@@ -75,11 +75,11 @@ var scene = new THREE.Scene();
 scene.background = new THREE.Color( 0xffffff );
 
 //----------- Light 
-var light_1 = new THREE.AmbientLight( 0xffffff, 0.7 );
+var light_1 = new THREE.AmbientLight( 0xffffff, 1.7 );
 scene.add( light_1 ); 
  
 
-var light_2 = new THREE.DirectionalLight( 0xcccccc, 0.3 );
+var light_2 = new THREE.DirectionalLight( 0xcccccc, 1.3 );
 light_2.position.set(0,15,0);
 light_2.lookAt(scene.position);
 light_2.castShadow = true;
@@ -156,7 +156,7 @@ function createGrid()
 
 new THREE.MTLLoader().load
 ( 
-	'js/house_1_nzr.mtl',
+	'js/house_2.mtl',
 	
 	function ( materials ) 
 	{
@@ -164,11 +164,11 @@ new THREE.MTLLoader().load
 		
 		new THREE.OBJLoader().setMaterials( materials ).load						
 		( 
-			'js/house_1_nzr.obj', 
+			'js/house_2.obj', 
 			function ( object ) 
 			{		console.log(333333, object);
-				//object.position.set(-7,0,4);
-				object.scale.set(0.001, 0.001, 0.001);
+				object.position.set(-7,0,4);
+				//object.scale.set(0.001, 0.001, 0.001);
 				scene.add( object );
 			} 
 		);
