@@ -11,6 +11,7 @@
 <script src="js/jquery.js"></script>
 <script src="js/three.min.js?<?=$vrs?>"></script>
 <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+<script src="https://threejs.org/examples/js/loaders/MTLLoader.js"></script>
 </head>
 <body>
 
@@ -39,7 +40,17 @@
 
 <script>
 var container = document.getElementById( 'scene-3d' );
-console.log(container);
+
+container.addEventListener('contextmenu', function(event) { event.preventDefault() });
+container.addEventListener( 'mousedown', onDocumentMouseDown, false );
+container.addEventListener( 'mousemove', onDocumentMouseMove, false );
+container.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+container.addEventListener( 'touchstart', onDocumentMouseDown, false );
+container.addEventListener( 'touchmove', onDocumentMouseMove, false );
+container.addEventListener( 'touchend', onDocumentMouseUp, false );
+
+
 var w_w = container.clientWidth;
 var w_h = container.clientHeight;
 var aspect = w_w/w_h;
@@ -91,14 +102,14 @@ camera.userData.tag = 'cameraTop';
 var camera = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.2, 1000 );  
 camera.rotation.order = 'YZX';		//'ZYX'
 camera.position.set(8, 6, 8);
-camera.lookAt(new THREE.Vector3(0,2,0));
+camera.lookAt(new THREE.Vector3(0,2,-2));
 camera.userData.tag = 'camera3D';
 //----------- camera
 
 
 
 var theta = 0;
-var radius = 10;
+var radius = 14;
 function animate() 
 {
 	requestAnimationFrame( animate );
@@ -106,7 +117,7 @@ function animate()
 	theta += 0.1;
 	camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
 	camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
-	camera.lookAt( scene.position );
+	camera.lookAt(new THREE.Vector3(0,2,-2));
 	
 	renderer.render(scene, camera);
 }
@@ -140,21 +151,148 @@ function createGrid()
 }
 
 
-new THREE.OBJLoader().load
-(
-	'js/house.obj', 
+
+
+
+new THREE.MTLLoader().load
+( 
+	'js/house_1_nzr.mtl',
 	
-	function ( obj ) 
+	function ( materials ) 
 	{
-		//obj.geometry.computeBoundingSphere();	
-		//obj.position.set(0,0,0);
-		//obj.rotation.set(Math.PI/2,Math.PI,-Math.PI/2);
-		obj.position.y = 0.5;
-		obj.scale.set(0.02, 0.02, 0.02);
+		materials.preload();
 		
-		scene.add( obj );	
-	}	
+		new THREE.OBJLoader().setMaterials( materials ).load						
+		( 
+			'js/house_1_nzr.obj', 
+			function ( object ) 
+			{		console.log(333333, object);
+				//object.position.set(-7,0,4);
+				object.scale.set(0.001, 0.001, 0.001);
+				scene.add( object );
+			} 
+		);
+	}
 );
+
+
+var vk_click = '';
+var isMouseDown1 = false;
+var isMouseRight1 = false;
+var isMouseDown2 = false;
+var isMouseDown3 = false;
+var planeMath = createPlaneMath();
+var onMouseDownPosition = {x:0, y:0};
+var onMouseDownPhi = 0;
+var onMouseDownTheta = 0;
+var raycaster = new THREE.Raycaster();
+var centerCam = new THREE.Vector3(0,2,-2);
+
+console.log(camera);
+
+function onDocumentMouseDown( event ) 
+{
+	if(event.changedTouches)
+	{
+		event.clientX = event.changedTouches[0].clientX;
+		event.clientY = event.changedTouches[0].clientY;
+		vk_click = 'left';
+	}
+	
+
+	switch ( event.button ) 
+	{
+		case 0: vk_click = 'left'; break;
+		case 1: vk_click = 'right'; /*middle*/ break;
+		case 2: vk_click = 'right'; break;
+	}
+
+	onMouseDownPosition.x = event.clientX;
+	onMouseDownPosition.y = event.clientY;
+
+	if (vk_click == 'left')				// 1
+	{		
+		var dir = new THREE.Vector3().subVectors( centerCam, camera.position ).normalize();
+		
+		// получаем угол наклона камеры к target (к точке куда она смотрит)
+		var dergree = THREE.Math.radToDeg( dir.angleTo(new THREE.Vector3(dir.x, 0, dir.z)) ) * 2;	
+		if(dir.y > 0) { dergree *= -1; }
+		onMouseDownPhi = dergree;  	
+		
+		
+		// получаем угол направления (на плоскости) камеры к target 
+		dir.y = 0; 
+		dir.normalize();    
+		onMouseDownTheta = THREE.Math.radToDeg( Math.atan2(dir.x, dir.z) - Math.PI ) * 2;			
+		
+		isMouseDown2 = true;
+	}
+	else if(vk_click == 'right')		// 2
+	{
+		isMouseDown3 = true;
+		planeMath.position.copy( centerCam );
+		planeMath.rotation.copy( camera.rotation );
+		planeMath.updateMatrixWorld();		
+		
+		var intersects = rayIntersect( event, planeMath, 'one' );	
+		//camera3D.userData.camera.click.pos = intersects[0].point;  			
+	}
+}
+
+
+
+function onDocumentMouseMove( event ) 
+{ 
+	if(event.changedTouches)
+	{
+		event.clientX = event.changedTouches[0].clientX;
+		event.clientY = event.changedTouches[0].clientY;
+		isMouseDown2 = true;
+	}
+
+	//cameraMove3D( event );
+}
+
+
+function onDocumentMouseUp( event )  
+{
+	isMouseDown1 = false;
+	isMouseRight1 = false;
+	isMouseDown2 = false;
+	isMouseDown3 = false;
+}
+
+
+
+function createPlaneMath()
+{
+	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	var mat_pm = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
+	mat_pm.visible = false; 
+	var planeMath = new THREE.Mesh( geometry, mat_pm );
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.userData.tag = 'planeMath';	
+	scene.add( planeMath );	
+	
+	return planeMath;
+}
+
+
+function rayIntersect( event, obj, t ) 
+{
+	var mouse = {x:0, y:0};
+	mouse.x = ( event.clientX / w_w ) * 2 - 1;
+	mouse.y = - ( event.clientY / w_h ) * 2 + 1;
+	raycaster.setFromCamera( mouse, camera );
+	
+	var intersects = null;
+	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); }
+	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj, true ); }	
+	
+	return intersects;
+}
+
+
 
 
 animate();
