@@ -1,0 +1,11 @@
+
+
+
+AddDefaultCharset utf-8
+
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.3d-stroyka\.ru$ [NC]
+RewriteRule ^(.*)$ http://3d-stroyka.ru/$1 [R=301,L]
+
+
