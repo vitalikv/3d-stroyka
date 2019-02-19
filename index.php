@@ -1,320 +1,263 @@
 <? $vrs = '=1' ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Строительный калькулятор 3D</title>
-<meta charset="utf-8">
-<link rel="icon" href="/img/favicon.ico">
-<link rel="stylesheet" href="css/reset.css">
-<link rel="stylesheet" href="css/style.css?<?=$vrs?>">
+<link rel="shortcut icon" href="/img/favicon.ico" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/reset.css">
+<link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/style.css">
+
 <script src="js/jquery.js"></script>
 <script src="js/three.min.js?<?=$vrs?>"></script>
 <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
 <script src="https://threejs.org/examples/js/loaders/MTLLoader.js"></script>
+
+<title>Строительный калькулятор 3D</title>
+
+
 </head>
 <body>
 
-<div class="wrap">
-<div class="content">
-<script>console.log(window.location.hostname)</script>
-
-<header>
-<div class="title">Строительные онлайн калькуляторы в 3D</div>
-</header>
-
-<div class="menu-b">
-<ul class="menu">
-<li><a href="/">Главная</a></li>
-<li><a href="/teoriy">Теория</a></li>
-<li><a href="/proekt">Проектирование</a></li>
-<li><a href="/montag">Монтаж</a></li>
-<li><a href="/zapusk">Запуск</a></li>
-</ul>
-</div>
-
-<div class="b1">
-<div id="scene-3d" style="width:90%; height:600px; margin:0 auto;"></div>
-</div>
-
-
 <script>
-var container = document.getElementById( 'scene-3d' );
-
-container.addEventListener('contextmenu', function(event) { event.preventDefault() });
-container.addEventListener( 'mousedown', onDocumentMouseDown, false );
-container.addEventListener( 'mousemove', onDocumentMouseMove, false );
-container.addEventListener( 'mouseup', onDocumentMouseUp, false );
-
-container.addEventListener( 'touchstart', onDocumentMouseDown, false );
-container.addEventListener( 'touchmove', onDocumentMouseMove, false );
-container.addEventListener( 'touchend', onDocumentMouseUp, false );
-
-
-var w_w = container.clientWidth;
-var w_h = container.clientHeight;
-var aspect = w_w/w_h;
-var d = 5;
-var infProject = { settings : {}, scene : {}, cam: { mirror : [] } };
-
-var canvas = document.createElement( 'canvas' );
-var context = canvas.getContext( 'webgl2', { antialias: true } );
-var renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context, preserveDrawingBuffer: true, } );
-
-//var renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true, /*antialias : true*/});
-renderer.localClippingEnabled = true;
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( w_w, w_h );
-
-
-container.appendChild( renderer.domElement );
-
-var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0xffffff );
-
-//----------- Light 
-var light_1 = new THREE.AmbientLight( 0xffffff, 1.7 );
-scene.add( light_1 ); 
- 
-
-var light_2 = new THREE.DirectionalLight( 0xcccccc, 1.3 );
-light_2.position.set(0,15,0);
-light_2.lookAt(scene.position);
-light_2.castShadow = true;
-light_2.shadow.mapSize.width = 2048;
-light_2.shadow.mapSize.height = 2048;
-light_2.shadow.camera.left = - d;
-light_2.shadow.camera.right = d;
-light_2.shadow.camera.top = d;
-light_2.shadow.camera.bottom = - d;
-light_2.shadow.camera.near = 0;
-light_2.shadow.camera.far = 3500;
-scene.add( light_2 );
-
-//----------- camera
-var camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
-camera.position.set(5, 3, 5);
-camera.lookAt(new THREE.Vector3(0,2,0));
-camera.userData.tag = 'cameraTop';
-
-var camera = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.2, 1000 );  
-camera.rotation.order = 'YZX';		//'ZYX'
-camera.position.set(8, 6, 8);
-camera.lookAt(new THREE.Vector3(0,2,-2));
-camera.userData.tag = 'camera3D';
-//----------- camera
-
-
-
-var theta = 0;
-var radius = 14;
-function animate() 
-{
-	requestAnimationFrame( animate );
-	
-	theta += 0.1;
-	camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
-	camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
-	camera.lookAt(new THREE.Vector3(0,2,-2));
-	
-	renderer.render(scene, camera);
-}
-
-
-
-createGrid();
-
-function createGrid() 
-{
-	var geom_line = new THREE.Geometry();
-	var count_grid1 = 10;
-	var count_grid2 = (count_grid1 * 1) / 2;
-	geom_line.vertices.push(new THREE.Vector3( - count_grid2, 0, 0 ) );
-	geom_line.vertices.push(new THREE.Vector3( count_grid2, 0, 0 ) );
-	linesMaterial = new THREE.LineBasicMaterial( { color: 0xd6d6d6, opacity: 1, linewidth: .1 } );
-
-	for ( var i = 0; i <= count_grid1; i ++ ) 
-	{
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.z = ( i * 1 ) - count_grid2;
-		line.position.y = -0.01;
-		scene.add( line );
-
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.x = ( i * 1 ) - count_grid2;
-		line.position.y = -0.01;
-		line.rotation.y = 90 * Math.PI / 180;
-		scene.add( line );
-	}	
-}
-
-
-
-
-
-new THREE.MTLLoader().load
-( 
-	'js/house_2.mtl',
-	
-	function ( materials ) 
-	{
-		materials.preload();
-		
-		new THREE.OBJLoader().setMaterials( materials ).load						
-		( 
-			'js/house_2.obj', 
-			function ( object ) 
-			{		console.log(333333, object);
-				object.position.set(-7,0,4);
-				//object.scale.set(0.001, 0.001, 0.001);
-				scene.add( object );
-			} 
-		);
-	}
-);
-
-
-var vk_click = '';
-var isMouseDown1 = false;
-var isMouseRight1 = false;
-var isMouseDown2 = false;
-var isMouseDown3 = false;
-var planeMath = createPlaneMath();
-var onMouseDownPosition = {x:0, y:0};
-var onMouseDownPhi = 0;
-var onMouseDownTheta = 0;
-var raycaster = new THREE.Raycaster();
-var centerCam = new THREE.Vector3(0,2,-2);
-
-console.log(camera);
-
-function onDocumentMouseDown( event ) 
-{
-	if(event.changedTouches)
-	{
-		event.clientX = event.changedTouches[0].clientX;
-		event.clientY = event.changedTouches[0].clientY;
-		vk_click = 'left';
-	}
+$(document).ready(function(){
 	
 
-	switch ( event.button ) 
-	{
-		case 0: vk_click = 'left'; break;
-		case 1: vk_click = 'right'; /*middle*/ break;
-		case 2: vk_click = 'right'; break;
-	}
-
-	onMouseDownPosition.x = event.clientX;
-	onMouseDownPosition.y = event.clientY;
-
-	if (vk_click == 'left')				// 1
-	{		
-		var dir = new THREE.Vector3().subVectors( centerCam, camera.position ).normalize();
-		
-		// получаем угол наклона камеры к target (к точке куда она смотрит)
-		var dergree = THREE.Math.radToDeg( dir.angleTo(new THREE.Vector3(dir.x, 0, dir.z)) ) * 2;	
-		if(dir.y > 0) { dergree *= -1; }
-		onMouseDownPhi = dergree;  	
-		
-		
-		// получаем угол направления (на плоскости) камеры к target 
-		dir.y = 0; 
-		dir.normalize();    
-		onMouseDownTheta = THREE.Math.radToDeg( Math.atan2(dir.x, dir.z) - Math.PI ) * 2;			
-		
-		isMouseDown2 = true;
-	}
-	else if(vk_click == 'right')		// 2
-	{
-		isMouseDown3 = true;
-		planeMath.position.copy( centerCam );
-		planeMath.rotation.copy( camera.rotation );
-		planeMath.updateMatrixWorld();		
-		
-		var intersects = rayIntersect( event, planeMath, 'one' );	
-		//camera3D.userData.camera.click.pos = intersects[0].point;  			
-	}
-}
+changesize_1();
 
 
+$(window).resize(function(){ changesize_1(); });
 
-function onDocumentMouseMove( event ) 
+
+function changesize_1()
 { 
-	if(event.changedTouches)
+	var w_win = $(document).width();
+	var w_bl_1 = w_win * 0.6;
+	if(w_bl_1 < (210 * 4 + 5))
 	{
-		event.clientX = event.changedTouches[0].clientX;
-		event.clientY = event.changedTouches[0].clientY;
-		isMouseDown2 = true;
+		var rs = (w_bl_1 - 4) / 4;
+		$('[click_img]').css("width", rs);
+		$('[bl2_img]').css("width", (rs * 4 + 4));
 	}
-
-	//cameraMove3D( event );
+	else
+	{
+		$('[click_img]').css("width", 210);
+		$('[bl2_img]').css("width", (210 * 4 + 4));
+	}
 }
 
-
-function onDocumentMouseUp( event )  
-{
-	isMouseDown1 = false;
-	isMouseRight1 = false;
-	isMouseDown2 = false;
-	isMouseDown3 = false;
-}
-
-
-
-function createPlaneMath()
-{
-	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
-	var mat_pm = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
-	mat_pm.visible = false; 
-	var planeMath = new THREE.Mesh( geometry, mat_pm );
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
-	planeMath.userData.tag = 'planeMath';	
-	scene.add( planeMath );	
+//console.log($('.img_ind_2').width());
+//console.log($('.img_ind_2').height());
 	
-	return planeMath;
-}
+<? // фото ?>
+$(document).on('click', '[click_img]', function () { 
+var img = $(this).attr('src');
+img = /(.+)-m\./.exec(img);
+$('[fon]').html('<img src="'+img[1]+'.png" class="img_big_2">');
+$(".img_big_2").bind("load",function(){ 
+$('[fon]').css({"display":"block"}); 
+var h_html = $(this).height();
+var h_okno = $(window).height();
+var h_resul = (h_okno-h_html)/2;
+$(this).css("margin-top", h_resul);
+});
+});		
+<? // фото ?>
 
 
-function rayIntersect( event, obj, t ) 
-{
-	var mouse = {x:0, y:0};
-	mouse.x = ( event.clientX / w_w ) * 2 - 1;
-	mouse.y = - ( event.clientY / w_h ) * 2 + 1;
-	raycaster.setFromCamera( mouse, camera );
+<? // видео ?>
+$(document).on('click', '[review]', function () { 
+var v = $(this).attr('review');
+var video = "";
+
+
+if(v == "1"){ video = "https://www.youtube.com/embed/XbMTbW-rr-Y"; }
+else if(v == "2"){ video = "https://www.youtube.com/embed/MgkQ-0kiQ7k"; }
+else if(v == "3"){ video = "https://www.youtube.com/embed/3ZcNvLCbv7E"; }
+else if(v == "4"){ video = "https://www.youtube.com/embed/ngOufPOni9c"; }
+else if(v == "5"){ video = "https://www.youtube.com/embed/qhSWUnvAj88"; }
+else { video = "https://www.youtube.com/embed/1J49QSxEhT0"; }
+
+$('[fon]').html('<div class="img_big_2"><iframe width="100%" height="100%" src="'+ video + '" frameborder="0" allowfullscreen></iframe></div>');
+
+$('[fon]').css({"display":"block"});
+
+var w_okno = $(window).width() * 0.7;
+
+$('.img_big_2').css("width", w_okno);
+$('.img_big_2').css("height", w_okno / 1.6666);
+$('.img_big_2').css("margin-top", ($(window).height() - w_okno / 1.6666) / 2);
+
+});		
+<? // видео ?>
+
+
+<? // закрытие fon ?>
+$(document).on('click', '.img_big_2', function () { return false; });
+$(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}); $('[fon]').html(''); $('body').css("overflow", "auto"); });
+<? // закрытие fon ?>	
 	
-	var intersects = null;
-	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); }
-	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj, true ); }	
-	
-	return intersects;
-}
-
-
-
-
-animate();
-
+});
 </script>
 
-</div>
+
+<div class="fon" fon=""></div> <? // фон под big img ?>
+
+
+<div class="wrap">
+
+	<div class="content">
+		<div class="line_0"></div>
+
+		<? include($_SERVER['DOCUMENT_ROOT']."/include/menu_1.php");  ?>
+		
+		<div class="block_line_1">		
+			<div class="offset_top_50"></div>
+			<div class="t1">Строительные онлайн калькуляторы в 3D</div>
+			<div class="offset_top_30"></div>
+			
+			<div>
+				<div id="scene-3d" class="youtube_1">
+										
+				</div>
+				
+				<div class="block_right_1">
+					<div class="inb_1">
+						<div class="inb_1_1">
+							<div class="ind_text_1">О программе:</div>
+							<div class="offset_top_30"></div>
+							<div class="ind_text_2">
+							Конструктор позволяет спроектировать 3D схему отопления из полипропилена. Подсчитать общее количество деталей и вывести отдельным списком. <br><br>
+							Это удобный инструмент для тех, кто хочет наглядно видеть, как будет выглядеть будущая система и знать какие детали для нее понадобятся.   
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="clear"></div>
+			</div>		
+		</div>
+		
+		
+		<div class="offset_top_50"></div>
+		<div class="block_line_2">
+			<div class="block_line_1">
+				<div class="offset_top_50"></div>
+				<div class="block_float_2">					
+					<div class="ind_text_1"><div class="padding_left_30">Возможности программы:</div></div>
+					<div class="ind_list_1">
+					<div class="ind_item_1">Проектирование реалистичных 3D схем отопления</div>
+					<div class="ind_item_1">Быстрое редактирование уже сделанной схемы</div>
+					<div class="ind_item_1">Удобный и понятный интерфейс</div>
+					<div class="ind_item_1">Удобное перемещение по плану</div>
+					<div class="ind_item_1">Сохранение изображений схем отопления</div>
+					<div class="ind_item_1">Сохранение в текстовый файл списка деталей</div>
+					</div>					
+				</div>
+				
+				<div class="block_right_2">
+					<div class="block_img_1" bl2_img="">
+						<img src="/img/ind/1-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/2-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/3-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/4-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/5-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/6-m.png" class="img_ind_1" click_img="">		
+						
+						<img src="/img/ind/7-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/8-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/9-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/10-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/11-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/12-m.png" class="img_ind_1" click_img="">
+						<div class="clear"></div>						
+					</div>
+					<div class="clear"></div>
+				</div>
+				
+				<div class="clear"></div>
+				<div class="offset_top_50"></div>
+			</div>
+		</div>		
+		<div class="offset_top_50"></div>
+		
+		
+		
+		<div class="block_line_1">
+			<div class="ind_text_1">Особенности:</div>
+			<div class="offset_top_30"></div>
+			
+			<div>
+			<div class="ind_bl_1" review="1">
+				<img src="/img/ind/bl_1.png" class="img_ind_2">
+				<div class="ind_text_3">
+					Более 500 различных деталей и их модификаций
+				</div>
+			</div>
+			<div class="ind_bl_1" review="2">
+				<img src="/img/ind/bl_2.png" class="img_ind_2">
+				<div class="ind_text_3">
+					Быстрое и легкое редактирование
+				</div>
+			</div>			
+			<div class="ind_bl_1" review="3">
+				<img src="/img/ind/bl_3.png" class="img_ind_2">
+				<div class="ind_text_3">
+					Создание 3D чертежей с названиями деталей
+				</div>
+			</div>			
+			<div class="ind_bl_1" review="4">
+				<img src="/img/ind/bl_4.png" class="img_ind_2">
+				<div class="ind_text_3">
+					Вывод списка всех задействованных деталей в чертеже
+				</div>				
+			</div>
+			<div class="ind_bl_1" review="5">
+				<img src="/img/ind/bl_5.png" class="img_ind_2">
+				<div class="ind_text_3">
+					Реалистичная картинка
+				</div>				
+			</div>			
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="offset_top_50"></div>
+		
+		<div class="block_line_1">
+			<div class="ind_text_1">Системные требования:</div>
+			<div class="offset_top_30"></div>
+			Операционная система: от Windows 7 и выше<br>
+			Процессор: от 2 ядер Intel® или AMD®<br>
+			Память: от 2GB<br>
+			Видеокарта: GeForce или ATI Radeon<br><br>
+			
+			Программа запускается даже на ноутбуках 10 летний давности, но работает с тормозами.<br> 
+			Оптимальный вариант: ПК или ноутбук средний мощности 5 летний давности.  
+		</div>
+
+			
+		<div class="offset_top_50"></div>
+		
+	</div>
+
 </div>
 
+
 <footer>
-	<div class="block_line_1">
-		<div class="footer_menu">
-			<a href="/">Конструктор</a>
-			<!--<a href="/review">Возможности</a>-->
-			<a href="/documentation">Инструкция</a>
-			<a href="/buy">Купить</a>
-			<a href="/contact">Задать вопрос</a>
-		</div>
-		<div class="clear"></div>
-	</div>
+<? include($_SERVER['DOCUMENT_ROOT']."/include/footer_1.php");  ?>
 </footer>
+
+
+
+
+
+<script src="thr/scene-3d.js"></script>
+
+
 
 </body>
 </html>
+
+
 
