@@ -15,9 +15,13 @@
 </head>
 <body>
 
-<div class="contener">
-
+<div class="wrap">
+<div class="content">
 <script>console.log(window.location.hostname)</script>
+
+<header>
+<div class="title">Строительные онлайн калькуляторы в 3D</div>
+</header>
 
 <div class="menu-b">
 <ul class="menu">
@@ -29,12 +33,8 @@
 </ul>
 </div>
 
-<div class="content">
-Строительный калькулятор
-
-<div id="scene-3d" style="width:90%; height:600px; margin:auto;">
-</div>
-
+<div class="b1">
+<div id="scene-3d" style="width:90%; height:600px; margin:0 auto;"></div>
 </div>
 
 
@@ -299,21 +299,21 @@ animate();
 
 </script>
 
-
-<div class="otstup3"></div>
-
-<div class="footer">
-<p>
-<a href="/">Главная</a> | 
-<a href="/o_nas">О Нас</a> |
-<a href="/staty">Статьи</a> |
-<a href="/contact">Контакты</a>
-</p>
+</div>
 </div>
 
-<div class="otstup4"></div>
-
-</div>
+<footer>
+	<div class="block_line_1">
+		<div class="footer_menu">
+			<a href="/">Конструктор</a>
+			<!--<a href="/review">Возможности</a>-->
+			<a href="/documentation">Инструкция</a>
+			<a href="/buy">Купить</a>
+			<a href="/contact">Задать вопрос</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+</footer>
 
 </body>
 </html>
