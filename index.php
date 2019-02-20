@@ -47,8 +47,7 @@ function changesize_1()
 	}
 }
 
-//console.log($('.img_ind_2').width());
-//console.log($('.img_ind_2').height());
+
 	
 <? // фото ?>
 $(document).on('click', '[click_img]', function () { 
@@ -66,31 +65,6 @@ $(this).css("margin-top", h_resul);
 <? // фото ?>
 
 
-<? // видео ?>
-$(document).on('click', '[review]', function () { 
-var v = $(this).attr('review');
-var video = "";
-
-
-if(v == "1"){ video = "https://www.youtube.com/embed/XbMTbW-rr-Y"; }
-else if(v == "2"){ video = "https://www.youtube.com/embed/MgkQ-0kiQ7k"; }
-else if(v == "3"){ video = "https://www.youtube.com/embed/3ZcNvLCbv7E"; }
-else if(v == "4"){ video = "https://www.youtube.com/embed/ngOufPOni9c"; }
-else if(v == "5"){ video = "https://www.youtube.com/embed/qhSWUnvAj88"; }
-else { video = "https://www.youtube.com/embed/1J49QSxEhT0"; }
-
-$('[fon]').html('<div class="img_big_2"><iframe width="100%" height="100%" src="'+ video + '" frameborder="0" allowfullscreen></iframe></div>');
-
-$('[fon]').css({"display":"block"});
-
-var w_okno = $(window).width() * 0.7;
-
-$('.img_big_2').css("width", w_okno);
-$('.img_big_2').css("height", w_okno / 1.6666);
-$('.img_big_2').css("margin-top", ($(window).height() - w_okno / 1.6666) / 2);
-
-});		
-<? // видео ?>
 
 
 <? // закрытие fon ?>
@@ -125,11 +99,13 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				<div class="block_right_1">
 					<div class="inb_1">
 						<div class="inb_1_1">
-							<div class="ind_text_1">О программе:</div>
+							<div class="ind_text_1">О сайте:</div>
 							<div class="offset_top_30"></div>
 							<div class="ind_text_2">
-							Конструктор позволяет спроектировать 3D схему отопления из полипропилена. Подсчитать общее количество деталей и вывести отдельным списком. <br><br>
-							Это удобный инструмент для тех, кто хочет наглядно видеть, как будет выглядеть будущая система и знать какие детали для нее понадобятся.   
+								Здесь собранные различные строительные программы-калькуляторы, которые позволяют упростить построение и расчеты. Калькулятор сделан таким образом, что для начала вам нужно построить объект, а затем вы получите необходимые расчеты. <br><br>
+								Например -> фундамент: <br>
+								1. создаете фундамент вашей формы и конфигурации <br>
+								2. появляется смета с результатом 							 
 							</div>
 						</div>
 					</div>
@@ -144,15 +120,19 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 		<div class="block_line_2">
 			<div class="block_line_1">
 				<div class="offset_top_50"></div>
-				<div class="block_float_2">					
-					<div class="ind_text_1"><div class="padding_left_30">Возможности программы:</div></div>
+				<div class="block_float_2">	
+					<div class="ind_text_2">
+					3D калькулятор - это по сути упрощенная программа по проектированию, заточенная под конкретную задачу. Нет ничего лишнего и всё максимально упрощено. Это сделано для того чтобы не тратить часы на обучение работе в программе, а сразу приступить к построению и расчетам.
+					</div>
+					<div class="offset_top_30"></div>
+					<div class="ind_text_1"><div class="padding_left_30">Особенности:</div></div>
+					
 					<div class="ind_list_1">
-					<div class="ind_item_1">Проектирование реалистичных 3D схем отопления</div>
-					<div class="ind_item_1">Быстрое редактирование уже сделанной схемы</div>
-					<div class="ind_item_1">Удобный и понятный интерфейс</div>
-					<div class="ind_item_1">Удобное перемещение по плану</div>
-					<div class="ind_item_1">Сохранение изображений схем отопления</div>
-					<div class="ind_item_1">Сохранение в текстовый файл списка деталей</div>
+						<div class="ind_item_1">2D и 3D визуализация</div>
+						<div class="ind_item_1">Быстрое редактирование</div>
+						<div class="ind_item_1">Удобный и понятный интерфейс</div>
+						<div class="ind_item_1">Сохранение изображений</div>
+						<div class="ind_item_1">Моментальный расчет сметы</div>
 					</div>					
 				</div>
 				
@@ -185,42 +165,42 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 		
 		
 		<div class="block_line_1">
-			<div class="ind_text_1">Особенности:</div>
+			<div style="text-align: center; font-size: 24px; color:#222;">Калькуляторы:</div>
 			<div class="offset_top_30"></div>
 			
-			<div>
-			<div class="ind_bl_1" review="1">
-				<img src="/img/ind/bl_1.png" class="img_ind_2">
-				<div class="ind_text_3">
-					Более 500 различных деталей и их модификаций
+			<div class="modal_body_content_grid">
+				<div class="ind_bl_1" review="1">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>					
+					<div class="ind_text_3">
+						Более 500 различных деталей и их модификаций
+					</div>
 				</div>
-			</div>
-			<div class="ind_bl_1" review="2">
-				<img src="/img/ind/bl_2.png" class="img_ind_2">
-				<div class="ind_text_3">
-					Быстрое и легкое редактирование
+				<div class="ind_bl_1" review="2">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="ind_text_3">
+						Быстрое и легкое редактирование
+					</div>
+				</div>			
+				<div class="ind_bl_1" review="3">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="ind_text_3">
+						Создание 3D чертежей с названиями деталей
+					</div>
+				</div>			
+				<div class="ind_bl_1" review="4">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="ind_text_3">
+						Вывод списка всех задействованных деталей в чертеже
+					</div>				
 				</div>
-			</div>			
-			<div class="ind_bl_1" review="3">
-				<img src="/img/ind/bl_3.png" class="img_ind_2">
-				<div class="ind_text_3">
-					Создание 3D чертежей с названиями деталей
-				</div>
-			</div>			
-			<div class="ind_bl_1" review="4">
-				<img src="/img/ind/bl_4.png" class="img_ind_2">
-				<div class="ind_text_3">
-					Вывод списка всех задействованных деталей в чертеже
-				</div>				
+				<div class="ind_bl_1" review="5">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="ind_text_3">
+						Реалистичная картинка
+					</div>				
+				</div>			
 			</div>
-			<div class="ind_bl_1" review="5">
-				<img src="/img/ind/bl_5.png" class="img_ind_2">
-				<div class="ind_text_3">
-					Реалистичная картинка
-				</div>				
-			</div>			
-			</div>
-			<div class="clear"></div>
+			
 		</div>
 		<div class="offset_top_50"></div>
 		

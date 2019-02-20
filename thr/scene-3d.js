@@ -88,7 +88,7 @@ createGrid();
 function createGrid() 
 {
 	var geom_line = new THREE.Geometry();
-	var count_grid1 = 10;
+	var count_grid1 = 100;
 	var count_grid2 = (count_grid1 * 1) / 2;
 	geom_line.vertices.push(new THREE.Vector3( - count_grid2, 0, 0 ) );
 	geom_line.vertices.push(new THREE.Vector3( count_grid2, 0, 0 ) );
