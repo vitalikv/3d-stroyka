@@ -2,7 +2,7 @@
 
 $url = $_SERVER['REQUEST_URI'];
 
-$path = "/";
+$path = "/gl/";
 
 $title = 'калькулятор площади пола онлайн';
 $type = 1;
@@ -91,14 +91,14 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	
 	<div class="top_panel_2">				
 		<div class="toolbar" data-action ='top_panel_1'>	
-			<div data-action ='wall' class="button1"><img src="/img/paint.png"></div>
+			<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 			<div class="button1-wrap">
 				<div data-action ='2D' class="button1">2D</div>
 				<div data-action ='3D' class="button1">3D</div>
 			</div>
 			<div data-action ='estimate' class="button4">СМЕТА</div>
 			<div class="button1-wrap">
-				<div data-action ='screenshot' class="button1"><img src="/img/screenshot.png"></div>
+				<div data-action ='screenshot' class="button1"><img src="<?=$path?>/img/screenshot.png"></div>
 			</div>
 		</div> 
 	</div>	 
@@ -114,7 +114,7 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	<div class="left_panel_1" data-action ='left_panel_1'  >
 
 		<div class="side_panel-button">			
-			<div class="button2" data-action ='form_1'><img src="/img/f4.png"></div>
+			<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
 		</div> 
 		<?if($type == 2){?>
 		<div class="input-height">
@@ -164,7 +164,7 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 								echo '
 								<div class="block_form_1" link_form = "'.$i.'">
 									<div class="block_form_1_image_wrap">
-										<img src="/img/f'.$i.'.png">
+										<img src="'.$path.'/img/f'.$i.'.png">
 									</div>
 									<div class="block_form_1_desc">';
 										if($i == 0) { echo 'пустой план'; }

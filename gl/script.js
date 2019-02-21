@@ -1080,7 +1080,7 @@ function createPoint( pos, id )
 
 
 var clippingMaskWall = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 1 );	// маска для стены   
-var lightMap_1 = new THREE.TextureLoader().load('/img/lightMap_1.png');
+var lightMap_1 = new THREE.TextureLoader().load('/gl/img/lightMap_1.png');
 //renderer.clippingPlanes = [ clippingMaskWall ];
 
 
