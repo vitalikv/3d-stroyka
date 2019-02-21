@@ -169,24 +169,24 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 			<div class="offset_top_30"></div>
 			
 			<div class="modal_body_content_grid">
-				<div class="ind_bl_1" review="1">
+				<a class="ind_bl_1" href="calculator/monolit_fundament">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>					
 					<div class="ind_text_3">
-						Более 500 различных деталей и их модификаций
+						монолитный фундамент
 					</div>
-				</div>
-				<div class="ind_bl_1" review="2">
+				</a>
+				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">
-						Быстрое и легкое редактирование
+						ленточный фундамент
 					</div>
-				</div>			
-				<div class="ind_bl_1" review="3">
+				</a>			
+				<a class="ind_bl_1" href="calculator/svaynyy_fundament">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">
-						Создание 3D чертежей с названиями деталей
+						свайный фундамент
 					</div>
-				</div>			
+				</a>			
 				<div class="ind_bl_1" review="4">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">

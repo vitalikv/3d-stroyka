@@ -5,6 +5,7 @@ DirectoryIndex index.php
 Options -Indexes
 
 RewriteEngine On
+RewriteBase /
 RewriteCond %{HTTP_HOST} ^www.3d-stroyka\.ru$ [NC]
 RewriteRule ^(.*)$ http://3d-stroyka.ru/$1 [R=301,L]
 
@@ -15,7 +16,9 @@ RewriteRule ^documentation$ documentation.php
 RewriteRule ^buy$ buy.php
 RewriteRule ^contact$ contact.php
 RewriteRule ^get_pay$ components/get_pay.php
-RewriteRule ^demo$ demo.php
+RewriteRule ^calculator\/monolit_fundament$ gl/index.php
+RewriteRule ^calculator\/lentochnii_fundament$ gl/index.php
+RewriteRule ^calculator\/svaynyy_fundament$ gl/index.php
 
 RewriteRule ^download$ download.php
 RewriteRule ^dw/program.zip$ dw/download_1.php
