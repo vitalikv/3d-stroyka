@@ -37,6 +37,7 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	var vr = "<?=$vrs ?>";
 	
 	var infProject = { type : <?=$type?>, title : '<?=$title?>', nameId : '<?=$nameId?>', unlock : '<?=$setting['unlock']?>', scene : { tool : {} } };
+	infProject.path = '<?=$path?>';
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject);
