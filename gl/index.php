@@ -6,13 +6,12 @@ $path = "/gl/";
 
 $title = 'калькулятор площади пола онлайн';
 $type = 1;
-$setting['unlock'] = '';
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
 if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $type = 1; $nameId = 'монолитный фундамент'; }
 if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $type = 2; $nameId = 'ленточный фундамент'; }
-if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $type = 2; $setting['unlock'] = 1; $nameId = 'свайный фундамент'; }
+if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $type = 2; $nameId = 'свайный фундамент'; }
 ?>
 
 
@@ -36,7 +35,7 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
     <script>
 	var vr = "<?=$vrs ?>";
 	
-	var infProject = { type : <?=$type?>, title : '<?=$title?>', nameId : '<?=$nameId?>', unlock : '<?=$setting['unlock']?>', scene : { tool : {} } };
+	var infProject = { type : <?=$type?>, title : '<?=$title?>', nameId : '<?=$nameId?>', scene : { tool : {} } };
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	

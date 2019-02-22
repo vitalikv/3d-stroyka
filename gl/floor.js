@@ -27,8 +27,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	room[n].rotation.set( Math.PI / 2, 0, 0 );	
 	room[n].p = arrP;
 	room[n].w = arrW; 
-	room[n].s = arrS;
-	room[n].label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor })[0];
+	room[n].s = arrS;	
 	room[n].pr_preview = '';
 	room[n].pr_catalog = '';
 	
@@ -58,18 +57,19 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	//setMaterialFloorCeiling(n, material)
 	
 	
-	
-	
-	getYardageSpace( [room[n]] );
+	if(infProject.settings.calc.fundament == 'monolit')
+	{ 
+		room[n].label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor })[0];
+		
+		getYardageSpace( [room[n]] ); 
+		scene.add( room[n] ); 
+		scene.add( ceiling[n] );
 
-	scene.add( room[n] );
-	scene.add( ceiling[n] );	
+		if(plinth[0].o) { loadPopObj_1({ obj: room[n], lotid : plinth[0].lotid }); } 
+		//if(plinth[1].o) { loadPopObj_1({ obj: ceiling[n], lotid : plinth[0].lotid}); }		
+	}	
 	
 	addParamPointOnZone(arrP, room[n]);
-		
-	if(plinth[0].o) { loadPopObj_1({ obj: room[n], lotid : plinth[0].lotid }); } 
-	//if(plinth[1].o) { loadPopObj_1({ obj: ceiling[n], lotid : plinth[0].lotid}); }
-	
 	
 	upLabelPlan_1(arrW);
 	
@@ -135,6 +135,8 @@ function replaceParamPointOnZone(zone, newPoint, replacePoint)
 // при изменении формы пола обновляем geometry.faces
 function updateShapeFloor(arrRoom)
 {  
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') { return; }
 	
 	for ( var i = 0; i < arrRoom.length; i++ ) 
 	{	 

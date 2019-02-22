@@ -254,11 +254,9 @@ var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3();
   
   
-  
-//if(infProject.type == 2) { var floorLabel = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor })[0]; floorLabel.visible = true; }   
  
  
-if(infProject.type == 2 && infProject.unlock == 1) 
+if(infProject.settings.calc.fundament == 'svai') 
 {
 	infProject.scene.tool.pillar = createPillar();
 }
@@ -1122,7 +1120,8 @@ function createOneWall3( point1, point2, width, cdm )
 	
 	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, lightMap : lightMap_1 } );
 
-	if(infProject.type == 2) { var color = 0x696969; }
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') { var color = 0x696969; }
 	else { var color = 0x4d4d4d; }
 	
 	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color, lightMap : lightMap_1, transparent: true, depthTest: false } ) ];		
@@ -1486,7 +1485,8 @@ function createEstimateJson()
 {
 	var arr = [];
 	
-	if(infProject.type == 2)
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') 
 	{
 		var fundament = infProject.scene.array.fundament;		
 		

@@ -44,7 +44,7 @@ function calculationSpaceWall( wall, index )
 // считаем и показываем длину стены
 function upLabelPlan_1(arrWall, Zoom)
 {
-	
+	console.log(99999999, arrWall.length);
 	if(Zoom){}
 	else if(typeof Zoom !== "undefined") { Zoom = false; }
 	
@@ -239,7 +239,8 @@ function getWallAreaTop( wall )
 //площадь помещения ( номер зон получаем из массива )
 function getYardageSpace( room ) 
 {	
-	
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') { return; }	
 	
 	for (var u = 0; u < room.length; u++)
 	{  

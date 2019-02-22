@@ -663,7 +663,8 @@ function deleteOneSameZone( arrRoom, arrP, arrRoom_2 )
 // создаем и обновляем зоны
 function createWallZone(wall)
 {
-	if(infProject.type == 2) {}
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') {}
 	else { return; }
 	
 	var zone = calculationZoneFundament_1(wall);	
@@ -688,7 +689,8 @@ function createWallZone(wall)
 // подсчитваем точки у ленточного фундамента 
 function calculationZoneFundament_1(wall)
 {
-	if(infProject.type == 2)
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai') 
 	{
 		var arr = [];
 		var arrW = [];
