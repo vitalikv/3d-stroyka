@@ -9,8 +9,8 @@
 <link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/reset.css">
 <link rel="stylesheet" media="screen" type="text/css" title="Style" href="/css/style.css">
 
-<script src="js/jquery.js"></script>
-<script src="js/three.min.js?<?=$vrs?>"></script>
+<script src="gl/js/jquery.js"></script>
+<script src="gl/js/three.min.js?<?=$vrs?>"></script>
 <script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
 <script src="https://threejs.org/examples/js/loaders/MTLLoader.js"></script>
 
