@@ -302,11 +302,9 @@ canvas
 	width: 100%;
 
 	flex-direction: column;
-	-webkit-flex-direction: column;
-	
+	-webkit-flex-direction: column;	
 
 	border-bottom: 1px solid #f1f1f1;
-
 
 	background-color:#ffffff; 
 	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
@@ -321,30 +319,44 @@ canvas
 }
 
 
-h1
-{
-	font-family: arial,sans-serif;
-	font-size: 20px;	
-}
 
 
 .top_panel_1 .go-home
 {
 	position: absolute;
 	width: 140px;	
-	height: 30px;
-	top: 15px;
-	left: 20px;
-	
-	font-family: arial,sans-serif;
-	font-size: 20px;
+	height: 100%; 
+	top: 0px;
+	left: 0px;	
 	text-decoration: none;
 	user-select: none;
-	-moz-user-select: none;
-	line-height: 0.6em;
-	color: #666;
-	cursor: pointer;	
+	-moz-user-select: none;	
+	border-right: 2px solid #cccccc;	
 }
+
+.go-home p
+{
+	display: block;
+    position: absolute;
+    top: 50%;	
+	left: 15px;
+	margin-top: -0.5em;	
+	font-family: arial,sans-serif;
+	font-size: 20px;	
+	color: #666;
+	text-align:center;  	
+}
+
+
+.top_panel_1 .go-home:hover
+{
+	background-image: -moz-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%); 
+	background-image: -webkit-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%);
+	background-image: -o-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%); 
+	background-image: -ms-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%);  
+	background-image: linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%);	
+}
+
 
 .top_panel_2
 {
@@ -378,7 +390,7 @@ h1
 	margin: 10px auto 10px auto;
 	
 	font-family: arial,sans-serif;
-	font-size: 15px;
+	font-size: 20px;
 	color: #666;
 	text-decoration: none;
 	user-select: none;

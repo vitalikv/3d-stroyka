@@ -87,7 +87,7 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	
 	
 	<div class="top_panel_1" data-action ='top_panel_1'>
-		<div class="go-home">На главную</div>
+		<a href="/" class="go-home"><p>На главную</p></a>
 		<div class="title_1"><h1><?=$title?></h1></div>
 	</div>
 	
