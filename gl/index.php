@@ -40,7 +40,12 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	
-	infProject.settings.wall = { label : 'outside' }
+	infProject.settings.wall = { label : 'outside' } 
+	infProject.settings.calc = { fundament: '' }
+	
+	if(infProject.nameId == 'монолитный фундамент') { infProject.settings.calc.fundament = 'monolit'; }
+	else if(infProject.nameId == 'ленточный фундамент') { infProject.settings.calc.fundament = 'lent'; }
+	else if(infProject.nameId == 'свайный фундамент') { infProject.settings.calc.fundament = 'svai'; }
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject);

@@ -141,7 +141,7 @@ function upLabelPlan_1(arrWall, Zoom)
 			for ( var i2 = 0; i2 < v.length; i2++ ) { wall.userData.wall.v[i2] = v[i2].clone(); }	// обновляем vertices			
 		}
 		
-		if(infProject.type == 2) { getWallAreaTop( wall ); }
+		getWallAreaTop( wall );
 	}
 	
 	
@@ -153,49 +153,51 @@ function upLabelPlan_1(arrWall, Zoom)
 // подсчитваем объем у ленточного фундамента
 function calculationAreaFundament_2(wall)
 {
-	if(infProject.type == 2)
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai'){}
+	else { return; }
+	
+	var fundament = [];
+	for ( var i = 0; i < obj_line.length; i++ )
 	{
-		var fundament = [];
-		for ( var i = 0; i < obj_line.length; i++ )
+		var zone = obj_line[i].userData.wall.zone;
+		
+		var exist = false;
+		
+		for ( var i2 = 0; i2 < fundament.length; i2++ )
 		{
-			var zone = obj_line[i].userData.wall.zone;
-			
-			var exist = false;
-			
-			for ( var i2 = 0; i2 < fundament.length; i2++ )
-			{
-				if(fundament[i2] == zone) { exist = true; break; }
-			}
-			
-			if(!exist) { fundament[fundament.length] = zone; }
+			if(fundament[i2] == zone) { exist = true; break; }
 		}
 		
-		infProject.scene.array.fundament = fundament;
+		if(!exist) { fundament[fundament.length] = zone; }
+	}
+	
+	infProject.scene.array.fundament = fundament;
+	
+	for ( var i = 0; i < fundament.length; i++ )
+	{
 		
-		for ( var i = 0; i < fundament.length; i++ )
+		var points = fundament[i].points;
+		var walls = fundament[i].walls;
+		var label = fundament[i].label;
+		
+		var sum = 0;
+		for ( var i2 = 0; i2 < walls.length; i2++ )
 		{
-			
-			var points = fundament[i].points;
-			var walls = fundament[i].walls;
-			var label = fundament[i].label;
-			
-			var sum = 0;
-			for ( var i2 = 0; i2 < walls.length; i2++ )
-			{
-				sum += walls[i2].userData.wall.area.top;
-			}
-			
-			sum = Math.round(sum * 100)/100;
+			sum += walls[i2].userData.wall.area.top;
+		}
+		
+		sum = Math.round(sum * 100)/100;
 
-			var pos = new THREE.Vector3();
-			
-			for (i2 = 0; i2 < points.length; i2++) { pos.x += points[i2].position.x; pos.z += points[i2].position.z; }				
-			
-			label.position.set(pos.x / points.length, 0.2, pos.z / points.length);		
-			
-			upLabelArea2(label, sum, '80', 'rgba(255,255,255,1)', true);			
-		}			
-	}	
+		var pos = new THREE.Vector3();
+		
+		for (i2 = 0; i2 < points.length; i2++) { pos.x += points[i2].position.x; pos.z += points[i2].position.z; }				
+		
+		label.position.set(pos.x / points.length, 0.2, pos.z / points.length);		
+		
+		upLabelArea2(label, sum, '80', 'rgba(255,255,255,1)', true);			
+	}			
+	
 }
 
 
@@ -203,6 +205,10 @@ function calculationAreaFundament_2(wall)
 //площадь стены сверху
 function getWallAreaTop( wall ) 
 {	
+	var inf = infProject.settings.calc.fundament;
+	if(inf == 'lent' || inf == 'svai'){}
+	else { return; }
+	
 	var res = 0;
 	var v = wall.userData.wall.v; 
 	
