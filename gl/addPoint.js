@@ -50,7 +50,7 @@ function clickCreateWall(point)
 		if(obj.userData.tag == 'wall') { addPoint_5( obj, point ); } 
 	}
 	else
-	{  
+	{   
 		if(!turnBackPosPoint(point))
 		{ 
 			if(obj.userData.tag == 'planeMath') { movePointWallPlaneMath(point); }
@@ -67,8 +67,8 @@ function clickCreateWall(point)
 function movePointWallPlaneMath(point) 
 {
 	updateShapeFloor(point.zone); 
-	getInfoEvent3( point, param_wall.wallR ); 
-	clickPointUP_BSP(param_wall.wallR);
+	
+	clickPointUP_BSP(point.w);
 }
 
 

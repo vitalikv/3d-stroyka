@@ -52,7 +52,7 @@ function upLabelPlan_1(arrWall, Zoom)
 	{
 		var wall = arrWall[i];
 		
-		if(infProject.type == 1)
+		if(infProject.settings.wall.label == 'outside')
 		{
 			var label_1 = wall.label[0]; 
 		}
@@ -73,7 +73,7 @@ function upLabelPlan_1(arrWall, Zoom)
 		
 		if(!Zoom)
 		{
-			if(infProject.type == 1)
+			if(infProject.settings.wall.label == 'outside')
 			{
 				var dist = p1.distanceTo( p2 );			
 				
@@ -104,7 +104,7 @@ function upLabelPlan_1(arrWall, Zoom)
 		var z1 = p1.x - p2.x;		 
 		 
 		 
-		if(infProject.type == 1)
+		if(infProject.settings.wall.label == 'outside')
 		{
 			label_1.rotation.set( 0, rotY, 0 );
 

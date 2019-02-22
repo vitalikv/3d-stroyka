@@ -201,8 +201,6 @@ var levelFloor = 1;
 var projName = 'Новый проект';
 var projVersion = '1';
 var keys = [];
-//var libs = '92da6c1f72c1ebca456a86d978af1dfc7db1bcb24d658d710c5c8ae25d98ba52';  
-var libs = 'fb5f95f84fa11b73e0ebfa0969de65176902c1b7337652d43537a66a09d7028d';
 var camera = cameraTop;
 var height_wall = 0.2;
 var width_wall = 0.3;
@@ -1136,7 +1134,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall })[0];	
 	wall.label[0].visible = true;
 	
-	if(infProject.type == 2) 
+	if(infProject.settings.wall.label == 'double') 
 	{
 		wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall })[0]; 
 		wall.label[1].visible = true;

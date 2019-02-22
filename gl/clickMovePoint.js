@@ -18,7 +18,7 @@ function clickPoint( intersect )
 	
 	$.ajax
 	({
-		url: 'checkSum.php',
+		url: infProject.path+'checkSum.php',
 		type: 'POST',
 		data: {	pos1: {x: obj.position.x, y: obj.position.y, z: obj.position.z}, pos2: {x: intersect.point.x, y: intersect.point.y, z: intersect.point.z} },
 		dataType: 'json',
@@ -43,7 +43,24 @@ function clickPoint( intersect )
 	
 	getArrM();
 		
-	param_wall.wallR = detectChangeArrWall([], obj_selected);	
+	param_wall.wallR = detectChangeArrWall([], obj_selected);
+
+	// запоминаем последнее положение точки и дверей/окон
+	if(1==1)
+	{  
+		obj.userData.point.last.pos = obj.position.clone(); 		
+		
+		for ( var i = 0; i < param_wall.wallR.length; i++ )
+		{						
+			for ( var i2 = 0; i2 < param_wall.wallR[i].userData.wall.arrO.length; i2++ )
+			{
+				var wd = param_wall.wallR[i].userData.wall.arrO[i2];
+				 
+				wd.userData.door.last.pos = wd.position.clone();
+				wd.userData.door.last.rot = wd.rotation.clone(); 
+			}
+		}		 			
+	}	
 }
 
 
@@ -686,7 +703,7 @@ function undoRedoChangeMovePoint( point, walls )
 
 function clickPointMouseUp(obj)
 {  
-	if(obj.w.length > 0) createWallZone(obj.w[0]);
+	//if(obj.w.length > 0) createWallZone(obj.w[0]);
 }
 
 

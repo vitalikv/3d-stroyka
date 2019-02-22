@@ -372,7 +372,7 @@ function onDocumentMouseUp( event )
 		{
 			clickWallMouseUp(obj_selected);
 		}
-		UI.setCursor();
+		
 		
 	}
 
