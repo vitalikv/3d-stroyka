@@ -6,13 +6,22 @@ $path = "/gl/";
 
 $title = 'калькулятор площади пола онлайн';
 $interface['estimate'] = 1;
+$interface['width_1'] = 1;
+$interface['height_1'] = 1;
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
-if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; }
+if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; $interface['width_1'] = 0; }
 if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $nameId = 'ленточный фундамент'; }
 if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $nameId = 'свайный фундамент'; }
-if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь участка 3D'; $nameId = 'площадь участка'; $interface['estimate'] = 0; }
+if($url == '/calculator/ploshchad_uchastka')	
+{ 
+	$title = 'Площадь участка 3D'; 
+	$nameId = 'площадь участка'; 
+	$interface['estimate'] = 0; 
+	$interface['width_1'] = 0;
+	$interface['height_1'] = 0;
+}
 ?>
 
 
@@ -146,16 +155,19 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
 		<div class="side_panel-button">			
 			<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
 		</div> 
-		<?if($type == 2){?>
+		<?if($interface['width_1'] == 1){?>
 		<div class="input-height">
 			<div class="text_1">ширина (см)</div>
 			<input type="text" data-action ='input-width' value = 30>
 		</div> 
 		<?}?>
+		
+		<?if($interface['height_1'] == 1){?>
 		<div class="input-height">
 			<div class="text_1">высота (см)</div>
 			<input type="text" data-action ='input-height' value = 20>
-		</div> 
+		</div>
+		<?}?>		
 	</div>
 	
 	

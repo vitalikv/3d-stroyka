@@ -928,7 +928,16 @@ function createForm(cdm)
 	else if(form == 'shape14') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,0), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,1.5), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,0), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-1.5)]; }	
 	else if(form == 'shape15') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,2), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-2)]; }
 	
-	if(form == 'land') { var arrP = [new THREE.Vector3(-20,0,-10), new THREE.Vector3(-20,0,10), new THREE.Vector3(20,0,10), new THREE.Vector3(20,0,-10)]; }
+	if(form == 'land') 
+	{ 
+		var arrP = [];
+		arrP[0] = new THREE.Vector3(-15.3,0,-6.7);
+		arrP[1] = new THREE.Vector3(-15.3,0,8.95);
+		arrP[2] = new THREE.Vector3(-0.73,0,10.79);
+		arrP[3] = new THREE.Vector3(19.51,0,9.63);
+		arrP[4] = new THREE.Vector3(19.51,0,-7.35);
+		arrP[5] = new THREE.Vector3(0,0,-7.95);
+	}
 	
 	
 	for ( var i = 0; i < arrP.length; i++ ) { createPoint( arrP[i], 0 ); }
