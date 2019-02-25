@@ -24,7 +24,7 @@ function changeCamera(cam)
 	{	
 		activeHover2D_2();
 		objDeActiveColor_2D();  
-		cameraZoomTop( 1 );
+		cameraZoomTop( cameraTop.zoom );
 		 
 		if(cdm == 'cameraTop')	// возращаемся в 3D режим из 2D режима
 		{

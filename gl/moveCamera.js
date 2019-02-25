@@ -442,7 +442,7 @@ function cameraZoomTop( delta )
 
 	// zoom label
 	var k = 1 / delta;
-	if(k <= 1) 
+	if(k <= infProject.settings.camera.limitZoom) 
 	{
 		k *= kof_rd;
 

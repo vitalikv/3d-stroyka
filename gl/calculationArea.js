@@ -44,7 +44,7 @@ function calculationSpaceWall( wall, index )
 // считаем и показываем длину стены
 function upLabelPlan_1(arrWall, Zoom)
 {
-	console.log(99999999, arrWall.length);
+	
 	if(Zoom){}
 	else if(typeof Zoom !== "undefined") { Zoom = false; }
 	
@@ -77,7 +77,7 @@ function upLabelPlan_1(arrWall, Zoom)
 			{
 				var dist = p1.distanceTo( p2 );			
 				
-				upLabelCameraWall({label : label_1, text : Math.round(dist * 100) * 10, sizeText : 85, color : 'rgba(0,0,0,1)'});
+				upLabelCameraWall({label : label_1, text : Math.round(dist * 100) / 100, sizeText : 85, color : 'rgba(0,0,0,1)'});
 			}
 			else
 			{
@@ -85,8 +85,8 @@ function upLabelPlan_1(arrWall, Zoom)
 				var d1 = Math.abs( v[6].x - v[0].x );		
 				var d2 = Math.abs( v[10].x - v[4].x );
 
-				upLabelCameraWall({label : label_1, text : Math.round(d1 * 100) * 10, sizeText : 85, color : 'rgba(0,0,0,1)'});
-				upLabelCameraWall({label : label_2, text : Math.round(d2 * 100) * 10, sizeText : 85, color : 'rgba(0,0,0,1)'});				
+				upLabelCameraWall({label : label_1, text : Math.round(d1 * 100) / 100, sizeText : 85, color : 'rgba(0,0,0,1)'});
+				upLabelCameraWall({label : label_2, text : Math.round(d2 * 100) / 100, sizeText : 85, color : 'rgba(0,0,0,1)'});				
 			}			
 		}		
 		
@@ -338,34 +338,6 @@ function checkClockWise( arrP )
 }
 
 
-
-
-
-
-// room
-function upLabelArea2(label, area, text2, size, color, border) 
-{		
-	if(!label){ return; }
-	var canvs = label.material.map.image; 
-	var ctx = canvs.getContext("2d");
-	
-	ctx.clearRect(0, 0, canvs.width, canvs.height);
-	ctx.font = size + 'pt Arial';
-	
-		ctx.fillStyle = 'rgba(0,0,0,1)';
-		ctx.fillRect(0, 0, canvs.width, canvs.height);
-		ctx.fillStyle = 'rgba(255,255,255,1)';
-		ctx.fillRect(1, 1, canvs.width - 2, canvs.height - 2);	
-	
-	ctx.fillStyle = 'rgba(0,0,0,1)';
-	ctx.textAlign = "center";
-	ctx.textBaseline = "bottom";
-	ctx.fillText('площадь : '+area+ ' m2', canvs.width / 2, canvs.height / 2 - 10 );
-
-	ctx.fillText('объем : '+Math.round((area * height_wall) * 100) / 100 +' m3', canvs.width / 2, canvs.height / 2 + 110 );	
-	
-	label.material.map.needsUpdate = true;
-}
 
 
 

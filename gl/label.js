@@ -150,15 +150,56 @@ function upLabelCameraWall(cdm)
 		ctx.fillRect(0, 0, canvs.width, canvs.height);		
 	}
 	
+	var str = '';
+	var value = cdm.text * infProject.settings.unit.wall;
+	if(infProject.settings.unit.wall == 1) { str = ' м'; } 
+	
 	ctx.fillStyle = cdm.color;
 	ctx.textAlign = "center";
 	ctx.textBaseline = "middle";
-	ctx.fillText(cdm.text, canvs.width / 2, canvs.height / 2 );
+	ctx.fillText(value + str, canvs.width / 2, canvs.height / 2 );
 	
 	cdm.label.material.map.needsUpdate = true;
 }
 
 
+
+
+
+
+// room
+function upLabelArea2(label, area, text2, size, color, border) 
+{		
+	if(!label){ return; }
+	var canvs = label.material.map.image; 
+	var ctx = canvs.getContext("2d");
+	
+	ctx.clearRect(0, 0, canvs.width, canvs.height);
+	ctx.font = size + 'pt Arial';
+	
+		ctx.fillStyle = 'rgba(0,0,0,1)';
+		ctx.fillRect(0, 0, canvs.width, canvs.height);
+		ctx.fillStyle = 'rgba(255,255,255,1)';
+		ctx.fillRect(1, 1, canvs.width - 2, canvs.height - 2);	
+	
+	ctx.fillStyle = 'rgba(0,0,0,1)';
+	ctx.textAlign = "center";
+	ctx.textBaseline = "bottom";
+	
+	if(infProject.settings.unit.floor == 1) 
+	{
+		ctx.fillText('площадь : '+area+ ' м2', canvs.width / 2, canvs.height / 2 - 10 );
+		ctx.fillText('объем : '+Math.round((area * height_wall) * 100) / 100 +' м3', canvs.width / 2, canvs.height / 2 + 110 );			
+	}
+	else if(infProject.settings.unit.floor == 0.01)
+	{
+		var value = Math.round(area*infProject.settings.unit.floor * 100) / 100;
+		ctx.fillText('площадь участка', canvs.width / 2, canvs.height / 2 - 10 );
+		ctx.fillText(value+' (сотка)', canvs.width / 2, canvs.height / 2 + 110 );			
+	}
+	
+	label.material.map.needsUpdate = true;
+}
 
 
 

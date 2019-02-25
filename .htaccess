@@ -16,9 +16,8 @@ RewriteRule ^documentation$ documentation.php
 RewriteRule ^buy$ buy.php
 RewriteRule ^contact$ contact.php
 RewriteRule ^get_pay$ components/get_pay.php
-RewriteRule ^calculator\/monolit_fundament1$ gl/index.php
-RewriteRule ^calculator\/lentochnii_fundament$ gl/index.php
-RewriteRule ^calculator\/svaynyy_fundament$ gl/index.php
+RewriteRule ^calculator\/.*$ gl/index.php
+
 
 RewriteRule ^download$ download.php
 RewriteRule ^dw/program.zip$ dw/download_1.php

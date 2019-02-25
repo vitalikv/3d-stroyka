@@ -187,12 +187,12 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 						свайный фундамент
 					</div>
 				</a>			
-				<div class="ind_bl_1" review="4">
+				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">
-						Вывод списка всех задействованных деталей в чертеже
+						Площадь участка
 					</div>				
-				</div>
+				</a>
 				<div class="ind_bl_1" review="5">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">

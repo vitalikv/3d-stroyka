@@ -22,6 +22,9 @@ scene.background = new THREE.Color( 0xffffff );
 var cameraTop = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
 cameraTop.position.set(0, 10, 0);
 cameraTop.lookAt(scene.position);
+cameraTop.zoom = infProject.settings.camera.zoom;
+cameraTop.updateMatrixWorld();
+cameraTop.updateProjectionMatrix();
 //----------- cameraTop
 
 
@@ -215,6 +218,7 @@ var arrWallFront = [];
 
 infProject.scene.array = { point : obj_point, wall : obj_line, window : arr_window, door : arr_door, room : room, ceiling : ceiling, obj : arr_obj };
 infProject.scene.array.fundament = [];
+infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
 
 var actColorWin = new THREE.Color('rgb(255,0,0)');
 var colorHover = new THREE.Color('rgb(55, 125, 61)');
@@ -226,7 +230,7 @@ var wallVisible = [];
 var circle = createCircleSpline();
 var p_tool = createToolPoint();
 var d_tool = createToolDoorPoint();
- createGrid();
+
 //var pointGrid = createPointGrid(100);
 var pointGrid = { visible : true }
 
@@ -309,28 +313,42 @@ function createPillar()
 
 
 
-function createGrid()
+function createGrid(cdm)
 {
+	var lineGrid = new THREE.Group();
+	
+	var offset = (cdm.offset) ? cdm.offset : 1;
+	
 	var geom_line = new THREE.Geometry();
-	var count_grid1 = 30;
-	var count_grid2 = (count_grid1 * 0.5) / 2;
+	var count_grid1 = cdm.value;
+	var count_grid2 = (count_grid1 * offset) / 2; 
 	geom_line.vertices.push(new THREE.Vector3( - count_grid2, 0, 0 ) );
 	geom_line.vertices.push(new THREE.Vector3( count_grid2, 0, 0 ) );
-	linesMaterial = new THREE.LineBasicMaterial( { color: 0xd6d6d6, opacity: .2, linewidth: .1 } );
+	
+	var linesMaterial = new THREE.LineBasicMaterial( { color: 0xd6d6d6, opacity: 1, linewidth: .1 } );
 
 	for ( var i = 0; i <= count_grid1; i ++ ) 
 	{
 		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.z = ( i * 0.5 ) - count_grid2;
+		line.position.z = ( i * offset ) - count_grid2;
 		line.position.y = -0.01;
-		scene.add( line );
+		lineGrid.add( line );
 
 		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.x = ( i * 0.5 ) - count_grid2;
+		line.position.x = ( i * offset ) - count_grid2;
 		line.position.y = -0.01;
 		line.rotation.y = 90 * Math.PI / 180;
-		scene.add( line );
-	}	
+		lineGrid.add( line );
+	}
+	
+	scene.add( lineGrid );	
+
+	var x = count_grid1/2;
+	var y = count_grid1/2;
+
+	var limit = (cdm.limit) ? cdm.limit : false;
+	
+	return { limit : limit, obj : lineGrid, bound : { min : {x:-x, y:-y}, max : {x:x, y:y} } };
 }
 
 
@@ -910,6 +928,8 @@ function createForm(cdm)
 	else if(form == 'shape14') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,0), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,1.5), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,0), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-1.5)]; }	
 	else if(form == 'shape15') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,2), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-2)]; }
 	
+	if(form == 'land') { var arrP = [new THREE.Vector3(-20,0,-10), new THREE.Vector3(-20,0,10), new THREE.Vector3(20,0,10), new THREE.Vector3(20,0,-10)]; }
+	
 	
 	for ( var i = 0; i < arrP.length; i++ ) { createPoint( arrP[i], 0 ); }
 	
@@ -1015,12 +1035,14 @@ function createForm(cdm)
 	
 	
 	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
-	if(infProject.type == 1) detectRoomZone(nameRoomDef);
+	detectRoomZone(nameRoomDef);
 	upLabelPlan_1(obj_line);
 	
 	if(obj_line.length > 0) createWallZone(obj_line[0])
 	
 	width_wall = 0.3;
+	
+	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	
 	centerCamera2D();
 	renderCamera();
@@ -1112,7 +1134,8 @@ function createOneWall3( point1, point2, width, cdm )
 	var offsetZ = 0;
 	var height = height_wall;
 	
-	if(infProject.type == 1) { width = 0.03; }
+	if(infProject.settings.calc.fundament == 'monolit') { width = 0.03; }
+	else if(infProject.settings.land.o) { width = 0.1; }
 	
 	var p1 = point1.position;
 	var p2 = point2.position;	
@@ -1643,7 +1666,10 @@ function formatSizeUnits(bytes){
 
 		
  
-
+function setUnits()
+{
+	 
+}
 
 
 animate();
@@ -1656,7 +1682,7 @@ $(document).ready(function ()
 { 
 	docReady = true; 
 	//loadFile('');
-	createForm({form:'shape3'});	
+	if(infProject.settings.project != '')createForm({form:infProject.settings.project}); 	
 });
 
 

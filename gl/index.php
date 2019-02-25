@@ -9,9 +9,10 @@ $type = 1;
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
-if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $type = 1; $nameId = 'монолитный фундамент'; }
-if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $type = 2; $nameId = 'ленточный фундамент'; }
-if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $type = 2; $nameId = 'свайный фундамент'; }
+if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; }
+if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $nameId = 'ленточный фундамент'; }
+if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $nameId = 'свайный фундамент'; }
+if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь участка 3D'; $nameId = 'площадь участка'; }
 ?>
 
 
@@ -39,12 +40,26 @@ if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фунд�
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	
+	infProject.settings.project = 'shape3';
 	infProject.settings.wall = { label : 'outside' } 
 	infProject.settings.calc = { fundament: '' }
+	infProject.settings.land = { o: false }
+	infProject.settings.unit = { wall: 1, floor: 1 }
+	infProject.settings.camera = { type: '2d', zoom: 1, limitZoom : 1 }
+	infProject.settings.grid = { value: 10, offset : 0.5 }
 	
 	if(infProject.nameId == 'монолитный фундамент') { infProject.settings.calc.fundament = 'monolit'; }
 	else if(infProject.nameId == 'ленточный фундамент') { infProject.settings.calc.fundament = 'lent'; }
 	else if(infProject.nameId == 'свайный фундамент') { infProject.settings.calc.fundament = 'svai'; }
+	else if(infProject.nameId == 'площадь участка') 
+	{ 
+		infProject.settings.land.o = true; 
+		infProject.settings.unit.floor = 0.01; 
+		infProject.settings.camera.zoom = 0.25;
+		infProject.settings.camera.limitZoom = 5; 
+		infProject.settings.project = 'land';
+		infProject.settings.grid = { value: 100, offset : 1 }
+	}
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject);
