@@ -5,14 +5,14 @@ $url = $_SERVER['REQUEST_URI'];
 $path = "/gl/";
 
 $title = 'калькулятор площади пола онлайн';
-$type = 1;
+$interface['estimate'] = 1;
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
 if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; }
 if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $nameId = 'ленточный фундамент'; }
 if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $nameId = 'свайный фундамент'; }
-if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь участка 3D'; $nameId = 'площадь участка'; }
+if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь участка 3D'; $nameId = 'площадь участка'; $interface['estimate'] = 0; }
 ?>
 
 
@@ -31,12 +31,13 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
 <body>
 
 
-  <?php $vrs = '=1' ?>
+<?php $vrs = '=1' ?>
+
 	
-    <script>
+<script>
 	var vr = "<?=$vrs ?>";
 	
-	var infProject = { type : <?=$type?>, title : '<?=$title?>', nameId : '<?=$nameId?>', scene : { tool : {} } };
+	var infProject = { title : '<?=$title?>', nameId : '<?=$nameId?>', scene : { tool : {} } };
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	
@@ -46,7 +47,8 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
 	infProject.settings.land = { o: false }
 	infProject.settings.unit = { wall: 1, floor: 1 }
 	infProject.settings.camera = { type: '2d', zoom: 1, limitZoom : 1 }
-	infProject.settings.grid = { value: 10, offset : 0.5 }
+	infProject.settings.grid = { value: 30, offset : 0.5 }
+	infProject.settings.interface = { estimate:1 }
 	
 	if(infProject.nameId == 'монолитный фундамент') { infProject.settings.calc.fundament = 'monolit'; }
 	else if(infProject.nameId == 'ленточный фундамент') { infProject.settings.calc.fundament = 'lent'; }
@@ -59,12 +61,14 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
 		infProject.settings.camera.limitZoom = 5; 
 		infProject.settings.project = 'land';
 		infProject.settings.grid = { value: 100, offset : 1 }
+		infProject.settings.interface.estimate = 0;
 	}
 	
 	console.log('version '+ vr);
-    console.log('infProject ', infProject);
+    console.log('infProject ', infProject, <?=$interface['estimate']?>);
 	
-    </script>
+</script>
+
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
     <script src="<?=$path?>js/jquery.js"></script>
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
@@ -84,7 +88,7 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
     <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
-	
+	<script src="<?=$path?>changeTexture.js?<?=$vrs?>"></script>
 
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>
@@ -120,7 +124,9 @@ if($url == '/calculator/ploshchad_uchastka')	{ $title = 'Площадь учас
 				<div data-action ='2D' class="button1">2D</div>
 				<div data-action ='3D' class="button1">3D</div>
 			</div>
+			<? if($interface['estimate'] == 1){ ?>
 			<div data-action ='estimate' class="button4">СМЕТА</div>
+			<? } ?>
 			<div class="button1-wrap">
 				<div data-action ='screenshot' class="button1"><img src="<?=$path?>/img/screenshot.png"></div>
 			</div>

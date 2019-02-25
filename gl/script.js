@@ -1199,9 +1199,8 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.material[3] = { lotid : 4954, caption : '', color : wall.material[3].color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : '' };
 	// --------------
 	
-	
-	wall.userData.wall.actList = abo.wall;
-		
+	 
+	wall.userData.wall.actList = abo.wall;			
 	
 	//console.log(wall);
 	

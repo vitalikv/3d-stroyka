@@ -55,6 +55,27 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 
 	// загружаем материал (пол, потолок)
 	//setMaterialFloorCeiling(n, material)
+	var img = null;
+	if(infProject.settings.land.o) { img = infProject.path+'img/grass.jpg'; }
+	
+	if(img)
+	{
+		new THREE.TextureLoader().load(img, function ( image )  
+		{ 
+			var texture = image;			
+			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			texture.anisotropy = renderer.capabilities.getMaxAnisotropy();  	
+			texture.repeat.x = 0.2;
+			texture.repeat.y = 0.2;
+			texture.needsUpdate = true;
+			
+			room[n].material.map = texture;   
+			room[n].material.needsUpdate = true; 
+			room[n].material.lightMap = lightMap_1;			
+			
+			renderCamera();
+		});			
+	}
 	
 	
 	if(infProject.settings.calc.fundament == 'monolit' || infProject.settings.land.o)
@@ -88,15 +109,14 @@ function setMaterialFloorCeiling(n, material)
 		else if(material[i].containerID == 'ceil') { obj = ceiling[n]; }
 		else { continue; }
 
-		var rgb = { r : 100, g : 100, b : 100 };  
-		if(material[i].color) { rgb = material[i].color; }			
-			
-		var scale = (material[i].scale) ? material[i].scale : new THREE.Vector2(1,1);
+		var color = { r : 100, g : 100, b : 100 };  
+		if(material[i].color) { color = material[i].color; }			
 		
-		var inf = { obj: obj, lotid: material[i].lotid, start: 'load', rgb : rgb, scale : scale };
+		var inf = { obj: obj, lotid: material[i].lotid, start: 'load', color : color };
 		
+		if(material[i].scale) { inf.scale = material[i].scale; }		
 		if(material[i].offset) { inf.offset = material[i].offset; }
-		if(material[i].rotation) { inf.rot = material[i].rotation; }
+		if(material[i].rotation) { inf.rotation = material[i].rotation; }
 		
 		loadPopObj_1(inf);
 	}	
@@ -158,7 +178,7 @@ function updateShapeFloor(arrRoom)
 		arrRoom[i].geometry.computeFaceNormals();
 		
 		arrRoom[i].position.y = height_wall;
-		
+		upUvs_1( arrRoom[i] );
 		getYardageSpace([arrRoom[i]]); 
 
 		// потолок	
