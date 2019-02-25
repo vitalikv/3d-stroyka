@@ -147,7 +147,7 @@ var onMouseDownTheta = 0;
 var raycaster = new THREE.Raycaster();
 var centerCam = new THREE.Vector3(0,2,-2);
 
-console.log(camera);
+
 
 function onDocumentMouseDown( event ) 
 {
@@ -209,7 +209,7 @@ function onDocumentMouseMove( event )
 		isMouseDown2 = true;
 	}
 
-	//cameraMove3D( event );
+	cameraMove3D( event );
 }
 
 
@@ -251,6 +251,35 @@ function rayIntersect( event, obj, t )
 	return intersects;
 }
 
+
+
+function cameraMove3D( event )
+{
+	if ( isMouseDown2 ) 
+	{  
+		newCameraPosition = null;
+		radious = centerCam.distanceTo( camera.position );
+		theta = - ( ( event.clientX - onMouseDownPosition.x ) * 0.5 ) + onMouseDownTheta;
+		phi = ( ( event.clientY - onMouseDownPosition.y ) * 0.5 ) + onMouseDownPhi;
+		phi = Math.min( 180, Math.max( -80, phi ) );
+
+		camera.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+		camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
+		camera.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+
+		camera.position.add( centerCam );  
+		camera.lookAt( centerCam );
+	}
+	if ( isMouseDown3 )    
+	{
+		newCameraPosition = null;
+		
+		var intersects = rayIntersect( event, planeMath, 'one' );
+		var offset = new THREE.Vector3().subVectors( camera3D.userData.camera.click.pos, intersects[0].point );
+		camera.position.add( offset );
+		centerCam.add( offset );
+	}			
+}
 
 
 
