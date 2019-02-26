@@ -1290,8 +1290,10 @@ function changeHeightWall( h2 )
 	h2 /= 100;
 	
 	if(h2 < 0.01) { h2 = 0.01; }
-	if(h2 > 3) { h2 = 3; }	
-	height_wall = h2;
+	if(h2 > 3) { h2 = 3; }
+		
+	height_wall = h2;	
+	if(infProject.settings.floor.changeY) { infProject.settings.floor.height = infProject.settings.floor.posY = h2; }		
 	
 	var v = obj_line[0].geometry.vertices;	
 	
@@ -1323,11 +1325,11 @@ function changeHeightWall( h2 )
 		n++;
 		
 		v[ n ] = v[ n - 2 ].clone();
-		v[ n ].y = height_wall + 0.01;
+		v[ n ].y = h2 + 0.01;
 		n++;
 
 		v[ n ] = new THREE.Vector3();
-		v[ n ].y = height_wall + 0.01;
+		v[ n ].y = h2 + 0.01;
 		n++; 		
 	}	
 	p_tool.geometry.verticesNeedUpdate = true;

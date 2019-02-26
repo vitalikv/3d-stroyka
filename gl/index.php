@@ -11,6 +11,7 @@ $interface['height_1'] = 1;
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
+if($url == '/calculator/monolit_fundament')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; $interface['width_1'] = 0; }
 if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; $interface['width_1'] = 0; }
 if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $nameId = 'ленточный фундамент'; }
 if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $nameId = 'свайный фундамент'; }
@@ -57,7 +58,7 @@ if($url == '/calculator/ploshchad_uchastka')
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
-	infProject.settings.floor = { o: false }
+	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false }
 	infProject.settings.wall = { width : 0.3, label : 'outside' } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
@@ -72,6 +73,9 @@ if($url == '/calculator/ploshchad_uchastka')
 		infProject.settings.wall.width = 0.03;
 		infProject.settings.height = 0.2;
 		infProject.settings.floor.o = true;
+		infProject.settings.floor.posY = infProject.settings.height;
+		infProject.settings.floor.height = infProject.settings.height;
+		infProject.settings.floor.changeY = true;
 	}
 	else if(infProject.nameId == 'ленточный фундамент')
 	{ 
@@ -86,14 +90,18 @@ if($url == '/calculator/ploshchad_uchastka')
 	else if(infProject.nameId == 'площадь участка') 
 	{ 
 		infProject.settings.land.o = true; 
+		infProject.settings.height = 0.2;
+		infProject.settings.floor.o = true;
+		infProject.settings.floor.posY = infProject.settings.height;
+		infProject.settings.floor.height = infProject.settings.height;
+		infProject.settings.floor.changeY = true;		
 		infProject.settings.wall.width = 0.1;
 		infProject.settings.unit.floor = 0.01; 
 		infProject.settings.camera.zoom = 0.25;
 		infProject.settings.camera.limitZoom = 5; 
 		infProject.settings.project = 'land';
 		infProject.settings.grid = { value: 100, offset : 1 }
-		infProject.settings.interface.estimate = 0;
-		infProject.settings.floor.o = true;
+		infProject.settings.interface.estimate = 0;		
 	}
 	else if(infProject.nameId == 'объем и площадь помещения') 
 	{ 

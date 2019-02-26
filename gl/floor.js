@@ -22,8 +22,9 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	
 	var n = room.length;	
 	//room[n] = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color : 0xe3e3e5, side : THREE.BackSide } ) );	
-	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: height_wall } ), new THREE.MeshLambertMaterial( { color : 0xe3e3e5, lightMap : lightMap_1 } ) ); 
-	room[n].position.set( 0, height_wall, 0 );
+	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ), new THREE.MeshLambertMaterial( { color : 0xe3e3e5, lightMap : lightMap_1 } ) ); 
+	
+	room[n].position.set( 0, infProject.settings.floor.posY, 0 );
 	room[n].rotation.set( Math.PI / 2, 0, 0 );	
 	room[n].p = arrP;
 	room[n].w = arrW; 
@@ -42,7 +43,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	
 	
 	ceiling[n] = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color : 0xffffff, lightMap : lightMap_1 } ) );			
-	ceiling[n].position.set( 0, arrP[0].position.y + height_wall, 0 );
+	ceiling[n].position.set( 0, arrP[0].position.y + infProject.settings.floor.height, 0 );
 	ceiling[n].rotation.set( Math.PI / 2, 0, 0 );	
 	
 	ceiling[n].userData.tag = 'ceiling';
@@ -155,18 +156,16 @@ function replaceParamPointOnZone(zone, newPoint, replacePoint)
 // при изменении формы пола обновляем geometry.faces
 function updateShapeFloor(arrRoom)
 {  
-	var inf = infProject.settings.calc.fundament;
-	if(inf == 'lent' || inf == 'svai') { return; }
+	if(!infProject.settings.floor.o) { return; }
 	
 	for ( var i = 0; i < arrRoom.length; i++ ) 
 	{	 
 		var point = [];
-		for ( var i2 = 0; i2 < arrRoom[i].p.length - 1; i2++ ) { point[i2] = new THREE.Vector2 ( arrRoom[i].p[i2].position.x, arrRoom[i].p[i2].position.z ); }			
-		var txt = ''; for ( var i2 = 0; i2 < arrRoom[i].p.length - 1; i2++ ) { txt += ' | ' + arrRoom[i].p[i2].userData.id; } console.log(arrRoom[i].userData.id + ' = ' + txt);	
+		for ( var i2 = 0; i2 < arrRoom[i].p.length - 1; i2++ ) { point[i2] = new THREE.Vector2 ( arrRoom[i].p[i2].position.x, arrRoom[i].p[i2].position.z ); }				
 		
 		var shape = new THREE.Shape( point );				
 
-		var geometry = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: height_wall } ); 
+		var geometry = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ); 
 		
 		arrRoom[i].geometry.vertices = geometry.vertices;
 		arrRoom[i].geometry.faces = geometry.faces;		
@@ -177,7 +176,7 @@ function updateShapeFloor(arrRoom)
 		arrRoom[i].geometry.computeBoundingBox();
 		arrRoom[i].geometry.computeFaceNormals();
 		
-		arrRoom[i].position.y = height_wall;
+		arrRoom[i].position.y = infProject.settings.floor.posY;
 		upUvs_1( arrRoom[i] );
 		getYardageSpace([arrRoom[i]]); 
 

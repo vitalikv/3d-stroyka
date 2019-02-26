@@ -169,7 +169,7 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 			<div class="offset_top_30"></div>
 			
 			<div class="modal_body_content_grid">
-				<a class="ind_bl_1" href="calculator/monolit_fundament1">
+				<a class="ind_bl_1" href="calculator/monolit_fundament">
 					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
 					<div class="ind_text_3">
 						монолитный фундамент
