@@ -11,8 +11,8 @@
 
 <script src="gl/js/jquery.js"></script>
 <script src="gl/js/three.min.js?<?=$vrs?>"></script>
-<script src="https://threejs.org/examples/js/loaders/OBJLoader.js"></script>
-<script src="https://threejs.org/examples/js/loaders/MTLLoader.js"></script>
+<script src="gl/js/OBJLoader.js"></script>
+<script src="gl/js/MTLLoader.js"></script>
 
 <title>Строительный калькулятор 3D</title>
 
@@ -193,12 +193,43 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 						Площадь участка
 					</div>				
 				</a>
-				<div class="ind_bl_1" review="5">
+				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
 					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
 					<div class="ind_text_3">
-						Реалистичная картинка
+						Объем и площадь помещения
 					</div>				
-				</div>			
+				</a>	
+
+				<a class="ind_bl_1" href="calculator/monolit_fundament1">
+					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
+					<div class="ind_text_3">
+						монолитный фундамент
+					</div>
+				</a>
+				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
+					<div class="block_form_1_image_wrap"><img src="/img/2.jpg"></div>
+					<div class="ind_text_3">
+						ленточный фундамент
+					</div>
+				</a>			
+				<a class="ind_bl_1" href="calculator/svaynyy_fundament">
+					<div class="block_form_1_image_wrap"><img src="/img/3.jpg"></div>
+					<div class="ind_text_3">
+						свайный фундамент
+					</div>
+				</a>			
+				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
+					<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
+					<div class="ind_text_3">
+						Площадь участка
+					</div>				
+				</a>
+				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
+					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="ind_text_3">
+						Объем и площадь помещения
+					</div>				
+				</a>					
 			</div>
 			
 		</div>

@@ -205,8 +205,8 @@ var projName = 'Новый проект';
 var projVersion = '1';
 var keys = [];
 var camera = cameraTop;
-var height_wall = 0.2;
-var width_wall = 0.3;
+var height_wall = infProject.settings.height;
+var width_wall = infProject.settings.wall.width;
 var obj_point = [];
 var obj_line = [];
 var arr_window = [];
@@ -1142,9 +1142,6 @@ function createOneWall3( point1, point2, width, cdm )
 {
 	var offsetZ = 0;
 	var height = height_wall;
-	
-	if(infProject.settings.calc.fundament == 'monolit') { width = 0.03; }
-	else if(infProject.settings.land.o) { width = 0.1; }
 	
 	var p1 = point1.position;
 	var p2 = point2.position;	
