@@ -57,6 +57,7 @@ if($url == '/calculator/ploshchad_uchastka')
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
+	infProject.settings.floor = { o: false }
 	infProject.settings.wall = { width : 0.3, label : 'outside' } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
@@ -69,7 +70,8 @@ if($url == '/calculator/ploshchad_uchastka')
 	{ 
 		infProject.settings.calc.fundament = 'monolit';
 		infProject.settings.wall.width = 0.03;
-		infProject.settings.height = 0.2;		
+		infProject.settings.height = 0.2;
+		infProject.settings.floor.o = true;
 	}
 	else if(infProject.nameId == 'ленточный фундамент')
 	{ 
@@ -91,7 +93,13 @@ if($url == '/calculator/ploshchad_uchastka')
 		infProject.settings.project = 'land';
 		infProject.settings.grid = { value: 100, offset : 1 }
 		infProject.settings.interface.estimate = 0;
+		infProject.settings.floor.o = true;
 	}
+	else if(infProject.nameId == 'объем и площадь помещения') 
+	{ 
+		infProject.settings.wall.label = 'double';
+		infProject.settings.floor.o = true;
+	}	
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject, <?=$interface['estimate']?>);
