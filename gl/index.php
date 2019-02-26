@@ -105,7 +105,7 @@ if($url == '/calculator/ploshchad_uchastka')
 	}
 	else if(infProject.nameId == 'объем и площадь помещения') 
 	{ 
-		infProject.settings.wall.label = 'double';
+		infProject.settings.wall.label = 'inside';
 		infProject.settings.floor.o = true;
 	}	
 	

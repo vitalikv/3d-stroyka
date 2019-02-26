@@ -1141,7 +1141,7 @@ console.log(RD.create({str : 'wall'}));
 function createOneWall3( point1, point2, width, cdm ) 
 {
 	var offsetZ = 0;
-	var height = height_wall;
+	var height = height_wall; 
 	
 	var p1 = point1.position;
 	var p2 = point2.position;	
@@ -1310,7 +1310,8 @@ function changeHeightWall( h2 )
 		obj_line[i].geometry.verticesNeedUpdate = true;
 	}
 	
-
+	upLabelPlan_1( obj_line );
+	clickPointUP_BSP( obj_line );
 	
 	var v = p_tool.geometry.vertices;	
 	var n = 0;

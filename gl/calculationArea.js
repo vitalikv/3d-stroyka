@@ -52,7 +52,7 @@ function upLabelPlan_1(arrWall, Zoom)
 	{
 		var wall = arrWall[i];
 		
-		if(infProject.settings.wall.label == 'outside')
+		if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside')
 		{
 			var label_1 = wall.label[0]; 
 		}
@@ -73,7 +73,7 @@ function upLabelPlan_1(arrWall, Zoom)
 		
 		if(!Zoom)
 		{
-			if(infProject.settings.wall.label == 'outside')
+			if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside')
 			{
 				var dist = p1.distanceTo( p2 );			
 				
@@ -104,11 +104,13 @@ function upLabelPlan_1(arrWall, Zoom)
 		var z1 = p1.x - p2.x;		 
 		 
 		 
-		if(infProject.settings.wall.label == 'outside')
+		if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside')
 		{
 			label_1.rotation.set( 0, rotY, 0 );
-
-			if(wall.userData.wall.room.side == 1)
+			
+			var side = (infProject.settings.wall.label == 'outside') ? 1 : 0;
+			
+			if(wall.userData.wall.room.side == side)
 			{ 
 				var dir = new THREE.Vector3().addScaledVector( new THREE.Vector3(x1, 0, z1).normalize(), -v[4].z + (v1[1].z - v1[0].z) / 2 );
 			}
