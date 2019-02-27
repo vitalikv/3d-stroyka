@@ -58,8 +58,8 @@ if($url == '/calculator/ploshchad_uchastka')
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
-	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false }
-	infProject.settings.wall = { width : 0.3, label : 'outside' } 
+	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center' }
+	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center' } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
 	infProject.settings.unit = { wall: 1, floor: 1 }
@@ -106,7 +106,9 @@ if($url == '/calculator/ploshchad_uchastka')
 	else if(infProject.nameId == 'объем и площадь помещения') 
 	{ 
 		infProject.settings.wall.label = 'inside';
+		infProject.settings.wall.dist = 'inside';
 		infProject.settings.floor.o = true;
+		infProject.settings.floor.areaPoint = 'inside';
 	}	
 	
 	console.log('version '+ vr);

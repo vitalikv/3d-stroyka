@@ -69,13 +69,24 @@ function upLabelPlan_1(arrWall, Zoom)
 		
 		var p1 = wall.userData.wall.p[0].position;
 		var p2 = wall.userData.wall.p[1].position;
-		
+
 		
 		if(!Zoom)
 		{
 			if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside')
 			{
-				var dist = p1.distanceTo( p2 );			
+				if(infProject.settings.wall.dist == 'inside')
+				{
+					var dist = Math.abs( v[10].x - v[4].x );
+				}
+				else if(infProject.settings.wall.dist == 'outside')
+				{
+					var dist = Math.abs( v[6].x - v[0].x );
+				}				
+				else
+				{
+					var dist = p1.distanceTo( p2 );
+				}							
 				
 				upLabelCameraWall({label : label_1, text : Math.round(dist * 100) / 100, sizeText : 85, color : 'rgba(0,0,0,1)'});
 			}
@@ -240,9 +251,8 @@ function getWallAreaTop( wall )
 
 //площадь помещения ( номер зон получаем из массива )
 function getYardageSpace( room ) 
-{	
-	var inf = infProject.settings.calc.fundament;
-	if(inf == 'lent' || inf == 'svai') { return; }	
+{	 
+	if(!infProject.settings.floor.o) { return; }	
 	
 	for (var u = 0; u < room.length; u++)
 	{  
@@ -252,32 +262,73 @@ function getYardageSpace( room )
 		var n = arrW.length;
 		var res = 0;
 		
-		
-		for (i = 0; i < arrW.length; i++)
+		if(infProject.settings.floor.areaPoint == 'inside')
 		{
-			var p1 = (arrS[i] == 0) ? arrW[i].userData.wall.p[0].position : arrW[i].userData.wall.p[1].position;	
+			for (i = 0; i < n; i++) { arrW[i].updateMatrixWorld(); }
 			
-			if (i == 0) 
+			for (i = 0; i < n; i++) 
 			{
-				var p2 = (arrS[ n-1 ] == 0) ? arrW[n-1].userData.wall.p[0].position : arrW[n-1].userData.wall.p[1].position; 
-				var p3 = (arrS[ i+1 ] == 0) ? arrW[i+1].userData.wall.p[0].position : arrW[i+1].userData.wall.p[1].position;						
-			}
-			else if (i == n-1) 
-			{
-				var p2 = (arrS[ i-1 ] == 0) ? arrW[i-1].userData.wall.p[0].position : arrW[i-1].userData.wall.p[1].position;
-				var p3 = (arrS[ 0 ] == 0) ? arrW[0].userData.wall.p[0].position : arrW[0].userData.wall.p[1].position;								
-			}
-			else 
-			{
-				var p2 = (arrS[ i-1 ] == 0) ? arrW[i-1].userData.wall.p[0].position : arrW[i-1].userData.wall.p[1].position; 
-				var p3 = (arrS[ i+1 ] == 0) ? arrW[i+1].userData.wall.p[0].position : arrW[i+1].userData.wall.p[1].position; 						
-			}
-			
-			var sum = p1.x*(p2.z - p3.z); 
-			sum = Math.round(sum * 100) * 10;
-			res += sum;				
+				var ch = (arrS[i] == 0) ? 4 : 6;
+				
+				var p1 = arrW[i].localToWorld( arrW[i].userData.wall.v[ ch ].clone() );		
+				
+				if (i == 0) 
+				{
+					var ch1 = (arrS[ n-1 ] == 0) ? 4 : 6; 
+					var ch2 = (arrS[ i+1 ] == 0) ? 4 : 6;
+					
+					var p2 = arrW[n-1].localToWorld( arrW[n-1].userData.wall.v[ ch1 ].clone() );
+					var p3 = arrW[i+1].localToWorld( arrW[i+1].userData.wall.v[ ch2 ].clone() );						
+				}
+				else if (i == n-1) 
+				{
+					var ch1 = (arrS[ i-1 ] == 0) ? 4 : 6;
+					var ch2 = (arrS[ 0 ] == 0) ? 4 : 6;
+					
+					var p2 = arrW[i-1].localToWorld( arrW[i-1].userData.wall.v[ ch1 ].clone() );
+					var p3 = arrW[0].localToWorld( arrW[0].userData.wall.v[ ch2 ].clone() );									
+				}
+				else 
+				{
+					var ch1 = (arrS[ i-1 ] == 0) ? 4 : 6;
+					var ch2 = (arrS[ i+1 ] == 0) ? 4 : 6;
+					
+					var p2 = arrW[i-1].localToWorld( arrW[i-1].userData.wall.v[ ch1 ].clone() );
+					var p3 = arrW[i+1].localToWorld( arrW[i+1].userData.wall.v[ ch2 ].clone() );							
+				}
+				
+				var sum = p1.x*(p2.z - p3.z); 
+				sum = Math.round(sum * 100) * 10;
+				res += sum;				
+			}			
 		}
-		
+		else
+		{
+			for (i = 0; i < arrW.length; i++)
+			{
+				var p1 = (arrS[i] == 0) ? arrW[i].userData.wall.p[0].position : arrW[i].userData.wall.p[1].position;	
+				
+				if (i == 0) 
+				{
+					var p2 = (arrS[ n-1 ] == 0) ? arrW[n-1].userData.wall.p[0].position : arrW[n-1].userData.wall.p[1].position; 
+					var p3 = (arrS[ i+1 ] == 0) ? arrW[i+1].userData.wall.p[0].position : arrW[i+1].userData.wall.p[1].position;						
+				}
+				else if (i == n-1) 
+				{
+					var p2 = (arrS[ i-1 ] == 0) ? arrW[i-1].userData.wall.p[0].position : arrW[i-1].userData.wall.p[1].position;
+					var p3 = (arrS[ 0 ] == 0) ? arrW[0].userData.wall.p[0].position : arrW[0].userData.wall.p[1].position;								
+				}
+				else 
+				{
+					var p2 = (arrS[ i-1 ] == 0) ? arrW[i-1].userData.wall.p[0].position : arrW[i-1].userData.wall.p[1].position; 
+					var p3 = (arrS[ i+1 ] == 0) ? arrW[i+1].userData.wall.p[0].position : arrW[i+1].userData.wall.p[1].position; 						
+				}
+				
+				var sum = p1.x*(p2.z - p3.z); 
+				sum = Math.round(sum * 100) * 10;
+				res += sum;				
+			}			
+		}
 
 		
 		res = Math.abs( res ) / 2;

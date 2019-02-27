@@ -1148,12 +1148,8 @@ function createOneWall3( point1, point2, width, cdm )
 	var d = p1.distanceTo( p2 );
 	
 	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, lightMap : lightMap_1 } );
-
-	var inf = infProject.settings.calc.fundament;
-	if(inf == 'lent' || inf == 'svai') { var color = 0x696969; }
-	else { var color = 0x4d4d4d; }
 	
-	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color, lightMap : lightMap_1, transparent: true, depthTest: false } ) ];		
+	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: 0x696969, lightMap : lightMap_1, transparent: true, depthTest: false } ) ];		
 	var geometry = createGeometryWall(d, height, width, offsetZ);	
 	var wall = obj_line[obj_line.length] = new THREE.Mesh( geometry, materials ); 
  	
