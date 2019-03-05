@@ -1699,7 +1699,7 @@ $(document).ready(function ()
 	//loadFile('');
 	if(infProject.settings.project != '') { createForm({form:infProject.settings.project}); }
 
-	//if(infProject.settings.camera == '3d') { camera = camera3D; }
+	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 });
 
 

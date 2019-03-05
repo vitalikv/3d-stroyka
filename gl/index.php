@@ -56,7 +56,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 <body>
 
 
-<?php $vrs = '=1' ?>
+<?php $vrs = '=2' ?>
 
 	
 <script>
@@ -67,7 +67,6 @@ if($url == '/calculator/shtukaturka_na_stene')
 	infProject.path = '<?=$path?>';
 	
 	infProject.settings.project = 'shape3';
-	infProject.settings.camera = '2d';
 	infProject.settings.height = 2.5;
 	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center' }
 	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center' } 
@@ -124,7 +123,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	else if(infProject.nameId == 'штукатурка на стене') 
 	{ 
 		infProject.settings.project = 'wall_stucco';
-		infProject.settings.camera = '3d';
+		infProject.settings.camera.type = '3d';
 	}
 
 	
