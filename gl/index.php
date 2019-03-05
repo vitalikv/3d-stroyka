@@ -219,7 +219,7 @@ if($url == '/calculator/ploshchad_uchastka')
 	<div class="bottom_panel_1" data-action ='top_panel_1'>			
 		<div class="toolbar" data-action ='top_panel_1'>	
 			<div class="button1-wrap">
-				<div data-action ='2D' class="button1"><p>Добавить точку</p></div>
+				<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
 			</div>
 			<div class="button1-wrap">
 				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
@@ -293,7 +293,8 @@ if($url == '/calculator/ploshchad_uchastka')
 		$('[data-action="input-width"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });  
 		$('[data-action="input-height"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
 		$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
-
+		$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
+		
 		$('input').on('focus', function () {  });
 		$('input').on('focus keyup change', function () { UI.activeInput = $(this).data('action'); });
 		$('input').blur(function () { UI.activeInput = ''; });	
