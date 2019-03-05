@@ -200,10 +200,10 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 					</div>				
 				</a>	
 
-				<a class="ind_bl_1" href="calculator/monolit_fundament1">
+				<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
 					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
 					<div class="ind_text_3">
-						монолитный фундамент
+						Расчет штукатурки на стене
 					</div>
 				</a>
 				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">

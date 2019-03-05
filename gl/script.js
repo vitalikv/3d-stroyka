@@ -905,6 +905,11 @@ function createToolDoorPoint()
 
 
 
+
+
+
+
+
 function createForm(cdm) 
 {
 	var form = cdm.form;
@@ -912,7 +917,8 @@ function createForm(cdm)
 	var arrP = [];
 	resetScene();
 	
-	if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
+	if(form == 'wall_stucco') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
+	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
 	else if(form == 'shape2') { var arrP = [new THREE.Vector3(0,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(3,0,2)]; }
 	else if(form == 'shape3') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }
 	else if(form == 'shape4') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3), new THREE.Vector3(0,0,-3), new THREE.Vector3(0,0,0)]; }	
@@ -942,14 +948,19 @@ function createForm(cdm)
 	
 	for ( var i = 0; i < arrP.length; i++ ) { createPoint( arrP[i], 0 ); }
 	
-	for ( var i = 0; i < obj_point.length; i++ )
+	if(form == 'wall_stucco')
 	{
-		var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
-		createOneWall3( obj_point[i], obj_point[i2], width_wall, {} );
+		createOneWall3( obj_point[0], obj_point[1], width_wall, {} );
 	}
-
-
-	if(form == 'shape7')
+	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6')
+	{
+		for ( var i = 0; i < obj_point.length; i++ )
+		{
+			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
+			createOneWall3( obj_point[i], obj_point[i2], width_wall, {} );
+		}		
+	}
+	else if(form == 'shape7')
 	{
 		createOneWall3( obj_point[2], obj_point[5], width_wall, {} );
 	}	
@@ -1049,7 +1060,7 @@ function createForm(cdm)
 	
 	if(obj_line.length > 0) createWallZone(obj_line[0])
 	
-	width_wall = 0.3;
+	//width_wall = 0.3;
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	
@@ -1686,7 +1697,9 @@ $(document).ready(function ()
 { 
 	docReady = true; 
 	//loadFile('');
-	if(infProject.settings.project != '')createForm({form:infProject.settings.project}); 	
+	if(infProject.settings.project != '') { createForm({form:infProject.settings.project}); }
+
+	//if(infProject.settings.camera == '3d') { camera = camera3D; }
 });
 
 

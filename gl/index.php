@@ -8,6 +8,7 @@ $title = 'калькулятор площади пола онлайн';
 $interface['estimate'] = 1;
 $interface['width_1'] = 1;
 $interface['height_1'] = 1;
+$interface['form_1'] = 1;
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
@@ -27,6 +28,15 @@ if($url == '/calculator/ploshchad_uchastka')
 	$interface['estimate'] = 0; 
 	$interface['width_1'] = 0;
 	$interface['height_1'] = 0;
+}
+if($url == '/calculator/shtukaturka_na_stene')	
+{ 
+	$title = 'Расчет штукатурки на стене 3D'; 
+	$nameId = 'штукатурка на стене'; 
+	$interface['estimate'] = 0; 
+	$interface['width_1'] = 0;
+	$interface['height_1'] = 0;
+	$interface['form_1'] = 0;
 }
 ?>
 
@@ -57,6 +67,7 @@ if($url == '/calculator/ploshchad_uchastka')
 	infProject.path = '<?=$path?>';
 	
 	infProject.settings.project = 'shape3';
+	infProject.settings.camera = '2d';
 	infProject.settings.height = 2.5;
 	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center' }
 	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center' } 
@@ -110,6 +121,12 @@ if($url == '/calculator/ploshchad_uchastka')
 		infProject.settings.floor.o = true;
 		infProject.settings.floor.areaPoint = 'inside';
 	}	
+	else if(infProject.nameId == 'штукатурка на стене') 
+	{ 
+		infProject.settings.project = 'wall_stucco';
+		infProject.settings.camera = '3d';
+	}
+
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject, <?=$interface['estimate']?>);
@@ -190,9 +207,12 @@ if($url == '/calculator/ploshchad_uchastka')
 	<!--hidden='true'-->
 	<div class="left_panel_1" data-action ='left_panel_1'  >
 
+		<?if($interface['form_1'] == 1){?>
 		<div class="side_panel-button">			
 			<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
 		</div> 
+		<?}?>
+		
 		<?if($interface['width_1'] == 1){?>
 		<div class="input-height">
 			<div class="text_1">ширина (см)</div>
