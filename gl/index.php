@@ -168,11 +168,11 @@ if($url == '/calculator/ploshchad_uchastka')
 		<div class="toolbar" data-action ='top_panel_1'>	
 			<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 			<div class="button1-wrap">
-				<div data-action ='2D' class="button1">2D</div>
-				<div data-action ='3D' class="button1">3D</div>
+				<div data-action ='2D' class="button1"><p>2D</p></div>
+				<div data-action ='3D' class="button1"><p>3D</p></div>
 			</div>
 			<? if($interface['estimate'] == 1){ ?>
-			<div data-action ='estimate' class="button4">СМЕТА</div>
+			<div data-action ='estimate' class="button1"><p>СМЕТА</p></div>
 			<? } ?>
 			<div class="button1-wrap">
 				<div data-action ='screenshot' class="button1"><img src="<?=$path?>/img/screenshot.png"></div>
@@ -214,6 +214,18 @@ if($url == '/calculator/ploshchad_uchastka')
 		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
 		<a href="/calculator/svaynyy_fundament" class="link_page_1">свайный<br>фундамент</a>
 	</div>	
+	
+	
+	<div class="bottom_panel_1" data-action ='top_panel_1'>			
+		<div class="toolbar" data-action ='top_panel_1'>	
+			<div class="button1-wrap">
+				<div data-action ='2D' class="button1"><p>Добавить точку</p></div>
+			</div>
+			<div class="button1-wrap">
+				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+			</div>
+		</div>
+	</div>		
 	
 	
 	
@@ -280,6 +292,7 @@ if($url == '/calculator/ploshchad_uchastka')
 		
 		$('[data-action="input-width"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });  
 		$('[data-action="input-height"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
+		$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 
 		$('input').on('focus', function () {  });
 		$('input').on('focus keyup change', function () { UI.activeInput = $(this).data('action'); });
