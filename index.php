@@ -194,7 +194,7 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 					</div>				
 				</a>
 				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
-					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
+					<div class="block_form_1_image_wrap"><img src="/img/5.jpg"></div>
 					<div class="ind_text_3">
 						Объем и площадь помещения
 					</div>				
