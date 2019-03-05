@@ -118,6 +118,22 @@ function findCommmonWallPoint(point1, point2)
 
 
 
+// разделение стены на две половины по центру 
+function addPointCenterWall()
+{
+	var wall = clickO.obj;
+	clickO.obj = null;
+	objDeActiveColor_2D();
+	
+	var pos1 = wall.userData.wall.p[0].position;
+	var pos2 = wall.userData.wall.p[1].position;
+	
+	var pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1); 
+	var point = createPoint( pos, 0 );
+	
+	addPoint_1( wall, point );
+}
+
 
 // добавляем точку на стену (разбиваем стену)
 function addPoint_1( wall, point )

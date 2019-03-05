@@ -269,6 +269,7 @@ function deletePoint( point )
 	lineAxis_1.visible = false;
 	lineAxis_2.visible = false; 
 
+	createWallZone(wall);
 	calculationAreaFundament_2();
 	
 	return { point : { id : point.userData.id }, wall : wall }; 

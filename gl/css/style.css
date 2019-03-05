@@ -416,8 +416,8 @@ canvas
 	flex-direction: column;
 	-webkit-flex-direction: column;
 	
-	
-	border-radius: 3px;
+	border: 1px solid #b3b3b3;
+	border-radius: 0 3px 3px 0;
 	background-color:#f1f1f1; 
    
 	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
@@ -440,7 +440,7 @@ canvas
 	flex-direction: column;
 	-webkit-flex-direction: column;	
 
-	
+	border: 1px solid #b3b3b3;
 	border-radius: 3px 0 0 3px;
 	background-color:#f1f1f1; 
    
@@ -450,15 +450,20 @@ canvas
 }
 
 
+.button1-wrap 
+{ 
+	padding:0 15px;
+	display: -webkit-box;
+	display: flex;	
+}
 
 
+.button1:hover { cursor: pointer }
 
-.button1:hover, .button3:hover, .button4:hover { cursor: pointer }
 
-
-.button1, .button3, .button4
+.button1
 {
-	width: 50px;
+	width: auto;
 	height: 20px;
 	text-decoration:none; 
 	text-align:center; 
@@ -486,36 +491,20 @@ canvas
 
 .button1 img 
 {
-	display: block;
-	width: 95%;
+	display: block;	
 	height: 95%;
-	margin: auto;
+	margin: 0 15px; 
 	-o-object-fit: contain;
 	object-fit: contain;	
 }
 
-.button1-wrap 
-{ 
+
+.button1 p
+{
+	display: block;
 	padding:0 15px;
-	display: -webkit-box;
-	display: flex;	
-}
-
-.button3
-{
-	width: 100%;	
-}
-
-.button3-wrap 
-{ 
-	padding:0 35px;	
-}
-
-.button4
-{
-	width: 100px;	
-}
-	
+	margin: 0;	
+}	
 
 a.link_page_1
 {
@@ -661,6 +650,42 @@ a.link_page_1
 	right: 20px;
 	bottom: 20px;
 	display: -webkit-box;
+	display: flex;	
+}
+
+
+
+.bottom_panel_1  
+{
+	position: absolute;
+	left: 0;
+	bottom: 60px;
+	width: 100%;
+	display: -webkit-box;
+	display: flex;	
+}
+
+
+.bottom_panel_1 .toolbar
+{
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	display: -webkit-box;
+	display: flex;
+	border: 1px solid #b3b3b3; 
+	border-radius: 3px;
+	background-color:#f1f1f1; 
+   
+	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 	
+}
+
+.bottom_panel_1 .toolbar .button1-wrap 
+{ 
+	padding:15px 15px;
+	display: -webkit-box;  
 	display: flex;	
 }
 
