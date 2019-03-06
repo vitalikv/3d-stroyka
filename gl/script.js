@@ -226,6 +226,18 @@ var colDoor = 'rgb(166, 151, 99)';
 var colWin = 'rgb(122, 160, 195)';
 
 
+// cutoff боковые отсечки для линеек
+// format_1 линейки для отображения длины/высоты стены в режиме cameraWall
+// format_2 линейки для окон/мебели
+// format_3 нижние размеры между мебелью в режиме cameraWall 
+// cube контроллеры для изменения ширины/длины wd
+var arrSize = { cutoff : createRulerCutoff(), format_1 : {}, format_2 : {}, format_3 : {line : [], label : []}, cube : createControllWD() };
+var labelGeometry_1 = createGeometryPlan2(0.2 * kof_rd, 0.1 * kof_rd); 
+arrSize.format_1 = { line : createRulerWin({count : 6, color : 0xcccccc}), label : createLabelCameraWall({ count : 2, text : 100, size : 50, border : 'white', geometry : labelGeometry_1 }) };
+arrSize.format_2 = { line : createRulerWin({count : 6, color : 0x000000}), label : createLabelCameraWall({ count : 6, text : 100, size : 50, border : 'border line', geometry : labelGeometry_1 }) };
+arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, material : 'standart'}), label : createLabelCameraWall({ count : 6, text : [1,2,3,4,5,6], materialTop : 'no', size : 85, ratio : {x:256, y:256}, geometry : createGeometryPlan(0.25, 0.25) }) };
+
+
 var wallVisible = [];
 var circle = createCircleSpline();
 var p_tool = createToolPoint();
