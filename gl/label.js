@@ -204,6 +204,8 @@ function upLabelArea2(label, area, text2, size, color, border)
 
 
 
+
+
 // показываем (линейки) нижние размеры между мебелью в режиме cameraWall 
 function showSizeFormat_3() 
 {
@@ -345,6 +347,8 @@ function deleteSizeFormat_3()
 	
 	arrSize.format_3 = { line : [], label : [] };
 }
+
+
 
 
 

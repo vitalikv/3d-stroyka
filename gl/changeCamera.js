@@ -13,7 +13,8 @@ function changeCamera(cam)
 		changeDepthColor();
 		objDeActiveColor_2D();		
 		showHideSizePlane('show');
-		cameraZoomTop( camera.zoom )
+		cameraZoomTop( camera.zoom );
+		infProject.scene.grid.obj.visible = true;
 	}
 	else if(camera == camera3D)
 	{	
@@ -23,41 +24,38 @@ function changeCamera(cam)
 		 
 		lineAxis_1.visible = false;
 		lineAxis_2.visible = false;
-		
+		infProject.scene.grid.obj.visible = true;
 		changeDepthColor();
 	}
 	else if(camera == cameraWall)
-	{
-		if(1==2)
-		{
-			var wall = infProject.scene.array.wall[0]; console.log(infProject.scene.array.wall.length, 66666);
+	{  
+		if(infProject.scene.array.wall.length > 0)
+		{  
+			arrWallFront.wall = [];
+			arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
+			detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(wall, 1));			
+
+			
+			var wall = infProject.scene.array.wall[0]; 
 			var index = 1;
 			
 			var x1 = wall.userData.wall.p[1].position.z - wall.userData.wall.p[0].position.z;
 			var z1 = wall.userData.wall.p[0].position.x - wall.userData.wall.p[1].position.x;	
 			var dir = new THREE.Vector3(x1, 0, z1).normalize();						// перпендикуляр стены			
 			var c = (index == 1) ? -100 : 100;	
-			
-			wall.updateMatrixWorld();
-			wall.geometry.computeBoundingBox();
-			var bound = popObj.geometry.boundingBox;
-			
-			var box = [];
-			box[0] = wall.localToWorld( new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z) );	
-			box[1] = wall.localToWorld( new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z) );
-			box[2] = wall.localToWorld( new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z) );
-			box[3] = wall.localToWorld( new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z) );
-			
-			var pc = new THREE.Vector3().subVectors( box[2], box[0] ).divideScalar( 2 ).add( box[0] );
+			var pc = new THREE.Vector3().subVectors( arrWallFront.bounds.max.x, arrWallFront.bounds.min.x ).divideScalar( 2 ).add( arrWallFront.bounds.min.x );
 			
 			cameraWall.position.copy( pc );
 			cameraWall.position.add(new THREE.Vector3().addScaledVector( dir, c )); 
-			cameraWall.position.y = (box[1].y - box[0].y)/2 + box[0].y;
+			cameraWall.position.y = (arrWallFront.bounds.max.y.y - arrWallFront.bounds.min.y.y)/2 + arrWallFront.bounds.min.y.y;
 			
 			
 			var rotY = Math.atan2(dir.x, dir.z);
 			rotY = (index == 1) ? rotY + Math.PI : rotY;
-			cameraWall.rotation.set(0, rotY, 0); 					
+			cameraWall.rotation.set(0, rotY, 0); 
+
+			detectZoomScreenWall();		// выставляем cameraWall, так чтобы обхватывала всю стену
+			showRuleCameraWall();		// показываем линейки/размеры высоты/ширины стены 
 		}
 		else
 		{
@@ -66,6 +64,9 @@ function changeCamera(cam)
 			cameraWall.zoom = 1.5;
 		}
 		
+
+		
+		infProject.scene.grid.obj.visible = false;
 		changeDepthColor();
 	}
 
@@ -291,8 +292,40 @@ function rayFurniture_2( obj, wall )
 
 
 
+
+// выставляем zoom cameraWall, так чтобы обхватывала всю стену
+function detectZoomScreenWall()  
+{ 	
+	cameraWall.zoom = 2;
+	camera.updateMatrixWorld();
+	camera.updateProjectionMatrix();
+	
+	var posX = { min : arrWallFront.bounds.min.x.clone(), max : arrWallFront.bounds.max.x.clone() };
+	var posY = { min : arrWallFront.bounds.min.y.clone(), max : arrWallFront.bounds.max.y.clone() };
+	
+	posX.min.project(camera);
+	posY.min.project(camera);	
+	
+	
+	
+	var x = 0.6/posX.min.x;
+	var y = 0.6/posY.min.y;
+	
+	camera.zoom = (posX.min.x < posY.min.y) ? Math.abs(x) * 2 : Math.abs(y) * 2;    
+	
+	camera.updateMatrixWorld();
+	camera.updateProjectionMatrix();
+
+	zoom_binding = camera.zoom;
+}
+
+
+
+
+
+
 // показываем линейки длины/высоты стены в режиме cameraWall
-function showRuleCameraWall(cdm)
+function showRuleCameraWall()
 {
 	var wall = arrWallFront.wall[0].obj;
 	var index = arrWallFront.wall[0].index;

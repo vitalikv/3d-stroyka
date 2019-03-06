@@ -5,10 +5,13 @@ $url = $_SERVER['REQUEST_URI'];
 $path = "/gl/";
 
 $title = 'калькулятор площади пола онлайн';
+$interface['wall_1'] = 1;
 $interface['estimate'] = 1;
 $interface['width_1'] = 1;
 $interface['height_1'] = 1;
 $interface['form_1'] = 1;
+$interface['right_panel_1'] = 1;
+
 	
 if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
 
@@ -37,6 +40,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 	$interface['width_1'] = 0;
 	$interface['height_1'] = 0;
 	$interface['form_1'] = 0;
+	$interface['wall_1'] = 0;
+	$interface['right_panel_1'] = 0;
 }
 ?>
 
@@ -183,8 +188,10 @@ if($url == '/calculator/shtukaturka_na_stene')
 	</div>
 	
 	<div class="top_panel_2">				
-		<div class="toolbar" data-action ='top_panel_1'>	
+		<div class="toolbar" data-action ='top_panel_1'>
+			<? if($interface['wall_1'] == 1){ ?>
 			<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
+			<? } ?>
 			<div class="button1-wrap">
 				<div data-action ='2D' class="button1"><p>2D</p></div>
 				<div data-action ='3D' class="button1"><p>3D</p></div>
@@ -229,13 +236,13 @@ if($url == '/calculator/shtukaturka_na_stene')
 		<?}?>		
 	</div>
 	
-	
+	<?if($interface['right_panel_1'] == 1){?>
 	<div class="right_panel_1" data-action ='right_panel_1'>			
 		<a href="/calculator/monolit_fundament" class="link_page_1">монолитный<br>фундамент</a>
 		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
 		<a href="/calculator/svaynyy_fundament" class="link_page_1">свайный<br>фундамент</a>
 	</div>	
-	
+	<?}?>
 	
 	<div class="bottom_panel_1" data-action ='top_panel_1'>			
 		<div class="toolbar" data-action ='top_panel_1'>	

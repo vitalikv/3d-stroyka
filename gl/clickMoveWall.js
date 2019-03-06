@@ -302,11 +302,14 @@ function changeWallLimit(point, pos2, qt, dir2)
 
 
 
-
 // кликнули на стену (создаем outline)
 function clickWallOutline(wall, index)  
 {	
 	if(!wall) return;
+	deleteOutline();
+	
+	if(index == 1 || index == 2) { } 
+	else { return; }	
 	
 	var obj = new THREE.Group(); 
 	
@@ -321,128 +324,29 @@ function clickWallOutline(wall, index)
 	
 	
 	// определяем относится ли стена к какому-нибудь помещению
-	var room = detectRoomWallSide(wall, index);
+	var room = detectRoomWallSide(wall, index); 
 	
-	arrWallFront = [{ obj : wall, index : index }];
+	arrWallFront.wall = [{ obj : wall, index : index }];
 	
 	// объединяем прямо стоящие соседние стены в одну стену
 	if(camera == camera3D)
 	{
-		var p = wall.userData.wall.p;
-		var dir1 = new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize();						
-		var unique = detectDirectionWall([{ obj : wall, dir : 'forward' }], p, dir1);	
-		
-		var arrW = [];
-		var arrS = [];
-		for (i = 0; i < unique.length; i++) 
-		{ 
-			arrW[i] = unique[i].obj; 
-			arrS[i] = (unique[i].dir == 'forward') ? index : (index == 1) ? 2 : 1; 	// находим какой стороной стены повернуты к выбранной комнате
-		}
-		
-		
-		// убираем из массива все стены, которые не принадлежат к выбранной комнате
-		if(room)
-		{
-			for (i = arrW.length - 1; i >= 0; i--) 
-			{ 
-				var flag = true;
-				
-				for (i2 = 0; i2 < room.w.length; i2++)  
-				{
-					if(arrW[i] == room.w[i2]) { flag = false; break; }
-				}	
-
-				if(flag) { arrW.splice(i, 1); arrS.splice(i, 1); }
-			}			
-		}
-		
-		arrWallFront = [];
-		for (i = 0; i < arrW.length; i++) 
-		{ 
-			arrWallFront[i] = { obj : arrW[i], index : arrS[i] };  
-		}		
-		 
-		
-		// переводим вершины (у всех стен) в локальные значения для выбранной стены   
-		var arrV2 = [];
-		for (i = 0; i < arrW.length; i++)
-		{
-			arrW[i].updateMatrixWorld();
-			var v = arrW[i].userData.wall.v;			
-			
-			var arrN = (arrS[i] == 2) ? [4,5,11,10] : [0,1,7,6];
-
-			for (i2 = 0; i2 < arrN.length; i2++)
-			{
-				if(i == 0) { arrV2[arrV2.length] = v[arrN[i2]].clone(); }
-				else 
-				{ 
-					var worldV = arrW[i].localToWorld( v[arrN[i2]].clone() ); 
-					arrV2[arrV2.length] = arrW[0].worldToLocal( worldV ); 
-				}
-			}
-		}
-		
-		// находим из значений вершин всех стен min/max значения ширины и высоты
-		var box = { min : { x : arrV2[0].x, y : arrV2[0].y }, max : { x : arrV2[0].x, y : arrV2[0].y } };
-		
-		for (i = 0; i < arrV2.length; i++)
-		{
-			if(arrV2[i].x < box.min.x) { box.min.x = arrV2[i].x; }
-			else if(arrV2[i].x > box.max.x) { box.max.x = arrV2[i].x; }
-			
-			if(arrV2[i].y < box.min.y) { box.min.y = arrV2[i].y; }
-			else if(arrV2[i].y > box.max.y) { box.max.y = arrV2[i].y; }			
-		}
-		
-		
-		var arrV3 = 
-		[
-			new THREE.Vector3(box.min.x, box.min.y, 0), 
-			new THREE.Vector3(box.min.x, box.max.y, 0),
-			new THREE.Vector3(box.max.x, box.max.y, 0),
-			new THREE.Vector3(box.max.x, box.min.y, 0), 
-		];
-			
-
-		// зная min/max ширины/высоты, находим точки для outLine	
-		var z = arrV[0].z;
-		var arrV = [];
-		
-		for (i = 0; i < arrV3.length; i++)
-		{
-			var min = 99999;
-			var n = 0;
-			
-			for (i2 = 0; i2 < arrV2.length; i2++)
-			{
-				var d = arrV3[i].distanceTo(arrV2[i2]);
-				
-				if(min > d) { n = i2; min = d; }
-			}
-			
-			arrV[i] = arrV2[n];
-		}	
-		
-		arrV[arrV.length] = arrV[0].clone();
-		
-		for (i = 0; i < arrV.length; i++) { arrV[i].z = z; }		
+		arrV = detectDirectionWall_1(wall, index, room);
 	}
 	
 	
 	// если есть пол, то поднимаем outLine для стены
-	if(camera == camera3D || camera == cameraWall)
+	var flag = false;
+	if(camera == camera3D) { if(room) flag = true; } 
+	else if(camera == cameraWall) { flag = true; }
+
+	if(flag)
 	{
-		if(room)
+		for (i = 0; i < arrV.length; i++)
 		{
-			for (i = 0; i < arrV.length; i++)
-			{
-				if(arrV[i].y < 0.05) arrV[i].y += 0.1; 
-			}					
-		}
-	}
-	
+			if(arrV[i].y < 0.05) arrV[i].y += 0.1; 
+		}					
+	}	
 	
 	// создаем outLine
 	for (i = 0; i < arrV.length - 1; i++)
@@ -475,18 +379,194 @@ function clickWallOutline(wall, index)
 		
 		obj.add( outline );
 	}
-
-			
+	
 	scene.add( obj );
+	
+	
+	arrOutline.obj = wall;
+	arrOutline.outline = obj;
 	
 	return obj;
 }
 
 
 
+
+
+// находим все соседние стены с которые находятся на одном уровне и напрвлении 
+function detectDirectionWall_1(wall, index, room) 
+{
+	var p = wall.userData.wall.p;
+	var dir1 = new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize();						
+	var unique = detectDirectionWall_2([{ obj : wall, dir : 'forward' }], p, dir1);	
+	
+	var arrW = [];
+	var arrS = [];
+	for (i = 0; i < unique.length; i++) 
+	{  
+		arrW[i] = unique[i].obj; 
+		arrS[i] = (unique[i].dir == 'forward') ? index : (index == 1) ? 2 : 1; 	// находим какой стороной стены повернуты к выбранной комнате
+	}
+	
+		
+	arrWallFront.index = index;  
+	arrWallFront.room = room;
+	arrWallFront.wall = [];	  
+	arrWallFront.wall_2 = [];	// боковые стены (если это комната)  
+	//arrWallFront.objPop = { obj_1 : [], obj_2 : [] };
+	
+	// убираем из массива все стены, которые не принадлежат к выбранной комнате
+	if(room)
+	{
+		for (var i = arrW.length - 1; i >= 0; i--) 
+		{ 
+			var flag = true;
+			
+			for (var i2 = 0; i2 < room.w.length; i2++)  
+			{
+				if(arrW[i] == room.w[i2]) { flag = false; break; }
+			}	
+
+			if(flag) { arrW.splice(i, 1); arrS.splice(i, 1); }
+		}
+
+		// находим соседние стены и добавляем в массив 
+		var arrW2 = [];
+		for (var i = 0; i < arrW.length; i++)
+		{
+			var p = arrW[i].userData.wall.p;
+			
+			for (var i2 = 0; i2 < p.length; i2++)
+			{
+				for (var i3 = 0; i3 < p[i2].w.length; i3++)
+				{
+					if(p[i2].w[i3] == arrW[i]) continue;		// если стена уже есть в arrW, то пропускаем эту стену 
+					
+					var flag = false;					
+					for (var i4 = 0; i4 < arrW.length; i4++)  
+					{
+						if(p[i2].w[i3] == arrW[i4]) { flag = true; break; }		// если стена уже есть в arrW, то пропускаем эту стену 
+					}										
+					if(flag) { continue; }
+				
+					
+					for (var i4 = 0; i4 < room.w.length; i4++)  
+					{
+						// если стена относится к выбранной room, то добавляем в массив
+						if(p[i2].w[i3] == room.w[i4]) 
+						{ 
+							var dir2 = new THREE.Vector3().subVectors( p[i2].w[i3].userData.wall.p[1].position, p[i2].w[i3].userData.wall.p[0].position ).normalize();
+							var rad = new THREE.Vector3(dir1.z, 0, dir1.x).angleTo(new THREE.Vector3(dir2.z, 0, dir2.x));
+							
+							if(index == 2) if(Math.round(THREE.Math.radToDeg(rad)) > 90) continue;		// если стена перекрывает вид на фтронтальные стены, то не отображаем эту стену
+							if(index == 1) if(Math.round(THREE.Math.radToDeg(rad)) < 90) continue; 
+							//console.log( Math.round(THREE.Math.radToDeg(rad))  );
+							
+							arrW2.push(p[i2].w[i3]); 
+							break; 
+						}	
+					}					
+				}
+			}			
+		}
+		
+		arrWallFront.wall_2 = arrW2; 	
+	}
+	
+
+	// добавляем стены которые находятся на одном уровне и напрвлении
+	for (i = 0; i < arrW.length; i++) 
+	{ 
+		arrWallFront.wall[i] = { obj : arrW[i], index : arrS[i] };  
+	}
+
+
+	// переводим вершины (у всех стен) в локальные значения для выбранной стены   
+	var arrV2 = [];
+	for (i = 0; i < arrW.length; i++)
+	{
+		arrW[i].updateMatrixWorld();
+		var v = arrW[i].userData.wall.v;			
+		
+		var arrN = (arrS[i] == 2) ? [4,5,11,10] : [0,1,7,6];
+
+		for (i2 = 0; i2 < arrN.length; i2++)
+		{
+			if(i == 0) { arrV2[arrV2.length] = v[arrN[i2]].clone(); }
+			else 
+			{ 
+				var worldV = arrW[i].localToWorld( v[arrN[i2]].clone() ); 
+				arrV2[arrV2.length] = arrW[0].worldToLocal( worldV ); 
+			}
+		}
+	}
+	
+	// находим из значений вершин всех стен min/max значения ширины и высоты
+	var box = { min : { x : arrV2[0].x, y : arrV2[0].y }, max : { x : arrV2[0].x, y : arrV2[0].y } };
+	
+	for (i = 0; i < arrV2.length; i++)
+	{
+		if(arrV2[i].x < box.min.x) { box.min.x = arrV2[i].x; }
+		else if(arrV2[i].x > box.max.x) { box.max.x = arrV2[i].x; }
+		
+		if(arrV2[i].y < box.min.y) { box.min.y = arrV2[i].y; }
+		else if(arrV2[i].y > box.max.y) { box.max.y = arrV2[i].y; }			
+	}
+	
+	
+	var arrV3 = 
+	[
+		new THREE.Vector3(box.min.x, box.min.y, 0), 
+		new THREE.Vector3(box.min.x, box.max.y, 0),
+		new THREE.Vector3(box.max.x, box.max.y, 0),
+		new THREE.Vector3(box.max.x, box.min.y, 0), 
+	];
+	
+	
+	// зная min/max ширины/высоты, находим крайние точки 
+	var arrV = [];
+	
+	for (i = 0; i < arrV3.length; i++)
+	{
+		var min = 99999;
+		var n = 0;
+		
+		for (i2 = 0; i2 < arrV2.length; i2++)
+		{
+			var d = arrV3[i].distanceTo(arrV2[i2]); 
+			
+			if(min > d) { n = i2; min = d; }
+		}
+		
+		arrV[i] = arrV2[n];
+	}	
+	
+	arrV[arrV.length] = arrV[0].clone();
+	
+	var vZ = (index == 2) ? v[4].z : v[0].z;
+	for (i = 0; i < arrV.length; i++) { arrV[i].z = vZ; }
+
+
+	
+	// нужно для cameraWall, чтобы подсчитать zoom 		
+	arrWallFront.bounds = { min : { x : 0, y : 0 }, max : { x : 0, y : 0 } };
+	
+	var xC = (box.max.x - box.min.x)/2 + box.min.x;
+	var yC = (box.max.y - box.min.y)/2 + box.min.y;
+	
+	arrWallFront.bounds.min.x = wall.localToWorld( new THREE.Vector3(box.min.x, yC, vZ) );	 
+	arrWallFront.bounds.max.x = wall.localToWorld( new THREE.Vector3(box.max.x, yC, vZ) );
+	arrWallFront.bounds.min.y = wall.localToWorld( new THREE.Vector3(xC, box.min.y, vZ) );
+	arrWallFront.bounds.max.y = wall.localToWorld( new THREE.Vector3(xC, box.max.y, vZ) );	
+	
+	return arrV;
+}
+
+
+
 // находим все соседние стены с которые находятся на одном уровне и напрвлении 
 // из-за того что забыл поставить var i, она была глобальной и всё ломалось ( рекурсия )
-function detectDirectionWall(arr, p, dir1)
+function detectDirectionWall_2(arr, p, dir1)
 {
 	// находим у стены все соседние стены с которыми она соединяется 
 	var arrW = [...new Set([...p[0].w, ...p[1].w])];		// объединяем массивы, в результате в новом массиве будет только неповторяющиеся объекты (стены) ES6	
@@ -506,17 +586,15 @@ function detectDirectionWall(arr, p, dir1)
 		else if(comparePos(dir1, new THREE.Vector3(-dir2.x,-dir2.y,-dir2.z))) { str = 'back'; }
 		
 		if(str) 
-		{ 	console.log(arrW[i].userData.id, str, dir1, dir2);
+		{ 	
 			arr[arr.length] = { obj : arrW[i], dir : str }; 
-			arr = detectDirectionWall(arr, arrW[i].userData.wall.p, dir1); 
+			arr = detectDirectionWall_2(arr, arrW[i].userData.wall.p, dir1); 
 		}
 	}		
 
 	
 	return arr;
 }
-
-
 
 
 // определяем к какому помещению принадлежит выделенная сторона стены 

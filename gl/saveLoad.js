@@ -117,7 +117,8 @@ function resetScene()
 	camera3D.userData.camera = { type : 'fly', height : camera3D.position.y, startProject : true };
 	camera3D.userData.camera.click = { pos : new THREE.Vector3() }; 
 	
-	clickO = resetPop.clickO(); 
+	clickO = resetPop.clickO();
+	infProject.scene.array = resetPop.infProjectSceneArray();
 	
 	getConsoleRendererInfo()
 }
