@@ -238,8 +238,7 @@ function wallAfterRender_2()
 // кликаем левой кнопокой мыши (собираем инфу для перемещения камеры в 2D режиме)
 function clickSetCamera2D( event, click )
 {
-	//if ( click == 'left' ) { isMouseDown1 = true; return; }
-	if ( camera == cameraTop) { }
+	if ( camera == cameraTop || camera == cameraWall) { }
 	else { return; }
 
 	isMouseDown1 = true;
@@ -248,13 +247,28 @@ function clickSetCamera2D( event, click )
 	onMouseDownPosition.y = event.clientY;
 	newCameraPosition = null;
 	
-	planeMath.position.set(camera.position.x,0,camera.position.z);
-	planeMath.rotation.set(-Math.PI/2,0,0);  
-	
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	onMouseDownPosition.x = intersects[0].point.x;
-	onMouseDownPosition.z = intersects[0].point.z;	
+
+	if(camera == cameraTop) 
+	{
+		planeMath.position.set(camera.position.x,0,camera.position.z);
+		planeMath.rotation.set(-Math.PI/2,0,0);  
+		planeMath.updateMatrixWorld();
+		
+		var intersects = rayIntersect( event, planeMath, 'one' );
+		
+		onMouseDownPosition.x = intersects[0].point.x;
+		onMouseDownPosition.z = intersects[0].point.z;	 		
+	}
+	if(camera == cameraWall) 
+	{
+		planeMath.position.set(0,0,0);
+		planeMath.rotation.copy( camera.rotation ); 
+		planeMath.updateMatrixWorld();
+
+		var intersects = rayIntersect( event, planeMath, 'one' );	
+		onMouseDownPosition.x = intersects[0].point.x;
+		onMouseDownPosition.y = intersects[0].point.y;		 		
+	}	
 }
 
 
@@ -324,21 +338,11 @@ function moveCameraWall2D( event )
 {
 	if ( !isMouseRight1 ) { return; }
 
-	var f = 1.3 / camera.zoom;
-
-	var mx = ( ( event.clientX - onMouseDownPosition.x ) * 0.01 * f );
-	var my = ( ( event.clientY - onMouseDownPosition.y ) * 0.01 * f );
-
-	var x = Math.sin( camera.rotation.y - 1.5707963267948966 );
-	var z = Math.cos( camera.rotation.y - 1.5707963267948966 );
-	var dir = new THREE.Vector3( x, 0, z );
-	dir = new THREE.Vector3().addScaledVector( dir, mx );
-	camera.position.add( dir );
-
-	//camera.position.x -= x;
-	camera.position.y += my;
-	onMouseDownPosition.x = event.clientX;
-	onMouseDownPosition.y = event.clientY;
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	camera.position.x += onMouseDownPosition.x - intersects[0].point.x;
+	camera.position.y += onMouseDownPosition.y - intersects[0].point.y;	
+	
 	newCameraPosition = null;	
 }
 
