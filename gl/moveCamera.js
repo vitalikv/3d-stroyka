@@ -261,7 +261,10 @@ function clickSetCamera2D( event, click )
 	}
 	if(camera == cameraWall) 
 	{
-		planeMath.position.set(0,0,0);
+		var dir = camera.getWorldDirection();
+		dir.addScalar(-10);
+		planeMath.position.copy(camera.position);
+		planeMath.position.add(dir);  
 		planeMath.rotation.copy( camera.rotation ); 
 		planeMath.updateMatrixWorld();
 
