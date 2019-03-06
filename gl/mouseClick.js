@@ -11,13 +11,7 @@ var catchTime = 0.30;
 var vk_click = '';
 
 
-var clickO = resetVarParam();
 
-
-function resetVarParam()
-{	
-	return { obj: null, last_obj: null, hover_obj: null, rayhit : null, button : null, buttonAct : null };
-}
 
 
 function mouseDownRight()
@@ -29,7 +23,7 @@ function mouseDownRight()
 	
 	if(obj_selected)
 	{
-		if(obj_selected.userData.tag == 'free_dw') { scene.remove(obj_selected); clickO = resetVarParam(); }
+		if(obj_selected.userData.tag == 'free_dw') { scene.remove(obj_selected); clickO = resetPop.clickO(); }
 		
 		if(obj_selected.userData.tag == 'point') 
 		{ 	
@@ -46,7 +40,7 @@ function mouseDownRight()
 				if(point.userData.point.last.cdm == 'new_point_1') { deletePoint( point ).wall.userData.id = point.userData.point.last.cross.walls.old; }
 			}
 			
-			clickO = resetVarParam();
+			clickO = resetPop.clickO();
 		}
 	}	
 	

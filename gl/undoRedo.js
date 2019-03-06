@@ -19,7 +19,7 @@ function resetActiveObj()
 	else if(camera == camera3D) { hideMenuObjUI_3D( clickO.last_obj ); }
 	else if ( camera == cameraWall ) { objDeActiveColor_Wall(clickO.last_obj); }
 	
-	clickO = resetVarParam();
+	clickO = resetPop.clickO();
 }
 
 // принудительно назначить/активировать выбранный объект

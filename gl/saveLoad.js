@@ -16,6 +16,47 @@ function loadUrl(href)
 }
 
 
+
+var resetPop =
+{
+	camera3D : 
+	{
+		userData : function()
+		{
+			var camera = { type : 'fly', height : camera3D.position.y, startProject : true, rot360 : { start : false, angle : 0, qEnd : null } };
+			camera.click = { pos : new THREE.Vector3() };
+			
+			return camera;			
+		}
+	},
+
+	fileInfo : function()
+	{
+		return { last : {cam : { obj : camera, type : '', pos : new THREE.Vector3(), rot : new THREE.Vector3() }} };
+	},
+	
+	infProjectSceneArray : function()
+	{
+		var array = { point : obj_point, wall : obj_line, window : arr_window, door : arr_door, room : room, ceiling : ceiling, obj : arr_obj };
+		array.fundament = [];
+		array.lineGrid = { limit : false };		
+		
+		return array;
+	},	
+	
+	clickO : function()
+	{
+		return { obj: null, last_obj: null, hover_obj: null, rayhit : null, button : null, buttonAct : null, selectBox : [], selectBox_2 : [] };
+	},
+	
+	active : function()
+	{
+		return { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true, unlock : true };
+	},	
+}
+
+
+
 function resetScene() 
 {	
 	
@@ -76,7 +117,7 @@ function resetScene()
 	camera3D.userData.camera = { type : 'fly', height : camera3D.position.y, startProject : true };
 	camera3D.userData.camera.click = { pos : new THREE.Vector3() }; 
 	
-	clickO = resetVarParam(); 
+	clickO = resetPop.clickO(); 
 	
 	getConsoleRendererInfo()
 }

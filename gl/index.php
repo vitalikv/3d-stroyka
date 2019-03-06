@@ -75,7 +75,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 	infProject.settings.unit = { wall: 1, floor: 1 }
 	infProject.settings.camera = { type: '2d', zoom: 1, limitZoom : 1 }
 	infProject.settings.grid = { value: 30, offset : 0.5 }
-	infProject.settings.interface = { estimate:1 }
+	infProject.settings.interface = { button: {} }
+	infProject.settings.interface.button = { cam2d: '2d' }
 	
 	if(infProject.nameId == 'монолитный фундамент') 
 	{ 
@@ -123,7 +124,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 	else if(infProject.nameId == 'штукатурка на стене') 
 	{ 
 		infProject.settings.project = 'wall_stucco';
-		infProject.settings.camera.type = '3d';
+		infProject.settings.camera.type = 'front';
+		infProject.settings.interface.button.cam2d = 'front';
 	}
 
 	
@@ -298,8 +300,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 		$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		
-		$('[data-action="2D"]').on('mousedown', function(e) { clickInterface(); UI.setView('2D'); return false; }); 	
-		$('[data-action="3D"]').mousedown(function () { clickInterface(); UI.setView('3D'); return false; }); 	
+		$('[data-action="2D"]').on('mousedown', function(e) { clickInterface({button:'2D'}); return false; }); 	
+		$('[data-action="3D"]').mousedown(function () { clickInterface({button:'3D'}); return false; }); 	
 		$('[data-action="wall"]').mousedown(function () { clickInterface(); clickO.button = 'create_wall'; return false; }); 		
 		$('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 		

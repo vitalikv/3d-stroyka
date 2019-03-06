@@ -6,11 +6,6 @@
 // переключение камеры
 function changeCamera(cam)
 {  
-	var cdm = '';
-	if(camera == cameraWall){ cdm = 'cameraWall'; }
-	else if(camera == cameraTop){ cdm = 'cameraTop'; }
-	
-	clickO.obj = null;
 	camera = cam;
 	
 	if(camera == cameraTop)
@@ -26,18 +21,55 @@ function changeCamera(cam)
 		objDeActiveColor_2D();  
 		cameraZoomTop( cameraTop.zoom );
 		 
-		if(cdm == 'cameraTop')	// возращаемся в 3D режим из 2D режима
+		lineAxis_1.visible = false;
+		lineAxis_2.visible = false;
+		
+		changeDepthColor();
+	}
+	else if(camera == cameraWall)
+	{
+		if(1==2)
 		{
-			//objDeActiveColor_2D(); 
-			lineAxis_1.visible = false;
-			lineAxis_2.visible = false;
+			var wall = infProject.scene.array.wall[0]; console.log(infProject.scene.array.wall.length, 66666);
+			var index = 1;
 			
-			changeDepthColor();
-			getInfoRenderWall();
+			var x1 = wall.userData.wall.p[1].position.z - wall.userData.wall.p[0].position.z;
+			var z1 = wall.userData.wall.p[0].position.x - wall.userData.wall.p[1].position.x;	
+			var dir = new THREE.Vector3(x1, 0, z1).normalize();						// перпендикуляр стены			
+			var c = (index == 1) ? -100 : 100;	
+			
+			wall.updateMatrixWorld();
+			wall.geometry.computeBoundingBox();
+			var bound = popObj.geometry.boundingBox;
+			
+			var box = [];
+			box[0] = wall.localToWorld( new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z) );	
+			box[1] = wall.localToWorld( new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z) );
+			box[2] = wall.localToWorld( new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z) );
+			box[3] = wall.localToWorld( new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z) );
+			
+			var pc = new THREE.Vector3().subVectors( box[2], box[0] ).divideScalar( 2 ).add( box[0] );
+			
+			cameraWall.position.copy( pc );
+			cameraWall.position.add(new THREE.Vector3().addScaledVector( dir, c )); 
+			cameraWall.position.y = (box[1].y - box[0].y)/2 + box[0].y;
+			
+			
+			var rotY = Math.atan2(dir.x, dir.z);
+			rotY = (index == 1) ? rotY + Math.PI : rotY;
+			cameraWall.rotation.set(0, rotY, 0); 					
 		}
+		else
+		{
+			cameraWall.position.set(0, 1, 15);
+			cameraWall.rotation.set(0, 0, 0);
+			cameraWall.zoom = 1.5;
+		}
+		
+		changeDepthColor();
 	}
 
-	clickO = resetVarParam();
+	clickO = resetPop.clickO();
 	
 	renderCamera();
 }
@@ -72,7 +104,7 @@ function changeDepthColor()
 		var pillar = false;
 		var visible_2 = true;
 	}
-	else if(camera == camera3D)
+	else if(camera == camera3D || camera == cameraWall)
 	{
 		var depthTest = true;
 		var w2 = 0.0;

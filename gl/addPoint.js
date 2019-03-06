@@ -366,7 +366,7 @@ function addPoint_4( point )
 			{ 
 				deleteWall_2(point.w[0]);
 				obj_selected = null;
-				clickO = resetVarParam();
+				clickO = resetPop.clickO();
 			}						
 			else
 			{

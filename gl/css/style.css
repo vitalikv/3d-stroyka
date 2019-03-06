@@ -411,7 +411,7 @@ canvas
 	list-style: none;
 	margin-left: 0;
 	padding-left: 0;	
-	width: 120px;
+	max-width: 120px;
 
 	flex-direction: column;
 	-webkit-flex-direction: column;
@@ -554,7 +554,7 @@ a.link_page_1
 {
 	width: 100px;
 	height: auto;
-	margin: 20px auto 0 auto;
+	margin: 10px;
 	display: -webkit-box;
 	display: flex;
 	flex-direction: column;
@@ -588,9 +588,9 @@ a.link_page_1
 
 .input-height
 {
-	width: 100px;
+	width: auto;
 	height: 90px;
-	margin: 20px auto;	
+	margin: 10px;	
 	
 	border: 1px solid #b3b3b3;
 	border-radius: 3px;

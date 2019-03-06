@@ -216,8 +216,8 @@ var room = [];
 var ceiling = [];
 var arrWallFront = [];
 
-infProject.scene.array = { point : obj_point, wall : obj_line, window : arr_window, door : arr_door, room : room, ceiling : ceiling, obj : arr_obj };
-infProject.scene.array.fundament = [];
+var clickO = resetPop.clickO();
+infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
 
 var actColorWin = new THREE.Color('rgb(255,0,0)');
@@ -1438,7 +1438,7 @@ function clickButton( event )
 }	
 	
 
-function clickInterface()
+function clickInterface(cdm)
 {
 	clickO.obj = null;
 	objDeActiveColor_2D();
@@ -1446,6 +1446,19 @@ function clickInterface()
 	
 	clickO.last_obj = null;
 	clickO.rayhit = null;
+	
+	if(cdm)
+	{
+		if(cdm.button == '2D')
+		{
+			if(infProject.settings.interface.button.cam2d == 'front') { changeCamera(cameraWall); }
+			else { changeCamera(cameraTop); }
+		}
+		else if(cdm.button == '3D')
+		{
+			changeCamera(camera3D);
+		}		
+	}
 }	
 
 
@@ -1700,6 +1713,7 @@ $(document).ready(function ()
 	if(infProject.settings.project != '') { createForm({form:infProject.settings.project}); }
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
+	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 });
 
 
