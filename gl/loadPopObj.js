@@ -118,6 +118,24 @@ function createEmptyCube(json)
 
 
 
+function createEmptyFormWD_1(cdm)
+{
+	var material = new THREE.MeshLambertMaterial({ color: colWin, transparent: true, opacity: 1.0, depthTest: false });
+	
+	var spline = [];
+	spline[0] = new THREE.Vector2( 0, 0 );	
+	spline[1] = new THREE.Vector2( 1, 0 );
+	spline[2] = new THREE.Vector2( 1, 1 );
+	spline[3] = new THREE.Vector2( 0, 1 );
+	
+	var shape = new THREE.Shape( spline );
+	var obj = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, depth: 0.2 } ), material );	
+	
+	scene.add( obj );  console.log(obj);
+}
+
+
+
 // создаем форму окна/двери/балкона при загрузки объекта (вставка формы двери в сцену)
 function createEmptyFormWD(json, cdm)
 {  

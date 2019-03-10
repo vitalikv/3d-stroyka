@@ -11,7 +11,7 @@ function createRulerWin(cdm)
 	
 	for ( var i = 0; i < cdm.count; i++ )
 	{
-		arr[i] = new THREE.Mesh( createGeometryCube(1, 0.005, 0.005), new THREE.LineBasicMaterial( mat ) );
+		arr[i] = new THREE.Mesh( createGeometryCube(1, 0.025, 0.025), new THREE.LineBasicMaterial( mat ) );
 		var v = arr[i].geometry.vertices; 
 		v[0].x = v[1].x = v[6].x = v[7].x = 0;
 		arr[i].geometry.verticesNeedUpdate = true;			
@@ -79,7 +79,9 @@ function createLabelCameraWall(cdm)
 		texture.needsUpdate = true;	
 		
 		if(cdm.materialTop == 'no') { var material = { transparent: true }; }
-		else { var material = { transparent: true, depthTest: false, opacity: 0.5 }; }		
+		else { var material = { transparent: true, depthTest: false }; }
+
+		if(cdm.opacity) { material.opacity = cdm.opacity; }
 		
 		material.map = texture;
 		var material = new THREE.MeshBasicMaterial(material);
@@ -741,7 +743,7 @@ function showRuleCameraWall()
 		label[i].position.copy( pos2[i] );		
 		label[i].rotation.set( 0, wall.rotation.y + rt, 0 );    
 		label[i].visible = true;		
-		upLabelCameraWall({label : label[i], text : Math.round(d[i] * 100) * 10, color : 'rgba(82,82,82,1)', border : 'white'}); 			
+		upLabelCameraWall({label : label[i], text : Math.round(d[i] * 100) / 100, sizeText : 85, color : 'rgba(82,82,82,1)', border : 'white'}); 			
 	}
 	
 	// устанавливаем боковые черточки для линеек 

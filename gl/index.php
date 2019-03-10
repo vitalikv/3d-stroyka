@@ -11,18 +11,45 @@ $interface['width_1'] = 1;
 $interface['height_1'] = 1;
 $interface['form_1'] = 1;
 $interface['right_panel_1'] = 1;
-
+$interface['bottom_panel_1'] = 1;
+$interface['wd_1'] = 1;
 	
-if($url == '/calculator/area_apartment')	{ $title = 'Калькулятор площади квартиры онлайн 3D'; }
-
-if($url == '/calculator/monolit_fundament')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; $interface['width_1'] = 0; }
-if($url == '/calculator/monolit_fundament1')	{ $title = 'Калькулятор монолитного фундамента 3D'; $nameId = 'монолитный фундамент'; $interface['width_1'] = 0; }
-if($url == '/calculator/lentochnii_fundament')	{ $title = 'Калькулятор ленточного фундамента 3D'; $nameId = 'ленточный фундамент'; }
-if($url == '/calculator/svaynyy_fundament')	{ $title = 'Свайный фундамент калькулятор 3D'; $nameId = 'свайный фундамент'; }
+if($url == '/calculator/area_apartment')	
+{ 
+	$title = 'Калькулятор площади квартиры онлайн 3D'; 
+	$interface['wd_1'] = 0;
+}
+if($url == '/calculator/monolit_fundament')	
+{ 
+	$title = 'Калькулятор монолитного фундамента 3D'; 
+	$nameId = 'монолитный фундамент'; 
+	$interface['width_1'] = 0; 
+	$interface['wd_1'] = 0;
+}
+if($url == '/calculator/monolit_fundament1')	
+{ 
+	$title = 'Калькулятор монолитного фундамента 3D'; 
+	$nameId = 'монолитный фундамент'; 
+	$interface['width_1'] = 0; 
+	$interface['wd_1'] = 0;
+}
+if($url == '/calculator/lentochnii_fundament')	
+{ 
+	$title = 'Калькулятор ленточного фундамента 3D'; 
+	$nameId = 'ленточный фундамент'; 
+	$interface['wd_1'] = 0;
+}
+if($url == '/calculator/svaynyy_fundament')	
+{ 
+	$title = 'Свайный фундамент калькулятор 3D'; 
+	$nameId = 'свайный фундамент';
+	$interface['wd_1'] = 0;	
+}
 if($url == '/calculator/obyem_pomeshcheniya')	
 { 
 	$title = 'Калькулятор объема и площади помещения 3D'; 
 	$nameId = 'объем и площадь помещения'; 
+	$interface['wd_1'] = 0;
 }
 if($url == '/calculator/ploshchad_uchastka')	
 { 
@@ -31,17 +58,18 @@ if($url == '/calculator/ploshchad_uchastka')
 	$interface['estimate'] = 0; 
 	$interface['width_1'] = 0;
 	$interface['height_1'] = 0;
+	$interface['wd_1'] = 0;
 }
 if($url == '/calculator/shtukaturka_na_stene')	
 { 
 	$title = 'Расчет штукатурки на стене 3D'; 
 	$nameId = 'штукатурка на стене'; 
-	$interface['estimate'] = 0; 
 	$interface['width_1'] = 0;
 	$interface['height_1'] = 0;
 	$interface['form_1'] = 0;
 	$interface['wall_1'] = 0;
 	$interface['right_panel_1'] = 0;
+	$interface['bottom_panel_1'] = 0;
 }
 ?>
 
@@ -192,6 +220,9 @@ if($url == '/calculator/shtukaturka_na_stene')
 			<? if($interface['wall_1'] == 1){ ?>
 			<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 			<? } ?>
+			<? if($interface['wd_1'] == 1){ ?>
+			<div data-action ='wd_1' class="button1"><p>Проём</p></div>
+			<? } ?>			
 			<div class="button1-wrap">
 				<div data-action ='2D' class="button1"><p>2D</p></div>
 				<div data-action ='3D' class="button1"><p>3D</p></div>
@@ -244,6 +275,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	</div>	
 	<?}?>
 	
+	<?if($interface['bottom_panel_1'] == 1){?>
 	<div class="bottom_panel_1" data-action ='top_panel_1'>			
 		<div class="toolbar" data-action ='top_panel_1'>	
 			<div class="button1-wrap">
@@ -254,7 +286,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 			</div>
 		</div>
 	</div>		
-	
+	<?}?>
 	
 	
 	<div class="modal" data-action ='modal'>
@@ -309,7 +341,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 		
 		$('[data-action="2D"]').on('mousedown', function(e) { clickInterface({button:'2D'}); return false; }); 	
 		$('[data-action="3D"]').mousedown(function () { clickInterface({button:'3D'}); return false; }); 	
-		$('[data-action="wall"]').mousedown(function () { clickInterface(); clickO.button = 'create_wall'; return false; }); 		
+		$('[data-action="wall"]').mousedown(function () { clickInterface(); clickO.button = 'create_wall'; return false; }); 
+		$('[data-action="wd_1"]').mousedown(function () { clickInterface(); clickO.button = 'create_wd_1'; return false; });
 		$('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 		
 		$('[link_form]').mousedown(function () 

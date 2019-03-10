@@ -81,7 +81,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	
 	if(infProject.settings.floor.o)
 	{ 
-		room[n].label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor })[0];
+		room[n].label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor, opacity : 0.5 })[0];
 		
 		getYardageSpace( [room[n]] ); 
 		scene.add( room[n] ); 

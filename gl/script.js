@@ -232,9 +232,9 @@ var colWin = 'rgb(122, 160, 195)';
 // format_3 нижние размеры между мебелью в режиме cameraWall 
 // cube контроллеры для изменения ширины/длины wd
 var arrSize = { cutoff : createRulerCutoff(), format_1 : {}, format_2 : {}, format_3 : {line : [], label : []}, cube : createControllWD() };
-var labelGeometry_1 = createGeometryPlan2(0.2 * kof_rd, 0.1 * kof_rd); 
-arrSize.format_1 = { line : createRulerWin({count : 6, color : 0xcccccc}), label : createLabelCameraWall({ count : 2, text : 100, size : 50, border : 'white', geometry : labelGeometry_1 }) };
-arrSize.format_2 = { line : createRulerWin({count : 6, color : 0x000000}), label : createLabelCameraWall({ count : 6, text : 100, size : 50, border : 'border line', geometry : labelGeometry_1 }) };
+var labelGeometry_1 = createGeometryPlan2(0.25 * kof_rd, 0.125 * kof_rd); 
+arrSize.format_1 = { line : createRulerWin({count : 6, color : 0xcccccc}), label : createLabelCameraWall({ count : 2, text : 0, size : 50, ratio : {x:256*2, y:256}, border : 'white', geometry : labelGeometry_1 }) };
+arrSize.format_2 = { line : createRulerWin({count : 6, color : 0x000000}), label : createLabelCameraWall({ count : 6, text : 0, size : 50, ratio : {x:256*2, y:256}, border : 'border line', geometry : labelGeometry_1 }) };
 arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, material : 'standart'}), label : createLabelCameraWall({ count : 6, text : [1,2,3,4,5,6], materialTop : 'no', size : 85, ratio : {x:256, y:256}, geometry : createGeometryPlan(0.25, 0.25) }) };
 
 
@@ -392,7 +392,7 @@ function createPointGrid(size) {
 function createPlaneMath()
 {
 	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
-	var mat_pm = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0, side: THREE.DoubleSide } );
+	var mat_pm = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
 	mat_pm.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, mat_pm );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -1178,12 +1178,12 @@ function createOneWall3( point1, point2, width, cdm )
  	
 	
 	wall.label = [];
-	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall })[0];	
+	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0];	
 	wall.label[0].visible = true;
 	
 	if(infProject.settings.wall.label == 'double') 
 	{
-		wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall })[0]; 
+		wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0]; 
 		wall.label[1].visible = true;
 	}
 	
@@ -1424,7 +1424,16 @@ function clickButton( event )
 		planeMath.position.set(0, 0, 0);
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 	}
-
+	if(camera == cameraWall)
+	{
+		var dir = camera.getWorldDirection();
+		dir.addScalar(-10);
+		planeMath.position.copy(camera.position);
+		planeMath.position.add(dir);  
+		planeMath.rotation.copy( camera.rotation ); 
+		planeMath.updateMatrixWorld();		
+	}
+	
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
 	
@@ -1441,7 +1450,11 @@ function clickButton( event )
 			obj_selected = point;
 
 			if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }
-		}		
+		}
+		if(camera == cameraWall)
+		{
+			createEmptyFormWD_1();
+		}
 		
 		clickO.buttonAct = clickO.button;
 		clickO.button = null;

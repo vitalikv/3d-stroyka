@@ -65,7 +65,7 @@ function changeCamera(cam)
 		}
 		
 
-		
+		cameraZoomWall();
 		infProject.scene.grid.obj.visible = false;
 		changeDepthColor();
 	}

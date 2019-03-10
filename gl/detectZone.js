@@ -668,7 +668,7 @@ function createWallZone(wall)
 	else { return; }
 	
 	var zone = calculationZoneFundament_1(wall);	
-	zone.label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor })[0];
+	zone.label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : geometryLabelFloor, opacity : 0.5 })[0];
 	
 	
 	for(var i = 0; i < zone.walls.length; i++)

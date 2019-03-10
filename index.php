@@ -190,20 +190,20 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
 					<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
 					<div class="ind_text_3">
-						Площадь участка
+						площадь участка
 					</div>				
 				</a>
 				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
 					<div class="block_form_1_image_wrap"><img src="/img/5.jpg"></div>
 					<div class="ind_text_3">
-						Объем и площадь помещения
+						объем и площадь помещения
 					</div>				
 				</a>	
 
 				<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
 					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
 					<div class="ind_text_3">
-						Расчет штукатурки на стене
+						расчет штукатурки на стене
 					</div>
 				</a>
 				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
