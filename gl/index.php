@@ -103,7 +103,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
-	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center' }
+	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center', material : null }
 	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center', material : null } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
@@ -135,6 +135,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 	}
 	else if(infProject.nameId == 'площадь участка') 
 	{ 
+		infProject.load.img = ['img/load/grass.jpg']; 
+		infProject.settings.floor.material = [{ img:infProject.load.img[0], repeat:{x:0.2, y:0.2} }];
 		infProject.settings.land.o = true; 
 		infProject.settings.height = 0.2;
 		infProject.settings.floor.o = true;
@@ -162,7 +164,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 		infProject.settings.project = 'wall_stucco';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
-		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0]}, {index:2, img:infProject.load.img[0]}];
+		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
 	}
 
 	

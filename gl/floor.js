@@ -56,28 +56,16 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 
 	// загружаем материал (пол, потолок)
 	//setMaterialFloorCeiling(n, material)
-	var img = null;
-	if(infProject.settings.land.o) { img = infProject.path+'img/load/grass.jpg'; }
 	
-	if(img)
-	{
-		new THREE.TextureLoader().load(img, function ( image )  
-		{ 
-			var texture = image;			
-			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-			texture.anisotropy = renderer.capabilities.getMaxAnisotropy();  	
-			texture.repeat.x = 0.2;
-			texture.repeat.y = 0.2;
-			texture.needsUpdate = true;
-			
-			room[n].material.map = texture;   
-			room[n].material.needsUpdate = true; 
-			room[n].material.lightMap = lightMap_1;			
-			
-			renderCamera();
-		});			
+	if(infProject.settings.floor.material)
+	{	
+		var m = infProject.settings.floor.material;
+		
+		for ( var i = 0; i < m.length; i++ )
+		{
+			setTexture({obj:room[n], material:m[i]});
+		}	
 	}
-	console.log(99999)
 	
 	if(infProject.settings.floor.o)
 	{ 

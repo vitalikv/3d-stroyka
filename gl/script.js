@@ -1304,9 +1304,19 @@ function setTexture(cdm)
 	{ 
 		var texture = image;			
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();  	
-		texture.repeat.x = 0.6;
-		texture.repeat.y = 0.6;
+		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+		
+		if(cdm.repeat)
+		{
+			texture.repeat.x = cdm.repeat.x;
+			texture.repeat.y = cdm.repeat.y;			
+		}
+		else
+		{
+			texture.repeat.x = 1;
+			texture.repeat.y = 1;			
+		}
+		
 		texture.needsUpdate = true;
 		
 		material.map = texture;   
