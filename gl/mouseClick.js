@@ -230,13 +230,16 @@ function clickRayHit( rayhit )
 	clickO.obj = object;
 	clickO.rayhit = rayhit;	
 
-	if ( camera == cameraTop )
+	if(camera == cameraTop)
 	{  
-		if (clickToolWD()) { console.log(clickO.last_obj); }
-		else if ( tag == 'wall' ) { clickWall_2D( rayhit ); }
-		else if ( tag == 'point' ) { clickPoint( rayhit ); }
+		if(clickToolWD()) { console.log(clickO.last_obj); }
+		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
+		else if( tag == 'point' ) { clickPoint( rayhit ); }
 	}
-
+	else if(camera == cameraWall)
+	{
+		if(clickToolWD()) { console.log(clickO.last_obj); }
+	}
 }
 
 

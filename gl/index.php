@@ -191,7 +191,7 @@ if($url == '/calculator/shtukaturka_na_stene')
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>
   	<script src="<?=$path?>loadPopObj.js?<?=$vrs?>"></script>
-	
+	<script src="<?=$path?>dragWindowDoorUI.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activeHover2D.js?<?=$vrs?>"></script>
     
