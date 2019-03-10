@@ -964,7 +964,7 @@ function createForm(cdm)
 	{
 		createOneWall3( obj_point[0], obj_point[1], width_wall, {} );
 	}
-	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6')
+	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'land')
 	{
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
@@ -1225,7 +1225,19 @@ function createOneWall3( point1, point2, width, cdm )
 	// --------------
 	
 	 
-	wall.userData.wall.actList = abo.wall;			
+	wall.userData.wall.actList = abo.wall;
+	
+	upUvs_1( wall );
+	
+	if(infProject.settings.wall.material)
+	{
+		var m = infProject.settings.wall.material;
+		
+		for ( var i = 0; i < m.length; i++ )
+		{
+			setTexture({obj:wall, material:m[i]});
+		}	
+	}
 	
 	//console.log(wall);
 	
@@ -1279,6 +1291,31 @@ function rayIntersect( event, obj, t )
 }
 
 
+
+// устанавливаем текстуру
+function setTexture(cdm)
+{
+	//if(!cdm.img) return;
+	
+	var img = infProject.path+cdm.material.img;
+	var material = (cdm.material.index) ? cdm.obj.material[cdm.material.index] : cdm.obj.material;
+	
+	new THREE.TextureLoader().load(img, function ( image )  
+	{ 
+		var texture = image;			
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();  	
+		texture.repeat.x = 0.6;
+		texture.repeat.y = 0.6;
+		texture.needsUpdate = true;
+		
+		material.map = texture;   
+		material.needsUpdate = true; 
+		material.lightMap = lightMap_1;			
+		console.log(11111);
+		renderCamera();
+	});			
+}
 
 
 function showObjTool( tag )

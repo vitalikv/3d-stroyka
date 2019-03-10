@@ -99,10 +99,12 @@ if($url == '/calculator/shtukaturka_na_stene')
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	
+	infProject.load = { img : [] }
+	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
 	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center' }
-	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center' } 
+	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center', material : null } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
 	infProject.settings.unit = { wall: 1, floor: 1 }
@@ -156,9 +158,11 @@ if($url == '/calculator/shtukaturka_na_stene')
 	}	
 	else if(infProject.nameId == 'штукатурка на стене') 
 	{ 
+		infProject.load.img = ['img/load/beton.jpg'];
 		infProject.settings.project = 'wall_stucco';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
+		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0]}, {index:2, img:infProject.load.img[0]}];
 	}
 
 	

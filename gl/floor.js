@@ -57,7 +57,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	// загружаем материал (пол, потолок)
 	//setMaterialFloorCeiling(n, material)
 	var img = null;
-	if(infProject.settings.land.o) { img = infProject.path+'img/grass.jpg'; }
+	if(infProject.settings.land.o) { img = infProject.path+'img/load/grass.jpg'; }
 	
 	if(img)
 	{
@@ -77,7 +77,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 			renderCamera();
 		});			
 	}
-	
+	console.log(99999)
 	
 	if(infProject.settings.floor.o)
 	{ 

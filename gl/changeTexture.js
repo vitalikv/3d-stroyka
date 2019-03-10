@@ -341,7 +341,7 @@ function upUvs_1( obj )
     geometry.uvsNeedUpdate = true;
 	geometry.elementsNeedUpdate = true;
 	
-	setOffsetUVS( obj );
+	//setOffsetUVS( obj );
 }
 
 
