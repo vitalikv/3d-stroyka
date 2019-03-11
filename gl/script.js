@@ -1179,11 +1179,18 @@ function createOneWall3( point1, point2, width, cdm )
 	
 	wall.label = [];
 	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0];	
-	wall.label[0].visible = true;
+	wall.label[0].visible = false;
 	
-	if(infProject.settings.wall.label == 'double') 
+	wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0]; 
+	wall.label[1].visible = false;
+	
+	if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside') 
 	{
-		wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0]; 
+		wall.label[0].visible = true;
+	}
+	else if(infProject.settings.wall.label == 'double') 
+	{
+		wall.label[0].visible = true;
 		wall.label[1].visible = true;
 	}
 	
@@ -1218,10 +1225,10 @@ function createOneWall3( point1, point2, width, cdm )
 	for ( var i = 0; i < v.length; i++ ) { wall.userData.wall.v[i] = v[i].clone(); }
 	
 	wall.userData.material = [];
-	wall.userData.material[0] = { lotid : 0, caption : '', color : wall.material[0].color, scale : new THREE.Vector2(1,1), filters : 0, preview : '', catalog : '' };			// top
-	wall.userData.material[1] = { lotid : 4954, caption : '', color : wall.material[1].color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : '' };
-	wall.userData.material[2] = { lotid : 4954, caption : '', color : wall.material[2].color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : '' };
-	wall.userData.material[3] = { lotid : 4954, caption : '', color : wall.material[3].color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : '' };
+	wall.userData.material[0] = { color : wall.material[0].color, scale : new THREE.Vector2(1,1), };	// top
+	wall.userData.material[1] = { color : wall.material[1].color, scale : new THREE.Vector2(1,1), };	// left
+	wall.userData.material[2] = { color : wall.material[2].color, scale : new THREE.Vector2(1,1), };	// right
+	wall.userData.material[3] = { color : wall.material[3].color, scale : new THREE.Vector2(1,1), };
 	// --------------
 	
 	 

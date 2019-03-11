@@ -104,7 +104,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
 	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center', material : null }
-	infProject.settings.wall = { width : 0.3, label : 'outside', dist : 'center', material : null } 
+	infProject.settings.wall = { width : 0.3, label : '', dist : 'center', material : null } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
 	infProject.settings.unit = { wall: 1, floor: 1 }
@@ -116,6 +116,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	if(infProject.nameId == 'монолитный фундамент') 
 	{ 
 		infProject.settings.calc.fundament = 'monolit';
+		infProject.settings.wall.label = 'outside';
 		infProject.settings.wall.width = 0.03;
 		infProject.settings.height = 0.2;
 		infProject.settings.floor.o = true;
@@ -125,11 +126,13 @@ if($url == '/calculator/shtukaturka_na_stene')
 	}
 	else if(infProject.nameId == 'ленточный фундамент')
 	{ 
+		infProject.settings.wall.label = 'outside';
 		infProject.settings.calc.fundament = 'lent';
 		infProject.settings.height = 0.2;
 	}
 	else if(infProject.nameId == 'свайный фундамент') 
 	{ 
+		infProject.settings.wall.label = 'outside';
 		infProject.settings.calc.fundament = 'svai';
 		infProject.settings.height = 0.2;
 	}
@@ -142,7 +145,8 @@ if($url == '/calculator/shtukaturka_na_stene')
 		infProject.settings.floor.o = true;
 		infProject.settings.floor.posY = infProject.settings.height;
 		infProject.settings.floor.height = infProject.settings.height;
-		infProject.settings.floor.changeY = true;		
+		infProject.settings.floor.changeY = true;
+		infProject.settings.wall.label = 'outside';
 		infProject.settings.wall.width = 0.1;
 		infProject.settings.unit.floor = 0.01; 
 		infProject.settings.camera.zoom = 0.25;
@@ -219,6 +223,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	<div class="top_panel_1" data-action ='top_panel_1'>
 		<a href="/" class="go-home"><p>На главную</p></a>
 		<div class="title_1"><h1><?=$title?></h1></div>
+		<div class="menu-link"><p>Список калькуляторов</p></div>
 	</div>
 	
 	<div class="top_panel_2">				

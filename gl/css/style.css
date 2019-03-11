@@ -348,6 +348,20 @@ canvas
 }
 
 
+.menu-link
+{
+	position: absolute;
+	width: auto;	
+	height: 100%; 
+	top: 0px;
+	right: 0px;	
+	text-decoration: none;
+	user-select: none;
+	-moz-user-select: none;	
+	border-right: 2px solid #cccccc;		
+}
+
+
 .top_panel_1 .go-home:hover
 {
 	background-image: -moz-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%); 

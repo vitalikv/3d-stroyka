@@ -201,7 +201,7 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				</a>	
 
 				<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
-					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
+					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>					
 					<div class="ind_text_3">
 						расчет штукатурки на стене
 					</div>
