@@ -935,7 +935,10 @@ function createToolDoorPoint()
 
 function createFormWallR()
 {
-	var size = {x:0.25, y:0.065, z:0.125};
+	var l = 6;			// длина стены (м)
+	var h = 3;			// высота стены
+	var size = {x:0.25, y:0.065, z:0.125};		// размер блока кирпича
+	var seam = 0.01;							// толщина шва
 	
 	var geometry = createGeometryCube(size.x, size.y, size.z);
 	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
@@ -943,39 +946,70 @@ function createFormWallR()
 	material.lightMap = lightMap_1;
 	material.needsUpdate = true; 	
 	
+	var wall = {block:[], concrete:null};
 	var pos = [];
 	
-	for(var i = 0; i < 9; i++)
+	var center = new THREE.Vector3();
+	var countX = Math.round(l/size.x+seam);		// 6м делим 
+	var countY = Math.round(h/size.y+seam);
+	
+	
+	
+	for(var i = 0; i < countX; i++)
 	{
-		var x = i * size.x + (i * 0.003);
+		var x = i * size.x + (i * seam);
 		pos[i] = new THREE.Vector3(x,0,0);
+		center.add(pos[i]); 
 	}
-									
+	
+	center.x /= countX;
+	center.z /= countX;
 	
 	for ( var i = 0; i < pos.length; i++ )
 	{
 		var cube = new THREE.Mesh( geometry, material );
 		cube.position.copy(pos[i]);
+		wall.block[wall.block.length] = cube;
 		scene.add(cube); 
 	}
 	
 	var sign = -1;
-	for ( var i2 = 0; i2 < 12; i2++ )
+	for ( var i2 = 0; i2 < countY; i2++ )
 	{
 		sign = (sign > 0) ? -1 : 1;
 		
-		for ( var i = 0; i < pos.length; i++ )
+		if(sign == 1) 
+		{
+			var cube = new THREE.Mesh( geometry, material );
+			cube.position.set(pos[0].x + (size.x/2 + seam) * -sign, pos[0].y + size.y + seam, pos[0].z);
+			wall.block[wall.block.length] = cube;
+			scene.add(cube); 			
+		}
+		
+		for ( var i = 0; i < countX; i++ )
 		{
 			var cube = new THREE.Mesh( geometry, material );
 			pos[i].x += (size.x/2) * sign;
-			pos[i].y += size.y + 0.003;
+			pos[i].y += size.y + seam;
 			cube.position.copy(pos[i]);
+			wall.block[wall.block.length] = cube;
 			scene.add(cube); 
 		}		
-	}
+	}	
 
-	var cube = new THREE.Mesh( createGeometryCube((size.x + 0.003) * 9, (size.y + 0.003) * 13 - 0.004, size.z - 0.003), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
+	var geometry = createGeometryCube((size.x + seam) * countX, (size.y + seam) * (countY+1) - (seam+0.001), size.z - seam);
+	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc } );
+	
+	var cube = new THREE.Mesh(geometry, material);
+	//cube.position.set(center.x, 0, center.z);
+	wall.concrete = cube;
 	scene.add(cube);
+	
+	// возращаем блоки к центру
+	for ( var i = 0; i < wall.block.length; i++ )
+	{
+		wall.block[i].position.x -= center.x;
+	}	
 	
 	renderCamera();
 }
