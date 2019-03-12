@@ -71,6 +71,17 @@ if($url == '/calculator/shtukaturka_na_stene')
 	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
 }
+if($url == '/calculator/raschet_kirpicha')	
+{ 
+	$title = 'Расчет кирпича для стены 3D'; 
+	$nameId = 'расчет кирпича'; 
+	$interface['width_1'] = 0;
+	$interface['height_1'] = 0;
+	$interface['form_1'] = 0;
+	$interface['wall_1'] = 0;
+	$interface['right_panel_1'] = 0;
+	$interface['bottom_panel_1'] = 0;
+}
 ?>
 
 
@@ -157,8 +168,10 @@ if($url == '/calculator/shtukaturka_na_stene')
 	}
 	else if(infProject.nameId == 'объем и площадь помещения') 
 	{ 
+		infProject.load.img = ['img/load/kirpich.jpg'];
 		infProject.settings.wall.label = 'inside';
 		infProject.settings.wall.dist = 'inside';
+		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
 		infProject.settings.floor.o = true;
 		infProject.settings.floor.areaPoint = 'inside';
 	}	
@@ -170,6 +183,14 @@ if($url == '/calculator/shtukaturka_na_stene')
 		infProject.settings.interface.button.cam2d = 'front';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
 	}
+	else if(infProject.nameId == 'расчет кирпича') 
+	{ 
+		infProject.load.img = ['img/load/kirpich.jpg'];
+		infProject.settings.project = '';
+		infProject.settings.camera.type = 'front';
+		infProject.settings.interface.button.cam2d = 'front';
+		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
+	}	
 
 	
 	console.log('version '+ vr);

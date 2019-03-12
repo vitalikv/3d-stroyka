@@ -206,10 +206,10 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 						расчет штукатурки на стене
 					</div>
 				</a>
-				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
-					<div class="block_form_1_image_wrap"><img src="/img/2.jpg"></div>
+				<a class="ind_bl_1" href="/calculator/raschet_kirpicha">
+					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
 					<div class="ind_text_3">
-						ленточный фундамент
+						расчет кирпича
 					</div>
 				</a>			
 				<a class="ind_bl_1" href="calculator/svaynyy_fundament">

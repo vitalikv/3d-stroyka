@@ -492,7 +492,7 @@ function createGeometryPlan2(x, y)
 
 
 
-function createGeometryCube(x, y, z)
+function createGeometryCube(x, y, z, cdm)
 {
 	var geometry = new THREE.Geometry();
 	x /= 2;
@@ -551,7 +551,22 @@ function createGeometryCube(x, y, z)
 	geometry.faces = faces;
 	geometry.faceVertexUvs[0] = [uvs3, uvs4, uvs3, uvs4, uvs3, uvs4, uvs1, uvs2, uvs3, uvs4, uvs3, uvs4];
 	geometry.computeFaceNormals();	
-	geometry.uvsNeedUpdate = true;		
+	geometry.uvsNeedUpdate = true;	
+
+	if(cdm)
+	{
+		if(cdm.material)
+		{
+			geometry.faces[0].materialIndex = 1;
+			geometry.faces[1].materialIndex = 1;	
+			geometry.faces[2].materialIndex = 2;
+			geometry.faces[3].materialIndex = 2;	
+			geometry.faces[4].materialIndex = 3;
+			geometry.faces[5].materialIndex = 3;
+			geometry.faces[6].materialIndex = 3;
+			geometry.faces[7].materialIndex = 3;				
+		}
+	}
 	
 	return geometry;
 }
@@ -918,7 +933,52 @@ function createToolDoorPoint()
 
 
 
+function createFormWallR()
+{
+	var size = {x:0.25, y:0.065, z:0.125};
+	
+	var geometry = createGeometryCube(size.x, size.y, size.z);
+	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
+	material.map = new THREE.TextureLoader().load(infProject.path+'img/load/one_kirpich.jpg');  
+	material.lightMap = lightMap_1;
+	material.needsUpdate = true; 	
+	
+	var pos = [];
+	
+	for(var i = 0; i < 9; i++)
+	{
+		var x = i * size.x + (i * 0.003);
+		pos[i] = new THREE.Vector3(x,0,0);
+	}
+									
+	
+	for ( var i = 0; i < pos.length; i++ )
+	{
+		var cube = new THREE.Mesh( geometry, material );
+		cube.position.copy(pos[i]);
+		scene.add(cube); 
+	}
+	
+	var sign = -1;
+	for ( var i2 = 0; i2 < 12; i2++ )
+	{
+		sign = (sign > 0) ? -1 : 1;
+		
+		for ( var i = 0; i < pos.length; i++ )
+		{
+			var cube = new THREE.Mesh( geometry, material );
+			pos[i].x += (size.x/2) * sign;
+			pos[i].y += size.y + 0.003;
+			cube.position.copy(pos[i]);
+			scene.add(cube); 
+		}		
+	}
 
+	var cube = new THREE.Mesh( createGeometryCube((size.x + 0.003) * 9, (size.y + 0.003) * 13 - 0.004, size.z - 0.003), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
+	scene.add(cube);
+	
+	renderCamera();
+}
 
 
 
@@ -1308,7 +1368,8 @@ function setTexture(cdm)
 	var material = (cdm.material.index) ? cdm.obj.material[cdm.material.index] : cdm.obj.material;
 	
 	new THREE.TextureLoader().load(img, function ( image )  
-	{ 
+	{
+		material.color = new THREE.Color( 0xffffff );
 		var texture = image;			
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -1326,10 +1387,10 @@ function setTexture(cdm)
 		
 		texture.needsUpdate = true;
 		
-		material.map = texture;   
-		material.needsUpdate = true; 
-		material.lightMap = lightMap_1;			
-		console.log(11111);
+		material.map = texture; 
+		material.lightMap = lightMap_1;
+		material.needsUpdate = true; 					
+		
 		renderCamera();
 	});			
 }
@@ -1793,6 +1854,8 @@ $(document).ready(function ()
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
+	
+	createFormWallR()
 });
 
 
