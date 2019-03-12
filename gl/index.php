@@ -244,7 +244,13 @@ if($url == '/calculator/raschet_kirpicha')
 	<div class="top_panel_1" data-action ='top_panel_1'>
 		<a href="/" class="go-home"><p>На главную</p></a>
 		<div class="title_1"><h1><?=$title?></h1></div>
-		<div class="menu-link"><p>Список калькуляторов</p></div>
+		<div class="menu-link">
+			<div class="menu-link_1">Список калькуляторов</div>
+			<div class="menu-link_2">
+				<a href="/" class="button12">Список калькуляторов</a>
+				<a href="/" class="button12">Список калькуляторов</a>
+			</div>			
+		</div>				
 	</div>
 	
 	<div class="top_panel_2">				

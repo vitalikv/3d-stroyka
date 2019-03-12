@@ -358,7 +358,29 @@ canvas
 	text-decoration: none;
 	user-select: none;
 	-moz-user-select: none;	
-	border-right: 2px solid #cccccc;		
+	border-left: 2px solid #cccccc;	
+	cursor: pointer;
+}
+
+
+.menu-link_1
+{
+	display: block;		
+	font-family: arial,sans-serif;
+	font-size: 20px;
+	color: #666;
+	margin: auto;
+}
+
+
+.menu-link_2  
+{
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	
+	border: 1px solid #111111;
 }
 
 
