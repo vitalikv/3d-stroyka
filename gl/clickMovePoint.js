@@ -5,7 +5,7 @@ var zoom_binding = 1;
 
 
 
-var rel_pos = [];
+
 function clickPoint( intersect )
 {
 	if(obj_selected)
@@ -16,33 +16,12 @@ function clickPoint( intersect )
 	var obj = intersect.object;	
 	obj_selected = obj;
 	
-	$.ajax
-	({
-		url: infProject.path+'checkSum.php',
-		type: 'POST',
-		data: {	pos1: {x: obj.position.x, y: obj.position.y, z: obj.position.z}, pos2: {x: intersect.point.x, y: intersect.point.y, z: intersect.point.z} },
-		dataType: 'json',
-		success: function(json)
-		{ 			
-			offset = new THREE.Vector3(json.x, json.y, json.z);
-			
-			param_win.click = true;			
-		},
-		error: function(json){ console.log(json);  }
-	});	
-	
-	planeMath.position.set( 0, intersect.point.y, 0 );
-	planeMath.rotation.set(-Math.PI/2, 0, 0);			
 
-	rel_pos = [];
-	for ( var i = 0; i < obj.w.length; i++ )
-	{
-		obj.w[i].updateMatrixWorld();
-		if(obj.w[i].userData.wall.arrO.length > 0) { rel_pos[i] = getArrPosRelatively( obj.w[i].userData.wall.arrO, obj.w[i].userData.wall.p[0].position, obj.w[i].userData.wall.p[1].position, obj.start[i] ); }
-	}			 	
-	
-	getArrM();
-		
+	offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
+	planeMath.position.set( 0, intersect.point.y, 0 );
+	planeMath.rotation.set(-Math.PI/2, 0, 0);	
+
+	param_win.click = true;	
 	param_wall.wallR = detectChangeArrWall([], obj_selected);
 
 	// запоминаем последнее положение точки и дверей/окон
@@ -86,34 +65,6 @@ function getWallArrOUR()
 
 
 
-function getArrM()
-{
-	arrM = [];	
-	for ( var i = 0; i < obj_selected.w.length; i++ )
-	{				
-		var point = (obj_selected.w[i].userData.wall.p[0] == obj_selected) ? obj_selected.w[i].userData.wall.p[1] : obj_selected.w[i].userData.wall.p[0];		
-		arrM[i] = [ obj_selected.w[i], point, obj_selected, obj_selected.start[ i ] ]; 
-	}			
-}
-
-
-
-// получаем относительное положение относительно выбранной точки
-function getArrPosRelatively( arr, point_1, point_2, side ) 
-{
-	if(side == 1) { var p1 = point_1; var p2 = point_2; }
-	else if(side == 0) { var p2 = point_1; var p1 = point_2; }
-	
-	var pos = [];
-	var dir = new THREE.Vector3().subVectors( p1, p2 ).normalize();
-	var qt = quaternionDirection( dir );
-	for ( var i = 0; i < arr.length; i++ ){ pos[i] = localTransformPoint( new THREE.Vector3().subVectors( arr[i].position, p1 ), qt ); }
-
-	return pos;
-}
-
-
-
 
 
 function movePoint( event, obj )
@@ -141,28 +92,11 @@ function movePoint( event, obj )
 		
 		obj.position.copy( pos );				
 		dragToolPoint( event, obj );	// направляющие
-		
-		for ( var i = 0; i < obj.w.length; i++ )
-		{			
-			if(arrM.length > 0)
-			{
-				if(arrM[i][0].userData.wall.arrO.length > 0)
-				{ 
-					pos = limitMovePoint( obj, arrM[i][1], arrM[i][0], arrM[i][3], pos2 );					
-				}							
-			}
-		}		
+				
 		 
 		for ( var i = 0; i < obj.w.length; i++ )
 		{			
-			updateWall(obj.w[i]);
-			
-			
-			if(arrM.length > 0)
-			{ 	
-				var p = arrM[i][0].userData.wall.p;
-				if(arrM[i][0].userData.wall.arrO.length > 0) { moveObjsWall( arrM[i][0].userData.wall.arrO, p[0].position, p[1].position, rel_pos[i], arrM[i][3] ); } 
-			}		
+			updateWall(obj.w[i]);	
 		}		
 	
 		upLineYY(obj);			
@@ -638,33 +572,6 @@ function intersectWall_3(p0, p1, p2, p3)
 }
 
 
-// при перемещении стены окна/двери перемещаются/вращаются и остаются на своих местах относительно стены
-function moveObjsWall( arr, point_1, point_2, arrV, side )
-{
-	if(side == 1) { var p1 = point_1; var p2 = point_2; }
-	else if(side == 0) { var p2 = point_1; var p1 = point_2; }	
-	
-	var dir = new THREE.Vector3().subVectors( p1, p2 ).normalize();
-	
-	var rotY = Math.atan2(dir.x, dir.z);
-	
-	if(side == 1) { rotY += Math.PI / 2; }
-	else if(side == 0) { rotY -= Math.PI / 2; }	
-	
-	
-	for ( var i = 0; i < arr.length; i++ )
-	{			
-		arr[i].rotation.set(0, rotY, 0);		
-
-		var v1 = new THREE.Vector3().addScaledVector( dir, arrV[i].z );
-		v1 = new THREE.Vector3().addVectors( p1, v1 );
-		v1.y = arrV[i].y;
-		var pos2 = new THREE.Vector3().subVectors( v1, arr[i].position );
-		arr[i].position.copy( v1 );	
-		
-		//if(arr[i].userData.door.popObj) { arr[i].userData.door.popObj.rotation.set(0, rotY, 0); arr[i].userData.door.popObj.position.add( pos2 ); }  
-	}	
-}
 
 
 // undo/redo при перемещении точки 
@@ -674,21 +581,8 @@ function undoRedoChangeMovePoint( point, walls )
 	
 	for ( var i = 0; i < point.p.length; i++ )
 	{
-		updateWall(point.w[i]);		
-	}
-	
-	for ( var i = 0; i < walls.length; i++ )
-	{
-		//walls[i] = findObjFromId( 'wall', arrWall[i].id ); 
-		
-		for ( var i2 = 0; i2 < walls[i].userData.wall.arrO.length; i2++ )
-		{
-			var wd = walls[i].userData.wall.arrO[i2];
-			 
-			wd.position.copy( wd.userData.door.last.pos );
-			wd.rotation.copy( wd.userData.door.last.rot ); 
-		}
-	}	
+		updateWall(point.w[i], {point:point});		
+	}		
 	
 	upLineYY(point);  
 	upLabelPlan_1(walls);

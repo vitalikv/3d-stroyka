@@ -3,7 +3,6 @@
 
 var param_wall = { click : false, wallR : [], posS : 0, qt_1 : [], qt_2 : [], arrZone : [] };
 
-var arrM = [];
 
 function clickWall_2D( intersect )
 {
@@ -44,11 +43,9 @@ function clickWall_2D( intersect )
 		param_wall.qt_2[i] = quaternionDirection(dir);
 	}
 	
-	prepareInfoClickWall(obj);		// подготовка, собираем данные о соседних стенах и объектах (окна,двери)
-	
 	param_wall.arrZone = compileArrPickZone(obj); 
 	
-	getInfoUndoWall(obj);	// undo/redo	
+	getInfoUndoWall(obj);
 }
 
 
@@ -136,34 +133,21 @@ function moveWall( event, obj )
 		var pos3 = obj.position.clone();
 		var pos2 = new THREE.Vector3().subVectors( pos, obj.position );			
 		// ------------
-		console.log(pos2.y);
+		
 		
 		pos2 = new THREE.Vector3().subVectors ( changeWallLimit(obj.userData.wall.p[0], pos2, param_wall.qt_1, dir), obj.userData.wall.p[0].position ); 
 		pos2 = new THREE.Vector3().subVectors ( changeWallLimit(obj.userData.wall.p[1], pos2, param_wall.qt_2, dir), obj.userData.wall.p[1].position );
 		
 		
 		pos2 = new THREE.Vector3(pos2.x, 0, pos2.z);
-		obj.position.add( pos2 );				
+						
 		obj.userData.wall.p[0].position.add( pos2 );
 		obj.userData.wall.p[1].position.add( pos2 );		
-
 		
-		var pos2 = new THREE.Vector3().subVectors ( obj.position, pos3 );
 		
-		for ( var i = 0; i < obj.userData.wall.arrO.length; i++ )
+		for ( var i = 0; i < param_wall.wallR.length; i++ )
 		{ 
-			obj.userData.wall.arrO[ i ].position.add( pos2 );
-		}
-		
-		
-		for ( var i = 0; i < arrM.length; i++ )
-		{ 
-			updateWall(arrM[i][0]);
-
-			if(arrM[i][0].userData.wall.arrO.length > 0)
-			{ 
-				moveObjsWall( arrM[i][0].userData.wall.arrO, arrM[i][0].userData.wall.p[0].position, arrM[i][0].userData.wall.p[1].position, rel_pos[i], arrM[i][3] );
-			}			
+			updateWall(param_wall.wallR[i]);		
 		}
 		
 		upLineYY(obj.userData.wall.p[0]);
@@ -645,7 +629,7 @@ function clickWallMouseUp(wall)
 	upLineYY( wall.userData.wall.p[ 1 ] );
 	upLabelPlan_1( param_wall.wallR ); 
 	updateShapeFloor( param_wall.arrZone ); 
-	if ( camera == cameraTop ) { getInfoEvent2( wall, param_wall.wallR ); }	
+		
 	
 	clickPointUP_BSP(param_wall.wallR);
 	
