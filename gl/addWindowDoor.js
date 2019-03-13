@@ -82,13 +82,7 @@ function addWD( cdm )
 	if(1==1)
 	{  
 		objsBSP = { wall : wall, wd : createCloneWD_BSP( obj ) };				
-		MeshBSP( obj, objsBSP );
-		
-		//wall.material[0].wireframe = true;
-		//wall.material[1].wireframe = true;
-		//wall.material[2].wireframe = true;
-		
-		//upUvs_1( wall );		
+		MeshBSP( obj, objsBSP );	
 	}	
 
 
@@ -97,20 +91,6 @@ function addWD( cdm )
 	obj.geometry.computeBoundingBox();
 	obj.geometry.computeBoundingSphere();
 
-	//---Shadow---
-	var childrens = getAllChildrenObj(obj.children[0], []);
-	
-
-	
-	for ( var i = 0; i < childrens.length; i++ )
-	{
-		if(!childrens[i].obj.geometry) continue;
-		if(childrens[i].obj.material.opacity < 0.3) continue;
-		
-		childrens[i].obj.castShadow = true;
-		childrens[i].obj.receiveShadow = true;
-	}	
-	//---Shadow---
 	
 	
 	// правильно поворачиваем окно/дверь	
@@ -140,21 +120,8 @@ function addWD( cdm )
 		obj.userData.door.popObj.position.copy(obj.geometry.boundingSphere.center.clone());
 	}
 	
-	getInfoWD_1(obj, pos);
-	resetMenuUI();
 	
-	// если объект новый (вставили из каталога), то записываем 
-	// если объект загружен из сохраненного файла или вставлен из undoRedo, то ничего не делаем 
-	if(obj.userData.door.status == '') { getInfoEvent6( obj ); }  
-	//else if(obj.userData.door.status == 'undoRedo') { forceAssignActiveObj(obj); }	// выделение/активация объекта
-	
-	// после замены выделяем объект
-	if(cdm.replace) 
-	{ 
-		if(camera == cameraTop) { objActiveColor_2D(obj); }
-		clickWD_2( obj ); 
-		clickO.last_obj = obj; 
-	}  
+	resetMenuUI();	 
 	
 	renderCamera();
 }
@@ -355,6 +322,8 @@ function MeshBSP( wd, objsBSP )
 		wall.geometry.faces[i].normal.normalize();
 		if(wall.geometry.faces[i].normal.z == 1) { wall.geometry.faces[i].materialIndex = 1; }
 		else if(wall.geometry.faces[i].normal.z == -1) { wall.geometry.faces[i].materialIndex = 2; }
+		else if(wall.geometry.faces[i].normal.y == 1) { wall.geometry.faces[i].materialIndex = 3; }
+		else if(wall.geometry.faces[i].normal.y == -1) { wall.geometry.faces[i].materialIndex = 3; }
 	}
 
 	//wall.updateMatrixWorld();
