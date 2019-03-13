@@ -1359,6 +1359,7 @@ function createOneWall3( point1, point2, width, cdm )
 	point2.start[n] = 1;
 	
 	
+	// невидемая стена
 	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, transparent: true, opacity: 0.0 } );
 	var geometry = createGeometryCube(1, height, 0.2);
 	var v = geometry.vertices;
@@ -1366,6 +1367,7 @@ function createOneWall3( point1, point2, width, cdm )
 	v[2].x = v[3].x = v[4].x = v[5].x = d;
 	var wallMesh = new THREE.Mesh( geometry, material ); 
 	wallMesh.userData.tag = 'wall';
+	wallMesh.userData.tag_2 = 'child_wall';
 	wallMesh.userData.parent = wall;
 	if(camera == camera3D) { wallMesh.visible = false; }
 	wall.add( wallMesh );
@@ -1590,19 +1592,29 @@ function clickButton( event )
 	{		
 		if(camera == cameraTop)
 		{ 
-			clickO.obj = null; 
-			clickO.last_obj = null;
-			
-			var point = createPoint( intersects[0].point, 0 );
-			point.position.y = 0;
-			point.userData.point.type = clickO.button; 
-			obj_selected = point;
+			if(clickO.button == 'create_wall')
+			{
+				clickO.obj = null; 
+				clickO.last_obj = null;
+				
+				var point = createPoint( intersects[0].point, 0 );
+				point.position.y = 0;
+				point.userData.point.type = clickO.button; 
+				obj_selected = point;
 
-			if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }
+				if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
+			}
+			if(clickO.button == 'create_wd_1')
+			{
+				createEmptyFormWD_1();
+			}
 		}
 		if(camera == cameraWall)
 		{
-			createEmptyFormWD_1();
+			if(clickO.button == 'create_wd_1')
+			{
+				createEmptyFormWD_1();
+			}
 		}
 		
 		clickO.buttonAct = clickO.button;
@@ -1889,7 +1901,7 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 	
-	createFormWallR()
+	//createFormWallR()
 });
 
 

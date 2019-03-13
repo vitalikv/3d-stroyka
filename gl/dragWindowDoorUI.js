@@ -23,7 +23,13 @@ function dragWD_2( event, obj )
 			var object = intersects[ i ].object;
 			
 			if(object.userData.tag == 'planeMath'){ obj.position.copy( intersects[i].point ); } 			
-			else if(object.userData.tag == 'wall'){ wall = object; obj.rotation.copy( wall.rotation ); pos = intersects[i].point; }
+			else if(object.userData.tag == 'wall')
+			{ 
+				if(object.userData.tag_2){ if(object.userData.tag_2 == 'child_wall'){ object = object.parent; } }
+				wall = object; 
+				obj.rotation.copy( wall.rotation ); 
+				pos = intersects[i].point; 
+			}
 			else if(object.userData.tag == 'window' || object.userData.tag == 'door'){ obj.material.color = actColorWin; } 
 		}
 	}
@@ -38,7 +44,6 @@ function dragWD_2( event, obj )
 	var pos = wall.localToWorld( new THREE.Vector3(pos.x, pos.y, 0 ) ); 	
 	
 	  
-	 
 	if(camera == camera3D || camera == cameraWall) 
 	{ 
 		obj.position.set( pos.x, pos.y, pos.z ); 

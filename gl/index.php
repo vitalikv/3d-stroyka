@@ -49,7 +49,7 @@ if($url == '/calculator/obyem_pomeshcheniya')
 { 
 	$title = 'Калькулятор объема и площади помещения 3D'; 
 	$nameId = 'объем и площадь помещения'; 
-	$interface['wd_1'] = 0;
+	$interface['wd_1'] = 1;
 }
 if($url == '/calculator/ploshchad_uchastka')	
 { 

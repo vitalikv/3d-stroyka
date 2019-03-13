@@ -159,10 +159,11 @@ function createEmptyFormWD_1(cdm)
 	
 	obj.userData.tag = 'free_dw';
 	obj.userData.door = {};
+	obj.userData.door.type = 'DoorSimply';
 	obj.userData.door.size = new THREE.Vector3( 1, 1, 0.2 );
 	obj.userData.door.form = form;
 	obj.userData.door.bound = {}; 
-	obj.userData.door.floorCenterY = 0;  // центр wd над полом
+	obj.userData.door.floorCenterY = 1.5;  // центр wd над полом
 	obj.userData.door.width = 0.2;
 	obj.userData.door.h1 = 0;
 	obj.userData.door.color = obj.material.color; 
