@@ -155,7 +155,7 @@ function movePoint( event, obj )
 		 
 		for ( var i = 0; i < obj.w.length; i++ )
 		{			
-			updateWall(obj.w[i], obj.p[i], obj, obj.start[i]);
+			updateWall(obj.w[i]);
 			
 			
 			if(arrM.length > 0)
@@ -674,7 +674,7 @@ function undoRedoChangeMovePoint( point, walls )
 	
 	for ( var i = 0; i < point.p.length; i++ )
 	{
-		updateWall(point.w[i], point.p[i], point, point.start[i]);		
+		updateWall(point.w[i]);		
 	}
 	
 	for ( var i = 0; i < walls.length; i++ )

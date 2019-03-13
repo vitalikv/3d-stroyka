@@ -103,7 +103,7 @@ function inputLengthWall_2(wall, sideWall, inputName)
 
 		for ( var i = 0; i < arrM.length; i++ ) 
 		{  
-			if(wall != arrM[i][0]) { updateWall(arrM[i][0], arrM[i][1], arrM[i][2], arrM[i][3]); } 
+			if(wall != arrM[i][0]) { updateWall(arrM[i][0]); } 
 			if(arrM[i][0].userData.wall.arrO.length > 0){ moveObjsWall( arrM[i][0].userData.wall.arrO, arrM[i][0].userData.wall.p[0].position, arrM[i][0].userData.wall.p[1].position, rel_pos[i], arrM[i][3] ); }       
 		} 		
 		
@@ -130,17 +130,14 @@ function inputLengthWall_2(wall, sideWall, inputName)
 
 
 
-
 // изменение длины стены
-function updateWall(wall, point_0, point_1, side) 
+function updateWall(wall) 
 {
-	if(side == 1) { var p0 = point_0; var p1 = point_1; }
-	else if(side == 0) { var p1 = point_0; var p0 = point_1; }
-		
 	//wall.updateMatrixWorld(); перенес на момент клика
 	var v = wall.geometry.vertices;
- 
-	var dist = p0.position.distanceTo(p1.position);
+	var p = wall.userData.wall.p;
+	
+	var dist = p[0].position.distanceTo(p[1].position);
 	
 	v[0].x = v[1].x = v[2].x = v[3].x = v[4].x = v[5].x = 0;
 	v[6].x = v[7].x = v[8].x = v[9].x = v[10].x = v[11].x = dist;
@@ -149,15 +146,13 @@ function updateWall(wall, point_0, point_1, side)
 	wall.geometry.elementsNeedUpdate = true;
 	wall.geometry.computeBoundingBox();	
 	wall.geometry.computeBoundingSphere();	
-	wall.geometry.computeFaceNormals();
-	
+	wall.geometry.computeFaceNormals();	
 
-
-	var dir = new THREE.Vector3().subVectors(p0.position, p1.position).normalize();
+	var dir = new THREE.Vector3().subVectors(p[0].position, p[1].position).normalize();
 	var angleDeg = Math.atan2(dir.x, dir.z);
 	wall.rotation.set(0, angleDeg + Math.PI / 2, 0);
 
-	wall.position.copy( p0.position );	
+	wall.position.copy( p[0].position );
 
 	var wallMesh = wall.children[0];
 	var v = wallMesh.geometry.vertices;
@@ -166,7 +161,7 @@ function updateWall(wall, point_0, point_1, side)
 	wallMesh.geometry.verticesNeedUpdate = true; 
 	wallMesh.geometry.elementsNeedUpdate = true;
 	
-	wallMesh.geometry.computeBoundingSphere();
+	wallMesh.geometry.computeBoundingSphere();	
 }
 
 

@@ -146,7 +146,7 @@ function moveWall( event, obj )
 		
 		for ( var i = 0; i < arrM.length; i++ )
 		{ 
-			updateWall(arrM[i][0], arrM[i][1], arrM[i][2], arrM[i][3]);
+			updateWall(arrM[i][0]);
 
 			if(arrM[i][0].userData.wall.arrO.length > 0)
 			{ 

@@ -737,8 +737,8 @@ function setInfoEvent2()
 	var point2 = findObjFromId( 'point', ar.wall.point2.id );	point2.position.copy( ar.wall.point2.pos );
 	
 	
-	for ( var i = 0; i < point1.p.length; i++ ) { updateWall(point1.w[i], point1.p[i], point1, point1.start[i]); }	
-	for ( var i = 0; i < point2.p.length; i++ ) { updateWall(point2.w[i], point2.p[i], point2, point2.start[i]); }	
+	for ( var i = 0; i < point1.p.length; i++ ) { updateWall(point1.w[i]); }	
+	for ( var i = 0; i < point2.p.length; i++ ) { updateWall(point2.w[i]); }	
 	
 	upLineYY( point1 ); 
 	upLineYY( point2 );	
@@ -1310,8 +1310,8 @@ function setInfoEvent21()
 	var point2 = findObjFromId( 'point', ar.wall.point2.id );	point2.position.copy( ar.wall.point2.pos );
 	
 	
-	for ( var i = 0; i < point1.p.length; i++ ) { updateWall(point1.w[i], point1.p[i], point1, point1.start[i]); }	
-	for ( var i = 0; i < point2.p.length; i++ ) { updateWall(point2.w[i], point2.p[i], point2, point2.start[i]); }	
+	for ( var i = 0; i < point1.p.length; i++ ) { updateWall(point1.w[i]); }	
+	for ( var i = 0; i < point2.p.length; i++ ) { updateWall(point2.w[i]); }	
 	
 	upLineYY( point1 ); 
 	upLineYY( point2 );	
