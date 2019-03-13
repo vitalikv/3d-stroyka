@@ -16,7 +16,7 @@ function clickToolWD()
 			if(!obj.userData.door.wall) { return true; }
 			
 			clickO.last_obj = null;
-			addWD( obj, obj.userData.door.wall, obj.position );  
+			addWD({ obj : obj, wall : obj.userData.door.wall, pos : obj.position });  
 			return true; 
 		}
 	}
@@ -29,14 +29,18 @@ function clickToolWD()
 // добавляем на выбранную стену окно/дверь
 // obj 		готовая дверь/окно
 // wall		стену на которую кликнули
-function addWD( obj, wall, pos )
+function addWD( cdm )
 {	
+	var obj = cdm.obj;
+	var wall = cdm.wall;
+	var pos = cdm.pos;
+	
 	pos.y -= 0.001;		// делаем чуть ниже уровня пола
 	obj.position.copy( pos );
 	obj.rotation.copy( wall.rotation ); 
 	obj.material.transparent = false;
 	clickO.obj = obj;
-	console.log(333333)
+	
 	if(camera == cameraTop)
 	{ 
 		obj.material.depthTest = false;  
@@ -58,6 +62,7 @@ function addWD( obj, wall, pos )
 	obj.userData.tag = (obj.userData.door.type == 'WindowSimply') ? 'window' : 'door';
 	obj.userData.door.wall = wall;
 	obj.userData.door.goList.setEmptyBox = true;  
+	//obj.userData.freeze = clickActionBreak_2(obj);
 	
 	if(obj.userData.tag == 'window') { obj.userData.door.actList = abo.window; }
 	else if(obj.userData.tag == 'door') { obj.userData.door.actList = abo.door; }
@@ -81,21 +86,75 @@ function addWD( obj, wall, pos )
 		
 		//wall.material[0].wireframe = true;
 		//wall.material[1].wireframe = true;
-		//wall.material[2].wireframe = true;	
+		//wall.material[2].wireframe = true;
+		
+		//upUvs_1( wall );		
 	}	
 
 
 	wall.userData.wall.arrO[wall.userData.wall.arrO.length] = obj;
 	
 	obj.geometry.computeBoundingBox();
-	obj.geometry.computeBoundingSphere();	
- 
+	obj.geometry.computeBoundingSphere();
+
+	//---Shadow---
+	var childrens = getAllChildrenObj(obj.children[0], []);
+	
+
+	
+	for ( var i = 0; i < childrens.length; i++ )
+	{
+		if(!childrens[i].obj.geometry) continue;
+		if(childrens[i].obj.material.opacity < 0.3) continue;
+		
+		childrens[i].obj.castShadow = true;
+		childrens[i].obj.receiveShadow = true;
+	}	
+	//---Shadow---
+	
+	
 	// правильно поворачиваем окно/дверь	
 	// obj.updateMatrixWorld();  сверху уже есть
 	
+	if(obj.userData.tag == 'door') 
+	{ 
+		createDoorLeaf(obj, (obj.userData.door.open_type) ? obj.userData.door.open_type : 0); 
+		
+		// устанавливаем (поварачиваем) ПОП дверь	
+		if(obj.userData.door.type == 'DoorSimply') { setPosDoorLeaf_2(obj); }
+		else if(obj.userData.door.type == 'DoorPattern') { if(obj.userData.door.goList.setPopObj) { changeWidthParamWD(obj); setPosDoorLeaf_3(obj); } } 		 
+	}
+	else
+	{
+		var room = detectCommonZone_1( wall );
+		
+		if(room.length == 1)
+		{
+			var side = 0;
+			for ( var i2 = 0; i2 < room[0].w.length; i2++ ) { if(room[0].w[i2].userData.id == wall.userData.id) { side = room[0].s[i2]; break; } }
 
+			if(side == 0) { obj.userData.door.popObj.rotation.y += Math.PI; }
+			else { }			
+		}
+		 
+		obj.userData.door.popObj.position.copy(obj.geometry.boundingSphere.center.clone());
+	}
+	
 	getInfoWD_1(obj, pos);
 	resetMenuUI();
+	
+	// если объект новый (вставили из каталога), то записываем 
+	// если объект загружен из сохраненного файла или вставлен из undoRedo, то ничего не делаем 
+	if(obj.userData.door.status == '') { getInfoEvent6( obj ); }  
+	//else if(obj.userData.door.status == 'undoRedo') { forceAssignActiveObj(obj); }	// выделение/активация объекта
+	
+	// после замены выделяем объект
+	if(cdm.replace) 
+	{ 
+		if(camera == cameraTop) { objActiveColor_2D(obj); }
+		clickWD_2( obj ); 
+		clickO.last_obj = obj; 
+	}  
 	
 	renderCamera();
 }
@@ -136,8 +195,17 @@ function changeWindowDoorPop(obj, x, y)
 	
 	if(popObj) 
 	{ 
-		popObj.position.x = obj.geometry.boundingSphere.center.x; 
-		popObj.position.y = obj.geometry.boundingSphere.center.y;
+		if(obj.userData.door.type == 'DoorPattern')
+		{
+			obj.geometry.computeBoundingBox();
+			popObj.position.x = obj.geometry.boundingSphere.center.x; 
+			popObj.position.y = obj.geometry.boundingBox.min.y; 
+		}
+		else
+		{
+			popObj.position.x = obj.geometry.boundingSphere.center.x; 
+			popObj.position.y = obj.geometry.boundingSphere.center.y;			
+		}
 		
 		popObj.geometry.computeBoundingBox();		
 		var dX = popObj.geometry.boundingBox.max.x - popObj.geometry.boundingBox.min.x;
@@ -190,7 +258,7 @@ function clickMoveWD_BSP( wd )
 {
 	console.log('clone wall (без перемещаемого WD)');
 	
-	var wall = wd.userData.door.wall;
+	var wall = wd.userData.door.wall; 
 	
 	var p1 = wall.userData.wall.p[0].position;
 	var p2 = wall.userData.wall.p[1].position;	
@@ -205,6 +273,7 @@ function clickMoveWD_BSP( wd )
 	
 	//wall.updateMatrixWorld();
 
+	upUvs_1( wall ); 
 	
 	// вырезаем отверстия для окон/дверей
 	var arrO = wall.userData.wall.arrO;
@@ -213,7 +282,7 @@ function clickMoveWD_BSP( wd )
 	{
 		if(arrO[n] == wd) continue;
 		
-		var objClone = createCloneWD_BSP( arrO[n] );
+		var objClone = createCloneWD_BSP( arrO[n] ); 
 
 		var wdBSP = new ThreeBSP( objClone );    
 		var wallBSP = new ThreeBSP( wall ); 			// копируем выбранную стену	
@@ -231,7 +300,9 @@ function clickMoveWD_BSP( wd )
 			if(wall.geometry.faces[i].normal.z == 1) { wall.geometry.faces[i].materialIndex = 1; }
 			else if(wall.geometry.faces[i].normal.z == -1) { wall.geometry.faces[i].materialIndex = 2; }
 		}		
-	}	
+	}
+	
+		 
 	
 	return wall;
 }
@@ -286,7 +357,9 @@ function MeshBSP( wd, objsBSP )
 		else if(wall.geometry.faces[i].normal.z == -1) { wall.geometry.faces[i].materialIndex = 2; }
 	}
 
-	//wall.updateMatrixWorld();	 	
+	//wall.updateMatrixWorld();
+	
+	//upUvs_1( wall );	 	
 }
 
  
@@ -295,9 +368,7 @@ function MeshBSP( wd, objsBSP )
  // создаем копии стен (для ThreeBSP) без окон/дверей (запускается один раз, когда начали перемещать точку)
 function clickMovePoint_BSP( arrW ) 
 {
-	var w = [];
-	for ( var i = 0; i < arrW.length; i++ ) { w[w.length] = arrW[i].userData.id; }
-	console.log('click_BSP_1', w);
+	console.log('click_BSP_1');
 	
 	for ( var i = 0; i < arrW.length; i++ )
 	{
@@ -324,9 +395,7 @@ function clickMovePoint_BSP( arrW )
 // сняли клик, после перемещения точки (вставляем wd)
 function clickPointUP_BSP( arrW )   
 {
-	var w = [];
-	for ( var i = 0; i < arrW.length; i++ ) { w[w.length] = arrW[i].userData.id; }
-	console.log('click_BSP_2', w);
+	console.log('click_BSP_2');
 	
 	for ( var i = 0; i < arrW.length; i++ )
 	{
@@ -342,6 +411,8 @@ function clickPointUP_BSP( arrW )
 			
 			MeshBSP( wd, objsBSP );			
 		}
+		
+		upUvs_1( wall ); 
 	}
 } 
  

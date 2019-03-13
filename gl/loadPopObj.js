@@ -159,7 +159,7 @@ function createEmptyFormWD_1(cdm)
 	
 	obj.userData.tag = 'free_dw';
 	obj.userData.door = {};
-	obj.userData.door.type = 'DoorSimply';
+	obj.userData.door.type = 'DoorEmpty';
 	obj.userData.door.size = new THREE.Vector3( 1, 1, 0.2 );
 	obj.userData.door.form = form;
 	obj.userData.door.bound = {}; 

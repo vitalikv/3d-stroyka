@@ -13,7 +13,7 @@ function clickWall_2D( intersect )
 	{ 
 		if(obj.userData.tag_2) 
 		{ 			
-			if(object.userData.tag_2 == 'child_wall')
+			if(obj.userData.tag_2 == 'child_wall')
 			{
 				obj = obj.parent; 
 				clickO.obj = obj; 
