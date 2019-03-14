@@ -110,6 +110,38 @@ function updateWall(wall, cdm)
 	var v = wall.geometry.vertices;
 	var p = wall.userData.wall.p;
 	
+	
+	var f1 = false;	// точку p0 не двигали
+	var f2 = false;	// точку p1 не двигали
+	
+	f1 = !comparePos(p[0].userData.point.last.pos, p[0].position); 	// true - точку p0 двигали
+	f2 = !comparePos(p[1].userData.point.last.pos, p[1].position); 	// true - точку p1 двигали	
+	
+	// перемещаются сразу 2 точки
+	if(f1 && f2)
+	{
+		var offset_1 = new THREE.Vector3().subVectors(p[0].position, p[0].userData.point.last.pos);
+		var offset_2 = new THREE.Vector3().subVectors(p[1].position, p[1].userData.point.last.pos);
+		
+		var equal = comparePos(offset_1, offset_2);
+		
+		// стену просто переместили, без изменении длины
+		if(equal)
+		{
+			var offset = new THREE.Vector3().subVectors(p[0].position, wall.position);
+			
+			wall.position.copy(p[0].position);
+						
+			for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
+			{
+				wall.userData.wall.arrO[i].position.add(offset);
+			}
+			
+			return;
+		}
+	}	
+	
+	
 	var dist = p[0].position.distanceTo(p[1].position);
 	
 	v[0].x = v[1].x = v[2].x = v[3].x = v[4].x = v[5].x = 0;
@@ -137,27 +169,26 @@ function updateWall(wall, cdm)
 	wallMesh.geometry.computeBoundingSphere();
 
 
+	// ------- 
 	// устанавливаем wd	
-	// определяем какая точка (1 или 2) НЕ изменила position	
-	var p0_no_move = (comparePos(p[0].userData.point.last.pos, p[0].position)) ? true : false;
-	
 	if(cdm)
 	{
-		if(cdm.point)	// точку которую перемещали
+		if(cdm.point)	// точка которая двигалась
 		{
-			p0_no_move = (cdm.point == p[1]) ? true : false;
+			if(cdm.point == p[0]) { f1 = true; }
+			if(cdm.point == p[1]) { f2 = true; }
 		}
 	}
 	
-	 
-	if(p0_no_move){ var dir = new THREE.Vector3().subVectors( p[0].position, p[1].position ).normalize(); }
+	
+	if(f2){ var dir = new THREE.Vector3().subVectors( p[0].position, p[1].position ).normalize(); }
 	else { var dir = new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize(); }
 	
 	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
 	{
 		var wd = wall.userData.wall.arrO[i];	
 
-		if(p0_no_move)
+		if(f2)
 		{
 			var startPos = new THREE.Vector3(p[0].position.x, 0, p[0].position.z);
 			var p1 = p[0].position;			
@@ -169,7 +200,7 @@ function updateWall(wall, cdm)
 		}
 		
 		var dist = startPos.distanceTo(new THREE.Vector3(wd.position.x, 0, wd.position.z));
-		console.log(dist, p0_no_move, p[0].userData.id);
+		
 		
 		var pos = new THREE.Vector3().addScaledVector( dir, -dist );
 		pos = new THREE.Vector3().addVectors( p1, pos );
@@ -177,7 +208,7 @@ function updateWall(wall, cdm)
 		wd.position.x = pos.x;
 		wd.position.z = pos.z;
 		wd.rotation.copy( wall.rotation );
-	}	
+	}			
 }
 
 
