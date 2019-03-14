@@ -31,19 +31,23 @@ function clickWall_2D( intersect )
 	  
 	param_wall.wallR = detectChangeArrWall_2(obj);
 
-	for ( var i = 0; i < obj.userData.wall.p[0].w.length; i++ )
+	var p = obj.userData.wall.p;
+	
+	for ( var i = 0; i < p[0].w.length; i++ )
 	{  
-		var dir = new THREE.Vector3().subVectors( obj.userData.wall.p[0].position, obj.userData.wall.p[0].p[i].position ).normalize();	
+		var dir = new THREE.Vector3().subVectors( p[0].position, p[0].p[i].position ).normalize();	
 		param_wall.qt_1[i] = quaternionDirection(dir);
 	}
 	
-	for ( var i = 0; i < obj.userData.wall.p[1].w.length; i++ )
+	for ( var i = 0; i < p[1].w.length; i++ )
 	{ 
-		var dir = new THREE.Vector3().subVectors( obj.userData.wall.p[1].position, obj.userData.wall.p[1].p[i].position ).normalize();
+		var dir = new THREE.Vector3().subVectors( p[1].position, p[1].p[i].position ).normalize();
 		param_wall.qt_2[i] = quaternionDirection(dir);
 	}
 	
-	param_wall.arrZone = compileArrPickZone(obj); 
+	param_wall.arrZone = compileArrPickZone(obj);
+
+	clickO.click.wall = [...new Set([...p[0].w, ...p[1].w])];  
 	
 	getInfoUndoWall(obj);
 }
@@ -145,9 +149,9 @@ function moveWall( event, obj )
 		obj.userData.wall.p[1].position.add( pos2 );		
 		
 		
-		for ( var i = 0; i < param_wall.wallR.length; i++ )
+		for ( var i = 0; i < clickO.click.wall.length; i++ )
 		{ 
-			updateWall(param_wall.wallR[i]);		
+			updateWall(clickO.click.wall[i]);		
 		}
 		
 		upLineYY(obj.userData.wall.p[0]);
