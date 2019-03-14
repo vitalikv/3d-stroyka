@@ -29,6 +29,7 @@ function inputLengthWall_2(wall, sideWall, inputName)
 	var p1 = wall.userData.wall.p[1];
 	var p0 = wall.userData.wall.p[0];	
  	
+	var walls = [...new Set([...p0.w, ...p1.w])];	// получаем основную и соседние стены
 	
 	var ns = 0;
 	var flag = true;
@@ -75,9 +76,9 @@ function inputLengthWall_2(wall, sideWall, inputName)
 		wall.geometry.computeBoundingSphere();	
 		wall.geometry.computeFaceNormals();	
 
-		for ( var i = 0; i < wallR.length; i++ )
+		for ( var i = 0; i < walls.length; i++ )
 		{
-			updateWall(wallR[i]);
+			updateWall_2(walls[i]);
 		}		
 		
 		upLineYY(p0);
