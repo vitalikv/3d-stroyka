@@ -178,6 +178,7 @@ function cutMeshBlockBSP( wd, objsBSP )
  
 	for ( var i = 0; i < wall.block.length; i++ )
 	{
+		if(wall.block[i].geometry.vertices.length == 0) continue;
 		var block = wall.block[i];
 		var wd2 = createCloneWD_BSP( wd );
 		
