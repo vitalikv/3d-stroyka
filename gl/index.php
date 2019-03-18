@@ -185,8 +185,8 @@ if($url == '/calculator/raschet_kirpicha')
 	}
 	else if(infProject.nameId == 'расчет кирпича') 
 	{ 
-		infProject.load.img = ['img/load/kirpich.jpg'];
-		infProject.settings.project = '';
+		infProject.load.img = ['img/load/beton.jpg'];
+		infProject.settings.project = 'wall_kirpich';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
@@ -202,6 +202,7 @@ if($url == '/calculator/raschet_kirpicha')
     <script src="<?=$path?>js/jquery.js"></script>
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
     
+	<script src="<?=$path?>meshBSP.js"></script> 	
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>

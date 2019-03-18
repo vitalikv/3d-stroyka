@@ -932,7 +932,7 @@ function createToolDoorPoint()
 
 
 
-
+var wall = {block:[], concrete:null};
 function createFormWallR()
 {
 	var l = 6;			// длина стены (м)
@@ -946,7 +946,7 @@ function createFormWallR()
 	material.lightMap = lightMap_1;
 	material.needsUpdate = true; 	
 	
-	var wall = {block:[], concrete:null};
+	wall = {block:[], concrete:null};
 	var pos = [];
 	
 	var center = new THREE.Vector3();
@@ -999,11 +999,14 @@ function createFormWallR()
 
 	var geometry = createGeometryCube((size.x + seam) * countX, (size.y + seam) * (countY+1) - (seam+0.001), size.z - seam);
 	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc } );
+
 	
-	var cube = new THREE.Mesh(geometry, material);
-	//cube.position.set(center.x, 0, center.z);
-	wall.concrete = cube;
-	scene.add(cube);
+	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
+	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
+	var width = size.z - seam;
+	var height = (size.y + seam) * (countY+1) - (seam+0.001);
+	
+	wall.concrete = createOneWall3( point1, point2, width, {height: height} );
 	
 	// возращаем блоки к центру
 	for ( var i = 0; i < wall.block.length; i++ )
@@ -1161,12 +1164,13 @@ function createForm(cdm)
 	
 	
 	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
-	detectRoomZone(nameRoomDef);
-	upLabelPlan_1(obj_line);
-	
+	if(obj_line.length > 0) detectRoomZone(nameRoomDef);
+	if(obj_line.length > 0) upLabelPlan_1(obj_line);
 	if(obj_line.length > 0) createWallZone(obj_line[0])
 	
 	//width_wall = 0.3;
+	
+	if(form == 'wall_kirpich') { createFormWallR(); }
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	
@@ -1258,7 +1262,7 @@ console.log(RD.create({str : 'wall'}));
 function createOneWall3( point1, point2, width, cdm ) 
 {
 	var offsetZ = 0;
-	var height = height_wall; 
+	var height = (cdm.height) ? cdm.height : height_wall; 
 	
 	var p1 = point1.position;
 	var p2 = point2.position;	
@@ -1900,8 +1904,6 @@ $(document).ready(function ()
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
-	
-	//createFormWallR()
 });
 
 
