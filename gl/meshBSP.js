@@ -172,22 +172,38 @@ function clickPointUP_BSP( arrW )
 
 
 // вырезаем отверстие под окно/дверь 
-function cutMeshBlockBSP( wd, objsBSP )
+function cutMeshBlockBSP( wd )
 {  
-
- 
+	if(wall.block.length == 0) return;
+	
+	var wd2 = createCloneWD_BSP( wd );
+	
+	wd2.updateMatrixWorld();
+	wd2.geometry.computeBoundingBox();
+	var bound = wd2.geometry.boundingBox;
+	
 	for ( var i = 0; i < wall.block.length; i++ )
 	{
-		if(wall.block[i].geometry.vertices.length == 0) continue;
+		if(wall.block[i].geometry.vertices.length == 0) continue;		
+		
 		var block = wall.block[i];
-		var wd2 = createCloneWD_BSP( wd );
+		
+		var ps = wd2.worldToLocal( block.position.clone() );
+		
+		// если за пределом wd, то не вырезаем
+		if(ps.x < bound.min.x) { continue; }
+		if(ps.x > bound.max.x) { continue; }
+		if(ps.y < bound.min.y) { continue; }
+		if(ps.y > bound.max.y) { continue; }
+		if(ps.z < bound.min.z) { continue; }
+		if(ps.z > bound.max.z) { continue; }	
+						
 		
 		var wdBSP = new ThreeBSP( wd2 );    
 		var wallBSP = new ThreeBSP( block ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
 		
 		block.geometry = newBSP.toMesh().geometry;
-		block.updateMatrixWorld();
 	}	 	
 }
 

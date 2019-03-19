@@ -83,8 +83,7 @@ function addWD( cdm )
 	{  
 		objsBSP = { wall : wall, wd : createCloneWD_BSP( obj ) };				
 		MeshBSP( obj, objsBSP ); 
-		objsBSP = { wall : wall, wd : createCloneWD_BSP( obj ) };
-		cutMeshBlockBSP( obj, objsBSP );
+		cutMeshBlockBSP( obj );
 	}	
 
 
