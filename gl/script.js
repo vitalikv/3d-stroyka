@@ -934,32 +934,24 @@ function createToolDoorPoint()
 
 var wall = {block:[], concrete:null};
 function createFormWallR()
-{
-	var l = 6;			// длина стены (м)
-	var h = 3;			// высота стены
+{	
 	var size = {x:0.25, y:0.065, z:0.125};		// размер блока кирпича
 	var seam = 0.01;							// толщина шва
-	
-	var geometry = createGeometryCube(size.x, size.y, size.z);
-	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
-	material.map = new THREE.TextureLoader().load(infProject.path+'img/load/one_kirpich.jpg');  
-	material.lightMap = lightMap_1;
-	material.needsUpdate = true; 	
-	
-	
-	var pos = [];	
-	var countX = Math.round(l/size.x+seam);		// 6м делим 
-	var countY = Math.round(h/size.y+seam);
-		
+
 
 	// создаем стену
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
 	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
 	var width = size.z - seam;
-	var height = (size.y + seam) * (countY+1) - (seam+0.001);
+	var height = 2;
 	
 	var wall = createOneWall3( point1, point2, width, {height: height} );
 	
+	var pos = [];
+	var dist = point1.position.distanceTo(point2.position);
+	var countX = Math.ceil(dist/(size.x+seam));			// окргление в большую сторону	
+	var countY = Math.ceil(height/(size.y+seam));
+	console.log(height, countY, countX);
 	
 	for(var i = 0; i < countX; i++)
 	{
@@ -969,35 +961,27 @@ function createFormWallR()
 	}
 
 	
-	for ( var i = 0; i < pos.length; i++ )
-	{
-		var block = new THREE.Mesh( geometry, material );
-		block.position.copy(pos[i]);
-		wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
-		scene.add(block); 
-	}
-	
 	var sign = -1;
+	var geometry = createGeometryCube(size.x, size.y, size.z);
+	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
+	material.map = new THREE.TextureLoader().load(infProject.path+'img/load/one_kirpich.jpg');  
+	material.lightMap = lightMap_1;
+	material.needsUpdate = true; 	
+	
+	
 	for ( var i2 = 0; i2 < countY; i2++ )
 	{
 		sign = (sign > 0) ? -1 : 1;
 		
-		if(sign == 1) 
-		{
-			var cube = new THREE.Mesh( geometry, material );
-			cube.position.set(pos[0].x + (size.x/2 + seam) * -sign, pos[0].y + size.y + seam, pos[0].z);
-			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = cube;
-			scene.add(cube); 			
-		}
-		
 		for ( var i = 0; i < countX; i++ )
 		{
-			var cube = new THREE.Mesh( geometry, material );
+			var block = new THREE.Mesh( geometry, material );
+			block.position.copy(pos[i]);
+			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+			scene.add(block);
+if(i==0) { console.log(i2, i, pos[i].y); }
 			pos[i].x += (size.x/2) * sign;
-			pos[i].y += size.y + seam;
-			cube.position.copy(pos[i]);
-			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = cube;
-			scene.add(cube); 
+			pos[i].y += size.y + seam;			
 		}		
 	}	
 		
