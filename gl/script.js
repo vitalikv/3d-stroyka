@@ -946,31 +946,35 @@ function createFormWallR()
 	material.lightMap = lightMap_1;
 	material.needsUpdate = true; 	
 	
-	wall = {block:[], concrete:null};
-	var pos = [];
 	
-	var center = new THREE.Vector3();
+	var pos = [];	
 	var countX = Math.round(l/size.x+seam);		// 6м делим 
 	var countY = Math.round(h/size.y+seam);
+		
+
+	// создаем стену
+	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
+	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
+	var width = size.z - seam;
+	var height = (size.y + seam) * (countY+1) - (seam+0.001);
 	
+	var wall = createOneWall3( point1, point2, width, {height: height} );
 	
 	
 	for(var i = 0; i < countX; i++)
 	{
 		var x = i * size.x + (i * seam);
 		pos[i] = new THREE.Vector3(x,0,0);
-		center.add(pos[i]); 
+		pos[i].add(point1.position);
 	}
-	
-	center.x /= countX;
-	center.z /= countX;
+
 	
 	for ( var i = 0; i < pos.length; i++ )
 	{
-		var cube = new THREE.Mesh( geometry, material );
-		cube.position.copy(pos[i]);
-		wall.block[wall.block.length] = cube;
-		scene.add(cube); 
+		var block = new THREE.Mesh( geometry, material );
+		block.position.copy(pos[i]);
+		wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+		scene.add(block); 
 	}
 	
 	var sign = -1;
@@ -982,7 +986,7 @@ function createFormWallR()
 		{
 			var cube = new THREE.Mesh( geometry, material );
 			cube.position.set(pos[0].x + (size.x/2 + seam) * -sign, pos[0].y + size.y + seam, pos[0].z);
-			wall.block[wall.block.length] = cube;
+			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = cube;
 			scene.add(cube); 			
 		}
 		
@@ -992,27 +996,11 @@ function createFormWallR()
 			pos[i].x += (size.x/2) * sign;
 			pos[i].y += size.y + seam;
 			cube.position.copy(pos[i]);
-			wall.block[wall.block.length] = cube;
+			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = cube;
 			scene.add(cube); 
 		}		
 	}	
-
-	var geometry = createGeometryCube((size.x + seam) * countX, (size.y + seam) * (countY+1) - (seam+0.001), size.z - seam);
-	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc } );
-
-	
-	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
-	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
-	var width = size.z - seam;
-	var height = (size.y + seam) * (countY+1) - (seam+0.001);
-	
-	wall.concrete = createOneWall3( point1, point2, width, {height: height} );
-	
-	// возращаем блоки к центру
-	for ( var i = 0; i < wall.block.length; i++ )
-	{
-		wall.block[i].position.x -= center.x;
-	}	
+		
 	
 	renderCamera();
 }
@@ -1315,6 +1303,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3() }; 
 	wall.userData.wall.area = { top : 0 }; 
 	
+	wall.userData.wall.block = { arr : [] };
 	wall.userData.wall.room = { side : 0 };
 	
 	var v = wall.geometry.vertices;
