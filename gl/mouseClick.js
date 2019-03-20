@@ -239,6 +239,8 @@ function clickRayHit( rayhit )
 	else if(camera == cameraWall)
 	{
 		if(clickToolWD()) { console.log(clickO.last_obj); }
+		else if ( tag == 'window' ) { clickWD( rayhit ); }
+		else if ( tag == 'door' ) { clickWD( rayhit ); }		
 	}
 }
 

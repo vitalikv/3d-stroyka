@@ -8,11 +8,11 @@ function clickWD( intersect )
 	var obj = intersect.object;
 	if ( obj.userData.tag == 'door_leaf' ) { obj = obj.door; }
 	
-	setUIPreview(obj, obj.pr_preview, obj.pr_catalog);
-	setUIDoorSize(obj);
+	//setUIPreview(obj, obj.pr_preview, obj.pr_catalog);
+	//setUIDoorSize(obj);
 	
-
-	(obj.userData.door.type === 'DoorPattern') ? UI.show('doorPattern') : UI.hide('doorPattern');
+console.log(22222);
+	//(obj.userData.door.type === 'DoorPattern') ? UI.show('doorPattern') : UI.hide('doorPattern');
 
 
 	if(camera == cameraWall || camera == cameraTop) 
@@ -22,12 +22,12 @@ function clickWD( intersect )
 		// label zoom		
 		var k = 1 / camera.zoom;
 		if(k > 1) k = 1;
-		for ( var i = 0; i < labelRuler1.length; i++ ) { labelRuler1[i].scale.set(k, k, k); } 		
-	}		
+		//for ( var i = 0; i < labelRuler1.length; i++ ) { labelRuler1[i].scale.set(k, k, k); } 		
+	}
 
- 	getInfoWD_1(obj, intersect.point);
+	getInfoWD_1(obj, intersect.point);
 	
-	clickShowRulerWD(obj);
+	//clickShowRulerWD(obj);
 }
 
 
@@ -242,8 +242,8 @@ function moveWD_2( wd, pos )
 	
 	MeshBSP( wd, objsBSP );
 	
-	showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
-	showRulerWD_3D(wd);
+	//showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
+	//showRulerWD_3D(wd);
 }
 
 
