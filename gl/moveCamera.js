@@ -262,15 +262,16 @@ function clickSetCamera2D( event, click )
 	if(camera == cameraWall) 
 	{
 		var dir = camera.getWorldDirection();
-		dir.addScalar(-10);
-		planeMath.position.copy(camera.position);
+		dir = new THREE.Vector3().addScaledVector(dir, 10);
+		planeMath.position.copy(camera.position);  
 		planeMath.position.add(dir);  
 		planeMath.rotation.copy( camera.rotation ); 
 		planeMath.updateMatrixWorld();
 
 		var intersects = rayIntersect( event, planeMath, 'one' );	
 		onMouseDownPosition.x = intersects[0].point.x;
-		onMouseDownPosition.y = intersects[0].point.y;		 		
+		onMouseDownPosition.y = intersects[0].point.y;
+		onMouseDownPosition.z = intersects[0].point.z;		 		
 	}	
 }
 
@@ -345,6 +346,7 @@ function moveCameraWall2D( event )
 	
 	camera.position.x += onMouseDownPosition.x - intersects[0].point.x;
 	camera.position.y += onMouseDownPosition.y - intersects[0].point.y;	
+	camera.position.z += onMouseDownPosition.z - intersects[0].point.z;
 	
 	newCameraPosition = null;	
 }
