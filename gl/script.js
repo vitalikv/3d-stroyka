@@ -254,7 +254,6 @@ var planeMath2 = createPlaneMath2();
 var geometryLabelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 var geometryLabelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 var arrContWD = createControllWD(); 
-var ruleVert_1 = createRulerVerticalWin();
 
 
 

@@ -27,7 +27,7 @@ console.log(22222);
 
 	getInfoWD_1(obj, intersect.point);
 	
-	//clickShowRulerWD(obj);
+	clickShowRulerWD(obj);
 }
 
 
@@ -243,7 +243,7 @@ function moveWD_2( wd, pos )
 	MeshBSP( wd, objsBSP );
 	
 	//showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
-	//showRulerWD_3D(wd);
+	showRulerWD_3D(wd);
 }
 
 

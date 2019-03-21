@@ -175,7 +175,8 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.totalLoad = false;
 	obj.userData.door.goList = { setEmptyBox : false, setPopObj : false, setPlinths : false };
 	obj.userData.door.status = '';
-
+	obj.userData.door.topMenu = true;
+	
 	obj_selected = obj; 
 	clickO.last_obj = obj;
 	
