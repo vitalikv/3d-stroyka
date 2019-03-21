@@ -695,7 +695,11 @@ function showRuleCameraWall()
 	var index = arrWallFront.wall[0].index;
 	var rt = (index == 1) ? 0 : Math.PI;
 	
-	var d = [arrWallFront.bounds.max.x.distanceTo(arrWallFront.bounds.min.x), (arrWallFront.bounds.max.y.y - arrWallFront.bounds.min.y.y - 0.1)];
+	
+	var room = detectRoomWallSide(wall, index);
+	var offset = (room) ? 0.1 : 0;
+	
+	var d = [arrWallFront.bounds.max.x.distanceTo(arrWallFront.bounds.min.x), (arrWallFront.bounds.max.y.y - arrWallFront.bounds.min.y.y - offset)];
 
 	var dir = [];
 	dir[0] = new THREE.Vector3().subVectors( arrWallFront.bounds.max.x, arrWallFront.bounds.min.x ).normalize();
@@ -707,12 +711,12 @@ function showRuleCameraWall()
 	
 	if(index == 1)
 	{
-		pos[1] = new THREE.Vector3(arrWallFront.bounds.min.x.x, arrWallFront.bounds.min.y.y + 0.1, arrWallFront.bounds.min.x.z);	
+		pos[1] = new THREE.Vector3(arrWallFront.bounds.min.x.x, arrWallFront.bounds.min.y.y + offset, arrWallFront.bounds.min.x.z);	
 		pos[1].add( dir[0].clone().multiplyScalar( -0.8 ) );		
 	}
 	else
 	{
-		pos[1] = new THREE.Vector3(arrWallFront.bounds.max.x.x, arrWallFront.bounds.min.y.y + 0.1, arrWallFront.bounds.max.x.z);	
+		pos[1] = new THREE.Vector3(arrWallFront.bounds.max.x.x, arrWallFront.bounds.min.y.y + offset, arrWallFront.bounds.max.x.z);	
 		pos[1].add( dir[0].clone().multiplyScalar( 0.8 ) );			
 	}
 	
@@ -721,7 +725,7 @@ function showRuleCameraWall()
 	pos2[0] = new THREE.Vector3().subVectors( arrWallFront.bounds.max.x, arrWallFront.bounds.min.x ).divideScalar( 2 ).add( arrWallFront.bounds.min.x );	
 	pos2[0].y = pos[0].y;
 	pos2[1] = pos[1].clone();
-	pos2[1].y = (( arrWallFront.bounds.max.y.y - arrWallFront.bounds.min.y.y ) / 2 + arrWallFront.bounds.min.y.y) + 0.1;
+	pos2[1].y = (( arrWallFront.bounds.max.y.y - arrWallFront.bounds.min.y.y ) / 2 + arrWallFront.bounds.min.y.y) + offset;
 		
 	
 	var line = arrSize.format_1.line;
