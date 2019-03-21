@@ -238,7 +238,7 @@ function moveWD_2( wd, pos )
 	wd.userData.door.h1 += pos2.y;
 	UI('window_above_floor_1').val(Math.round(wd.userData.door.h1 * 100) * 10);
 	
-	for ( var i = 0; i < arrContWD.length; i++ ) { arrContWD[i].position.add( pos2 ); } 	// меняем расположение контроллеров	
+	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].position.add( pos2 ); } 	// меняем расположение контроллеров
 	
 	MeshBSP( wd, objsBSP );
 	
