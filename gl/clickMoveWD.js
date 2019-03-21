@@ -252,6 +252,13 @@ function moveWD_2( wd, pos )
 // скрываем размеры и котнроллеры у окна/двери
 function hideSizeWD( obj )
 {	
+	if(clickO.obj) 
+	{
+		if(clickO.obj.userData.tag == 'door') return;
+		if(clickO.obj.userData.tag == 'window') return;
+	}		
+	
+
 	if(camera == cameraTop || camera == camera3D) 
 	{
 		//d_tool.visible = false;  
@@ -260,16 +267,28 @@ function hideSizeWD( obj )
 		{
 			if(obj.userData.tag == 'door' || obj.userData.tag == 'window')
 			{
-				obj.userData.door.wall.label[0].visible = true; 
-				//obj.userData.door.wall.label[1].visible = true;	 	
+				if(camera == camera3D)
+				{
+					obj.userData.door.wall.label[0].visible = true; 
+					obj.userData.door.wall.label[1].visible = true;	 
+				}
+				else
+				{
+					for ( var i = 0; i < arrWallFront.wall.length; i++ )
+					{
+						arrWallFront.wall[i].obj.label[0].visible = true;
+						arrWallFront.wall[i].obj.label[1].visible = true;		
+					}					
+				}
 			}			
 		}
 	}
-		
-	for ( var i = 0; i < arrContWD.length; i++ ) { arrContWD[i].visible = false; }
-	for ( var i = 0; i < arrRule4.length; i++ ) { arrRule4[i].visible = false; }
-	for ( var i = 0; i < labelRuler1.length; i++ ){ labelRuler1[i].visible = false; }
-	for ( var i = 0; i < ruleVert_1.length; i++ ) { ruleVert_1[i].visible = false; }		
+	
+	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].visible = false; }
+	for ( var i = 0; i < arrSize.format_2.line.length; i++ ) { arrSize.format_2.line[i].visible = false; }
+	for ( var i = 0; i < arrSize.format_2.label.length; i++ ){ arrSize.format_2.label[i].visible = false; }
+	//for ( var i = 0; i < arrSize.cutoff.length; i++ ) { arrSize.cutoff[i].visible = false; }	
+  	for ( var i = 0; i < arrSize.cutoff.length; i++ ){ arrSize.cutoff[i].visible = false; }
 }
 
 
