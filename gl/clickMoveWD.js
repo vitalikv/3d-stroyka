@@ -11,7 +11,7 @@ function clickWD( intersect )
 	//setUIPreview(obj, obj.pr_preview, obj.pr_catalog);
 	//setUIDoorSize(obj);
 	
-
+	
 	//(obj.userData.door.type === 'DoorPattern') ? UI.show('doorPattern') : UI.hide('doorPattern');
 
 
@@ -60,7 +60,7 @@ function getInfoWD_1(obj, pos)
 
 
 // находим у окна/двери ближайшие объекты (ограничевающие перемещение)
-// если их нету, то находим конецы стены
+// если их нету, то находим концы стены
 function findOnWallWD(wd)
 {
 	var arrWD = wallLeftRightWD_2(wd);
@@ -71,8 +71,9 @@ function findOnWallWD(wd)
 	wall.geometry.computeBoundingBox();	
 	
 	var off = 0.0;	// отступы от краев
+	var off_2 = 0.0;
 	
-	wd.userData.door.bound = { min : { x : wall.geometry.boundingBox.min.x + off, y : wall.geometry.boundingBox.min.y + off }, max : { x : wall.geometry.boundingBox.max.x - off, y : wall.geometry.boundingBox.max.y - off } };
+	wd.userData.door.bound = { min : { x : wall.geometry.boundingBox.min.x + off, y : wall.geometry.boundingBox.min.y + off_2 }, max : { x : wall.geometry.boundingBox.max.x - off, y : wall.geometry.boundingBox.max.y - off } };
 	
 	if(arrWD.left)
 	{
@@ -223,7 +224,7 @@ function moveWD_2( wd, pos )
 	if(pos.x + x_min < bound.min.x){ pos.x = bound.min.x - x_min; }
 	else if(pos.x + x_max > bound.max.x){ pos.x = bound.max.x - x_max; }		
 	
-	if(pos.y + y_min < bound.min.y + 0.1 - 0.014){ pos.y = bound.min.y - y_min + 0.1 - 0.014; }
+	if(pos.y + y_min < bound.min.y){ pos.y = bound.min.y - y_min; }
 	else if(pos.y + y_max > bound.max.y){ pos.y = bound.max.y - y_max; }
 
 	

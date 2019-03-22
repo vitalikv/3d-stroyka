@@ -32,7 +32,8 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 
 	room[n].userData.tag = 'room';
 	room[n].userData.id = (id == 0) ? countId : countId++;
-	room[n].userData.room = { roomType : roomType, areaTxt : 0, p : arrP, w : arrW, s : arrS, preview : '', caption : '', outline : null }; 
+	room[n].userData.room = { roomType : roomType, areaTxt : 0, p : arrP, w : arrW, s : arrS, preview : '', caption : '', outline : null };
+	room[n].userData.room.height = infProject.settings.floor.height;
 	room[n].userData.material = { lotid : 4956, containerID : null, caption : '', color : room[n].material.color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : null };
 	room[n].userData.room.plinth = {o : plinth[0].o, lotid : plinth[0].lotid, v : [], mat : null, obj : [], preview : '', caption : '', param : null, catalog : null };		
 	
