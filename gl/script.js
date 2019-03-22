@@ -1338,7 +1338,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.area = { top : 0 }; 
 	
 	wall.userData.wall.block = { arr : [] };
-	wall.userData.wall.room = { side : 0 };
+	wall.userData.wall.room = { side : 0, side2 : [null,null,null] };
 	
 	var v = wall.geometry.vertices;
 	wall.userData.wall.v = [];

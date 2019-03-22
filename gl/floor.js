@@ -11,7 +11,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	
 	for ( var i = 0; i < arrW.length; i++ ) 
 	{ 
-		arrW[i].userData.wall.room.side = arrS[i];  
+		arrW[i].userData.wall.room.side = arrS[i]; 
 	}
 	
 	//var str = ''; for ( var i = 0; i < arrP.length; i++ ) { str += ' | ' + arrP[i].userData.id; } console.log(str);
@@ -77,6 +77,13 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 
 		if(plinth[0].o) { loadPopObj_1({ obj: room[n], lotid : plinth[0].lotid }); } 
 		//if(plinth[1].o) { loadPopObj_1({ obj: ceiling[n], lotid : plinth[0].lotid}); }		
+	}
+
+
+	for ( var i = 0; i < arrW.length; i++ ) 
+	{ 
+		var ind = (arrS[i] == 0) ? 2 : 1; 
+		arrW[i].userData.wall.room.side2[ind] = room[n];
 	}	
 	
 	addParamPointOnZone(arrP, room[n]);

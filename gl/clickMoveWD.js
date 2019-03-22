@@ -11,7 +11,7 @@ function clickWD( intersect )
 	//setUIPreview(obj, obj.pr_preview, obj.pr_catalog);
 	//setUIDoorSize(obj);
 	
-console.log(22222);
+
 	//(obj.userData.door.type === 'DoorPattern') ? UI.show('doorPattern') : UI.hide('doorPattern');
 
 
@@ -70,7 +70,7 @@ function findOnWallWD(wd)
 	var wall = wd.userData.door.wall;
 	wall.geometry.computeBoundingBox();	
 	
-	var off = 0.01;
+	var off = 0.0;	// отступы от краев
 	
 	wd.userData.door.bound = { min : { x : wall.geometry.boundingBox.min.x + off, y : wall.geometry.boundingBox.min.y + off }, max : { x : wall.geometry.boundingBox.max.x - off, y : wall.geometry.boundingBox.max.y - off } };
 	

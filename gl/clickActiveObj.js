@@ -108,18 +108,9 @@ function clickWall_3D( intersect )
 	//object.material[index].color = new THREE.Color( 0xf7c6c6 );	
 	
 	clickO.obj = object;
-	clickO.index = index;  
+	clickO.index = index;  	
 	
-	setUIPreview(object, object.userData.material[index].preview, object.userData.material[index].catalog, index); 
-	
-	if(camera == camera3D) 
-	{  
-		UI.showToolbar('wall-3d-toolbar'); 
-		
-		menuSettingTexture( { obj : object, index : index } ); 
-	}
-	
-	object.userData.wall.outline = clickWallOutline(object, index); 
+	//object.userData.wall.outline = clickWallOutline(object, index); 
 }
 
 
