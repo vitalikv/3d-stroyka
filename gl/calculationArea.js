@@ -119,9 +119,9 @@ function upLabelPlan_1(arrWall, Zoom)
 		{
 			label_1.rotation.set( 0, rotY, 0 );
 			
-			var side = (infProject.settings.wall.label == 'outside') ? 1 : 0;
+			var side = (infProject.settings.wall.label == 'outside') ? 1 : 2;
 			
-			if(wall.userData.wall.room.side == side)
+			if(wall.userData.wall.room.side2[side])
 			{ 
 				var dir = new THREE.Vector3().addScaledVector( new THREE.Vector3(x1, 0, z1).normalize(), -v[4].z + (v1[1].z - v1[0].z) / 2 );
 			}

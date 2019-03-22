@@ -9,11 +9,6 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 		point_room[i] = new THREE.Vector2 ( arrP[i].position.x, arrP[i].position.z );		
 	}
 	
-	for ( var i = 0; i < arrW.length; i++ ) 
-	{ 
-		arrW[i].userData.wall.room.side = arrS[i]; 
-	}
-	
 	//var str = ''; for ( var i = 0; i < arrP.length; i++ ) { str += ' | ' + arrP[i].userData.id; } console.log(str);
 	console.log('-------------');	 
 	
@@ -80,10 +75,11 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	}
 
 
+	// определяем к какой стороне стены принадлежит зона и записываем зону к этой стене 
 	for ( var i = 0; i < arrW.length; i++ ) 
 	{ 
 		var ind = (arrS[i] == 0) ? 2 : 1; 
-		arrW[i].userData.wall.room.side2[ind] = room[n];
+		arrW[i].userData.wall.room.side2[ind] = room[n]; 
 	}	
 	
 	addParamPointOnZone(arrP, room[n]);

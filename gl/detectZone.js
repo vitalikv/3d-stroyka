@@ -323,6 +323,20 @@ function deleteArrZone(arrRoom)
 	var roomType = [];
 	var arrN = [];
 	
+	
+	// обновляем у сторон стен зоны, к которым они принадлежат
+	for(var i = 0; i < arrRoom.length; i++)
+	{
+		for(var i2 = 0; i2 < arrRoom[i].userData.room.w.length; i2++)
+		{
+			var wall = arrRoom[i].userData.room.w[i2];
+			
+			if(wall.userData.wall.room.side2[1] == arrRoom[i]){ wall.userData.wall.room.side2[1] = null; }
+			else if(wall.userData.wall.room.side2[2] == arrRoom[i]){ wall.userData.wall.room.side2[2] = null; }
+		}
+	}
+	
+	
 	// удаляем из массива room удаляемые зоны
 	for ( var i = 0; i < room.length; i++ ) 
 	{
