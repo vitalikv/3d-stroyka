@@ -500,7 +500,8 @@ canvas
 .button1
 {
 	width: auto;
-	height: 20px;
+	height: 20px; 
+	margin:auto;
 	text-decoration:none; 
 	text-align:center; 
 	padding:11px 0; 
@@ -622,7 +623,7 @@ a.link_page_1
 } 
 
 
-.input-height
+.left_panel_1 .input-height
 {
 	width: auto;
 	height: 90px;
@@ -639,25 +640,7 @@ a.link_page_1
 }
 
 
-.text_1
-{
-	display: block;
-	margin: 10px auto 0 auto;
-	
-	font-family: arial,sans-serif;
-	font-size: 15px;
-	color: #666;
-	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
-
-	outline: none;
-	text-align:  center;
-}
-
-
-
-.input-height input
+.left_panel_1 .input-height input
 {
 	display: block;
 	width:80%;
@@ -676,6 +659,27 @@ a.link_page_1
 	outline: none;
 	
 	border-radius: 3px;	
+}
+
+
+
+
+
+
+.text_1
+{
+	display: block;
+	margin: 10px auto 0 auto;
+	
+	font-family: arial,sans-serif;
+	font-size: 15px;
+	color: #666;
+	text-decoration: none;
+	user-select: none;
+	-moz-user-select: none;
+
+	outline: none;
+	text-align:  center;
 }
 
 
@@ -711,14 +715,44 @@ a.link_page_1
 	display: flex;
 	border: 1px solid #b3b3b3; 
 	border-radius: 3px;
-	background-color:#f1f1f1; 
+	background-color:#f1f1f1;
+
+
+	flex-direction: column;
+	-webkit-flex-direction: column;		
    
 	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
 	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
 	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 	
 }
 
-.bottom_panel_1 .toolbar .button1-wrap 
+
+.bottom_panel_1 .toolbar .toolbar-header
+{
+	display: block;
+	padding: 3px;
+	
+	font-family: arial,sans-serif;
+	font-size: 20px;
+	color: #666;
+	text-decoration: none;
+	user-select: none;
+	-moz-user-select: none;
+	text-align:  center;	
+	
+	background-color:#cfcfcf;
+}
+
+
+.bottom_panel_1 .toolbar .toolbar-menu
+{
+	position: relative;
+	display: -webkit-box;
+	display: flex;
+}
+
+
+.bottom_panel_1 .toolbar .toolbar-menu .button1-wrap 
 { 
 	padding:15px 15px;
 	display: -webkit-box;  
@@ -726,4 +760,38 @@ a.link_page_1
 }
 
 
+
+.bottom_panel_1 .toolbar .toolbar-menu .input-size
+{
+	width: auto;
+	height: 90px;	
+	background-color:#f1f1f1; 
+	
+	display: -webkit-box;
+	display: flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;		
+}
+
+
+.bottom_panel_1 .toolbar .toolbar-menu .input-size input
+{
+	display: block;
+	width:80%;
+	margin: auto;
+	
+	border-radius: 2px;	
+	font-size: 18px;
+	text-align:  center;
+	
+	text-shadow: 0 -1px rgb(46,53,58);
+	text-decoration: none;
+	user-select: none;
+	-moz-user-select: none;
+	line-height: 2em;
+	padding: 0;
+	outline: none;
+	
+	border-radius: 3px;	
+}
 

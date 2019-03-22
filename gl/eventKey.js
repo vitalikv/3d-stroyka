@@ -34,6 +34,7 @@ document.body.addEventListener("keydown", function (e)
 		{
 			if(UI.activeInput == 'input-height') { changeHeightWall( $('[data-action="input-height"]').val() ); }
 			if(UI.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
+			//if(UI.activeInput == 'size-wall-length') { changeWidthWall( $('[data-action="size-wall-length"]').val() ); }
 		}		
 		 
 		return; 

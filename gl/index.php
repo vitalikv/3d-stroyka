@@ -326,6 +326,30 @@ if($url == '/calculator/raschet_kirpicha')
 		</div>
 	</div>		
 	<?}?>
+	<div class="bottom_panel_1" data-action ='top_panel_1'>			
+		<div class="toolbar" data-action ='top_panel_1'>
+			<div class="toolbar-header">стена</div>
+			<div class="toolbar-menu">
+				<div class="input-size">
+					<div class="text_1">длина (м)</div>
+					<input type="text" data-action ='size-wall-length' value = 0>
+				</div>
+				
+				<div class="input-size">
+					<div class="text_1">высота (м)</div>
+					<input type="text" data-action ='size-wall-height' value = 0>
+				</div>	
+				
+				<div class="input-size">
+					<div class="text_1">толщина (м)</div>
+					<input type="text" data-action ='size-wall-width' value = 0>
+				</div>				
+				<div class="button1-wrap">
+					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				</div>			
+			</div>
+		</div>
+	</div>	
 	
 	
 	<div class="modal" data-action ='modal'>
