@@ -20,16 +20,40 @@ function showLengthWallUI( wall )
 
 
 
-// миняем длину стены 
-function inputLengthWall_2(wall, sideWall, inputName)
+// после изменения на панели длины стены, нажали enter и миняем длину стены
+function inputLengthWall_1(cdm)
 {
+	var wall = infProject.scene.array.wall[0];
+	//if(!clickO.obj){ return; } 
+	//if(clickO.obj.userData.tag != 'wall'){ return; } 	
+	//var wall = clickO.obj; 
+
+	getInfoEvent21( wall, 'down' );		// redo
+	 
+	cdm.wall = wall;
+	cdm.type = 'wallRedBlue';
+	cdm.side = 'wall_length_1';
+	console.log(cdm);
+	inputLengthWall_2(cdm);	// меняем только длину стены 
+	
+	getInfoEvent21( wall, 'up' );		// redo
+}
+
+
+// миняем длину стены 
+function inputLengthWall_2(cdm)
+{
+	var wall = cdm.wall;
+	var value = cdm.value;
+	
 	var wallR = detectChangeArrWall_2(wall);
-	clickMovePoint_BSP(wallR);	
+	clickMovePoint_BSP(wallR);
 
 	var p1 = wall.userData.wall.p[1];
-	var p0 = wall.userData.wall.p[0];	
- 	
+	var p0 = wall.userData.wall.p[0];
+
 	var walls = [...new Set([...p0.w, ...p1.w])];	// получаем основную и соседние стены
+ 	
 	
 	var ns = 0;
 	var flag = true;
@@ -38,28 +62,29 @@ function inputLengthWall_2(wall, sideWall, inputName)
 		var v = wall.userData.wall.v;
 
 		var d = 0;
-		if(inputName == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x ); var input_txt = UI('wall_length_1').val(); } 
-		else if(inputName == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x ); var input_txt = UI('wall_length_2').val(); }
+		
+		if(cdm.side == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x );  } 
+		else if(cdm.side == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x );  }
 		d = Math.round(d * 1000);
 		
-		var sub = (input_txt - d) / 1000;
-		if(sideWall == 'wallRedBlue') { sub /= 2; }	
+		var sub = (value - d) / 1000;
+		if(cdm.type == 'wallRedBlue') { sub /= 2; }	
 		
 		var dir = new THREE.Vector3().subVectors(p1.position, p0.position).normalize();
 		var dir = new THREE.Vector3().addScaledVector( dir, sub );	
 
-		if(sideWall == 'wallBlueDot')
+		if(cdm.type == 'wallBlueDot')
 		{ 
 			var offset = new THREE.Vector3().addVectors( p1.position, dir ); 
 			p1.position.copy( offset ); 
 		}
-		else if(sideWall == 'wallRedDot')
+		else if(cdm.type == 'wallRedDot')
 		{ 
 			var offset = new THREE.Vector3().subVectors( p0.position, dir ); 
 			p0.position.copy( offset ); 
 			wall.position.copy( offset );
 		}
-		else if(sideWall == 'wallRedBlue')
+		else if(cdm.type == 'wallRedBlue')
 		{ 			
 			var offset = new THREE.Vector3().subVectors( p0.position, dir ); 
 			p0.position.copy( offset );
@@ -67,28 +92,21 @@ function inputLengthWall_2(wall, sideWall, inputName)
 			
 			p1.position.copy( new THREE.Vector3().addVectors( p1.position, dir ) );				
 		}
-		
-		wall.geometry = createGeometryWall(p0.position.distanceTo( p1.position ), wall.userData.wall.height_1, wall.userData.wall.width, wall.userData.wall.offsetZ);	// обновляем стену до простой стены					
-		
-		wall.geometry.verticesNeedUpdate = true; 
-		wall.geometry.elementsNeedUpdate = true;
-		wall.geometry.computeBoundingBox();
-		wall.geometry.computeBoundingSphere();	
-		wall.geometry.computeFaceNormals();	
 
+		
 		for ( var i = 0; i < walls.length; i++ )
 		{
-			updateWall_2(walls[i]);
-		}		
+			updateWall(walls[i]);
+		}			 		 
 		
 		upLineYY(p0);
 		upLineYY(p1);
 		upLabelPlan_1( [wall] );
-		if(inputName == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x ); }
-		else if(inputName == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x ); }
+		if(cdm.side == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x ); }
+		else if(cdm.side == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x ); }
 		d = Math.round(d * 1000);
 
-		if(input_txt - d == 0){ flag = false; }
+		if(value - d == 0){ flag = false; }
 		
 		if(ns > 5){ flag = false; }
 		ns++;
@@ -98,9 +116,10 @@ function inputLengthWall_2(wall, sideWall, inputName)
 	updateShapeFloor( compileArrPickZone(wall) );  				 			
 	
 	showLengthWallUI(wall);
-	
+	console.log(777777);
 	clickPointUP_BSP(wallR);
 }
+
 
 
 

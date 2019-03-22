@@ -29,12 +29,12 @@ document.body.addEventListener("keydown", function (e)
 	if (e.keyCode == 72 && e.ctrlKey) { showHash(); }
 	
 	if(UI.activeInput) 
-	{ 
+	{ console.log(UI.activeInput);
 		if(e.keyCode == 13)
 		{
 			if(UI.activeInput == 'input-height') { changeHeightWall( $('[data-action="input-height"]').val() ); }
 			if(UI.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
-			//if(UI.activeInput == 'size-wall-length') { changeWidthWall( $('[data-action="size-wall-length"]').val() ); }
+			if(UI.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }
 		}		
 		 
 		return; 
@@ -169,28 +169,7 @@ function upKeyWall( cdm )
 	}
 }
 
-// после изменения на панели длины стены, нажали enter и миняем длину стены
-function inputLengthWall_1()
-{
-	if(!clickO.obj){ return; } 
-	if(clickO.obj.userData.tag != 'wall'){ return; } 	
-	var wall = clickO.obj; 
 
-	getInfoEvent21( wall, 'down' );		// redo
-	
-	var sideWall = UI('wall-dots').val();
-	var inputName = UI.activeInput;
-	
-	var v = wall.userData.wall.v; 
-	var value = 0;
-	if(inputName == 'wall_length_1'){ value = Math.abs( v[6].x - v[0].x ); var input_txt = UI('wall_length_1').val(); }
-	else if(inputName == 'wall_length_2'){ value = Math.abs( v[2].x - v[4].x ); var input_txt = UI('wall_length_2').val(); }
-	value = Math.round(value * 1000);	
-	 
-	inputLengthWall_2(wall, sideWall, inputName);	// меняем только длину стены 
-	
-	getInfoEvent21( wall, 'up' );		// redo
-}
 
 
 function showHash()

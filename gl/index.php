@@ -416,6 +416,8 @@ if($url == '/calculator/raschet_kirpicha')
 		
 		$('[data-action="input-width"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });  
 		$('[data-action="input-height"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
+		$('[data-action="size-wall-length"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
+		
 		$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 		$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 		
