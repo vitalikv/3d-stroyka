@@ -112,6 +112,7 @@ if($url == '/calculator/raschet_kirpicha')
 	
 	infProject.load = { img : [] }
 	infProject.activeInput = '';
+	infProject.activeDiv = null;
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
@@ -452,6 +453,7 @@ if($url == '/calculator/raschet_kirpicha')
 	function editText(input) 
 	{
 		input.focus();
+		infProject.activeDiv = input;
 		infProject.activeInput = input.data('action'); 
 		console.log(infProject.activeInput);
 		//let length = input[0].value.toString().length;

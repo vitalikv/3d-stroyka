@@ -32,7 +32,8 @@ document.body.addEventListener("keydown", function (e)
 	{ 
 		if(e.keyCode == 13)
 		{
-			if(infProject.activeInput == 'input-height') { changeHeightWall( $('[data-action="input-height"]').val() ); }
+			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
+			if(infProject.activeInput == 'size-wall-height') { changeHeightWall(); }
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
 			if(infProject.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }
 		}		

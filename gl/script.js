@@ -1480,11 +1480,21 @@ function showObjTool( tag )
 
 
 // изменение высоты стен
-function changeHeightWall( h2 )
+function changeHeightWall()
 {
-	if(!isNumeric(h2)) return;
+	if(infProject.activeInput == 'input-height')
+	{
+		var h2 = $('input[data-action="input-height"]');
+		h2 /= 100;
+	}	
+	else if(infProject.activeInput == 'size-wall-height')
+	{
+		var h2 = $('input[data-action="size-wall-height"]').val();
+	}	
+	
+	if(!isNumeric(h2)) return;	
 	h2 = Number(h2);
-	h2 /= 100;
+	
 	
 	if(h2 < 0.01) { h2 = 0.01; }
 	if(h2 > 3) { h2 = 3; }
@@ -1538,7 +1548,14 @@ function changeHeightWall( h2 )
 	//h2 = Math.round(h2 * 10) / 100;
 	console.log(h2);
 	
-	$('input[data-action="input-height"]').val(h2*100);
+	if(infProject.activeInput == 'input-height')
+	{
+		$('input[data-action="input-height"]').val(h2*100);
+	}	
+	else if(infProject.activeInput == 'size-wall-height')
+	{
+		$('input[data-action="size-wall-height"]').val(h2);
+	}	
 	
 	updateShapeFloor(room);
 	calculationAreaFundament_2();
