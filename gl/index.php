@@ -111,6 +111,7 @@ if($url == '/calculator/raschet_kirpicha')
 	infProject.path = '<?=$path?>';
 	
 	infProject.load = { img : [] }
+	infProject.activeInput = '';
 	
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
@@ -292,14 +293,14 @@ if($url == '/calculator/raschet_kirpicha')
 		<?if($interface['width_1'] == 1){?>
 		<div class="input-height">
 			<div class="text_1">ширина (см)</div>
-			<input type="text" data-action ='input-width' value = 30>
+			<input type="text" data-action ='input-width' data-input='' value = 30>
 		</div> 
 		<?}?>
 		
 		<?if($interface['height_1'] == 1){?>
 		<div class="input-height">
 			<div class="text_1">высота (см)</div>
-			<input type="text" data-action ='input-height' value = 20>
+			<input type="text" data-action ='input-height' data-input='' value = 20>
 		</div>
 		<?}?>		
 	</div>
@@ -330,17 +331,17 @@ if($url == '/calculator/raschet_kirpicha')
 			<div class="toolbar-menu">
 				<div class="input-size">
 					<div class="text_1">длина (м)</div>
-					<input type="text" data-action ='size-wall-length' value = 0>
+					<input type="text" data-action ='size-wall-length' data-input='' value = 0>
 				</div>
 				
 				<div class="input-size">
 					<div class="text_1">высота (м)</div>
-					<input type="text" data-action ='size-wall-height' value = 0>
+					<input type="text" data-action ='size-wall-height' data-input='' value = 0>
 				</div>	
 				
 				<div class="input-size">
 					<div class="text_1">толщина (м)</div>
-					<input type="text" data-action ='size-wall-width' value = 0>
+					<input type="text" data-action ='size-wall-width' data-input='' value = 0>
 				</div>				
 				<div class="button1-wrap">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
@@ -396,9 +397,7 @@ if($url == '/calculator/raschet_kirpicha')
 		</div>	
 	</div>
 	
-	<script>
-		var activeInput = '';
-		
+	<script>		
 		$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		
@@ -414,16 +413,14 @@ if($url == '/calculator/raschet_kirpicha')
 			$('[data-action="modal"]').css({"display":"none"}); 
 		}); 
 		
-		$('[data-action="input-width"]').mousedown(function () { editText($(this)); });  
-		$('[data-action="input-height"]').mousedown(function () { editText($(this)); });
-		$('[data-action="size-wall-length"]').mousedown(function () { editText($(this)); });
+		$('[data-input]').mousedown(function () { editText($(this)); });  
 		
 		$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 		$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 		
 		$('input').on('focus', function () {  });
-		$('input').on('focus keyup change', function () { activeInput = $(this).data('action'); });
-		$('input').blur(function () { activeInput = ''; });	
+		$('input').on('focus keyup change', function () { infProject.activeInput = $(this).data('action'); });
+		$('input').blur(function () { infProject.activeInput = ''; });	
 
 		
 		$('[data-action="estimate"]').mousedown(function () 
@@ -455,7 +452,8 @@ if($url == '/calculator/raschet_kirpicha')
 	function editText(input) 
 	{
 		input.focus();
-		//UI.activeInput = input.data('action'); console.log(UI.activeInput);
+		infProject.activeInput = input.data('action'); 
+		console.log(infProject.activeInput);
 		//let length = input[0].value.toString().length;
 		//input[0].setSelectionRange(0, length);
 		input.select();

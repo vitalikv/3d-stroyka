@@ -237,7 +237,7 @@ function moveWD_2( wd, pos )
 	wd.position.copy( pos );	
 
 	wd.userData.door.h1 += pos2.y;
-	UI('window_above_floor_1').val(Math.round(wd.userData.door.h1 * 100) * 10);
+	//UI('window_above_floor_1').val(Math.round(wd.userData.door.h1 * 100) * 10);
 	
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].position.add( pos2 ); } 	// меняем расположение контроллеров
 	
@@ -318,7 +318,7 @@ function showTableWD(wd)
 	//else if(wd.userData.tag == 'window') { menu = 'window'; }
 	
 	menu = (wd.userData.tag == 'window') ? 'window' : 'door';
-	
+	return;
 	if(menu == 'door')
 	{ 
 		setUIPreview(wd, wd.pr_preview, wd.pr_catalog);

@@ -28,13 +28,13 @@ document.body.addEventListener("keydown", function (e)
 	if (e.keyCode == 89 && e.ctrlKey) { setInfoEvent1( 'redo' ); renderCamera(); }
 	if (e.keyCode == 72 && e.ctrlKey) { showHash(); }
 	
-	if(UI.activeInput) 
-	{ console.log(UI.activeInput);
+	if(infProject.activeInput) 
+	{ 
 		if(e.keyCode == 13)
 		{
-			if(UI.activeInput == 'input-height') { changeHeightWall( $('[data-action="input-height"]').val() ); }
-			if(UI.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
-			if(UI.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }
+			if(infProject.activeInput == 'input-height') { changeHeightWall( $('[data-action="input-height"]').val() ); }
+			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
+			if(infProject.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }
 		}		
 		 
 		return; 
@@ -158,7 +158,7 @@ function upKeyWall( cdm )
 {	
 	if(cdm == 13)	// enter 
 	{  
-		var u = UI.activeInput;
+		var u = infProject.activeInput;
 		if(u == 'wall_length_1' || u == 'wall_length_2') { inputLengthWall_1(); renderCamera(); } 
 		else if(u == 'wall_width_1') { /*getInfoEvent20(clickO.obj, 'down');*/ inputWidthWall(); renderCamera(); /*getInfoEvent20(clickO.obj, 'up');*/  } 
 		else if(u == 'door_width_1' || u == 'door_width_2' || u == 'window_width_1' || u == 'window_height_1' || u == 'window_above_floor_1') 

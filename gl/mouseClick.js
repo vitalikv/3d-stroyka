@@ -255,7 +255,7 @@ function clickRayHit( rayhit )
 
 
 function setUIPreview( object, preview, catalog, index ) 
-{
+{ return;
 	var target = '';
 	switch ( object.userData.tag ) 
 	{
