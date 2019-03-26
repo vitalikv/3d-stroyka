@@ -5,7 +5,7 @@ var newCameraPosition = null;
 
 function updateKeyDown() 
 {
-	if(docReady) if(UI.activeInput) return;
+	//if(docReady) if(UI.activeInput) return;
 	
 	var flag = false;
 	

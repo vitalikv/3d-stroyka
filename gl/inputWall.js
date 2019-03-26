@@ -65,9 +65,9 @@ function inputLengthWall_2(cdm)
 		
 		if(cdm.side == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x );  } 
 		else if(cdm.side == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x );  }
-		d = Math.round(d * 1000);
+		//d = Math.round(d * 1000);
 		
-		var sub = (value - d) / 1000;
+		var sub = (value - d) / 1;
 		if(cdm.type == 'wallRedBlue') { sub /= 2; }	
 		
 		var dir = new THREE.Vector3().subVectors(p1.position, p0.position).normalize();
@@ -104,7 +104,7 @@ function inputLengthWall_2(cdm)
 		upLabelPlan_1( [wall] );
 		if(cdm.side == 'wall_length_1'){ d = Math.abs( v[6].x - v[0].x ); }
 		else if(cdm.side == 'wall_length_2'){ d = Math.abs( v[10].x - v[4].x ); }
-		d = Math.round(d * 1000);
+		
 
 		if(value - d == 0){ flag = false; }
 		
@@ -116,7 +116,7 @@ function inputLengthWall_2(cdm)
 	updateShapeFloor( compileArrPickZone(wall) );  				 			
 	
 	showLengthWallUI(wall);
-	console.log(777777);
+	
 	clickPointUP_BSP(wallR);
 }
 

@@ -236,9 +236,7 @@ if($url == '/calculator/raschet_kirpicha')
 	<script src="<?=$path?>eventKey.js?<?=$vrs?>"></script>
 	
 
-	<script src="<?=$path?>js/ui.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>js/postmessage.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>js/overlay.js?<?=$vrs?>"></script>
+
 	
 	
 	
@@ -399,6 +397,8 @@ if($url == '/calculator/raschet_kirpicha')
 	</div>
 	
 	<script>
+		var activeInput = '';
+		
 		$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); return false; });
 		
@@ -414,16 +414,16 @@ if($url == '/calculator/raschet_kirpicha')
 			$('[data-action="modal"]').css({"display":"none"}); 
 		}); 
 		
-		$('[data-action="input-width"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });  
-		$('[data-action="input-height"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
-		$('[data-action="size-wall-length"]').mousedown(function () { $(this).focus(); UI.activeInput = $(this).data('action'); editText($(this)); });
+		$('[data-action="input-width"]').mousedown(function () { editText($(this)); });  
+		$('[data-action="input-height"]').mousedown(function () { editText($(this)); });
+		$('[data-action="size-wall-length"]').mousedown(function () { editText($(this)); });
 		
 		$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 		$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 		
 		$('input').on('focus', function () {  });
-		$('input').on('focus keyup change', function () { UI.activeInput = $(this).data('action'); });
-		$('input').blur(function () { UI.activeInput = ''; });	
+		$('input').on('focus keyup change', function () { activeInput = $(this).data('action'); });
+		$('input').blur(function () { activeInput = ''; });	
 
 		
 		$('[data-action="estimate"]').mousedown(function () 
@@ -452,11 +452,14 @@ if($url == '/calculator/raschet_kirpicha')
 		$('[data-action="modal_window_close"]').mousedown(function () { $('[data-action="modal"]').css({"display":"none"}); });
   
   
-  function editText(input) {
-    console.log(input[0])
-    let length = input[0].value.toString().length
-    input[0].setSelectionRange(0, length);
-  }	
+	function editText(input) 
+	{
+		input.focus();
+		//UI.activeInput = input.data('action'); console.log(UI.activeInput);
+		//let length = input[0].value.toString().length;
+		//input[0].setSelectionRange(0, length);
+		input.select();
+	}	
 	</script> 
 
 </body>
