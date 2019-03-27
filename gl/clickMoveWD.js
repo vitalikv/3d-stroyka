@@ -321,17 +321,17 @@ function showTableWD(wd)
 	return;
 	if(menu == 'door')
 	{ 
-		setUIPreview(wd, wd.pr_preview, wd.pr_catalog);
-		UI('door_width_1').val(Math.round(d1 * 100) * 10)
-		UI('door_width_2').val(Math.round(d1 * 100) * 10);	
-		UI.showToolbar('door-2d-toolbar');  
+		//setUIPreview(wd, wd.pr_preview, wd.pr_catalog);
+		//UI('door_width_1').val(Math.round(d1 * 100) * 10)
+		//UI('door_width_2').val(Math.round(d1 * 100) * 10);	
+		//UI.showToolbar('door-2d-toolbar');  
 	}
 	else if(menu == 'window')
 	{		
-		UI('window_width_1').val(Math.round(d1 * 100) * 10)
-		UI('window_height_1').val(Math.round(d2 * 100) * 10)
-		UI('window_above_floor_1').val(Math.round(h * 100) * 10)
-		UI.showToolbar('window-toolbar');		 
+		//UI('window_width_1').val(Math.round(d1 * 100) * 10)
+		//UI('window_height_1').val(Math.round(d2 * 100) * 10)
+		//UI('window_above_floor_1').val(Math.round(h * 100) * 10)
+		//UI.showToolbar('window-toolbar');		 
 	}	
 }
 

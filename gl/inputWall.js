@@ -5,16 +5,16 @@
 // кликнули на стену (в таблице показываем длину стены)
 function showLengthWallUI( wall )
 {
-	UI.showToolbar('wall-2d-toolbar');
+	//UI.showToolbar('wall-2d-toolbar');
 		
 	var v = wall.userData.wall.v; 		
 	var d1 = Math.abs( v[6].x - v[0].x );		
 	var d2 = Math.abs( v[10].x - v[4].x );	
 	
-	UI('wall_length_1').val(Math.round(d1 * 100) * 10);
-	UI('wall_length_2').val(Math.round(d2 * 100) * 10);			
+	//UI('wall_length_1').val(Math.round(d1 * 100) * 10);
+	//UI('wall_length_2').val(Math.round(d2 * 100) * 10);			
 
-	toggleButtonMenuWidthWall(wall);
+	//toggleButtonMenuWidthWall(wall);
 }
 
 
@@ -35,6 +35,14 @@ function inputLengthWall_1(cdm)
 	cdm.side = 'wall_length_1';
 	console.log(cdm);
 	inputLengthWall_2(cdm);	// меняем только длину стены 
+	
+	if(camera == cameraWall) 
+	{ 
+		arrWallFront.wall = [];
+		arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
+		detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(wall, 1));	
+		showRuleCameraWall(); 
+	}
 	
 	getInfoEvent21( wall, 'up' );		// redo
 }

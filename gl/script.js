@@ -1560,6 +1560,14 @@ function changeHeightWall()
 	updateShapeFloor(room);
 	calculationAreaFundament_2();
 	
+	if(camera == cameraWall && infProject.scene.array.wall.length > 0) 
+	{ 
+		arrWallFront.wall = [];
+		arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
+		detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(infProject.scene.array.wall[0], 1));	
+		showRuleCameraWall(); 
+	}	
+	
 	renderCamera();
 }
 	

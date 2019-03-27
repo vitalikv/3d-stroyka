@@ -463,9 +463,9 @@ function hideMenuObjUI_Wall(o)
 	{
 		var tag = o.userData.tag;
 		
-		if(tag == 'wall') {  }
-		else if(tag == 'window') { hideSizeWD( o ); }
-		else if(tag == 'door') { hideSizeWD( o ); }	
+		if(tag == 'wall') { hideMenuUI(o); }
+		else if(tag == 'window') { hideSizeWD(o); hideMenuUI(o); }
+		else if(tag == 'door') { hideSizeWD(o); hideMenuUI(o); }	
 	}
 	
 	clickO.last_obj = null;
@@ -482,8 +482,10 @@ function showMenuObjUI_Wall(o, stop)
 	{
 		var tag = o.userData.tag;
 		
-		if(tag == 'wall') {  }
-		else if(tag == 'controll_wd') { o = o.userData.controll.obj; }		
+		if(tag == 'wall') { showMenuUI( o ); }
+		else if(tag == 'controll_wd') { o = o.userData.controll.obj; }
+		else if(tag == 'window') { showMenuUI( o ); }
+		else if(tag == 'door') { showMenuUI( o ); }			
 	}
 	
 
@@ -492,6 +494,25 @@ function showMenuObjUI_Wall(o, stop)
 }
 
 
+
+function hideMenuUI(obj) 
+{
+	var tag = obj.userData.tag;
+	
+	if(tag == 'wall') { $('[nameId="wd_wall_1"]').hide(); }
+	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
+	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }		
+}
+
+
+function showMenuUI(obj) 
+{
+	var tag = obj.userData.tag;
+	
+	if(tag == 'wall') { $('[nameId="wd_wall_1"]').show(); }
+	else if(tag == 'window') { $('[nameId="wd_menu_1"]').show(); }
+	else if(tag == 'door') { $('[nameId="wd_menu_1"]').show(); }		
+}
 
 
 // по клику получаем инфу об объекте

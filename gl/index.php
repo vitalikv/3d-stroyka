@@ -326,8 +326,9 @@ if($url == '/calculator/raschet_kirpicha')
 		</div>
 	</div>		
 	<?}?>
-	<div class="bottom_panel_1" data-action ='top_panel_1'>			
-		<div class="toolbar" data-action ='top_panel_1'>
+	<div class="bottom_panel_1" data-action ='top_panel_1'>	
+	
+		<div class="toolbar" data-action ='top_panel_1' nameId='wd_wall_1'>
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">
 				<div class="input-size">
@@ -349,6 +350,26 @@ if($url == '/calculator/raschet_kirpicha')
 				</div>			
 			</div>
 		</div>
+		
+		
+		<div class="toolbar" data-action ='top_panel_1' nameId='wd_menu_1' style="display: none;">
+			<div class="toolbar-header">проём</div>
+			<div class="toolbar-menu">
+				<div class="input-size">
+					<div class="text_1">длина (м)</div>
+					<input type="text" data-action ='size-wd-length' data-input='' value = 0>
+				</div>
+				
+				<div class="input-size">
+					<div class="text_1">высота (м)</div>
+					<input type="text" data-action ='size-wd-height' data-input='' value = 0>
+				</div>	
+								
+				<div class="button1-wrap">
+					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				</div>			
+			</div>
+		</div>		
 	</div>	
 	
 	

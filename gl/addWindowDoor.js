@@ -122,7 +122,11 @@ function addWD( cdm )
 	}
 	
 	
-	resetMenuUI();	 
+	
+	resetMenuUI();
+
+	objActiveColor_2D(obj);	  
+	clickO.last_obj = obj; 	
 	
 	renderCamera();
 }
