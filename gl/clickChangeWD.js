@@ -449,7 +449,7 @@ function moveToggleChangeWin( event, controll )
 
 
 	// ограничитель до ближайших окон/дверей/края стены
-	if(1==1)
+	if(1==2)
 	{		
 		var pos2 = wall.worldToLocal( v1.clone() );	
 

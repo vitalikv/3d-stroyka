@@ -33,9 +33,8 @@ document.body.addEventListener("keydown", function (e)
 		if(e.keyCode == 13)
 		{
 			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
-			if(infProject.activeInput == 'size-wall-height') { changeHeightWall(); }
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
-			if(infProject.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }			
+			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
 			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }		
 		}		
 		 
@@ -161,8 +160,7 @@ function upKeyWall( cdm )
 	if(cdm == 13)	// enter 
 	{  
 		var u = infProject.activeInput;
-		if(u == 'wall_length_1' || u == 'wall_length_2') { inputLengthWall_1(); renderCamera(); } 
-		else if(u == 'wall_width_1') { /*getInfoEvent20(clickO.obj, 'down');*/ inputWidthWall(); renderCamera(); /*getInfoEvent20(clickO.obj, 'up');*/  } 
+		if(u == 'wall_width_1') { /*getInfoEvent20(clickO.obj, 'down');*/ inputWidthWall(); renderCamera(); /*getInfoEvent20(clickO.obj, 'up');*/  } 
 		else if(1 == 6) { inputGlobalWidthWall(); } 
 	}
 }

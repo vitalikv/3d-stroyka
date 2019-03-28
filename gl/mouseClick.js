@@ -499,7 +499,7 @@ function hideMenuUI(obj)
 {
 	var tag = obj.userData.tag;
 	
-	if(tag == 'wall') { $('[nameId="wd_wall_1"]').hide(); }
+	if(tag == 'wall') { $('[nameId="wall_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }		
 }
@@ -509,12 +509,7 @@ function showMenuUI(obj)
 {
 	var tag = obj.userData.tag;
 	
-	if(tag == 'wall') 
-	{ 
-		
-		$('[nameId="wd_wall_1"]').show();
-		
-	}
+	if(tag == 'wall') { showLengthWallUI(obj); }  
 	else if(tag == 'window') { showTableWD(obj); }
 	else if(tag == 'door') { showTableWD(obj); }		
 }

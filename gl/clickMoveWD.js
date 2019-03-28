@@ -352,9 +352,35 @@ function inputWidthHeightWD(wd)
 	
 	var wall = wd.userData.door.wall;
 	
-	var x = Number($('[nameId="size-wd-length"]').val());		// ширина окна	
-	var y = Number($('[nameId="size-wd-height"]').val());		// высота окна
+	var x = $('[nameId="size-wd-length"]').val();		// ширина окна	
+	var y = $('[nameId="size-wd-height"]').val();		// высота окна
 	var h = 0;					// высота над полом	
+	
+	
+	// если знаначения ввели с ошибкой, то исправляем
+	if(1==1)
+	{
+		x = x.replace(",", ".");
+		y = y.replace(",", ".");
+		
+		wd.geometry.computeBoundingBox();
+		var x2 = (Math.abs(wd.geometry.boundingBox.max.x) + Math.abs(wd.geometry.boundingBox.min.x));
+		var y2 = (Math.abs(wd.geometry.boundingBox.max.y) + Math.abs(wd.geometry.boundingBox.min.y));		
+		
+		x = (isNumeric(x)) ? x : x2;
+		y = (isNumeric(y)) ? y : y2;		
+	}
+	
+	
+	// ограничение размеров
+	if(1==1)
+	{
+		if(x > 10) { x = 10; }
+		else if(x < 0.1) { x = 0.1; }
+
+		if(y > 5) { y = 5; }
+		else if(y < 0.1) { y = 0.1; }	
+	}
 	
 	
 	//var h = Number(UI('window_above_floor_1').val()) / 1000 - wd.userData.door.h1;		// высота над полом	
@@ -376,6 +402,8 @@ function inputWidthHeightWD(wd)
 	wd.updateMatrixWorld();
 	
 	clickShowRulerWD(wd);	// показываем линейки и контроллеры для окна/двери
+	
+	showTableWD(wd);		// обновляем меню
 	
 	renderCamera();
 }

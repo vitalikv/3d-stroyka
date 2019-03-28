@@ -3,16 +3,18 @@
 
 
 // кликнули на стену (в таблице показываем длину стены)
-function showLengthWallUI( wall )
+function showLengthWallUI( wall ) 
 {
-	//UI.showToolbar('wall-2d-toolbar');
+	$('[nameId="wall_menu_1"]').show();
 		
 	var v = wall.userData.wall.v; 		
-	var d1 = Math.abs( v[6].x - v[0].x );		
-	var d2 = Math.abs( v[10].x - v[4].x );	
+	var x = Math.abs( v[6].x - v[0].x );		
+	var y = Math.abs( v[1].y - v[0].y );	
+	var z = Math.abs( v[4].z - v[0].z );
 	
-	//UI('wall_length_1').val(Math.round(d1 * 100) * 10);
-	//UI('wall_length_2').val(Math.round(d2 * 100) * 10);			
+	$('[nameId="size-wall-length"]').val(Math.round(x * 100)/100);
+	$('[nameId="size-wall-height"]').val(Math.round(y * 100)/100);
+	$('[nameId="size-wall-width"]').val(Math.round(z * 100)/100);
 
 	//toggleButtonMenuWidthWall(wall);
 }
@@ -21,7 +23,7 @@ function showLengthWallUI( wall )
 
 
 // после изменения на панели длины стены, нажали enter и миняем длину стены
-function inputLengthWall_1(cdm)
+function inputChangeWall_1(cdm)
 {
 	var wall = infProject.scene.array.wall[0];
 	//if(!clickO.obj){ return; } 
@@ -33,8 +35,49 @@ function inputLengthWall_1(cdm)
 	cdm.wall = wall;
 	cdm.type = 'wallRedBlue';
 	cdm.side = 'wall_length_1';
+	
+	var x = $('[nameId="size-wall-length"]').val();
+	var y = $('[nameId="size-wall-height"]').val();
+	var z = $('[nameId="size-wall-width"]').val();
+	
+	// если знаначения ввели с ошибкой, то исправляем
+	if(1==1)
+	{
+		x = x.replace(",", ".");
+		y = y.replace(",", ".");
+		z = z.replace(",", ".");
+		
+		var v = wall.userData.wall.v;
+		
+		var x2 = v[6].x - v[0].x;
+		var y2 = v[1].y - v[0].y;		
+		var z2 = Math.abs(v[4].z) + Math.abs(v[0].z);
+		
+		x = (isNumeric(x)) ? x : x2;
+		y = (isNumeric(y)) ? y : y2;
+		z = (isNumeric(z)) ? z : z2;
+	}
+	
+	
+	// ограничение размеров
+	if(1==1)
+	{
+		if(x > 30) { x = 30; }
+		else if(x < 0.5) { x = 0.5; }
+
+		if(y > 10) { y = 10; }
+		else if(y < 0.1) { y = 0.1; }	
+		
+		if(z > 10) { z = 10; }
+		else if(z < 0.02) { z = 0.02; }		
+	}	
+	
+	cdm.length = x;
+	cdm.height = y;
+	cdm.width = z;	
+	
 	console.log(cdm);
-	inputLengthWall_2(cdm);	// меняем только длину стены 
+	inputLengthWall_1(cdm);	// меняем только длину стены 
 	
 	if(camera == cameraWall) 
 	{ 
@@ -44,15 +87,17 @@ function inputLengthWall_1(cdm)
 		showRuleCameraWall(); 
 	}
 	
+	renderCamera();
+	
 	getInfoEvent21( wall, 'up' );		// redo
 }
 
 
 // миняем длину стены 
-function inputLengthWall_2(cdm)
+function inputLengthWall_1(cdm)
 {
 	var wall = cdm.wall;
-	var value = cdm.value;
+	var value = cdm.length;
 	
 	var wallR = detectChangeArrWall_2(wall);
 	clickMovePoint_BSP(wallR);
@@ -61,7 +106,36 @@ function inputLengthWall_2(cdm)
 	var p0 = wall.userData.wall.p[0];
 
 	var walls = [...new Set([...p0.w, ...p1.w])];	// получаем основную и соседние стены
- 	
+	
+	
+	// высота стены
+	if(cdm.height)
+	{
+		var h2 = cdm.height;
+		
+		var v = wall.geometry.vertices;	
+		v[1].y = h2;
+		v[3].y = h2;
+		v[5].y = h2;
+		v[7].y = h2;
+		v[9].y = h2;
+		v[11].y = h2;
+		wall.geometry.verticesNeedUpdate = true;
+		wall.geometry.elementsNeedUpdate = true;
+	}
+ 
+	// ширина стены
+	if(cdm.width)
+	{
+		var z = cdm.width/2;
+		
+		var v = wall.geometry.vertices;	
+		v[0].z = v[1].z = v[6].z = v[7].z = z;
+		v[4].z = v[5].z = v[10].z = v[11].z = -z;	
+		wall.geometry.verticesNeedUpdate = true;
+		wall.geometry.elementsNeedUpdate = true;
+	}
+ 
 	
 	var ns = 0;
 	var flag = true;
@@ -128,6 +202,48 @@ function inputLengthWall_2(cdm)
 	clickPointUP_BSP(wallR);
 }
 
+
+
+// изменяем ширину у всех стену
+function changeWidthWall( value )
+{
+	if(!isNumeric(value)) return;
+	value = Number(value);
+	value /= 100;
+
+	if(value < 0.005) { value = 0.005; }
+	if(value > 1) { value = 1; }	
+	
+	
+	//clickMovePoint_BSP( obj_line );
+	value /= 2;
+	
+	for(var i = 0; i < obj_line.length; i++)
+	{
+		var wall = obj_line[i];
+		console.log(wall.userData.id); 
+		var v = wall.geometry.vertices;
+						
+		var z = [value, -value];
+
+		v[0].z = v[1].z = v[6].z = v[7].z = z[0];
+		v[4].z = v[5].z = v[10].z = v[11].z = z[1];	
+
+		wall.geometry.verticesNeedUpdate = true; 
+		wall.geometry.elementsNeedUpdate = true;
+		
+		wall.geometry.computeBoundingSphere();
+		wall.geometry.computeBoundingBox();
+		wall.geometry.computeFaceNormals();	
+	}
+	
+	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
+	upLabelPlan_1(obj_line);
+	calculationAreaFundament_2();
+	//clickPointUP_BSP(obj_line);
+	
+	renderCamera();
+}	
 
 
 
