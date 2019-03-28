@@ -14,6 +14,10 @@ function createRulerWin(cdm)
 		arr[i] = new THREE.Mesh( createGeometryCube(1, 0.025, 0.025), new THREE.LineBasicMaterial( mat ) );
 		var v = arr[i].geometry.vertices; 
 		v[0].x = v[1].x = v[6].x = v[7].x = 0;
+		
+		v[0].y = v[3].y = v[4].y = v[7].y = -0.025/2;
+		v[1].y = v[2].y = v[5].y = v[6].y = 0.025/2;
+		
 		arr[i].geometry.verticesNeedUpdate = true;			
 		arr[i].visible = false;	 
 		arr[i].renderOrder = 1;

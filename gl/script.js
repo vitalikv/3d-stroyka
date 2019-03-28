@@ -1678,12 +1678,12 @@ function clickButton( event )
 
 function clickInterface(cdm)
 {
-	clickO.obj = null;
-	objDeActiveColor_2D();
-	mouseDownRight(); 	
-	
-	clickO.last_obj = null;
-	clickO.rayhit = null;
+	if(obj_selected)
+	{
+		deActiveSelected();
+		mouseDownRight();
+	}
+
 	
 	if(cdm)
 	{
@@ -1695,10 +1695,31 @@ function clickInterface(cdm)
 		else if(cdm.button == '3D')
 		{
 			changeCamera(camera3D);
+		}	
+		else if(cdm.button == 'point_1')
+		{
+			deActiveSelected();
+			clickO.button = 'create_wall';
+		}
+		else if(cdm.button == 'wd_1')
+		{
+			deActiveSelected();
+			clickO.button = 'create_wd_1';
 		}		
 	}
+	
+	return false;
 }	
 
+
+
+// декативируем старое выделение (объект и меню)
+function deActiveSelected()
+{
+	if ( camera == cameraTop ) { objDeActiveColor_2D(); }
+	else if ( camera == camera3D ) {  }
+	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }		
+}
 
 
 var dir_y = new THREE.Vector3(0, 1, 0);

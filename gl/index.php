@@ -328,7 +328,7 @@ if($url == '/calculator/raschet_kirpicha')
 	<?}?>
 	<div class="bottom_panel_1" data-action ='top_panel_1'>	
 	
-		<div class="toolbar" data-action ='top_panel_1' nameId='wd_wall_1'>
+		<div class="toolbar" data-action ='top_panel_1' nameId='wd_wall_1' style="display: none;">
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">
 				<div class="input-size">
@@ -420,13 +420,13 @@ if($url == '/calculator/raschet_kirpicha')
 	</div>
 	
 	<script>		
-		$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); return false; });
-		$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); return false; });
+		$('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
+		$('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
 		
-		$('[data-action="2D"]').on('mousedown', function(e) { clickInterface({button:'2D'}); return false; }); 	
-		$('[data-action="3D"]').mousedown(function () { clickInterface({button:'3D'}); return false; }); 	
-		$('[data-action="wall"]').mousedown(function () { clickInterface(); clickO.button = 'create_wall'; return false; }); 
-		$('[data-action="wd_1"]').mousedown(function () { clickInterface(); clickO.button = 'create_wd_1'; return false; });
+		$('[data-action="2D"]').on('mousedown', function(e) { return clickInterface({button:'2D'}); }); 	
+		$('[data-action="3D"]').mousedown(function () { return clickInterface({button:'3D'}); }); 	
+		$('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); }); 
+		$('[data-action="wd_1"]').mousedown(function () { return clickInterface({button:'wd_1'}); });
 		$('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 		
 		$('[link_form]').mousedown(function () 

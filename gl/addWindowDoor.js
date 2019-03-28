@@ -124,9 +124,10 @@ function addWD( cdm )
 	
 	
 	resetMenuUI();
-
-	objActiveColor_2D(obj);	  
-	clickO.last_obj = obj; 	
+ 	
+	deActiveSelected();
+	
+	clickRayHit( detectRayHit( event, 'click' ) ); 
 	
 	renderCamera();
 }

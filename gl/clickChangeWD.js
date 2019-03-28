@@ -340,7 +340,7 @@ function showRulerWD_3D(wd)
 		
 		label[i].rotation.set( 0, wall.rotation.y + rt, 0 );    
 		label[i].visible = true;			
-		upLabelCameraWall({label : label[i], text : Math.round(d * 100) * 10, color : 'rgba(0,0,0,1)', border : 'border line'});
+		upLabelCameraWall({label : label[i], text : Math.round(d * 100) / 100, color : 'rgba(0,0,0,1)', border : 'border line'});
 	}
 	
 	// боковые отсечки для линейки
