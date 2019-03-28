@@ -75,7 +75,7 @@ function findOnWallWD(wd)
 	
 	wd.userData.door.bound = { min : { x : wall.geometry.boundingBox.min.x + off, y : wall.geometry.boundingBox.min.y + off_2 }, max : { x : wall.geometry.boundingBox.max.x - off, y : wall.geometry.boundingBox.max.y - off } };
 	
-	if(arrWD.left)
+	if(arrWD.left && 1==2)
 	{
 		arrWD.left.updateMatrixWorld();
 		var pos = arrWD.left.worldToLocal( wd.position.clone() );	 	
@@ -87,7 +87,7 @@ function findOnWallWD(wd)
 	}
 	
 
-	if(arrWD.right)
+	if(arrWD.right && 1==2)
 	{
 		arrWD.right.updateMatrixWorld();
 		var pos = arrWD.right.worldToLocal( wd.position.clone() );	 	
@@ -318,7 +318,13 @@ function showTableWD(wd)
 	//else if(wd.userData.tag == 'window') { menu = 'window'; }
 	
 	menu = (wd.userData.tag == 'window') ? 'window' : 'door';
-	return;
+	
+	
+	$('[nameId="wd_menu_1"]').show();
+	
+	$('[nameId="size-wd-length"]').val(Math.round(d1 * 100) / 100);
+	$('[nameId="size-wd-height"]').val(Math.round(d2 * 100) / 100);
+	
 	if(menu == 'door')
 	{ 
 		//setUIPreview(wd, wd.pr_preview, wd.pr_catalog);
@@ -340,11 +346,18 @@ function showTableWD(wd)
 // измененяем ширину и высоту окна/двери, высоту над полом
 function inputWidthHeightWD(wd)
 {  
+	if(!wd) return;
+	if(wd.userData.tag == 'window' || wd.userData.tag == 'door'){}
+	else { return; }
+	
 	var wall = wd.userData.door.wall;
 	
-	var x = Number(UI('window_width_1').val()) / 1000;	 				// ширина окна	
-	var y = Number(UI('window_height_1').val()) / 1000;  				// высота окна
-	var h = Number(UI('window_above_floor_1').val()) / 1000 - wd.userData.door.h1;		// высота над полом	
+	var x = Number($('[nameId="size-wd-length"]').val());		// ширина окна	
+	var y = Number($('[nameId="size-wd-height"]').val());		// высота окна
+	var h = 0;					// высота над полом	
+	
+	
+	//var h = Number(UI('window_above_floor_1').val()) / 1000 - wd.userData.door.h1;		// высота над полом	
 	
 	h += (y - Math.abs( wd.geometry.boundingBox.max.y - wd.geometry.boundingBox.min.y )) / 2;    // вычитаем изменение высоты окна/двери  
 	
@@ -364,7 +377,7 @@ function inputWidthHeightWD(wd)
 	
 	clickShowRulerWD(wd);	// показываем линейки и контроллеры для окна/двери
 	
-	getInfoEvent7( wd );
+	renderCamera();
 }
 
 

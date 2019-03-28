@@ -35,7 +35,8 @@ document.body.addEventListener("keydown", function (e)
 			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
 			if(infProject.activeInput == 'size-wall-height') { changeHeightWall(); }
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
-			if(infProject.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }
+			if(infProject.activeInput == 'size-wall-length') { inputLengthWall_1({value:$('[data-action="size-wall-length"]').val()}); renderCamera(); }			
+			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }		
 		}		
 		 
 		return; 
@@ -162,10 +163,6 @@ function upKeyWall( cdm )
 		var u = infProject.activeInput;
 		if(u == 'wall_length_1' || u == 'wall_length_2') { inputLengthWall_1(); renderCamera(); } 
 		else if(u == 'wall_width_1') { /*getInfoEvent20(clickO.obj, 'down');*/ inputWidthWall(); renderCamera(); /*getInfoEvent20(clickO.obj, 'up');*/  } 
-		else if(u == 'door_width_1' || u == 'door_width_2' || u == 'window_width_1' || u == 'window_height_1' || u == 'window_above_floor_1') 
-		{		
-			inputWidthHeightWD(clickO.last_obj); renderCamera();
-		}
 		else if(1 == 6) { inputGlobalWidthWall(); } 
 	}
 }

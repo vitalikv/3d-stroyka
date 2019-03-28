@@ -357,12 +357,12 @@ if($url == '/calculator/raschet_kirpicha')
 			<div class="toolbar-menu">
 				<div class="input-size">
 					<div class="text_1">длина (м)</div>
-					<input type="text" data-action ='size-wd-length' data-input='' value = 0>
+					<input type="text" nameId='size-wd-length' data-input='wd_1' value = 0>
 				</div>
 				
 				<div class="input-size">
 					<div class="text_1">высота (м)</div>
-					<input type="text" data-action ='size-wd-height' data-input='' value = 0>
+					<input type="text" nameId='size-wd-height' data-input='wd_1' value = 0>
 				</div>	
 								
 				<div class="button1-wrap">
@@ -441,7 +441,11 @@ if($url == '/calculator/raschet_kirpicha')
 		$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 		
 		$('input').on('focus', function () {  });
-		$('input').on('focus keyup change', function () { infProject.activeInput = $(this).data('action'); });
+		$('input').on('focus keyup change', function () 
+		{ 
+			infProject.activeInput = $(this).data('action');
+			if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
+		});
 		$('input').blur(function () { infProject.activeInput = ''; });	
 
 		
@@ -475,7 +479,9 @@ if($url == '/calculator/raschet_kirpicha')
 	{
 		input.focus();
 		infProject.activeDiv = input;
-		infProject.activeInput = input.data('action'); 
+		infProject.activeInput = input.data('action');  
+		
+		if(input.data('action') == undefined) { infProject.activeInput = input.data('input'); }
 		console.log(infProject.activeInput);
 		//let length = input[0].value.toString().length;
 		//input[0].setSelectionRange(0, length);

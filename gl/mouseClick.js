@@ -509,9 +509,14 @@ function showMenuUI(obj)
 {
 	var tag = obj.userData.tag;
 	
-	if(tag == 'wall') { $('[nameId="wd_wall_1"]').show(); }
-	else if(tag == 'window') { $('[nameId="wd_menu_1"]').show(); }
-	else if(tag == 'door') { $('[nameId="wd_menu_1"]').show(); }		
+	if(tag == 'wall') 
+	{ 
+		
+		$('[nameId="wd_wall_1"]').show();
+		
+	}
+	else if(tag == 'window') { showTableWD(obj); }
+	else if(tag == 'door') { showTableWD(obj); }		
 }
 
 

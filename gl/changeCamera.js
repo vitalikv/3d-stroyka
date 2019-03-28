@@ -6,6 +6,8 @@
 // переключение камеры
 function changeCamera(cam)
 {  
+	deActiveSelected();
+	
 	camera = cam;
 	
 	if(camera == cameraTop)
