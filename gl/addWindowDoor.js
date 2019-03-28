@@ -3,12 +3,11 @@
 
 
 // кликнули на стену или окно/дверь, когда к мышки привязана вставляемая дверь 
-function clickToolWD()
+function clickToolWD(obj)
 { 
-	var obj = clickO.last_obj;
 	  
 	if(obj)
-	{   
+	{    
 		// кликнули на стену, когда добавляем окно
 		if(obj.userData.tag == 'free_dw') 
 		{ 

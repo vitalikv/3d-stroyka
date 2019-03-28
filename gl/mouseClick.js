@@ -234,7 +234,7 @@ function clickRayHit( rayhit )
 
 	if(camera == cameraTop)
 	{  
-		if(clickToolWD()) { console.log(clickO.last_obj); }
+		if(clickToolWD(obj_selected)) { console.log(clickO.last_obj); }
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 	}
@@ -244,7 +244,7 @@ function clickRayHit( rayhit )
 	}	
 	else if(camera == cameraWall)
 	{
-		if(clickToolWD()) { console.log(clickO.last_obj); }
+		if(clickToolWD(obj_selected)) { console.log(clickO.last_obj); }
 		else if ( tag == 'wall' ) { clickWall_3D( rayhit ); }
 		else if ( tag == 'window' ) { clickWD( rayhit ); }
 		else if ( tag == 'door' ) { clickWD( rayhit ); }
