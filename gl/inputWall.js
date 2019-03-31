@@ -111,7 +111,7 @@ function inputLengthWall_1(cdm)
 	// высота стены
 	if(cdm.height)
 	{
-		var h2 = cdm.height;
+		var h2 = Number(cdm.height);
 		
 		var v = wall.geometry.vertices;	
 		v[1].y = h2;
@@ -120,8 +120,8 @@ function inputLengthWall_1(cdm)
 		v[7].y = h2;
 		v[9].y = h2;
 		v[11].y = h2;
-		wall.geometry.verticesNeedUpdate = true;
-		wall.geometry.elementsNeedUpdate = true;
+		wall.geometry.verticesNeedUpdate = true; 
+		wall.geometry.elementsNeedUpdate = true;	
 	}
  
 	// ширина стены

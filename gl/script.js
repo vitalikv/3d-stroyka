@@ -1515,6 +1515,7 @@ function changeHeightWall()
 		v[9].y = h2;
 		v[11].y = h2;
 		obj_line[i].geometry.verticesNeedUpdate = true;
+		obj_line[i].geometry.elementsNeedUpdate = true;
 	}
 	
 	upLabelPlan_1( obj_line );
