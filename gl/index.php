@@ -82,6 +82,17 @@ if($url == '/calculator/raschet_kirpicha')
 	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
 }
+if($url == '/calculator/raschet_blokov')	
+{ 
+	$title = 'Расчет блоков для стены 3D'; 
+	$nameId = 'расчет блоков'; 
+	$interface['width_1'] = 0;
+	$interface['height_1'] = 0;
+	$interface['form_1'] = 0;
+	$interface['wall_1'] = 0;
+	$interface['right_panel_1'] = 0;
+	$interface['bottom_panel_1'] = 0;
+}
 ?>
 
 
@@ -117,7 +128,7 @@ if($url == '/calculator/raschet_kirpicha')
 	infProject.settings.project = 'shape3';
 	infProject.settings.height = 2.5;
 	infProject.settings.floor = { o: false, posY: 0.1, height : 0.1, changeY: false, areaPoint: 'center', material : null }
-	infProject.settings.wall = { width : 0.3, label : '', dist : 'center', material : null } 
+	infProject.settings.wall = { width : 0.3, label : '', dist : 'center', material : null, block : {} } 
 	infProject.settings.calc = { fundament: '' }
 	infProject.settings.land = { o: false }
 	infProject.settings.unit = { wall: 1, floor: 1 }
@@ -187,13 +198,25 @@ if($url == '/calculator/raschet_kirpicha')
 	}
 	else if(infProject.nameId == 'расчет кирпича') 
 	{ 
-		infProject.load.img = ['img/load/beton.jpg'];
+		infProject.load.img = ['img/load/beton.jpg', 'img/load/one_kirpich.jpg'];
 		infProject.settings.project = 'wall_kirpich';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
+		
+		infProject.settings.wall.block.size = {x:0.25, y:0.065, z:0.125};		// размер блока кирпича
+		infProject.settings.wall.block.material = { o : null, link : 'img/load/one_kirpich.jpg' };
 	}	
-
+	else if(infProject.nameId == 'расчет блоков') 
+	{ 
+		infProject.load.img = ['img/load/block_1.jpg', 'img/load/block_1.jpg'];
+		infProject.settings.project = 'wall_block';
+		infProject.settings.camera.type = 'front';
+		infProject.settings.interface.button.cam2d = 'front';
+		
+		infProject.settings.wall.block.size = {x:0.39, y:0.188, z:0.190};		// размер блока кирпича
+		infProject.settings.wall.block.material = { o : null, link : 'img/load/block_1.jpg' };
+	}	
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject, <?=$interface['estimate']?>);

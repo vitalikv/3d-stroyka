@@ -934,9 +934,8 @@ function createToolDoorPoint()
 
 function createFormWallR()
 {	
-	var size = {x:0.25, y:0.065, z:0.125};		// размер блока кирпича
-	var seam = 0.01;							// толщина шва
-
+	var size = infProject.settings.wall.block.size;		// размер блока кирпича
+	var seam = 0.01;									// толщина шва
 
 	// создаем стену
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
@@ -981,9 +980,26 @@ function createFormWallR()
 	var sign = -1;
 	var geometry = createGeometryCube(size.x, size.y, size.z);
 	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
-	material.map = new THREE.TextureLoader().load(infProject.path+'img/load/one_kirpich.jpg');  
-	material.lightMap = lightMap_1;
-	material.needsUpdate = true; 	
+
+	new THREE.TextureLoader().load(infProject.path+infProject.settings.wall.block.material.link, function ( image )  
+	{
+		material.color = new THREE.Color( 0xffffff );
+		var texture = image;			
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+		
+		texture.repeat.x = 1;
+		texture.repeat.y = 1;			
+
+		
+		texture.needsUpdate = true;
+		
+		material.map = texture; 
+		material.lightMap = lightMap_1;
+		material.needsUpdate = true; 					
+		
+		renderCamera();
+	});	
 	
 	
 	for ( var i2 = 0; i2 < countY; i2++ )
@@ -1192,7 +1208,7 @@ function createForm(cdm)
 	
 	//width_wall = 0.3;
 	
-	if(form == 'wall_kirpich') { createFormWallR(); }
+	if(form == 'wall_kirpich' || form == 'wall_block') { createFormWallR(); } 
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	

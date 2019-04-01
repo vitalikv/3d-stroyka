@@ -212,10 +212,10 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 						расчет кирпича
 					</div>
 				</a>			
-				<a class="ind_bl_1" href="calculator/svaynyy_fundament">
-					<div class="block_form_1_image_wrap"><img src="/img/3.jpg"></div>
+				<a class="ind_bl_1" href="calculator/raschet_blokov">
+					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
 					<div class="ind_text_3">
-						свайный фундамент
+						расчет блоков
 					</div>
 				</a>			
 				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">

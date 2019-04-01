@@ -128,6 +128,25 @@ function inputLengthWall_1(cdm)
 		v[4].z = v[5].z = v[10].z = v[11].z = -z;	
 		wall.geometry.verticesNeedUpdate = true;
 		wall.geometry.elementsNeedUpdate = true;
+		
+		
+		// меняем ширину wd
+		for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
+		{ 
+			var wd = wall.userData.wall.arrO[i];	
+			var v = wd.geometry.vertices;
+			var f = wd.userData.door.form.v;
+			var v2 = wall.geometry.vertices;
+			
+			for ( var i2 = 0; i2 < f.minZ.length; i2++ ) { v[f.minZ[i2]].z = v2[4].z; }
+			for ( var i2 = 0; i2 < f.maxZ.length; i2++ ) { v[f.maxZ[i2]].z = v2[0].z; }	
+
+			wd.geometry.verticesNeedUpdate = true; 
+			wd.geometry.elementsNeedUpdate = true;
+			wd.geometry.computeBoundingSphere();
+			wd.geometry.computeBoundingBox();
+			wd.geometry.computeFaceNormals();		
+		}		
 	}
  
 	
