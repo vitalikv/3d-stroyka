@@ -312,8 +312,8 @@ function showRulerWD_3D(wd)
 		rt = Math.PI;
 	}
 	
-	w2[2] = new THREE.Vector3(p[2].x, 0, p[2].z);
-	w2[3] = new THREE.Vector3(p[3].x, wall.userData.wall.height_1, p[3].z);
+	w2[2] = new THREE.Vector3(p[2].x, arrWallFront.bounds.min.y.y, p[2].z);
+	w2[3] = new THREE.Vector3(p[3].x, arrWallFront.bounds.max.y.y, p[3].z);
 
 	
 	var line = arrSize.format_2.line;
