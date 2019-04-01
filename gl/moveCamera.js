@@ -512,15 +512,25 @@ function cameraZoom3D( delta, z )
 	var dir = new THREE.Vector3().subVectors( centerCam, camera.position ).normalize();
 	dir = new THREE.Vector3().addScaledVector( dir, vect );
 	dir.addScalar( 0.001 );
-	var pos3 = new THREE.Vector3().addVectors( camera.position, dir );
+	var pos3 = new THREE.Vector3().addVectors( camera.position, dir );	
+
+
+	var qt = quaternionDirection( new THREE.Vector3().subVectors( centerCam, camera.position ).normalize() );
+	var v1 = localTransformPoint( new THREE.Vector3().subVectors( centerCam, pos3 ), qt );
 
 
 	var offset = new THREE.Vector3().subVectors( pos3, pos2 );
 	var pos2 = new THREE.Vector3().addVectors( centerCam, offset );
 
-	if ( delta < 0 ) { if ( pos2.y >= 0 ) { centerCam.copy( pos2 ); } }
-
-	if ( pos3.distanceTo( centerCam ) >= 0.5 ) { camera.position.copy( pos3 ); }
+	var centerCam_2 = centerCam.clone();
+	
+	if ( delta < 0 ) { if ( pos2.y >= 0 ) { centerCam_2.copy( pos2 ); } }
+	
+	if ( v1.z >= 0.5) 
+	{ 
+		centerCam.copy(centerCam_2);
+		camera.position.copy( pos3 ); 	
+	}	
 }
 
 
