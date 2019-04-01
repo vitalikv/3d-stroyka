@@ -695,6 +695,12 @@ function getRotationHorVertCamWall()
 // показываем линейки длины/высоты стены в режиме cameraWall
 function showRuleCameraWall()
 {
+	if(camera != cameraWall) return;
+	
+	arrWallFront.wall = [];
+	arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
+	detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(wall, 1));			
+	
 	var wall = arrWallFront.wall[0].obj;
 	var index = arrWallFront.wall[0].index;
 	var rt = (index == 1) ? 0 : Math.PI;

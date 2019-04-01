@@ -76,16 +76,10 @@ function inputChangeWall_1(cdm)
 	cdm.height = y;
 	cdm.width = z;	
 	
-	console.log(cdm);
+	
 	inputLengthWall_1(cdm);	// меняем только длину стены 
 	
-	if(camera == cameraWall) 
-	{ 
-		arrWallFront.wall = [];
-		arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
-		detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(wall, 1));	
-		showRuleCameraWall(); 
-	}
+	showRuleCameraWall();	// обновляем размеры стены
 	
 	renderCamera();
 	

@@ -33,9 +33,7 @@ function changeCamera(cam)
 	{  
 		if(infProject.scene.array.wall.length > 0)
 		{  
-			arrWallFront.wall = [];
-			arrWallFront.wall = [{ obj : infProject.scene.array.wall[0], index : 1 }];
-			detectDirectionWall_1(infProject.scene.array.wall[0], 1, detectRoomWallSide(wall, 1));			
+			showRuleCameraWall();		// показываем линейки/размеры высоты/ширины стены 
 
 			
 			var wall = infProject.scene.array.wall[0]; 
@@ -56,8 +54,7 @@ function changeCamera(cam)
 			rotY = (index == 1) ? rotY + Math.PI : rotY;
 			cameraWall.rotation.set(0, rotY, 0); 
 
-			detectZoomScreenWall();		// выставляем cameraWall, так чтобы обхватывала всю стену
-			showRuleCameraWall();		// показываем линейки/размеры высоты/ширины стены 
+			detectZoomScreenWall();		// выставляем cameraWall, так чтобы обхватывала всю стену			
 		}
 		else
 		{
