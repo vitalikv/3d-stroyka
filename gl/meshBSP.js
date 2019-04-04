@@ -183,6 +183,8 @@ function cutMeshBlockBSP( wd, wall )
 	wd2.geometry.computeBoundingBox();
 	var bound = wd2.geometry.boundingBox;
 	
+	var size = infProject.settings.wall.block.size;
+	
 	for ( var i = 0; i < arrB.length; i++ )
 	{
 		if(arrB[i].geometry.vertices.length == 0) continue;		
@@ -190,12 +192,12 @@ function cutMeshBlockBSP( wd, wall )
 		var ps = wd2.worldToLocal( arrB[i].position.clone() );
 		
 		// если за пределом wd, то не вырезаем
-		if(ps.x < bound.min.x) { continue; }
-		if(ps.x > bound.max.x) { continue; }
-		if(ps.y < bound.min.y) { continue; }
-		if(ps.y > bound.max.y) { continue; }
-		if(ps.z < bound.min.z) { continue; }
-		if(ps.z > bound.max.z) { continue; }	
+		if(ps.x < bound.min.x - size.x/2) { continue; }
+		if(ps.x > bound.max.x + size.x/2) { continue; }
+		if(ps.y < bound.min.y - size.y/2) { continue; }
+		if(ps.y > bound.max.y + size.y/2) { continue; }
+		if(ps.z < bound.min.z - size.z/2) { continue; }
+		if(ps.z > bound.max.z + size.z/2) { continue; }	
 						
 		
 		var wdBSP = new ThreeBSP( wd2 );    

@@ -243,6 +243,13 @@ function moveWD_2( wd, pos )
 	
 	MeshBSP( wd, objsBSP );
 	
+	var arrB = wall.userData.wall.block.arr;
+	for ( var i = 0; i < arrB.length; i++ )
+	{
+		arrB[i].geometry = wall.userData.wall.block.geometry.clone();
+	}
+	cutMeshBlockBSP( wd, wall );
+	
 	//showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
 	showRulerWD_3D(wd);
 }

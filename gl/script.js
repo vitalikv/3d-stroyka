@@ -1001,7 +1001,7 @@ function createFormWallR()
 		renderCamera();
 	});	
 	
-	
+	wall.userData.wall.block.geometry = geometry.clone();
 	for ( var i2 = 0; i2 < countY; i2++ )
 	{
 		sign = (sign > 0) ? -1 : 1;
