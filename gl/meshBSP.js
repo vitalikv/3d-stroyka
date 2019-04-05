@@ -65,21 +65,21 @@ function clickMoveWD_BSP( wd )
 function createCloneWD_BSP( wd )
 {
 	//console.log('clone WD (но чушь шире оригинала) (для boolean)');
-	
-	objClone.geometry = wd.geometry.clone(); 
-	objClone.position.copy( wd.position );
-	objClone.rotation.copy( wd.rotation );
+	var obj = new THREE.Mesh();
+	obj.geometry = wd.geometry.clone(); 
+	obj.position.copy( wd.position );
+	obj.rotation.copy( wd.rotation );
 	
 	//var width = wd.userData.door.width / 2 + 0.3;
 	var minZ = wd.userData.door.form.v.minZ;
 	var maxZ = wd.userData.door.form.v.maxZ;
 	
-	var v = objClone.geometry.vertices;
+	var v = obj.geometry.vertices;
 	
 	for ( var i = 0; i < minZ.length; i++ ) { v[minZ[i]].z -= 0.2; }
 	for ( var i = 0; i < maxZ.length; i++ ) { v[maxZ[i]].z += 0.2; }
 
-	return objClone;	
+	return obj;		
 }
 
 
@@ -172,8 +172,10 @@ function clickPointUP_BSP( arrW )
 
 
 // вырезаем отверстие под окно/дверь 
-function cutMeshBlockBSP( wd, wall )
+function cutMeshBlockBSP( wd )
 {  
+	var wall = wd.userData.door.wall;
+
 	if(wall.userData.wall.block.arr.length == 0) return;
 	
 	var arrB = wall.userData.wall.block.arr;

@@ -366,21 +366,21 @@ function onDocumentMouseUp( event )
 
 	if ( !long_click && camera == camera3D ) { showMenuObjUI_3D( clickO.obj ); }
 	
-	if ( obj_selected )  
+	var obj = obj_selected;	
+	
+	if(obj)  
 	{
-		if ( obj_selected.userData.tag == 'point' ) 
+		var tag = obj.userData.tag;
+		console.log(tag);
+		if(tag == 'point') 
 		{  		
 			var point = obj_selected;
-			if(!obj_selected.userData.point.type) { clickCreateWall(obj_selected); }
-			
+			if(!obj_selected.userData.point.type) { clickCreateWall(obj_selected); }			
 			clickPointMouseUp(point);
 		}
-		else if ( obj_selected.userData.tag == 'wall' ) 
-		{
-			clickWallMouseUp(obj_selected);
-		}
-		
-		
+		else if(tag == 'wall') { clickWallMouseUp(obj); }
+		else if(tag == 'window' || obj.userData.tag == 'door') { clickWDMouseUp(obj); }	
+		else if(tag == 'controll_wd') { clickMouseUpToggleWD(obj); } 
 	}
 
 	if(obj_selected)

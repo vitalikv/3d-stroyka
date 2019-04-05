@@ -197,6 +197,8 @@ var wallClone = new THREE.Mesh();
 
 function moveWD_2( wd, pos )
 {
+	var wall = wd.userData.door.wall;
+	
 	if(param_win.click)  
 	{ 
 		param_win.click = false; 
@@ -207,9 +209,28 @@ function moveWD_2( wd, pos )
 		wallClone.rotation.copy( wd.userData.door.wall.rotation );
 		
 		objsBSP = { wall : wallClone, wd : createCloneWD_BSP( wd ) };
+		
+		// меняем цвет у wd
+		wd.material.depthTest = false;  
+		wd.material.opacity = 1.0; 		 	
+
+		// полностью восстанавливаем кирпичную стену
+		var arrB = wall.userData.wall.block.arr;
+		for ( var i = 0; i < arrB.length; i++ )
+		{
+			arrB[i].geometry = wall.userData.wall.block.geometry.clone();
+		}
+
+		// верзаем в кирпичах wd, кроме того wd которое мы перетаскиваем
+		var arrO = wall.userData.wall.arrO;
+		for ( var i = 0; i < arrO.length; i++ )
+		{
+			if(arrO[i] == wd) continue;
+			
+			cutMeshBlockBSP( arrO[i] );	
+		}
+		
 	}
-	
-	var wall = wd.userData.door.wall;
 	
 	pos = new THREE.Vector3().addVectors( wd.userData.door.offset, pos );			
 	pos = wall.worldToLocal( pos.clone() );
@@ -241,14 +262,9 @@ function moveWD_2( wd, pos )
 	
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].position.add( pos2 ); } 	// меняем расположение контроллеров
 	
-	MeshBSP( wd, objsBSP );
 	
-	var arrB = wall.userData.wall.block.arr;
-	for ( var i = 0; i < arrB.length; i++ )
-	{
-		arrB[i].geometry = wall.userData.wall.block.geometry.clone();
-	}
-	cutMeshBlockBSP( wd, wall );
+	
+
 	
 	//showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
 	showRulerWD_3D(wd);
@@ -639,11 +655,24 @@ function сhangeSizePosWD( wd, pos, x, y )
 // сняли клик с мышки после токо как кликнули на стену
 function clickWDMouseUp(wd)
 {
-	clickToolDoorUp(wd);
+	MeshBSP( wd, objsBSP );
+	 
+	if(camera == cameraTop)
+	{ 
+		wd.material.depthTest = false;  
+		wd.material.opacity = 1.0; 		 	
+	}
+	else
+	{ 		
+		wd.material.depthTest = true;
+		wd.material.transparent = true;
+		wd.material.opacity = 0;					
+	}	
 	
-	if(comparePos(wd.userData.door.last.pos, wd.position)) { return; }		// не двигали
+	cutMeshBlockBSP( wd );
+	//clickToolDoorUp(wd);
 	
-	getInfoEvent7( wd );	
+	//if(comparePos(wd.userData.door.last.pos, wd.position)) { return; }		// не двигали	
 }
 
 
