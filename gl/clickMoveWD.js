@@ -655,6 +655,8 @@ function сhangeSizePosWD( wd, pos, x, y )
 // сняли клик с мышки после токо как кликнули на стену
 function clickWDMouseUp(wd)
 {
+	if(param_win.click) return;
+	
 	MeshBSP( wd, objsBSP );
 	 
 	if(camera == cameraTop)

@@ -187,20 +187,25 @@ function cutMeshBlockBSP( wd )
 	
 	var size = infProject.settings.wall.block.size;
 	
+
+	
 	for ( var i = 0; i < arrB.length; i++ )
 	{
 		if(arrB[i].geometry.vertices.length == 0) continue;		
 		
-		var ps = wd2.worldToLocal( arrB[i].position.clone() );
+		if(1==1)
+		{
+			var ps = wd2.worldToLocal( arrB[i].position.clone() );
+			
+			// если за пределом wd, то не вырезаем 
+			if(ps.x < bound.min.x - size.x/1) { continue; }
+			if(ps.x > bound.max.x + size.x/1) { continue; }
+			if(ps.y < bound.min.y - size.y/1) { continue; }
+			if(ps.y > bound.max.y + size.y/1) { continue; }
+			if(ps.z < bound.min.z - size.z/1) { continue; }
+			if(ps.z > bound.max.z + size.z/1) { continue; }											
+		}
 		
-		// если за пределом wd, то не вырезаем
-		if(ps.x < bound.min.x - size.x/2) { continue; }
-		if(ps.x > bound.max.x + size.x/2) { continue; }
-		if(ps.y < bound.min.y - size.y/2) { continue; }
-		if(ps.y > bound.max.y + size.y/2) { continue; }
-		if(ps.z < bound.min.z - size.z/2) { continue; }
-		if(ps.z > bound.max.z + size.z/2) { continue; }	
-						
 		
 		var wdBSP = new ThreeBSP( wd2 );    
 		var wallBSP = new ThreeBSP( arrB[i] ); 			// копируем выбранную стену	
