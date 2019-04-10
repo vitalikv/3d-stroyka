@@ -979,6 +979,12 @@ function createFormWallR()
 	
 	var sign = -1;
 	var geometry = createGeometryCube(size.x, size.y, size.z);
+	var v = geometry.vertices;
+	v[3].x = v[2].x = v[5].x = v[4].x = size.x;
+	v[0].x = v[1].x = v[6].x = v[7].x = 0;
+	geometry.verticesNeedUpdate = true; 
+	geometry.elementsNeedUpdate = true;		
+	
 	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
 
 	new THREE.TextureLoader().load(infProject.path+infProject.settings.wall.block.material.link, function ( image )  
@@ -1006,20 +1012,28 @@ function createFormWallR()
 	{
 		sign = (sign > 0) ? -1 : 1;
 		
-		for ( var i = 0; i < countX; i++ )
+		var i = 0;
+		while (dist > (size.x+seam)*i) 
 		{
+			var pos2 = point1.position.clone();
+			//pos2.x += ((size.x/2) * sign) * i;
+			
+			pos2.x += (size.x + seam) * i;			
+			pos2.y += (size.y + seam) * i2;			
+			
+			
 			var block = new THREE.Mesh( geometry, material );
-			block.position.copy(pos[i]);
+			block.position.copy(pos2);
 			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
 			scene.add(block);
 
 			block.userData.tag = 'block_1';
 			block.userData.setX = { num : i, last : countX-1 };
 			block.userData.setY = { num : i2, last : countY-1 };
-			
-			pos[i].x += (size.x/2) * sign;
-			pos[i].y += size.y + seam;			
+
+			i++;
 		}		
+		
 	}	
 	
 
