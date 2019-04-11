@@ -945,28 +945,17 @@ function createFormWallR()
 	
 	
 	// создаем инструмент для резки кирпичей по бокам стены и сверху
-	var geometry = createGeometryWall(1, height + 0.5, width + 0.4, 0);
+	var geometry = createGeometryWall(1, 1, 1, 0);
 	var material = new THREE.MeshLambertMaterial( { color : 0xffff00 } );
 	
 	var cutWall = [];
 	
-	cutWall[0] = new THREE.Mesh( geometry, material );	
-	cutWall[0].visible = false;
-	scene.add(cutWall[0]);
-	cutWall[1] = new THREE.Mesh( geometry, material );	
-	cutWall[1].visible = false;
-	scene.add(cutWall[1]);
-	
-	var geometry = createGeometryWall(point1.position.distanceTo(point2.position), 1, width + 0.4, 0);
-	var v = geometry.vertices;
-	v[0].x = v[1].x = v[2].x = v[3].x = v[4].x = v[5].x = v[5].x-1;
-	v[6].x = v[7].x = v[8].x = v[9].x = v[10].x = v[11].x = v[11].x+1;
-	geometry.verticesNeedUpdate = true; 
-	geometry.elementsNeedUpdate = true;	
-	
-	cutWall[2] = new THREE.Mesh( geometry, material );	
-	cutWall[2].visible = false;
-	scene.add(cutWall[2]);
+	for(var i = 0; i < 3; i++)
+	{
+		cutWall[i] = new THREE.Mesh( geometry.clone(), material );	
+		cutWall[i].visible = false;
+		scene.add(cutWall[i]);		
+	}
 	
 	infProject.tools.cutWall = cutWall;
 	// создаем инструмент для резки кирпичей по бокам стены и сверху
@@ -1069,21 +1058,48 @@ function cutSideBlockWall(cdm)
 	
 	var p = wall.userData.wall.p;
 	
-	infProject.tools.cutWall[0].position.copy(p[0].position);	
-	infProject.tools.cutWall[0].rotation.copy(wall.rotation);
-	infProject.tools.cutWall[0].position.y -= 0.1;
-	infProject.tools.cutWall[0].rotation.y += Math.PI;
+	var dist = p[0].position.distanceTo(p[1].position);
 	
-	infProject.tools.cutWall[1].position.copy(p[1].position);
-	infProject.tools.cutWall[1].rotation.copy(wall.rotation);
-	infProject.tools.cutWall[1].position.y -= 0.1; 
+	// инструмент для резки кирпичей
+	var cutWall = infProject.tools.cutWall;
 	
-	infProject.tools.cutWall[2].position.copy(wall.position);	
-	infProject.tools.cutWall[2].rotation.copy(wall.rotation);
-	infProject.tools.cutWall[2].position.y = wall.userData.wall.height_1;	
+	var resize = [{x1: 0, x2 : 1, y1 : -1, y2 : wall.userData.wall.height_1 + 1}];
+	resize[1] = {x1: 0, x2 : 1, y1 : -1, y2 : wall.userData.wall.height_1 + 1};
+	resize[2] = {x1: -1, x2 : dist + 1, y1 : 0, y2 : 1};
+	
+	for(var i = 0; i < cutWall.length; i++)
+	{
+		var v = cutWall[i].geometry.vertices;
+		v[0].x = v[1].x = v[2].x = v[3].x = v[4].x = v[5].x = resize[i].x1;
+		v[6].x = v[7].x = v[8].x = v[9].x = v[10].x = v[11].x = resize[i].x2;
+		
+		v[0].y = v[2].y = v[4].y = v[6].y = v[8].y = v[10].y = resize[i].y1;
+		v[1].y = v[3].y = v[5].y = v[7].y = v[9].y = v[11].y = resize[i].y2;
+
+		v[0].z = v[1].z = v[6].z = v[7].z = wall.userData.wall.width + 0.5;
+		v[4].z = v[5].z = v[10].z = v[11].z = -wall.userData.wall.width - 0.5;
+		
+		cutWall[i].geometry.verticesNeedUpdate = true; 
+		cutWall[i].geometry.elementsNeedUpdate = true;			
+	}
 	
 	
-	// обрезаем края по бокам
+	cutWall[0].position.copy(p[0].position);	
+	cutWall[0].rotation.copy(wall.rotation);
+	cutWall[0].position.y -= 0.1;
+	cutWall[0].rotation.y += Math.PI;
+	
+	cutWall[1].position.copy(p[1].position);
+	cutWall[1].rotation.copy(wall.rotation);
+	cutWall[1].position.y -= 0.1; 
+	
+	cutWall[2].position.copy(wall.position);	
+	cutWall[2].rotation.copy(wall.rotation);
+	cutWall[2].position.y = wall.userData.wall.height_1;	
+	// инструмент для резки кирпичей
+	
+	
+	// обрезаем кирпичи по бокам стены
 	var arrB = wall.userData.wall.block.arr;
 	
 	for ( var i = 0; i < arrB.length; i++ )
