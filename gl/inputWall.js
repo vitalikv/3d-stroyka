@@ -81,13 +81,17 @@ function inputChangeWall_1(cdm)
 	
 	showRuleCameraWall();	// обновляем размеры стены
 	
+	resetSideBlockWall({wall:wall});	// обновляем кирпичи
+	cutSideBlockWall({wall:wall});		// обрезаем кирпичи по бокам стены	
+	for(var i = 0; i < wall.userData.wall.arrO.length; i++) { cutMeshBlockBSP( wall.userData.wall.arrO[i] ); }	// вырезаем wd в кирпичах 
+	
 	renderCamera();
 	
 	getInfoEvent21( wall, 'up' );		// redo
 }
 
 
-// миняем длину стены 
+// миняем через input длину/высоту/ширину стены 
 function inputLengthWall_1(cdm)
 {
 	var wall = cdm.wall;
@@ -115,7 +119,9 @@ function inputLengthWall_1(cdm)
 		v[9].y = h2;
 		v[11].y = h2;
 		wall.geometry.verticesNeedUpdate = true; 
-		wall.geometry.elementsNeedUpdate = true;	
+		wall.geometry.elementsNeedUpdate = true;
+
+		wall.userData.wall.height_1 = Math.round(h2 * 100) / 100;
 	}
  
 	// ширина стены

@@ -180,6 +180,10 @@ function cutMeshBlockBSP( wd )
 	
 	var arrB = wall.userData.wall.block.arr;
 	var wd2 = createCloneWD_BSP( wd );
+		
+	
+	var v = wd2.geometry.vertices; 	
+	for ( var i = 0; i < v.length; i++ ) { v[i].x *= 0.999; v[i].y *= 0.999; }	
 	
 	wd2.updateMatrixWorld();
 	wd2.geometry.computeBoundingBox();

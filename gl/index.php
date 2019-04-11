@@ -230,6 +230,7 @@ if($url == '/calculator/raschet_blokov')
 	<script src="<?=$path?>meshBSP.js"></script> 	
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     
+	<script src="<?=$path?>createWallBlock.js?<?=$vrs?>"></script>
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addWindowDoor.js?<?=$vrs?>"></script>
