@@ -944,7 +944,7 @@ function createFormWallR()
 	var height = 2;
 	
 	
-	// создаем инструмент для резки кирпичей по бокам стены
+	// создаем инструмент для резки кирпичей по бокам стены и сверху
 	var geometry = createGeometryWall(1, height + 0.5, width + 0.4, 0);
 	var material = new THREE.MeshLambertMaterial( { color : 0xffff00 } );
 	
@@ -957,27 +957,24 @@ function createFormWallR()
 	cutWall[1].visible = false;
 	scene.add(cutWall[1]);
 	
+	var geometry = createGeometryWall(point1.position.distanceTo(point2.position), 1, width + 0.4, 0);
+	var v = geometry.vertices;
+	v[0].x = v[1].x = v[2].x = v[3].x = v[4].x = v[5].x = v[5].x-1;
+	v[6].x = v[7].x = v[8].x = v[9].x = v[10].x = v[11].x = v[11].x+1;
+	geometry.verticesNeedUpdate = true; 
+	geometry.elementsNeedUpdate = true;	
+	
+	cutWall[2] = new THREE.Mesh( geometry, material );	
+	cutWall[2].visible = false;
+	scene.add(cutWall[2]);
+	
 	infProject.tools.cutWall = cutWall;
-	// создаем инструмент для резки кирпичей по бокам стены
+	// создаем инструмент для резки кирпичей по бокам стены и сверху
 	
 	
 	var wall = createOneWall3( point1, point2, width, {height: height} );
-	
-	var pos = [];
-	var dist = point1.position.distanceTo(point2.position);
-	var countX = Math.ceil(dist/(size.x+seam));			// окргление в большую сторону	
-	var countY = Math.ceil(height/(size.y+seam));
-	
-	
-	for(var i = 0; i < countX; i++)
-	{
-		var x = i * size.x + (i * seam);
-		pos[i] = new THREE.Vector3(x,0,0);
-		pos[i].add(point1.position);
-	}
 
-	
-	var sign = -1;
+	// кирпич
 	var geometry = createGeometryCube(size.x, size.y, size.z);
 	var v = geometry.vertices;
 	v[3].x = v[2].x = v[5].x = v[4].x = size.x;
@@ -1007,20 +1004,36 @@ function createFormWallR()
 		renderCamera();
 	});	
 	
+	
 	wall.userData.wall.block.geometry = geometry.clone();
-	for ( var i2 = 0; i2 < countY; i2++ )
+	
+	
+	var dist = point1.position.distanceTo(point2.position);
+	var pos = [[point1.position.clone()],[point1.position.clone().add(new THREE.Vector3(-size.x/2, 0, 0))]];
+	
+	var numY = 0;
+	var countY = pos.length;
+	var pos2 = pos[0][0];
+	
+	var i2 = 0;
+	while (height > pos2.y + (size.y+seam))
 	{
-		sign = (sign > 0) ? -1 : 1;
+		if(countY - 1 < numY) numY = 0;
+		var numX = 0;
+		var countX = pos[numY].length;
+		
+		var dist2 = 0;
 		
 		var i = 0;
-		while (dist > (size.x+seam)*i) 
+		while (dist > dist2) 
 		{
-			var pos2 = point1.position.clone();
-			//pos2.x += ((size.x/2) * sign) * i;
+			if(countX - 1 < numX) numX = 0;
 			
+			pos2 = pos[numY][numX].clone();			
 			pos2.x += (size.x + seam) * i;			
 			pos2.y += (size.y + seam) * i2;			
 			
+			dist2 = point1.position.distanceTo(new THREE.Vector3(pos2.x+size.x+seam, 0, 0));
 			
 			var block = new THREE.Mesh( geometry, material );
 			block.position.copy(pos2);
@@ -1028,25 +1041,49 @@ function createFormWallR()
 			scene.add(block);
 
 			block.userData.tag = 'block_1';
-			block.userData.setX = { num : i, last : countX-1 };
-			block.userData.setY = { num : i2, last : countY-1 };
+			block.userData.setX = { num : i, last : (dist > dist2) ? false : true };  
+			block.userData.setY = { num : i2, last : (height > pos2.y + (size.y+seam)) ? false : true }; if(i2 == 10) console.log(block.userData.setY);
 
+			numX++;
 			i++;
 		}		
 		
+		numY++;
+		i2++;
 	}	
 	
+	
+	cutSideBlockWall({wall:wall});
+	
+	renderCamera();
+}
 
-	infProject.tools.cutWall[0].position.copy(point1.position);	
-	infProject.tools.cutWall[0].rotation.copy(point1.rotation);
+
+
+// обрезаем кирпичей по краям и сверху стены
+function cutSideBlockWall(cdm)
+{
+	var wall = cdm.wall;
+	
+	if(wall.userData.wall.block.arr.length == 0) return;
+	
+	var p = wall.userData.wall.p;
+	
+	infProject.tools.cutWall[0].position.copy(p[0].position);	
+	infProject.tools.cutWall[0].rotation.copy(wall.rotation);
 	infProject.tools.cutWall[0].position.y -= 0.1;
 	infProject.tools.cutWall[0].rotation.y += Math.PI;
 	
-	infProject.tools.cutWall[1].position.copy(point2.position);
-	infProject.tools.cutWall[1].rotation.copy(point2.rotation);
+	infProject.tools.cutWall[1].position.copy(p[1].position);
+	infProject.tools.cutWall[1].rotation.copy(wall.rotation);
 	infProject.tools.cutWall[1].position.y -= 0.1; 
 	
+	infProject.tools.cutWall[2].position.copy(wall.position);	
+	infProject.tools.cutWall[2].rotation.copy(wall.rotation);
+	infProject.tools.cutWall[2].position.y = wall.userData.wall.height_1;	
 	
+	
+	// обрезаем края по бокам
 	var arrB = wall.userData.wall.block.arr;
 	
 	for ( var i = 0; i < arrB.length; i++ )
@@ -1056,7 +1093,24 @@ function createFormWallR()
 		var wd2 = null;
 		
 		if(arrB[i].userData.setX.num == 0) { wd2 = infProject.tools.cutWall[0]; }
-		else if(arrB[i].userData.setX.num == arrB[i].userData.setX.last) { wd2 = infProject.tools.cutWall[1]; }
+		else if(arrB[i].userData.setX.last) { wd2 = infProject.tools.cutWall[1]; }
+		else { continue; }
+		
+		var wdBSP = new ThreeBSP( wd2 );    
+		var wallBSP = new ThreeBSP( arrB[i] ); 			// копируем выбранную стену	
+		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
+		
+		arrB[i].geometry = newBSP.toMesh().geometry;
+	} 
+
+	// обрезаем края сверху
+	for ( var i = 0; i < arrB.length; i++ )
+	{
+		if(arrB[i].geometry.vertices.length == 0) continue;		
+		
+		var wd2 = null;
+		
+		if(arrB[i].userData.setY.last) { wd2 = infProject.tools.cutWall[2]; }
 		else { continue; }
 		
 		var wdBSP = new ThreeBSP( wd2 );    
@@ -1065,8 +1119,6 @@ function createFormWallR()
 		
 		arrB[i].geometry = newBSP.toMesh().geometry;
 	}		
-	
-	renderCamera();
 }
 
 

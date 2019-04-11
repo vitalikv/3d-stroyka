@@ -219,8 +219,10 @@ function moveWD_2( wd, pos )
 		for ( var i = 0; i < arrB.length; i++ )
 		{
 			arrB[i].geometry = wall.userData.wall.block.geometry.clone();
-		}
+		} 
 
+		cutSideBlockWall({wall:wall});
+		
 		// верзаем в кирпичах wd, кроме того wd которое мы перетаскиваем
 		var arrO = wall.userData.wall.arrO;
 		for ( var i = 0; i < arrO.length; i++ )
