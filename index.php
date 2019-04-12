@@ -115,9 +115,72 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 			</div>		
 		</div>
 		
-		
 		<div class="offset_top_50"></div>
-		<div class="block_line_2">
+		<div class="block_line_2">	
+			<div class="block_line_1">
+				<div class="offset_top_30"></div>
+				<div style="text-align: center; font-size: 24px; color:#222;">Калькуляторы:</div>
+				<div class="offset_top_30"></div>
+				
+				<div class="modal_body_content_grid">
+					<a class="ind_bl_1" href="calculator/monolit_fundament">
+						<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
+						<div class="ind_text_3">
+							монолитный фундамент
+						</div>
+					</a>
+					<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
+						<div class="block_form_1_image_wrap"><img src="/img/2.jpg"></div>
+						<div class="ind_text_3">
+							ленточный фундамент
+						</div>
+					</a>			
+					<a class="ind_bl_1" href="calculator/svaynyy_fundament">
+						<div class="block_form_1_image_wrap"><img src="/img/3.jpg"></div>
+						<div class="ind_text_3">
+							свайный фундамент
+						</div>
+					</a>			
+					<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
+						<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
+						<div class="ind_text_3">
+							площадь участка
+						</div>				
+					</a>
+					<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
+						<div class="block_form_1_image_wrap"><img src="/img/5.jpg"></div>
+						<div class="ind_text_3">
+							объем и площадь помещения
+						</div>				
+					</a>	
+
+					<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
+						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>					
+						<div class="ind_text_3">
+							расчет штукатурки на стене
+						</div>
+					</a>
+					<a class="ind_bl_1" href="/calculator/raschet_kirpicha">
+						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
+						<div class="ind_text_3">
+							расчет кирпича
+						</div>
+					</a>			
+					<a class="ind_bl_1" href="calculator/raschet_blokov">
+						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
+						<div class="ind_text_3">
+							расчет блоков
+						</div>
+					</a>								
+				</div>
+				<div class="offset_top_50"></div>
+			</div>
+		</div>	
+		<div class="offset_top_50"></div>		
+		
+		
+		
+		
 			<div class="block_line_1">
 				<div class="offset_top_50"></div>
 				<div class="block_float_2">	
@@ -159,96 +222,9 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				<div class="clear"></div>
 				<div class="offset_top_50"></div>
 			</div>
-		</div>		
+				
 		<div class="offset_top_50"></div>
-		
-		
-		
-		<div class="block_line_1">
-			<div style="text-align: center; font-size: 24px; color:#222;">Калькуляторы:</div>
-			<div class="offset_top_30"></div>
-			
-			<div class="modal_body_content_grid">
-				<a class="ind_bl_1" href="calculator/monolit_fundament">
-					<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
-					<div class="ind_text_3">
-						монолитный фундамент
-					</div>
-				</a>
-				<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
-					<div class="block_form_1_image_wrap"><img src="/img/2.jpg"></div>
-					<div class="ind_text_3">
-						ленточный фундамент
-					</div>
-				</a>			
-				<a class="ind_bl_1" href="calculator/svaynyy_fundament">
-					<div class="block_form_1_image_wrap"><img src="/img/3.jpg"></div>
-					<div class="ind_text_3">
-						свайный фундамент
-					</div>
-				</a>			
-				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
-					<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
-					<div class="ind_text_3">
-						площадь участка
-					</div>				
-				</a>
-				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
-					<div class="block_form_1_image_wrap"><img src="/img/5.jpg"></div>
-					<div class="ind_text_3">
-						объем и площадь помещения
-					</div>				
-				</a>	
 
-				<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
-					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>					
-					<div class="ind_text_3">
-						расчет штукатурки на стене
-					</div>
-				</a>
-				<a class="ind_bl_1" href="/calculator/raschet_kirpicha">
-					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
-					<div class="ind_text_3">
-						расчет кирпича
-					</div>
-				</a>			
-				<a class="ind_bl_1" href="calculator/raschet_blokov">
-					<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
-					<div class="ind_text_3">
-						расчет блоков
-					</div>
-				</a>			
-				<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
-					<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
-					<div class="ind_text_3">
-						Площадь участка
-					</div>				
-				</a>
-				<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
-					<div class="block_form_1_image_wrap"><img src="/img/ind/bl_1.png"></div>
-					<div class="ind_text_3">
-						Объем и площадь помещения
-					</div>				
-				</a>					
-			</div>
-			
-		</div>
-		<div class="offset_top_50"></div>
-		
-		<div class="block_line_1">
-			<div class="ind_text_1">Системные требования:</div>
-			<div class="offset_top_30"></div>
-			Операционная система: от Windows 7 и выше<br>
-			Процессор: от 2 ядер Intel® или AMD®<br>
-			Память: от 2GB<br>
-			Видеокарта: GeForce или ATI Radeon<br><br>
-			
-			Программа запускается даже на ноутбуках 10 летний давности, но работает с тормозами.<br> 
-			Оптимальный вариант: ПК или ноутбук средний мощности 5 летний давности.  
-		</div>
-
-			
-		<div class="offset_top_50"></div>
 		
 	</div>
 
