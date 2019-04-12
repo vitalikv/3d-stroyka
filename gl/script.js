@@ -941,6 +941,7 @@ function createForm(cdm)
 	resetScene();
 	
 	if(form == 'wall_stucco') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
+	else if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
 	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
 	else if(form == 'shape2') { var arrP = [new THREE.Vector3(0,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(3,0,2)]; }
 	else if(form == 'shape3') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }
@@ -982,8 +983,22 @@ function createForm(cdm)
 	if(form == 'wall_stucco')
 	{
 		createOneWall3( obj_point[0], obj_point[1], width_wall, inf );
+		
+		var inf_2 = { texture : [{index:1, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}] };
+		
+		var p1 = createPoint( obj_point[0].position.clone(), 0 );
+		var p2 = createPoint( obj_point[1].position.clone(), 0 );
+		
+		p1.position.z += 0.15;
+		p2.position.z += 0.15;
+		
+		var w = 0.1;
+		inf_2.offsetZ = w;
+		inf_2.color = [0xc4c4c4, 0xa1a1a1];
+		
+		createOneWall3( p1, p2, w, inf_2 );
 	}
-	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'land')
+	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'land' || form == 'plan_area')
 	{
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
@@ -1183,16 +1198,23 @@ console.log(RD.create({str : 'wall'}));
 
 function createOneWall3( point1, point2, width, cdm ) 
 {
-	var offsetZ = 0;
+	var offsetZ = (cdm.offsetZ) ? cdm.offsetZ : 0;  
 	var height = (cdm.height) ? cdm.height : height_wall; 
 	
 	var p1 = point1.position;
 	var p2 = point2.position;	
 	var d = p1.distanceTo( p2 );
 	
-	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, lightMap : lightMap_1 } );
+	var color = [0x7d7d7d, 0x696969];
 	
-	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: 0x696969, lightMap : lightMap_1 } ) ];		
+	if(cdm.color)
+	{
+		color = cdm.color;
+	}
+	
+	var material = new THREE.MeshLambertMaterial( { color : color[0], lightMap : lightMap_1 } );
+	
+	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color[1], lightMap : lightMap_1 } ) ];		
 	var geometry = createGeometryWall(d, height, width, offsetZ);	
 	var wall = obj_line[obj_line.length] = new THREE.Mesh( geometry, materials ); 
  	
@@ -1548,7 +1570,7 @@ function clickInterface(cdm)
 		if(cdm.button == '2D')
 		{
 			if(infProject.settings.interface.button.cam2d == 'front') { changeCamera(cameraWall); }
-			else { changeCamera(cameraTop); }
+			else { changeCamera(cameraTop); } 
 		}
 		else if(cdm.button == '3D')
 		{

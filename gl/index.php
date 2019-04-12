@@ -191,7 +191,7 @@ if($url == '/calculator/raschet_blokov')
 	}	
 	else if(infProject.nameId == 'штукатурка на стене') 
 	{ 
-		infProject.load.img = ['img/load/beton.jpg'];
+		infProject.load.img = ['img/load/kirpich.jpg', 'img/load/beton.jpg'];
 		infProject.settings.project = 'wall_stucco';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
@@ -203,7 +203,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.project = 'wall_kirpich';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
-		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
+		infProject.settings.wall.material = [{index:0, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
 		
 		infProject.settings.wall.block.size = {x:0.25, y:0.065, z:0.125};		// размер блока кирпича
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/one_kirpich.jpg' };

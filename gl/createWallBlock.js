@@ -35,7 +35,7 @@ function createFormWallR()
 	// создаем инструмент для резки кирпичей по бокам стены и сверху
 	
 	
-	var wall = createOneWall3( point1, point2, width, {height: height} );
+	var wall = createOneWall3( point1, point2, width, {height: height, texture : infProject.settings.wall.material} );
 
 	// кирпич
 	var geometry = createGeometryCube(size.x, size.y, size.z);
