@@ -182,6 +182,7 @@ if($url == '/calculator/raschet_blokov')
 	else if(infProject.nameId == 'объем и площадь помещения') 
 	{ 
 		infProject.load.img = ['img/load/kirpich.jpg'];
+		infProject.settings.project = 'plan_area';
 		infProject.settings.wall.label = 'inside';
 		infProject.settings.wall.dist = 'inside';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
