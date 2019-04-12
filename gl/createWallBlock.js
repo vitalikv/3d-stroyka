@@ -14,6 +14,7 @@ function createFormWallR()
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
 	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
 	var width = size.z - seam;
+	var width = (size.z * 2 + seam) - seam;
 	var height = 2;
 	
 	
@@ -105,48 +106,73 @@ function resetSideBlockWall(cdm)
 	var seam = wall.userData.wall.block.seam;
 	
 	
-	var pos = [[p[0].position.clone()],[p[0].position.clone().add(new THREE.Vector3(-size.x/2, 0, 0))]];
 	
-	var numY = 0;
-	var countY = pos.length;
-	var pos2 = pos[0][0];
+	var ps = p[0].position.clone();
 	
-	var i2 = 0;
-	while (height > pos2.y + (size.y+seam))
+	var pos = [];
+	pos[0] = [];
+	pos[0][0] = [ps.clone()];		// 1 ряд по высоте и ширине
+	pos[0][1] = [ps.clone().add(new THREE.Vector3(-size.x/2, 0, 0))];	// 2 ряд по высоте и 1 ряд по ширине
+	
+
+	ps.add(new THREE.Vector3(0, 0, (size.z + seam)/2));
+	
+	var pos = [];
+	pos[0] = [];
+	pos[0][0] = [ps.clone()];		// 1 ряд по высоте и ширине
+	pos[0][1] = [ps.clone().add(new THREE.Vector3(-size.x/2, 0, 0))];	// 2 ряд по высоте и 1 ряд по ширине
+
+	pos[1] = [];
+	pos[1][0] = [ps.clone().add(new THREE.Vector3(-size.x/2, 0, -size.z - seam))];		// 1 ряд по высоте и ширине
+	pos[1][1] = [ps.clone().add(new THREE.Vector3(0, 0, -size.z - seam))];	// 2 ряд по высоте и 1 ряд по ширине	
+	
+	
+	for(var z1 = 0; z1 < pos.length; z1++)
 	{
-		if(countY - 1 < numY) numY = 0;
-		var numX = 0;
-		var countX = pos[numY].length;
+		var numY = 0;
+		var countY = pos[z1].length;
+		var pos2 = pos[z1][0][0];
 		
-		var dist2 = 0;
 		
-		var i = 0;
-		while (dist > dist2) 
+		var y1 = 0;
+		while (height > pos2.y + (size.y+seam))
 		{
-			if(countX - 1 < numX) numX = 0;
+			if(countY - 1 < numY) numY = 0;
+			var numX = 0;
+			var countX = pos[z1][numY].length;
 			
-			pos2 = pos[numY][numX].clone();			
-			pos2.x += (size.x + seam) * i;			
-			pos2.y += (size.y + seam) * i2;			
+			var dist2 = 0;
 			
-			dist2 = p[0].position.distanceTo(new THREE.Vector3(pos2.x+size.x+seam, 0, 0));
-			
-			var block = new THREE.Mesh( geometry, material );
-			block.position.copy(pos2);
-			wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
-			scene.add(block);
+			var x1 = 0;
+			while (dist > dist2) 
+			{
+				if(countX - 1 < numX) numX = 0;
+				
+				pos2 = pos[z1][numY][numX].clone();			
+				pos2.x += (size.x + seam) * x1;			
+				pos2.y += (size.y + seam) * y1;			
+				
+				dist2 = p[0].position.distanceTo(new THREE.Vector3(pos2.x+size.x+seam, 0, 0));
+				
+				var block = new THREE.Mesh( geometry, material );
+				block.position.copy(pos2);
+				wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+				scene.add(block);
 
-			block.userData.tag = 'block_1';
-			block.userData.setX = { num : i, last : (dist > dist2) ? false : true };  
-			block.userData.setY = { num : i2, last : (height > pos2.y + (size.y+seam)) ? false : true }; 
+				block.userData.tag = 'block_1';
+				block.userData.setX = { num : x1, last : (dist > dist2) ? false : true };  
+				block.userData.setY = { num : y1, last : (height > pos2.y + (size.y+seam)) ? false : true }; 
 
-			numX++;
-			i++;
+				numX++;
+				x1++;
+			}		
+			
+			numY++;
+			y1++;
 		}		
 		
-		numY++;
-		i2++;
-	}		
+	}
+	
 }
 
 
