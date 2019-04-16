@@ -1004,60 +1004,60 @@ function createForm(cdm)
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
 			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
-			createOneWall3( obj_point[i], obj_point[i2], width_wall, inf );
+			createOneWall3( obj_point[i], obj_point[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		}		
 	}
 	
 	if(form == 'shape7')
 	{
-		createOneWall3( obj_point[2], obj_point[5], width_wall, inf );
+		createOneWall3( obj_point[2], obj_point[5], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	else if(form == 'shape8')
 	{
-		createOneWall3( obj_point[3], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[2], obj_point[7], width_wall, inf );
+		createOneWall3( obj_point[3], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[2], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	else if(form == 'shape9')
 	{
 		createPoint( new THREE.Vector3(-1,0,0), 0 );
 		createPoint( new THREE.Vector3(1,0,0), 0 );
-		createOneWall3( obj_point[1], obj_point[10], width_wall, inf );
-		createOneWall3( obj_point[3], obj_point[10], width_wall, inf );
-		createOneWall3( obj_point[10], obj_point[9], width_wall, inf );
-		createOneWall3( obj_point[4], obj_point[11], width_wall, inf );
-		createOneWall3( obj_point[11], obj_point[8], width_wall, inf );
-		createOneWall3( obj_point[10], obj_point[11], width_wall, inf );
-		createOneWall3( obj_point[11], obj_point[6], width_wall, inf );
+		createOneWall3( obj_point[1], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[3], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[10], obj_point[9], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[4], obj_point[11], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[11], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[10], obj_point[11], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[11], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}
 	else if(form == 'shape10')
 	{
-		createOneWall3( obj_point[1], obj_point[4], width_wall, inf );
-		createOneWall3( obj_point[4], obj_point[7], width_wall, inf );
+		createOneWall3( obj_point[1], obj_point[4], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[4], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	else if(form == 'shape13')
 	{
-		createOneWall3( obj_point[4], obj_point[7], width_wall, inf );
-		createOneWall3( obj_point[4], obj_point[1], width_wall, inf );
-		createOneWall3( obj_point[7], obj_point[10], width_wall, inf );
-		createOneWall3( obj_point[1], obj_point[10], width_wall, inf );
+		createOneWall3( obj_point[4], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[4], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[7], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[1], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	else if(form == 'shape14')
 	{
 		createPoint( new THREE.Vector3(0,0,0), 0 );
-		createOneWall3( obj_point[1], obj_point[8], width_wall, inf );
-		createOneWall3( obj_point[3], obj_point[8], width_wall, inf );
-		createOneWall3( obj_point[5], obj_point[8], width_wall, inf );
-		createOneWall3( obj_point[7], obj_point[8], width_wall, inf );
+		createOneWall3( obj_point[1], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[3], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[5], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[7], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	else if(form == 'shape15')
 	{
 		createPoint( new THREE.Vector3(0,0,0), 0 );
-		createOneWall3( obj_point[0], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[1], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[2], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[3], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[4], obj_point[6], width_wall, inf );
-		createOneWall3( obj_point[5], obj_point[6], width_wall, inf );
+		createOneWall3( obj_point[0], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[1], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[2], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[3], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[4], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
+		createOneWall3( obj_point[5], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 	}	
 	
 	
@@ -1076,13 +1076,13 @@ function createForm(cdm)
 		for ( var i = 0; i < arrPo1.length; i++ )
 		{
 			var i2 = (i == arrPo1.length - 1) ? 0 : i + 1;		
-			createOneWall3( arrPo1[i], arrPo1[i2], width_wall, inf );
+			createOneWall3( arrPo1[i], arrPo1[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		}	
 
 		for ( var i = 0; i < arrPo2.length; i++ )
 		{
 			var i2 = (i == arrPo2.length - 1) ? 0 : i + 1;		
-			createOneWall3( arrPo2[i], arrPo2[i2], width_wall, inf );
+			createOneWall3( arrPo2[i], arrPo2[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		}			
 	}
 	
