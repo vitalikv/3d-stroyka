@@ -124,50 +124,50 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				
 				<div class="modal_body_content_grid">
 					<a class="ind_bl_1" href="calculator/monolit_fundament">
-						<div class="block_form_1_image_wrap"><img src="/img/1.jpg"></div>					
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_1.jpg"></div>					
 						<div class="ind_text_3">
 							монолитный фундамент
 						</div>
 					</a>
 					<a class="ind_bl_1" href="/calculator/lentochnii_fundament">
-						<div class="block_form_1_image_wrap"><img src="/img/2.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_2.jpg"></div>
 						<div class="ind_text_3">
 							ленточный фундамент
 						</div>
 					</a>			
 					<a class="ind_bl_1" href="calculator/svaynyy_fundament">
-						<div class="block_form_1_image_wrap"><img src="/img/3.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_3.jpg"></div>
 						<div class="ind_text_3">
 							свайный фундамент
 						</div>
 					</a>			
 					<a class="ind_bl_1" href="calculator/ploshchad_uchastka">
-						<div class="block_form_1_image_wrap"><img src="/img/4.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_4.jpg"></div>
 						<div class="ind_text_3">
 							площадь участка
 						</div>				
 					</a>
 					<a class="ind_bl_1" href="calculator/obyem_pomeshcheniya">
-						<div class="block_form_1_image_wrap"><img src="/img/5.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_5.jpg"></div>
 						<div class="ind_text_3">
 							объем и площадь помещения
 						</div>				
 					</a>	
 
 					<a class="ind_bl_1" href="calculator/shtukaturka_na_stene">
-						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>					
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_6.jpg"></div>					
 						<div class="ind_text_3">
 							расчет штукатурки на стене
 						</div>
 					</a>
 					<a class="ind_bl_1" href="/calculator/raschet_kirpicha">
-						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_7.jpg"></div>
 						<div class="ind_text_3">
 							расчет кирпича
 						</div>
 					</a>			
 					<a class="ind_bl_1" href="calculator/raschet_blokov">
-						<div class="block_form_1_image_wrap"><img src="/img/6.jpg"></div>
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_8.jpg"></div>
 						<div class="ind_text_3">
 							расчет блоков
 						</div>

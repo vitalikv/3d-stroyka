@@ -939,7 +939,7 @@ function createForm(cdm)
 	
 	var arrP = [];
 	resetScene();
-	
+	console.log(form);
 	if(form == 'wall_stucco') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
 	else if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
 	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
@@ -998,7 +998,8 @@ function createForm(cdm)
 		
 		createOneWall3( p1, p2, w, inf_2 );
 	}
-	else if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'land' || form == 'plan_area')
+	
+	if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'shape7' || form == 'shape8' || form == 'shape9' || form == 'shape10' || form == 'shape11' || form == 'shape12' || form == 'shape13' || form == 'shape14' || form == 'shape15' || form == 'land' || form == 'plan_area')
 	{
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
@@ -1006,7 +1007,8 @@ function createForm(cdm)
 			createOneWall3( obj_point[i], obj_point[i2], width_wall, inf );
 		}		
 	}
-	else if(form == 'shape7')
+	
+	if(form == 'shape7')
 	{
 		createOneWall3( obj_point[2], obj_point[5], width_wall, inf );
 	}	
@@ -1403,11 +1405,11 @@ function showObjTool( tag )
 
 // изменение высоты стен
 function changeHeightWall()
-{
+{  
 	if(infProject.activeInput == 'input-height')
 	{
-		var h2 = $('input[data-action="input-height"]');
-		h2 /= 100;
+		var h2 = $('input[data-action="input-height"]').val();
+		h2 /= 100;   
 	}	
 	else if(infProject.activeInput == 'size-wall-height')
 	{
@@ -1634,11 +1636,17 @@ function quaternionDirection(dir1)
 
 // screenshot
 function saveAsImage() 
-{
+{ 
 	try 
-	{					
+	{		
+		renderer.antialias = true;
+		renderer.render( scene, camera );
+		
 		var strMime = "image/jpeg";
-		var imgData = renderer.domElement.toDataURL(strMime, 0.7);			
+		var imgData = renderer.domElement.toDataURL(strMime, 0.7);	
+
+		renderer.antialias = false;
+		renderer.render( scene, camera );
  
 		openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.jpg");
 	} 
