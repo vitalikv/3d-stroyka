@@ -53,6 +53,7 @@ function objDeActiveColor_2D()
 		if(clickO.obj.userData.tag == 'd_tool'){ if(clickO.obj.door == o) { return; } }     		
 	}
 	
+	
 	if(o.userData.tag == 'wall'){ if(o.userData.parent) { o = o.userData.parent; } o.material[3].color = o.userData.material[3].color; }	
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }	
 	else if(o.userData.tag == 'window'){ o.material.color = new THREE.Color(colWin); }
@@ -120,11 +121,6 @@ function clickFloor_3D( object )
 	object.userData.room.outline = clickFloorOutline(object);
 
 	clickO.obj = object;
-
-	setUIPreview(object, object.pr_preview, object.pr_catalog);	
-	UI.showToolbar('floor-3d-toolbar');
-	
-	menuSettingTexture( { obj : object } );
 }
 
 
@@ -135,11 +131,6 @@ function clickCeiling_3D( object )
 	object.userData.ceil.outline = clickFloorOutline(object);
 
 	clickO.obj = object;
-
-	setUIPreview(object, object.userData.material.preview, object.userData.material.catalog);	
-	UI.showToolbar('floor-3d-toolbar');
-	
-	menuSettingTexture( { obj : object } ); 
 }
 
 

@@ -9,6 +9,8 @@ function changeCamera(cam)
 	deActiveSelected();
 	
 	camera = cam;
+	clickO.obj = null;
+	
 	
 	if(camera == cameraTop)
 	{					
