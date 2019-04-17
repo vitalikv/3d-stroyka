@@ -201,19 +201,19 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				
 				<div class="block_right_2">
 					<div class="block_img_1" bl2_img="">
-						<img src="/img/ind/1-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/2-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/3-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/4-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/5-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/6-m.png" class="img_ind_1" click_img="">		
+						<img src="/img/ind/screenshot(1).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(2).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(3).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(4).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(5).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(6).jpg" class="img_ind_1" click_img="">		
 						
-						<img src="/img/ind/7-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/8-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/9-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/10-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/11-m.png" class="img_ind_1" click_img="">
-						<img src="/img/ind/12-m.png" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(7).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(8).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(9).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(10).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(11).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(12).jpg" class="img_ind_1" click_img="">
 						<div class="clear"></div>						
 					</div>
 					<div class="clear"></div>
