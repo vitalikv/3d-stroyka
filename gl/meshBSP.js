@@ -85,9 +85,9 @@ function createCloneWD_BSP( wd )
 
 
 // вырезаем отверстие под окно/дверь 
-function MeshBSP( wd, objsBSP )
+function MeshBSP( wd, objsBSP, wall )
 {  
-	var wall = wd.userData.door.wall;
+	if(!wall) wall = wd.userData.door.wall;
 	
 	var wallClone = objsBSP.wall;
 	var wdClone = objsBSP.wd;
@@ -176,6 +176,11 @@ function cutMeshBlockBSP( wd )
 {  
 	var wall = wd.userData.door.wall;
 
+	if(wall.userData.wall.plaster.o)
+	{				
+		MeshBSP( wd, { wall : wall.userData.wall.plaster.o, wd : createCloneWD_BSP( wd ) }, wall.userData.wall.plaster.o );		
+	}
+
 	if(wall.userData.wall.block.arr.length == 0) return;
 	
 	var arrB = wall.userData.wall.block.arr;
@@ -218,6 +223,7 @@ function cutMeshBlockBSP( wd )
 		arrB[i].geometry = newBSP.toMesh().geometry;
 	}	 	
 }
+
 
 
  

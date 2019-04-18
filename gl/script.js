@@ -560,8 +560,6 @@ function createGeometryCube(x, y, z, cdm)
 			geometry.faces[1].materialIndex = 1;	
 			geometry.faces[2].materialIndex = 2;
 			geometry.faces[3].materialIndex = 2;	
-			geometry.faces[4].materialIndex = 3;
-			geometry.faces[5].materialIndex = 3;
 			geometry.faces[6].materialIndex = 3;
 			geometry.faces[7].materialIndex = 3;				
 		}
@@ -987,21 +985,8 @@ function createForm(cdm)
 	
 	if(form == 'wall_stucco')
 	{
-		createOneWall3( obj_point[0], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		
-		var inf_2 = { texture : [{index:1, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}] };
-		
-		var p1 = createPoint( obj_point[0].position.clone(), 0 );
-		var p2 = createPoint( obj_point[1].position.clone(), 0 );
-		
-		p1.position.z += 0.15;
-		p2.position.z += 0.15;
-		
-		var w = 0.1;
-		inf_2.offsetZ = w;
-		inf_2.color = [{index:0, o:0xc4c4c4}, {index:1, o:0xc4c4c4}, {index:2, o:0xc4c4c4}, {index:3, o:0xa1a1a1}];
-		
-		createOneWall3( p1, p2, w, inf_2 );
+		inf.plaster = true;
+		createOneWall3( obj_point[0], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );		
 	}
 	
 	if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'shape7' || form == 'shape8' || form == 'shape9' || form == 'shape10' || form == 'shape11' || form == 'shape12' || form == 'shape13' || form == 'shape14' || form == 'shape15' || form == 'land' || form == 'plan_area')
@@ -1276,6 +1261,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.area = { top : 0 }; 
 	
 	wall.userData.wall.block = { arr : [] };
+	wall.userData.wall.plaster = { o : null };
 	wall.userData.wall.room = { side : 0, side2 : [null,null,null] };
 	
 	var v = wall.geometry.vertices;
@@ -1337,8 +1323,61 @@ function createOneWall3( point1, point2, width, cdm )
 	if(camera == camera3D) { wallMesh.visible = false; }
 	wall.add( wallMesh );
 	
-	scene.add( wall );
 	
+	
+	
+	if(cdm.plaster)
+	{
+		var index = 1;
+		
+		wall.updateMatrixWorld();
+		
+		var v = wall.userData.wall.v;		
+		
+		if(index == 1) { var x = v[v.length - 6].x - v[0].x; }
+		else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }			
+		
+		var geometry = createGeometryCube(1, height, 1, {material:true});
+		var v = geometry.vertices;
+		v[0].x = v[1].x = v[6].x = v[7].x = 0;
+		v[2].x = v[3].x = v[4].x = v[5].x = x;
+		v[0].z = v[1].z = v[2].z = v[3].z = 0.3;	// index 1
+		v[4].z = v[5].z = v[6].z = v[7].z = 0;			
+		
+		
+		var color = [0x7d7d7d, 0x696969]; 		
+		var material = new THREE.MeshLambertMaterial({ color : 0xc4c4c4, lightMap : lightMap_1 });
+		var material_1 = new THREE.MeshLambertMaterial({ color : color[0], lightMap : lightMap_1 });
+		
+		var materials = [ material.clone(), material_1.clone(), material_1.clone(), new THREE.MeshLambertMaterial( { color: 0xa1a1a1, lightMap : lightMap_1 } ) ];
+	
+		var wall_2 = new THREE.Mesh( geometry, materials );
+		
+	
+		var num = (index == 1) ? 0 : 4;
+
+		var pos = wall.localToWorld( wall.userData.wall.v[ num ].clone() );
+		
+		wall_2.position.copy(pos);
+		wall_2.rotation.copy(wall.rotation);
+		
+		upUvs_1( wall_2 );
+		
+		var texture = [{index:1, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}];
+		
+		for ( var i = 0; i < texture.length; i++ )
+		{
+			setTexture({obj:wall_2, material:texture[i]});
+		}		
+		
+		scene.add( wall_2 );
+		
+		wall.userData.wall.plaster.o = wall_2;
+	}
+	
+	
+	scene.add( wall );
+		
 	return wall;
 }
 
