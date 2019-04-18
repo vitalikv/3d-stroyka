@@ -144,8 +144,8 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.wall.width = 0.03;
 		infProject.settings.height = 0.2;
 		infProject.settings.floor.o = true;
-		infProject.settings.floor.posY = infProject.settings.height;
-		infProject.settings.floor.height = infProject.settings.height;
+		infProject.settings.floor.posY = infProject.settings.height - 0.01;
+		infProject.settings.floor.height = infProject.settings.height - 0.01;
 		infProject.settings.floor.changeY = true;
 	}
 	else if(infProject.nameId == 'ленточный фундамент')
@@ -167,11 +167,12 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.land.o = true; 
 		infProject.settings.height = 0.2;
 		infProject.settings.floor.o = true;
-		infProject.settings.floor.posY = infProject.settings.height;
-		infProject.settings.floor.height = infProject.settings.height;
+		infProject.settings.floor.posY = infProject.settings.height - 0.01;
+		infProject.settings.floor.height = infProject.settings.height - 0.01;
 		infProject.settings.floor.changeY = true;
 		infProject.settings.wall.label = 'outside';
 		infProject.settings.wall.width = 0.1;
+		infProject.settings.wall.color = [{index:3, o:0x222222}];
 		infProject.settings.unit.floor = 0.01; 
 		infProject.settings.camera.zoom = 0.25;
 		infProject.settings.camera.limitZoom = 5; 
@@ -339,23 +340,18 @@ if($url == '/calculator/raschet_blokov')
 	</div>	
 	<?}?>
 	
-	<?if($interface['bottom_panel_1'] == 1){?>
-	<div class="bottom_panel_1" data-action ='top_panel_1'>			
-		<div class="toolbar" data-action ='top_panel_1'>	
-			<div class="button1-wrap">
-				<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
-			</div>
-			<div class="button1-wrap">
-				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
-			</div>
-		</div>
-	</div>		
-	<?}?>
+
 	<div class="bottom_panel_1" data-action ='top_panel_1'>	
 	
 		<div class="toolbar" nameId='wall_menu_1' style="display: none;">
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">
+				<?if($interface['bottom_panel_1'] == 1){?>
+				<div class="button1-wrap">
+					<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
+				</div>
+				<?}?>
+				<?if($interface['bottom_panel_1'] != 1){?>
 				<div class="input-size">
 					<div class="text_1">длина (м)</div>
 					<input type="text" nameId='size-wall-length' data-input='wall_1' value = 0>
@@ -365,16 +361,28 @@ if($url == '/calculator/raschet_blokov')
 					<div class="text_1">высота (м)</div>
 					<input type="text" nameId='size-wall-height' data-input='wall_1' value = 0>
 				</div>	
-				  
-				<div class="input-size">
+				<?}?>  
+				
+				<div class="input-size" style="display: none;">
 					<div class="text_1">толщина (м)</div>
 					<input type="text" nameId='size-wall-width' data-input='wall_1' value = 0>
-				</div>				
+				</div>
+				
 				<div class="button1-wrap">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>
+		
+		
+		<div class="toolbar" nameId='point_menu_1' style="display: none;">
+			<div class="toolbar-header">точка</div>
+			<div class="toolbar-menu">
+				<div class="button1-wrap">
+					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				</div>			
+			</div>
+		</div>		
 		
 		
 		<div class="toolbar" nameId='wd_menu_1' style="display: none;">

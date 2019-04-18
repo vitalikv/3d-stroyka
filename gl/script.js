@@ -980,9 +980,14 @@ function createForm(cdm)
 		inf = { texture : infProject.settings.wall.material };
 	}
 	
+	if(infProject.settings.wall.color)
+	{
+		inf.color = infProject.settings.wall.color;
+	}
+	
 	if(form == 'wall_stucco')
 	{
-		createOneWall3( obj_point[0], obj_point[1], width_wall, inf );
+		createOneWall3( obj_point[0], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		
 		var inf_2 = { texture : [{index:1, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}] };
 		
@@ -994,7 +999,7 @@ function createForm(cdm)
 		
 		var w = 0.1;
 		inf_2.offsetZ = w;
-		inf_2.color = [0xc4c4c4, 0xa1a1a1];
+		inf_2.color = [{index:0, o:0xc4c4c4}, {index:1, o:0xc4c4c4}, {index:2, o:0xc4c4c4}, {index:3, o:0xa1a1a1}];
 		
 		createOneWall3( p1, p2, w, inf_2 );
 	}
@@ -1003,7 +1008,7 @@ function createForm(cdm)
 	{
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
-			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
+			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;	console.log(inf);	
 			createOneWall3( obj_point[i], obj_point[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		}		
 	}
@@ -1207,16 +1212,25 @@ function createOneWall3( point1, point2, width, cdm )
 	var p2 = point2.position;	
 	var d = p1.distanceTo( p2 );
 	
-	var color = [0x7d7d7d, 0x696969];
+	var color = [0x7d7d7d, 0x696969]; 
 	
+	var material = new THREE.MeshLambertMaterial({ color : color[0], lightMap : lightMap_1 });
+	
+	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color[1], lightMap : lightMap_1 } ) ];
+
 	if(cdm.color)
 	{
-		color = cdm.color;
+		for( var i = 0; i < cdm.color.length; i++ )
+		{
+			console.log(cdm.color[i]);
+			for( var i2 = 0; i2 < materials.length; i2++ )
+			{
+				if(cdm.color[i].index == i2) { materials[i2].color = new THREE.Color( cdm.color[i].o ); break; }
+			}
+		}
 	}
+
 	
-	var material = new THREE.MeshLambertMaterial( { color : color[0], lightMap : lightMap_1 } );
-	
-	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color[1], lightMap : lightMap_1 } ) ];		
 	var geometry = createGeometryWall(d, height, width, offsetZ);	
 	var wall = obj_line[obj_line.length] = new THREE.Mesh( geometry, materials ); 
  	

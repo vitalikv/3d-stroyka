@@ -98,7 +98,7 @@ function onDocumentMouseDown( event )
 	
 	clickRayHit( detectRayHit( event, 'click' ) ); 
 
-	if ( camera == cameraTop ) { objDeActiveColor_2D(); objActiveColor_2D(clickO.obj); clickO.last_obj = clickO.obj; }
+	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); showMenuObjUI_2D( clickO.obj ); }
 	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
 	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); showMenuObjUI_Wall(clickO.obj); }
 	
@@ -411,6 +411,44 @@ lineAxis_2.visible = false;
 
 
 
+function hideMenuObjUI_2D( o )
+{
+	if(o)
+	{ 
+		objDeActiveColor_2D(); 
+		
+		switch ( o.userData.tag ) 
+		{  
+			case 'wall': hideMenuUI(o);  break;
+			case 'point': hideMenuUI(o);  break;
+		}
+	}
+}
+
+
+
+function showMenuObjUI_2D( o )
+{
+	var rayhit = clickO.rayhit;
+	
+	if(o)
+	{
+		objActiveColor_2D(o);
+		
+		switch ( o.userData.tag ) 
+		{
+			case 'wall': showMenuUI( o ); break;
+			case 'point': showMenuUI( o ); break;
+		}	
+	}
+	
+		
+	clickO.last_obj = o;
+}
+
+
+
+
 
 function showMenuObjUI_3D( o, stop )
 {
@@ -500,6 +538,7 @@ function hideMenuUI(obj)
 	var tag = obj.userData.tag;
 	
 	if(tag == 'wall') { $('[nameId="wall_menu_1"]').hide(); }
+	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }		
 }
@@ -510,6 +549,7 @@ function showMenuUI(obj)
 	var tag = obj.userData.tag;
 	
 	if(tag == 'wall') { showLengthWallUI(obj); }  
+	else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); } 
 	else if(tag == 'window') { showTableWD(obj); }
 	else if(tag == 'door') { showTableWD(obj); }		
 }
