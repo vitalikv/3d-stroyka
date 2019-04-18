@@ -54,7 +54,6 @@ $(document).on('click', '[click_img]', function () {
 var img = $(this).attr('src');
 //img = /(.+)-m\./.exec(img); 
 //$('[fon]').html('<img src="'+img[1]+'.jpg" class="img_big_2">');
-console.log(img);
 $('[fon]').html('<img src="'+img+'" class="img_big_2">');
 $(".img_big_2").bind("load",function(){ 
 $('[fon]').css({"display":"block"}); 
