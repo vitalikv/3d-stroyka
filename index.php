@@ -37,12 +37,12 @@ function changesize_1()
 	if(w_bl_1 < (210 * 4 + 5))
 	{
 		var rs = (w_bl_1 - 4) / 4;
-		$('[click_img]').css("width", rs);
+		//$('[click_img]').css("width", rs);
 		$('[bl2_img]').css("width", (rs * 4 + 4));
 	}
 	else
 	{
-		$('[click_img]').css("width", 210);
+		//$('[click_img]').css("width", 210);
 		$('[bl2_img]').css("width", (210 * 4 + 4));
 	}
 }
@@ -52,8 +52,10 @@ function changesize_1()
 <? // фото ?>
 $(document).on('click', '[click_img]', function () { 
 var img = $(this).attr('src');
-img = /(.+)-m\./.exec(img);
-$('[fon]').html('<img src="'+img[1]+'.png" class="img_big_2">');
+//img = /(.+)-m\./.exec(img); 
+//$('[fon]').html('<img src="'+img[1]+'.jpg" class="img_big_2">');
+console.log(img);
+$('[fon]').html('<img src="'+img+'" class="img_big_2">');
 $(".img_big_2").bind("load",function(){ 
 $('[fon]').css({"display":"block"}); 
 var h_html = $(this).height();
@@ -200,20 +202,20 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				</div>
 				
 				<div class="block_right_2">
-					<div class="block_img_1" bl2_img="">
-						<img src="/img/ind/screenshot(1).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(2).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(3).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(4).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(5).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(6).jpg" class="img_ind_1" click_img="">		
+					<div class="modal_body_content_grid_2" bl2_img="">
+						<img src="/img/ind/screenshot(1).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(2).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(3).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(4).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(5).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(6).jpg" class="ind_bl_2" click_img="">		
 						
-						<img src="/img/ind/screenshot(7).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(8).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(9).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(10).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(11).jpg" class="img_ind_1" click_img="">
-						<img src="/img/ind/screenshot(12).jpg" class="img_ind_1" click_img="">
+						<img src="/img/ind/screenshot(7).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(8).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(9).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(10).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(11).jpg" class="ind_bl_2" click_img="">
+						<img src="/img/ind/screenshot(12).jpg" class="ind_bl_2" click_img="">
 						<div class="clear"></div>						
 					</div>
 					<div class="clear"></div>
