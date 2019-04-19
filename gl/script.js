@@ -1325,7 +1325,7 @@ function createOneWall3( point1, point2, width, cdm )
 	
 	
 	
-	
+	// штукатурная стена
 	if(cdm.plaster)
 	{
 		var index = 1;
@@ -1335,13 +1335,15 @@ function createOneWall3( point1, point2, width, cdm )
 		var v = wall.userData.wall.v;		
 		
 		if(index == 1) { var x = v[v.length - 6].x - v[0].x; }
-		else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }			
+		else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }	
+
+		var width = 0.3;
 		
 		var geometry = createGeometryCube(1, height, 1, {material:true});
 		var v = geometry.vertices;
 		v[0].x = v[1].x = v[6].x = v[7].x = 0;
 		v[2].x = v[3].x = v[4].x = v[5].x = x;
-		v[0].z = v[1].z = v[2].z = v[3].z = 0.3;	// index 1
+		v[0].z = v[1].z = v[2].z = v[3].z = width;	// index 1
 		v[4].z = v[5].z = v[6].z = v[7].z = 0;			
 		
 		
@@ -1353,7 +1355,7 @@ function createOneWall3( point1, point2, width, cdm )
 	
 		var wall_2 = new THREE.Mesh( geometry, materials );
 		
-	
+		
 		var num = (index == 1) ? 0 : 4;
 
 		var pos = wall.localToWorld( wall.userData.wall.v[ num ].clone() );
@@ -1368,7 +1370,11 @@ function createOneWall3( point1, point2, width, cdm )
 		for ( var i = 0; i < texture.length; i++ )
 		{
 			setTexture({obj:wall_2, material:texture[i]});
-		}		
+		}
+
+		wall_2.userData.wall_2 = {};		
+		wall_2.userData.wall_2.height_1 = Math.round(height * 100) / 100;
+		wall_2.userData.wall_2.width = Math.round(width * 100) / 100;
 		
 		scene.add( wall_2 );
 		
