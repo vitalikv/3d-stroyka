@@ -441,6 +441,8 @@ function moveToggleChangeWin( event, controll )
 		wallClone.position.copy( wd.userData.door.wall.position ); 
 		wallClone.rotation.copy( wd.userData.door.wall.rotation );
 		
+		objsBSP = { wall : wallClone, wd : createCloneWD_BSP( wd ) };
+		
 		// меняем цвет у wd
 		wd.material.depthTest = false;  
 		wd.material.opacity = 1.0; 
@@ -532,10 +534,6 @@ function moveToggleChangeWin( event, controll )
 		var pos = pos2.clone().divideScalar( 2 ).add( wd.position.clone() )
 		
 		сhangeSizePosWD( wd, pos, x, y );
-		
-		objsBSP = { wall : wallClone, wd : createCloneWD_BSP( wd ) };
-
-		MeshBSP( wd, objsBSP ); 
 	}
 	
 	// устанавливаем второстепенные контроллеры, в правильное положение
@@ -573,7 +571,13 @@ function moveToggleChangeWin( event, controll )
 
 function clickMouseUpToggleWD( controll )
 {
+	if(param_win.click) { param_win.click = false; return; }
+	
 	var wd = controll.userData.controll.obj;
+	
+	objsBSP.wd = createCloneWD_BSP( wd );
+	
+	MeshBSP( wd, objsBSP );
 	
 	if(camera == cameraTop)
 	{ 

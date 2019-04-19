@@ -154,7 +154,28 @@ function MeshBSP( wd, objsBSP, wall )
 
 	//wall.updateMatrixWorld();
 	
-	//upUvs_1( wall );	 	
+	//upUvs_1( wall );
+
+	if(wall.userData.wall.plaster.o)
+	{	
+		var wall_2 = wall.userData.wall.plaster.o;
+		
+		var wdBSP = new ThreeBSP( wdClone );    
+		var wallBSP = new ThreeBSP( wall_2 ); 			// копируем выбранную стену	
+		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
+		wall_2.geometry = newBSP.toMesh().geometry;	
+		
+		wall_2.geometry.computeFaceNormals();
+
+		for ( var i = 0; i < wall_2.geometry.faces.length; i++ )
+		{
+			wall_2.geometry.faces[i].normal.normalize();
+			if(wall_2.geometry.faces[i].normal.z == 1) { wall_2.geometry.faces[i].materialIndex = 1; }
+			else if(wall_2.geometry.faces[i].normal.z == -1) { wall_2.geometry.faces[i].materialIndex = 2; }
+			else if(wall_2.geometry.faces[i].normal.y == 1) { wall_2.geometry.faces[i].materialIndex = 3; }
+			else if(wall_2.geometry.faces[i].normal.y == -1) { wall_2.geometry.faces[i].materialIndex = 3; }
+		}	
+	}	
 }
 
  
@@ -217,11 +238,6 @@ function clickPointUP_BSP( arrW )
 function cutMeshBlockBSP( wd )
 {  
 	var wall = wd.userData.door.wall;
-
-	if(wall.userData.wall.plaster.o)
-	{				
-		MeshBSP( wd, { wall : wall.userData.wall.plaster.o, wd : createCloneWD_BSP( wd ) }, wall.userData.wall.plaster.o );		
-	}
 
 	if(wall.userData.wall.block.arr.length == 0) return;
 	

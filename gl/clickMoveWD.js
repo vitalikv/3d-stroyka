@@ -654,10 +654,10 @@ function сhangeSizePosWD( wd, pos, x, y )
 
 
 
-// сняли клик с мышки после токо как кликнули на стену
+// сняли клик с мышки после токо как кликнули на WD
 function clickWDMouseUp(wd)
 {
-	if(param_win.click) return;
+	if(param_win.click) { param_win.click = false; return; }
 	
 	MeshBSP( wd, objsBSP );
 	 
