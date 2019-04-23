@@ -323,25 +323,29 @@ function upUvs_1( obj )
 	
     geometry.faceVertexUvs[0] = [];
 	var faces = geometry.faces;
+	var n = 1;
+	
 	
     for (var i = 0; i < faces.length; i++) 
-	{				
+	{		
+		var components = ['x', 'y', 'z'].sort(function(a, b) {
+			return Math.abs(faces[i].normal[a]) > Math.abs(faces[i].normal[b]);
+		});	
+
+
         var v1 = geometry.vertices[faces[i].a];
         var v2 = geometry.vertices[faces[i].b];
         var v3 = geometry.vertices[faces[i].c];				
- 
-        geometry.faceVertexUvs[0][i] =
-		[
-            new THREE.Vector2(v1['x'], v1['y']),
-            new THREE.Vector2(v2['x'], v2['y']),
-            new THREE.Vector2(v3['x'], v3['y'])
-        ];
+
+        geometry.faceVertexUvs[0].push([
+            new THREE.Vector2(v1[components[0]], v1[components[1]]),
+            new THREE.Vector2(v2[components[0]], v2[components[1]]),
+            new THREE.Vector2(v3[components[0]], v3[components[1]])
+        ]);
     }
 
     geometry.uvsNeedUpdate = true;
-	geometry.elementsNeedUpdate = true;
-	
-	//setOffsetUVS( obj );
+	geometry.elementsNeedUpdate = true;	
 }
 
 

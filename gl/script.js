@@ -48,15 +48,23 @@ cameraWall.zoom = 2
 
 
 //----------- Light 
-scene.add( new THREE.AmbientLight( 0xffffff, 0.7 ) ); 
+scene.add( new THREE.AmbientLight( 0xffffff, 0.6 ) ); 
 
+var lights = [];
+lights[ 0 ] = new THREE.PointLight( 0x222222, 0.7, 0 );
+lights[ 1 ] = new THREE.PointLight( 0x222222, 0.5, 0 );
+lights[ 2 ] = new THREE.PointLight( 0x222222, 0.8, 0 );
+lights[ 3 ] = new THREE.PointLight( 0x222222, 0.2, 0 );
 
-var directionalLight = new THREE.DirectionalLight( 0xcccccc, 0.3 );
-//var directionalLight = new THREE.PointLight( 0xffffff, 0.5 );
-//directionalLight.castShadow = true;
-directionalLight.position.set(-5,6,5);
-directionalLight.lookAt(scene.position);
-//scene.add( directionalLight );
+lights[ 0 ].position.set( -1000, 200, 1000 );
+lights[ 1 ].position.set( -1000, 200, -1000 );
+lights[ 2 ].position.set( 1000, 200, -1000 );
+lights[ 3 ].position.set( 1000, 200, 1000 );
+
+scene.add( lights[ 0 ] );
+scene.add( lights[ 1 ] );
+scene.add( lights[ 2 ] );
+scene.add( lights[ 3 ] );
 //----------- Light
 
 
