@@ -13,6 +13,8 @@ $interface['form_1'] = 1;
 $interface['right_panel_1'] = 1;
 $interface['bottom_panel_1'] = 1;
 $interface['wd_1'] = 1;
+$interface['wall_plaster_width_1'] = 0;
+
 	
 if($url == '/calculator/area_apartment')	
 { 
@@ -70,6 +72,7 @@ if($url == '/calculator/shtukaturka_na_stene')
 	$interface['wall_1'] = 0;
 	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
+	$interface['wall_plaster_width_1'] = 1;
 }
 if($url == '/calculator/raschet_kirpicha')	
 { 
@@ -193,7 +196,7 @@ if($url == '/calculator/raschet_blokov')
 	else if(infProject.nameId == 'штукатурка на стене') 
 	{ 
 		infProject.load.img = ['img/load/kirpich.jpg', 'img/load/beton.jpg'];
-		infProject.settings.project = 'wall_stucco';
+		infProject.settings.project = 'wall_plaster';
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
@@ -328,6 +331,13 @@ if($url == '/calculator/raschet_blokov')
 		<div class="input-height">
 			<div class="text_1">высота (см)</div>
 			<input type="text" data-action ='input-height' data-input='' value = 20>
+		</div>
+		<?}?>
+
+		<?if($interface['wall_plaster_width_1'] == 1){?>
+		<div class="input-height">
+			<div class="text_1">толщина (см)</div>
+			<input type="text" nameId='wall_plaster_width_1' data-input='wall_plaster_width_1' value = 3>
 		</div>
 		<?}?>		
 	</div>

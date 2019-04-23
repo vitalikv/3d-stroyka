@@ -946,7 +946,7 @@ function createForm(cdm)
 	var arrP = [];
 	resetScene();
 	console.log(form);
-	if(form == 'wall_stucco') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
+	if(form == 'wall_plaster') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
 	else if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
 	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
 	else if(form == 'shape2') { var arrP = [new THREE.Vector3(0,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(3,0,2)]; }
@@ -981,7 +981,7 @@ function createForm(cdm)
 	
 	var inf = {};
 	
-	if(infProject.settings.project == 'plan_area' || infProject.settings.project == 'wall_stucco' || infProject.settings.project == 'wall_kirpich')
+	if(infProject.settings.project == 'plan_area' || infProject.settings.project == 'wall_kirpich')
 	{
 		inf = { texture : infProject.settings.wall.material };
 	}
@@ -991,9 +991,15 @@ function createForm(cdm)
 		inf.color = infProject.settings.wall.color;
 	}
 	
-	if(form == 'wall_stucco')
+	if(form == 'wall_plaster')
 	{
-		inf.plaster = true;
+		var value = $('input[data-input="wall_plaster_width_1"]').val();
+		
+		if(!isNumeric(value)) value = 3;	
+		
+		value = Math.round(value) / 100;		
+		
+		inf.plaster = { width : value };
 		createOneWall3( obj_point[0], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );		
 	}
 	
@@ -1345,7 +1351,7 @@ function createOneWall3( point1, point2, width, cdm )
 		if(index == 1) { var x = v[v.length - 6].x - v[0].x; }
 		else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }	
 
-		var width = 0.3;
+		var width = cdm.plaster.width;
 		
 		var geometry = createGeometryCube(1, height, 1, {material:true});
 		var v = geometry.vertices;

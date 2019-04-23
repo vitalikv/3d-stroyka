@@ -123,8 +123,7 @@ function resetScene()
 	
 	clickO = resetPop.clickO();
 	infProject.scene.array = resetPop.infProjectSceneArray();
-	
-	getConsoleRendererInfo()
+
 }
 
 

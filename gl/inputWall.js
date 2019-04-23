@@ -416,36 +416,41 @@ function updateWall(wall, cdm)
 
 
 // изменение ширины стены
-function inputWidthWall() 
+function inputWidthOneWall(cdm) 
 {
-	if(!clickO.obj){ return; } 
-	if(clickO.obj.userData.tag != 'wall'){ return; } 
+	var wall = cdm.wall;
+	var unit = cdm.width.unit;
+	var width = cdm.width.value;
+	var offset = cdm.offset;
 
-	var wall = clickO.obj;
+	if(unit == 'cm'){ width /= 100; }
+	else if(unit == 'mm'){ width /= 1000; }
+	
+	if(!wall){ return; } 
+	if(wall.userData.tag != 'wall'){ return; } 
+
 	var wallR = detectChangeArrWall_2(wall);
 	
 	clickMovePoint_BSP(wallR);
 			
 	var v = wall.geometry.vertices;
 	
-	var type = UI('wall-resize').val();
-	var width = Number(UI('wall_width_1').val()) / 1000;
 	var z = [0,0];
 	
-	if(type == 'wallRedBlueArrow')
+	if(offset == 'wallRedBlueArrow')
 	{ 	
 		width = (width < 0.01) ? 0.01 : width;
 		width /= 2;		
 		z = [width, -width];		
 		var value = Math.round(width * 2 * 1000);
 	}
-	else if(type == 'wallBlueArrow')
+	else if(offset == 'wallBlueArrow')
 	{ 
 		width = (Math.abs(Math.abs(v[4].z) + Math.abs(width)) < 0.01) ? 0.01 - Math.abs(v[4].z) : width;   		
 		z = [width, v[4].z];
 		var value = width * 1000;
 	}
-	else if(type == 'wallRedArrow')
+	else if(offset == 'wallRedArrow')
 	{		 
 		width = (Math.abs(Math.abs(v[0].z) + Math.abs(width)) < 0.01) ? 0.01 - Math.abs(v[0].z) : width;    		
 		z = [v[0].z, -width];
@@ -464,12 +469,9 @@ function inputWidthWall()
 	
 	var width = Math.abs(v[0].z) + Math.abs(v[4].z);	
 	wall.userData.wall.width = Math.round(width * 100) / 100;
-	wall.userData.wall.offsetZ = v[0].z + v[4].z;	
+	wall.userData.wall.offsetZ = (v[0].z + v[4].z)/2;	 
 
-	UI('wall_width_1').val(value);
 	
-	//upLineYY(wall.userData.wall.p[0]);
-	//upLineYY(wall.userData.wall.p[1]);
 	var p0 = wall.userData.wall.p[0];
 	var p1 = wall.userData.wall.p[1];
 	upLineYY_2(p0, p0.p, p0.w, p0.start);	
@@ -481,33 +483,16 @@ function inputWidthWall()
 		var wd = wall.userData.wall.arrO[i];	
 		var v = wd.geometry.vertices;
 		var f = wd.userData.door.form.v;
+		var v2 = wall.geometry.vertices;
 		
-		for ( var i2 = 0; i2 < f.minZ.length; i2++ ) { v[f.minZ[i2]].z = wall.geometry.vertices[4].z; }
-		for ( var i2 = 0; i2 < f.maxZ.length; i2++ ) { v[f.maxZ[i2]].z = wall.geometry.vertices[0].z; }	
+		for ( var i2 = 0; i2 < f.minZ.length; i2++ ) { v[f.minZ[i2]].z = v2[4].z; }
+		for ( var i2 = 0; i2 < f.maxZ.length; i2++ ) { v[f.maxZ[i2]].z = v2[0].z; }	
 
 		wd.geometry.verticesNeedUpdate = true; 
 		wd.geometry.elementsNeedUpdate = true;
 		wd.geometry.computeBoundingSphere();
 		wd.geometry.computeBoundingBox();
 		wd.geometry.computeFaceNormals();		
-	}
-	
-	// правильно устанавливаем Pop после изменение ширины стены
-	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
-	{ 
-		if(wall.userData.wall.arrO[i].userData.door.type == 'DoorPattern')
-		{
-			changeWidthParamWD(wall.userData.wall.arrO[i]);
-		}
-		else if(wall.userData.wall.arrO[i].userData.door.type == 'WindowSimply')
-		{
-			wall.userData.wall.arrO[i].userData.door.popObj.position.copy(wall.userData.wall.arrO[i].geometry.boundingSphere.center.clone()); 
-		}
-		else if(wall.userData.wall.arrO[i].userData.door.type == 'DoorSimply')
-		{
-			setPosDoorLeaf_1(wall.userData.wall.arrO[i], wall.userData.wall.arrO[i].userData.door.open_type);
-			setPosDoorLeaf_2(wall.userData.wall.arrO[i]);			
-		}
 	}	
 	
 	upLabelPlan_1( wallR );	 				
@@ -516,26 +501,21 @@ function inputWidthWall()
 	clickPointUP_BSP(wallR);
 
 	if(camera == camera3D) {}
+	
+	renderCamera();
 }
 
 
 
-// переключаем в меню стены кнокпи ширины 
-function toggleButtonMenuWidthWall(wall)
-{		
-	wall.geometry.verticesNeedUpdate = true;
-	var v = wall.userData.wall.v; 			
-	
-	var k = UI('wall-resize').val();
-	
-	if(k == 'wallRedBlueArrow') { var width = Math.round((Math.abs(v[0].z) + Math.abs(v[4].z)) * 1000); }
-	else if(k == 'wallBlueArrow') { var width = Math.round(Math.abs(v[0].z) * 1000); }
-	else if(k == 'wallRedArrow') { var width = Math.round(Math.abs(v[4].z) * 1000); }
-
-	if(Math.abs(width) < 0.001){ width = 0; }   
-	
-	UI('wall_width_1').val(width);	
+// изменение ширины штукатурки на стене
+function inputWidthOneWallPlaster(cdm) 
+{
+	var wall = cdm.wall;
+	var unit = cdm.width.unit;
+	var width = cdm.width.value;
+	var offset = cdm.offset;	
 }
+
 
 
 
@@ -611,20 +591,6 @@ function inputWidthWall_2(wall, z)
 	clickPointUP_BSP(wallR);
 }
 
-
-
-
-// меняем глобальную переменную ширины стены
-function inputGlobalWidthWall()
-{
-	var width = $('[input_wl="6"]').val();
-	
-	width = (width < 0.01) ? 0.01 : width;
-	
-	$('[input_wl="6"]').val(width);
-	
-	width_wall = width;
-}
 
 
 
