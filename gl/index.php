@@ -7,94 +7,80 @@ $path = "/gl/";
 $title = 'калькулятор площади пола онлайн';
 $interface['wall_1'] = 1;
 $interface['estimate'] = 1;
-$interface['width_1'] = 1;
-$interface['height_1'] = 1;
-$interface['form_1'] = 1;
-$interface['right_panel_1'] = 1;
 $interface['bottom_panel_1'] = 1;
-$interface['wd_1'] = 1;
+$interface['click_wall_2D'] = 0;
+$interface['wd_1'] = 0;
 $interface['wall_plaster_width_1'] = 0;
-
+$interface['monolit_fundament'] = 0;
+$interface['lentochnii_fundament'] = 0;
+$interface['svaynyy_fundament'] = 0;
+$interface['ploshchad_uchastka'] = 0;
+$interface['obyem_pomeshcheniya'] = 0;
 	
-if($url == '/calculator/area_apartment')	
-{ 
-	$title = 'Калькулятор площади квартиры онлайн 3D'; 
-	$interface['wd_1'] = 0;
-}
-if($url == '/calculator/monolit_fundament')	
+
+if($url == '/calculator/monolit_fundament' || $url == '/calculator/monolit_fundament1')	
 { 
 	$title = 'Калькулятор монолитного фундамента 3D'; 
 	$nameId = 'монолитный фундамент'; 
-	$interface['width_1'] = 0; 
-	$interface['wd_1'] = 0;
-}
-if($url == '/calculator/monolit_fundament1')	
-{ 
-	$title = 'Калькулятор монолитного фундамента 3D'; 
-	$nameId = 'монолитный фундамент'; 
-	$interface['width_1'] = 0; 
-	$interface['wd_1'] = 0;
+	$interface['monolit_fundament'] = 1; 
+	$interface['wall_1'] = 1;
+	$interface['click_wall_2D'] = 1;
 }
 if($url == '/calculator/lentochnii_fundament')	
 { 
 	$title = 'Калькулятор ленточного фундамента 3D'; 
 	$nameId = 'ленточный фундамент'; 
-	$interface['wd_1'] = 0;
+	$interface['lentochnii_fundament'] = 1;
+	$interface['wall_1'] = 1;
+	$interface['click_wall_2D'] = 1;
 }
 if($url == '/calculator/svaynyy_fundament')	
 { 
 	$title = 'Свайный фундамент калькулятор 3D'; 
 	$nameId = 'свайный фундамент';
-	$interface['wd_1'] = 0;	
+	$interface['svaynyy_fundament'] = 1;
+	$interface['wall_1'] = 1;
+	$interface['click_wall_2D'] = 1;
 }
 if($url == '/calculator/obyem_pomeshcheniya')	
 { 
 	$title = 'Калькулятор объема и площади помещения 3D'; 
 	$nameId = 'объем и площадь помещения'; 
-	$interface['wd_1'] = 1;
+	$interface['wall_1'] = 1;
+	$interface['obyem_pomeshcheniya'] = 1;
+	$interface['click_wall_2D'] = 1;
 }
 if($url == '/calculator/ploshchad_uchastka')	
 { 
 	$title = 'Расчет площади участка 3D'; 
 	$nameId = 'площадь участка'; 
-	$interface['estimate'] = 0; 
-	$interface['width_1'] = 0;
-	$interface['height_1'] = 0;
-	$interface['wd_1'] = 0;
+	$interface['estimate'] = 0;	
+	$interface['click_wall_2D'] = 1;
 }
 if($url == '/calculator/shtukaturka_na_stene')	
 { 
 	$title = 'Расчет штукатурки на стене 3D'; 
 	$nameId = 'штукатурка на стене'; 
-	$interface['width_1'] = 0;
-	$interface['height_1'] = 0;
-	$interface['form_1'] = 0;
 	$interface['wall_1'] = 0;
-	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
 	$interface['wall_plaster_width_1'] = 1;
+	$interface['wd_1'] = 1;
 }
 if($url == '/calculator/raschet_kirpicha')	
 { 
 	$title = 'Расчет кирпича для стены 3D'; 
 	$nameId = 'расчет кирпича'; 
-	$interface['width_1'] = 0;
-	$interface['height_1'] = 0;
-	$interface['form_1'] = 0;
 	$interface['wall_1'] = 0;
-	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
+	$interface['wd_1'] = 1;
 }
 if($url == '/calculator/raschet_blokov')	
 { 
 	$title = 'Расчет блоков для стены 3D'; 
 	$nameId = 'расчет блоков'; 
-	$interface['width_1'] = 0;
-	$interface['height_1'] = 0;
-	$interface['form_1'] = 0;
 	$interface['wall_1'] = 0;
-	$interface['right_panel_1'] = 0;
 	$interface['bottom_panel_1'] = 0;
+	$interface['wd_1'] = 1;
 }
 ?>
 
@@ -314,35 +300,69 @@ if($url == '/calculator/raschet_blokov')
 	<!--hidden='true'-->
 	<div class="left_panel_1" data-action ='left_panel_1'  >
 
-		<?if($interface['form_1'] == 1){?>
-		<div class="side_panel-button">			
-			<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
-		</div> 
+		
+		<?if($interface['monolit_fundament'] == 1){?>
+		<div class="left-input-block">
+			<div class="left-input-block-header">фундамент</div>
+			<div class="side_panel-button">			
+				<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
+			</div> 			
+			
+			<div class="input-height">
+				<div class="text_1">высота (см)</div>
+				<input type="text" data-action ='input-height' data-input='' value = 20>
+			</div>	
+		</div>		
 		<?}?>
 		
-		<?if($interface['width_1'] == 1){?>
-		<div class="input-height">
-			<div class="text_1">ширина (см)</div>
-			<input type="text" data-action ='input-width' data-input='' value = 30>
-		</div> 
+		
+		<?if($interface['lentochnii_fundament'] == 1 || $interface['svaynyy_fundament'] == 1){?>
+		<div class="left-input-block">
+			<div class="left-input-block-header">фундамент</div>
+			<div class="side_panel-button">			
+				<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
+			</div> 			
+			
+			<div class="input-height">
+				<div class="text_1">ширина (см)</div>
+				<input type="text" data-action ='input-width' data-input='' value = 30>
+			</div> 
+			
+			<div class="input-height">
+				<div class="text_1">высота (см)</div>
+				<input type="text" data-action ='input-height' data-input='' value = 20>
+			</div>			
+		</div>		
+		<?}?>		
+		
+		
+		<?if($interface['obyem_pomeshcheniya'] == 1){?>
+		<div class="left-input-block">
+			<div class="left-input-block-header">стены</div>
+			<div class="side_panel-button">			
+				<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
+			</div> 			
+			
+			<div class="input-height">
+				<div class="text_1">высота (см)</div>
+				<input type="text" data-action ='input-height' data-input='' value = 20>
+			</div>	
+		</div>		
 		<?}?>
 		
-		<?if($interface['height_1'] == 1){?>
-		<div class="input-height">
-			<div class="text_1">высота (см)</div>
-			<input type="text" data-action ='input-height' data-input='' value = 20>
-		</div>
-		<?}?>
-
+		
 		<?if($interface['wall_plaster_width_1'] == 1){?>
-		<div class="input-height">
-			<div class="text_1">толщина (см)</div>
-			<input type="text" nameId='wall_plaster_width_1' data-input='wall_plaster_width_1' value = 3>
+		<div class="left-input-block">
+			<div class="left-input-block-header">штукатурка</div>
+			<div class="input-height">
+				<div class="text_1">толщина (см)</div>
+				<input type="text" nameId='wall_plaster_width_1' data-input='wall_plaster_width_1' value = 3>
+			</div>
 		</div>
 		<?}?>		
 	</div>
 	
-	<?if($interface['right_panel_1'] == 1){?>
+	<?if(2 == 1){?>
 	<div class="right_panel_1" data-action ='right_panel_1'>			
 		<a href="/calculator/monolit_fundament" class="link_page_1">монолитный<br>фундамент</a>
 		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
@@ -353,15 +373,34 @@ if($url == '/calculator/raschet_blokov')
 
 	<div class="bottom_panel_1" data-action ='top_panel_1'>	
 	
+		<?if($interface['click_wall_2D'] == 1){?>
+			<div class="toolbar" nameId='wall_menu_1' style="display: none;">
+				<div class="toolbar-header">стена</div>
+				<div class="toolbar-menu">					
+					<div class="button1-wrap">
+						<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
+					</div>					
+					<div class="button1-wrap">
+						<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					</div>			
+				</div>
+			</div>
+			
+			
+			<div class="toolbar" nameId='point_menu_1' style="display: none;">
+				<div class="toolbar-header">точка</div>
+				<div class="toolbar-menu">
+					<div class="button1-wrap">
+						<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					</div>			
+				</div>
+			</div>	
+		<?}?>
+		
+		<?if($interface['click_wall_2D'] == 1){?>
 		<div class="toolbar" nameId='wall_menu_1' style="display: none;">
 			<div class="toolbar-header">стена</div>
-			<div class="toolbar-menu">
-				<?if($interface['bottom_panel_1'] == 1){?>
-				<div class="button1-wrap">
-					<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
-				</div>
-				<?}?>
-				<?if($interface['bottom_panel_1'] != 1){?>
+			<div class="toolbar-menu">				
 				<div class="input-size">
 					<div class="text_1">длина (м)</div>
 					<input type="text" nameId='size-wall-length' data-input='wall_1' value = 0>
@@ -370,30 +409,15 @@ if($url == '/calculator/raschet_blokov')
 				<div class="input-size">
 					<div class="text_1">высота (м)</div>
 					<input type="text" nameId='size-wall-height' data-input='wall_1' value = 0>
-				</div>	
-				<?}?>  
+				</div>					 
 				
 				<div class="input-size" style="display: none;">
 					<div class="text_1">толщина (м)</div>
 					<input type="text" nameId='size-wall-width' data-input='wall_1' value = 0>
-				</div>
-				
-				<div class="button1-wrap">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
-				</div>			
-			</div>
-		</div>
-		
-		
-		<div class="toolbar" nameId='point_menu_1' style="display: none;">
-			<div class="toolbar-header">точка</div>
-			<div class="toolbar-menu">
-				<div class="button1-wrap">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
-				</div>			
+				</div>		
 			</div>
 		</div>		
-		
+		<?}?>
 		
 		<div class="toolbar" nameId='wd_menu_1' style="display: none;">
 			<div class="toolbar-header">проём</div>
