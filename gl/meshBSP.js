@@ -5,11 +5,12 @@
 // 1. обновляем стену до простой стены без окон/дверей
 // 2. добавляем откосы
 // 3. вырезаем отверстия для окон/дверей , кроме перемещаемого окна/двери
-function clickMoveWD_BSP( wd )  
+function clickMoveWD_BSP( wd, wall )  
 {
 	console.log('clone wall (без перемещаемого WD)');
 	
-	var wall = wd.userData.door.wall; 
+	if(!wall) { wall = wd.userData.door.wall; }	// делаем отверстия для всех wd, кроме выделенного 
+	else {  }	// делаем отверстия для всех wd
 	
 	var p1 = wall.userData.wall.p[0].position;
 	var p2 = wall.userData.wall.p[1].position;	
@@ -41,7 +42,7 @@ function clickMoveWD_BSP( wd )
 		wall.geometry = newBSP.toMesh().geometry;	
 	}
 	
-	if(arrO.length > 1)
+	if(arrO.length > 1 || wd == null)
 	{
 		wall.geometry.computeFaceNormals();
 
@@ -50,6 +51,8 @@ function clickMoveWD_BSP( wd )
 			wall.geometry.faces[i].normal.normalize();
 			if(wall.geometry.faces[i].normal.z == 1) { wall.geometry.faces[i].materialIndex = 1; }
 			else if(wall.geometry.faces[i].normal.z == -1) { wall.geometry.faces[i].materialIndex = 2; }
+			else if(wall.geometry.faces[i].normal.y == 1) { wall.geometry.faces[i].materialIndex = 3; }
+			else if(wall.geometry.faces[i].normal.y == -1) { wall.geometry.faces[i].materialIndex = 3; }
 		}		
 	}
 	
@@ -65,7 +68,11 @@ function clickMoveWD_BSP( wd )
 		v[4].z = v[5].z = v[6].z = v[7].z = 0;				
 		
 		wall_2.geometry = geometry;
-		
+		wall_2.geometry.verticesNeedUpdate = true; 
+		wall_2.geometry.elementsNeedUpdate = true;	
+		wall_2.geometry.computeBoundingSphere();
+		wall_2.geometry.computeBoundingBox();
+		wall_2.geometry.computeFaceNormals();			
 		upUvs_1( wall_2 );
 			
 
@@ -84,7 +91,7 @@ function clickMoveWD_BSP( wd )
 			wall_2.geometry = newBSP.toMesh().geometry;	
 		}
 		
-		if(arrO.length > 1)
+		if(arrO.length > 1 || wd == null)
 		{
 			wall_2.geometry.computeFaceNormals();
 
@@ -93,11 +100,13 @@ function clickMoveWD_BSP( wd )
 				wall_2.geometry.faces[i].normal.normalize();
 				if(wall_2.geometry.faces[i].normal.z == 1) { wall_2.geometry.faces[i].materialIndex = 1; }
 				else if(wall_2.geometry.faces[i].normal.z == -1) { wall_2.geometry.faces[i].materialIndex = 2; }
-			}		
+				else if(wall_2.geometry.faces[i].normal.y == 1) { wall_2.geometry.faces[i].materialIndex = 3; }
+				else if(wall_2.geometry.faces[i].normal.y == -1) { wall_2.geometry.faces[i].materialIndex = 3; }
+			}				
 		}			
 	}		
 	
-	return wall;
+	return wall; 
 }
 
 

@@ -29,10 +29,11 @@ document.body.addEventListener("keydown", function (e)
 		if(e.keyCode == 13)
 		{
 			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
-			//if(infProject.activeInput == 'input-width') { inputWidthOneWall({wall:obj_line[0], width:{value:70, unit:'cm'}, offset:'wallRedBlueArrow'}) }
+			//if(infProject.activeInput == 'input-width') { inputWidthOneWall({wall:obj_line[0], width:{value:7, unit:'cm'}, offset:'wallRedBlueArrow'}) } 
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
 			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
-			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }		
+			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }
+			if(infProject.activeInput == 'wall_plaster_width_1') { inputWidthOneWallPlaster({wall:obj_line[0], width:{value:7, unit:'cm'}, index:1}) }
 		}		
 		 
 		return; 
