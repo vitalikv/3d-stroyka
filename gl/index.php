@@ -7,7 +7,7 @@ $path = "/gl/";
 $title = 'калькулятор площади пола онлайн';
 $interface['wall_1'] = 1;
 $interface['estimate'] = 1;
-$interface['bottom_panel_1'] = 1;
+$interface['bottom_panel_1'] = 0;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
 $interface['wall_plaster_width_1'] = 0;
@@ -16,6 +16,9 @@ $interface['lentochnii_fundament'] = 0;
 $interface['svaynyy_fundament'] = 0;
 $interface['ploshchad_uchastka'] = 0;
 $interface['obyem_pomeshcheniya'] = 0;
+$interface['raschet_kirpicha'] = 0;
+$interface['raschet_blokov'] = 0;
+
 	
 
 if($url == '/calculator/monolit_fundament' || $url == '/calculator/monolit_fundament1')	
@@ -62,7 +65,6 @@ if($url == '/calculator/shtukaturka_na_stene')
 	$title = 'Расчет штукатурки на стене 3D'; 
 	$nameId = 'штукатурка на стене'; 
 	$interface['wall_1'] = 0;
-	$interface['bottom_panel_1'] = 0;
 	$interface['wall_plaster_width_1'] = 1;
 	$interface['wd_1'] = 1;
 }
@@ -71,16 +73,16 @@ if($url == '/calculator/raschet_kirpicha')
 	$title = 'Расчет кирпича для стены 3D'; 
 	$nameId = 'расчет кирпича'; 
 	$interface['wall_1'] = 0;
-	$interface['bottom_panel_1'] = 0;
 	$interface['wd_1'] = 1;
+	$interface['raschet_kirpicha'] = 1;
 }
 if($url == '/calculator/raschet_blokov')	
 { 
 	$title = 'Расчет блоков для стены 3D'; 
 	$nameId = 'расчет блоков'; 
 	$interface['wall_1'] = 0;
-	$interface['bottom_panel_1'] = 0;
 	$interface['wd_1'] = 1;
+	$interface['raschet_blokov'] = 1;
 }
 ?>
 
@@ -359,6 +361,27 @@ if($url == '/calculator/raschet_blokov')
 				<input type="text" nameId='wall_plaster_width_1' data-input='wall_plaster_width_1' value = 3>
 			</div>
 		</div>
+		<?}?>	
+
+
+		<?if($interface['raschet_kirpicha'] == 1 || $interface['raschet_blokov'] == 1){?>
+		<div class="left-input-block">
+			<div class="left-input-block-header">кладка</div>
+			<div class="side_panel-button">			
+				<div class="button2" data-action ='form_1'><img src="<?=$path?>/img/f4.png"></div>
+			</div> 			
+			
+			<div class="left-input-block-header">стена</div>
+			<div class="input-height">
+				<div class="text_1">ширина (см)</div>
+				<input type="text" data-action ='input-width' data-input='' value = 30>
+			</div> 
+			
+			<div class="input-height">
+				<div class="text_1">высота (см)</div>
+				<input type="text" data-action ='input-height' data-input='' value = 20>
+			</div>			
+		</div>		
 		<?}?>		
 	</div>
 	
