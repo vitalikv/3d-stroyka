@@ -43,11 +43,15 @@ function inputChangeWall_1(cdm)
 	// если знаначения ввели с ошибкой, то исправляем
 	if(1==1)
 	{
+		var v = wall.userData.wall.v;
+		
+		if(x == undefined) { x = '' + (v[6].x - v[0].x); }
+		if(y == undefined) { y = '' + (v[1].y - v[0].y); }		
+		if(z == undefined) { z = '' + (Math.abs(v[4].z) + Math.abs(v[0].z)); }		
+		
 		x = x.replace(",", ".");
 		y = y.replace(",", ".");
 		z = z.replace(",", ".");
-		
-		var v = wall.userData.wall.v;
 		
 		var x2 = v[6].x - v[0].x;
 		var y2 = v[1].y - v[0].y;		
@@ -55,7 +59,7 @@ function inputChangeWall_1(cdm)
 		
 		x = (isNumeric(x)) ? x : x2;
 		y = (isNumeric(y)) ? y : y2;
-		z = (isNumeric(z)) ? z : z2;
+		z = (isNumeric(z)) ? z : z2;  
 	}
 	
 	
