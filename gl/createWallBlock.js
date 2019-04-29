@@ -117,27 +117,28 @@ function resetSideBlockWall(cdm)
 	pos[0][1] = [{p:ps.clone().add(new THREE.Vector3(-size.x/2, 0, 0)), r:null}];	// 2 ряд по высоте и 1 ряд по ширине
 	
 	
-	
 	if(1==2)
 	{
 		var pos = [];
-		pos[0] = [];
-		pos[0][0] = [{p:ps.clone(), r:true}];		// 1 ряд по ширине / 1 ряд по высоте / 1 ряд ширине
+		//pos[0][0] = [{p:ps.clone(), r:false}];		// 1 ряд по ширине / 1 ряд по высоте / 1 ряд ширине
 		
-		pos[1] = [];
-		pos[1][0] = [{p:ps.clone().add(new THREE.Vector3(size.z/2, 0, -size.z - seam)), r:null}];
-	}		
-	
-	
-	if(1==2)
-	{
-		var pos = [];
-		pos[0] = [];
-		pos[0][0] = [ps.clone()];		// 1 ряд по ширине / 1 ряд по высоте / 1 ряд ширине
-
-		pos[1] = [];
-		pos[1][0] = [ps.clone().add(new THREE.Vector3(size.z/2, 0, -size.z - seam))];		
-	}
+		pos[0] = { pos : new THREE.Vector3() };	
+		pos[1] = { pos : new THREE.Vector3(size.z/2, 0, -size.z - seam) };
+		
+		
+		var pos2 = p[0].position.clone();
+		
+		
+		while(height > pos2.y + (size.y+seam))
+		{
+			
+			for(var x = 0; x < pos.length; x++)
+			{
+				
+			}
+		}
+		
+	}			
 	
 	if(1==1)
 	{
@@ -176,7 +177,7 @@ function resetSideBlockWall(cdm)
 				
 				pos2 = { p : pos[z1][numY][numX].p.clone(), r : null };
 				if(pos[z1][numY][numX].r) { pos2.r = pos[z1][numY][numX].r; }
-				console.log(dist, dist2);
+				
 				if(pos2.r){ pos2.p.x += (size.z + seam) * x1; }
 				else { pos2.p.x += (size.x + seam) * x1; }
 							
