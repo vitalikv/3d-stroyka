@@ -167,7 +167,7 @@ function resetSideBlockWall(cdm)
 					scene.add(block);
 
 					block.userData.tag = 'block_1';
-					block.userData.setX = { num : num, last : false };  
+					block.userData.setX = { num : num, last : (count > 0) ? true : false };  
 					block.userData.setY = { num : num, last : false };
 				}
 				
