@@ -106,42 +106,87 @@ function resetSideBlockWall(cdm)
 	var seam = wall.userData.wall.block.seam;
 	
 	
-	
-	var ps = p[0].position.clone();
-	ps.add(new THREE.Vector3(0, 0, (size.z + seam)/2));
+
 	
 	
-	var pos = [];
-	pos[0] = [];
-	pos[0][0] = [{p:ps.clone(), r:null}];		// 1 ряд по высоте и ширине
-	pos[0][1] = [{p:ps.clone().add(new THREE.Vector3(-size.x/2, 0, 0)), r:null}];	// 2 ряд по высоте и 1 ряд по ширине
-	
-	
-	if(1==2)
+	if(1==1)
 	{
-		var pos = [];
-		//pos[0][0] = [{p:ps.clone(), r:false}];		// 1 ряд по ширине / 1 ряд по высоте / 1 ряд ширине
-		
-		pos[0] = { pos : new THREE.Vector3() };	
-		pos[1] = { pos : new THREE.Vector3(size.z/2, 0, -size.z - seam) };
+		var qt = [];		
+		qt[0] = { pos : new THREE.Vector3(), v : [], stop : { x : false, y : false } };	
+		qt[1] = { pos : new THREE.Vector3(-size.x/2, 0, -size.z - seam), v : [], stop : { x : false, y : false } };
 		
 		
-		var pos2 = p[0].position.clone();
+		var startPos = p[0].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
+		var endPos = p[1].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
 		
+		var v = geometry.vertices;
 		
-		while(height > pos2.y + (size.y+seam))
+		for(var n = 0; n < qt.length; n++)
 		{
-			
-			for(var x = 0; x < pos.length; x++)
+			for(var n2 = 0; n2 < v.length; n2++)
 			{
+				qt[n].v[n2] = v[n2].clone();
+			}			
+		}		
+		
+		var stop = false;
+		var num = 0;
+		while(!stop)
+		{			
+			stop = true;
+			
+			
+			for(var n = 0; n < qt.length; n++)
+			{
+				if(qt[n].stop.x) continue;
 				
+				var pos = qt[n].pos.clone();
+				
+				pos.x += (size.x + seam) * num;
+								
+				var count = 0;
+				
+				for(var n2 = 0; n2 < qt[n].v.length; n2++)
+				{
+					if(qt[n].v[n2].x + pos.x + startPos.x > endPos.x) { count++; }
+				}	
+
+				if(count == qt[n].v.length) 
+				{ 
+					qt[n].stop.x = true;
+				}
+				else
+				{
+					var block = new THREE.Mesh( geometry, material );
+					
+					block.position.copy(pos);
+					block.position.add(startPos);
+					//if(pos2.r) { block.rotation.y = Math.PI/2; }
+					
+					wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+					scene.add(block);
+
+					block.userData.tag = 'block_1';
+					block.userData.setX = { num : num, last : false };  
+					block.userData.setY = { num : num, last : false };
+				}
+				
+				
+console.log(n, qt[n].v[0].x + pos.x + startPos.x, endPos.x);				
+				
+				stop = false;
 			}
+			
+			num++;
 		}
 		
 	}			
 	
-	if(1==1)
+	if(1==2)
 	{
+		var ps = p[0].position.clone();
+		ps.add(new THREE.Vector3(0, 0, (size.z + seam)/2));		
+		
 		var pos = [];
 		pos[0] = [];
 		pos[0][0] = [{p:ps.clone(), r:null}];		// 1 ряд по ширине / 1 ряд по высоте / 1 ряд длине
@@ -150,62 +195,64 @@ function resetSideBlockWall(cdm)
 		pos[1] = [];
 		pos[1][0] = [{p:ps.clone().add(new THREE.Vector3(-size.x/2, 0, -size.z - seam)), r:null}];		// 2 ряд по ширине / 1 ряд по высоте / 1 ряд длине
 		pos[1][1] = [{p:ps.clone().add(new THREE.Vector3(0, 0, -size.z - seam)), r:null}];	// 2 ряд по ширине / 2 ряд по высоте / 1 ряд длине			
-	}
 	
 	
-	
-	for(var z1 = 0; z1 < pos.length; z1++)
-	{
-		var numY = 0;
-		var countY = pos[z1].length;
-		var pos2 = pos[z1][0][0];
-		
-		
-		var y1 = 0;
-		while (height > pos2.p.y + (size.y+seam))
+		for(var z1 = 0; z1 < pos.length; z1++)
 		{
-			if(countY - 1 < numY) numY = 0;
-			var numX = 0;
-			var countX = pos[z1][numY].length;
+			var numY = 0;
+			var countY = pos[z1].length;
+			var pos2 = pos[z1][0][0];
 			
-			var dist2 = 0;
 			
-			var x1 = 0;
-			while (dist > dist2) 
+			var y1 = 0;
+			while (height > pos2.p.y + (size.y+seam))
 			{
-				if(countX - 1 < numX) numX = 0;
+				if(countY - 1 < numY) numY = 0;
+				var numX = 0;
+				var countX = pos[z1][numY].length;
 				
-				pos2 = { p : pos[z1][numY][numX].p.clone(), r : null };
-				if(pos[z1][numY][numX].r) { pos2.r = pos[z1][numY][numX].r; }
+				var dist2 = 0;
 				
-				if(pos2.r){ pos2.p.x += (size.z + seam) * x1; }
-				else { pos2.p.x += (size.x + seam) * x1; }
-							
-				pos2.p.y += (size.y + seam) * y1;			
-				
-				dist2 = p[0].position.distanceTo(new THREE.Vector3(pos2.p.x+size.x+seam, 0, 0));
-				
-				var block = new THREE.Mesh( geometry, material );
-				
-				block.position.copy(pos2.p);
-				if(pos2.r) { block.rotation.y = Math.PI/2; }
-				
-				wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
-				scene.add(block);
+				var x1 = 0;
+				while (dist > dist2) 
+				{
+					if(countX - 1 < numX) numX = 0;
+					
+					pos2 = { p : pos[z1][numY][numX].p.clone(), r : null };
+					if(pos[z1][numY][numX].r) { pos2.r = pos[z1][numY][numX].r; }
+					
+					if(pos2.r){ pos2.p.x += (size.z + seam) * x1; }
+					else { pos2.p.x += (size.x + seam) * x1; }
+								
+					pos2.p.y += (size.y + seam) * y1;			
+					
+					dist2 = p[0].position.distanceTo(new THREE.Vector3(pos2.p.x+size.x+seam, 0, 0));
+					
+					var block = new THREE.Mesh( geometry, material );
+					
+					block.position.copy(pos2.p);
+					if(pos2.r) { block.rotation.y = Math.PI/2; }
+					
+					wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+					scene.add(block);
 
-				block.userData.tag = 'block_1';
-				block.userData.setX = { num : x1, last : (dist > dist2) ? false : true };  
-				block.userData.setY = { num : y1, last : (height > pos2.p.y + (size.y+seam)) ? false : true }; 
+					block.userData.tag = 'block_1';
+					block.userData.setX = { num : x1, last : (dist > dist2) ? false : true };  
+					block.userData.setY = { num : y1, last : (height > pos2.p.y + (size.y+seam)) ? false : true }; 
 
-				numX++;
-				x1++;
+					numX++;
+					x1++;
+				}		
+				
+				numY++;
+				y1++;
 			}		
 			
-			numY++;
-			y1++;
-		}		
-		
+		}
+	
+	
 	}
+		
 	
 }
 
