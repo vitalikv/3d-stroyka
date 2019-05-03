@@ -112,9 +112,10 @@ function resetSideBlockWall(cdm)
 	if(1==1)
 	{
 		var qt = [];		
-		qt[0] = { pos : new THREE.Vector3(), v : [], stop : { x : false, y : false } };	
-		qt[1] = { pos : new THREE.Vector3(-size.x/2, 0, -size.z - seam), v : [], stop : { x : false, y : false } };
-		
+		qt[0] = { pos : new THREE.Vector3(-0.01,0,0), v : [], stop : { x : false, y : false } };	
+		qt[1] = { pos : new THREE.Vector3(-size.x/2, 0, -size.z - seam), v : [], stop : { x : false, y : false } };			
+		qt[2] = { pos : new THREE.Vector3(-size.x/2, size.y + seam, 0), v : [], stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, -size.z - seam), v : [], stop : { x : false, y : false } };		
 		
 		var startPos = p[0].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
 		var endPos = p[1].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
@@ -172,7 +173,7 @@ function resetSideBlockWall(cdm)
 				}
 				
 				
-console.log(n, qt[n].v[0].x + pos.x + startPos.x, endPos.x);				
+if(num < 1) console.log(n, block.position);				
 				
 				stop = false;
 			}
