@@ -16,6 +16,7 @@ function createFormWallR()
 	var width = size.z - seam;	// 0.5 ряд
 	var width = size.x - seam;	// 1 ряд
 	var width = size.x + size.z;	// 1.5 ряд
+	var width = size.x + size.x - seam/2;	// 2 ряд
 	var height = 2;
 	
 	
@@ -138,7 +139,7 @@ function resetSideBlockWall(cdm)
 		qt[3] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };
 
 
-		// 1.5 ряд
+		// 1.5 ряда
 		var qt = [];
 		var row = 2;
 		var rowX = 0;
@@ -150,10 +151,43 @@ function resetSideBlockWall(cdm)
 		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.z + size.z/2 + seam), rotY : Math.PI/2, stop : { x : false, y : false } };	
 		
 		
+		// 2 ряда
+		var qt = [];
+		var row = 2;
+		var rowX = 0;
+		qt[0] = { pos : new THREE.Vector3(-0.01, 0, size.x - size.z/2 + seam/2), stop : { x : false, y : false } };		
+		qt[1] = { pos : new THREE.Vector3(-0.01 + size.z/2, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01, 0, -size.x + size.z/2 - seam/2), stop : { x : false, y : false } };		
+		qt[4] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
+		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[6] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[7] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };			
+		
+		
 		var startPos = p[0].position.clone();
 		var endPos = p[1].position.clone();
 		
-		var v = geometry.vertices;		
+		var v = geometry.vertices;
+
+		// поворачиваем точку на заданный угол, получаем новую позицию после поворота
+		function rotateV2(pos, angle)
+		{
+			var pos2 = new THREE.Vector3();
+			
+			pos2.x = pos.x * Math.cos(angle) - pos.z * Math.sin(angle);
+			pos2.z = pos.x * Math.sin(angle) + pos.z * Math.cos(angle);	
+			
+			return pos2;
+		}
+
+		var v2 = [];
+		
+		for(var n2 = 0; n2 < v.length; n2++)
+		{
+			v2[n2] = rotateV2(v[n2], Math.PI/2);
+		}	
+	
 		
 		var sum = 0;	// кол-во кирпичей у стены
 		var stopY = false;
@@ -225,7 +259,11 @@ function resetSideBlockWall(cdm)
 					
 					for(var n2 = 0; n2 < v.length; n2++)
 					{
-						if(v[n2].x + pos.x + startPos.x > endPos.x) { count++; }
+						if(qt[n].rotY) 
+						{
+							if(v2[n2].x + pos.x + startPos.x > endPos.x) { count++; }
+						}
+						else if(v[n2].x + pos.x + startPos.x > endPos.x) { count++; }						
 					}	
 
 					if(count == v.length) 
