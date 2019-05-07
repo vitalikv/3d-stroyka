@@ -74,7 +74,7 @@ function createFormWallR()
 	wall.userData.wall.block.material = material;
 	
 	resetSideBlockWall({start:true,wall:wall});
-	cutSideBlockWall({wall:wall});
+	cutSideBlockWall({wall:wall});	// обрезаем кирпичи по краям стены
 	
 	renderCamera();
 }
@@ -112,75 +112,131 @@ function resetSideBlockWall(cdm)
 	if(1==1)
 	{
 		var qt = [];		
-		qt[0] = { pos : new THREE.Vector3(-0.01,0,0), v : [], stop : { x : false, y : false } };	
-		qt[1] = { pos : new THREE.Vector3(-size.x/2, 0, -size.z - seam), v : [], stop : { x : false, y : false } };			
-		qt[2] = { pos : new THREE.Vector3(-size.x/2, size.y + seam, 0), v : [], stop : { x : false, y : false } };
-		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, -size.z - seam), v : [], stop : { x : false, y : false } };		
+		qt[0] = { pos : new THREE.Vector3(-0.01,0,0), stop : { x : false, y : false } };	
+		qt[1] = { pos : new THREE.Vector3(-size.x/2, 0, -size.z - seam), stop : { x : false, y : false } };			
+		qt[2] = { pos : new THREE.Vector3(-size.x/2, size.y + seam, 0), stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, -size.z - seam), stop : { x : false, y : false } };	
+
+
+		var qt = [];		
+		qt[0] = { pos : new THREE.Vector3(-0.01,0,0), rotY : Math.PI/2, stop : { x : false, y : false } };	
+		
 		
 		var startPos = p[0].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
 		var endPos = p[1].position.clone().add(new THREE.Vector3(0, 0, (size.z + seam)/2));
 		
-		var v = geometry.vertices;
+		var v = geometry.vertices;		
 		
-		for(var n = 0; n < qt.length; n++)
+		var sum = 0;	// кол-во кирпичей у стены
+		var stopY = false;
+		var numY = 0;		
+		while(!stopY)
 		{
-			for(var n2 = 0; n2 < v.length; n2++)
-			{
-				qt[n].v[n2] = v[n2].clone();
-			}			
-		}		
-		
-		var stop = false;
-		var num = 0;
-		while(!stop)
-		{			
-			stop = true;
-			
+			stopY = true;
 			
 			for(var n = 0; n < qt.length; n++)
 			{
-				if(qt[n].stop.x) continue;
+				if(qt[n].stop.y) continue;
 				
 				var pos = qt[n].pos.clone();
 				
-				pos.x += (size.x + seam) * num;
-								
+				if(numY > 0) pos.y += (size.y + seam) * 2;
+
 				var count = 0;
 				
-				for(var n2 = 0; n2 < qt[n].v.length; n2++)
+				for(var n2 = 0; n2 < v.length; n2++)
 				{
-					if(qt[n].v[n2].x + pos.x + startPos.x > endPos.x) { count++; }
+					if(v[n2].y + pos.y > height) { count++; }
 				}	
 
-				if(count == qt[n].v.length) 
+				if(count == v.length) 
 				{ 
-					qt[n].stop.x = true;
+					qt[n].stop.y = true;
 				}
 				else
 				{
-					var block = new THREE.Mesh( geometry, material );
-					
-					block.position.copy(pos);
-					block.position.add(startPos);
-					//if(pos2.r) { block.rotation.y = Math.PI/2; }
-					
-					wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
-					scene.add(block);
-
-					block.userData.tag = 'block_1';
-					block.userData.setX = { num : num, last : (count > 0) ? true : false };  
-					block.userData.setY = { num : num, last : false };
+					qt[n].pos.y = pos.y;
 				}
 				
-				
-if(num < 1) console.log(n, block.position);				
-				
-				stop = false;
+				qt[n].lastY = (count > 0) ? true : false;
+
+				stopY = false;
 			}
 			
-			num++;
+			
+			
+			lineX( JSON.parse(JSON.stringify( qt )), v ); 
+				
+			numY++;
+			
+			
+			//if(numY > 100) stopY = true;
 		}
 		
+		
+		function lineX(qt, v)
+		{
+			//console.log('Y', qt);
+			
+			var stop = false;
+			var numX = 0;
+			while(!stop)
+			{			
+				stop = true;
+				
+				for(var n = 0; n < qt.length; n++)
+				{
+					if(qt[n].stop.x) continue;
+					if(qt[n].stop.y) continue;
+					
+					var pos = JSON.parse(JSON.stringify(qt[n].pos));
+					
+					pos.x += (size.x + seam) * numX;
+									
+					var count = 0;
+					
+					for(var n2 = 0; n2 < v.length; n2++)
+					{
+						if(v[n2].x + pos.x + startPos.x > endPos.x) { count++; }
+					}	
+
+					if(count == v.length) 
+					{ 
+						qt[n].stop.x = true;
+					}
+					else
+					{
+						var block = new THREE.Mesh( geometry, material );
+						
+						block.position.copy(pos);
+						block.position.add(startPos);
+						//if(pos2.r) { block.rotation.y = Math.PI/2; }
+						
+						wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+						scene.add(block);
+						
+						block.userData.tag = 'block_1';
+						block.userData.setX = { num : numX, last : (count > 0) ? true : false };  
+						block.userData.setY = { num : numX, last : qt[n].lastY };
+						
+						qt[n].stop.x = (count > 0) ? true : false;
+						
+						sum++;
+					}									
+					
+					stop = false;
+				}
+				
+				numX++;  
+			}
+			
+			console.log('numX', numX-1);
+		}
+		
+		
+		console.log('numY', numY);
+		
+		console.log(sum);
 	}			
 	
 	if(1==2)
