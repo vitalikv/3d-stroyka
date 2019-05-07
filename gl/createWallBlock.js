@@ -13,10 +13,14 @@ function createFormWallR()
 	// создаем стену
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
 	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
-	var width = size.z - seam;	// 0.5 ряд
-	var width = size.x - seam;	// 1 ряд
-	var width = size.x + size.z;	// 1.5 ряд
-	var width = size.x + size.x - seam/2;	// 2 ряд
+	
+	var layer = infProject.settings.wall.block.layer;
+	
+	if(layer == '0.5'){ var width = size.z - seam; }
+	else if(layer == '1'){ var width = size.x - seam; }
+	else if(layer == '1.5'){ var width = size.x + size.z; }
+	else if(layer == '2'){ var width = size.x + size.x - seam/2; }			
+		
 	var height = 2;
 	
 	
@@ -106,64 +110,16 @@ function resetSideBlockWall(cdm)
 	var size = wall.userData.wall.block.size;
 	var height = wall.userData.wall.height_1;
 	var seam = wall.userData.wall.block.seam;
-	
+	var layer = infProject.settings.wall.block.layer;
 	
 
 	
 	
 	if(1==1)
 	{
-		// 0.5 ряд
-		var qt = [];
-		var row = 2;
-		qt[0] = { pos : new THREE.Vector3(-0.01, 0, 0), stop : { x : false, y : false } };
-		qt[1] = { pos : new THREE.Vector3(-0.01 - size.x/2, size.y + seam, 0), stop : { x : false, y : false } };
-
-
-		// 1 ряд
-		var qt = [];
-		var row = 2;
-		qt[0] = { pos : new THREE.Vector3(-0.01,0, (size.z + seam)/2), stop : { x : false, y : false } };	
-		qt[1] = { pos : new THREE.Vector3(-0.01 - size.x/2, 0, (-size.z - seam)/2), stop : { x : false, y : false } };			
-		qt[2] = { pos : new THREE.Vector3(-0.01 - size.x/2, size.y + seam, (size.z + seam)/2), stop : { x : false, y : false } };
-		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, (-size.z - seam)/2), stop : { x : false, y : false } };			
-
-
-		// 1 ряд
-		var qt = [];
-		var row = 2;
-		var rowX = 0;
-		qt[0] = { pos : new THREE.Vector3(-0.01, 0, (size.z + seam)/2), stop : { x : false, y : false } };
-		qt[1] = { pos : new THREE.Vector3(-0.01, 0, (-size.z - seam)/2), stop : { x : false, y : false } };			
-		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[3] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-
-
-		// 1.5 ряда
-		var qt = [];
-		var row = 2;
-		var rowX = 0;
-		qt[0] = { pos : new THREE.Vector3(-0.01, 0, size.z + seam), stop : { x : false, y : false } };		
-		qt[1] = { pos : new THREE.Vector3(-0.01 + size.z/2, 0, size.z/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, 0, size.z/2), rotY : Math.PI/2, stop : { x : false, y : false } };			
-		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, -size.z - seam), stop : { x : false, y : false } };		
-		qt[4] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.z + size.z/2 + seam), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.z + size.z/2 + seam), rotY : Math.PI/2, stop : { x : false, y : false } };	
-		
-		
-		// 2 ряда
-		var qt = [];
-		var row = 2;
-		var rowX = 0;
-		qt[0] = { pos : new THREE.Vector3(-0.01, 0, size.x - size.z/2 + seam/2), stop : { x : false, y : false } };		
-		qt[1] = { pos : new THREE.Vector3(-0.01 + size.z/2, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[3] = { pos : new THREE.Vector3(-0.01, 0, -size.x + size.z/2 - seam/2), stop : { x : false, y : false } };		
-		qt[4] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
-		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[6] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[7] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };			
-		
+		var res = pickBrickLaying(layer, size, seam);
+		var qt = res.qt;
+		var row = res.row;
 		
 		var startPos = p[0].position.clone();
 		var endPos = p[1].position.clone();
@@ -407,4 +363,58 @@ function cutSideBlockWall(cdm)
 
 
 
+function pickBrickLaying(type, size, seam)
+{
+	var qt = [];
+	var row = 2;	
+	
+	if(type == '0.5')	// 0.5 ряд
+	{
+		qt[0] = { pos : new THREE.Vector3(-0.01, 0, 0), stop : { x : false, y : false } };
+		qt[1] = { pos : new THREE.Vector3(-0.01 - size.x/2, size.y + seam, 0), stop : { x : false, y : false } };		
+	}
+	
+	if(type == '1-1')	// 1 ряд
+	{
+		qt[0] = { pos : new THREE.Vector3(-0.01,0, (size.z + seam)/2), stop : { x : false, y : false } };	
+		qt[1] = { pos : new THREE.Vector3(-0.01 - size.x/2, 0, (-size.z - seam)/2), stop : { x : false, y : false } };			
+		qt[2] = { pos : new THREE.Vector3(-0.01 - size.x/2, size.y + seam, (size.z + seam)/2), stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, (-size.z - seam)/2), stop : { x : false, y : false } };					
+	}
 
+
+	if(type == '1')		// 1 ряд
+	{
+		qt[0] = { pos : new THREE.Vector3(-0.01, 0, (size.z + seam)/2), stop : { x : false, y : false } };
+		qt[1] = { pos : new THREE.Vector3(-0.01, 0, (-size.z - seam)/2), stop : { x : false, y : false } };			
+		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
+	}
+
+
+	if(type == '1.5')	// 1.5 ряда
+	{
+		qt[0] = { pos : new THREE.Vector3(-0.01, 0, size.z + seam), stop : { x : false, y : false } };		
+		qt[1] = { pos : new THREE.Vector3(-0.01 + size.z/2, 0, size.z/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, 0, size.z/2), rotY : Math.PI/2, stop : { x : false, y : false } };			
+		qt[3] = { pos : new THREE.Vector3(-0.01, size.y + seam, -size.z - seam), stop : { x : false, y : false } };		
+		qt[4] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.z + size.z/2 + seam), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.z + size.z/2 + seam), rotY : Math.PI/2, stop : { x : false, y : false } };	
+	}
+	
+	
+	if(type == '2')		// 2 ряда
+	{
+		qt[0] = { pos : new THREE.Vector3(-0.01, 0, size.x - size.z/2 + seam/2), stop : { x : false, y : false } };		
+		qt[1] = { pos : new THREE.Vector3(-0.01 + size.z/2, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, 0, size.z + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[3] = { pos : new THREE.Vector3(-0.01, 0, -size.x + size.z/2 - seam/2), stop : { x : false, y : false } };		
+		qt[4] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
+		qt[5] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x + seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[6] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };
+		qt[7] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, -seam/2), rotY : Math.PI/2, stop : { x : false, y : false } };					
+	}
+	
+	
+	return { qt : qt, row : row };
+}
