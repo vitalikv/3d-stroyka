@@ -535,6 +535,10 @@ function showMenuObjUI_Wall(o, stop)
 
 function hideMenuUI(obj) 
 {
+	if(!obj) return;  console.log(obj);
+	if(!obj.userData) return;
+	if(!obj.userData.tag) return;
+	
 	var tag = obj.userData.tag;
 	
 	if(tag == 'wall') { $('[nameId="wall_menu_1"]').hide(); }

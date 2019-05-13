@@ -74,8 +74,9 @@ function checkChangeFormWallR()
 	{
 		if(infProject.scene.array.wall.length > 0) 
 		{
-			resetScene();
+			resetScene(); 
 			createFormWallR(); 
+			if(camera == cameraWall) changeCamera(cameraWall);
 		}
 	}
 	
