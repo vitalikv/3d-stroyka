@@ -1330,7 +1330,7 @@ function createOneWall3( point1, point2, width, cdm )
 	
 	
 	// невидемая стена
-	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, transparent: true, opacity: 0.0 } );
+	var material = new THREE.MeshLambertMaterial( { color : 0x7d7d7d, transparent: true, opacity: 0.7 } );
 	var geometry = createGeometryCube(1, height, 0.2);
 	var v = geometry.vertices;
 	v[0].x = v[1].x = v[6].x = v[7].x = 0;

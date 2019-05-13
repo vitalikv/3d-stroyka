@@ -63,22 +63,40 @@ var resetPop =
 
 function resetScene() 
 {	
-	
-	disposeHierchy(scene, disposeNode);
-	
+
 	for ( var i = 0; i < obj_line.length; i++ )
 	{ 
 		scene.remove(obj_line[i].label[0]); 
 		scene.remove(obj_line[i].label[1]);
 		if(obj_line[i].userData.wall.outline) { scene.remove(obj_line[i].userData.wall.outline); }
-		if(obj_line[i].userData.wall.zone) { scene.remove(obj_line[i].userData.wall.zone.label); } 
+		if(obj_line[i].userData.wall.zone) { scene.remove(obj_line[i].userData.wall.zone.label); }
+
+		for(var i2 = obj_line[i].userData.wall.block.arr.length - 1; i2 > -1; i2--)
+		{
+			var block = obj_line[i].userData.wall.block.arr[i2];
+			scene.remove(block);			
+		}			
+		
+		for(var i2 = obj_line[i].children.length - 1; i2 > -1; i2--)
+		{ 
+			scene.remove(obj_line[i].children[i2]);
+		}
+		
+		obj_line[i].label = [];
+		obj_line[i].userData.wall.p = [];
+		obj_line[i].userData.wall.outline = null;
+		obj_line[i].userData.wall.zone = null;
+		obj_line[i].userData.wall.block.arr = [];
+		
 		scene.remove(obj_line[i]); 
 	}
+	
 	for ( var i = 0; i < obj_point.length; i++ )
 	{ 
 		if(obj_point[i].userData.point.pillar) { scene.remove( obj_point[i].userData.point.pillar ); }
 		scene.remove(obj_point[i]); 
 	}	
+	
 	for ( var i = 0; i < arr_window.length; i++ ){ scene.remove(arr_window[i]); }
 	for ( var i = 0; i < arr_door.length; i++ ){ scene.remove(arr_door[i]); }	
 	for ( var i = 0; i < arr_obj.length; i++ ) { scene.remove(arr_obj[i]); }
@@ -92,6 +110,8 @@ function resetScene()
 		scene.remove(room[i]); 
 		scene.remove( ceiling[i] );	
 	}	
+	
+	disposeHierchy(scene, disposeNode);
 	
 	wallVisible = [];
 	obj_point = [];

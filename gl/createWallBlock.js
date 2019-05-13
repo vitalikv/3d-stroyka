@@ -55,22 +55,37 @@ function checkChangeFormWallR()
 	var seam = infProject.settings.wall.block.seam;
 	var layer = infProject.settings.wall.block.layer;
 	
-	console.log(size, seam, layer);
 	
 	getFormWallR_1();
 	
-	var size = infProject.settings.wall.block.size;
-	var seam = infProject.settings.wall.block.seam;
-	var layer = infProject.settings.wall.block.layer;
+	var size_2 = infProject.settings.wall.block.size;
+	var seam_2 = infProject.settings.wall.block.seam;
+	var layer_2 = infProject.settings.wall.block.layer;
 	
-	console.log(size, seam, layer);
+	var up = false;
+	
+	if(size.x != size_2.x) { up = true; }
+	else if(size.y != size_2.y) { up = true; }
+	else if(size.z != size_2.z) { up = true; }
+	else if(seam != seam_2) { up = true; }
+	else if(layer != layer_2) { up = true; }
+	
+	if(up)
+	{
+		if(infProject.scene.array.wall.length > 0) 
+		{
+			resetScene();
+			createFormWallR(); 
+		}
+	}
+	
 }
 
 
 // создаем кирпичную стену
 function createFormWallR()
 {	
-	if(infProject.scene.array.wall.length > 0) { console.log('createFormWallR'); } 
+	
 		
 	var size = infProject.settings.wall.block.size;		// размер блока кирпича
 	var seam = infProject.settings.wall.block.seam;		// толщина шва
@@ -166,7 +181,9 @@ function resetSideBlockWall(cdm)
 	
 	for(var i = wall.userData.wall.block.arr.length - 1; i > -1; i--)
 	{
-		scene.remove(wall.userData.wall.block.arr[i]);
+		var block = wall.userData.wall.block.arr[i];
+		scene.remove(block);
+		if(block.geometry) { block.geometry.dispose(); }
 	}	
 	
 	wall.userData.wall.block.arr = [];
