@@ -227,7 +227,8 @@ var arrWallFront = [];
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
-infProject.tools = { cutWall : [] }
+infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь 
+infProject.tools = { cutWall : [] } 
 
 var actColorWin = new THREE.Color('rgb(255,0,0)');
 var colorHover = new THREE.Color('rgb(55, 125, 61)');

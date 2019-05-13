@@ -212,7 +212,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
 		
-		infProject.settings.wall.block.size = {x:0.39, y:0.188, z:0.190};		// размер блока кирпича
+		infProject.settings.wall.block.size = {x:0.6, y:0.2, z:0.3};		// размер блока кирпича
 		infProject.settings.wall.block.layer = '0.5';
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/block_1.jpg' };
 	}	
@@ -513,11 +513,6 @@ if($url == '/calculator/raschet_blokov')
 						
 						<?if($interface['raschet_kirpicha'] == 1){?>
 						
-						
-						<?}?>
-						
-						
-						<?if($interface['raschet_blokov'] == 1){?>
 							<div class="raschet_blokov_1"> 
 								<div class="raschet_blokov_1_block_1">
 									<div class="raschet_blokov_1_header_1">Вариант кладки</div>
@@ -576,6 +571,56 @@ if($url == '/calculator/raschet_blokov')
 										<div class="raschet_blokov_1_radio_str"> 
 											<input type="radio" name="radio3">
 											<div class="raschet_blokov_1_radio_label">двойной 250х120х140 мм</div>
+										</div>
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio3">
+											<div class="raschet_blokov_1_radio_label">свой</div>
+										</div>
+									</div>									
+									
+								</div>
+							</div>
+							
+						<?}?>
+						
+						
+						<?if($interface['raschet_blokov'] == 1){?>
+							<div class="raschet_blokov_1"> 
+								
+								<div class="raschet_blokov_1_block_1">
+									<div class="raschet_blokov_1_header_1">Толщина клея</div>
+									
+									<div class="raschet_blokov_1_radio_1">
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio2" checked>
+											<div class="raschet_blokov_1_radio_label">1 мм</div>
+										</div>									
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio2" checked>
+											<div class="raschet_blokov_1_radio_label">3 мм</div>
+										</div>									
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio2" checked>
+											<div class="raschet_blokov_1_radio_label">5 мм</div>
+										</div>
+									</div>									
+								</div>	
+
+								<div class="raschet_blokov_1_block_1"> 
+									<div class="raschet_blokov_1_header_1">Размер блоков</div>									
+									
+									<div class="raschet_blokov_1_radio_1">	 
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio3" checked>
+											<div class="raschet_blokov_1_radio_label">600х200х200 мм</div>
+										</div>
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio3">
+											<div class="raschet_blokov_1_radio_label">600х250х200 мм</div>
+										</div>
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" name="radio3">
+											<div class="raschet_blokov_1_radio_label">600х300х200 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
 											<input type="radio" name="radio3">
@@ -657,6 +702,7 @@ if($url == '/calculator/raschet_blokov')
 		
 		$('[data-action="form_1"]').mousedown(function () 
 		{ 
+			infProject.scene.block.key.scroll = true;
 			clickInterface();
 			$('.modal').css({"display":"block"});
 			$('[modal_body="estimate"]').css({"display":"none"});
@@ -667,8 +713,18 @@ if($url == '/calculator/raschet_blokov')
 		
 		$('[data-action="modal_window"]').mousedown(function () { return false; });		
 		
-		$('[data-action="modal"]').mousedown(function () { clickInterface(); $('[data-action="modal"]').css({"display":"none"}); });			
-		$('[data-action="modal_window_close"]').mousedown(function () { $('[data-action="modal"]').css({"display":"none"}); });
+		$('[data-action="modal"]').mousedown(function () 
+		{	
+			infProject.scene.block.key.scroll = false;
+			clickInterface(); 
+			$('[data-action="modal"]').css({"display":"none"}); 
+		})
+		;			
+		$('[data-action="modal_window_close"]').mousedown(function () 
+		{  
+			infProject.scene.block.key.scroll = false;
+			$('[data-action="modal"]').css({"display":"none"}); 
+		});
   
   
 	function editText(input) 

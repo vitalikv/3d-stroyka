@@ -355,6 +355,8 @@ function moveCameraWall2D( event )
 // cameraZoom
 function mousewheel( e )
 {
+	if(infProject.scene.block.key.scroll) return;
+	
 	var delta = e.wheelDelta ? e.wheelDelta / 120 : e.detail ? e.detail / 3 : 0;
 
 	if ( type_browser == 'Chrome' || type_browser == 'Opera' ) { delta = -delta; }
