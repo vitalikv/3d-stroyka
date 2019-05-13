@@ -1,14 +1,79 @@
 
 
 
+// получаем параметры стены и кирпичей/блоков из input
+function getFormWallR_1() 
+{
+	if(infProject.settings.project == 'wall_block' || infProject.settings.project == 'wall_kirpich'){}
+	else return;
+	
+	//--------------------
+	
+	var seam = $('input[name="block_seam"]:checked').val();	// толщина шва
+	infProject.settings.wall.block.seam = Number(seam);
+	
+	//--------------------
+	
+	var size = $('input[name="block_size"]:checked').val();		// размер блока 
+	
+	if(infProject.settings.project == 'wall_kirpich')
+	{
+		if(size == "250х120х65") { size = {x:0.25, y:0.065, z:0.120}; }
+		else if(size == "250х120х88") { size = {x:0.25, y:0.088, z:0.120}; }
+		else if(size == "250х120х140") { size = {x:0.25, y:0.065, z:0.140}; }
+		else { size = {x:0.25, y:0.065, z:0.120}; }
+	}
+	else if(infProject.settings.project == 'wall_block')
+	{
+		if(size == "600х200х200") { size = {x:0.6, y:0.2, z:0.2}; }
+		else if(size == "600х250х200") { size = {x:0.6, y:0.2, z:0.25}; }
+		else if(size == "600х300х200") { size = {x:0.6, y:0.2, z:0.3}; }
+		else { size = {x:0.6, y:0.2, z:0.2}; }		
+	}
+	
+	infProject.settings.wall.block.size = size;
+	
+	//--------------------
+	
+	
+	if(infProject.settings.project == 'wall_kirpich')
+	{
+		infProject.settings.wall.block.layer = $('input[name="block_layer"]:checked').val();		// тип укладки	
+	}
+	
+		
+}
 
+
+// проверяем в input изменили ли параметры стены по сравнению со старыми значениями
+function checkChangeFormWallR()
+{
+	if(infProject.settings.project == 'wall_block' || infProject.settings.project == 'wall_kirpich'){}
+	else return;
+
+	var size = infProject.settings.wall.block.size;
+	var seam = infProject.settings.wall.block.seam;
+	var layer = infProject.settings.wall.block.layer;
+	
+	console.log(size, seam, layer);
+	
+	getFormWallR_1();
+	
+	var size = infProject.settings.wall.block.size;
+	var seam = infProject.settings.wall.block.seam;
+	var layer = infProject.settings.wall.block.layer;
+	
+	console.log(size, seam, layer);
+}
 
 
 // создаем кирпичную стену
 function createFormWallR()
 {	
+	if(infProject.scene.array.wall.length > 0) { console.log('createFormWallR'); } 
+		
 	var size = infProject.settings.wall.block.size;		// размер блока кирпича
-	var seam = 0.01;									// толщина шва
+	var seam = infProject.settings.wall.block.seam;		// толщина шва
 
 	// создаем стену
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );

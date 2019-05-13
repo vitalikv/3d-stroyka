@@ -202,6 +202,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
 		
 		infProject.settings.wall.block.size = {x:0.25, y:0.065, z:0.120};		// размер блока кирпича
+		infProject.settings.wall.block.seam = 0.01;
 		infProject.settings.wall.block.layer = '0.5';
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/one_kirpich.jpg' };
 	}	
@@ -213,6 +214,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.interface.button.cam2d = 'front';
 		
 		infProject.settings.wall.block.size = {x:0.6, y:0.2, z:0.3};		// размер блока кирпича
+		infProject.settings.wall.block.seam = 0.005;
 		infProject.settings.wall.block.layer = '0.5';
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/block_1.jpg' };
 	}	
@@ -519,19 +521,19 @@ if($url == '/calculator/raschet_blokov')
 									
 									<div class="raschet_blokov_1_radio_1">	 
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio1" checked>
+											<input type="radio" value = "0.5" name="block_layer" checked>
 											<div class="raschet_blokov_1_radio_label">0.5 кирпича</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio1">
+											<input type="radio" value = "1" name="block_layer">
 											<div class="raschet_blokov_1_radio_label">1 кирпич</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio1">
+											<input type="radio" value = "1.5" name="block_layer">
 											<div class="raschet_blokov_1_radio_label">1.5 кирпича</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio1">
+											<input type="radio" value = "2" name="block_layer">
 											<div class="raschet_blokov_1_radio_label">2 кирпича</div>
 										</div>
 									</div>									
@@ -542,34 +544,34 @@ if($url == '/calculator/raschet_blokov')
 									
 									<div class="raschet_blokov_1_radio_1">	 
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2" checked>
+											<input type="radio" value="0.01" name="block_seam" checked>
 											<div class="raschet_blokov_1_radio_label">1 см</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2">
+											<input type="radio" value="0.015" name="block_seam">
 											<div class="raschet_blokov_1_radio_label">1.5 см</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2">
+											<input type="radio" value="0.02" name="block_seam">
 											<div class="raschet_blokov_1_radio_label">2 см</div>
 										</div>
 									</div>									
 								</div>	
 
 								<div class="raschet_blokov_1_block_1"> 
-									<div class="raschet_blokov_1_header_1">Размер кирпича</div>									
+									<div class="raschet_blokov_1_header_1">Размер кирпича (Длина/Ширина/Высота)</div>									
 									
 									<div class="raschet_blokov_1_radio_1">	 
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3" checked>
+											<input type="radio" value="250х120х65" name="block_size" checked>
 											<div class="raschet_blokov_1_radio_label">одинарный 250х120х65 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3">
+											<input type="radio" value="250х120х88" name="block_size">
 											<div class="raschet_blokov_1_radio_label">полуторный 250х120х88 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3">
+											<input type="radio" value="250х120х140" name="block_size">
 											<div class="raschet_blokov_1_radio_label">двойной 250х120х140 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
@@ -588,38 +590,42 @@ if($url == '/calculator/raschet_blokov')
 							<div class="raschet_blokov_1"> 
 								
 								<div class="raschet_blokov_1_block_1">
-									<div class="raschet_blokov_1_header_1">Толщина клея</div>
+									<div class="raschet_blokov_1_header_1">Толщина раствора</div>
 									
 									<div class="raschet_blokov_1_radio_1">
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2" checked>
-											<div class="raschet_blokov_1_radio_label">1 мм</div>
+											<input type="radio" value="0.005" name="block_seam" checked>
+											<div class="raschet_blokov_1_radio_label">клей</div>
 										</div>									
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2" checked>
-											<div class="raschet_blokov_1_radio_label">3 мм</div>
-										</div>									
+											<input type="radio" value="0.01" name="block_seam">
+											<div class="raschet_blokov_1_radio_label">1 см</div>
+										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio2" checked>
-											<div class="raschet_blokov_1_radio_label">5 мм</div>
+											<input type="radio" value="0.015" name="block_seam">
+											<div class="raschet_blokov_1_radio_label">1.5 см</div>
+										</div>
+										<div class="raschet_blokov_1_radio_str"> 
+											<input type="radio" value="0.02" name="block_seam"> 
+											<div class="raschet_blokov_1_radio_label">2 см</div>
 										</div>
 									</div>									
 								</div>	
 
 								<div class="raschet_blokov_1_block_1"> 
-									<div class="raschet_blokov_1_header_1">Размер блоков</div>									
+									<div class="raschet_blokov_1_header_1">Размер блоков (Длина/Ширина/Высота)</div>									
 									
 									<div class="raschet_blokov_1_radio_1">	 
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3" checked>
+											<input type="radio" value="600х200х200" name="block_size" checked>
 											<div class="raschet_blokov_1_radio_label">600х200х200 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3">
+											<input type="radio" value="600х250х200" name="block_size">
 											<div class="raschet_blokov_1_radio_label">600х250х200 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
-											<input type="radio" name="radio3">
+											<input type="radio" value="600х300х200" name="block_size">
 											<div class="raschet_blokov_1_radio_label">600х300х200 мм</div>
 										</div>
 										<div class="raschet_blokov_1_radio_str"> 
@@ -702,6 +708,7 @@ if($url == '/calculator/raschet_blokov')
 		
 		$('[data-action="form_1"]').mousedown(function () 
 		{ 
+			getFormWallR_1();
 			infProject.scene.block.key.scroll = true;
 			clickInterface();
 			$('.modal').css({"display":"block"});
@@ -716,6 +723,7 @@ if($url == '/calculator/raschet_blokov')
 		$('[data-action="modal"]').mousedown(function () 
 		{	
 			infProject.scene.block.key.scroll = false;
+			checkChangeFormWallR();			
 			clickInterface(); 
 			$('[data-action="modal"]').css({"display":"none"}); 
 		})
@@ -723,6 +731,7 @@ if($url == '/calculator/raschet_blokov')
 		$('[data-action="modal_window_close"]').mousedown(function () 
 		{  
 			infProject.scene.block.key.scroll = false;
+			checkChangeFormWallR();
 			$('[data-action="modal"]').css({"display":"none"}); 
 		});
   
