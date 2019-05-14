@@ -20,7 +20,7 @@ function getFormWallR_1()
 	{
 		if(size == "250х120х65") { size = {x:0.25, y:0.065, z:0.120}; }
 		else if(size == "250х120х88") { size = {x:0.25, y:0.088, z:0.120}; }
-		else if(size == "250х120х140") { size = {x:0.25, y:0.065, z:0.140}; }
+		else if(size == "250х120х140") { size = {x:0.25, y:0.140, z:0.120}; }
 		else { size = {x:0.25, y:0.065, z:0.120}; }
 	}
 	else if(infProject.settings.project == 'wall_block')
@@ -292,7 +292,7 @@ function resetSideBlockWall(cdm)
 					
 					var pos = JSON.parse(JSON.stringify(qt[n].pos));
 					
-					pos.x += (size.x + seam) * numX;
+					pos.x += (size.x + 0.01) * numX;
 									
 					var count = 0;
 					
@@ -471,7 +471,7 @@ function pickBrickLaying(type, size, seam)
 		qt[0] = { pos : new THREE.Vector3(-0.01, 0, (size.z + seam)/2), stop : { x : false, y : false } };
 		qt[1] = { pos : new THREE.Vector3(-0.01, 0, (-size.z - seam)/2), stop : { x : false, y : false } };			
 		qt[2] = { pos : new THREE.Vector3(-0.01 + size.z/2, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };
-		qt[3] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + seam, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
+		qt[3] = { pos : new THREE.Vector3(-0.01 + size.z + size.z/2 + 0.01, size.y + seam, size.x/2), rotY : Math.PI/2, stop : { x : false, y : false } };		
 	}
 
 
