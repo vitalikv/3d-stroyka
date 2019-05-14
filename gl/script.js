@@ -947,8 +947,8 @@ function createForm(cdm)
 	var arrP = [];
 	resetScene();
 	console.log(form);
-	if(form == 'wall_plaster') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(3,0,0)]; }
-	else if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
+	
+	if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
 	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
 	else if(form == 'shape2') { var arrP = [new THREE.Vector3(0,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(3,0,2)]; }
 	else if(form == 'shape3') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }
@@ -990,19 +990,7 @@ function createForm(cdm)
 	if(infProject.settings.wall.color)
 	{
 		inf.color = infProject.settings.wall.color;
-	}
-	
-	if(form == 'wall_plaster')
-	{
-		var value = $('input[data-input="wall_plaster_width_1"]').val();
-		
-		if(!isNumeric(value)) value = 3;	
-		
-		value = Math.round(value) / 100;		
-		
-		inf.plaster = { width : value };
-		createOneWall3( obj_point[0], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );		
-	}
+	}	
 	
 	if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'shape7' || form == 'shape8' || form == 'shape9' || form == 'shape10' || form == 'shape11' || form == 'shape12' || form == 'shape13' || form == 'shape14' || form == 'shape15' || form == 'land' || form == 'plan_area')
 	{
@@ -1119,6 +1107,10 @@ function createForm(cdm)
 		getFormWallR_1(); 	// получаем параметры стены из input 
 		createFormWallR(); 
 	}  
+	if(form == 'wall_plaster') 
+	{ 
+		createWallPlaster();
+	} 
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	
@@ -1393,7 +1385,7 @@ function createOneWall3( point1, point2, width, cdm )
 
 		wall_2.userData.wall_2 = {};		
 		wall_2.userData.wall_2.height_1 = Math.round(height * 100) / 100;
-		wall_2.userData.wall_2.width = Math.round(width * 100) / 100;
+		wall_2.userData.wall_2.width = Math.round(width * 1000) / 1000;
 		
 		scene.add( wall_2 );
 		

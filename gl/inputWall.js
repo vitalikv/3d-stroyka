@@ -520,61 +520,6 @@ function inputWidthOneWall(cdm)
 
 
 
-// изменение ширины штукатурки на стене
-function inputWidthOneWallPlaster(cdm) 
-{
-	var wall = cdm.wall;
-	var unit = cdm.width.unit;
-	var width = cdm.width.value;
-	var index = cdm.index; 	
-
-	var wall_2 = wall.userData.wall.plaster.o;
-	
-	if(!isNumeric(width)) 
-	{
-		width = wall_2.userData.wall_2.width;	
-	}
-	else
-	{
-		if(unit == 'cm'){ width /= 100; }
-		else if(unit == 'mm'){ width /= 1000; }		
-	}		
-
-	var index = 1;
-	
-	wall.updateMatrixWorld();
-	
-	var v = wall.userData.wall.v;		
-	
-	if(index == 1) { var x = v[v.length - 6].x - v[0].x; }
-	else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }	
-
-	
-	var geometry = createGeometryCube(1, wall_2.userData.wall_2.height_1, 1, {material:true});
-	var v = geometry.vertices;
-	v[0].x = v[1].x = v[6].x = v[7].x = 0;
-	v[2].x = v[3].x = v[4].x = v[5].x = x;
-	v[0].z = v[1].z = v[2].z = v[3].z = width;	// index 1
-	v[4].z = v[5].z = v[6].z = v[7].z = 0;		
-
-	wall_2.geometry = geometry;
-	wall_2.userData.wall_2.width = Math.round(width * 100) / 100;
-	
-	wall_2.geometry.verticesNeedUpdate = true; 
-	wall_2.geometry.elementsNeedUpdate = true;	
-	wall_2.geometry.computeBoundingSphere();
-	wall_2.geometry.computeBoundingBox();
-	wall_2.geometry.computeFaceNormals();		
-
-	upUvs_1( wall_2 );
-	
-	
-	
-	if(wall.userData.wall.arrO.length > 0) clickMoveWD_BSP( null, wall );
-	
-	renderCamera();
-}
-
 
 
 

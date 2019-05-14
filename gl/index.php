@@ -192,6 +192,10 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.camera.type = 'front';
 		infProject.settings.interface.button.cam2d = 'front';
 		infProject.settings.wall.material = [{index:1, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[0], repeat:{x:0.6, y:0.6}}];
+		infProject.settings.wall.length = 6;
+		infProject.settings.wall.width = 0.3;
+		infProject.settings.wall.height = 2.5;
+		infProject.settings.wall.plaster = { width : 0.03 };
 	}
 	else if(infProject.nameId == 'расчет кирпича') 
 	{ 
@@ -231,7 +235,9 @@ if($url == '/calculator/raschet_blokov')
 	<script src="<?=$path?>meshBSP.js"></script> 	
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     
-	<script src="<?=$path?>createWallBlock.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>block/createWallBlock.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>block/createWallPlaster.js?<?=$vrs?>"></script>
+	
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addWindowDoor.js?<?=$vrs?>"></script>
