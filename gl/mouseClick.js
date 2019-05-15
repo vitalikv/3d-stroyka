@@ -535,7 +535,7 @@ function showMenuObjUI_Wall(o, stop)
 
 function hideMenuUI(obj) 
 {
-	if(!obj) return;  console.log(obj);
+	if(!obj) return;  console.log('hideMenuUI', obj);
 	if(!obj.userData) return;
 	if(!obj.userData.tag) return;
 	

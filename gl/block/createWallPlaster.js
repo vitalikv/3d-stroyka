@@ -83,7 +83,7 @@ function checkChangeFormWallR2()
 }
 
 
-// создаем стену и штукатурку
+// создаем стену и штукатурку при первом запуске
 function createWallPlaster()
 {	
 	if(1==2)
@@ -93,7 +93,9 @@ function createWallPlaster()
 		value = Math.round(value) / 100;				
 	}
 	
-	var inf = { plaster : { width : infProject.settings.wall.plaster.width } };
+	height_wall = infProject.settings.wall.height;
+	
+	var inf = { height : infProject.settings.wall.height, plaster : { width : infProject.settings.wall.plaster.width } };
 	
 	createPoint( new THREE.Vector3(-3,0,0), 0 );
 	createPoint( new THREE.Vector3(3,0,0), 0 );
