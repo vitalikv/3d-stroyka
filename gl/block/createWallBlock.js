@@ -422,7 +422,7 @@ function cutSideBlockWall(cdm)
 		var wallBSP = new ThreeBSP( arrB[i] ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
 		
-		arrB[i].geometry = newBSP.toMesh().geometry;
+		arrB[i].geometry = newBSP.toGeometry();
 	} 
 
 	// обрезаем края сверху
@@ -439,7 +439,7 @@ function cutSideBlockWall(cdm)
 		var wallBSP = new ThreeBSP( arrB[i] ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
 		
-		arrB[i].geometry = newBSP.toMesh().geometry;
+		arrB[i].geometry = newBSP.toGeometry();
 	}		
 }
 

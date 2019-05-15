@@ -39,7 +39,7 @@ function clickMoveWD_BSP( wd, wall )
 		var wdBSP = new ThreeBSP( objClone );    
 		var wallBSP = new ThreeBSP( wall ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );		// вычитаем из стены объект нужной формы		
-		wall.geometry = newBSP.toMesh().geometry;	
+		wall.geometry = newBSP.toGeometry();	
 	}
 	
 	if(arrO.length > 1 || wd == null)
@@ -88,7 +88,7 @@ function clickMoveWD_BSP( wd, wall )
 			var wdBSP = new ThreeBSP( objClone );    
 			var wallBSP = new ThreeBSP( wall_2 ); 			// копируем выбранную стену	
 			var newBSP = wallBSP.subtract( wdBSP );		// вычитаем из стены объект нужной формы		
-			wall_2.geometry = newBSP.toMesh().geometry;	
+			wall_2.geometry = newBSP.toGeometry();	
 		}
 		
 		if(arrO.length > 1 || wd == null)
@@ -148,7 +148,7 @@ function MeshBSP( wd, objsBSP, wall )
 	var wdBSP = new ThreeBSP( wdClone );    
 	var wallBSP = new ThreeBSP( wallClone ); 			// копируем выбранную стену	
 	var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
-	wall.geometry = newBSP.toMesh().geometry;	
+	wall.geometry = newBSP.toGeometry();	
 	
 	wall.geometry.computeFaceNormals();
 
@@ -172,7 +172,7 @@ function MeshBSP( wd, objsBSP, wall )
 		var wdBSP = new ThreeBSP( wdClone );    
 		var wallBSP = new ThreeBSP( wall_2 ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
-		wall_2.geometry = newBSP.toMesh().geometry;	
+		wall_2.geometry = newBSP.toGeometry();	
 		
 		wall_2.geometry.computeFaceNormals();
 
@@ -287,7 +287,7 @@ function cutMeshBlockBSP( wd )
 		var wallBSP = new ThreeBSP( arrB[i] ); 			// копируем выбранную стену	
 		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
 		
-		arrB[i].geometry = newBSP.toMesh().geometry;
+		arrB[i].geometry = newBSP.toGeometry();
 	}	 	
 }
 

@@ -50,7 +50,9 @@ $('[data-action="estimate"]').mousedown(function ()
 
 $('[data-action="form_1"]').mousedown(function () 
 { 
+	console.log('form_1');
 	getFormWallR_1();
+	checkClickUINameID('form_1');
 	infProject.scene.block.key.scroll = true;
 	clickInterface();
 	$('.modal').css({"display":"block"});
@@ -92,13 +94,13 @@ function editText(input)
 	//input[0].setSelectionRange(0, length);
 	input.select();
 	
-	checkClickInputNameID(infProject.activeInput);
+	checkClickUINameID(infProject.activeInput);
 }	
 
 
-function checkClickInputNameID(name)
+function checkClickUINameID(name)
 {
-	if(name == 'wall_1' || name == 'wall_plaster_width_1'){ hideMenuObjUI_Wall(clickO.last_obj); }
+	if(name == 'wall_1' || name == 'wall_plaster_width_1' || name == 'form_1'){ hideMenuObjUI_Wall(clickO.last_obj); }
 }
 
 
