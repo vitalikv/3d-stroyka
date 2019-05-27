@@ -1608,9 +1608,16 @@ function clickButton( event )
 
 				if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
 			}
-			if(clickO.button == 'create_wd_1')
+			else if(clickO.button == 'create_wd_1')
 			{
 				createEmptyFormWD_1();
+			}
+			else if(clickO.button == 'warm_floor_1')
+			{
+				var point = createPointWF({ pos : intersects[0].point });
+				point.position.y = 0;
+				point.userData.wf_point.type = clickO.button; 
+				obj_selected = point;				
 			}
 		}
 		if(camera == cameraWall)
@@ -1657,7 +1664,12 @@ function clickInterface(cdm)
 		{
 			deActiveSelected();
 			clickO.button = 'create_wd_1';
-		}		
+		}	
+		else if(cdm.button == 'warm_floor_1')
+		{
+			deActiveSelected();
+			clickO.button = 'warm_floor_1';
+		}			
 	}
 	
 	return false;

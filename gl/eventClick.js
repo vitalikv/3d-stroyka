@@ -8,7 +8,8 @@ $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(
 
 $('[data-action="2D"]').on('mousedown', function(e) { return clickInterface({button:'2D'}); }); 	
 $('[data-action="3D"]').mousedown(function () { return clickInterface({button:'3D'}); }); 	
-$('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); }); 
+$('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
+$('[data-action="warm_floor"]').mousedown(function () { return clickInterface({button:'warm_floor_1'}); }); 
 $('[data-action="wd_1"]').mousedown(function () { return clickInterface({button:'wd_1'}); });
 $('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 

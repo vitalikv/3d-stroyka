@@ -172,7 +172,13 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 						<div class="ind_text_3">
 							расчет блоков
 						</div>
-					</a>								
+					</a>	
+					<a class="ind_bl_1" href="calculator/warm_floor">
+						<div class="block_form_1_image_wrap"><img src="/img/screenshot_8.jpg"></div>
+						<div class="ind_text_3">
+							теплый пол
+						</div>
+					</a>					
 				</div>
 				<div class="offset_top_50"></div>
 			</div>

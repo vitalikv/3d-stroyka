@@ -88,6 +88,12 @@ if($url == '/calculator/raschet_blokov')
 	$interface['wd_1'] = 1;
 	$interface['raschet_blokov'] = 1;
 }
+if($url == '/calculator/warm_floor')	
+{ 
+	$title = 'Расчет теплого пола 3D'; 
+	$nameId = 'теплый пол'; 
+	$interface['wall_1'] = 0;
+}
 ?>
 
 
@@ -112,7 +118,7 @@ if($url == '/calculator/raschet_blokov')
 <script>
 	var vr = "<?=$vrs ?>";
 	
-	var infProject = { title : '<?=$title?>', nameId : '<?=$nameId?>', scene : { tool : {} } };
+	var infProject = { url : '<?=$url?>', title : '<?=$title?>', nameId : '<?=$nameId?>', scene : { tool : {} } };
 	infProject.settings = {};
 	infProject.path = '<?=$path?>';
 	
@@ -132,7 +138,7 @@ if($url == '/calculator/raschet_blokov')
 	infProject.settings.interface = { button: {} }
 	infProject.settings.interface.button = { cam2d: '2d' }
 	
-	if(infProject.nameId == 'монолитный фундамент') 
+	if(infProject.url == '/calculator/monolit_fundament') 
 	{ 
 		infProject.settings.calc.fundament = 'monolit';
 		infProject.settings.wall.label = 'outside';
@@ -143,19 +149,19 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.floor.height = infProject.settings.height - 0.01;
 		infProject.settings.floor.changeY = true;
 	}
-	else if(infProject.nameId == 'ленточный фундамент')
+	else if(infProject.url == '/calculator/lentochnii_fundament')
 	{ 
 		infProject.settings.wall.label = 'outside';
 		infProject.settings.calc.fundament = 'lent';
 		infProject.settings.height = 0.2;
 	}
-	else if(infProject.nameId == 'свайный фундамент') 
+	else if(infProject.url == '/calculator/svaynyy_fundament') 
 	{ 
 		infProject.settings.wall.label = 'outside';
 		infProject.settings.calc.fundament = 'svai';
 		infProject.settings.height = 0.2;
 	}
-	else if(infProject.nameId == 'площадь участка') 
+	else if(infProject.url == '/calculator/ploshchad_uchastka') 
 	{ 
 		infProject.load.img = ['img/load/grass.jpg']; 
 		infProject.settings.floor.material = [{ img:infProject.load.img[0], repeat:{x:0.2, y:0.2} }];
@@ -175,7 +181,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.grid = { value: 100, offset : 1 }
 		infProject.settings.interface.estimate = 0;		
 	}
-	else if(infProject.nameId == 'объем и площадь помещения') 
+	else if(infProject.url == '/calculator/obyem_pomeshcheniya') 
 	{ 
 		infProject.load.img = ['img/load/kirpich.jpg'];
 		infProject.settings.project = 'plan_area';
@@ -185,7 +191,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.floor.o = true;
 		infProject.settings.floor.areaPoint = 'inside';
 	}	
-	else if(infProject.nameId == 'штукатурка на стене') 
+	else if(infProject.url == '/calculator/shtukaturka_na_stene') 
 	{ 
 		infProject.load.img = ['img/load/kirpich.jpg', 'img/load/beton.jpg'];
 		infProject.settings.project = 'wall_plaster';
@@ -197,7 +203,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.wall.height = 2.5;
 		infProject.settings.wall.plaster = { width : 0.03 };
 	}
-	else if(infProject.nameId == 'расчет кирпича') 
+	else if(infProject.url == '/calculator/raschet_kirpicha') 
 	{ 
 		infProject.load.img = ['img/load/beton.jpg', 'img/load/one_kirpich.jpg'];
 		infProject.settings.project = 'wall_kirpich';
@@ -210,7 +216,7 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.wall.block.layer = '0.5';
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/one_kirpich.jpg' };
 	}	
-	else if(infProject.nameId == 'расчет блоков') 
+	else if(infProject.url == '/calculator/raschet_blokov') 
 	{ 
 		infProject.load.img = ['img/load/block_1.jpg', 'img/load/block_1.jpg'];
 		infProject.settings.project = 'wall_block';
@@ -221,7 +227,13 @@ if($url == '/calculator/raschet_blokov')
 		infProject.settings.wall.block.seam = 0.005;
 		infProject.settings.wall.block.layer = '0.5';
 		infProject.settings.wall.block.material = { o : null, link : 'img/load/block_1.jpg' };
-	}	
+	}
+	else if(infProject.url == '/calculator/warm_floor')
+	{
+		console.log(3333, infProject.url);
+		
+		infProject.settings.project = '';
+	}
 	
 	console.log('version '+ vr);
     console.log('infProject ', infProject, <?=$interface['estimate']?>);
@@ -237,6 +249,8 @@ if($url == '/calculator/raschet_blokov')
     
 	<script src="<?=$path?>block/createWallBlock.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>block/createWallPlaster.js?<?=$vrs?>"></script>
+	
+	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>
 	
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>
@@ -289,6 +303,9 @@ if($url == '/calculator/raschet_blokov')
 		<div class="toolbar" data-action ='top_panel_1'>
 			<? if($interface['wall_1'] == 1){ ?>
 			<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
+			<? } ?>
+			<? if($url == '/calculator/warm_floor'){ ?>
+			<div data-action ='warm_floor' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 			<? } ?>
 			<? if($interface['wd_1'] == 1){ ?>
 			<div data-action ='wd_1' class="button1"><p>Проём</p></div>
