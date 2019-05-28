@@ -1614,9 +1614,8 @@ function clickButton( event )
 			}
 			else if(clickO.button == 'warm_floor_1')
 			{
-				var point = createPointWF({ pos : intersects[0].point });
+				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
 				point.position.y = 0;
-				point.userData.wf_point.type = clickO.button; 
 				obj_selected = point;				
 			}
 		}

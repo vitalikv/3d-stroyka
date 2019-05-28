@@ -20,20 +20,21 @@ function mouseDownRight()
 	clickO.buttonAct = null;
 	clickO.button = null; 
 	
+	var obj = obj_selected;
 	
-	if(obj_selected)
+	if(obj)
 	{
-		if(obj_selected.userData.tag == 'free_dw') { scene.remove(obj_selected); clickO = resetPop.clickO(); }
+		if(obj.userData.tag == 'free_dw') { scene.remove(obj); clickO = resetPop.clickO(); }
 		
-		if(obj_selected.userData.tag == 'point') 
+		if(obj.userData.tag == 'point') 
 		{ 	
-			if(obj_selected.w.length == 0){ deleteOnePoint(obj_selected); }  
+			if(obj.w.length == 0){ deleteOnePoint(obj); }  
 			else 
 			{ 
-				if(obj_selected.userData.point.type == 'continue_create_wall')
+				if(obj.userData.point.type == 'continue_create_wall')
 				{
-					var point = obj_selected.p[0]; 
-					deleteWall_2(obj_selected.w[0]); 
+					var point = obj.p[0]; 
+					deleteWall_2(obj.w[0]); 
 					//upLabelPlan_1([point.w[0]]);					
 				}
 				
@@ -42,6 +43,14 @@ function mouseDownRight()
 			
 			clickO = resetPop.clickO();
 		}
+		else if (obj.userData.tag == 'wf_point' ) 
+		{
+			if(obj.userData.wf_point.type == 'tool') 
+			{
+				deleteValueFromArrya(obj);
+				scene.remove(obj);  
+			}			
+		}			
 	}	
 	
 	obj_selected = null;	
@@ -382,17 +391,25 @@ function onDocumentMouseUp( event )
 		else if(tag == 'wall') { clickWallMouseUp(obj); }
 		else if(tag == 'window' || obj.userData.tag == 'door') { clickWDMouseUp(obj); }	
 		else if(tag == 'controll_wd') { clickMouseUpToggleWD(obj); } 
-	}
-
-	if(obj_selected)
-	{
-		if ( obj_selected.userData.tag == 'free_dw' ) {  }
-		else if ( obj_selected.userData.tag == 'point' ) 
+		
+		
+		if(tag == 'free_dw') {  }
+		else if (tag == 'point') 
 		{
-			if(obj_selected.userData.point.type) {  } 
+			if(obj.userData.point.type) {  } 
 			else { obj_selected = null; }
 		}
-		else { obj_selected = null; }
+		else if (tag == 'wf_point' ) 
+		{
+			if(obj.userData.wf_point.type == 'tool') 
+			{
+				obj.userData.wf_point.type = '';
+				
+				obj_selected = createPointWF({ pos : obj.position.clone(), type : 'tool', createLine : true }); 
+			}
+			else { obj_selected = null; }			
+		}		
+		else { obj_selected = null; }		
 	}
 
 
