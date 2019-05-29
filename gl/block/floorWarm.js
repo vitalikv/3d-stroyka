@@ -20,21 +20,11 @@ function createPointWF(cdm)
 	point.userData.wf_point = {};
 	point.userData.wf_point.color = point.material.color.clone();
 	point.userData.wf_point.type = (cdm.type) ? cdm.type : '';
-	point.userData.wf_point.line = { o : null, p : [] }
+	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
 	scene.add( point );
 
-	arr_wf.point[arr_wf.point.length] = point;
-	
-	if(cdm.createLine)
-	{
-		var geometry = new THREE.Geometry();
-		geometry.vertices.push(point.position.clone(), point.position.clone());
-		
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
-		scene.add( line );
 
-		point.userData.wf_point.line = line;
-	}
+	arr_wf.point[arr_wf.point.length] = point;
 	
 	return point;	
 }
@@ -49,7 +39,15 @@ function moveWFPoint(event, obj)
 	
 	obj.position.copy(intersects[0].point);
 	
-	//upLineWF(point);
+	if(obj.userData.wf_point.line.o)
+	{
+		var line = obj.userData.wf_point.line.o;
+		
+		line.geometry.vertices[0] = obj.position;
+		line.geometry.verticesNeedUpdate = true; 
+		line.geometry.elementsNeedUpdate = true;			
+		
+	}
 }
 
 
@@ -59,14 +57,15 @@ function upLineWF(point)
 {
 	if(!point.userData.wf_point.line.o)
 	{
-		if(point.userData.wf_point.line.p.length == 1)
-		{
-			var geometry = new THREE.Geometry();
-			geometry.vertices.push(point.position.clone(), point.position.clone());
-			
-			var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
-			scene.add( line );			
-		}
+		var geometry = new THREE.Geometry();
+		geometry.vertices.push(point.position.clone(), point.position.clone());
+		
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
+		line.userData.wf_line = {};
+		line.userData.wf_line.point = [point];
+		scene.add( line );
+		
+		point.userData.wf_point.line.o = line;
 	}
 }
 

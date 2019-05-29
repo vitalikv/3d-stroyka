@@ -405,7 +405,14 @@ function onDocumentMouseUp( event )
 			{
 				obj.userData.wf_point.type = '';
 				
-				obj_selected = createPointWF({ pos : obj.position.clone(), type : 'tool', createLine : true }); 
+				upLineWF(obj);
+				
+				var line = obj.userData.wf_point.line.o; 
+				
+				obj_selected = createPointWF({ pos : obj.position.clone(), type : 'tool', line : line }); 
+				
+				line.userData.wf_line.point.push(obj_selected);
+				
 			}
 			else { obj_selected = null; }			
 		}		
