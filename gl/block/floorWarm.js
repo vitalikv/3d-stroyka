@@ -32,7 +32,7 @@ function createPointWF(cdm)
 
 
 
-// перетаскиваем точку
+// перетаскиваем точку, оновляем форму линии
 function moveWFPoint(event, obj)
 {
 	var intersects = rayIntersect( event, planeMath, 'one' );
@@ -43,22 +43,25 @@ function moveWFPoint(event, obj)
 	{
 		var line = obj.userData.wf_point.line.o;
 		
-		line.geometry.vertices[0] = obj.position;
+		line.geometry.vertices[line.geometry.vertices.length - 1] = obj.position;
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;			
-		
 	}
 }
 
 
 
-
+// обновляем или создаем линию
 function upLineWF(point)
 {
+	point.userData.wf_point.type = '';
+	
+	var line = point.userData.wf_point.line.o;
+	
 	if(!point.userData.wf_point.line.o)
 	{
 		var geometry = new THREE.Geometry();
-		geometry.vertices.push(point.position.clone(), point.position.clone());
+		geometry.vertices.push(point.position.clone());
 		
 		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
 		line.userData.wf_line = {};
@@ -67,9 +70,45 @@ function upLineWF(point)
 		
 		point.userData.wf_point.line.o = line;
 	}
+	
+	
+	var point_2 = createPointWF({ pos : point.position.clone(), type : 'tool', line : line }); 
+			
+	var geometry = new THREE.Geometry();
+	geometry.vertices = line.geometry.vertices;	
+	geometry.vertices.push(point_2.position.clone());
+	
+	line.geometry = geometry;
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true;	
+	
+	line.userData.wf_line.point.push(point_2);
+
+	obj_selected = point_2;
 }
 
 
+
+// нажали на правую кнопку мыши, когда создаем линию
+function clickRightMouseLineWF(obj)
+{
+	if(obj.userData.wf_point.type != 'tool') return;
+	
+	arr_wf.point.pop();	// удаляем последнее значение в массиве
+	
+	var line = obj.userData.wf_point.line.o;
+	line.userData.wf_line.point.pop();
+	
+	scene.remove(obj);
+
+	var geometry = new THREE.Geometry();
+	line.geometry.vertices.pop();
+	geometry.vertices = line.geometry.vertices;	
+	
+	line.geometry = geometry;
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true; 	
+}
 
 
 // удаление значения из массива 

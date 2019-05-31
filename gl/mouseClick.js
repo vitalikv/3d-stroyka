@@ -45,11 +45,7 @@ function mouseDownRight()
 		}
 		else if (obj.userData.tag == 'wf_point' ) 
 		{
-			if(obj.userData.wf_point.type == 'tool') 
-			{
-				deleteValueFromArrya(obj);
-				scene.remove(obj);  
-			}			
+			clickRightMouseLineWF(obj);			
 		}			
 	}	
 	
@@ -403,16 +399,7 @@ function onDocumentMouseUp( event )
 		{
 			if(obj.userData.wf_point.type == 'tool') 
 			{
-				obj.userData.wf_point.type = '';
-				
 				upLineWF(obj);
-				
-				var line = obj.userData.wf_point.line.o; 
-				
-				obj_selected = createPointWF({ pos : obj.position.clone(), type : 'tool', line : line }); 
-				
-				line.userData.wf_line.point.push(obj_selected);
-				
 			}
 			else { obj_selected = null; }			
 		}		
