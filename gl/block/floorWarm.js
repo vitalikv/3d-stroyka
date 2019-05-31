@@ -30,6 +30,21 @@ function createPointWF(cdm)
 }
 
 
+// кликнули на точку
+function clickWFPoint(intersect)
+{
+	if(obj_selected)
+	{
+		if(obj_selected.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
+	}		
+	
+	var obj = intersect.object;	
+	obj_selected = obj;	
+	
+	offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
+	planeMath.position.set( 0, intersect.point.y, 0 );
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+}
 
 
 // перетаскиваем точку, оновляем форму линии
@@ -37,13 +52,23 @@ function moveWFPoint(event, obj)
 {
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
-	obj.position.copy(intersects[0].point);
+	
+	if(obj.userData.wf_point.type == 'tool') 
+	{ 
+		obj.position.copy(intersects[0].point);
+	}
+	else
+	{
+		var pos = new THREE.Vector3().addVectors( intersects[0].point, offset );
+		obj.position.copy(pos);
+	}
+	
 	
 	if(obj.userData.wf_point.line.o)
 	{
 		var line = obj.userData.wf_point.line.o;
 		
-		line.geometry.vertices[line.geometry.vertices.length - 1] = obj.position;
+		//line.geometry.vertices[line.geometry.vertices.length - 1] = obj.position;
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;			
 	}
@@ -51,7 +76,7 @@ function moveWFPoint(event, obj)
 
 
 
-// обновляем или создаем линию
+// добавляем точки или создаем линию
 function upLineWF(point)
 {
 	point.userData.wf_point.type = '';
@@ -61,7 +86,7 @@ function upLineWF(point)
 	if(!point.userData.wf_point.line.o)
 	{
 		var geometry = new THREE.Geometry();
-		geometry.vertices.push(point.position.clone());
+		geometry.vertices.push(point.position);
 		
 		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
 		line.userData.wf_line = {};
@@ -76,7 +101,7 @@ function upLineWF(point)
 			
 	var geometry = new THREE.Geometry();
 	geometry.vertices = line.geometry.vertices;	
-	geometry.vertices.push(point_2.position.clone());
+	geometry.vertices.push(point_2.position);
 	
 	line.geometry = geometry;
 	line.geometry.verticesNeedUpdate = true; 
@@ -97,17 +122,32 @@ function clickRightMouseLineWF(obj)
 	arr_wf.point.pop();	// удаляем последнее значение в массиве
 	
 	var line = obj.userData.wf_point.line.o;
-	line.userData.wf_line.point.pop();
 	
-	scene.remove(obj);
+	if(line)
+	{
 
-	var geometry = new THREE.Geometry();
-	line.geometry.vertices.pop();
-	geometry.vertices = line.geometry.vertices;	
-	
-	line.geometry = geometry;
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true; 	
+		if(line.userData.wf_line.point.length == 2)
+		{			
+			scene.remove(line.userData.wf_line.point[0]);
+			scene.remove(line.userData.wf_line.point[1]);
+			scene.remove(line);	
+			line = null;
+		}
+		else
+		{
+			line.userData.wf_line.point.pop();
+
+			var geometry = new THREE.Geometry();
+			line.geometry.vertices.pop();
+			geometry.vertices = line.geometry.vertices;	
+			
+			line.geometry = geometry;
+			line.geometry.verticesNeedUpdate = true; 
+			line.geometry.elementsNeedUpdate = true;			
+		}
+	}
+
+ 	scene.remove(obj);
 }
 
 

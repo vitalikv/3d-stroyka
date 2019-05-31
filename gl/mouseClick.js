@@ -148,12 +148,12 @@ function detectRayHit( event, cdm )
 			}
 		}
 
-		var cdm = { intersects: um, tag: [ 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'obj', 'point', 'wall', 'room', 'ceiling', 'group_pop' ] };
+		var cdm = { intersects: um, tag: [ 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'obj', 'wf_point', 'point', 'wall', 'room', 'ceiling', 'group_pop' ] };
 		if ( num == -1 ) { num = clickFirstHit_2( cdm ); }
 	}
 	else
 	{
-		var cdm = { intersects: um, tag: [ 'controll_wd', 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'point', 'wall' ] };
+		var cdm = { intersects: um, tag: [ 'controll_wd', 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'wf_point', 'point', 'wall' ] };
 		num = clickFirstHit_1( cdm );  
 	}
 
@@ -242,6 +242,7 @@ function clickRayHit( rayhit )
 		if(clickToolWD(obj_selected)) { console.log(clickO.last_obj); }
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
+		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
 	}
 	else if(camera == camera3D)
 	{
