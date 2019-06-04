@@ -1,6 +1,6 @@
 
 
-
+$('[data-action="top_panel_1"]').mousemove(function (e) { e.stopPropagation(); });
 		
 $('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
 $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
@@ -22,8 +22,9 @@ $('[link_form]').mousedown(function ()
 }); 
 
 
-$('[data-input]').mousedown(function () { editText($(this)); });  
-
+ 
+$("input").mousedown(function (e) { editText($(this)); e.stopPropagation(); }); 
+$("input").mousemove(function (e) { return false; });
 
 
 $('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
@@ -85,15 +86,11 @@ $('[data-action="modal_window_close"]').mousedown(function ()
   
 function editText(input) 
 {
-	input.focus();
 	infProject.activeDiv = input;
 	infProject.activeInput = input.data('action');  
 	
 	if(input.data('action') == undefined) { infProject.activeInput = input.data('input'); }
 	console.log(infProject.activeInput);
-	//let length = input[0].value.toString().length;
-	//input[0].setSelectionRange(0, length);
-	input.select();
 	
 	checkClickUINameID(infProject.activeInput);
 }	

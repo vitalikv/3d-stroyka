@@ -73,8 +73,6 @@ canvas
 	font-size: 70px;
 	text-align: center;
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 	line-height: 0.6em;
 	color: #666;
 	cursor: pointer;	
@@ -396,8 +394,6 @@ canvas
 	top: 0px;
 	left: 0px;	
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;	
 	border-right: 2px solid #cccccc;	
 }
 
@@ -422,9 +418,7 @@ canvas
 	height: 100%; 
 	top: 0px;
 	right: 0px;	
-	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;	
+	text-decoration: none;	
 	border-left: 2px solid #cccccc;	
 	cursor: pointer;
 }
@@ -496,8 +490,6 @@ canvas
 	font-size: 20px;
 	color: #666;
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 
 	outline: none;
 	text-align:  center;	
@@ -719,8 +711,6 @@ a.link_page_1
 	font-size: 18px;
 	color: #666;
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 	text-align:  center;	
 	
 	background-color:#cfcfcf;
@@ -754,8 +744,6 @@ a.link_page_1
 	
 	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 	line-height: 2em;
 	padding: 0;
 	outline: none;
@@ -777,8 +765,6 @@ a.link_page_1
 	font-size: 15px;
 	color: #666;
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 
 	outline: none;
 	text-align:  center;
@@ -838,8 +824,6 @@ a.link_page_1
 	font-size: 20px;
 	color: #666;
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 	text-align:  center;	
 	
 	background-color:#cfcfcf;
@@ -888,8 +872,6 @@ a.link_page_1
 	
 	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
-	user-select: none;
-	-moz-user-select: none;
 	line-height: 2em;
 	padding: 0;
 	outline: none;
