@@ -70,7 +70,26 @@ function moveWFPoint(event, obj)
 		
 		//line.geometry.vertices[line.geometry.vertices.length - 1] = obj.position;
 		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;			
+		line.geometry.elementsNeedUpdate = true;
+
+		if(line.userData.wf_line.tube)
+		{
+			var points = [];
+				
+			for(var i = 0; i < line.geometry.vertices.length; i++)
+			{
+				points[i] = line.geometry.vertices[i].clone();
+			}
+			
+			var pipeSpline = new THREE.CatmullRomCurve3(points);
+			pipeSpline.curveType = 'catmullrom';
+			pipeSpline.tension = 0;
+			var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
+			
+			var tubeGeometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );	
+
+			line.userData.wf_line.tube.geometry = tubeGeometry;
+		}
 	}
 }
 
@@ -90,6 +109,7 @@ function upLineWF(point)
 		
 		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
 		line.userData.wf_line = {};
+		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
 		scene.add( line );
 		
@@ -143,7 +163,28 @@ function clickRightMouseLineWF(obj)
 			
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
-			line.geometry.elementsNeedUpdate = true;			
+			line.geometry.elementsNeedUpdate = true;
+
+			// создаем трубу
+			var points = [];
+				
+			for(var i = 0; i < line.geometry.vertices.length; i++)
+			{
+				points[i] = line.geometry.vertices[i].clone();
+			}
+			
+			var pipeSpline = new THREE.CatmullRomCurve3(points);
+			pipeSpline.curveType = 'catmullrom';
+			pipeSpline.tension = 0;
+			var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
+			
+			var tubeGeometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );
+
+			var tube = new THREE.Mesh( tubeGeometry, new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );	
+			
+			scene.add( tube );
+
+			line.userData.wf_line.tube = tube;
 		}
 	}
 
