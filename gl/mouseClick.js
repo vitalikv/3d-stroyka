@@ -396,7 +396,7 @@ function onDocumentMouseUp( event )
 			if(obj.userData.point.type) {  } 
 			else { obj_selected = null; }
 		}
-		else if (tag == 'wf_point' ) 
+		else if (tag == 'wf_point') 
 		{
 			if(obj.userData.wf_point.type == 'tool') 
 			{

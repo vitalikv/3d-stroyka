@@ -1,7 +1,7 @@
 
 
 
-var arr_wf = { point: [] };
+var arr_wf = { line : [], point : [] };
 
 
 // создаем точку для теплого пола
@@ -47,7 +47,9 @@ function clickWFPoint(intersect)
 }
 
 
-// перетаскиваем точку, оновляем форму линии
+
+
+// перетаскиваем точку/tool, обновляем форму линии
 function moveWFPoint(event, obj)
 {
 	var intersects = rayIntersect( event, planeMath, 'one' );
@@ -55,7 +57,9 @@ function moveWFPoint(event, obj)
 	
 	if(obj.userData.wf_point.type == 'tool') 
 	{ 
-		obj.position.copy(intersects[0].point);
+		obj.position.copy(intersects[0].point); 
+
+		dragToolWFPoint({obj : obj_selected});
 	}
 	else
 	{
@@ -64,44 +68,120 @@ function moveWFPoint(event, obj)
 	}
 	
 	
+	// обновляем geometry линии
 	if(obj.userData.wf_point.line.o)
 	{
 		var line = obj.userData.wf_point.line.o;
 		
-		//line.geometry.vertices[line.geometry.vertices.length - 1] = obj.position;
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;
 
+		// обновляем geometry трубы
 		if(line.userData.wf_line.tube)
 		{
-			var points = [];
-				
-			for(var i = 0; i < line.geometry.vertices.length; i++)
-			{
-				points[i] = line.geometry.vertices[i].clone();
-			}
-			
-			var pipeSpline = new THREE.CatmullRomCurve3(points);
-			pipeSpline.curveType = 'catmullrom';
-			pipeSpline.tension = 0;
-			var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
-			
-			var tubeGeometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );	
-
-			line.userData.wf_line.tube.geometry = tubeGeometry;
+			newTubeWF({line : line});
 		}
 	}
 }
 
 
 
-// добавляем точки или создаем линию
+
+
+// перетаскиваем точку (определяем с чем пересекается)
+function dragToolWFPoint(cdm)
+{	
+	var obj = cdm.obj;
+	
+	var arrDp = [];
+	var arr = [];
+	
+	lineAxis_1.visible = false;
+	
+	for(var i = 0; i < arr_wf.line.length; i++)
+	{ 
+		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[0];
+		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[arr_wf.line[i].userData.wf_line.point.length - 1];
+		
+		var v = arr_wf.line[i].geometry.vertices;
+		
+		if(v.length < 2) continue;
+		
+		var dist1 = v[0].distanceTo(obj.position);
+		var dist2 = v[v.length - 1].distanceTo(obj.position);
+		
+		if(dist1 < dist2)
+		{
+			var pos = v[0];
+			var dist = dist1;
+		}
+		else
+		{
+			var pos = v[v.length - 1];
+			var dist = dist2;			
+		}
+		
+		if(dist < 0.5) 
+		{ 
+			getNearLineWF({dist: dist, p1: pos, p2: obj.position});
+			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position};
+			continue; 
+		}
+		
+		
+		// пускаем перпендикуляр от точки на прямую
+		for(var i2 = 0; i2 < v.length - 1; i2++)
+		{
+			if(!calScal(v[i2], v[i2 + 1], obj.position)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
+			
+			var pos = spPoint(v[i2], v[i2 + 1], obj.position);  
+			var pos = new THREE.Vector3(pos.x, pos.y, pos.z);	// получаем точку пересечения точки на прямую
+			
+			var dist = pos.distanceTo(obj.position);
+			
+			if(dist > 0.5) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
+			
+			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position};
+		}
+		
+		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[i].position;
+	}
+		
+		
+	if(arr.length > 1) arr.sort(function (a, b) { return a.dist - b.dist; });
+
+	if(arr.length > 0) getNearLineWF(arr[0]);
+	
+	renderCamera();
+}
+
+  
+// устанвливаем и показываем красные линии
+function getNearLineWF(cdm)
+{
+	var d = cdm.p1.distanceTo( cdm.p2 );	
+	
+	var v = lineAxis_1.geometry.vertices;		
+	v[3].x = v[2].x = v[5].x = v[4].x = d;		
+	lineAxis_1.geometry.verticesNeedUpdate = true;
+
+	var dir = new THREE.Vector3().subVectors( cdm.p1, cdm.p2 ).normalize();
+	var angleDeg = Math.atan2(dir.x, dir.z);
+	lineAxis_1.rotation.set(0, angleDeg + Math.PI / 2, 0);		
+	lineAxis_1.position.copy( cdm.p1 );
+	
+	lineAxis_1.visible = true;	
+}
+
+
+// создаем(активирована точка tool) или обновляем линию, если перетаскиваем точку
 function upLineWF(point)
 {
 	point.userData.wf_point.type = '';
 	
 	var line = point.userData.wf_point.line.o;
 	
+	// создаем новую линию
 	if(!point.userData.wf_point.line.o)
 	{
 		var geometry = new THREE.Geometry();
@@ -112,6 +192,8 @@ function upLineWF(point)
 		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
 		scene.add( line );
+		
+		arr_wf.line[arr_wf.line.length] = line;
 		
 		point.userData.wf_point.line.o = line;
 	}
@@ -145,15 +227,18 @@ function clickRightMouseLineWF(obj)
 	
 	if(line)
 	{
-
+		// если у линии 2 точки, то удаляем точки и линию
 		if(line.userData.wf_line.point.length == 2)
-		{			
+		{		
+			deleteValueFromArrya({arr : arr_wf.point, o : line.userData.wf_line.point[0]});
+			deleteValueFromArrya({arr : arr_wf.point, o : line.userData.wf_line.point[1]});
+			deleteValueFromArrya({arr : arr_wf.line, o : line});
 			scene.remove(line.userData.wf_line.point[0]);
 			scene.remove(line.userData.wf_line.point[1]);
 			scene.remove(line);	
-			line = null;
+			line = null;			
 		}
-		else
+		else	// удаляем последнюю линию
 		{
 			line.userData.wf_line.point.pop();
 
@@ -166,36 +251,59 @@ function clickRightMouseLineWF(obj)
 			line.geometry.elementsNeedUpdate = true;
 
 			// создаем трубу
-			var points = [];
-				
-			for(var i = 0; i < line.geometry.vertices.length; i++)
-			{
-				points[i] = line.geometry.vertices[i].clone();
-			}
-			
-			var pipeSpline = new THREE.CatmullRomCurve3(points);
-			pipeSpline.curveType = 'catmullrom';
-			pipeSpline.tension = 0;
-			var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
-			
-			var tubeGeometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );
-
-			var tube = new THREE.Mesh( tubeGeometry, new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );	
-			
-			scene.add( tube );
-
-			line.userData.wf_line.tube = tube;
+			//newTubeWF({line : line, createLine : true});
 		}
 	}
 
- 	scene.remove(obj);
+	//console.log(arr_wf.point);
+	//console.log(arr_wf.line);
+	
+ 	scene.remove(obj);	// удаляем последнюю точку
+}
+
+
+// создаем или обновляем форму трубы
+function newTubeWF(cdm)
+{
+	var line = cdm.line;
+	
+	var points = [];
+		
+	for(var i = 0; i < line.geometry.vertices.length; i++)
+	{
+		points[i] = line.geometry.vertices[i].clone();
+	}
+	
+	var pipeSpline = new THREE.CatmullRomCurve3(points);
+	pipeSpline.curveType = 'catmullrom';
+	pipeSpline.tension = 0;
+	var params = { extrusionSegments: 30, radiusSegments: 12, closed: false };
+	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );	
+	geometry.computeFaceNormals();
+	geometry.computeVertexNormals();			
+
+	if(cdm.createLine)
+	{
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: true } ) );	
+		line.userData.wf_line.tube = tube;
+		scene.add( tube );
+	}
+	else
+	{
+		line.userData.wf_line.tube.geometry = geometry;
+	}
+	
 }
 
 
 // удаление значения из массива 
-function deleteValueFromArrya(obj)
+function deleteValueFromArrya(cdm)
 {
-	for(var i = arr_wf.point.length - 1; i > -1; i--) { if(arr_wf.point[i] == obj) { arr_wf.point.splice(i, 1); break; } }
+	var arr = cdm.arr;
+	var o = cdm.o;
+	
+	for(var i = arr.length - 1; i > -1; i--) { if(arr[i] == o) { arr.splice(i, 1); break; } }
 }
 
 
