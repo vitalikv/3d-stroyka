@@ -21,6 +21,7 @@ function createPointWF(cdm)
 	point.userData.wf_point.color = point.material.color.clone();
 	point.userData.wf_point.type = (cdm.type) ? cdm.type : '';
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
+	point.userData.wf_point.cross = { o : null, point : [] };
 	scene.add( point );
 
 
@@ -92,18 +93,22 @@ function moveWFPoint(event, obj)
 function dragToolWFPoint(cdm)
 {	
 	var obj = cdm.obj;
+	obj.userData.wf_point.cross = { o : null, point : [] };
 	
 	var arrDp = [];
 	var arr = [];
 	
 	lineAxis_1.visible = false;
 	
+	var z = 0.1 / camera.zoom;
+	
 	for(var i = 0; i < arr_wf.line.length; i++)
 	{ 
 		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[0];
 		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[arr_wf.line[i].userData.wf_line.point.length - 1];
 		
-		var v = arr_wf.line[i].geometry.vertices;
+		var line = arr_wf.line[i];
+		var v = line.geometry.vertices;
 		
 		if(v.length < 2) continue;
 		
@@ -114,17 +119,19 @@ function dragToolWFPoint(cdm)
 		{
 			var pos = v[0];
 			var dist = dist1;
+			var cross = line.userData.wf_line.point[0];
 		}
 		else
 		{
 			var pos = v[v.length - 1];
-			var dist = dist2;			
+			var dist = dist2;
+			var cross = line.userData.wf_line.point[line.userData.wf_line.point.length - 1];
 		}
 		
-		if(dist < 0.5) 
+		if(dist < z) 
 		{ 
-			getNearLineWF({dist: dist, p1: pos, p2: obj.position});
-			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position};
+			//getNearLineWF({dist: dist, p1: pos, p2: obj.position});
+			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: cross};
 			continue; 
 		}
 		
@@ -139,9 +146,11 @@ function dragToolWFPoint(cdm)
 			
 			var dist = pos.distanceTo(obj.position);
 			
-			if(dist > 0.5) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
+			if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
 			
-			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position};
+			var point_1 = line.userData.wf_line.point[i2];
+			var point_2 = line.userData.wf_line.point[i2];
+			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: line, point: [point_1, point_2]};
 		}
 		
 		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[i].position;
@@ -150,10 +159,19 @@ function dragToolWFPoint(cdm)
 		
 	if(arr.length > 1) arr.sort(function (a, b) { return a.dist - b.dist; });
 
-	if(arr.length > 0) getNearLineWF(arr[0]);
+	if(arr.length > 0) 
+	{  
+		obj.userData.wf_point.cross = {o: arr[0].cross, point: arr[0].point};
+		obj.position.copy(arr[0].p1);
+		//getNearLineWF(arr[0]);
+	}
 	
 	renderCamera();
 }
+
+
+
+
 
   
 // устанвливаем и показываем красные линии
@@ -188,6 +206,7 @@ function upLineWF(point)
 		geometry.vertices.push(point.position);
 		
 		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
+		line.userData.tag = 'wf_line';
 		line.userData.wf_line = {};
 		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
@@ -214,6 +233,50 @@ function upLineWF(point)
 	obj_selected = point_2;
 }
 
+
+
+function clickPointToolsWF(obj)
+{
+	var cross = obj.userData.wf_point.cross.o;
+	
+	if(!cross) return;
+	
+	var tag = cross.userData.tag;
+	
+	if(tag == 'wf_line') 
+	{
+		obj.userData.wf_point.type = '';
+		obj_selected = null;
+		
+		var p = obj.userData.wf_point.cross.point;
+		var arrP = cross.userData.wf_line.point;  console.log(cross.userData.wf_line.point.length);
+		
+		for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p[0]) { arrP.splice(i+1, 0, obj); break; } }
+		console.log(cross.userData.wf_line.point.length, cross);
+		obj.userData.wf_point.line.o = cross;
+		
+		// обновляем geometry линии
+		var line = cross;
+		
+		var geometry = new THREE.Geometry();
+		
+		for(var i = 0; i < arrP.length; i++)
+		{
+			geometry.vertices[i] = arrP[i].position;
+		}
+		
+		line.geometry = geometry;	
+		line.geometry.verticesNeedUpdate = true; 
+		line.geometry.elementsNeedUpdate = true;
+
+		// обновляем geometry трубы
+		if(line.userData.wf_line.tube)
+		{
+			newTubeWF({line : line});
+		}	
+		
+	}
+}
 
 
 // нажали на правую кнопку мыши, когда создаем линию
@@ -251,7 +314,7 @@ function clickRightMouseLineWF(obj)
 			line.geometry.elementsNeedUpdate = true;
 
 			// создаем трубу
-			//newTubeWF({line : line, createLine : true});
+			newTubeWF({line : line, createLine : true});
 		}
 	}
 

@@ -431,6 +431,9 @@ function cameraZoomTopLoop()
 
 
 
+
+
+
 function cameraZoomTop( delta )
 {
 	if(camera == cameraTop)

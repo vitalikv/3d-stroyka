@@ -96,6 +96,10 @@ function onDocumentMouseDown( event )
 		{			
 			if(obj_selected.userData.point.type) { clickCreateWall( obj_selected ); return; }  
 		}
+		if(obj_selected.userData.tag == 'wf_point')
+		{
+			if(obj_selected.userData.wf_point.type == 'tool') { clickPointToolsWF( obj_selected ); return; }
+		}
 	}
 	 
 	clickO.obj = null; 
