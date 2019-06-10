@@ -15,6 +15,7 @@ function changeCamera(cam)
 	if(camera == cameraTop)
 	{					
 		changeDepthColor();
+		showHideArrObj(arr_wf.point, true); 
 		objDeActiveColor_2D();		
 		showHideSizePlane('show');
 		cameraZoomTop( camera.zoom );
@@ -30,6 +31,7 @@ function changeCamera(cam)
 		lineAxis_2.visible = false;
 		infProject.scene.grid.obj.visible = true;
 		changeDepthColor();
+		showHideArrObj(arr_wf.point, false); 
 	}
 	else if(camera == cameraWall)
 	{  
@@ -176,7 +178,7 @@ function changeDepthColor()
 }
 
 
-// скрываем ПОП объекты
+// скрываем/показываем объекты
 function showHideArrObj(arr, visible)
 {	
 	if(arr.length == 0) return;

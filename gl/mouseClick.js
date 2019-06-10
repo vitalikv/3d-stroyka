@@ -45,7 +45,7 @@ function mouseDownRight()
 		}
 		else if (obj.userData.tag == 'wf_point' ) 
 		{
-			clickRightMouseLineWF(obj);			
+			if(obj.userData.wf_point.type == 'tool') { deletePointWF(obj); }			
 		}			
 	}	
 	
@@ -403,7 +403,7 @@ function onDocumentMouseUp( event )
 		else if (tag == 'wf_point') 
 		{
 			if(obj.userData.wf_point.type == 'tool') 
-			{
+			{ 
 				upLineWF(obj);
 			}
 			else { obj_selected = null; }			

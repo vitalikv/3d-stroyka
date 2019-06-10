@@ -6,8 +6,11 @@ function activeHover2D( event )
 
 	if ( obj_selected ) 
 	{
-		if ( obj_selected.userData.tag == 'free_dw' ) { return; }
-		if ( obj_selected.userData.tag == 'point' ) { if (obj_selected.userData.point.type) return; }
+		var tag = obj_selected.userData.tag;
+		
+		if (tag == 'free_dw') { return; }
+		if (tag == 'point') { if (obj_selected.userData.point.type) return; }
+		if (tag == 'wf_point') { if (obj_selected.userData.wf_point.type == 'tool') return; }
 	}
 
 
@@ -33,6 +36,7 @@ function activeHover2D( event )
 		if ( tag == 'window' ) { object.material.color = colorHover; }
 		else if ( tag == 'door' ) { object.material.color = colorHover; if( object.userData.door.leaf_2D ){ object.userData.door.leaf_2D.material.color = colorHover; } }
 		else if ( tag == 'point' ) { object.material.color = colorHover; }
+		else if ( tag == 'wf_point' ) { object.material.color = colorHover; }
 		else if ( tag == 'wall' ) { object.material[ 3 ].color = colorHover;  }		
 		else if ( tag == 'controll_wd' ) { if(clickO.last_obj == object.obj) { activeHover2D_2(); return; } }
 		
@@ -58,7 +62,8 @@ function activeHover2D_2()
 	
 	if ( tag == 'window' ) { var color = new THREE.Color(colWin); } 
 	else if ( tag == 'door' ) { var color = new THREE.Color(colDoor); }	
-	else if ( tag == 'wall' ) { var color = object.userData.material[ 3 ].color; }	
+	else if ( tag == 'wall' ) { var color = object.userData.material[ 3 ].color; }
+	else if ( tag == 'wf_point' ) { var color = object.userData.wf_point.color; }
 	else if ( tag == 'point' )
 	{
 		var color = object.userData.point.color;
@@ -78,6 +83,7 @@ function activeHover2D_2()
 	
 	if ( tag == 'window' ) { object.material.color = color; }
 	else if ( tag == 'point' ) { object.material.color = color; }
+	else if ( tag == 'wf_point' ) { object.material.color = color; }
 	else if ( tag == 'obj' ) { /*object.material.color = color;*/ } 
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = color; }
 	else if ( tag == 'door' ) { object.material.color = color; if( object.userData.door.leaf_2D ) { object.userData.door.leaf_2D.material.color = color; } }

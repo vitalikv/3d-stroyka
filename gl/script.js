@@ -1671,6 +1671,7 @@ function clickInterface(cdm)
 		}	
 		else if(cdm.button == 'warm_floor_1')
 		{
+			clickO.obj = null;
 			deActiveSelected();
 			clickO.button = 'warm_floor_1';
 		}			

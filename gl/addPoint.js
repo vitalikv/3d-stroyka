@@ -32,7 +32,7 @@ function clickCreateWall(point)
 	var obj = point.userData.point.cross;
 	
 	if(!obj) return;
-	console.log(1111, point.userData.point.type );
+	
 	if(point.userData.point.type == 'create_wall')
 	{ 
 		if(obj.userData.tag == 'planeMath') { addPoint_6( point ); } 

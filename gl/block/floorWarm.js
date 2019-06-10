@@ -93,6 +93,9 @@ function moveWFPoint(event, obj)
 function dragToolWFPoint(cdm)
 {	
 	var obj = cdm.obj;
+	
+	if(obj.userData.wf_point.line.o) return;
+	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 	
 	var arrDp = [];
@@ -192,9 +195,11 @@ function getNearLineWF(cdm)
 }
 
 
-// создаем(активирована точка tool) или обновляем линию, если перетаскиваем точку
+// создаем/обновляем линию
 function upLineWF(point)
 {
+	if(point.userData.wf_point.cross.o) { point.userData.wf_point.cross = { o : null, point : [] }; return; }
+	
 	point.userData.wf_point.type = '';
 	
 	var line = point.userData.wf_point.line.o;
@@ -235,24 +240,27 @@ function upLineWF(point)
 
 
 
+// кликнули, когда к мышки привязан Point Tool
 function clickPointToolsWF(obj)
 {
+	if(obj.userData.wf_point.line.o) return;
+	
 	var cross = obj.userData.wf_point.cross.o;
 	
 	if(!cross) return;
 	
-	var tag = cross.userData.tag;
+	var tag = cross.userData.tag;	
 	
 	if(tag == 'wf_line') 
-	{
+	{		
 		obj.userData.wf_point.type = '';
-		obj_selected = null;
+		obj_selected = null;	
 		
 		var p = obj.userData.wf_point.cross.point;
-		var arrP = cross.userData.wf_line.point;  console.log(cross.userData.wf_line.point.length);
+		var arrP = cross.userData.wf_line.point;  
 		
 		for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p[0]) { arrP.splice(i+1, 0, obj); break; } }
-		console.log(cross.userData.wf_line.point.length, cross);
+		
 		obj.userData.wf_point.line.o = cross;
 		
 		// обновляем geometry линии
@@ -267,24 +275,57 @@ function clickPointToolsWF(obj)
 		
 		line.geometry = geometry;	
 		line.geometry.verticesNeedUpdate = true; 
+		line.geometry.elementsNeedUpdate = true;		
+	}
+	if(tag == 'wf_point')
+	{
+		var line = cross.userData.wf_point.line.o;
+		var p = line.userData.wf_line.point;
+		
+		var geometry = new THREE.Geometry();
+		
+		if(cross == p[0])	// добавляем все в обратном порядке, кроме нулевого элемента
+		{		
+			var arrP = [];
+			
+			for(var i = p.length - 1; i > -1; i--) 
+			{ 
+				geometry.vertices[geometry.vertices.length] = p[i].position; 
+				arrP[arrP.length] = p[i];
+			}  
+			
+			line.userData.wf_line.point = arrP;
+		}
+		else if(cross == p[p.length - 1])	// добавляем все, кроме последнего
+		{
+			geometry.vertices = line.geometry.vertices; 
+		}
+
+		geometry.vertices[geometry.vertices.length] = obj.position;
+		
+		line.geometry = geometry;	
+		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;
 
-		// обновляем geometry трубы
-		if(line.userData.wf_line.tube)
-		{
-			newTubeWF({line : line});
-		}	
-		
+		obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
+		line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку
 	}
+	
+	// обновляем geometry трубы
+	if(line)
+	{
+		if(line.userData.wf_line.tube) newTubeWF({line : line});
+	}	
+	
+	//obj.userData.wf_point.cross = { o : null, point : [] };
 }
 
 
 // нажали на правую кнопку мыши, когда создаем линию
-function clickRightMouseLineWF(obj)
+function deletePointWF(obj)
 {
-	if(obj.userData.wf_point.type != 'tool') return;
-	
-	arr_wf.point.pop();	// удаляем последнее значение в массиве
+	deleteValueFromArrya({arr : arr_wf.point, o : obj});
+	//arr_wf.point.pop();	// удаляем последнее значение в массиве
 	
 	var line = obj.userData.wf_point.line.o;
 	
@@ -301,27 +342,30 @@ function clickRightMouseLineWF(obj)
 			scene.remove(line);	
 			line = null;			
 		}
-		else	// удаляем последнюю линию
+		else	// удаляем точку
 		{
-			line.userData.wf_line.point.pop();
+			deleteValueFromArrya({arr : line.userData.wf_line.point, o : obj});
 
 			var geometry = new THREE.Geometry();
-			line.geometry.vertices.pop();
-			geometry.vertices = line.geometry.vertices;	
+			
+			for(var i = 0; i < line.userData.wf_line.point.length; i++)
+			{
+				geometry.vertices[i] = line.userData.wf_line.point[i].position;
+			}
 			
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
 
 			// создаем трубу
-			newTubeWF({line : line, createLine : true});
+			//newTubeWF({line : line, createLine : true});
 		}
 	}
 
 	//console.log(arr_wf.point);
 	//console.log(arr_wf.line);
 	
- 	scene.remove(obj);	// удаляем последнюю точку
+ 	scene.remove(obj);	// удаляем точку
 }
 
 
@@ -358,6 +402,7 @@ function newTubeWF(cdm)
 	}
 	
 }
+
 
 
 // удаление значения из массива 
