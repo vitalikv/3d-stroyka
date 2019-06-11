@@ -133,8 +133,6 @@ function resetScene()
 	projName = 'Новый проект';
 	projVersion = '1';
 	
-	d_tool.visible = false;
-	
 	pointGrid.visible = true;
 	
 	// прячем размеры и линейки
@@ -280,13 +278,6 @@ function saveWindows(wall)
 			if(wd.userData.door.open_type) { arr.open_type = wd.userData.door.open_type; }	// open_type	
 			if(wd.userData.tag == 'door') { arr.doState = 'false'; }							// doState	
 			arr.options = '';
-			
-			if(wd.userData.door.type == 'DoorPattern')
-			{
-				var handle = wd.userData.door.compilation.handle[0];
-				
-				arr.options = 's_re' + handle.userData.dumName + ':' + handle.userData.lotid;			
-			}
 			
 			if(wd.userData.tag == 'window') { windows[windows.length] = arr; }
 			else if(wd.userData.tag == 'door') { doors[doors.length] = arr; }			

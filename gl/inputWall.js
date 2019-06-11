@@ -569,24 +569,6 @@ function inputWidthWall_2(wall, z)
 		wd.geometry.computeBoundingSphere();
 		wd.geometry.computeBoundingBox();
 		wd.geometry.computeFaceNormals();		
-	}
-	
-	// правильно устанавливаем Pop после изменение ширины стены
-	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
-	{ 
-		if(wall.userData.wall.arrO[i].userData.door.type == 'DoorPattern')
-		{
-			changeWidthParamWD(wall.userData.wall.arrO[i]);
-		}
-		else if(wall.userData.wall.arrO[i].userData.door.type == 'WindowSimply')
-		{
-			wall.userData.wall.arrO[i].userData.door.popObj.position.copy(wall.userData.wall.arrO[i].geometry.boundingSphere.center.clone()); 
-		}
-		else if(wall.userData.wall.arrO[i].userData.door.type == 'DoorSimply')
-		{
-			setPosDoorLeaf_1(wall.userData.wall.arrO[i], wall.userData.wall.arrO[i].userData.door.open_type);
-			setPosDoorLeaf_2(wall.userData.wall.arrO[i]);			
-		}
 	}	
 	
 	upLabelPlan_1( wallR );	 				

@@ -6,14 +6,6 @@ var param_win = { click : false };
 function clickWD( intersect )
 {	
 	var obj = intersect.object;
-	if ( obj.userData.tag == 'door_leaf' ) { obj = obj.door; }
-	
-	//setUIPreview(obj, obj.pr_preview, obj.pr_catalog);
-	//setUIDoorSize(obj);
-	
-	
-	//(obj.userData.door.type === 'DoorPattern') ? UI.show('doorPattern') : UI.hide('doorPattern');
-
 
 	if(camera == cameraWall || camera == cameraTop) 
 	{
@@ -202,7 +194,6 @@ function moveWD_2( wd, pos )
 	if(param_win.click)  
 	{ 
 		param_win.click = false; 
-		d_tool.visible = false;
 
 		wallClone.geometry = clickMoveWD_BSP( wd ).geometry.clone(); 
 		wallClone.position.copy( wd.userData.door.wall.position ); 
@@ -286,8 +277,7 @@ function hideSizeWD( obj )
 	
 
 	if(camera == cameraTop || camera == camera3D) 
-	{
-		//d_tool.visible = false;  
+	{ 
 		
 		if(obj)
 		{
@@ -336,34 +326,12 @@ function showTableWD(wd)
 	var h = wall.worldToLocal( pos.clone() ).y;	
 	
 	wd.userData.door.h1 = h; 
-	
-	var menu = '';
-	
-	//if(wd.userData.tag == 'door') { menu = (wd.userData.door.type == 'DoorEmpty') ? 'window' : 'door'; }
-	//else if(wd.userData.tag == 'window') { menu = 'window'; }
-	
-	menu = (wd.userData.tag == 'window') ? 'window' : 'door';
-	
-	
+
 	$('[nameId="wd_menu_1"]').show();
 	
 	$('[nameId="size-wd-length"]').val(Math.round(d1 * 100) / 100);
 	$('[nameId="size-wd-height"]').val(Math.round(d2 * 100) / 100);
-	
-	if(menu == 'door')
-	{ 
-		//setUIPreview(wd, wd.pr_preview, wd.pr_catalog);
-		//UI('door_width_1').val(Math.round(d1 * 100) * 10)
-		//UI('door_width_2').val(Math.round(d1 * 100) * 10);	
-		//UI.showToolbar('door-2d-toolbar');  
-	}
-	else if(menu == 'window')
-	{		
-		//UI('window_width_1').val(Math.round(d1 * 100) * 10)
-		//UI('window_height_1').val(Math.round(d2 * 100) * 10)
-		//UI('window_above_floor_1').val(Math.round(h * 100) * 10)
-		//UI.showToolbar('window-toolbar');		 
-	}	
+
 }
 
 
@@ -435,198 +403,6 @@ function inputWidthHeightWD(wd)
 
 
 
-// перетаскиваем (drag drop) контроллер переноса полотна двери
-function moveToolDoor( event )
-{
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	d_tool.position.set( intersects[ 0 ].point.x, d_tool.position.y, intersects[ 0 ].point.z );
-	
-	var door = d_tool.door;					// дверь (коробка)
-	var door_leaf = door.userData.door.leaf_2D;			// полотно  	
-	
-	var v1 = door.worldToLocal(d_tool.position.clone());
-	
-	
-	if(v1.z < 0)
-	{
-		if(v1.x < 0) { var open_type = 0; }
-		else { var open_type = 2; }
-	}
-	else if(v1.z > 0)
-	{ 
-		if(v1.x < 0) { var open_type = 3; }
-		else { var open_type = 1; }
-	}
-
-	
-	if(door.userData.door.open_type != open_type) 
-	{ 
-		setPosDoorLeaf_1(door, open_type); 
-		if(door.userData.door.type == 'DoorSimply') { setPosDoorLeaf_2(door); } 
-		else if(door.userData.door.type == 'DoorPattern') { setPosDoorLeaf_3(door); } 
-	}		
-}
-
-
-
-
-
-// переключение положения двери по кнопки из меню 
-function changeInputPosDoorLeaf(value) 
-{
-	var door = null;
-	
-	if(camera == cameraTop) { door = clickO.obj; }
-	else { door = clickO.last_obj; }
-	
-	if(!door) { console.log('door null'); return; }
-	if(!door.userData.door.leaf_2D) { return; }
-	
-	var open_type = 0;
-	
-	if(value == 0) 
-	{ 
-		if(door.userData.door.open_type == 0) { open_type = 2; }
-		else if(door.userData.door.open_type == 2) { open_type = 0; }
-		else if(door.userData.door.open_type == 3) { open_type = 1; }
-		else if(door.userData.door.open_type == 1) { open_type = 3; }
-	}
-	else 
-	{ 
-		if(door.userData.door.open_type == 0) { open_type = 3; }
-		else if(door.userData.door.open_type == 3) { open_type = 0; }
-		else if(door.userData.door.open_type == 2) { open_type = 1; }
-		else if(door.userData.door.open_type == 1) { open_type = 2; }  
-	} 
-	
-	setPosDoorLeaf_1(door, open_type);
-	if(door.userData.door.type == 'DoorSimply') { setPosDoorLeaf_2(door); }
-	else if(door.userData.door.type == 'DoorPattern') { setPosDoorLeaf_3(door); }  
-	clickToolDoorUp(door);	
-}
-
-
-
-// устанавливаем полотно в зависимости от параметра open_type
-function setPosDoorLeaf_1(wd, open_type) 
-{  
-	if(!wd.userData.door.leaf_2D) return;
-	
-	var door_leaf = wd.userData.door.leaf_2D;
-	door_leaf.rotation.y = Math.PI/2;		
-	var v = wd.geometry.vertices;	
-	
-	var bound = wd.geometry.boundingBox;
-	var center = wd.geometry.boundingSphere.center; 	
-	
-	if(open_type == 3) { door_leaf.position.set(bound.min.x + 0.08 / 2, 0, bound.max.z - 0.08); door_leaf.rotation.y -= Math.PI; }	
-	else if(open_type == 2) { door_leaf.position.set(bound.max.x - 0.08 / 2, 0, bound.min.z + 0.08); }
-	else if(open_type == 1) { door_leaf.position.set(bound.max.x - 0.08 / 2, 0, bound.max.z - 0.08); door_leaf.rotation.y += Math.PI; }
-	else if(open_type == 0) { door_leaf.position.set(bound.min.x + 0.08 / 2, 0, bound.min.z + 0.08); }			
-	
-	wd.userData.door.open_type = open_type; 
-	
-	if(camera != cameraTop) { wd.remove(wd.userData.door.leaf_2D); }	// удаляем 2D полотно
-}
-
-
-
-
-// устанавливаем (поварачиваем) ПОП дверь, т.к. открыто дверное полотно type == 'DoorSimply'
-function setPosDoorLeaf_2(door) 
-{
-	var popObj = door.userData.door.popObj;	
-	 
-	if(!popObj) return;
-		
-	var v = door.geometry.vertices;	
-	var minZ = door.userData.door.form.v.minZ; 
-	var maxZ = door.userData.door.form.v.maxZ;
-	
-	if(door.userData.door.leaf_2D)
-	{
-		var size = door.userData.door.size;
-		
-		if(door.userData.door.open_type == 0) 
-		{
-			popObj.scale.x = Math.abs(popObj.scale.x);
-			popObj.scale.z = Math.abs(popObj.scale.z);			
-			popObj.rotation.y = 0;
-			popObj.position.set(0, 0, v[minZ[0]].z + Number(size.z) / 2);
-		}
-		else if(door.userData.door.open_type == 1)
-		{ 
-			popObj.scale.x = Math.abs(popObj.scale.x);
-			popObj.scale.z = Math.abs(popObj.scale.z);	
-			popObj.rotation.y = Math.PI; 
-			popObj.position.set(0, 0, v[maxZ[0]].z - Number(size.z) / 2); 
-		}
-		else if(door.userData.door.open_type == 2)
-		{ 
-			popObj.scale.x = -Math.abs(popObj.scale.x);
-			popObj.scale.z = Math.abs(popObj.scale.z);
-			popObj.rotation.y = 0;
-			popObj.position.set(0, 0, v[minZ[0]].z + Number(size.z) / 2);
-		}
-		else if(door.userData.door.open_type == 3)
-		{ 
-			popObj.scale.x = Math.abs(popObj.scale.x);
-			popObj.scale.z = -Math.abs(popObj.scale.z); 
-			popObj.rotation.y = 0;
-			popObj.position.set(0, 0, v[maxZ[0]].z - Number(size.z) / 2);
-		}
-	}	
-}
-
-
-
-// устанавливаем (поварачиваем) ПОП дверь, т.к. открыто дверное полотно type == 'DoorPattern'
-function setPosDoorLeaf_3(door)
-{
-	//if(camera != cameraTop && door.userData.door.leaf_2D) { door.remove(door.userData.door.leaf_2D); }	// удаляем 2D полотно		
-	
-	door.geometry.computeBoundingBox();
-	
-	var popObj = door.userData.door.popObj;
-		
-	var open_type = door.userData.door.open_type;	
-	
-	if(open_type == 0 || open_type == 1) { popObj.scale.x = Math.abs(popObj.scale.x); }	
-	else { popObj.scale.x = -Math.abs(popObj.scale.x); }		
-	 
-	if(open_type == 0 || open_type == 2) 
-	{
-		popObj.rotation.y = 0;
-		popObj.position.set( 0, door.geometry.boundingBox.min.y, door.geometry.vertices[7].z - popObj.geometry.vertices[0].z );
-	}
-	else
-	{
-		popObj.rotation.y = -Math.PI;
-		popObj.position.set( 0, door.geometry.boundingBox.min.y, door.geometry.vertices[0].z - popObj.geometry.vertices[0].z );
-	}		
-}
-
-
-
-// устанавливаем контроллер перемещения полотна на торец полотна
-function clickToolDoorUp(wd) 
-{
-	if(camera != cameraTop) { return; }	
-	
-	if (wd.userData.door.type == 'DoorSimply' || wd.userData.door.type == 'DoorPattern') { }
-	else { d_tool.visible = false; return; }
-	
-	wd.updateMatrixWorld();
-	wd.userData.door.leaf_2D.updateMatrixWorld();
-	var v = wd.userData.door.leaf_2D.geometry.vertices;
-	var pos2 = wd.userData.door.leaf_2D.localToWorld( new THREE.Vector3(v[3].x, v[2].y, (v[4].z - v[3].z) / 2 + v[3].z) );
-	d_tool.position.copy( pos2 ); 
-
-	d_tool.visible = true;     
-}
-
-
 
 // изменяем размер окна/двери, а также перемещаем
 function сhangeSizePosWD( wd, pos, x, y )
@@ -645,10 +421,6 @@ function сhangeSizePosWD( wd, pos, x, y )
 	wd.geometry.computeBoundingSphere();
 
 	wd.position.copy( pos );
-	
-	changeWindowDoorPop(wd, x / 2, y / 2);		// изменяем у ПОП объекта ширину/высоту/центрируем 
-	
-	
 }
 
 
@@ -674,7 +446,6 @@ function clickWDMouseUp(wd)
 	}	
 	
 	cutMeshBlockBSP( wd );
-	//clickToolDoorUp(wd);
 	
 	//if(comparePos(wd.userData.door.last.pos, wd.position)) { return; }		// не двигали	
 }

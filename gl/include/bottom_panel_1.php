@@ -27,7 +27,7 @@
 		</div>	
 	<?}?>
 	
-	<?if(2 == 1){?>
+	<?if($interface['wall_b1'] == 1){?>
 	<div class="toolbar" nameId='wall_menu_1' style="display: none;">
 		<div class="toolbar-header">стена</div>
 		<div class="toolbar-menu">				
@@ -41,7 +41,7 @@
 				<input type="text" nameId='size-wall-height' data-input='wall_1' value = 0>
 			</div>					 
 			
-			<div class="input-size" style="display: none;">
+			<div class="input-size">
 				<div class="text_1">толщина (м)</div>
 				<input type="text" nameId='size-wall-width' data-input='wall_1' value = 0>
 			</div>		

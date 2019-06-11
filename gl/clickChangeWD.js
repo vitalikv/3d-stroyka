@@ -552,16 +552,6 @@ function moveToggleChangeWin( event, controll )
 	 // изменяем знаечние ширину/высоту окна в input (при перемещении контроллера)
 	showTableWD(wd);
 	
-	
-	if(camera == cameraTop)
-	{
-		if(wd.userData.door.open_type != "undefined") 
-		{ 
-			setPosDoorLeaf_1(wd, wd.userData.door.open_type); 
-			clickToolDoorUp(wd)
-		}		
-	}
-	
 	showRulerWD_2D(wd);
 	showRulerWD_3D(wd);
 }

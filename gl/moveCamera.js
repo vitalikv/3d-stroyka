@@ -218,7 +218,6 @@ function wallAfterRender_2()
 			for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
 			{
 				wall.userData.wall.arrO[ i2 ].visible = false;
-				if ( wall.userData.wall.arrO[ i2 ].userData.door.popObj ) wall.userData.wall.arrO[ i2 ].userData.door.popObj.visible = false;
 			}
 		}
 		else
@@ -227,7 +226,6 @@ function wallAfterRender_2()
 			for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
 			{
 				wall.userData.wall.arrO[ i2 ].visible = true;
-				if ( wall.userData.wall.arrO[ i2 ].userData.door.popObj ) wall.userData.wall.arrO[ i2 ].userData.door.popObj.visible = true;
 			}
 		}
 	}

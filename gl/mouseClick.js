@@ -132,7 +132,7 @@ function detectRayHit( event, cdm )
 
 	if ( cdm == 'click' )
 	{
-		var cdm = { intersects: um, tag: [ 'toggle_gp', 'pivot', 'gizmo', 'move_control', 'd_tool', 'controll_wd' ] };		
+		var cdm = { intersects: um, tag: [ 'toggle_gp', 'pivot', 'gizmo', 'move_control', 'controll_wd' ] };		
 		if ( camera == cameraTop ) { cdm.tag[ cdm.tag.length ] = 'window'; cdm.tag[ cdm.tag.length ] = 'door'; }
 		num = clickFirstHit_1( cdm );
 		
@@ -152,12 +152,12 @@ function detectRayHit( event, cdm )
 			}
 		}
 
-		var cdm = { intersects: um, tag: [ 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'obj', 'wf_point', 'point', 'wall', 'room', 'ceiling', 'group_pop' ] };
+		var cdm = { intersects: um, tag: [ 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'obj', 'wf_point', 'point', 'wall', 'room', 'ceiling', 'group_pop' ] };
 		if ( num == -1 ) { num = clickFirstHit_2( cdm ); }
 	}
 	else
 	{
-		var cdm = { intersects: um, tag: [ 'controll_wd', 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'door_leaf', 'wf_point', 'point', 'wall' ] };
+		var cdm = { intersects: um, tag: [ 'controll_wd', 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'wf_point', 'point', 'wall' ] };
 		num = clickFirstHit_1( cdm );  
 	}
 
@@ -196,32 +196,6 @@ function clickFirstHit_2( cdm )
 
 
 
-// блокировка при клике на объект
-function clickActionBreak( rayhit )
-{
-	var obj = rayhit.object;
-	var tag = obj.userData.tag;
-	
-	if ( tag == 'door_leaf' ) { obj = obj.door; tag = obj.userData.tag; }
-	
-	if ( camera == cameraTop )
-	{
-		if(tag == 'wall') { if(obj.userData.parent) { obj = obj.userData.parent; } if(!obj.userData.wall.actList.click2D) return true; }
-		else if(tag == 'point') { if(!obj.userData.point.actList.click2D) return true; }
-		else if(tag == 'window') { if(!obj.userData.door.actList.click2D) return true; }
-		else if(tag == 'door') { if(!obj.userData.door.actList.click2D) return true; }		
-	}
-	else if ( camera == camera3D )
-	{
-		if(tag == 'wall') { if(!obj.userData.wall.actList.click3D) return true; }
-		else if(tag == 'point') { if(!obj.userData.point.actList.click3D) return true; }
-		else if(tag == 'window') { if(!obj.userData.door.actList.click3D) return true; }
-		else if(tag == 'door') { if(!obj.userData.door.actList.click3D) return true; }			
-	}		
-	
-	return false;
-}
-
 
 
 function clickRayHit( rayhit )
@@ -232,11 +206,7 @@ function clickRayHit( rayhit )
 	
 	consoleInfo( object );
 	
-	if(clickActionBreak( rayhit )) return;
-	
 	var tag = object.userData.tag;
-	
-	if ( tag == 'door_leaf' ) { object = object.door; tag = object.userData.tag; }
 	
 	clickO.obj = object;
 	clickO.rayhit = rayhit;	
@@ -264,68 +234,6 @@ function clickRayHit( rayhit )
 
 
 
-function setUIPreview( object, preview, catalog, index ) 
-{ return;
-	var target = '';
-	switch ( object.userData.tag ) 
-	{
-		case 'wall': target = 'wall-preview'; break; 
-		case 'door': target = 'doors-preview'; break;
-		case 'obj': target = 'object-preview'; break;
-		case 'room': target = 'floor-preview'; break;
-		case 'ceiling': target = 'floor-preview'; break;
-	}
-	
-	UI( target ).val( preview );
-	if(object.userData.tag == 'obj' || object.userData.tag == 'door' || object.userData.tag == 'window') { if ( object.pr_filters ) { UI.catalogFilter = object.pr_filters; } }
-	else { if ( object.userData.material.filters ) { UI.catalogFilter = object.userData.material.filters; } }
-	
-	UI.catalogSource = catalog;
-	
-	// первое preview (дверь, стена, пол, объект)
-	if ( target === 'floor-preview' )
-	{  
-		UI.setObjectCaption( object.userData.material.caption );
-		UI.setProjectInfo( '', '', object.userData.material.lotid );			
-	} 
-	else if ( typeof index !== 'undefined' )
-	{
-		UI.setObjectCaption( object.userData.material[ index ].caption );
-		UI.setProjectInfo( '', '', object.userData.material[ index ].lotid );
-	} 
-	else
-	{
-		UI.setObjectCaption( object.pr_caption );
-		UI.setProjectInfo( '', '', object.lotid );
-	}
-	
-	
-	// второе preview (плинтус, ручка двери)
-	if ( object.userData.tag == 'room' ) 
-	{ 
-		UI( 'plinth-preview' ).val( object.userData.room.plinth.preview );
-		UI.setObjectCaption( object.userData.room.plinth.caption, 'plinth' ) 
-	}
-	else if ( object.userData.tag == 'ceiling' ) 
-	{ 
-		UI( 'plinth-preview' ).val( object.userData.ceil.plinth.preview );
-		UI.setObjectCaption( object.userData.ceil.plinth.caption, 'plinth' ) 
-	}	
-	else if ( object.userData.tag == 'door' && object.userData.door.type === 'DoorPattern') 
-	{
-		var door = object.userData.door;
-		if (typeof door.compilation !== 'undefined' && typeof door.compilation.handle[0] !== 'undefined' && typeof door.compilation.handle[0].userData.catalog !== 'undefined' ) 
-		{
-			UI( 'handle-preview' ).val( door.compilation.handle[0].userData.catalog.preview ); 
-			UI.setObjectCaption( door.compilation.handle[0].userData.catalog.caption, 'handle' );
-		} 
-		else 
-		{
-			UI( 'handle-preview' ).val( '' ); 
-			UI.setObjectCaption( '', 'handle' );
-		}
-	}
-}
 
 
 function onDocumentMouseMove( event ) 
@@ -353,7 +261,6 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'controll_wd' ) { moveToggleChangeWin( event, obj ); }
 		else if ( tag == 'point' ) { movePoint( event, obj ); }
 		else if ( tag == 'wf_point' ) { moveWFPoint( event, obj ); }
-		else if ( tag == 'd_tool' ) { moveToolDoor( event ); }
 		else if ( tag == 'move_control' ) { moveObjectControls( event ); }
 		else if ( tag == 'room' ) { cameraMove3D( event ); }
 		else if ( tag == 'toggle_gp' ) { moveToggleGp( event ); }
@@ -605,8 +512,7 @@ function consoleInfo( obj )
 	}
 	else if( tag == 'window' || tag == 'door' )
 	{ 
-		var txt = {};
-		if(obj.userData.door.type == 'DoorPattern') { txt = { compilation : obj.userData.door.compilation }; }
+		var txt = {};		
 		console.log( tag + " id : " + obj.userData.id + " | lotid : " + obj.userData.door.lotid + " | " + " type : " + obj.userData.door.type, txt, " | userData : ", obj.userData, obj ); 
 	}
 	else if ( tag == 'controll_wd' ) 

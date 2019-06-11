@@ -15,30 +15,13 @@ function objActiveColor_2D(obj)
 	else if(tag == 'point'){ obj.material.color = actColorWin; }
 	else if(tag == 'wf_point'){ obj.material.color = actColorWin; }
 	else if(tag == 'wall'){ if(obj.userData.parent) { obj = obj.userData.parent; } obj.material[3].color = actColorWin; } 	
-	else if(tag == 'door'){ obj.material.color = actColorWin; showHandleToolDoor(obj); }
-	else if(tag == 'room'){  } 
-	else if(tag == 'd_tool') { } 
-	else if(tag == 'controll_wd') { }
-	else if(tag == 'obj') {  }			
-	
+	else if(tag == 'door'){ obj.material.color = actColorWin; }		
 	
 	if(clickO.hover_obj == obj) { clickO.hover_obj = null; }
-	//clickO.obj = obj; 
 }
  
 
-// если дверь и вид сверху, то ставит инструмент перетаскивания дверного полотна 
-function showHandleToolDoor(obj) 
-{	
-	if(obj.userData.door.leaf_2D) 
-	{ 
-		d_tool.door = obj;
-		clickToolDoorUp(obj);  		 
-		d_tool.visible = true;
-		  
-		obj.userData.door.leaf_2D.material.color = actColorWin;  
-	}
-}	
+	
  
 // возращаем стандартный цвет объекта
 function objDeActiveColor_2D() 
@@ -50,8 +33,7 @@ function objDeActiveColor_2D()
 
 	if(clickO.obj)
 	{  
-		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.obj == o) { return; } } 
-		if(clickO.obj.userData.tag == 'd_tool'){ if(clickO.obj.door == o) { return; } }     		
+		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.obj == o) { return; } }      		
 	}
 	
 	
@@ -59,15 +41,9 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
 	else if(o.userData.tag == 'window'){ o.material.color = new THREE.Color(colWin); }
-	else if(o.userData.tag == 'door')
-	{ 
-		o.material.color = new THREE.Color(colDoor); 
-		if(o.userData.door.leaf_2D){ o.userData.door.leaf_2D.material.color = new THREE.Color(colDoor); d_tool.visible = false; } 
-	}	
+	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(colDoor); }	
 	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
-	
 
-	
 	
 	if(clickO.hover_obj == clickO.last_obj) { clickO.hover_obj = null; }
 	//clickO.obj = null;

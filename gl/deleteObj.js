@@ -283,8 +283,6 @@ function deleteWinDoor( obj )
 {	
 	var wall = obj.userData.door.wall; 		
 	
-	d_tool.visible = false;
-	
 	clickMoveWD_BSP( obj );		
 	
 	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ ){ if(obj == wall.userData.wall.arrO[i]) { wall.userData.wall.arrO.splice(i, 1); break; } }
@@ -303,7 +301,7 @@ function deleteWinDoor( obj )
 		//wall.label[1].visible = false;	 			
 	}
 	
-	scene.remove( obj.userData.door.leaf_2D );
+	
 	deleteArrObj( obj );
 	scene.remove( obj );	
 	

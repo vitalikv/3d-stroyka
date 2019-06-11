@@ -84,8 +84,6 @@ function changeWidthWD(obj, wall)
 	obj.geometry.computeFaceNormals();		
 	
 	obj.userData.door.width = width;	
-	
-	if(obj.userData.door.popObj) obj.userData.door.popObj.position.copy(obj.geometry.boundingSphere.center.clone());
 }
 
 

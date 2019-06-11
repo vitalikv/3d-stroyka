@@ -89,8 +89,7 @@ function showAllWallRender()
 		wall.visible = true;
 		for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
 		{ 
-			wall.userData.wall.arrO[i2].visible = true; 
-			if(wall.userData.wall.arrO[i2].userData.door.popObj) wall.userData.wall.arrO[i2].userData.door.popObj.visible = true; 
+			wall.userData.wall.arrO[i2].visible = true;  
 		}			
 	}
 }
@@ -125,25 +124,16 @@ function changeDepthColor()
 		if(obj_line[i].children[0]) obj_line[i].children[0].visible = visible_2;
 	}
 	
-	if(abo.point.click2D) 
-	{		
-		for ( var i = 0; i < obj_point.length; i++ )
-		{ 
-			obj_point[i].visible = visible; 
-			if(obj_point[i].userData.point.pillar) 
-			{
-				obj_point[i].userData.point.pillar.position.copy(obj_point[i].position);
-				obj_point[i].userData.point.pillar.visible = pillar;
-			}
-		}		
-	}
-	else 
+	for ( var i = 0; i < obj_point.length; i++ )
 	{ 
-		for ( var i = 0; i < obj_point.length; i++ )
-		{ 
-			obj_point[i].visible = false; 
-		} 
-	}
+		obj_point[i].visible = visible; 
+		if(obj_point[i].userData.point.pillar) 
+		{
+			obj_point[i].userData.point.pillar.position.copy(obj_point[i].position);
+			obj_point[i].userData.point.pillar.visible = pillar;
+		}
+	}		
+
 	
 	for ( var i = 0; i < arr_window.length; i++ )
 	{ 
@@ -156,24 +146,7 @@ function changeDepthColor()
 	{ 		
 		arr_door[ i ].material.depthTest = depthTest;
 		arr_door[ i ].material.transparent = depthTest; 
-		arr_door[ i ].material.opacity = w2;					
-		
-		//if(arr_door[ i ].userData.door.leaf_2D) { arr_door[ i ].userData.door.leaf_2D.visible = visible; } 
-		
-		if(visible == false) 
-		{
-			if(arr_door[i].userData.door.leaf_2D) 
-			{ 
-				arr_door[i].remove(arr_door[i].userData.door.leaf_2D);
-			} 			
-		}
-		else
-		{
-			if(arr_door[i].userData.door.type != 'DoorEmpty')
-			{
-				createDoorLeaf(arr_door[i], arr_door[i].userData.door.open_type);
-			}
-		}		
+		arr_door[ i ].material.opacity = w2;							
 	}
 }
 

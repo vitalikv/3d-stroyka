@@ -23,18 +23,13 @@ function activeHover2D( event )
 		var object = rayhit.object;
 		var tag = object.userData.tag; 		
 		
-		if ( tag == 'door_leaf' ) { object = object.door; tag = object.userData.tag; }
-		
-		if(tag == 'wall') { if(object.userData.parent) { object = object.userData.parent; } if(!object.userData.wall.actList.click2D) return; }
-		else if(tag == 'point') { if(!object.userData.point.actList.click2D) return; }
-		else if(tag == 'window') { if(!object.userData.door.actList.click2D) return; }
-		else if(tag == 'door') { if(!object.userData.door.actList.click2D) return; }			
+		if(tag == 'wall') { if(object.userData.parent) { object = object.userData.parent; } }			
 
 		if ( clickO.last_obj == object ) { activeHover2D_2(); return; }	// объект активирован (крансый цвет), поэтому не подсвечиваем
 		if ( clickO.hover_obj == object ) { return; }				// объект уже подсвечен
 
 		if ( tag == 'window' ) { object.material.color = colorHover; }
-		else if ( tag == 'door' ) { object.material.color = colorHover; if( object.userData.door.leaf_2D ){ object.userData.door.leaf_2D.material.color = colorHover; } }
+		else if ( tag == 'door' ) { object.material.color = colorHover; }
 		else if ( tag == 'point' ) { object.material.color = colorHover; }
 		else if ( tag == 'wf_point' ) { object.material.color = colorHover; }
 		else if ( tag == 'wall' ) { object.material[ 3 ].color = colorHover;  }		
@@ -86,6 +81,6 @@ function activeHover2D_2()
 	else if ( tag == 'wf_point' ) { object.material.color = color; }
 	else if ( tag == 'obj' ) { /*object.material.color = color;*/ } 
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = color; }
-	else if ( tag == 'door' ) { object.material.color = color; if( object.userData.door.leaf_2D ) { object.userData.door.leaf_2D.material.color = color; } }
+	else if ( tag == 'door' ) { object.material.color = color; }
 	clickO.hover_obj = null;
 }

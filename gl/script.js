@@ -174,36 +174,6 @@ function onWindowResize()
 
 
 
-
-var abo = { wall : {}, window : {}, door : {}, point : {}, room : {}, objPop : {} };
-
-abo.wall = { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true };
-abo.window = { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true };
-abo.door = { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true };
-abo.point = { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true };
-abo.objPop = { create : true, delete : true, click2D : true, click3D : true, move : true, replace : true };
-
-
-// включаем параметры блокировки различных действий
-function assignBlockParam(value)
-{
-	if(!value) return;
-	
-	var flag = (value == 0) ? true : false;
-	
-	abo.wall.click2D = flag;
-
-	abo.point.click2D = flag; 
-	abo.point.click3D = flag;
-
-	abo.window.click2D = flag; 
-	abo.window.click3D = flag; 
-
-	abo.door.move = flag; 
-	abo.door.delete = flag; 	
-}
-
-
 //----------- start
 
 
@@ -256,7 +226,6 @@ arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, ma
 var wallVisible = [];
 var circle = createCircleSpline();
 var p_tool = createToolPoint();
-var d_tool = createToolDoorPoint();
 
 //var pointGrid = createPointGrid(100);
 var pointGrid = { visible : true }
@@ -926,24 +895,6 @@ function createToolPoint()
 
 
 
-function createToolDoorPoint()
-{
-	var mat = new THREE.MeshLambertMaterial( { color : 0x222222 } );	
-	var geom = createGeometryCube(0.12, 0.01, 0.12);
-	obj = new THREE.Mesh( geom, mat );
-	obj.userData.tag = 'd_tool';
-	obj.door = null;
-	obj.position.set(0,0,0);
-	obj.visible = false;
-	obj.renderOrder = 1.1;
-	scene.add( obj );
-	
-	return obj;
-}
-
-
-
-
 
 function createForm(cdm) 
 {
@@ -1149,10 +1100,6 @@ function createPoint( pos, id )
 	point.userData.point.cross = null;
 	point.userData.point.type = null;
 	point.userData.point.last = { pos : pos.clone(), cdm : '', cross : null };
-	point.userData.point.actList = abo.point;
-	point.userData.point.actList = abo.point;
-
-	if(!abo.point.click2D) { point.visible = false; }
 	
 	point.visible = (camera == cameraTop) ? true : false;
 	
@@ -1291,9 +1238,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.material[2] = { color : wall.material[2].color, scale : new THREE.Vector2(1,1), };	// right
 	wall.userData.material[3] = { color : wall.material[3].color, scale : new THREE.Vector2(1,1), };
 	// --------------
-	
-	 
-	wall.userData.wall.actList = abo.wall;
+
 	
 	upUvs_1( wall );
 	
