@@ -42,7 +42,7 @@ function showHandleToolDoor(obj)
  
 // возращаем стандартный цвет объекта
 function objDeActiveColor_2D() 
-{			console.log(333, clickO.last_obj, clickO.last_obj == clickO.obj);
+{			
 	if(!clickO.last_obj){ return; }
 	if(clickO.last_obj == clickO.obj){ return; }
 	
