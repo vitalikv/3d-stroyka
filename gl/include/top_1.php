@@ -17,12 +17,20 @@
 		<? if($interface['wall_1'] == 1){ ?>
 		<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 		<? } ?>
-		<? if($url == '/calculator/warm_floor'){ ?>
-		<div data-action ='warm_floor' class="button1"><img src="<?=$path?>/img/paint.png"></div>
+		<? if($interface['tube_1'] == 1){ ?>
+		<div data-action ='create_tube_1' class="button1"><img src="<?=$path?>/img/paint.png"></div>
 		<? } ?>
 		<? if($interface['wd_1'] == 1){ ?>
-		<div data-action ='wd_1' class="button1"><p>Проём</p></div>
+		<div data-action ='create_wd_1' class="button1"><p>Проём</p></div>
+		<? } ?>	
+
+		<? if($interface['wd_2'] == 1){ ?>
+		<div data-action ='create_wd_2' class="button1"><p>Дверь</p></div>
+		<? } ?>	
+		<? if($interface['wd_3'] == 1){ ?>
+		<div data-action ='create_wd_3' class="button1"><p>Окно</p></div>
 		<? } ?>			
+		
 		<div class="button1-wrap">
 			<div data-action ='2D' class="button1"><p>2D</p></div>
 			<div data-action ='3D' class="button1"><p>3D</p></div>

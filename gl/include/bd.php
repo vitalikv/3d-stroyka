@@ -6,9 +6,12 @@ $path = "/gl/";
 
 $title = '';
 $interface['wall_1'] = 1;
+$interface['tube_1'] = 1;
 $interface['estimate'] = 1;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
+$interface['wd_2'] = 0;
+$interface['wd_3'] = 0;
 $interface['form_1'] = 0;
 $interface['wall_plaster_width_1'] = 0;
 $interface['monolit_fundament'] = 0;
@@ -91,8 +94,10 @@ if($url == '/calculator/raschet_blokov')
 if($url == '/calculator/warm_floor')	
 { 
 	$title = 'Расчет теплого пола 3D'; 
-	$nameId = 'теплый пол'; 
-	$interface['wd_1'] = 1;
+	$nameId = 'теплый пол';
+	$interface['tube_1'] = 1;	
+	$interface['wd_2'] = 1;
+	$interface['wd_3'] = 1;
 	$interface['wall_b1'] = 1;
 }
 
@@ -214,6 +219,7 @@ else if($url == '/calculator/warm_floor')
 	$infProject['settings']['project'] = 'warm_floor';
 	$infProject['settings']['floor']['o'] = true;
 	$infProject['settings']['wall']['label'] = 'double';
+	$infProject['settings']['project'] = 'shape1';
 }
 
 

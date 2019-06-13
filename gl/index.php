@@ -52,7 +52,6 @@
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>
   	
-	<script src="<?=$path?>dragWindowDoorUI.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>
     
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>

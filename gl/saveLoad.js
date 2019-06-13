@@ -35,7 +35,19 @@ var resetPop =
 		array.lineGrid = { limit : false };		
 		
 		return array;
-	},	
+	},
+
+	listColor : function()
+	{	
+		var array = {};
+		
+		array.door2D = 'rgb(166, 151, 99)';
+		array.window2D = 'rgb(122, 160, 195)';
+		array.active2D = 'rgb(255,0,0)';
+		array.hover2D = 'rgb(55, 125, 61)';
+
+		return array;
+	},
 	
 	clickO : function()
 	{

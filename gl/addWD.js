@@ -1,9 +1,18 @@
 
 
-// создаем форму окна/двери/балкона 
+// создаем форму окна/двери/балкона (free_dw)
 function createEmptyFormWD_1(cdm)
 {
-	var material = new THREE.MeshLambertMaterial({ color: colWin, transparent: true, opacity: 1.0, depthTest: false });
+	if(!cdm) { cdm = {} };
+	
+	var type = (cdm.type) ? cdm.type : 'door';
+	
+	var color = infProject.listColor.door2D;
+	
+	if(type == 'window'){ color = infProject.listColor.window2D; }
+	else if(type == 'door'){ color = infProject.listColor.door2D; }
+	
+	var material = new THREE.MeshLambertMaterial({ color: color, transparent: true, opacity: 1.0, depthTest: false, lightMap : lightMap_1 });
 	
 	if(camera == cameraTop)
 	{ 
@@ -55,7 +64,7 @@ function createEmptyFormWD_1(cdm)
 	
 	obj.userData.tag = 'free_dw';
 	obj.userData.door = {};
-	obj.userData.door.type = 'DoorEmpty';
+	obj.userData.door.type = type;
 	obj.userData.door.size = new THREE.Vector3( 1, 1, 0.2 );
 	obj.userData.door.form = form;
 	obj.userData.door.bound = {}; 
@@ -73,6 +82,66 @@ function createEmptyFormWD_1(cdm)
 	clickO.last_obj = obj;
 	
 	scene.add( obj );  
+}
+
+
+// перетаскиваем free_dw
+function dragWD_2( event, obj ) 
+{ 
+	var arrDp = [];
+	for ( var i = 0; i < obj_line.length; i++ ){ arrDp[arrDp.length] = obj_line[i]; } 
+	for ( var i = 0; i < arr_door.length; i++ ){ arrDp[arrDp.length] = arr_door[i]; } 
+	for ( var i = 0; i < arr_window.length; i++ ){ arrDp[arrDp.length] = arr_window[i]; } 
+	arrDp[arrDp.length] = planeMath; 
+
+	var intersects = rayIntersect( event, arrDp, 'arr' );
+	
+	var wall = null;
+	
+	var pos = new THREE.Vector3();
+	if(obj.material.color == new THREE.Color(infProject.listColor.active2D)) { obj.material.color = obj.userData.door.color; }
+	
+	for ( var i = 0; i < intersects.length; i++ )
+	{
+		if (intersects[ i ].face != null) 
+		{
+			var object = intersects[ i ].object;
+			
+			if(object.userData.tag == 'planeMath'){ obj.position.copy( intersects[i].point ); } 			
+			else if(object.userData.tag == 'wall')
+			{ 
+				if(object.userData.tag_2){ if(object.userData.tag_2 == 'child_wall'){ object = object.parent; } }
+				wall = object; 
+				obj.rotation.copy( wall.rotation ); 
+				pos = intersects[i].point; 
+			}
+			else if(object.userData.tag == 'window' || object.userData.tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); } 
+		}
+	}
+
+	if(obj.material.color == new THREE.Color(infProject.listColor.active2D)) { obj.userData.door.wall = null; return; }
+	if(!wall) { obj.userData.door.wall = null; return; }
+
+	
+
+	wall.updateMatrixWorld();			
+	var pos = wall.worldToLocal( pos.clone() );	
+	var pos = wall.localToWorld( new THREE.Vector3(pos.x, pos.y, 0 ) ); 	
+	
+	  
+	if(camera == camera3D || camera == cameraWall) 
+	{ 
+		obj.position.set( pos.x, pos.y, pos.z ); 
+	}
+	else 
+	{ 
+		var h = wall.userData.wall.p[0].position.y; 
+		obj.position.set( pos.x, obj.userData.door.floorCenterY + h, pos.z ); 
+	}		
+
+	changeWidthWD(obj, wall);	
+	
+	obj.userData.door.wall = wall;
 }
 
 
@@ -105,8 +174,9 @@ function clickToolWD(obj)
 function addWD( cdm )
 {	
 	var obj = cdm.obj;
-	var wall = cdm.wall;
-	var pos = cdm.pos;
+	var wall = obj.userData.door.wall;
+	var pos = obj.position;
+	var type = obj.userData.door.type;
 	
 	pos.y -= 0.001;		// делаем чуть ниже уровня пола
 	obj.position.copy( pos );
@@ -133,8 +203,8 @@ function addWD( cdm )
 	obj.geometry.computeBoundingBox(); 	
 	obj.geometry.computeBoundingSphere();
 	
-	obj.userData.tag = 'door';
-	obj.userData.door.wall = wall;
+	obj.userData.tag = type;
+	obj.userData.door.wall = wall;  console.log(obj.position);
 	
 	if(!obj.userData.id) { obj.userData.id = countId; countId++; }  
 	
@@ -172,7 +242,31 @@ function addWD( cdm )
 
 
 
- 
+// изменение ширины формы окна/двери
+function changeWidthWD(obj, wall)
+{
+	if(obj.userData.door.wall == wall) return;
+	//if(obj.userData.door.width == wall.userData.wall.width) return;
+	
+	var v = obj.geometry.vertices;
+	var minZ = obj.userData.door.form.v.minZ; 
+	var maxZ = obj.userData.door.form.v.maxZ;
+	
+	var width = wall.userData.wall.width; 
+	wall.geometry.computeBoundingBox();
+	
+	
+	for ( var i = 0; i < minZ.length; i++ ) { v[minZ[i]].z = wall.geometry.boundingBox.min.z; }
+	for ( var i = 0; i < maxZ.length; i++ ) { v[maxZ[i]].z = wall.geometry.boundingBox.max.z; }
+	
+	obj.geometry.verticesNeedUpdate = true; 
+	obj.geometry.elementsNeedUpdate = true;
+	obj.geometry.computeBoundingSphere();
+	obj.geometry.computeBoundingBox();	
+	obj.geometry.computeFaceNormals();		
+	
+	obj.userData.door.width = width;	
+} 
  
  
  

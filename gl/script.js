@@ -203,12 +203,11 @@ var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь 
-infProject.tools = { cutWall : [] } 
+infProject.tools = { cutWall : [] }
+infProject.listColor = resetPop.listColor(); 
 
-var actColorWin = new THREE.Color('rgb(255,0,0)');
-var colorHover = new THREE.Color('rgb(55, 125, 61)');
-var colDoor = 'rgb(166, 151, 99)';
-var colWin = 'rgb(122, 160, 195)';
+
+console.log(infProject);
 
 
 // cutoff боковые отсечки для линеек
@@ -240,7 +239,7 @@ var geometryLabelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 
 
 var nameRoomDef = 'Гостиная';
-var param_ugol = { file : '', hash : '', key : '', link_render : '', link_save : '' };
+
 
 var lineAxis_1 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
 var lineAxis_2 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
@@ -1080,7 +1079,7 @@ function createForm(cdm)
 
 function createPoint( pos, id )
 {
-	var point = obj_point[obj_point.length] = new THREE.Mesh( p_tool.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
+	var point = obj_point[obj_point.length] = new THREE.Mesh( p_tool.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false, lightMap : lightMap_1 } ) ); 
 	point.position.copy( pos );		
 
 	point.renderOrder = 1;
@@ -1560,9 +1559,17 @@ function clickButton( event )
 			}
 			else if(clickO.button == 'create_wd_1')
 			{
-				createEmptyFormWD_1();
+				createEmptyFormWD_1({type:'window'});
 			}
-			else if(clickO.button == 'warm_floor_1')
+			else if(clickO.button == 'create_wd_2')
+			{
+				createEmptyFormWD_1({type:'door'});
+			}
+			else if(clickO.button == 'create_wd_3')
+			{
+				createEmptyFormWD_1({type:'window'});
+			}			
+			else if(clickO.button == 'create_tube_1')
 			{
 				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
 				point.position.y = 0;
@@ -1609,16 +1616,26 @@ function clickInterface(cdm)
 			deActiveSelected();
 			clickO.button = 'create_wall';
 		}
-		else if(cdm.button == 'wd_1')
+		else if(cdm.button == 'create_wd_1')
 		{
 			deActiveSelected();
 			clickO.button = 'create_wd_1';
-		}	
-		else if(cdm.button == 'warm_floor_1')
+		}
+		else if(cdm.button == 'create_wd_2')
+		{
+			deActiveSelected();
+			clickO.button = 'create_wd_2';
+		}
+		else if(cdm.button == 'create_wd_3')
+		{
+			deActiveSelected();
+			clickO.button = 'create_wd_3';
+		}		
+		else if(cdm.button == 'create_tube_1')
 		{
 			clickO.obj = null;
 			deActiveSelected();
-			clickO.button = 'warm_floor_1';
+			clickO.button = 'create_tube_1';
 		}			
 	}
 	

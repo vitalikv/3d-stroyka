@@ -322,7 +322,7 @@ function addPoint_4( point )
 	
 	if(point.userData.point.type == 'create_wall')			// 1
 	{		 	
-		var wall = createOneWall3( point, point.userData.point.cross, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} ); 		 
+		var wall = createOneWall3( point, point.userData.point.cross, width_wall, {} ); 		 
 		point.userData.point.type = 'continue_create_wall';
 		point.userData.point.cross.userData.point.last.cdm = 'new_wall_from_point';
 		clickO.move = point;
@@ -344,7 +344,7 @@ function addPoint_4( point )
 			
 			point.userData.point.type = null; 			
 			var point2 = createPoint( point.position, 0 );			
-			var wall = createOneWall3( point, point2, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} ); 			
+			var wall = createOneWall3( point, point2, width_wall, {} ); 			
 			clickO.move = point2;
 			upLabelPlan_1( point.p[0].w );			
 			point2.userData.point.type = 'continue_create_wall'; 
@@ -502,7 +502,7 @@ function addPoint_5( wall, point )
 		
 		point2.userData.point.cross = point1;
 		
-		var newWall = createOneWall3( point1, point2, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} ); 
+		var newWall = createOneWall3( point1, point2, width_wall, {} ); 
 		var arrW = splitWalls( wall, point1 );
 		
 		// для undo/redo и для отмены правой кнопкой 
@@ -584,7 +584,7 @@ function addPoint_6( point1 )
 	var point2 = createPoint( point1.position.clone(), 0 );			
 	point2.userData.point.type = 'continue_create_wall';
 	
-	var wall = createOneWall3( point1, point2, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} );		
+	var wall = createOneWall3( point1, point2, width_wall, {} );		
 	
 	clickO.move = point2; 
 	

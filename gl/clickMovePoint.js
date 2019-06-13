@@ -219,9 +219,6 @@ function dragToolPoint( event, obj )
 		lineAxis_1.visible = false;
 		lineAxis_2.visible = false; 
 	}
-
-	//if(!obj.userData.point.cross) { obj.material.color = actColorWin; }
-	//else { obj.material.color = obj.userData.point.color; }
 }
 
   
