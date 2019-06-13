@@ -437,8 +437,7 @@ function cameraZoomTop( delta )
 	if(camera == cameraTop)
 	{
 		camera.zoom = delta;
-		camera.updateProjectionMatrix();
-		zoom_binding = delta;	// zoom point		
+		camera.updateProjectionMatrix();		
 	}
 
 	var k = 0.085 / delta;

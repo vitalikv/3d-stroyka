@@ -16,21 +16,19 @@ function clickWD( intersect )
 	if(camera == cameraTop) 
 	{
 		planeMath.position.set( 0, pos.y, 0 );
-		planeMath.rotation.set(-Math.PI/2, 0, 0);	
-		var offset = new THREE.Vector3().subVectors( obj.position, pos );		
+		planeMath.rotation.set(-Math.PI/2, 0, 0);			
 	}
 	else
 	{
 		planeMath.position.copy( pos );
-		planeMath.rotation.set( 0, obj.rotation.y, 0 );			
-		var offset = new THREE.Vector3().subVectors( obj.position, pos );		
+		planeMath.rotation.set( 0, obj.rotation.y, 0 );					
 	}	
 	
 	planeMath.updateMatrixWorld();  //  (для того, что бы при первом клике, окно не улетало на старое место, где до этого стояла мат.плоскость)	
 
 	param_win.click = true;
 
-	obj.userData.door.offset = offset;	
+	obj.userData.door.offset = new THREE.Vector3().subVectors( obj.position, pos );	
 	
 	findOnWallWD(obj);	
 	
@@ -44,8 +42,6 @@ function clickWD( intersect )
 // если их нету, то находим концы стены
 function findOnWallWD(wd)
 {
-	var arrWD = wallLeftRightWD_2(wd);
-	
 	wd.geometry.computeBoundingBox();
 	
 	var wall = wd.userData.door.wall;
@@ -56,6 +52,8 @@ function findOnWallWD(wd)
 	
 	wd.userData.door.bound = { min : { x : wall.geometry.boundingBox.min.x + off, y : wall.geometry.boundingBox.min.y + off_2 }, max : { x : wall.geometry.boundingBox.max.x - off, y : wall.geometry.boundingBox.max.y - off } };
 	
+	//var arrWD = wallLeftRightWD_2(wd);
+	var arrWD = {};
 	if(arrWD.left && 1==2)
 	{
 		arrWD.left.updateMatrixWorld();

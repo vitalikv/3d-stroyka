@@ -291,8 +291,6 @@ function detectZoomScreenWall()
 	
 	camera.updateMatrixWorld();
 	camera.updateProjectionMatrix();
-
-	zoom_binding = camera.zoom;
 }
 
 

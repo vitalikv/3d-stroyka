@@ -161,14 +161,10 @@ function addWD( cdm )
 	obj.geometry.computeBoundingBox();
 	obj.geometry.computeBoundingSphere();
 
-
-	resetMenuUI();
  	
 	clickO.obj = null;
 	clickO.last_obj = null;
 	clickO.move = null;
-	
-	//clickRayHit( detectRayHit( event, 'click' ) ); 
 	
 	renderCamera();
 }

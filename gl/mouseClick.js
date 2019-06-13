@@ -217,6 +217,8 @@ function clickRayHit( rayhit )
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
+		else if( tag == 'window' ) { clickWD( rayhit ); }
+		else if( tag == 'door' ) { clickWD( rayhit ); }		
 	}
 	else if(camera == camera3D)
 	{
@@ -225,10 +227,10 @@ function clickRayHit( rayhit )
 	else if(camera == cameraWall)
 	{
 		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
-		else if ( tag == 'wall' ) { clickWall_3D( rayhit ); }
-		else if ( tag == 'window' ) { clickWD( rayhit ); }
-		else if ( tag == 'door' ) { clickWD( rayhit ); }
-		else if ( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
+		else if( tag == 'wall' ) { clickWall_3D( rayhit ); }
+		else if( tag == 'window' ) { clickWD( rayhit ); }
+		else if( tag == 'door' ) { clickWD( rayhit ); }
+		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 	}
 }
 

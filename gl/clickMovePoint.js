@@ -1,11 +1,6 @@
 
 
 
-var zoom_binding = 1;
-
-
-
-
 function clickPoint( intersect )
 {
 	if(clickO.move)
@@ -190,7 +185,7 @@ function dragToolPoint( event, obj )
 		var p1 = new THREE.Vector3( obj.position.x, 0, obj.position.z ); 
 		var p2 = new THREE.Vector3( obj_point[i].position.x, 0, obj_point[i].position.z ); 
 		
-		if(p1.distanceTo( p2 ) < 0.2 / zoom_binding)
+		if(p1.distanceTo( p2 ) < 0.2 / camera.zoom)
 		{ 
 			obj.position.set( obj_point[i].position.x, obj.position.y, obj_point[i].position.z );
 			obj.userData.point.cross = point = obj_point[i];
@@ -249,8 +244,8 @@ function showLineAxis( point )
 		var x = Math.abs( obj_point[i].position.x - p1.x );
 		var z = Math.abs( obj_point[i].position.z - p2.z );
 		
-		if(x < 0.06 / zoom_binding){ pX[pX.length] = i; }
-		if(z < 0.06 / zoom_binding){ pZ[pZ.length] = i; }			
+		if(x < 0.06 / camera.zoom){ pX[pX.length] = i; }
+		if(z < 0.06 / camera.zoom){ pZ[pZ.length] = i; }			
 	}
 	
 	

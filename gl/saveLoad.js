@@ -1,13 +1,6 @@
 
 
 
-function resetMenuUI()
-{
-	menuUI = { open: false, type: '', select: null };
-}
-
-
-
 function loadUrl(href) 
 {
 	var url = new URL(href); 
@@ -153,9 +146,6 @@ function resetScene()
 	for ( var i = 0; i < line.length; i++ ) { line[i].visible = false; }
 	for ( var i = 0; i < label.length; i++ ) { label[i].visible = false; }
 	
-	
-	
-	menuUI = { open : false, type : '', select : null };
 	
 	camera3D.userData.camera = { type : 'fly', height : camera3D.position.y, startProject : true };
 	camera3D.userData.camera.click = { pos : new THREE.Vector3() }; 
