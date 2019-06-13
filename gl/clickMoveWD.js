@@ -7,24 +7,10 @@ function clickWD( intersect )
 {	
 	var obj = intersect.object;
 
-	if(camera == cameraWall || camera == cameraTop) 
-	{
-		obj_selected = obj;
-		
-		// label zoom		
-		var k = 1 / camera.zoom;
-		if(k > 1) k = 1;
-		//for ( var i = 0; i < labelRuler1.length; i++ ) { labelRuler1[i].scale.set(k, k, k); } 		
-	}
-
-	getInfoWD_1(obj, intersect.point);
+	obj_selected = obj;
 	
-	clickShowRulerWD(obj);
-}
-
-
-function getInfoWD_1(obj, pos)
-{
+	var pos = intersect.point;
+	
 	if(camera != cameraWall) { pos.y = obj.position.y; }
 	
 	if(camera == cameraTop) 
@@ -46,8 +32,11 @@ function getInfoWD_1(obj, pos)
 
 	obj.userData.door.offset = offset;	
 	
-	findOnWallWD(obj);
+	findOnWallWD(obj);	
+	
+	clickShowRulerWD(obj);
 }
+
 
 
 

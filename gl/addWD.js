@@ -164,9 +164,11 @@ function addWD( cdm )
 
 	resetMenuUI();
  	
-	deActiveSelected();
+	clickO.obj = null;
+	clickO.last_obj = null;
+	obj_selected = null;
 	
-	clickRayHit( detectRayHit( event, 'click' ) ); 
+	//clickRayHit( detectRayHit( event, 'click' ) ); 
 	
 	renderCamera();
 }
