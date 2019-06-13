@@ -550,15 +550,8 @@ function centerCamera2D()
 		for ( var i = 0; i < obj_point.length; i++ ) { pos.add( obj_point[ i ].position ); }
 		pos.divideScalar( obj_point.length );
 	}
-	else if ( arr_obj.length > 0 )
-	{
-		for ( var i = 0; i < arr_obj.length; i++ ) { pos.add( arr_obj[ i ].position ); }
-		pos.divideScalar( arr_obj.length );
-	}
 
 	newCameraPosition = {position2D: new THREE.Vector3(pos.x, cameraTop.position.y, pos.z)};
-	// cameraTop.position.x = pos.x;
-	// cameraTop.position.z = pos.z;
 }
 
 
@@ -572,11 +565,6 @@ function centerCamera3D()
 	{
 		for ( var i = 0; i < obj_point.length; i++ ) { pos.add( obj_point[ i ].position ); }
 		pos.divideScalar( obj_point.length );
-	}
-	else if ( arr_obj.length > 0 )
-	{
-		for ( var i = 0; i < arr_obj.length; i++ ) { pos.add( arr_obj[ i ].position ); }
-		pos.divideScalar( arr_obj.length );
 	}
 
 	newCameraPosition = { position3D: new THREE.Vector3( pos.x, 0, pos.z )};

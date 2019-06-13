@@ -140,9 +140,13 @@ function limitMovePoint(point, point2, wall, side, pos2)
 function dragToolPoint( event, obj )
 {	
 	var arrDp = [];
-	for ( var i = 0; i < obj_line.length; i++ ){ arrDp[arrDp.length] = obj_line[i]; } 
-	for ( var i = 0; i < arr_door.length; i++ ){ arrDp[arrDp.length] = arr_door[i]; } 
-	for ( var i = 0; i < arr_window.length; i++ ){ arrDp[arrDp.length] = arr_window[i]; } 
+	var wall = infProject.scene.array.wall;
+	var window = infProject.scene.array.window;
+	var door = infProject.scene.array.door;
+	
+	for ( var i = 0; i < wall.length; i++ ){ arrDp[arrDp.length] = wall[i]; } 
+	for ( var i = 0; i < window.length; i++ ){ arrDp[arrDp.length] = window[i]; } 
+	for ( var i = 0; i < door.length; i++ ){ arrDp[arrDp.length] = door[i]; }  
 	arrDp[arrDp.length] = planeMath;
 	
 	var intersects = rayIntersect( event, arrDp, 'arr' );

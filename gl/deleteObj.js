@@ -21,9 +21,7 @@ function detectDeleteObj()
 	if ( tag == 'wall' ) { deleteWall_1( obj ).room; }
 	else if ( tag == 'point' ) { if(obj.p.length == 2) { deletePoint( obj ); } }
 	else if ( tag == 'wf_point' ) { deletePointWF(obj); }
-	else if ( tag == 'obj' ) { deleteObjCatalog(obj); }
 	else if ( tag == 'window' || tag == 'door' ) { deleteWinDoor( obj ); }
-	else if ( tag == 'pivot' || tag == 'gizmo' ) { deleteObjCatalog(obj.parent.obj); }	
 
 	 renderCamera();
 }
@@ -89,14 +87,19 @@ function deleteWall_2(wall)
 	objDeActiveColor_2D();
 	
 	var arr = wall.userData.wall.arrO;
-	for ( var i = 0; i < arr.length; i ++ ){ deleteArrObj( arr[i] ); }
-	for ( var i = 0; i < arr.length; i ++ ){ scene.remove( arr[i] ); }
+
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.tag == 'window') { deleteValueFromArrya({arr : infProject.scene.array.window, o : arr[i]}); }
+		if(arr[i].userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : arr[i]}); }
+		scene.remove( arr[i] );
+	}
 
 	var p0 = wall.userData.wall.p[0];
 	var p1 = wall.userData.wall.p[1]; 
 	deleteOneOnPointValue(p0, wall);
 	deleteOneOnPointValue(p1, wall);
-	deleteWallFromArr(wall);
+	deleteValueFromArrya({arr : infProject.scene.array.wall, o : wall});;
 	
 	for ( var i = 0; i < wall.label.length; i ++ ){ scene.remove(wall.label[i]); } 
 	scene.remove( wall );
@@ -125,14 +128,19 @@ function deleteWall_3(wall)
 	objDeActiveColor_2D();
 	
 	var arr = wall.userData.wall.arrO;
-	for ( var i = 0; i < arr.length; i ++ ){ deleteArrObj( arr[i] ); }
-	for ( var i = 0; i < arr.length; i ++ ){ scene.remove( arr[i] ); }
+
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.tag == 'window') { deleteValueFromArrya({arr : infProject.scene.array.window, o : arr[i]}); }
+		if(arr[i].userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : arr[i]}); }
+		scene.remove( arr[i] );
+	}
 
 	var p0 = wall.userData.wall.p[0];
 	var p1 = wall.userData.wall.p[1]; 
 	deleteOneOnPointValue(p0, wall);
 	deleteOneOnPointValue(p1, wall);
-	deleteWallFromArr(wall);
+	deleteValueFromArrya({arr : infProject.scene.array.wall, o : wall});;
 	
 	for ( var i = 0; i < wall.label.length; i ++ ){ scene.remove(wall.label[i]); }	
 	scene.remove( wall );
@@ -302,7 +310,9 @@ function deleteWinDoor( obj )
 	}
 	
 	
-	deleteArrObj( obj );
+	if(obj.userData.tag == 'window') { deleteValueFromArrya({arr : infProject.scene.array.window, o : obj}); }
+	if(obj.userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : obj}); }
+	
 	scene.remove( obj );	
 	
 	clickO.obj = null; 
@@ -310,49 +320,17 @@ function deleteWinDoor( obj )
 }
 
 
-function deleteObjCatalog( obj ) 
+
+
+
+
+// удаление значения из массива 
+function deleteValueFromArrya(cdm)
 {
-	hidePivotGizmo(obj);  
+	var arr = cdm.arr;
+	var o = cdm.o;
 	
-	if(!obj){ return; }  	
-	
-	for (i = 0; i < arr_obj.length; i++) { if(arr_obj[i] == obj) { arr_obj.splice(i, 1); break; } }
-	
-	
-	if(clickO.obj == obj || clickO.last_obj == obj)
-	{
-		hideMenuObjUI_2D( obj );
-		clickO.obj = null;
-		clickO.last_obj = null;		
-	}
-	
-	
-	scene.remove( obj );	
-}
-
-
-
-
-
-
-// удаление объекта из массива
-function deleteArrObj( obj )
-{
-	var arr = []; 
-	if(obj.userData.tag == 'window')
-	{
-		var m = 0;
-		for ( var i = 0; i < arr_window.length; i ++ ) { if(arr_window[i] != obj){ arr[m] = arr_window[i]; m++; } }
-		arr_window = null;
-		arr_window = arr;
-	}
-	else if(obj.userData.tag == 'door')
-	{
-		var m = 0;
-		for ( var i = 0; i < arr_door.length; i ++ ) { if(arr_door[i] != obj){ arr[m] = arr_door[i]; m++; } }
-		arr_door = null;
-		arr_door = arr;
-	}	
+	for(var i = arr.length - 1; i > -1; i--) { if(arr[i] == o) { arr.splice(i, 1); break; } }
 }
 
 
@@ -368,14 +346,6 @@ function deleteOneOnPointValue(point, wall)
 }
 
 
-// удаление стены из массива стен
-function deleteWallFromArr(wall)
-{
-	var n = -1;
-	for ( var i = 0; i < obj_line.length; i++ ){ if(obj_line[i].userData.id == wall.userData.id) { n = i; break; } }
-
-	obj_line.splice(n, 1);	
-}
 
 
 // удаление точки из массива точек

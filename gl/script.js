@@ -78,31 +78,6 @@ var cube = new THREE.Mesh( createGeometryCube(0.07, 0.07, 0.07), new THREE.MeshL
 //scene.add( cube ); 
 
 
-// показать все переменные
-if(1==2)
-{	
-	for (var prop in window) 
-	{
-		if (window.hasOwnProperty(prop)) { console.log(prop, window[prop]); }
-	}
-} 
-
-if(1==2)
-{
-	var cube2 = new THREE.Mesh( createGeometryCube(1.2, 1.2, 1.2), new THREE.MeshLambertMaterial( { color : 0xffff00 } ) );
-
-	for ( var i = 0; i < cube2.geometry.faces.length; i++ ) 
-	{	
-		var color = new THREE.Color( 0xffffff ).setHSL( Math.random(), 0.5, 0.5 );
-		cube2.geometry.faces[ i ].vertexColors[0] = color;	
-		cube2.geometry.faces[ i ].vertexColors[1] = color;
-		cube2.geometry.faces[ i ].vertexColors[2] = color;		
-	}
-
-	//console.log(cube2.geometry.faces);
-	//geometry.colorsNeedUpdate = true;
-	scene.add( cube2 ); 	
-}
 
 
 
@@ -183,18 +158,12 @@ var resolutionD_h = window.screen.availHeight;
 var kof_rd = 1;
 
 var countId = 2;
-var levelFloor = 1;
-var projName = 'Новый проект';
-var projVersion = '1';
 var keys = [];
 var camera = cameraTop;
 var height_wall = infProject.settings.height;
 var width_wall = infProject.settings.wall.width;
 var obj_point = [];
 var obj_line = [];
-var arr_window = [];
-var arr_door = [];
-var arr_obj = [];
 var room = [];
 var ceiling = [];
 var arrWallFront = [];
@@ -226,9 +195,6 @@ var wallVisible = [];
 var circle = createCircleSpline();
 var p_tool = createToolPoint();
 
-//var pointGrid = createPointGrid(100);
-var pointGrid = { visible : true }
-
 
 var planeMath = createPlaneMath();
 var planeMath2 = createPlaneMath2();
@@ -236,15 +202,13 @@ var planeMath2 = createPlaneMath2();
 var geometryLabelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 var geometryLabelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 
-
+var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
 var nameRoomDef = 'Гостиная';
 
 
 var lineAxis_1 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
 var lineAxis_2 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
-lineAxis_1.visible = false;
-lineAxis_2.visible = false;
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -345,29 +309,7 @@ function createGrid(cdm)
 }
 
 
-function createPointGrid(size) {
-  var pointMaterial = new THREE.PointsMaterial({ size: 0.04, color: 0xafafaf });
-  var pointGeometry = new THREE.Geometry();
-  var x = y = z = 0;
-  for (var i = -size; i < size; i++) {
-    for (var k = -size; k < size; k++) {
-      
-      var point = new THREE.Vector3();
-      point.x = x + i * 0.5;
-      point.y = -0.05;
-      point.z = z + k * 0.5;
-      
-      // pointMaterial.sizeAttenuation = false;
-      pointGeometry.vertices.push(point);
-    }
-  }
-  
-  var pointGrid = new THREE.Points(pointGeometry, pointMaterial);
 
-  scene.add(pointGrid);
-  
-  return pointGrid;
-}
 
 
 function createPlaneMath()
@@ -712,9 +654,12 @@ function createGeometryWall(x, y, z, pr_offsetZ)
 
 
 
-function createLineAxis( p1, p2 ) 
+function createLineAxis() 
 {
 	var geometry = createGeometryCube(0.5, 0.01, 0.01);
+	
+	var p1 = new THREE.Vector3(0,0,0);
+	var p2 = new THREE.Vector3(1,0,0);
 	
 	var d = p1.distanceTo( p2 );	
 	var v = geometry.vertices;
@@ -723,19 +668,14 @@ function createLineAxis( p1, p2 )
 	v[0].x = v[1].x = v[6].x = v[7].x = 0;
 	
 	
-	var wall = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color : 0xff0000, transparent: true, depthTest: false } ) );
-	wall.position.copy( p1 );
-	wall.renderOrder = 2;
-	scene.add( wall );		
-
+	var axis = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color : 0xff0000, transparent: true, depthTest: false } ) );
+	axis.position.copy( p1 );
+	axis.renderOrder = 2;
+	scene.add( axis );		
 	
-	var dir = new THREE.Vector3().subVectors( p1, p2 ).normalize();
-	var angleDeg = Math.atan2(dir.x, dir.z);
-	wall.rotation.set(0, angleDeg + Math.PI / 2, 0);			
+	axis.visible = false;
 	
-	wall.position.y = 3;
-	
-	return wall;
+	return axis;
 }
 
 // vertex для Gizmo
@@ -1117,36 +1057,8 @@ function createPoint( pos, id )
 }
 
 
+  
 
-var clippingMaskWall = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ), 1 );	// маска для стены   
-var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
-//renderer.clippingPlanes = [ clippingMaskWall ];
-
-
-
-var RD = (function ()  
-{ return {
-	create : function (cdm)
-	{
-		if(cdm.str == 'wall') { return wall(cdm); }
-
-		function wall(cdm)
-		{
-			return RD;
-		}		
-	}
-}
-})();
-
-
-
-
-function listCommand(name, value) 
-{
-	if(typeof RD[name] == 'function') { RD[name](value); }
-}
-
-console.log(RD.create({str : 'wall'}));
 
 
 
@@ -1402,24 +1314,6 @@ function setTexture(cdm)
 }
 
 
-function showObjTool( tag )
-{			
-	if(camera == cameraWall)
-	{
-		planeMath.position.copy( clickO.last_obj.position );
-		planeMath.rotation.copy( clickO.last_obj.rotation );  		
-		hideSizeWD(clickO.obj); 		
-	}
-	else
-	{
-		planeMath.position.set( 0, hp, 0 );
-		planeMath.rotation.set(-Math.PI/2, 0, 0);			
-	}
-	
-	if(camera == cameraTop) { clickO.obj = null; objDeActiveColor_2D(); } 
-}
-
-
 
 
 // изменение высоты стен
@@ -1656,7 +1550,7 @@ function deActiveSelected()
 
 
 function upUvs_1( obj )
-{
+{ return;
 	obj.updateMatrixWorld();
 	var geometry = obj.geometry;
 	
@@ -1878,54 +1772,7 @@ function createEstimateJson()
 }
 
 		
-// определение размера Json файла
-function roughSizeOfObject( object ) {
-
-    var objectList = [];
-    var stack = [ object ];
-    var bytes = 0;
-
-    while ( stack.length ) {
-        var value = stack.pop();
-
-        if ( typeof value === 'boolean' ) {
-            bytes += 4;
-        }
-        else if ( typeof value === 'string' ) {
-            bytes += value.length * 2;
-        }
-        else if ( typeof value === 'number' ) {
-            bytes += 8;
-        }
-        else if
-        (
-            typeof value === 'object'
-            && objectList.indexOf( value ) === -1
-        )
-        {
-            objectList.push( value );
-
-            for( var i in value ) {
-                stack.push( value[ i ] );
-            }
-        }
-    }
-    return bytes;
-}
-
-
-// конвертация bytes в KB/MB
-function formatSizeUnits(bytes){
-      if      (bytes>=1073741824) {bytes=(bytes/1073741824).toFixed(2)+' GB';}
-      else if (bytes>=1048576)    {bytes=(bytes/1048576).toFixed(2)+' MB';}
-      else if (bytes>=1024)       {bytes=(bytes/1024).toFixed(2)+' KB';}
-      else if (bytes>1)           {bytes=bytes+' bytes';}
-      else if (bytes==1)          {bytes=bytes+' byte';}
-      else                        {bytes='0 byte';}
-      return bytes;
-}
-
-		
+	
  
 function setUnits()
 {
@@ -1933,8 +1780,94 @@ function setUnits()
 }
 
 
+
+// находим стены/точки/объекты по id
+function findObjFromId( cdm, id )
+{
+	var point = infProject.scene.array.point;
+	var wall = infProject.scene.array.wall;
+	var window = infProject.scene.array.window;
+	var door = infProject.scene.array.door;	
+	var room = infProject.scene.array.room;
+	
+	if(cdm == 'wall')
+	{
+		for ( var i = 0; i < wall.length; i++ ){ if(wall[i].userData.id == id){ return wall[i]; } }			
+	}
+	else if(cdm == 'point')
+	{
+		for ( var i = 0; i < point.length; i++ ){ if(point[i].userData.id == id){ return point[i]; } }
+	}
+	else if(cdm == 'wd')
+	{
+		for ( var i = 0; i < window.length; i++ ){ if(window[i].userData.id == id){ return window[i]; } }
+		for ( var i = 0; i < door.length; i++ ){ if(door[i].userData.id == id){ return door[i]; } }
+	}
+	else if(cdm == 'window')
+	{
+		for ( var i = 0; i < window.length; i++ ){ if(window[i].userData.id == id){ return window[i]; } }
+	}
+	else if(cdm == 'door')
+	{
+		for ( var i = 0; i < door.length; i++ ){ if(door[i].userData.id == id){ return door[i]; } }
+	}
+	else if(cdm == 'room')
+	{
+		for ( var i = 0; i < room.length; i++ ){ if(room[i].userData.id == id){ return room[i]; } }
+	}	
+	return null;
+}
+
+
+
 animate();
 renderCamera();
+
+
+
+document.body.addEventListener('contextmenu', function(event) { event.preventDefault() });
+document.body.addEventListener( 'mousedown', onDocumentMouseDown, false );
+document.body.addEventListener( 'mousemove', onDocumentMouseMove, false );
+document.body.addEventListener( 'mouseup', onDocumentMouseUp, false );
+
+
+document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
+document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );
+document.body.addEventListener( 'touchend', onDocumentMouseUp, false );
+
+
+document.body.addEventListener("keydown", function (e) { keys[e.keyCode] = true; });
+document.body.addEventListener("keyup", function (e) { keys[e.keyCode] = false; });
+
+document.addEventListener('DOMMouseScroll', mousewheel, false);
+document.addEventListener('mousewheel', mousewheel, false);	
+
+
+document.body.addEventListener("keydown", function (e) 
+{ 
+	
+	if(infProject.activeInput) 
+	{ 
+		if(e.keyCode == 13)
+		{
+			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
+			//if(infProject.activeInput == 'input-width') { inputWidthOneWall({wall:obj_line[0], width:{value:7, unit:'cm'}, offset:'wallRedBlueArrow'}) } 
+			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
+			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
+			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }
+			if(infProject.activeInput == 'wall_plaster_width_1') 
+			{ 		
+				inputWidthOneWallPlaster({wall:obj_line[0], width:{value:$('[nameid="wall_plaster_width_1"]').val(), unit:'cm'}, index:1}) 
+			}
+		}		
+		 
+		return; 
+	}
+
+
+	if(e.keyCode == 46) { detectDeleteObj(); }
+	
+} );
 
 
 var docReady = false;

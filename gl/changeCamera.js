@@ -14,24 +14,16 @@ function changeCamera(cam)
 	
 	if(camera == cameraTop)
 	{					
-		changeDepthColor();
-		showHideArrObj(arr_wf.point, true); 
-		objDeActiveColor_2D();		
-		showHideSizePlane('show');
+		changeDepthColor();			
 		cameraZoomTop( camera.zoom );
 		infProject.scene.grid.obj.visible = true;
 	}
 	else if(camera == camera3D)
 	{	
-		activeHover2D_2();
-		objDeActiveColor_2D();  
+		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
-		 
-		lineAxis_1.visible = false;
-		lineAxis_2.visible = false;
-		infProject.scene.grid.obj.visible = true;
 		changeDepthColor();
-		showHideArrObj(arr_wf.point, false); 
+		infProject.scene.grid.obj.visible = true;		 
 	}
 	else if(camera == cameraWall)
 	{  
@@ -72,6 +64,9 @@ function changeCamera(cam)
 		infProject.scene.grid.obj.visible = false;
 		changeDepthColor();
 	}
+	
+	lineAxis_1.visible = false;
+	lineAxis_2.visible = false;	
 
 	clickO = resetPop.clickO();
 	
@@ -79,20 +74,7 @@ function changeCamera(cam)
 }
 
 
-// показываем стены, которые были спрятаны
-function showAllWallRender()
-{		
-	for ( var i = 0; i < wallVisible.length; i++ ) 
-	{ 
-		var wall = wallVisible[i].wall;
-		if(wall.visible) { continue; }
-		wall.visible = true;
-		for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
-		{ 
-			wall.userData.wall.arrO[i2].visible = true;  
-		}			
-	}
-}
+
 
 
 
@@ -117,37 +99,31 @@ function changeDepthColor()
 	}
 	else { return; } 
 	
+	var point = infProject.scene.array.point;
+	var wall = infProject.scene.array.wall;
+	var window = infProject.scene.array.window;
+	var door = infProject.scene.array.door;	
 	
 	
-	for ( var i = 0; i < obj_line.length; i++ )
+	for ( var i = 0; i < wall.length; i++ )
 	{
-		if(obj_line[i].children[0]) obj_line[i].children[0].visible = visible_2;
+		if(wall[i].children[0]) wall[i].children[0].visible = visible_2;	// скрываем штукатурку
 	}
 	
-	for ( var i = 0; i < obj_point.length; i++ )
+	for ( var i = 0; i < point.length; i++ )
 	{ 
-		obj_point[i].visible = visible; 
-		if(obj_point[i].userData.point.pillar) 
+		point[i].visible = visible; 
+		if(point[i].userData.point.pillar) 
 		{
-			obj_point[i].userData.point.pillar.position.copy(obj_point[i].position);
-			obj_point[i].userData.point.pillar.visible = pillar;
+			point[i].userData.point.pillar.position.copy(point[i].position);
+			point[i].userData.point.pillar.visible = pillar;
 		}
 	}		
-
 	
-	for ( var i = 0; i < arr_window.length; i++ )
-	{ 
-		arr_window[ i ].material.depthTest = depthTest; 
-		arr_window[ i ].material.transparent = depthTest; 
-		arr_window[ i ].material.opacity = w2; 		 	
-	}
-
-	for ( var i = 0; i < arr_door.length; i++ )
-	{ 		
-		arr_door[ i ].material.depthTest = depthTest;
-		arr_door[ i ].material.transparent = depthTest; 
-		arr_door[ i ].material.opacity = w2;							
-	}
+	showHideArrObj(arr_wf.point, visible_2);
+	showHideArrObj(window, visible_2);
+	showHideArrObj(door, visible_2);
+	
 }
 
 
@@ -157,112 +133,6 @@ function showHideArrObj(arr, visible)
 	if(arr.length == 0) return;
 	
 	for ( var i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }				
-}
-
-
-// скрываем размеры стен и площадей помещений
-function showHideSizePlane(cdm)
-{
-	var flag = (cdm == 'hide') ? false : true;
-
-	//for ( var i = 0; i < obj_line.length; i++ ){ obj_line[i].label[0].visible = flag;  }
-	//for ( var i = 0; i < room.length; i++ ){ room[i].label.visible = flag; }		
-}
-
-
-// собираем инфу, какие стены будем скрывать в 3D режиме
-// опрееляем стена относится ко скольки зонам (0, 1, 2) 
-// если 1 зона, то стена внешняя
-function getInfoRenderWall()
-{
-	wallVisible = [];
-	for ( var i = 0; i < obj_line.length; i++ )
-	{	
-		var room = detectCommonZone_1( obj_line[i] );
-		if(room.length == 1) 
-		{ 	
-			var side = 0;
-			for ( var i2 = 0; i2 < room[0].w.length; i2++ ) { if(room[0].w[i2] == obj_line[i]) { side = room[0].s[i2]; break; } }
-			//var pos = new THREE.Vector3().subVectors( obj_line[i].p[1].position, obj_line[i].p[0].position ).divideScalar( 2 ).add(obj_line[i].p[0].position);
-
-			if(side == 0) { var n1 = 0; var n2 = 1; }
-			else { var n1 = 1; var n2 = 0; }
-			
-			var x1 = obj_line[i].userData.wall.p[n2].position.z - obj_line[i].userData.wall.p[n1].position.z;
-			var z1 = obj_line[i].userData.wall.p[n1].position.x - obj_line[i].userData.wall.p[n2].position.x;	
-			var dir = new THREE.Vector3(x1, 0, z1).normalize();						// перпендикуляр стены	
-			
-			wallVisible[wallVisible.length] = { wall : obj_line[i], normal : dir };  
-		}
-	}	
-}
-
-
-
-// скрываем все объекты, которые не прилегают к выбранной стене
-function showHideObjCameraWall(wall)
-{
-	for ( var i = 0; i < arr_obj.length; i++ ) 
-	{ 
-		var crossPoint = null;
-		
-		if(rayFurniture_2( arr_obj[i], wall )) {  }
-		else { arr_obj[i].visible = false; } 
-		
-	}  	
-}
-
- 
-
-// пускаем луч и определяем к какой комнате принадлежит объект
-function rayFurniture_2( obj, wall ) 
-{
-	if(!wall) return false;
-	
-	obj.updateMatrixWorld();
-	obj.geometry.computeBoundingBox();
-	obj.geometry.computeBoundingSphere();
-	
-	
-	var dir = obj.getWorldDirection();
-	
-	var cdm = null;
-	var degreeRad = [0, Math.PI/2, -Math.PI/2, Math.PI];
-	var col = [0xff0000, 0x1E90FF, 0x008000, 0x000000];	
-
-	var min = obj.geometry.boundingBox.min.clone();
-	var max = obj.geometry.boundingBox.max.clone();
-	var c = obj.geometry.boundingSphere.center.clone();	
-	var arrPos = [];
-	arrPos[0] = obj.localToWorld( new THREE.Vector3(c.x, c.y, max.z - 0.05) );
-	arrPos[1] = obj.localToWorld( new THREE.Vector3(min.x + 0.05, c.y, c.z) );
-	arrPos[2] = obj.localToWorld( new THREE.Vector3(max.x - 0.05, c.y, c.z) ); 
-	arrPos[3] = obj.localToWorld( new THREE.Vector3(c.x, c.y, min.z + 0.05) );
-	
-	
-	for ( var i = 0; i < degreeRad.length; i++ )
-	{
-		var dir2 = new THREE.Vector2(dir.x, dir.z).rotateAround(new THREE.Vector2(0, 0), degreeRad[i]);	
-		dir2 = new THREE.Vector3(dir2.x, 0, dir2.y).normalize();	 
-		
-		var ray = new THREE.Raycaster();
-		ray.set( arrPos[i], dir2 );  
-		
-		//scene.add(new THREE.ArrowHelper( ray.ray.direction, ray.ray.origin, 1, col[i] ));	 //помошник визуализации напрпавлений стрелок
-		
-		for ( var i2 = 0; i2 < arrWallFront.length; i2++ )
-		{
-			var intersect = ray.intersectObject( arrWallFront[i2].obj );	
-			
-			if (intersect.length == 0) continue;
-
-			var d = arrPos[i].distanceTo( intersect[0].point );
-			
-			if(d < 0.15) { return true; }			
-		}
-	}
-	
-	return false;
 }
 
 

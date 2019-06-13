@@ -405,14 +405,7 @@ function newTubeWF(cdm)
 
 
 
-// удаление значения из массива 
-function deleteValueFromArrya(cdm)
-{
-	var arr = cdm.arr;
-	var o = cdm.o;
-	
-	for(var i = arr.length - 1; i > -1; i--) { if(arr[i] == o) { arr.splice(i, 1); break; } }
-}
+
 
 
 

@@ -58,7 +58,7 @@
 		
 	
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    	
-	<script src="<?=$path?>eventKey.js?<?=$vrs?>"></script>
+	
 	
 	
 	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>

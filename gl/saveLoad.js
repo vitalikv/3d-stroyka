@@ -30,7 +30,7 @@ var resetPop =
 	
 	infProjectSceneArray : function()
 	{
-		var array = { point : obj_point, wall : obj_line, window : arr_window, door : arr_door, room : room, ceiling : ceiling, obj : arr_obj };
+		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [] };
 		array.fundament = [];
 		array.lineGrid = { limit : false };		
 		
@@ -58,6 +58,7 @@ var resetPop =
 		inf.pos = { clickDown : new THREE.Vector3() };
 		inf.click = { wall : [], point : [] };  
 		inf.selectBox = { arr : [], drag : false, move : false, walls : [], walls_2 : [], point : [] };
+		
 		return inf;
 	},
 	
@@ -106,9 +107,9 @@ function resetScene()
 		scene.remove(obj_point[i]); 
 	}	
 	
-	for ( var i = 0; i < arr_window.length; i++ ){ scene.remove(arr_window[i]); }
-	for ( var i = 0; i < arr_door.length; i++ ){ scene.remove(arr_door[i]); }	
-	for ( var i = 0; i < arr_obj.length; i++ ) { scene.remove(arr_obj[i]); }
+	for ( var i = 0; i < infProject.scene.array.window.length; i++ ){ scene.remove(infProject.scene.array.window[i]); }
+	for ( var i = 0; i < infProject.scene.array.door.length; i++ ){ scene.remove(infProject.scene.array.door[i]); }	
+	
 	
 	for ( var i = 0; i < room.length; i++ )
 	{
@@ -125,23 +126,12 @@ function resetScene()
 	wallVisible = [];
 	obj_point = [];
 	obj_line = [];
-	arr_window = [];
-	arr_door = [];
-	arr_obj = [];
 	room = [];
 	ceiling = [];
 	arrWallFront = [];
 	
-	param_usU = [];
-	param_usR = [];
-	leng_ur = -1;
-	ndsf = 1;
+
 	countId = 2;
-	levelFloor = 1;
-	projName = 'Новый проект';
-	projVersion = '1';
-	
-	pointGrid.visible = true;
 	
 	// прячем размеры и линейки
 	var line = arrSize.format_1.line;
@@ -339,8 +329,6 @@ function getJsonGeometry()
 				furn : [],
 				rooms : [],
 				height : height_wall,
-				levelFloor : 1,
-				projName : 'Новый проект',
 				version : '1'
 			}			
 		]
@@ -514,13 +502,6 @@ function loadFilePL(arr)
 	if(!arr) return;
 	
 	console.log(arr);
-	//console.log(pool_pop);
-	
-	
-	levelFloor = arr.floors[0].id;
-	//height_wall = arr.floors[0].height;
-	projName = arr.floors[0].name;
-	projVersion = arr.version;
 		
 	var point = arr.floors[0].points;
 	var walls = arr.floors[0].walls;
