@@ -1554,7 +1554,7 @@ function clickButton( event )
 				var point = createPoint( intersects[0].point, 0 );
 				point.position.y = 0;
 				point.userData.point.type = clickO.button; 
-				obj_selected = point;
+				clickO.move = point;
 
 				if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
 			}
@@ -1566,7 +1566,7 @@ function clickButton( event )
 			{
 				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
 				point.position.y = 0;
-				obj_selected = point;				
+				clickO.move = point;				
 			}
 		}
 		if(camera == cameraWall)
@@ -1586,7 +1586,7 @@ function clickButton( event )
 
 function clickInterface(cdm)
 {
-	if(obj_selected)
+	if(clickO.move)
 	{
 		deActiveSelected();
 		mouseDownRight();

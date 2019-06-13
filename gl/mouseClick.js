@@ -1,5 +1,5 @@
 
-var obj_selected = null;
+
 var isMouseDown1 = false;
 var isMouseRight1 = false;
 var isMouseDown2 = false;
@@ -20,7 +20,7 @@ function mouseDownRight()
 	clickO.buttonAct = null;
 	clickO.button = null; 
 	
-	var obj = obj_selected;
+	var obj = clickO.move;
 	
 	if(obj)
 	{
@@ -49,7 +49,7 @@ function mouseDownRight()
 		}			
 	}	
 	
-	obj_selected = null;	
+	clickO.move = null;	
 }
 
 
@@ -90,15 +90,15 @@ function onDocumentMouseDown( event )
 	if ( vk_click == 'right' ) { mouseDownRight( event ); return; } 
 
 
-	if(obj_selected)
+	if(clickO.move)
 	{
-		if(obj_selected.userData.tag == 'point') 
+		if(clickO.move.userData.tag == 'point') 
 		{			
-			if(obj_selected.userData.point.type) { clickCreateWall( obj_selected ); return; }  
+			if(clickO.move.userData.point.type) { clickCreateWall( clickO.move ); return; }  
 		}
-		if(obj_selected.userData.tag == 'wf_point')
+		if(clickO.move.userData.tag == 'wf_point')
 		{
-			if(obj_selected.userData.wf_point.type == 'tool') { clickPointToolsWF( obj_selected ); return; }
+			if(clickO.move.userData.wf_point.type == 'tool') { clickPointToolsWF( clickO.move ); return; }
 		}
 	}
 	 
@@ -213,7 +213,7 @@ function clickRayHit( rayhit )
 
 	if(camera == cameraTop)
 	{  
-		if(clickToolWD(obj_selected)) { console.log(clickO.last_obj); }
+		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
@@ -224,7 +224,7 @@ function clickRayHit( rayhit )
 	}	
 	else if(camera == cameraWall)
 	{
-		if(clickToolWD(obj_selected)) { console.log(clickO.last_obj); }
+		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
 		else if ( tag == 'wall' ) { clickWall_3D( rayhit ); }
 		else if ( tag == 'window' ) { clickWD( rayhit ); }
 		else if ( tag == 'door' ) { clickWD( rayhit ); }
@@ -249,7 +249,7 @@ function onDocumentMouseMove( event )
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
 
-	var obj = obj_selected;
+	var obj = clickO.move;
 	
 	if ( obj ) 
 	{
@@ -284,7 +284,7 @@ function onDocumentMouseUp( event )
 
 	if ( !long_click && camera == camera3D ) { showMenuObjUI_3D( clickO.obj ); }
 	
-	var obj = obj_selected;	
+	var obj = clickO.move;	
 	
 	if(obj)  
 	{
@@ -292,8 +292,8 @@ function onDocumentMouseUp( event )
 		console.log(tag);
 		if(tag == 'point') 
 		{  		
-			var point = obj_selected;
-			if(!obj_selected.userData.point.type) { clickCreateWall(obj_selected); }			
+			var point = clickO.move;
+			if(!clickO.move.userData.point.type) { clickCreateWall(clickO.move); }			
 			clickPointMouseUp(point);
 		}
 		else if(tag == 'wall') { clickWallMouseUp(obj); }
@@ -305,7 +305,7 @@ function onDocumentMouseUp( event )
 		else if (tag == 'point') 
 		{
 			if(obj.userData.point.type) {  } 
-			else { obj_selected = null; }
+			else { clickO.move = null; }
 		}
 		else if (tag == 'wf_point') 
 		{
@@ -313,9 +313,9 @@ function onDocumentMouseUp( event )
 			{ 
 				upLineWF(obj);
 			}
-			else { obj_selected = null; }			
+			else { clickO.move = null; }			
 		}		
-		else { obj_selected = null; }		
+		else { clickO.move = null; }		
 	}
 
 

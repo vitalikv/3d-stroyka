@@ -7,7 +7,7 @@ function clickWD( intersect )
 {	
 	var obj = intersect.object;
 
-	obj_selected = obj;
+	clickO.move = obj;
 	
 	var pos = intersect.point;
 	

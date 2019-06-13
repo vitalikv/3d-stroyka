@@ -69,7 +69,7 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3(), x : 0, y : 0 };
 	obj.userData.door.topMenu = true;
 	
-	obj_selected = obj; 
+	clickO.move = obj; 
 	clickO.last_obj = obj;
 	
 	scene.add( obj );  
@@ -166,7 +166,7 @@ function addWD( cdm )
  	
 	clickO.obj = null;
 	clickO.last_obj = null;
-	obj_selected = null;
+	clickO.move = null;
 	
 	//clickRayHit( detectRayHit( event, 'click' ) ); 
 	

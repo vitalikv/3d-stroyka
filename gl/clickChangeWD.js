@@ -358,7 +358,7 @@ function showRulerWD_3D(wd)
 // кликнули на контроллер
 function clickToggleChangeWin( intersect, cdm )
 {
-	obj_selected = intersect.object; 
+	clickO.move = intersect.object; 
 	var controll = intersect.object;	
 	var wd = controll.userData.controll.obj;
 	var wall = wd.userData.door.wall;

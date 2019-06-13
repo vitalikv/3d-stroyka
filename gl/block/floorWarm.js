@@ -34,13 +34,13 @@ function createPointWF(cdm)
 // кликнули на точку
 function clickWFPoint(intersect)
 {
-	if(obj_selected)
+	if(clickO.move)
 	{
-		if(obj_selected.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
+		if(clickO.move.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
 	}		
 	
 	var obj = intersect.object;	
-	obj_selected = obj;	
+	clickO.move = obj;	
 	
 	offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );
@@ -60,7 +60,7 @@ function moveWFPoint(event, obj)
 	{ 
 		obj.position.copy(intersects[0].point); 
 
-		dragToolWFPoint({obj : obj_selected});
+		dragToolWFPoint({obj : clickO.move});
 	}
 	else
 	{
@@ -235,7 +235,7 @@ function upLineWF(point)
 	
 	line.userData.wf_line.point.push(point_2);
 
-	obj_selected = point_2;
+	clickO.move = point_2;
 }
 
 
@@ -254,7 +254,7 @@ function clickPointToolsWF(obj)
 	if(tag == 'wf_line') 
 	{		
 		obj.userData.wf_point.type = '';
-		obj_selected = null;	
+		clickO.move = null;	
 		
 		var p = obj.userData.wf_point.cross.point;
 		var arrP = cross.userData.wf_line.point;  

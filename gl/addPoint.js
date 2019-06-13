@@ -138,7 +138,7 @@ function addPointCenterWall()
 // добавляем точку на стену (разбиваем стену)
 function addPoint_1( wall, point )
 {	 
-	obj_selected = null;					
+	clickO.move = null;					
 	lineAxis_1.visible = false;
 	lineAxis_2.visible = false;																
 	  
@@ -325,7 +325,7 @@ function addPoint_4( point )
 		var wall = createOneWall3( point, point.userData.point.cross, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} ); 		 
 		point.userData.point.type = 'continue_create_wall';
 		point.userData.point.cross.userData.point.last.cdm = 'new_wall_from_point';
-		obj_selected = point;
+		clickO.move = point;
 		clickMovePoint_BSP( point.userData.point.cross.w );	
 		console.log('1. кликнули на точку, создаем новую стену из этой точки');
 	}
@@ -345,7 +345,7 @@ function addPoint_4( point )
 			point.userData.point.type = null; 			
 			var point2 = createPoint( point.position, 0 );			
 			var wall = createOneWall3( point, point2, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} ); 			
-			obj_selected = point2;
+			clickO.move = point2;
 			upLabelPlan_1( point.p[0].w );			
 			point2.userData.point.type = 'continue_create_wall'; 
 
@@ -358,10 +358,10 @@ function addPoint_4( point )
 		} 
 		else if(point.userData.point.cross.userData.tag == 'point')		// 3
 		{			
-			if(point.userData.point.cross.userData.point.last.cdm == 'new_point_1' && obj_selected.userData.point.cross == point || point.userData.point.cross == point.p[0])
+			if(point.userData.point.cross.userData.point.last.cdm == 'new_point_1' && clickO.move.userData.point.cross == point || point.userData.point.cross == point.p[0])
 			{ 
 				deleteWall_2(point.w[0]);
-				obj_selected = null;
+				clickO.move = null;
 				clickO = resetPop.clickO();
 			}						
 			else
@@ -446,7 +446,7 @@ function addPointOption_4(point)
 	
 	if(point.w.length > 0) { createWallZone(point.w[0]); }
 	
-	obj_selected = null;
+	clickO.move = null;
 }
 
 
@@ -490,7 +490,7 @@ function addPoint_5( wall, point )
 		
 		point.userData.point.type = null; 		
 		
-		obj_selected = null; 		
+		clickO.move = null; 		
 	}
 	else if(point.userData.point.type == 'create_wall')		// 3
 	{	
@@ -521,7 +521,7 @@ function addPoint_5( wall, point )
 		
 		clickMovePoint_BSP( point1.w );
 
-		obj_selected = point2;
+		clickO.move = point2;
 		point2.userData.point.type = 'continue_create_wall'; 				 
 	}
 	else if(!point.userData.point.type)		// 4
@@ -565,7 +565,7 @@ function addPoint_5( wall, point )
 			} 
 		};		  	  
 		
-		obj_selected = null;
+		clickO.move = null;
 	}
 
 	param_wall.wallR = point.w;
@@ -586,7 +586,7 @@ function addPoint_6( point1 )
 	
 	var wall = createOneWall3( point1, point2, (clickO.buttonAct == 'create_zone') ? 0.01 : width_wall, {} );		
 	
-	obj_selected = point2; 
+	clickO.move = point2; 
 	
 	param_wall.wallR = [wall];
 }

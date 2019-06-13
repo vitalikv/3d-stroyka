@@ -20,7 +20,7 @@ function clickWall_2D( intersect )
 			}		
 		} 
 	}
-	obj_selected = obj;
+	clickO.move = obj;
 	
 	offset = new THREE.Vector3().subVectors( obj.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );	
@@ -173,7 +173,7 @@ function changeWallLimit(point, pos2, qt, dir2)
 	
 	for ( var i = 0; i < point.p.length; i++ )
 	{
-		if(point.w[i] == obj_selected){ continue; }
+		if(point.w[i] == clickO.move){ continue; }
 		
 		var v = point.w[i].userData.wall.v;
 		

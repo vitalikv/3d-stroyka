@@ -6,13 +6,13 @@ function activeHover2D( event )
 	if ( camera != cameraTop ) { return; }
 	if ( isMouseDown1 ) { return; }
 
-	if ( obj_selected ) 
+	if ( clickO.move ) 
 	{
-		var tag = obj_selected.userData.tag;
+		var tag = clickO.move.userData.tag;
 		
 		if (tag == 'free_dw') { return; }
-		if (tag == 'point') { if (obj_selected.userData.point.type) return; }
-		if (tag == 'wf_point') { if (obj_selected.userData.wf_point.type == 'tool') return; }
+		if (tag == 'point') { if (clickO.move.userData.point.type) return; }
+		if (tag == 'wf_point') { if (clickO.move.userData.wf_point.type == 'tool') return; }
 	}
 
 
@@ -28,7 +28,7 @@ function activeHover2D( event )
 		if(tag == 'wall') { if(object.userData.parent) { object = object.userData.parent; } }			
 
 		if ( clickO.last_obj == object ) { activeHover2D_2(); return; }	// объект активирован (крансый цвет), поэтому не подсвечиваем
-		if ( clickO.hover_obj == object ) { return; }				// объект уже подсвечен
+		if ( clickO.hover == object ) { return; }				// объект уже подсвечен
 
 		if ( tag == 'window' ) { object.material.color = colorHover; }
 		else if ( tag == 'door' ) { object.material.color = colorHover; }
@@ -39,7 +39,7 @@ function activeHover2D( event )
 		
 		activeHover2D_2();
 
-		clickO.hover_obj = object;
+		clickO.hover = object;
 	}
 	else
 	{
@@ -52,9 +52,9 @@ function activeHover2D( event )
 // возращаем стандартный цвет
 function activeHover2D_2()
 {
-	if ( !clickO.hover_obj ) { return; }
+	if ( !clickO.hover ) { return; }
 
-	var object = clickO.hover_obj;
+	var object = clickO.hover;
 	var tag = object.userData.tag;  	
 	
 	if ( tag == 'window' ) { var color = new THREE.Color(colWin); } 
@@ -69,7 +69,7 @@ function activeHover2D_2()
 	else if ( tag == 'obj' ) { /*object.material.color = color;*/ } 
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = color; }
 	else if ( tag == 'door' ) { object.material.color = color; }
-	clickO.hover_obj = null;
+	clickO.hover = null;
 }
 
 
@@ -89,7 +89,7 @@ function objActiveColor_2D(obj)
 	else if(tag == 'wall'){ if(obj.userData.parent) { obj = obj.userData.parent; } obj.material[3].color = actColorWin; } 	
 	else if(tag == 'door'){ obj.material.color = actColorWin; }		
 	
-	if(clickO.hover_obj == obj) { clickO.hover_obj = null; }
+	if(clickO.hover == obj) { clickO.hover = null; }
 }
  
 
@@ -116,7 +116,7 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
 
 	
-	if(clickO.hover_obj == clickO.last_obj) { clickO.hover_obj = null; }
+	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 	//clickO.obj = null;
 } 
 

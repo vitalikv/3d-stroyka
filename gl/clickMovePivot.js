@@ -55,7 +55,7 @@ function createPivot()
 // кликнули на pivot
 function clickPivot( intersect )
 {
-	obj_selected = intersect.object;  
+	clickO.move = intersect.object;  
 	
 	param_obj.off = [];
 	//var pos = intersect.object.matrixWorld.getPosition();

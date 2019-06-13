@@ -8,13 +8,13 @@ var zoom_binding = 1;
 
 function clickPoint( intersect )
 {
-	if(obj_selected)
+	if(clickO.move)
 	{
-		if(obj_selected.userData.tag == 'free_dw') { return; }	// кликнули на точку, когда добавляем окно
+		if(clickO.move.userData.tag == 'free_dw') { return; }	// кликнули на точку, когда добавляем окно
 	}	 
 	
 	var obj = intersect.object;	
-	obj_selected = obj;
+	clickO.move = obj;
 	
 
 	offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
@@ -22,7 +22,7 @@ function clickPoint( intersect )
 	planeMath.rotation.set(-Math.PI/2, 0, 0);	
 
 	param_win.click = true;	
-	param_wall.wallR = detectChangeArrWall([], obj_selected);
+	param_wall.wallR = detectChangeArrWall([], clickO.move);
 
 	// запоминаем последнее положение точки и дверей/окон
 	if(1==1)
@@ -48,15 +48,15 @@ function getWallArrOUR()
 {
 	var arr = [];
 	
-	for ( var i = 0; i < obj_selected.w.length; i++ )
+	for ( var i = 0; i < clickO.move.w.length; i++ )
 	{
-		arr[i] = { id : obj_selected.w[i].userData.id, arrO : [] };
+		arr[i] = { id : clickO.move.w[i].userData.id, arrO : [] };
 		
-		for ( var i2 = 0; i2 < obj_selected.w[i].userData.wall.arrO.length; i2++ )
+		for ( var i2 = 0; i2 < clickO.move.w[i].userData.wall.arrO.length; i2++ )
 		{
 			arr[i].arrO[i2] = { pos : '', rot : '' };
-			arr[i].arrO[i2].pos = obj_selected.w[i].userData.wall.arrO[i2].position.clone();
-			arr[i].arrO[i2].rot = obj_selected.w[i].userData.wall.arrO[i2].rotation.clone();			 
+			arr[i].arrO[i2].pos = clickO.move.w[i].userData.wall.arrO[i2].position.clone();
+			arr[i].arrO[i2].rot = clickO.move.w[i].userData.wall.arrO[i2].rotation.clone();			 
 		}
 	}
 
