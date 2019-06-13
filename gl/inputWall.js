@@ -29,8 +29,6 @@ function inputChangeWall_1(cdm)
 	//if(!clickO.obj){ return; } 
 	//if(clickO.obj.userData.tag != 'wall'){ return; } 	
 	//var wall = clickO.obj; 
-
-	getInfoEvent21( wall, 'down' );		// redo
 	 
 	cdm.wall = wall;
 	cdm.type = 'wallRedBlue';
@@ -90,8 +88,6 @@ function inputChangeWall_1(cdm)
 	for(var i = 0; i < wall.userData.wall.arrO.length; i++) { cutMeshBlockBSP( wall.userData.wall.arrO[i] ); }	// вырезаем wd в кирпичах 
 	
 	renderCamera();
-	
-	getInfoEvent21( wall, 'up' );		// redo
 }
 
 

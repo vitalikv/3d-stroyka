@@ -1,5 +1,77 @@
 
 
+// при наведение мыши над объектом (без клика) меняем цвет
+function activeHover2D( event )
+{
+	if ( camera != cameraTop ) { return; }
+	if ( isMouseDown1 ) { return; }
+
+	if ( obj_selected ) 
+	{
+		var tag = obj_selected.userData.tag;
+		
+		if (tag == 'free_dw') { return; }
+		if (tag == 'point') { if (obj_selected.userData.point.type) return; }
+		if (tag == 'wf_point') { if (obj_selected.userData.wf_point.type == 'tool') return; }
+	}
+
+
+
+	var rayhit = detectRayHit( event, 'activeHover' );
+
+	if ( rayhit ) 
+	{
+		// выделяем объект
+		var object = rayhit.object;
+		var tag = object.userData.tag; 		
+		
+		if(tag == 'wall') { if(object.userData.parent) { object = object.userData.parent; } }			
+
+		if ( clickO.last_obj == object ) { activeHover2D_2(); return; }	// объект активирован (крансый цвет), поэтому не подсвечиваем
+		if ( clickO.hover_obj == object ) { return; }				// объект уже подсвечен
+
+		if ( tag == 'window' ) { object.material.color = colorHover; }
+		else if ( tag == 'door' ) { object.material.color = colorHover; }
+		else if ( tag == 'point' ) { object.material.color = colorHover; }
+		else if ( tag == 'wf_point' ) { object.material.color = colorHover; }
+		else if ( tag == 'wall' ) { object.material[ 3 ].color = colorHover;  }		
+		else if ( tag == 'controll_wd' ) { if(clickO.last_obj == object.obj) { activeHover2D_2(); return; } }
+		
+		activeHover2D_2();
+
+		clickO.hover_obj = object;
+	}
+	else
+	{
+		activeHover2D_2();
+	}
+}
+
+
+
+// возращаем стандартный цвет
+function activeHover2D_2()
+{
+	if ( !clickO.hover_obj ) { return; }
+
+	var object = clickO.hover_obj;
+	var tag = object.userData.tag;  	
+	
+	if ( tag == 'window' ) { var color = new THREE.Color(colWin); } 
+	else if ( tag == 'door' ) { var color = new THREE.Color(colDoor); }	
+	else if ( tag == 'wall' ) { var color = object.userData.material[ 3 ].color; }
+	else if ( tag == 'wf_point' ) { var color = object.userData.wf_point.color; }
+	else if ( tag == 'point' ) { var color = object.userData.point.color; }
+	
+	if ( tag == 'window' ) { object.material.color = color; }
+	else if ( tag == 'point' ) { object.material.color = color; }
+	else if ( tag == 'wf_point' ) { object.material.color = color; }
+	else if ( tag == 'obj' ) { /*object.material.color = color;*/ } 
+	else if ( tag == 'wall' ) { object.material[ 3 ].color = color; }
+	else if ( tag == 'door' ) { object.material.color = color; }
+	clickO.hover_obj = null;
+}
+
 
 
 // выделяем/активируем объект
@@ -36,7 +108,6 @@ function objDeActiveColor_2D()
 		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.obj == o) { return; } }      		
 	}
 	
-	
 	if(o.userData.tag == 'wall'){ if(o.userData.parent) { o = o.userData.parent; } o.material[3].color = o.userData.material[3].color; }	
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
@@ -48,24 +119,6 @@ function objDeActiveColor_2D()
 	if(clickO.hover_obj == clickO.last_obj) { clickO.hover_obj = null; }
 	//clickO.obj = null;
 } 
-
-
-
-// делаем активный/неактивный цвет точек для этой стены
-function actColorLine( wall, cdm )
-{
-	var p = wall.userData.wall.p;
-	if(cdm == 'act') { var color_1 = new THREE.Color(0xff5d71); var color_2 = new THREE.Color(0x6476FC); var n = 1; }
-	else if(cdm == 'out') { var color_1 = p[0].userData.point.color; var color_2 = p[0].userData.point.color; var n = 0.6; }
-	
-	p[0].material.color = color_1;
-	p[1].material.color = color_2;
-	p[0].material.opacity = n;
-	p[1].material.opacity = n;	
-}
-
-
-
 
 
 
@@ -82,115 +135,12 @@ function clickWall_3D( intersect )
 	if(index == 1 || index == 2) { } 
 	else { return; }
 	
-	var object = intersect.object;
-	
-	//object.material[index].color = new THREE.Color( 0xf7c6c6 );	
+	var object = intersect.object;	
 	
 	clickO.obj = object;
 	clickO.index = index;  	
-	
-	//object.userData.wall.outline = clickWallOutline(object, index); 
 }
 
-
-// кликнули на пол в 3D режиме
-function clickFloor_3D( object )
-{		
-	object.userData.room.outline = clickFloorOutline(object);
-
-	clickO.obj = object;
-}
-
-
-
-// кликнули на потолок в 3D режиме
-function clickCeiling_3D( object )
-{		
-	object.userData.ceil.outline = clickFloorOutline(object);
-
-	clickO.obj = object;
-}
-
-
-// обновляем значения текстур в меню (стена/пол/потолок) (смещение/поворот)
-function menuSettingTexture( cdm )
-{
-	var obj = cdm.obj;
-	
-	if(!obj) return;	
-	if(obj.userData.tag == 'wall' || obj.userData.tag == 'room' || obj.userData.tag == 'ceiling'){}
-	else { return; }
-	
-	var rot = 0;
-	var offset = new THREE.Vector2();
-	
-	var map = (obj.userData.tag == 'wall') ? obj.material[cdm.index].map : obj.material.map;
-	
-	if(map)
-	{
-		rot = Math.round(THREE.Math.radToDeg(map.rotation)); 
-		offset = new THREE.Vector2( Math.round(map.offset.x * 10)/10, Math.round(map.offset.y * 10)/10 );  
-	}
-	
-	var str = (obj.userData.tag == 'wall') ? 'wall' : 'floor';
-	UI(str+'_texture_rotation').val(rot);
-	UI(str+'_texture_offset_x').val(offset.x);
-	UI(str+'_texture_offset_y').val(offset.y);	 	
-}
-
-
-
-// кликнули на объект (cameraWall)
-function objActiveColor_Wall(obj) 
-{
-	if(!obj) { return; }	
-
-	var index = clickO.index;	
-	
-	if(obj.userData.tag == 'wall') { UI.showToolbar('camera-wall-toolbar'); }
-	else if(obj.userData.tag == 'window') { showTableWD(obj); }
-	else if(obj.userData.tag == 'door') { showTableWD(obj); }
-	else if(obj.userData.tag == 'controll_wd') { obj = obj.userData.controll.obj; }
-	
-	clickO.last_obj = obj;		
-	clickO.obj = null;
-}
-
-
-// возращаем стандартный цвет объекта (cameraWall)
-function objDeActiveColor_Wall(obj)
-{  
-	if(!obj) return;
-	if(clickO.last_obj == clickO.obj) return;
-	
-	
-	if(clickO.obj)
-	{
-		if(clickO.obj.userData.tag == 'controll_wd')
-		{ 			
-			if(clickO.obj.userData.controll.obj == clickO.last_obj) { return; } 
-		} 
-	}	
-	
-	if(obj.userData.tag == 'wall') 
-	{ 
-		UI.hideToolbar( 'camera-wall-toolbar' );
-		scene.remove(obj.userData.wall.outline); 
-		obj.userData.wall.outline = null; 
-	}
-	else if(obj.userData.tag == 'window') 
-	{ 
-		UI.hideToolbar( 'window-toolbar' );
-		hideSizeWD( obj ); 
-	} 
-	else if(obj.userData.tag == 'door') 
-	{ 
-		UI.hideToolbar( 'door-2d-toolbar' );
-		hideSizeWD( obj ); 
-	}
-	
-	clickO.last_obj = null;
-}
 
 
 

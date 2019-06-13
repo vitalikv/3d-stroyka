@@ -48,7 +48,6 @@
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
     <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>changeTexture.js?<?=$vrs?>"></script>
 
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>
@@ -57,7 +56,6 @@
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activeHover2D.js?<?=$vrs?>"></script>
     
-    <script src="<?=$path?>undoRedo.js?<?=$vrs?>"></script>
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
 		
 	

@@ -49,9 +49,6 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	ceiling[n].userData.ceil.plinth = {o : plinth[1].o, lotid : plinth[1].lotid, v : [], mat : null, obj : [], preview : '', caption : '', param : null, catalog : null };
 	ceiling[n].visible = false;
 
-
-	// загружаем материал (пол, потолок)
-	//setMaterialFloorCeiling(n, material)
 	
 	if(infProject.settings.floor.material)
 	{	
@@ -69,10 +66,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 		
 		getYardageSpace( [room[n]] ); 
 		scene.add( room[n] ); 
-		scene.add( ceiling[n] );
-
-		if(plinth[0].o) { loadPopObj_1({ obj: room[n], lotid : plinth[0].lotid }); } 
-		//if(plinth[1].o) { loadPopObj_1({ obj: ceiling[n], lotid : plinth[0].lotid}); }		
+		scene.add( ceiling[n] );		
 	}
 
 
@@ -92,28 +86,6 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 
 
 
-// загружаем материал (пол, потолок)
-function setMaterialFloorCeiling(n, material)
-{
-	for ( var i = 0; i < material.length; i++ )
-	{
-		var obj = null;
-		if(material[i].containerID == 'floor') { obj = room[n]; }
-		else if(material[i].containerID == 'ceil') { obj = ceiling[n]; }
-		else { continue; }
-
-		var color = { r : 100, g : 100, b : 100 };  
-		if(material[i].color) { color = material[i].color; }			
-		
-		var inf = { obj: obj, lotid: material[i].lotid, start: 'load', color : color };
-		
-		if(material[i].scale) { inf.scale = material[i].scale; }		
-		if(material[i].offset) { inf.offset = material[i].offset; }
-		if(material[i].rotation) { inf.rotation = material[i].rotation; }
-		
-		loadPopObj_1(inf);
-	}	
-}
 
 
 // добавляем к точкам параметр зона и предыдущая точка
@@ -210,153 +182,5 @@ function findNumberInArrRoom(arr)
 }
 
 
-
-// показываем меню room
-function showTableFloorUI()
-{		
-	var room = clickO.obj;
-	UI('room-type').val(room.userData.room.roomType);
-	UI.showToolbar('floor-2d-toolbar');
-}
-
-
-// меняем зоны в меню 
-function clickTableZoneUI(value)
-{ 
-	var room = clickO.obj;
-	
-	upLabelArea2(room.label, room.userData.room.areaTxt + ' м2', '85', 'rgba(255,255,255,1)', true);
-	
-	room.userData.room.roomType = value;
-}
-
-
-
-// кликнули на пол (создаем outline)
-function clickFloorOutline(obj) 
-{	
-	if(obj.userData.tag == 'room' || obj.userData.tag == 'ceiling') {}
-	else { return; }
-	
-	if(obj.userData.tag == 'ceiling') 
-	{
-		for (i = 0; i < ceiling.length; i++)
-		{
-			if(ceiling[i] == obj) { var floor = room[i];  break; }
-		}
-	}
-	else if(obj.userData.tag == 'room') 
-	{
-		var floor = obj;
-	}
-	
-	
-	var outline = new THREE.Group();
-	
-	for (i = 0; i < floor.w.length; i++)
-	{
-		var wall = floor.w[i];
-		
-		wall.updateMatrixWorld();
-			
-		var v = wall.userData.wall.v;
-		
-		if(floor.s[i] == 0)
-		{			
-			var x = v[10].x - v[4].x;
-			var p1 = wall.localToWorld( v[4].clone() );
-			var p2 = wall.localToWorld( v[10].clone() );
-		}
-		else 
-		{
-			var x = v[6].x - v[0].x;
-			var p1 = wall.localToWorld( v[0].clone() );
-			var p2 = wall.localToWorld( v[6].clone() );			
-		}	
-		
-		var geometry = createGeometryLine(x, 0.02, 0.02); 
-		var line = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial({ color: 'rgb(17, 255, 0)', depthTest: false }) );
-		line.renderOrder = 2;
-		
-		line.position.set( p1.x, 0, p1.z );
-		
-		var dir = new THREE.Vector3().subVectors( p1, p2 ).normalize();
-		var angleDeg = Math.atan2(dir.x, dir.z);
-		line.rotation.set(0, angleDeg + Math.PI / 2, 0);	
-
-		outline.add( line );
-	}
-	
-	outline.position.y = obj.position.y;
-	
-	scene.add( outline );
-	
-	return outline;
-}
- 
-
-
-function createGeometryLine(x, y, z)
-{
-	var geometry = new THREE.Geometry();
-	
-	var h1 = 0;
-	
-	var z1 = z;
-	var z2 = z;
-	
-		
-	var vertices = [
-				new THREE.Vector3(0,h1,z1),
-				new THREE.Vector3(0,y,z1),
-				new THREE.Vector3(0,h1,0),
-				new THREE.Vector3(0,y,0),
-				new THREE.Vector3(0,h1,z2),
-				new THREE.Vector3(0,y,z2),								
-								
-				new THREE.Vector3(x,h1,z1),
-				new THREE.Vector3(x,y,z1),
-				new THREE.Vector3(x,h1,0),
-				new THREE.Vector3(x,y,0),
-				new THREE.Vector3(x,h1,z2),
-				new THREE.Vector3(x,y,z2),						
-			];	
-			
-	var faces = [
-				new THREE.Face3(0,6,7),
-				new THREE.Face3(7,1,0),
-				new THREE.Face3(4,5,11),
-				new THREE.Face3(11,10,4),				
-				new THREE.Face3(1,7,9),
-				new THREE.Face3(9,3,1),					
-				new THREE.Face3(9,11,5),
-				new THREE.Face3(5,3,9),				
-				new THREE.Face3(6,8,9),
-				new THREE.Face3(9,7,6),				
-				new THREE.Face3(8,10,11),
-				new THREE.Face3(11,9,8),
-				
-				new THREE.Face3(0,1,3),
-				new THREE.Face3(3,2,0),	
-
-				new THREE.Face3(2,3,5),
-				new THREE.Face3(5,4,2),	
-
-				new THREE.Face3(0,2,8),
-				new THREE.Face3(8,6,0),
-
-				new THREE.Face3(2,4,10),
-				new THREE.Face3(10,8,2),					
-			];
-
-			
-	geometry.vertices = vertices;
-	geometry.faces = faces;
-	geometry.computeFaceNormals();	
-	geometry.uvsNeedUpdate = true;		
-	
-	
-	return geometry;
-}
 
 

@@ -335,13 +335,9 @@ function addPoint_4( point )
 		{	
 			if(crossLineOnLine_1(point)) return; 	// произошло пересечение с другой стеной
 			
-			//getInfoEvent10( { point : point, wall : point.w[0] } );	// undo/redo
-			
 			var inf = infProject.settings.calc.fundament;
 			if(inf == 'lent' || inf == 'svai')  
-			{
-				console.log(3333, point.w[0].userData.wall.zone);
-				
+			{				
 				if(!point.w[0].userData.wall.zone) { createWallZone(point.w[0]); }
 			}
 			
@@ -420,15 +416,11 @@ function addPointOption_4(point)
 		console.log('4. замыкание старой точки с другой точкой'); 		
 		
 		if(wall.userData.wall.p[0] == point1) { var p1 = [point1, point2]; var p2 = [point, point2]; }
-		else { var p1 = [point2, point1]; var p2 = [point2, point]; }		
-		
-		// undo/redo
-		//getInfoEvent11({ point : point1, wall : wall, newPoint : p1, oldPoint : p2 });						 
+		else { var p1 = [point2, point1]; var p2 = [point2, point]; }							 
 	} 
 	else if(point.userData.point.cross.userData.tag == 'point') 
 	{ 
 		console.log('3. заканчиваем создание новой стены на точке (от точки к точке)'); 
-		//getInfoEvent10( { point : point1, wall : wall, mess : 'zone' } );	// undo/redo
 	}	
 	
 	var arrW = [];
@@ -472,7 +464,6 @@ function addPoint_5( wall, point )
 	if(point.userData.point.type == 'add_point')			// 1 
 	{    
 		addPoint_1( wall, point ); 
-		getInfoEvent8( wall.userData.id, point );
 		console.log('создали точку');
 	}
 	else if(point.userData.point.type == 'continue_create_wall')			// 2
@@ -498,8 +489,6 @@ function addPoint_5( wall, point )
 		};			
 		
 		point.userData.point.type = null; 		
-		
-		getInfoEvent10( { point : point, wall : point.w[0] } );	// undo/redo 
 		
 		obj_selected = null; 		
 	}
@@ -574,11 +563,7 @@ function addPoint_5( wall, point )
 					{ id : arrW[1].userData.id, p2 : { id : arrW[1].userData.wall.p[1].userData.id }  } 
 				] 
 			} 
-		};		 
-				
-		
-		// undo/redo
-		getInfoEvent12({ wall : selectWall, point : point, oldWall : wall, newWall : arrW });	 	  
+		};		  	  
 		
 		obj_selected = null;
 	}
