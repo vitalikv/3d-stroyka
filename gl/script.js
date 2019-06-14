@@ -204,8 +204,6 @@ var geometryLabelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
-var nameRoomDef = 'Гостиная';
-
 
 var lineAxis_1 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
 var lineAxis_2 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
@@ -991,7 +989,7 @@ function createForm(cdm)
 	
 	
 	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
-	if(obj_line.length > 0) detectRoomZone(nameRoomDef);
+	if(obj_line.length > 0) detectRoomZone();
 	if(obj_line.length > 0) upLabelPlan_1(obj_line);
 	if(obj_line.length > 0) createWallZone(obj_line[0])
 	

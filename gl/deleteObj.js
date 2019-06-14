@@ -51,7 +51,7 @@ function deleteWall_1( wall )
 		var n = 0;
 		for ( var i = 0; i < oldZ.length; i++ ) { if(oldZ[i].floor.userData.room.areaTxt > area) { n = i; } }
 		
-		newZones = detectRoomZone(nameRoomDef);
+		newZones = detectRoomZone();
 
 		if(newZones.length > 0) { assignOldToNewZones_2([newZones[0]], oldZ[n], false); } // если есть новая зона после удаления стены		
 	}
@@ -123,17 +123,24 @@ function deleteWall_2(wall)
 
 
 // удаляем разделяемую стену и окна/двери, которые принадлежат ей (без удаления зон)
-function deleteWall_3(wall)
+function deleteWall_3(wall, cdm)
 {
+	if(!cdm) { cdm = {}; }
+	if(!cdm.dw) { cdm.dw = ''; }
+	
 	objDeActiveColor_2D();
 	
-	var arr = wall.userData.wall.arrO;
-
-	for(var i = 0; i < arr.length; i++)
+	if(cdm.dw == 'no delete') {}
+	else
 	{
-		if(arr[i].userData.tag == 'window') { deleteValueFromArrya({arr : infProject.scene.array.window, o : arr[i]}); }
-		if(arr[i].userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : arr[i]}); }
-		scene.remove( arr[i] );
+		var arr = wall.userData.wall.arrO;
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(arr[i].userData.tag == 'window') { deleteValueFromArrya({arr : infProject.scene.array.window, o : arr[i]}); }
+			if(arr[i].userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : arr[i]}); }
+			scene.remove( arr[i] );
+		}		
 	}
 
 	var p0 = wall.userData.wall.p[0];
@@ -259,14 +266,14 @@ function deletePoint( point )
 	
 	upLabelPlan_1( arrW );	
 	
-	var newZones = detectRoomZone(nameRoomDef);		// создаем пол, для новых помещений	
+	var newZones = detectRoomZone();		// создаем пол, для новых помещений	
 	assignOldToNewZones_1(oldZ, newZones, 'delete');		// передаем параметры старых зон новым	(название зоны)			
 	
 	
 	// вставляем окна/двери (если стены параллельны)
 	if(comparePos(dir1, dir2)) 
 	{
-		for ( var i = 0; i < arrO.length; i++ ) { arrO[i].wall = wall; loadPopObj_1(arrO[i]); } 
+		for ( var i = 0; i < arrO.length; i++ ) { arrO[i].wall = wall; } 
 	}
 	
 	// накладываем материал

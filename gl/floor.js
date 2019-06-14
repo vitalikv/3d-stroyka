@@ -1,8 +1,14 @@
 
 
 
-function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
+function createFloor(cdm)
 {	
+	var arrP = cdm.point;
+	var arrW = cdm.wall;
+	var arrS = cdm.side;
+	var id = (cdm.id) ? cdm.id : null;
+	var material = (cdm.material) ? cdm.material : null;
+	
 	var point_room = [];
 	for ( var i = 0; i < arrP.length - 1; i++ ) 
 	{  
@@ -16,7 +22,7 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	var geometry = new THREE.ShapeGeometry( shape );
 	
 	var n = room.length;	
-	//room[n] = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color : 0xe3e3e5, side : THREE.BackSide } ) );	
+	
 	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ), new THREE.MeshLambertMaterial( { color : 0xe3e3e5, lightMap : lightMap_1 } ) ); 
 	
 	room[n].position.set( 0, infProject.settings.floor.posY, 0 );
@@ -24,29 +30,22 @@ function createFloor(arrP, arrW, arrS, id, roomType, material, plinth)
 	room[n].p = arrP;
 	room[n].w = arrW; 
 	room[n].s = arrS;	
-	room[n].pr_preview = '';
-	room[n].pr_catalog = '';
 	
 	
-	if(id == 0) { id = countId; countId++; }  
+	if(!id) { id = countId; countId++; }  
 
 	room[n].userData.tag = 'room';
-	room[n].userData.id = (id == 0) ? countId : countId++;
-	room[n].userData.room = { roomType : roomType, areaTxt : 0, p : arrP, w : arrW, s : arrS, preview : '', caption : '', outline : null };
+	room[n].userData.id = id;
+	room[n].userData.room = { areaTxt : 0, p : arrP, w : arrW, s : arrS, outline : null };
 	room[n].userData.room.height = infProject.settings.floor.height;
-	room[n].userData.material = { lotid : 4956, containerID : null, caption : '', color : room[n].material.color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : null };
-	room[n].userData.room.plinth = {o : plinth[0].o, lotid : plinth[0].lotid, v : [], mat : null, obj : [], preview : '', caption : '', param : null, catalog : null };		
-	
+	room[n].userData.material = room[n].material.clone();		
 	
 	ceiling[n] = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color : 0xffffff, lightMap : lightMap_1 } ) );			
 	ceiling[n].position.set( 0, arrP[0].position.y + infProject.settings.floor.height, 0 );
-	ceiling[n].rotation.set( Math.PI / 2, 0, 0 );	
-	
+	ceiling[n].rotation.set( Math.PI / 2, 0, 0 );		
 	ceiling[n].userData.tag = 'ceiling';
-	ceiling[n].userData.id = (id == 0) ? countId : countId++;
-	ceiling[n].userData.ceil = { preview : '', caption : '' };
-	ceiling[n].userData.material = { lotid : 4957, containerID : null, caption : '', color : ceiling[n].material.color, scale : new THREE.Vector2(1,1), filters : 1039, preview : '', catalog : null };
-	ceiling[n].userData.ceil.plinth = {o : plinth[1].o, lotid : plinth[1].lotid, v : [], mat : null, obj : [], preview : '', caption : '', param : null, catalog : null };
+	ceiling[n].userData.id = id;
+	ceiling[n].userData.material = ceiling[n].material.clone();
 	ceiling[n].visible = false;
 
 	

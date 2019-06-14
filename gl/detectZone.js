@@ -3,7 +3,7 @@
 
 
 // создаем пол 
-function detectRoomZone(roomType)
+function detectRoomZone()
 {		
 	var arrRoom = [];
 	
@@ -24,14 +24,11 @@ function detectRoomZone(roomType)
 			if(p.length > 5){ if(p[1] == p[p.length - 2]) continue; }
 			if(checkClockWise(p) <= 0){ continue; }		//var txt = ''; for ( var i3 = 0; i3 < p.length; i3++ ) { txt += ' | ' + p[i3].userData.id; } console.log(txt);						
 			if(detectSameZone( obj_point[i].zone, p )){ continue; }
-			
-					
+								
 			 
-			var arr = compileArrPointRoom_1(p);			
+			var arr = compileArrPointRoom_1(p);						
 			
-			//var mat = [ { lotid : 10119, containerID : '', color : [], scale : new THREE.Vector2(1,1) } ];
-			
-			arrRoom[arrRoom.length] = createFloor(p, arr[0], arr[1], 0, roomType, [], [ {o : false}, {o : false} ]);			
+			arrRoom[arrRoom.length] = createFloor({point : p, wall : arr[0], side : arr[1]});			
 			break; 
 		}
 	}
@@ -359,23 +356,13 @@ function deleteArrZone(arrRoom)
 			material : room[arrN[i]].material, 
 			userData : room[arrN[i]].userData, 
 			area : Number(room[arrN[i]].userData.room.areaTxt), 
-			plinth : room[arrN[i]].userData.room.plinth 
 		}; 
 		
 		var floor = room[arrN[i]];    			
 		room.splice(arrN[i], 1); 
 		
 		var ceil = ceiling[arrN[i]];
-		ceiling.splice(arrN[i], 1);
-		
-		if(floor.userData.room.plinth.o)
-		{
-			for ( var i2 = 0; i2 < floor.userData.room.plinth.obj.length; i2++ )
-			{
-				scene.remove( floor.userData.room.plinth.obj[i2] );
-			}			
-		}
-		
+		ceiling.splice(arrN[i], 1);	
 		
 		scene.remove( floor.label );
 		scene.remove( floor );
@@ -456,7 +443,7 @@ function splitZone(wall)
 	
 	if(oldZone) { deleteArrZone( [oldZone] ); }			// удаляем старый пол
 		
-	var newZones = detectRoomZone(nameRoomDef);			// создаем пол, для новых помещений	
+	var newZones = detectRoomZone();			// создаем пол, для новых помещений	
 	 
 	if(oldZone) { assignOldToNewZones_2(newZones, oldZ[0], true); } 
 }
@@ -473,22 +460,13 @@ function assignOldToNewZones_2(newZones, oldZ, addId)
 		var ceiling = newZ[i].ceiling;
 		
 		floor.userData.id = oldZ.floor.userData.id;	
-		floor.userData.room.roomType = oldZ.floor.userData.room.roomType;
-		floor.userData.room.preview = oldZ.floor.userData.room.preview;
-		floor.userData.room.caption = oldZ.floor.userData.room.caption;	
-		floor.userData.material = Object.assign({}, oldZ.floor.userData.material);
-		floor.pr_preview = oldZ.floor.pr_preview;		
+		floor.userData.material = Object.assign({}, oldZ.floor.userData.material);		
 		floor.material = oldZ.floor.material.clone();
 		
 
 		ceiling.userData.id = oldZ.ceiling.userData.id;	
-		ceiling.userData.ceil.preview = oldZ.ceiling.userData.ceil.preview;
-		ceiling.userData.ceil.caption = oldZ.ceiling.userData.ceil.caption;
 		ceiling.userData.material = Object.assign({}, oldZ.ceiling.userData.material);
 		ceiling.material = oldZ.ceiling.material.clone();
-		
-		if(oldZ.floor.userData.room.plinth.o) { loadPopObj_1({ obj: floor, lotid : oldZ.floor.userData.room.plinth.lotid }); }
-		if(oldZ.ceiling.userData.ceil.plinth.o) { loadPopObj_1({ obj: ceiling, lotid : oldZ.ceiling.userData.ceil.plinth.lotid }); }
 		
 		if(addId) 
 		{ 

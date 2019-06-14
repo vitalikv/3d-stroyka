@@ -112,9 +112,7 @@ function resetScene()
 	
 	
 	for ( var i = 0; i < room.length; i++ )
-	{
-		if(room[i].userData.room.plinth.o) { for ( var i2 = 0; i2 < room[i].userData.room.plinth.obj.length; i2++ ) { scene.remove(room[i].userData.room.plinth.obj[i2]); } }
-		
+	{		
 		scene.remove(room[i].label); 
 		if(room[i].userData.room.outline) { scene.remove(room[i].userData.room.outline); }
 		scene.remove(room[i]); 
@@ -423,9 +421,7 @@ function getJsonGeometry()
 		rooms[i].roomSType = detectNameRoom('textToId', room[i].userData.room.roomType);		
 		
 		rooms[i].pointid = [];
-		var s = 0; for ( var i2 = room[i].p.length - 1; i2 >= 1; i2-- ) { rooms[i].pointid[s] = room[i].p[i2].userData.id; s++; }
-		
-		if(room[i].userData.room.plinth.o) { rooms[i].plinthLot = { id : room[i].userData.room.plinth.lotid }; }    
+		var s = 0; for ( var i2 = room[i].p.length - 1; i2 >= 1; i2-- ) { rooms[i].pointid[s] = room[i].p[i2].userData.id; s++; }  
 		
 		
 		rooms[i].colors = [];
@@ -629,7 +625,7 @@ function loadFilePL(arr)
 
 	
 
-	if(infProject.type == 1) { detectRoomZone(nameRoomDef); }
+	if(infProject.type == 1) { detectRoomZone(); }
 	
 
 	

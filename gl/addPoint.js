@@ -182,7 +182,6 @@ function splitWalls( wall, point )
 	var material = wall.material;   
 	var p1 = { id : wall.userData.wall.p[0].userData.id, pos : wall.userData.wall.p[0].position.clone() };
 	var p2 = { id : wall.userData.wall.p[1].userData.id, pos : wall.userData.wall.p[1].position.clone() };
-	var userData_material = wall.userData.material;
 	
 	 
 	var arrW_2 = [];
@@ -212,26 +211,7 @@ function splitWalls( wall, point )
 	// определяем с какой стороны (справа/слева) окна/двери (если есть) относительно точки
 	wall.updateMatrixWorld();
 	var ps = wall.worldToLocal( point.position.clone() );	
-	var wd = wallLeftRightWD(wall, ps.x);	
-	
-	// собираем данные об окнах/дверях, принадлежащие разделяемой стене 
-	var wd1 = [];
-	for ( var i = 0; i < wd.wall_1.length; i++ )
-	{
-		var n = wd1.length;
-		wd1[n] = { id : wd.wall_1[i].userData.id, lotid: wd.wall_1[i].userData.door.lotid, pos : wd.wall_1[i].position.clone(), wall : null };
-		wd1[n].size = wd.wall_1[i].userData.door.size;
-		if(wd.wall_1[i].userData.door.open_type) { wd1[n].open_type = wd.wall_1[i].userData.door.open_type; }
-	}
-
-	var wd2 = [];
-	for ( var i = 0; i < wd.wall_2.length; i++ )
-	{
-		var n = wd2.length;
-		wd2[n] = { id : wd.wall_2[i].userData.id, lotid: wd.wall_2[i].userData.door.lotid, pos : wd.wall_2[i].position.clone(), wall : null };
-		wd2[n].size = wd.wall_2[i].userData.door.size;
-		if(wd.wall_2[i].userData.door.open_type) { wd2[n].open_type = wd.wall_2[i].userData.door.open_type; }
-	}
+	var wd = wallLeftRightWD(wall, ps.x);	// собираем данные об окнах/дверях, принадлежащие разделяемой стене 
 
 	// замыкаем стену (а не просто создаем точку на стене)  
 	if(point.userData.point.last.cdm == 'new_point_2' || point.userData.point.last.cdm == 'new_point')
@@ -247,7 +227,7 @@ function splitWalls( wall, point )
 	var oldZ = findNumberInArrRoom( oldZones );
 	deleteArrZone( oldZones );						// удаляем зоны  с которыми соприкасается стена					
 	
-	deleteWall_3( wall );  							// удаляем разделяемую стену и окна/двери, которые принадлежат ей (без удаления зон)	
+	deleteWall_3( wall, {dw : 'no delete'} );  							// удаляем разделяемую стену (без удаления зон)(без удаления окон/дверей)	
 	
 	// находим точки (если стена была отдельна, то эти точки удалены и их нужно заново создать)
 	var point1 = findObjFromId( 'point', p1.id );
@@ -263,8 +243,8 @@ function splitWalls( wall, point )
 	// накладываем материал
 	wall_1.material = [ material[0].clone(), material[1].clone(), material[2].clone(), material[3].clone() ];  
 	wall_2.material = [ material[0].clone(), material[1].clone(), material[2].clone(), material[3].clone() ];
-	wall_1.userData.material = Object.assign({}, userData_material);
-	wall_2.userData.material = Object.assign({}, userData_material); 
+	wall_1.userData.material = [ material[0].clone(), material[1].clone(), material[2].clone(), material[3].clone() ]; 
+	wall_2.userData.material = [ material[0].clone(), material[1].clone(), material[2].clone(), material[3].clone() ]; 
 	
 	for ( var i = 0; i < v2.length/2; i++ ) { wall_1.userData.wall.v[i] = v2[i].clone(); wall_1.geometry.vertices[i] = v2[i].clone(); }
 	
@@ -287,7 +267,7 @@ function splitWalls( wall, point )
 	upLabelPlan_1(arrW); 	
 	clickPointUP_BSP( arrW );
 	
-	var newZones = detectRoomZone(nameRoomDef);		// создаем пол, для новых помещений	
+	var newZones = detectRoomZone();		// создаем пол, для новых помещений	
 	
 	// передаем параметры старых зон новым	(название зоны)	
 	var flag = false;
@@ -295,14 +275,32 @@ function splitWalls( wall, point )
 	
 	if(flag) { assignOldToNewZones_2(newZones, oldZ_1[0], true); } 
 	else { assignOldToNewZones_1(oldZ, newZones, 'add'); }		
-
 	
 	
 	// вставляем окна/двери
-	for ( var i = 0; i < wd1.length; i++ ) { wd1[i].wall = wall_1; loadPopObj_1(wd1[i]); } 
-	for ( var i = 0; i < wd2.length; i++ ) { wd2[i].wall = wall_2; loadPopObj_1(wd2[i]); }	
+	for ( var i = 0; i < wd.wall_1.length; i++ ) 
+	{ 
+		var obj = wd.wall_1[i];
+		
+		obj.userData.door.wall = wall_1;
+		wall_1.userData.wall.arrO[wall_1.userData.wall.arrO.length] = obj; 
+		
+		objsBSP = { wall : wall_1, wd : createCloneWD_BSP( obj ) };				
+		MeshBSP( obj, objsBSP ); 
+		cutMeshBlockBSP( obj );		
+	} 
 	
-	
+	for ( var i = 0; i < wd.wall_2.length; i++ ) 
+	{ 
+		var obj = wd.wall_2[i];
+		
+		obj.userData.door.wall = wall_2;
+		wall_2.userData.wall.arrO[wall_2.userData.wall.arrO.length] = obj; 
+		
+		objsBSP = { wall : wall_2, wd : createCloneWD_BSP( obj ) };				
+		MeshBSP( obj, objsBSP ); 
+		cutMeshBlockBSP( obj );		
+	} 	
 	
 	
 	return [wall_1, wall_2];
