@@ -80,8 +80,8 @@ function onDocumentMouseDown( event )
 	}
 
 
-	lineAxis_1.visible = false;
-	lineAxis_2.visible = false;
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false;
 
 	clickSetCamera2D( event, vk_click );
 	clickSetCamera3D( event, vk_click );
@@ -328,8 +328,8 @@ function onDocumentMouseUp( event )
 	isMouseDown2 = false;
 	isMouseDown3 = false;
 	
-lineAxis_1.visible = false;
-lineAxis_2.visible = false;	
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false;	
 	
 	renderCamera();
 }

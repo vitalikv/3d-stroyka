@@ -64,8 +64,8 @@ function changeCamera(cam)
 		changeDepthColor();
 	}
 	
-	lineAxis_1.visible = false;
-	lineAxis_2.visible = false;	
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false;	
 
 	clickO = resetPop.clickO();
 	

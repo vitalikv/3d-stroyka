@@ -282,8 +282,8 @@ function deletePoint( point )
 	
 	clickPointUP_BSP( arrW );
 	
-	lineAxis_1.visible = false;
-	lineAxis_2.visible = false; 
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false; 
 
 	createWallZone(wall);
 	calculationAreaFundament_2();

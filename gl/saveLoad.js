@@ -121,7 +121,7 @@ function resetScene()
 	
 	disposeHierchy(scene, disposeNode);
 	
-	wallVisible = [];
+	
 	obj_point = [];
 	obj_line = [];
 	room = [];

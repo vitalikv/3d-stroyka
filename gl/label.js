@@ -821,14 +821,14 @@ function showNavigateLineCameraWall( cdm )
 	
 	if(Math.abs(dir.y) > 0.98) 
 	{ 
-		var line = lineAxis_1;
+		var line = infProject.tools.axis[0];
 		var vert = arrWallFront.vector.vert;
 		if(comparePos(dir, vert[0].dir)) { var rot = vert[0].rot; }
 		else { var rot = vert[1].rot; }		
 	}  
 	else 
 	{ 
-		var line = lineAxis_2;
+		var line = infProject.tools.axis[1];
 		var horiz = arrWallFront.vector.horiz;
 		if(comparePos(dir, horiz[0].dir)) { var rot = horiz[0].rot; }
 		else { var rot = horiz[1].rot; }

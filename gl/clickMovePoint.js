@@ -220,8 +220,8 @@ function dragToolPoint( event, obj )
 		obj.position.set( pos.x, obj.position.y, pos.z ); 
 		obj.userData.point.cross = wall; 
 		
-		lineAxis_1.visible = false;
-		lineAxis_2.visible = false; 
+		infProject.tools.axis[0].visible = false;
+		infProject.tools.axis[1].visible = false; 
 	}
 }
 
@@ -269,13 +269,13 @@ function showLineAxis( point )
 	{ 
 		point.position.x = obj_point[n1].position.x; 
 		point.position.z = obj_point[n2].position.z; 		
-		dopFunct1(point, obj_point[n1].position, lineAxis_1, 'xz'); 
-		dopFunct1(point, obj_point[n2].position, lineAxis_2, 'xz'); 
+		dopFunct1(point, obj_point[n1].position, infProject.tools.axis[0], 'xz'); 
+		dopFunct1(point, obj_point[n2].position, infProject.tools.axis[1], 'xz'); 
 	}
 	else
 	{
-		(pX.length > 0) ? dopFunct1(point, obj_point[n1].position, lineAxis_1, 'x') : lineAxis_1.visible = false;
-		(pZ.length > 0) ? dopFunct1(point, obj_point[n2].position, lineAxis_2, 'z') : lineAxis_2.visible = false;
+		(pX.length > 0) ? dopFunct1(point, obj_point[n1].position, infProject.tools.axis[0], 'x') : infProject.tools.axis[0].visible = false;
+		(pZ.length > 0) ? dopFunct1(point, obj_point[n2].position, infProject.tools.axis[1], 'z') : infProject.tools.axis[1].visible = false;
 	}
 }
 
@@ -586,8 +586,8 @@ function undoRedoChangeMovePoint( point, walls )
 	
 	clickPointUP_BSP(walls);
 	
-	lineAxis_1.visible = false;
-	lineAxis_2.visible = false;		
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false;		
 }
 
 

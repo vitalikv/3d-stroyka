@@ -101,8 +101,6 @@ function dragToolWFPoint(cdm)
 	var arrDp = [];
 	var arr = [];
 	
-	lineAxis_1.visible = false;
-	
 	var z = 0.1 / camera.zoom;
 	
 	for(var i = 0; i < arr_wf.line.length; i++)
@@ -177,16 +175,16 @@ function getNearLineWF(cdm)
 {
 	var d = cdm.p1.distanceTo( cdm.p2 );	
 	
-	var v = lineAxis_1.geometry.vertices;		
+	var v = infProject.tools.axis[0].geometry.vertices;		
 	v[3].x = v[2].x = v[5].x = v[4].x = d;		
-	lineAxis_1.geometry.verticesNeedUpdate = true;
+	infProject.tools.axis[0].geometry.verticesNeedUpdate = true;
 
 	var dir = new THREE.Vector3().subVectors( cdm.p1, cdm.p2 ).normalize();
 	var angleDeg = Math.atan2(dir.x, dir.z);
-	lineAxis_1.rotation.set(0, angleDeg + Math.PI / 2, 0);		
-	lineAxis_1.position.copy( cdm.p1 );
+	infProject.tools.axis[0].rotation.set(0, angleDeg + Math.PI / 2, 0);		
+	infProject.tools.axis[0].position.copy( cdm.p1 );
 	
-	lineAxis_1.visible = true;	
+	infProject.tools.axis[0].visible = true;	
 }
 
 

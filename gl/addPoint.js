@@ -139,8 +139,8 @@ function addPointCenterWall()
 function addPoint_1( wall, point )
 {	 
 	clickO.move = null;					
-	lineAxis_1.visible = false;
-	lineAxis_2.visible = false;																
+	infProject.tools.axis[0].visible = false;
+	infProject.tools.axis[1].visible = false;																
 	  
 	point.userData.point.last.cdm = 'add_point';
 	

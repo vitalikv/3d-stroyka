@@ -94,16 +94,8 @@ function animate()
 
 
 
+
 function renderCamera()
-{
-	drawRender();
-}
-
-
-
-var moveTexture = { };
-
-function drawRender()
 {
 	camera.updateMatrixWorld();			
 	
@@ -173,7 +165,9 @@ infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.geometry = { circle : createCircleSpline() }
-infProject.tools = { cutWall : [], point : createToolPoint() }
+infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
+infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
+infProject.tools = { cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
 infProject.listColor = resetPop.listColor(); 
 
 
@@ -192,20 +186,9 @@ arrSize.format_2 = { line : createRulerWin({count : 6, color : 0x000000}), label
 arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, material : 'standart'}), label : createLabelCameraWall({ count : 6, text : [1,2,3,4,5,6], materialTop : 'no', size : 85, ratio : {x:256, y:256}, geometry : createGeometryPlan(0.25, 0.25) }) };
 
 
-var wallVisible = [];
 
 var planeMath = createPlaneMath();
-var planeMath2 = createPlaneMath2();
-
-var geometryLabelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
-var geometryLabelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
-
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
-
-
-var lineAxis_1 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
-var lineAxis_2 = createLineAxis( new THREE.Vector3(0,0,0), new THREE.Vector3(1,0,0) );
-
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3();
@@ -320,22 +303,6 @@ function createPlaneMath()
 	
 	return planeMath;
 }
-
-
-
-function createPlaneMath2()
-{
-	var geometry = createGeometryCube(10000, 0.0001, 10000);
-	var mat_pm = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
-	mat_pm.visible = false;
-	var planeMath = new THREE.Mesh( geometry, mat_pm );
-	planeMath.rotation.set(0, 0, 0);
-	planeMath.userData.tag = 'planeMath3';	
-	scene.add( planeMath );	
-	
-	return planeMath;
-}
- 
 
 
 
@@ -721,58 +688,6 @@ function createGeometryCircle( vertices )
 }
 
 
-function createGeometryPivot(x, y, z)
-{
-	var geometry = new THREE.Geometry();
-	y /= 2;
-	z /= 2;
-	var vertices = [
-				new THREE.Vector3(0,-y,z),
-				new THREE.Vector3(0,y,z),
-				new THREE.Vector3(x,y,z),
-				new THREE.Vector3(x,-y,z),
-				new THREE.Vector3(x,-y,-z),
-				new THREE.Vector3(x,y,-z),
-				new THREE.Vector3(0,y,-z),
-				new THREE.Vector3(0,-y,-z),
-			];	
-			
-	var faces = [
-				new THREE.Face3(0,3,2),
-				new THREE.Face3(2,1,0),
-				new THREE.Face3(4,7,6),
-				new THREE.Face3(6,5,4),				
-				new THREE.Face3(0,1,6),
-				new THREE.Face3(6,7,0),					
-				new THREE.Face3(1,2,5),
-				new THREE.Face3(5,6,1),				
-				new THREE.Face3(2,3,4),
-				new THREE.Face3(4,5,2),				
-				new THREE.Face3(3,0,7),
-				new THREE.Face3(7,4,3),
-			];
-	
-	var uvs1 = [
-				new THREE.Vector2(0,0),
-				new THREE.Vector2(1,0),
-				new THREE.Vector2(1,1),
-			];
-	var uvs2 = [
-				new THREE.Vector2(1,1),
-				new THREE.Vector2(0,1),
-				new THREE.Vector2(0,0),
-			];	
-
-			
-	geometry.vertices = vertices;
-	geometry.faces = faces;
-	geometry.faceVertexUvs[0] = [uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2];
-	geometry.computeFaceNormals();	
-	geometry.uvsNeedUpdate = true;		
-	
-	return geometry;
-}
-
 
 
 function createCircleSpline()
@@ -1093,10 +1008,10 @@ function createOneWall3( point1, point2, width, cdm )
  	
 	
 	wall.label = [];
-	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0];	
+	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : infProject.geometry.labelWall, opacity : 0.5 })[0];	
 	wall.label[0].visible = false;
 	
-	wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : geometryLabelWall, opacity : 0.5 })[0]; 
+	wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : infProject.geometry.labelWall, opacity : 0.5 })[0]; 
 	wall.label[1].visible = false;
 	
 	if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside') 

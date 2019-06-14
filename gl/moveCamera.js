@@ -159,8 +159,6 @@ function cameraMove3D( event )
 
 			camera.position.add( centerCam );  
 			camera.lookAt( centerCam );
-
-			wallAfterRender_2();
 		}
 		if ( isMouseDown3 )    
 		{
@@ -170,8 +168,6 @@ function cameraMove3D( event )
 			var offset = new THREE.Vector3().subVectors( camera3D.userData.camera.click.pos, intersects[0].point );
 			camera.position.add( offset );
 			centerCam.add( offset );
-
-			wallAfterRender_2();
 		}
 	}
 	else if ( camera3D.userData.camera.type == 'first' )
@@ -199,36 +195,6 @@ function cameraMove3D( event )
 		}
 	} 		
 	
-}
-
-
-// скрываем внешние стены, когда она перекрывает обзор
-function wallAfterRender_2()
-{ return; 
-	for ( var i = 0; i < wallVisible.length; i++ )
-	{
-		var wall = wallVisible[ i ].wall;
-		//var pos = new THREE.Vector3().subVectors( wall.p[1].position, wall.p[0].position ).divideScalar( 2 ).add(wall.p[0].position);
-
-		if ( camera.getWorldDirection().dot( wallVisible[ i ].normal.clone() ) > 0 )  
-		{
-			wall.visible = false;
-			if(wall.userData.wall.outline) { scene.remove(wall.userData.wall.outline); wall.userData.wall.outline = null; }
-			
-			for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
-			{
-				wall.userData.wall.arrO[ i2 ].visible = false;
-			}
-		}
-		else
-		{
-			wall.visible = true;
-			for ( var i2 = 0; i2 < wall.userData.wall.arrO.length; i2++ ) 
-			{
-				wall.userData.wall.arrO[ i2 ].visible = true;
-			}
-		}
-	}
 }
 
 
@@ -604,7 +570,6 @@ function moveCameraToNewPosition()
 
 		camera.position.add( centerCam );
 		camera.lookAt( centerCam );
-		wallAfterRender_2();
 		
 		if(comparePos(centerCam, newCameraPosition.position3D)) { newCameraPosition = null; };		
 	}
