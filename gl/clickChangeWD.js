@@ -10,12 +10,12 @@ function createControllWD()
 		var obj = new THREE.Mesh( new THREE.BoxGeometry( 0.15, 0.15, 0.15 ), new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 } ) );
 		
 		obj.userData.tag = 'controll_wd';
-		obj.userData.controll = { id : i, obj : null };
+		obj.userData.controll_wd = { id : i, obj : null };		
 		obj.visible = false;
 		
 		
-		var child = new THREE.Mesh( new THREE.BoxGeometry( 0.1, 0.1, 0.1 ), new THREE.MeshLambertMaterial( { color : 'rgb(17, 255, 0)', depthTest: false } ) );
-		child.renderOrder = 3;
+		var child = new THREE.Mesh( new THREE.BoxGeometry( 0.1, 0.1, 0.1 ), new THREE.MeshLambertMaterial( { color : 'rgb(17, 255, 0)', transparent: true, opacity: 1, depthTest: false } ) );
+		child.renderOrder = 2;
 		obj.add( child );
 		 
 		arr[i] = obj;
@@ -92,7 +92,7 @@ function showControllWD( wall, obj )
 		arr[i].rotation.copy( wall.rotation );
 		arr[i].visible = arrVisible[i];
 		arr[i].obj = obj; 
-		arr[i].userData.controll.obj = obj;
+		arr[i].userData.controll_wd.obj = obj;
 	}
 }
 
@@ -101,11 +101,9 @@ function showControllWD( wall, obj )
 		
 
 // показываем линейки и контроллеры для окна/двери (собираем инфу, для перемещения линеек) 
-function clickShowRulerWD(obj)
+function showRulerWD(obj)
 {
 	var wall = obj.userData.door.wall;   
-	
-
 
 	showControllWD( wall, obj );		// показываем контроллеры 
 	
@@ -141,23 +139,6 @@ function clickShowRulerWD(obj)
 	var vZ = v[0].z + (v[4].z - v[0].z) / 2; 
 	
 	for ( var i = 0; i < boundPos.length; i++ ){ boundPos[i].z = vZ; boundPos[i].y = 0; wall.localToWorld( boundPos[i] ); } 
-
-
-	// находим объекты, которые принадлежат выбранной группе, заносим в массив (минус выбранный объект) 
-	if(1==2)
-	{
-		var arrO = [];  
-		for ( var i = 0; i < wall.userData.wall.arrO.length; i++ ){ if(obj != wall.userData.wall.arrO[i]) { arrO[arrO.length] = wall.userData.wall.arrO[i]; } }   
-
-		if(arrO.length > 0)  
-		{ 
-			var posX = getNearlyWinV(arrO, obj, wall, (Math.abs(v[0].z) - Math.abs(v[4].z)) / 2);    
-			 
-			if(posX[1] != false) { boundPos[0] = boundPos[2] = posX[1];  } 
-			if(posX[0] != false) { boundPos[1] = boundPos[3] = posX[0];  }  
-		}		
-	}
-	
 
 	// инфа для перемещения линеек	
 	obj.userData.door.ruler.boundPos = boundPos;	
@@ -288,7 +269,7 @@ function showRulerWD_3D(wd)
 	var boundPos = wd.userData.door.ruler.boundPos;
 	var index = wd.userData.door.ruler.faceIndex;
 	var rt = 0;
-	
+	console.log(boundPos);
 	var p = [];
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { p[i] = arrSize.cube[i].position; }
 	
@@ -360,12 +341,12 @@ function clickToggleChangeWin( intersect, cdm )
 {
 	clickO.move = intersect.object; 
 	var controll = intersect.object;	
-	var wd = controll.userData.controll.obj;
+	var wd = controll.userData.controll_wd.obj;
 	var wall = wd.userData.door.wall;
 	var pos2 = new THREE.Vector3();
 	
 	
-	var m = controll.userData.controll.id;
+	var m = controll.userData.controll_wd.id;
 	
 	if(camera == cameraTop)
 	{
@@ -429,7 +410,7 @@ function moveToggleChangeWin( event, controll )
 	var intersects = rayIntersect( event, planeMath, 'one' ); 	
 	if ( intersects.length < 1 ) return; 
 	
-	var wd = controll.userData.controll.obj;
+	var wd = controll.userData.controll_wd.obj;
 	var wall = wd.userData.door.wall;
 
 	
@@ -484,7 +465,7 @@ function moveToggleChangeWin( event, controll )
 			return pos2 - res;
 		}		
  
-		if(controll.userData.controll.id == 0)
+		if(controll.userData.controll_wd.id == 0)
 		{  
 			pos2.x = discreteShift(pos2.x, wd.userData.door.wall.controll.arrPos[1].x);
 			
@@ -492,7 +473,7 @@ function moveToggleChangeWin( event, controll )
 			if(pos2.x < x_min){ pos2.x = x_min; } 	
 			else if(pos2.x > wd.userData.door.wall.controll.arrPos[1].x - 0.2){ pos2.x = wd.userData.door.wall.controll.arrPos[1].x - 0.2; }		
 		}		
-		else if(controll.userData.controll.id == 1)
+		else if(controll.userData.controll_wd.id == 1)
 		{
 			pos2.x = discreteShift(pos2.x, wd.userData.door.wall.controll.arrPos[0].x);
 			
@@ -500,7 +481,7 @@ function moveToggleChangeWin( event, controll )
 			if(pos2.x > x_max){ pos2.x = x_max; }
 			else if(pos2.x < wd.userData.door.wall.controll.arrPos[0].x + 0.2){ pos2.x = wd.userData.door.wall.controll.arrPos[0].x + 0.2; }							
 		}
-		else if(controll.userData.controll.id == 2)
+		else if(controll.userData.controll_wd.id == 2)
 		{
 			pos2.y = discreteShift(pos2.y, wd.userData.door.wall.controll.arrPos[3].y);
 			
@@ -508,7 +489,7 @@ function moveToggleChangeWin( event, controll )
 			if(pos2.y < y_min){ pos2.y = y_min; }
 			else if(pos2.y > wd.userData.door.wall.controll.arrPos[3].y - 0.2){ pos2.y = wd.userData.door.wall.controll.arrPos[3].y - 0.2; }		
 		}		
-		else if(controll.userData.controll.id == 3)
+		else if(controll.userData.controll_wd.id == 3)
 		{
 			pos2.y = discreteShift(pos2.y, wd.userData.door.wall.controll.arrPos[2].y);
 			
@@ -538,12 +519,12 @@ function moveToggleChangeWin( event, controll )
 	
 	// устанавливаем второстепенные контроллеры, в правильное положение
 	var arr = arrSize.cube;	
-	if(controll.userData.controll.id == 0 || controll.userData.controll.id == 1)
+	if(controll.userData.controll_wd.id == 0 || controll.userData.controll_wd.id == 1)
 	{ 
 		arr[2].position.add( pos2.clone().divideScalar( 2 ) );
 		arr[3].position.add( pos2.clone().divideScalar( 2 ) );
 	}
-	else if(controll.userData.controll.id == 2 || controll.userData.controll.id == 3)
+	else if(controll.userData.controll_wd.id == 2 || controll.userData.controll_wd.id == 3)
 	{ 
 		arr[0].position.add( pos2.clone().divideScalar( 2 ) );
 		arr[1].position.add( pos2.clone().divideScalar( 2 ) );
@@ -563,7 +544,7 @@ function clickMouseUpToggleWD( controll )
 {
 	if(param_win.click) { param_win.click = false; return; }
 	
-	var wd = controll.userData.controll.obj;
+	var wd = controll.userData.controll_wd.obj;
 	
 	objsBSP.wd = createCloneWD_BSP( wd );
 	
@@ -582,6 +563,8 @@ function clickMouseUpToggleWD( controll )
 	}
 
 	cutMeshBlockBSP( wd );
+	
+	clickO.last_obj = clickO.obj.userData.controll_wd.obj;
 }
 
 

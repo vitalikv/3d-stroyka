@@ -443,7 +443,9 @@ function cameraZoomTop( delta )
 	var k = 0.085 / delta;
 
 	var n = 0;
-	var v = p_tool.geometry.vertices;
+	var circle = infProject.geometry.circle;
+	var v = infProject.tools.point.geometry.vertices;
+	
 	for ( var i = 0; i < circle.length; i++ )
 	{
 		v[ n ] = new THREE.Vector3().addScaledVector( circle[ i ].clone().normalize(), 0.1 / delta );
@@ -464,11 +466,8 @@ function cameraZoomTop( delta )
 	}
 
 	
-	p_tool.geometry.verticesNeedUpdate = true;
-	p_tool.geometry.elementsNeedUpdate = true;
-
-
-
+	infProject.tools.point.geometry.verticesNeedUpdate = true;
+	infProject.tools.point.geometry.elementsNeedUpdate = true;
 
 
 	// zoom label
@@ -479,25 +478,25 @@ function cameraZoomTop( delta )
 
 		var n1 = 0.25 * k *2;
 		var n2 = 0.125 * k *2;		
-		var v1 = geometryLabelWall.vertices;
+		var v1 = infProject.geometry.labelWall.vertices;
 		v1[ 0 ].x = v1[ 1 ].x = -n1;
 		v1[ 2 ].x = v1[ 3 ].x = n1;
 		v1[ 1 ].z = v1[ 2 ].z = n2;
 		v1[ 0 ].z = v1[ 3 ].z = -n2;
-		geometryLabelWall.verticesNeedUpdate = true;
-		geometryLabelWall.elementsNeedUpdate = true;
+		infProject.geometry.labelWall.verticesNeedUpdate = true;
+		infProject.geometry.labelWall.elementsNeedUpdate = true;
 		upLabelPlan_1( obj_line, true );
 
 
 		var n1 = 1 * k;
 		var n2 = 0.25 * k;
-		var v = geometryLabelFloor.vertices;
+		var v = infProject.geometry.labelFloor.vertices;
 		v[ 0 ].x = v[ 1 ].x = -n1;
 		v[ 2 ].x = v[ 3 ].x = n1;
 		v[ 1 ].z = v[ 2 ].z = n2;
 		v[ 0 ].z = v[ 3 ].z = -n2;
-		geometryLabelFloor.verticesNeedUpdate = true;
-		geometryLabelFloor.elementsNeedUpdate = true;
+		infProject.geometry.labelFloor.verticesNeedUpdate = true;
+		infProject.geometry.labelFloor.elementsNeedUpdate = true;
 	}
 }
 

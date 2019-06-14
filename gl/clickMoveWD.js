@@ -31,8 +31,6 @@ function clickWD( intersect )
 	obj.userData.door.offset = new THREE.Vector3().subVectors( obj.position, pos );	
 	
 	findOnWallWD(obj);	
-	
-	clickShowRulerWD(obj);
 }
 
 
@@ -137,28 +135,6 @@ function getMinDistanceVertex(v, pos)
 }
 
 
-
-// находим ближайшую точку с одной стороны стены
-function getMinDistanceWallOneSideVertex(v, pos)
-{
-	var minDist = 99999;
-	var hit = 0;
-
-	for ( var i = 0; i < v.length / 12; i++ )
-	{
-		var n = i * 12;
-		
-		var dist = Math.abs(v[0 + n].x - pos.x); 
-		if (dist < minDist) { minDist = dist; hit = 0 + n; }
-		
-		dist = Math.abs(v[6 + n].x - pos.x);
-		if (dist < minDist) { minDist = dist; hit = 6 + n; }
-	}
-
-	return hit;	
-}
-
-
  
 
 function moveWD( event, wd ) 
@@ -242,11 +218,9 @@ function moveWD_2( wd, pos )
 	
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].position.add( pos2 ); } 	// меняем расположение контроллеров
 	
-	
-	
 
 	
-	//showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
+	showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
 	showRulerWD_3D(wd);
 }
 
@@ -258,14 +232,16 @@ function hideSizeWD( obj )
 {	
 	if(clickO.obj) 
 	{
-		if(clickO.obj.userData.tag == 'door') return;
-		if(clickO.obj.userData.tag == 'window') return;
-	}		
-	
-
-	if(camera == cameraTop || camera == camera3D) 
-	{ 
+		if(clickO.obj == obj) return;	// кликнули на один и тот же активный объект
 		
+		if(clickO.obj.userData.tag == 'controll_wd')
+		{
+			if(clickO.obj.userData.controll_wd.obj == obj) { return; }
+		}		
+	}		
+		
+	if(camera == cameraTop || camera == camera3D) 
+	{ 		
 		if(obj)
 		{
 			if(obj.userData.tag == 'door' || obj.userData.tag == 'window')
@@ -381,7 +357,7 @@ function inputWidthHeightWD(wd)
 	
 	wd.updateMatrixWorld();
 	
-	clickShowRulerWD(wd);	// показываем линейки и контроллеры для окна/двери
+	showRulerWD(wd);	// показываем линейки и контроллеры для окна/двери
 	
 	showTableWD(wd);		// обновляем меню
 	

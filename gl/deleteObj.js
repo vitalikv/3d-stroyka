@@ -299,15 +299,13 @@ function deleteWinDoor( obj )
 	var wall = obj.userData.door.wall; 		
 	
 	clickMoveWD_BSP( obj );		
-	
-	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ ){ if(obj == wall.userData.wall.arrO[i]) { wall.userData.wall.arrO.splice(i, 1); break; } }
-	
-	
+		
+	deleteValueFromArrya({arr : wall.userData.wall.arrO, o : obj});	
 	
 	if(obj.userData.tag == 'window') { hideMenuUI(obj); }
 	if(obj.userData.tag == 'door') { hideMenuUI(obj); }
 	
-
+	clickO.obj = null;
 	hideSizeWD( obj ); 
 
 	if(camera == camera3D)

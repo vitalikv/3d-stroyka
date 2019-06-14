@@ -99,9 +99,9 @@ function objDeActiveColor_2D()
 
 	if(clickO.obj)
 	{  
-		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.obj == o) { return; } }      		
+		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.userData.controll_wd.obj == o) { return; } }      		
 	}
-	
+	 
 	if(o.userData.tag == 'wall'){ if(o.userData.parent) { o = o.userData.parent; } o.material[3].color = o.userData.material[3].color; }	
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }

@@ -7,7 +7,7 @@ var arr_wf = { line : [], point : [] };
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
-	var point = new THREE.Mesh( p_tool.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
+	var point = new THREE.Mesh( infProject.tools.point.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
 	point.position.copy( cdm.pos );		
 
 	point.renderOrder = 1;
@@ -106,10 +106,7 @@ function dragToolWFPoint(cdm)
 	var z = 0.1 / camera.zoom;
 	
 	for(var i = 0; i < arr_wf.line.length; i++)
-	{ 
-		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[0];
-		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[arr_wf.line[i].userData.wf_line.point.length - 1];
-		
+	{ 		
 		var line = arr_wf.line[i];
 		var v = line.geometry.vertices;
 		
@@ -155,8 +152,6 @@ function dragToolWFPoint(cdm)
 			var point_2 = line.userData.wf_line.point[i2];
 			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: line, point: [point_1, point_2]};
 		}
-		
-		//arrDp[arrDp.length] = arr_wf.line[i].userData.wf_line.point[i].position;
 	}
 		
 		

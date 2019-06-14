@@ -171,8 +171,9 @@ var arrWallFront = [];
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
-infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь 
-infProject.tools = { cutWall : [] }
+infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
+infProject.geometry = { circle : createCircleSpline() }
+infProject.tools = { cutWall : [], point : createToolPoint() }
 infProject.listColor = resetPop.listColor(); 
 
 
@@ -192,9 +193,6 @@ arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, ma
 
 
 var wallVisible = [];
-var circle = createCircleSpline();
-var p_tool = createToolPoint();
-
 
 var planeMath = createPlaneMath();
 var planeMath2 = createPlaneMath2();
@@ -800,6 +798,8 @@ function createToolPoint()
 {	
 	var n = 0;
 	var v = [];
+	var circle = infProject.geometry.circle;
+	
 	for ( var i = 0; i < circle.length; i++ )
 	{
 		v[n] = new THREE.Vector3().addScaledVector( circle[i].clone().normalize(), 0.1 );
@@ -1017,7 +1017,7 @@ function createForm(cdm)
 
 function createPoint( pos, id )
 {
-	var point = obj_point[obj_point.length] = new THREE.Mesh( p_tool.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false, lightMap : lightMap_1 } ) ); 
+	var point = obj_point[obj_point.length] = new THREE.Mesh( infProject.tools.point.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false, lightMap : lightMap_1 } ) ); 
 	point.position.copy( pos );		
 
 	point.renderOrder = 1;
@@ -1358,8 +1358,10 @@ function changeHeightWall()
 	upLabelPlan_1( obj_line );
 	clickPointUP_BSP( obj_line );
 	
-	var v = p_tool.geometry.vertices;	
 	var n = 0;
+	var circle = infProject.geometry.circle;
+	var v = infProject.tools.point.geometry.vertices;	
+	
 	for ( var i = 0; i < circle.length; i++ )
 	{		
 		v[ n ] = new THREE.Vector3().addScaledVector( circle[ i ].clone().normalize(), 0.1 / camera.zoom );
@@ -1378,8 +1380,8 @@ function changeHeightWall()
 		v[ n ].y = h2 + 0.01;
 		n++; 		
 	}	
-	p_tool.geometry.verticesNeedUpdate = true;
-	p_tool.geometry.elementsNeedUpdate = true;
+	infProject.tools.point.geometry.verticesNeedUpdate = true;
+	infProject.tools.point.geometry.elementsNeedUpdate = true;
 	
 	
 	
@@ -1472,7 +1474,7 @@ function clickButton( event )
 		{
 			if(clickO.button == 'create_wd_1')
 			{
-				createEmptyFormWD_1();
+				createEmptyFormWD_1({type:'window'});
 			}
 		}
 		
@@ -1493,7 +1495,9 @@ function clickInterface(cdm)
 
 	
 	if(cdm)
-	{
+	{		
+		deActiveSelected();	
+		
 		if(cdm.button == '2D')
 		{
 			if(infProject.settings.interface.button.cam2d == 'front') { changeCamera(cameraWall); }
@@ -1505,28 +1509,22 @@ function clickInterface(cdm)
 		}	
 		else if(cdm.button == 'point_1')
 		{
-			deActiveSelected();
 			clickO.button = 'create_wall';
 		}
 		else if(cdm.button == 'create_wd_1')
 		{
-			deActiveSelected();
 			clickO.button = 'create_wd_1';
 		}
 		else if(cdm.button == 'create_wd_2')
 		{
-			deActiveSelected();
 			clickO.button = 'create_wd_2';
 		}
 		else if(cdm.button == 'create_wd_3')
 		{
-			deActiveSelected();
 			clickO.button = 'create_wd_3';
 		}		
 		else if(cdm.button == 'create_tube_1')
 		{
-			clickO.obj = null;
-			deActiveSelected();
 			clickO.button = 'create_tube_1';
 		}			
 	}
@@ -1539,7 +1537,9 @@ function clickInterface(cdm)
 // декативируем старое выделение (объект и меню)
 function deActiveSelected()
 {
-	if ( camera == cameraTop ) { objDeActiveColor_2D(); }
+	clickO.obj = null;
+	
+	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ) }
 	else if ( camera == camera3D ) {  }
 	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }		
 }

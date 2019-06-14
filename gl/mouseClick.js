@@ -218,7 +218,8 @@ function clickRayHit( rayhit )
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
-		else if( tag == 'door' ) { clickWD( rayhit ); }		
+		else if( tag == 'door' ) { clickWD( rayhit ); }
+		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 	}
 	else if(camera == camera3D)
 	{
@@ -347,6 +348,8 @@ function hideMenuObjUI_2D( o )
 		{  
 			case 'wall': hideMenuUI(o);  break;
 			case 'point': hideMenuUI(o);  break;
+			case 'door': hideSizeWD(o); break;
+			case 'window': hideSizeWD(o); break;			
 		}
 	}
 }
@@ -363,8 +366,10 @@ function showMenuObjUI_2D( o )
 		
 		switch ( o.userData.tag ) 
 		{
-			case 'wall': showMenuUI( o ); break;
-			case 'point': showMenuUI( o ); break;
+			case 'wall': showLengthWallUI( o ); break;
+			case 'point': $('[nameId="point_menu_1"]').show(); break;
+			case 'door': showRulerWD( o ); break;
+			case 'window': showRulerWD( o ); break;
 		}	
 	}
 	
@@ -419,7 +424,7 @@ function hideMenuObjUI_Wall(o)
 	{
 		if(clickO.obj.userData.tag == 'controll_wd')
 		{ 			
-			if(clickO.obj.userData.controll.obj == clickO.last_obj) { return; } 
+			if(clickO.obj.userData.controll_wd.obj == clickO.last_obj) { return; } 
 		} 
 	}	
 	
@@ -446,10 +451,10 @@ function showMenuObjUI_Wall(o, stop)
 	{
 		var tag = o.userData.tag;
 		
-		if(tag == 'wall') { showMenuUI( o ); }
-		else if(tag == 'controll_wd') { o = o.userData.controll.obj; }
-		else if(tag == 'window') { showMenuUI( o ); }
-		else if(tag == 'door') { showMenuUI( o ); }			
+		if(tag == 'wall') { showLengthWallUI( o ); }
+		else if(tag == 'controll_wd') { o = o.userData.controll_wd.obj; }
+		else if(tag == 'window') { showRulerWD( o ); showTableWD( o ); }
+		else if(tag == 'door') { showRulerWD( o ); showTableWD( o ); }			
 	}
 	
 
@@ -474,15 +479,6 @@ function hideMenuUI(obj)
 }
 
 
-function showMenuUI(obj) 
-{
-	var tag = obj.userData.tag;
-	
-	if(tag == 'wall') { showLengthWallUI(obj); }  
-	else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); } 
-	else if(tag == 'window') { showTableWD(obj); }
-	else if(tag == 'door') { showTableWD(obj); }		
-}
 
 
 // по клику получаем инфу об объекте
@@ -519,7 +515,7 @@ function consoleInfo( obj )
 	}
 	else if ( tag == 'controll_wd' ) 
 	{
-		console.log( "controll_wd number : " + obj.userData.controll.id, obj );
+		console.log( "controll_wd number : " + obj.userData.controll_wd.id, obj );
 	}
 	else if ( tag == 'obj' ) 
 	{
