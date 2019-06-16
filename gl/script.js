@@ -804,7 +804,7 @@ function createForm(cdm)
 	{
 		for ( var i = 0; i < obj_point.length; i++ )
 		{
-			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;	console.log(inf);	
+			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
 			createOneWall3( obj_point[i], obj_point[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
 		}		
 	}

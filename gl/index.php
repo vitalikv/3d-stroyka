@@ -19,8 +19,7 @@
 		
 		var infProject = JSON.parse('<?=$jsonPhp?>');
 
-		console.log('version '+ vr);
-		console.log('infProject ', infProject);		
+		console.log('version '+ vr);		
 	</script>
 
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>

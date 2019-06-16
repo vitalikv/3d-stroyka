@@ -269,7 +269,7 @@ function showRulerWD_3D(wd)
 	var boundPos = wd.userData.door.ruler.boundPos;
 	var index = wd.userData.door.ruler.faceIndex;
 	var rt = 0;
-	console.log(boundPos);
+	
 	var p = [];
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { p[i] = arrSize.cube[i].position; }
 	
@@ -501,7 +501,7 @@ function moveToggleChangeWin( event, controll )
 		v1 = wall.localToWorld( pos2 );			
 	}
 	
-	var pos2 = new THREE.Vector3().subVectors( v1, controll.position );
+	var pos2 = new THREE.Vector3().subVectors( v1, controll.position );  
 	controll.position.copy( v1 ); 	
 
 	// обновляем форму окна/двери и с новыми размерами вырезаем отверстие в стене
@@ -512,7 +512,7 @@ function moveToggleChangeWin( event, controll )
 		var x = arr[0].position.distanceTo(arr[1].position);
 		var y = arr[2].position.distanceTo(arr[3].position);
 		
-		var pos = pos2.clone().divideScalar( 2 ).add( wd.position.clone() )
+		var pos = pos2.clone().divideScalar( 2 ).add( wd.position.clone() );
 		
 		сhangeSizePosWD( wd, pos, x, y );
 	}
@@ -564,7 +564,7 @@ function clickMouseUpToggleWD( controll )
 
 	cutMeshBlockBSP( wd );
 	
-	clickO.last_obj = clickO.obj.userData.controll_wd.obj;
+	clickO.last_obj = wd;
 }
 
 

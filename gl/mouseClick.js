@@ -292,7 +292,7 @@ function onDocumentMouseUp( event )
 	if(obj)  
 	{
 		var tag = obj.userData.tag;
-		console.log(tag);
+		
 		if(tag == 'point') 
 		{  		
 			var point = clickO.move;

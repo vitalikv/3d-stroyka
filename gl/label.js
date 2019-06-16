@@ -606,7 +606,7 @@ function showSizeFormat_4(obj)
 	showSizeCutoff(arr); 	
 }
 
-console.log(new THREE.Vector3(0, 0, 1).applyAxisAngle ( new THREE.Vector3(0, 1, 0), Math.PI/2  ));
+
 
 // боковые отсечки для линейки (cameraWall)
 function showSizeCutoff(arrP)

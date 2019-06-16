@@ -28,10 +28,10 @@ function createEmptyFormWD_1(cdm)
 	}	
 	
 	var spline = [];
-	spline[0] = new THREE.Vector2( -0.5, 0 );	
-	spline[1] = new THREE.Vector2( 0.5, 0 );
-	spline[2] = new THREE.Vector2( 0.5, 2.2 );
-	spline[3] = new THREE.Vector2( -0.5, 2.2 );		
+	spline[0] = new THREE.Vector2( -0.5, -1.1 );	
+	spline[1] = new THREE.Vector2( 0.5, -1.1 );
+	spline[2] = new THREE.Vector2( 0.5, 1.1 );
+	spline[3] = new THREE.Vector2( -0.5, 1.1 );		
 	
 	if(type == 'window')
 	{
@@ -76,7 +76,7 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.size = new THREE.Vector3( 1, 1, 0.2 );
 	obj.userData.door.form = form;
 	obj.userData.door.bound = {}; 
-	obj.userData.door.floorCenterY = (cdm.type == 'window') ? 1.5 : 0;  // центр wd над полом
+	obj.userData.door.floorCenterY = (cdm.type == 'window') ? 1.5 : 1.1;  // центр wd над полом
 	obj.userData.door.width = 0.2;
 	obj.userData.door.h1 = 0;
 	obj.userData.door.color = obj.material.color; 
@@ -217,7 +217,7 @@ function addWD( cdm )
 	obj.geometry.computeBoundingSphere();
 	
 	obj.userData.tag = type;
-	obj.userData.door.wall = wall;  console.log(obj.position);
+	obj.userData.door.wall = wall;  
 	
 	if(!obj.userData.id) { obj.userData.id = countId; countId++; }  
 	
