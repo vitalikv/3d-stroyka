@@ -169,7 +169,7 @@ infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.tools = { cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
 infProject.listColor = resetPop.listColor(); 
-
+infProject.settings.tube = { h : 0.2 };
 
 console.log(infProject);
 
@@ -1381,7 +1381,6 @@ function clickButton( event )
 			else if(clickO.button == 'create_tube_1')
 			{
 				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
-				point.position.y = 0;
 				clickO.move = point;				
 			}
 		}

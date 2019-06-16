@@ -1,15 +1,14 @@
 
 
 
-var arr_wf = { line : [], point : [] };
-
 
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.tools.point.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
 	point.position.copy( cdm.pos );		
-
+	point.position.y = infProject.settings.tube.h;	
+	
 	point.renderOrder = 1;
 	
 	if(!cdm.id) { var id = countId; countId++; }
@@ -23,9 +22,6 @@ function createPointWF(cdm)
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
 	point.userData.wf_point.cross = { o : null, point : [] };
 	scene.add( point );
-
-
-	arr_wf.point[arr_wf.point.length] = point;
 	
 	return point;	
 }
@@ -59,13 +55,14 @@ function moveWFPoint(event, obj)
 	if(obj.userData.wf_point.type == 'tool') 
 	{ 
 		obj.position.copy(intersects[0].point); 
-
+		obj.position.y = infProject.settings.tube.h;
 		dragToolWFPoint({obj : clickO.move});
 	}
 	else
 	{
 		var pos = new THREE.Vector3().addVectors( intersects[0].point, offset );
 		obj.position.copy(pos);
+		obj.position.y = infProject.settings.tube.h;
 	}
 	
 	
@@ -103,9 +100,9 @@ function dragToolWFPoint(cdm)
 	
 	var z = 0.1 / camera.zoom;
 	
-	for(var i = 0; i < arr_wf.line.length; i++)
+	for(var i = 0; i < infProject.scene.array.tube.length; i++)
 	{ 		
-		var line = arr_wf.line[i];
+		var line = infProject.scene.array.tube[i];
 		var v = line.geometry.vertices;
 		
 		if(v.length < 2) continue;
@@ -210,7 +207,8 @@ function upLineWF(point)
 		line.userData.wf_line.point = [point];
 		scene.add( line );
 		
-		arr_wf.line[arr_wf.line.length] = line;
+		
+		infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
 		
 		point.userData.wf_point.line.o = line;
 	}
@@ -317,7 +315,6 @@ function clickPointToolsWF(obj)
 // нажали на правую кнопку мыши, когда создаем линию
 function deletePointWF(obj)
 {
-	deleteValueFromArrya({arr : arr_wf.point, o : obj});
 	//arr_wf.point.pop();	// удаляем последнее значение в массиве
 	
 	var line = obj.userData.wf_point.line.o;
@@ -327,9 +324,7 @@ function deletePointWF(obj)
 		// если у линии 2 точки, то удаляем точки и линию
 		if(line.userData.wf_line.point.length == 2)
 		{		
-			deleteValueFromArrya({arr : arr_wf.point, o : line.userData.wf_line.point[0]});
-			deleteValueFromArrya({arr : arr_wf.point, o : line.userData.wf_line.point[1]});
-			deleteValueFromArrya({arr : arr_wf.line, o : line});
+			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
 			scene.remove(line.userData.wf_line.point[0]);
 			scene.remove(line.userData.wf_line.point[1]);
 			scene.remove(line);	
@@ -355,8 +350,8 @@ function deletePointWF(obj)
 		}
 	}
 
-	//console.log(arr_wf.point);
-	//console.log(arr_wf.line);
+	
+	//console.log(infProject.scene.array.tube.length);
 	
  	scene.remove(obj);	// удаляем точку
 }

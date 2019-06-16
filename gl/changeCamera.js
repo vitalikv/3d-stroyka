@@ -102,7 +102,7 @@ function changeDepthColor()
 	var wall = infProject.scene.array.wall;
 	var window = infProject.scene.array.window;
 	var door = infProject.scene.array.door;	
-	
+	var tube = infProject.scene.array.tube;
 	
 	for ( var i = 0; i < wall.length; i++ )
 	{
@@ -119,7 +119,17 @@ function changeDepthColor()
 		}
 	}		
 	
-	showHideArrObj(arr_wf.point, visible_2);
+	var wf = [];
+	
+	for ( var i = 0; i < tube.length; i++ )
+	{
+		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ )
+		{
+			wf[wf.length] = tube[i].userData.wf_line.point[i2];
+		}		
+	}
+	
+	showHideArrObj(wf, visible_2);
 	showHideArrObj(window, visible_2);
 	showHideArrObj(door, visible_2);
 	
