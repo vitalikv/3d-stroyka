@@ -56,7 +56,7 @@ function moveWFPoint(event, obj)
 	{ 
 		obj.position.copy(intersects[0].point); 
 		obj.position.y = infProject.settings.tube.h;
-		dragToolWFPoint({obj : clickO.move});
+		dragToolWFPoint({obj : clickO.move}); 
 	}
 	else
 	{
@@ -86,7 +86,7 @@ function moveWFPoint(event, obj)
 
 
 
-// перетаскиваем точку (определяем с чем пересекается)
+// перетаскиваем точку (определяем пересекается ли с первой/последней точки линий теплого пола)
 function dragToolWFPoint(cdm)
 {	
 	var obj = cdm.obj;
@@ -94,10 +94,8 @@ function dragToolWFPoint(cdm)
 	if(obj.userData.wf_point.line.o) return;
 	
 	obj.userData.wf_point.cross = { o : null, point : [] };
-	
-	var arrDp = [];
-	var arr = [];
-	
+		
+	var arr = [];	
 	var z = 0.1 / camera.zoom;
 	
 	for(var i = 0; i < infProject.scene.array.tube.length; i++)
@@ -125,27 +123,8 @@ function dragToolWFPoint(cdm)
 		
 		if(dist < z) 
 		{ 
-			//getNearLineWF({dist: dist, p1: pos, p2: obj.position});
 			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: cross};
 			continue; 
-		}
-		
-		
-		// пускаем перпендикуляр от точки на прямую
-		for(var i2 = 0; i2 < v.length - 1; i2++)
-		{
-			if(!calScal(v[i2], v[i2 + 1], obj.position)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
-			
-			var pos = spPoint(v[i2], v[i2 + 1], obj.position);  
-			var pos = new THREE.Vector3(pos.x, pos.y, pos.z);	// получаем точку пересечения точки на прямую
-			
-			var dist = pos.distanceTo(obj.position);
-			
-			if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
-			
-			var point_1 = line.userData.wf_line.point[i2];
-			var point_2 = line.userData.wf_line.point[i2];
-			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: line, point: [point_1, point_2]};
 		}
 	}
 		
@@ -156,7 +135,6 @@ function dragToolWFPoint(cdm)
 	{  
 		obj.userData.wf_point.cross = {o: arr[0].cross, point: arr[0].point};
 		obj.position.copy(arr[0].p1);
-		//getNearLineWF(arr[0]);
 	}
 	
 	renderCamera();
@@ -166,11 +144,85 @@ function dragToolWFPoint(cdm)
 
 
 
+
+// подсвечиваем линию или точку, когда наводим рядом мышь 
+function hoverCursorLineWF()
+{	
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return null;
+	
+	var posMouse = intersects[0].point;	
+	posMouse.y = infProject.settings.tube.h;
+	
+	var arr = [];	
+	var z = 0.1 / camera.zoom;
+	
+	for(var i = 0; i < infProject.scene.array.tube.length; i++)
+	{ 		
+		var line = infProject.scene.array.tube[i];
+		var v = line.geometry.vertices;
+		
+		if(v.length < 2) continue;
+
+		var flag = false;
+		
+		for(var i2 = 0; i2 < line.userData.wf_line.point.length; i2++)
+		{
+			var point = line.userData.wf_line.point[i2];
+			
+			var dist = point.position.distanceTo(posMouse);
+			
+			if(dist > z) continue;
+			
+			arr[arr.length] = {dist: dist, p1: point.position.clone(), p2: posMouse, cross: point};
+			
+			flag = true;
+		}
+		
+		if(flag) continue;
+		
+		// пускаем перпендикуляр от точки на прямую
+		for(var i2 = 0; i2 < v.length - 1; i2++)
+		{
+			if(!calScal(v[i2], v[i2 + 1], posMouse)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
+			
+			var pos = spPoint(v[i2], v[i2 + 1], posMouse);  
+			var pos = new THREE.Vector3(pos.x, posMouse.y, pos.z);	// получаем точку пересечения точки на прямую
+			
+			var dist = pos.distanceTo(posMouse);
+			
+			if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
+			
+			var point_1 = line.userData.wf_line.point[i2];
+			var point_2 = line.userData.wf_line.point[i2];
+			arr[arr.length] = {dist: dist, p1: pos, p2: posMouse, cross: line};
+		}
+	}
+		
+	var result = null;
+	
+	if(arr.length > 1) arr.sort(function (a, b) { return a.dist - b.dist; });
+	
+	if(arr.length > 0) 
+	{  
+		getNearLineWF(arr[0]);
+		result = { object : arr[0].cross, point : posMouse };
+	}
+	
+	renderCamera();
+	
+	return result;
+}
+
+
+
+
   
 // устанвливаем и показываем красные линии
 function getNearLineWF(cdm)
 {
-	var d = cdm.p1.distanceTo( cdm.p2 );	
+	var d = cdm.dist;	
 	
 	var v = infProject.tools.axis[0].geometry.vertices;		
 	v[3].x = v[2].x = v[5].x = v[4].x = d;		
@@ -200,11 +252,12 @@ function upLineWF(point)
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(point.position);
 		
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777 }) );
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777, linewidth: 1 }) );
 		line.userData.tag = 'wf_line';
 		line.userData.wf_line = {};
 		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
+		line.userData.wf_line.color = line.material.color.clone();
 		scene.add( line );
 		
 		

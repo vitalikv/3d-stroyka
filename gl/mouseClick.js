@@ -120,6 +120,10 @@ function onDocumentMouseDown( event )
 
 function detectRayHit( event, cdm )
 {
+	var result = hoverCursorLineWF(event);
+	
+	if(result) { return result; }
+	
 	var intersects = rayIntersect( event, scene.children, 'arr' );
 
 	var um = [];
@@ -277,7 +281,7 @@ function onDocumentMouseMove( event )
 	}
 
 	activeHover2D( event );
-	
+
 	renderCamera();
 }
 
@@ -520,6 +524,10 @@ function consoleInfo( obj )
 	else if ( tag == 'obj' ) 
 	{
 		console.log( "obj : " + obj.userData.id + " | lotid : " + obj.lotid  + " | userData : ", obj.userData, obj );
+	}	
+	else if ( tag == 'wf_line' ) 
+	{
+		console.log( tag + " id : " + obj.userData.id + " | userData : ", obj.userData, obj );
 	}	
 	else 
 	{
