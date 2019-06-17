@@ -11,6 +11,7 @@
 	<title><?=$title?></title>
 
 	<link rel="stylesheet" href="<?=$path?>css/style.css"> 
+	<script src="<?=$path?>js/jquery.js"></script>
 </head>
 
 <body>
@@ -23,7 +24,7 @@
 	</script>
 
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>js/jquery.js"></script>
+    
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
     
 	<script src="<?=$path?>meshBSP.js"></script> 	
@@ -31,7 +32,7 @@
     
 	<script src="<?=$path?>block/createWallBlock.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>block/createWallPlaster.js?<?=$vrs?>"></script>
-	
+	<script src="<?=$path?>block/createGrid.js?<?=$vrs?>"></script>
 	
 	
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
@@ -63,12 +64,9 @@
 	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>
 
 	
-	<? include("include/top_1.php");  ?>	
-	 
-	<? include("include/left_panel_1.php");  ?>
-	
-	<? include("include/bottom_panel_1.php");  ?>
-	
+	<? include("include/top_1.php");  ?>		 
+	<? include("include/left_panel_1.php");  ?>	
+	<? include("include/bottom_panel_1.php");  ?>	
 	<? include("include/modal_window_1.php");  ?>
 	
 	<!--<div class="help">
@@ -89,7 +87,7 @@
 	
 
 	
-<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>	
+	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>	
 
 </body>
 

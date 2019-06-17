@@ -365,50 +365,6 @@ function clickPointToolsWF(obj)
 }
 
 
-// нажали на правую кнопку мыши, когда создаем линию
-function deletePointWF(obj)
-{
-	//arr_wf.point.pop();	// удаляем последнее значение в массиве
-	
-	var line = obj.userData.wf_point.line.o;
-	
-	if(line)
-	{
-		// если у линии 2 точки, то удаляем точки и линию
-		if(line.userData.wf_line.point.length == 2)
-		{		
-			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
-			scene.remove(line.userData.wf_line.point[0]);
-			scene.remove(line.userData.wf_line.point[1]);
-			scene.remove(line);	
-			line = null;			
-		}
-		else	// удаляем точку
-		{
-			deleteValueFromArrya({arr : line.userData.wf_line.point, o : obj});
-
-			var geometry = new THREE.Geometry();
-			
-			for(var i = 0; i < line.userData.wf_line.point.length; i++)
-			{
-				geometry.vertices[i] = line.userData.wf_line.point[i].position;
-			}
-			
-			line.geometry = geometry;
-			line.geometry.verticesNeedUpdate = true; 
-			line.geometry.elementsNeedUpdate = true;
-
-			// создаем трубу
-			//newTubeWF({line : line, createLine : true});
-		}
-	}
-
-	
-	//console.log(infProject.scene.array.tube.length);
-	
- 	scene.remove(obj);	// удаляем точку
-}
-
 
 // создаем или обновляем форму трубы
 function newTubeWF(cdm)
@@ -445,6 +401,68 @@ function newTubeWF(cdm)
 }
 
 
+
+// удаляем последнию точку (нажали на правую кнопку мыши, когда создаем линию)
+function deletePointWF(obj)
+{
+	//arr_wf.point.pop();	// удаляем последнее значение в массиве
+	
+	var line = obj.userData.wf_point.line.o;
+	
+	if(line)
+	{
+		// если у линии 2 точки, то удаляем точки и линию
+		if(line.userData.wf_line.point.length == 2)
+		{		
+			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
+			scene.remove(line.userData.wf_line.point[0]);
+			scene.remove(line.userData.wf_line.point[1]);
+			scene.remove(line);	
+			line = null;			
+		}
+		else	// удаляем точку
+		{
+			deleteValueFromArrya({arr : line.userData.wf_line.point, o : obj});
+
+			var geometry = new THREE.Geometry();
+			
+			for(var i = 0; i < line.userData.wf_line.point.length; i++)
+			{
+				geometry.vertices[i] = line.userData.wf_line.point[i].position;
+			}
+			
+			line.geometry = geometry;
+			line.geometry.verticesNeedUpdate = true; 
+			line.geometry.elementsNeedUpdate = true;
+
+			// создаем трубу
+			//newTubeWF({line : line, createLine : true});
+		}
+	}
+	
+ 	scene.remove(obj);	// удаляем точку
+	
+	clickO = resetPop.clickO;
+}
+
+
+
+
+function deleteLineWF(line)
+{
+	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	
+	
+	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
+	{
+		scene.remove(line.userData.wf_line.point[i]);		
+	}
+
+	scene.remove(line);
+	
+	console.log(infProject.scene.array.tube.length);
+	
+	clickO = resetPop.clickO;
+}
 
 
 

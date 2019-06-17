@@ -22,6 +22,7 @@ $interface['obyem_pomeshcheniya'] = 0;
 $interface['raschet_kirpicha'] = 0;
 $interface['raschet_blokov'] = 0;
 $interface['wall_b1'] = 0;
+$interface['grid_tube_1'] = 0;
 	
 
 if($url == '/calculator/monolit_fundament' || $url == '/calculator/monolit_fundament1')	
@@ -99,17 +100,17 @@ if($url == '/calculator/warm_floor')
 	$interface['wd_2'] = 1;
 	$interface['wd_3'] = 1;
 	$interface['wall_b1'] = 1;
+	$interface['grid_tube_1'] = 1;
 }
 
 
 
 $infProject = array('url' => $url, 'title' => $title, 'nameId' => $nameId, 'path' => $path, 'load' => [ img => [] ]);
-$infProject['scene'] = [ 'tool' => [] ];
 
 $infProject['activeInput'] = '';
 $infProject['activeDiv'] = null;
 
-$infProject['settings']['project'] = 'shape3';
+$infProject['settings']['project'] = '';
 $infProject['settings']['height'] = 2.5;
 $infProject['settings']['floor'] = [ 'o' => false, 'posY' => 0.1, 'height' => 0.1, 'changeY' => false, 'areaPoint' => 'center', 'material' => null ];
 $infProject['settings']['wall'] = [ 'width' => 0.3, 'label' => '', 'dist' => 'center', 'material' => null, 'block' => null ]; 
@@ -117,12 +118,16 @@ $infProject['settings']['calc'] = [ 'fundament' => '' ];
 $infProject['settings']['land'] = [ 'o' => false ];
 $infProject['settings']['unit'] = [ 'wall' => 1, 'floor' => 1 ];
 $infProject['settings']['camera'] = [ 'type' => '2d', 'zoom' => 1, 'limitZoom' => 1 ];
-$infProject['settings']['grid'] = [ 'value' => 30, 'offset' => 0.5 ];
+$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5 ];
 $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
+
+$infProject['scene'] = [ 'tool' => [] ];
+$infProject['scene']['load'] = '';
 
 
 if($url == '/calculator/monolit_fundament') 
 { 
+	$infProject['scene']['load'] = 'shape3';
 	$infProject['settings']['calc']['fundament'] = 'monolit';
 	$infProject['settings']['wall']['label'] = 'outside';
 	$infProject['settings']['wall']['width'] = 0.03;
@@ -134,19 +139,23 @@ if($url == '/calculator/monolit_fundament')
 }
 else if($url == '/calculator/lentochnii_fundament')
 { 
+	$infProject['scene']['load'] = 'shape3';
 	$infProject['settings']['wall']['label'] = 'outside';
 	$infProject['settings']['calc']['fundament'] = 'lent';
 	$infProject['settings']['height'] = 0.2;
 }
 else if($url == '/calculator/svaynyy_fundament') 
 { 
+	$infProject['scene']['load'] = 'shape3';
 	$infProject['settings']['wall']['label'] = 'outside';
 	$infProject['settings']['calc']['fundament'] = 'svai';
 	$infProject['settings']['height'] = 0.2;
 }
 else if($url == '/calculator/ploshchad_uchastka') 
 { 
+	$infProject['scene']['load'] = 'land';
 	$infProject['load']['img'] = ['img/load/grass.jpg']; 
+	$infProject['settings']['project'] = 'land';
 	$infProject['settings']['floor']['material'][0] = ['img' => $infProject['load']['img'][0], 'repeat' => ['x' => 0.2, 'y' => 0.2]];
 	$infProject['settings']['land']['o'] = true; 
 	$infProject['settings']['height'] = 0.2;
@@ -159,13 +168,13 @@ else if($url == '/calculator/ploshchad_uchastka')
 	$infProject['settings']['wall']['color'][0] = ['index' => 3, 'o' => 0x222222];
 	$infProject['settings']['unit']['floor'] = 0.01; 
 	$infProject['settings']['camera']['zoom'] = 0.25;
-	$infProject['settings']['camera']['limitZoom'] = 5; 
-	$infProject['settings']['project'] = 'land';
-	$infProject['settings']['grid'] = ['value' => 100, 'offset' => 1];
+	$infProject['settings']['camera']['limitZoom'] = 5; 	
+	$infProject['settings']['grid'] = ['count' => 100, 'size' => 1];
 	$infProject['settings']['interface']['estimate'] = 0;		
 }
 else if($url == '/calculator/obyem_pomeshcheniya') 
 { 
+	$infProject['scene']['load'] = 'plan_area';	
 	$infProject['load']['img'] = ['img/load/kirpich.jpg'];
 	$infProject['settings']['project'] = 'plan_area';
 	$infProject['settings']['wall']['label'] = 'inside';
@@ -177,6 +186,7 @@ else if($url == '/calculator/obyem_pomeshcheniya')
 }	
 else if($url == '/calculator/shtukaturka_na_stene') 
 { 
+	$infProject['scene']['load'] = 'wall_kirpich';
 	$infProject['load']['img'] = ['img/load/kirpich.jpg', 'img/load/beton.jpg'];
 	$infProject['settings']['project'] = 'wall_plaster';
 	$infProject['settings']['camera']['type'] = 'front';
@@ -190,6 +200,7 @@ else if($url == '/calculator/shtukaturka_na_stene')
 }
 else if($url == '/calculator/raschet_kirpicha') 
 { 
+	$infProject['scene']['load'] = 'wall_kirpich';
 	$infProject['load']['img'] = ['img/load/beton.jpg', 'img/load/one_kirpich.jpg'];
 	$infProject['settings']['project'] = 'wall_kirpich';
 	$infProject['settings']['camera']['type'] = 'front';
@@ -204,6 +215,7 @@ else if($url == '/calculator/raschet_kirpicha')
 }	
 else if($url == '/calculator/raschet_blokov') 
 { 
+	$infProject['scene']['load'] = 'wall_block';
 	$infProject['load']['img'] = ['img/load/block_1.jpg', 'img/load/block_1.jpg'];
 	$infProject['settings']['project'] = 'wall_block';
 	$infProject['settings']['camera']['type'] = 'front';
@@ -216,10 +228,18 @@ else if($url == '/calculator/raschet_blokov')
 }
 else if($url == '/calculator/warm_floor')
 {
+	$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';
 	$infProject['settings']['floor']['o'] = true;
+	$infProject['settings']['floor']['color'] = 0xf7f2d5;
 	$infProject['settings']['wall']['label'] = 'double';
-	$infProject['settings']['project'] = 'shape1';
+	$infProject['settings']['wall']['color']['top'] = 0xded3b8;
+	$infProject['settings']['wall']['color']['front'] = 0xada186;
+	$infProject['settings']['grid']['size'] = 0.2;
+	$infProject['settings']['grid']['count'] = null;
+	$infProject['settings']['grid']['pos'] = [ 'y' => 0.2 ];
+	$infProject['settings']['grid']['color'] = 0x009dff;
+	
 }
 
 

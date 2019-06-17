@@ -23,7 +23,13 @@ function createFloor(cdm)
 	
 	var n = room.length;	
 	
-	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ), new THREE.MeshLambertMaterial( { color : 0xe3e3e5, lightMap : lightMap_1 } ) ); 
+	var color = 0xe3e3e5;
+	
+	if(infProject.settings.floor.color){ color = infProject.settings.floor.color; }
+	
+	var material =new THREE.MeshLambertMaterial( { color : color, lightMap : lightMap_1 } );
+	
+	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ), material ); 
 	
 	room[n].position.set( 0, infProject.settings.floor.posY, 0 );
 	room[n].rotation.set( Math.PI / 2, 0, 0 );	

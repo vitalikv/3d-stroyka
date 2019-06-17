@@ -166,7 +166,7 @@ var arrWallFront = [];
 
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
-infProject.scene.grid = { obj : createGrid(infProject.settings.grid).obj };
+infProject.scene.grid = { obj : createGrid(infProject.settings.grid) };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
@@ -250,48 +250,6 @@ function createPillar()
 	
 	return obj;
 }
-
-
-
-function createGrid(cdm)
-{
-	var lineGrid = new THREE.Group();
-	
-	var offset = (cdm.offset) ? cdm.offset : 1;
-	
-	var geom_line = new THREE.Geometry();
-	var count_grid1 = cdm.value;
-	var count_grid2 = (count_grid1 * offset) / 2; 
-	geom_line.vertices.push(new THREE.Vector3( - count_grid2, 0, 0 ) );
-	geom_line.vertices.push(new THREE.Vector3( count_grid2, 0, 0 ) );
-	
-	var linesMaterial = new THREE.LineBasicMaterial( { color: 0xd6d6d6, opacity: 1, linewidth: .1 } );
-
-	for ( var i = 0; i <= count_grid1; i ++ ) 
-	{
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.z = ( i * offset ) - count_grid2;
-		line.position.y = -0.01;
-		lineGrid.add( line );
-
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.x = ( i * offset ) - count_grid2;
-		line.position.y = -0.01;
-		line.rotation.y = 90 * Math.PI / 180;
-		lineGrid.add( line );
-	}
-	
-	scene.add( lineGrid );	
-
-	var x = count_grid1/2;
-	var y = count_grid1/2;
-
-	var limit = (cdm.limit) ? cdm.limit : false;
-	
-	return { limit : limit, obj : lineGrid, bound : { min : {x:-x, y:-y}, max : {x:x, y:y} } };
-}
-
-
 
 
 
@@ -752,186 +710,6 @@ function createToolPoint()
 
 
 
-function createForm(cdm) 
-{
-	var form = cdm.form;
-	
-	var arrP = [];
-	resetScene();
-	console.log(form);
-	
-	if(form == 'plan_area') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }	
-	else if(form == 'shape1') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
-	else if(form == 'shape2') { var arrP = [new THREE.Vector3(0,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(3,0,2)]; }
-	else if(form == 'shape3') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2)]; }
-	else if(form == 'shape4') { var arrP = [new THREE.Vector3(-3,0,0), new THREE.Vector3(-3,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3), new THREE.Vector3(0,0,-3), new THREE.Vector3(0,0,0)]; }	
-	else if(form == 'shape5') { var arrP = [new THREE.Vector3(-4,0,-1.5), new THREE.Vector3(-4,0,3), new THREE.Vector3(0,0,3), new THREE.Vector3(4,0,3), new THREE.Vector3(4,0,-1.5), new THREE.Vector3(2,0,-1.5), new THREE.Vector3(1,0,-3), new THREE.Vector3(-1,0,-3), new THREE.Vector3(-2,0,-1.5)]; }
-	else if(form == 'shape6') { var arrP = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,0), new THREE.Vector3(0,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3)]; }
-	else if(form == 'shape7') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(3,0,2), new THREE.Vector3(3,0,-2), new THREE.Vector3(0,0,-2)]; }		
-	else if(form == 'shape8') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,2), new THREE.Vector3(-1,0,2), new THREE.Vector3(1,0,2), new THREE.Vector3(3,0,2), new THREE.Vector3(3,0,-2), new THREE.Vector3(1,0,-2), new THREE.Vector3(-1,0,-2)]; }	
-	else if(form == 'shape9') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,0), new THREE.Vector3(-3,0,2), new THREE.Vector3(-1,0,2), new THREE.Vector3(1,0,2), new THREE.Vector3(3,0,2), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2), new THREE.Vector3(1,0,-2), new THREE.Vector3(-1,0,-2)]; }
-	else if(form == 'shape10') { var arrP = [new THREE.Vector3(-3,0,-2), new THREE.Vector3(-3,0,0), new THREE.Vector3(-3,0,2), new THREE.Vector3(0,0,2), new THREE.Vector3(0,0,0), new THREE.Vector3(3,0,0), new THREE.Vector3(3,0,-2), new THREE.Vector3(0,0,-2)]; }
-	else if(form == 'shape11') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,2), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-2)]; }
-	else if(form == 'shape12') { var arrP = [new THREE.Vector3(-1,0,-2), new THREE.Vector3(-1,0,-1), new THREE.Vector3(-3,0,-1), new THREE.Vector3(-3,0,1), new THREE.Vector3(-1,0,1), new THREE.Vector3(-1,0,2), new THREE.Vector3(1,0,2), new THREE.Vector3(1,0,1), new THREE.Vector3(3,0,1), new THREE.Vector3(3,0,-1), new THREE.Vector3(1,0,-1), new THREE.Vector3(1,0,-2)]; }
-	else if(form == 'shape13') { var arrP = [new THREE.Vector3(-1,0,-2), new THREE.Vector3(-1,0,-1), new THREE.Vector3(-3,0,-1), new THREE.Vector3(-3,0,1), new THREE.Vector3(-1,0,1), new THREE.Vector3(-1,0,2), new THREE.Vector3(1,0,2), new THREE.Vector3(1,0,1), new THREE.Vector3(3,0,1), new THREE.Vector3(3,0,-1), new THREE.Vector3(1,0,-1), new THREE.Vector3(1,0,-2)]; }
-	else if(form == 'shape14') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,0), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,1.5), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,0), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-1.5)]; }	
-	else if(form == 'shape15') { var arrP = [new THREE.Vector3(-2,0,-1), new THREE.Vector3(-2,0,1), new THREE.Vector3(0,0,2), new THREE.Vector3(2,0,1), new THREE.Vector3(2,0,-1), new THREE.Vector3(0,0,-2)]; }
-	
-	if(form == 'land') 
-	{ 
-		var arrP = [];
-		arrP[0] = new THREE.Vector3(-15.3,0,-6.7);
-		arrP[1] = new THREE.Vector3(-15.3,0,8.95);
-		arrP[2] = new THREE.Vector3(-0.73,0,10.79);
-		arrP[3] = new THREE.Vector3(19.51,0,9.63);
-		arrP[4] = new THREE.Vector3(19.51,0,-7.35);
-		arrP[5] = new THREE.Vector3(0,0,-7.95);
-	}
-	
-	
-	for ( var i = 0; i < arrP.length; i++ ) { createPoint( arrP[i], 0 ); }
-	
-	
-	var inf = {};
-	
-	if(infProject.settings.project == 'plan_area' || infProject.settings.project == 'wall_kirpich')
-	{
-		inf = { texture : infProject.settings.wall.material };
-	}
-	
-	if(infProject.settings.wall.color)
-	{
-		inf.color = infProject.settings.wall.color;
-	}	
-	
-	if(form == 'shape1' || form == 'shape2' || form == 'shape3' || form == 'shape4' || form == 'shape5' || form == 'shape6' || form == 'shape7' || form == 'shape8' || form == 'shape9' || form == 'shape10' || form == 'shape11' || form == 'shape12' || form == 'shape13' || form == 'shape14' || form == 'shape15' || form == 'land' || form == 'plan_area')
-	{
-		for ( var i = 0; i < obj_point.length; i++ )
-		{
-			var i2 = (i == obj_point.length - 1) ? 0 : i + 1;		
-			createOneWall3( obj_point[i], obj_point[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		}		
-	}
-	
-	if(form == 'shape7')
-	{
-		createOneWall3( obj_point[2], obj_point[5], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	else if(form == 'shape8')
-	{
-		createOneWall3( obj_point[3], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[2], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	else if(form == 'shape9')
-	{
-		createPoint( new THREE.Vector3(-1,0,0), 0 );
-		createPoint( new THREE.Vector3(1,0,0), 0 );
-		createOneWall3( obj_point[1], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[3], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[10], obj_point[9], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[4], obj_point[11], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[11], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[10], obj_point[11], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[11], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}
-	else if(form == 'shape10')
-	{
-		createOneWall3( obj_point[1], obj_point[4], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[4], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	else if(form == 'shape13')
-	{
-		createOneWall3( obj_point[4], obj_point[7], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[4], obj_point[1], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[7], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[1], obj_point[10], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	else if(form == 'shape14')
-	{
-		createPoint( new THREE.Vector3(0,0,0), 0 );
-		createOneWall3( obj_point[1], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[3], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[5], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[7], obj_point[8], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	else if(form == 'shape15')
-	{
-		createPoint( new THREE.Vector3(0,0,0), 0 );
-		createOneWall3( obj_point[0], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[1], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[2], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[3], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[4], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		createOneWall3( obj_point[5], obj_point[6], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-	}	
-	
-	
-	if(form == 'level_2')
-	{
-		var arrP1 = [new THREE.Vector3(-3,0,-3), new THREE.Vector3(-3,0,0), new THREE.Vector3(0,0,3), new THREE.Vector3(3,0,3), new THREE.Vector3(3,0,-3),];
-		
-		var h2 = height_wall + 0.1;
-		var arrP2 = [new THREE.Vector3(0,h2,0), new THREE.Vector3(0,h2,3), new THREE.Vector3(3,h2,6), new THREE.Vector3(6,h2,6), new THREE.Vector3(6,h2,0)]; 
-
-		var arrPo1 = [];
-		var arrPo2 = [];
-		for ( var i = 0; i < arrP1.length; i++ ) { arrPo1[arrPo1.length] = createPoint( arrP1[i], 0 ); }
-		for ( var i = 0; i < arrP2.length; i++ ) { arrPo2[arrPo2.length] = createPoint( arrP2[i], 0 ); }
-		
-		for ( var i = 0; i < arrPo1.length; i++ )
-		{
-			var i2 = (i == arrPo1.length - 1) ? 0 : i + 1;		
-			createOneWall3( arrPo1[i], arrPo1[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		}	
-
-		for ( var i = 0; i < arrPo2.length; i++ )
-		{
-			var i2 = (i == arrPo2.length - 1) ? 0 : i + 1;		
-			createOneWall3( arrPo2[i], arrPo2[i2], width_wall, JSON.parse( JSON.stringify( inf ) ) );
-		}			
-	}
-	
-	if(1==2)
-	{
-		var roofB = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10 ), new THREE.MeshLambertMaterial( {color: 0xff0000, transparent: true, opacity: 1, side: THREE.DoubleSide } ) );
-		roofB.rotation.set(-Math.PI/4, 0, 0);
-		roofB.position.set(0, 6, 0);
-		//roofB.userData.tag = 'planeMath';	
-		scene.add( roofB );
-		
-		var roofB = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10 ), new THREE.MeshLambertMaterial( {color: 0xff0000, transparent: true, opacity: 1, side: THREE.DoubleSide } ) );
-		roofB.rotation.set(Math.PI/4, 0, 0);
-		roofB.position.set(0, 6, 0);	
-		scene.add( roofB );			
-	}
-	
-	
-	
-	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
-	if(obj_line.length > 0) detectRoomZone();
-	if(obj_line.length > 0) upLabelPlan_1(obj_line);
-	if(obj_line.length > 0) createWallZone(obj_line[0])
-	
-	//width_wall = 0.3;
-	
-	if(form == 'wall_kirpich' || form == 'wall_block') 
-	{ 
-		getFormWallR_1(); 	// получаем параметры стены из input 
-		createFormWallR(); 
-	}  
-	if(form == 'wall_plaster') 
-	{ 
-		createWallPlaster();
-	} 
-	
-	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
-	
-	centerCamera2D();
-	renderCamera();
-}
-
-
-
 
 
 function createPoint( pos, id )
@@ -989,6 +767,13 @@ function createOneWall3( point1, point2, width, cdm )
 	var d = p1.distanceTo( p2 );
 	
 	var color = [0x7d7d7d, 0x696969]; 
+	
+	
+	if(infProject.settings.project == 'warm_floor' && infProject.settings.wall.color) 
+	{  
+		if(infProject.settings.wall.color.front) color[0] = infProject.settings.wall.color.front; 
+		if(infProject.settings.wall.color.top) color[1] = infProject.settings.wall.color.top; 
+	}	
 	
 	var material = new THREE.MeshLambertMaterial({ color : color[0], lightMap : lightMap_1 });
 	
@@ -1775,6 +1560,10 @@ document.body.addEventListener("keydown", function (e)
 			{ 		
 				inputWidthOneWallPlaster({wall:obj_line[0], width:{value:$('[nameid="wall_plaster_width_1"]').val(), unit:'cm'}, index:1}) 
 			}
+			if(infProject.activeInput == 'size-grid-tube-xy-1')
+			{
+				updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});
+			}
 		}		
 		 
 		return; 
@@ -1786,13 +1575,46 @@ document.body.addEventListener("keydown", function (e)
 } );
 
 
+// проверяем правильность ввода числа
+function checkNumberInput(cdm)
+{
+	var value = cdm.value;
+	
+	value = value.replace(",", ".");
+	
+	if(!isNumeric(value)) return null; 
+	
+	value = Number(value);
+	
+	if(cdm.unit)
+	{
+		if(cdm.unit == 0.01) { value /= 100; } // см
+		else if(cdm.unit == 0.001) { value /= 1000; } // мм
+	}
+	
+	if(cdm.round)
+	{
+		value = Math.round(h2 * 100) / 100;
+	}	
+
+	if(cdm.limit)
+	{
+		if(cdm.limit.max < value) { value = cdm.limit.max; }
+		if(cdm.limit.min > value) { value = cdm.limit.min; }
+	}
+
+	return value;	
+}
+
+
+
 var docReady = false;
 
 $(document).ready(function () 
 { 
 	docReady = true; 
 	//loadFile('');
-	if(infProject.settings.project != '') { createForm({form:infProject.settings.project}); }
+	if(infProject.scene.load != '') { loadStartForm({form: infProject.scene.load}); }
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }

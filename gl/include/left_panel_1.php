@@ -96,5 +96,28 @@
 			<input type="text" nameId='size-wall-height' data-input='wall_1' value = 2>
 		</div>			
 	</div>		
-	<?}?>		
+	<?}?>	
+
+
+	<?if($interface['grid_tube_1'] == 1){?>
+	<div class="left-input-block">
+		<div class="left-input-block-header">сетка</div>
+		<div class="input-height">
+		<div class="text_1">вкл/выкл</div>
+		</div>
+		
+		<div class="left-input-block-header">размер ячейки</div>
+		<div class="input-height">
+			<div class="text_1">ячейка (cм)</div>
+			<input type="text" nameId='size-grid-tube-xy-1' data-input='size-grid-tube-xy-1'>
+		</div> 	
+		
+		<div class="left-input-block-header">привязка</div>
+		<div class="input-height">
+			<div class="text_1">вкл/выкл</div>
+		</div>
+	</div>
+	<?}?>
+
+	
 </div>
