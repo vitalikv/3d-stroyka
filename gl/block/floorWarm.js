@@ -51,6 +51,7 @@ function moveWFPoint(event, obj)
 {
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
+	if(intersects.length == 0) return;
 	
 	if(obj.userData.wf_point.type == 'tool') 
 	{ 

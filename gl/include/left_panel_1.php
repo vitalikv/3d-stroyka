@@ -114,7 +114,7 @@
 		
 		<div class="left-input-block-header">привязка</div>
 		<div class="input-height">
-			<div class="text_1">вкл/выкл</div>
+			<div data-action ='grid_move_1' class="button1"><p>Вкл/Выкл</p></div>
 		</div>
 	</div>
 	<?}?>

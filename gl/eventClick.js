@@ -13,6 +13,7 @@ $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface
 $('[data-action="create_wd_1"]').mousedown(function () { return clickInterface({button:'create_wd_1'}); });
 $('[data-action="create_wd_2"]').mousedown(function () { return clickInterface({button:'create_wd_2'}); });
 $('[data-action="create_wd_3"]').mousedown(function () { return clickInterface({button:'create_wd_3'}); });
+$('[data-action="grid_move_1"]').mousedown(function () { return clickInterface({button:'grid_move_1'}); });
 $('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 
 

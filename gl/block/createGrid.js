@@ -40,9 +40,12 @@ function createGrid(cdm)
 	scene.add( lineGrid );	
 
 	
+	lineGrid.userData.mouse = { down: false, move: false, up: false, startPos: new THREE.Vector3() };
 	lineGrid.userData.size = size;
 	lineGrid.userData.count = cdm.count;
-		
+	lineGrid.userData.color = (cdm.uColor) ? cdm.uColor : lineGrid.children[0].material.color.clone();
+
+	
 	$('[nameid="size-grid-tube-xy-1"]').val(Math.round(size * 100));	// перводим в см	
 	
 	
@@ -75,16 +78,83 @@ function updateGrid(cdm)
 	
 	var pos = grid.position.clone();
 	var color = grid.children[0].material.color.clone();
+	var uColor = grid.userData.color.clone();
 	var count = grid.userData.count;
 	
 	scene.remove( grid );
 	
-	infProject.scene.grid.obj = createGrid({pos: pos, color: color, size: size});
+	infProject.scene.grid.obj = createGrid({pos: pos, color: color, size: size, uColor : uColor});
 	
 	renderCamera();
 }
 
 
+
+// вкл/выкл режим перемещения grid
+function startEndMoveGrid()
+{
+	var grid = infProject.scene.grid.obj;
+	
+	if(!infProject.scene.grid.active)
+	{
+		for(var i = 0; i < grid.children.length; i++)
+		{
+			grid.children[i].material.color = new THREE.Color(infProject.listColor.active2D);
+		}
+		
+		infProject.scene.grid.active = true;		
+	}
+	else
+	{
+		for(var i = 0; i < grid.children.length; i++)
+		{
+			grid.children[i].material.color = grid.userData.color.clone();
+		}
+
+		infProject.scene.grid.active = false;
+	}
+}
+
+
+
+function clickDownGrid(event)
+{
+	var grid = infProject.scene.grid.obj;
+	
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return;
+
+	//grid.userData.mouse.startPos = intersects[0].point.clone();
+	grid.userData.mouse.offset = new THREE.Vector3().subVectors( intersects[0].point, grid.position );
+	grid.userData.mouse.down = true;
+}
+
+
+function moveGrid(event)
+{
+	var grid = infProject.scene.grid.obj;
+	
+	if(!grid.userData.mouse.down) return;
+	
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return;
+
+	grid.position.x = intersects[0].point.x - grid.userData.mouse.offset.x;
+	grid.position.z = intersects[0].point.z - grid.userData.mouse.offset.z;
+
+	return true;
+}
+
+
+
+function clickUpGrid()
+{
+	var grid = infProject.scene.grid.obj;
+	
+	grid.userData.mouse.down = false;
+}
 
 
 
