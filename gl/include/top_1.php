@@ -1,6 +1,6 @@
 
 
-<div class="top_panel_1" data-action ='top_panel_1' style="display: none;">
+<div class="top_panel_1" data-action ='top_panel_1' style="display: none; z-index: 1;">
 	<a href="/" class="go-home"><p>На главную</p></a>
 	<div class="title_1"><h1><?=$title?></h1></div>
 	<div class="menu-link">
@@ -12,7 +12,7 @@
 	</div>				
 </div>
 
-<div class="top_panel_2">				
+<div class="top_panel_2" style="z-index: 1;">				
 	<div class="toolbar" data-action ='top_panel_1'>
 		<? if($interface['wall_1'] == 1){ ?>
 		<div data-action ='wall' class="button1"><img src="<?=$path?>/img/paint.png"></div>

@@ -10,8 +10,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title><?=$title?></title>
 
-	<link rel="stylesheet" href="<?=$path?>css/style.css"> 
-	<script src="<?=$path?>js/jquery.js"></script>
+	<link rel="stylesheet" href="<?=$path?>css/style.css"> 	
 </head>
 
 <body>
@@ -22,9 +21,30 @@
 
 		console.log('version '+ vr);		
 	</script>
+	
+	<? include("include/top_1.php");  ?>		 
+	<? include("include/left_panel_1.php");  ?>	
+	<? include("include/bottom_panel_1.php");  ?>	
+	<? include("include/modal_window_1.php");  ?>
+	
+	<?if(2 == 1){?>
+	<!--<div class="help">
+		<div class="button3" data-action ='top_panel_1'>
+			<div class="button3-wrap">видеоинструкция</div>
+		</div>
+	</div>-->
 
+	<!--hidden='true'-->
+		
+	<div class="right_panel_1" data-action ='right_panel_1'>			
+		<a href="/calculator/monolit_fundament" class="link_page_1">монолитный<br>фундамент</a>
+		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
+		<a href="/calculator/svaynyy_fundament" class="link_page_1">свайный<br>фундамент</a>
+	</div>	
+	<?}?>	
+	
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
-    
+    <script src="<?=$path?>js/jquery.js"></script>
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
     
 	<script src="<?=$path?>meshBSP.js"></script> 	
@@ -50,41 +70,12 @@
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
 
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>label.js?<?=$vrs?>"></script>
-  	
-	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>
-    
+    <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	
+	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
-		
-	
-    <script src="<?=$path?>script.js?<?=$vrs?>"></script>    	
-	
-	
+    <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	
 	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>
-
-	
-	<? include("include/top_1.php");  ?>		 
-	<? include("include/left_panel_1.php");  ?>	
-	<? include("include/bottom_panel_1.php");  ?>	
-	<? include("include/modal_window_1.php");  ?>
-	
-	<!--<div class="help">
-		<div class="button3" data-action ='top_panel_1'>
-			<div class="button3-wrap">видеоинструкция</div>
-		</div>
-	</div>-->
-	
-	<!--hidden='true'-->
-	
-	<?if(2 == 1){?>
-	<div class="right_panel_1" data-action ='right_panel_1'>			
-		<a href="/calculator/monolit_fundament" class="link_page_1">монолитный<br>фундамент</a>
-		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
-		<a href="/calculator/svaynyy_fundament" class="link_page_1">свайный<br>фундамент</a>
-	</div>	
-	<?}?>
-	
 
 	
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>	

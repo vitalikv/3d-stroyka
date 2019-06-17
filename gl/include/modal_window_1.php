@@ -1,7 +1,7 @@
 
 
 
-<div class="modal" data-action ='modal'>
+<div class="modal" data-action ='modal' style="z-index: 1;">
 	<div class="modal_wrap">
 		<div class="modal_window" data-action ='modal_window'>
 			<div class="modal_window_close" data-action ='modal_window_close'>

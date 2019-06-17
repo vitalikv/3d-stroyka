@@ -1594,7 +1594,7 @@ function checkNumberInput(cdm)
 	
 	if(cdm.round)
 	{
-		value = Math.round(h2 * 100) / 100;
+		value = Math.round(value * 100) / 100;  
 	}	
 
 	if(cdm.limit)

@@ -7,9 +7,10 @@ function createGrid(cdm)
 {
 	var lineGrid = new THREE.Group();
 	
-	var size = (cdm.size) ? cdm.size : 1;
+	var size = (cdm.size) ? cdm.size : 0.2;
+	size = Math.round(size * 100)/100; 
 	var count = (cdm.count) ? cdm.count : (10/size);
-	console.log(cdm.count);
+	
 	var geom_line = new THREE.Geometry();
 	var count_grid1 = count;
 	var count_grid2 = (count_grid1 * size) / 2; 
@@ -42,7 +43,8 @@ function createGrid(cdm)
 	lineGrid.userData.size = size;
 	lineGrid.userData.count = cdm.count;
 		
-	$('[nameid="size-grid-tube-xy-1"]').val(size * 100);	// перводим в см	
+	$('[nameid="size-grid-tube-xy-1"]').val(Math.round(size * 100));	// перводим в см	
+	
 	
 	if(cdm.pos)
 	{
@@ -60,7 +62,7 @@ function updateGrid(cdm)
 {
 	var grid = infProject.scene.grid.obj;
 	
-	var size = checkNumberInput({value: cdm.size, unit: 0.01, limit: {min: 0.05, max: 5}});
+	var size = checkNumberInput({ value: cdm.size, unit: 0.01, limit: {min: 0.05, max: 5} });
 	
 	if(!size) 
 	{
@@ -69,7 +71,7 @@ function updateGrid(cdm)
 		
 		return;
 	}
-
+	
 	
 	var pos = grid.position.clone();
 	var color = grid.children[0].material.color.clone();
