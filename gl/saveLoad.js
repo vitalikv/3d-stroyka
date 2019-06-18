@@ -45,6 +45,7 @@ var resetPop =
 		array.window2D = 'rgb(122, 160, 195)';
 		array.active2D = 'rgb(255,0,0)';
 		array.hover2D = 'rgb(55, 125, 61)';
+		array.lineTube2D = 0x777777;
 
 		return array;
 	},

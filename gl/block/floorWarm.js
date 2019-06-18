@@ -301,12 +301,13 @@ function upLineWF(point)
 		var geometry = new THREE.Geometry();
 		geometry.vertices.push(point.position);
 		
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x777777, linewidth: 1 }) );
+		//0x777777
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1 }) );
 		line.userData.tag = 'wf_line';
 		line.userData.wf_line = {};
 		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
-		line.userData.wf_line.color = line.material.color.clone();
+		line.userData.wf_line.color = new THREE.Color(infProject.listColor.lineTube2D);
 		scene.add( line );
 		
 		
@@ -484,6 +485,7 @@ function deletePointWF(obj)
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
 
+			line.material.color = new THREE.Color(infProject.listColor.lineTube2D);
 			// создаем трубу
 			//newTubeWF({line : line, createLine : true});
 		}
