@@ -166,7 +166,7 @@ var arrWallFront = [];
 
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
-infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false };
+infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
@@ -1230,9 +1230,17 @@ function clickInterface(cdm)
 		{
 			clickO.button = 'create_tube_1';
 		}
+		else if(cdm.button == 'grid_show_1')
+		{
+			showHideGrid(); 
+		}
 		else if(cdm.button == 'grid_move_1')
 		{
 			startEndMoveGrid(); 
+		}
+		else if(cdm.button == 'grid_link_1')
+		{
+			linkGrid(); 
 		}		
 	}
 	

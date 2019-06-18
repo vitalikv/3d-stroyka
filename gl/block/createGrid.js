@@ -11,30 +11,31 @@ function createGrid(cdm)
 	size = Math.round(size * 100)/100; 
 	var count = (cdm.count) ? cdm.count : (10/size);
 	
-	var geom_line = new THREE.Geometry();
-	var count_grid1 = count;
-	var count_grid2 = (count_grid1 * size) / 2; 
-	geom_line.vertices.push(new THREE.Vector3( - count_grid2, 0, 0 ) );
-	geom_line.vertices.push(new THREE.Vector3( count_grid2, 0, 0 ) );
+	var color = 0xd6d6d6;	
+	if(cdm.color) { color = cdm.color; }	
 	
-	var color = 0xd6d6d6;
+	var geometry = new THREE.Geometry();
+	var material = new THREE.LineBasicMaterial( { color: color, opacity: 1 } );
 	
-	if(cdm.color) { color = cdm.color; }
+	var ofsset = (count * size) / 2;
 	
-	var linesMaterial = new THREE.LineBasicMaterial( { color: color, opacity: 1 } );
+	// длина линии, центр по середине
+	geometry.vertices.push(new THREE.Vector3( -ofsset, 0, 0 ) );	
+	geometry.vertices.push(new THREE.Vector3( ofsset, 0, 0 ) );
 
-	for ( var i = 0; i <= count_grid1; i ++ ) 
+
+	for ( var i = 0; i <= count; i ++ ) 
 	{
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.z = ( i * size ) - count_grid2;
-		line.position.y = -0.01;
+		var line = new THREE.Line( geometry, material );
+		line.position.z = ( i * size ) - ofsset;
 		lineGrid.add( line );
 
-		var line = new THREE.Line( geom_line, linesMaterial );
-		line.position.x = ( i * size ) - count_grid2;
-		line.position.y = -0.01;
+		var line = new THREE.Line( geometry, material );
+		line.position.x = ( i * size ) - ofsset;
 		line.rotation.y = 90 * Math.PI / 180;
 		lineGrid.add( line );
+		
+		//console.log(( i * size ) - (count * size) / 2);
 	}
 	
 	scene.add( lineGrid );	
@@ -42,7 +43,7 @@ function createGrid(cdm)
 	
 	lineGrid.userData.mouse = { down: false, move: false, up: false, startPos: new THREE.Vector3() };
 	lineGrid.userData.size = size;
-	lineGrid.userData.count = cdm.count;
+	lineGrid.userData.count = count;
 	lineGrid.userData.color = (cdm.uColor) ? cdm.uColor : lineGrid.children[0].material.color.clone();
 
 	
@@ -86,6 +87,28 @@ function updateGrid(cdm)
 	infProject.scene.grid.obj = createGrid({pos: pos, color: color, size: size, uColor : uColor});
 	
 	renderCamera();
+}
+
+
+// показываем скрываем сетку
+function showHideGrid()
+{
+	var grid = infProject.scene.grid.obj;
+	
+	if(grid.visible)
+	{
+		grid.visible = false;
+		
+		if(infProject.scene.grid.active) { startEndMoveGrid(); }
+		
+		infProject.scene.grid.show = false;
+		infProject.scene.grid.link = false;
+	}
+	else
+	{
+		grid.visible = true;
+		infProject.scene.grid.show = true;
+	}
 }
 
 
@@ -149,11 +172,22 @@ function moveGrid(event)
 
 
 
+// сняли клик после перемещения grid
 function clickUpGrid()
 {
 	var grid = infProject.scene.grid.obj;
 	
 	grid.userData.mouse.down = false;
+}
+
+
+
+// вкл/выкл привязке к сетки
+function linkGrid()
+{
+	var flag = !infProject.scene.grid.link;
+	
+	infProject.scene.grid.link = flag;
 }
 
 

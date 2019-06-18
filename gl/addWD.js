@@ -112,7 +112,7 @@ function dragWD_2( event, obj )
 	var wall = null;
 	
 	var pos = new THREE.Vector3();
-	if(obj.material.color == new THREE.Color(infProject.listColor.active2D)) { obj.material.color = obj.userData.door.color; }
+	obj.material.color = obj.userData.door.color;
 	
 	for ( var i = 0; i < intersects.length; i++ )
 	{

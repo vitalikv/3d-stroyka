@@ -15,14 +15,14 @@ function changeCamera(cam)
 	{					
 		changeDepthColor();			
 		cameraZoomTop( camera.zoom );
-		infProject.scene.grid.obj.visible = true;
+		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
 	}
 	else if(camera == camera3D)
 	{	
 		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
-		infProject.scene.grid.obj.visible = true;		 
+		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;		 
 	}
 	else if(camera == cameraWall)
 	{  

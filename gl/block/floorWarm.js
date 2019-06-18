@@ -66,6 +66,7 @@ function moveWFPoint(event, obj)
 		obj.position.y = infProject.settings.tube.h;
 	}
 	
+	posLinkGrid({point: obj});
 	
 	// обновляем geometry линии
 	if(obj.userData.wf_point.line.o)
@@ -84,6 +85,52 @@ function moveWFPoint(event, obj)
 }
 
 
+
+function posLinkGrid(cdm)
+{
+	if(!infProject.scene.grid.link) return;
+	
+	var point = cdm.point;
+	
+	var grid = infProject.scene.grid.obj;
+	
+	var size = grid.userData.size;
+	var count = grid.userData.count;
+	
+	
+	var arr = [];
+	
+	for(var i = 0; i <= count; i++)
+	{
+		var value = ( i * size ) - (count * size) / 2;
+		
+		var posX = value + grid.position.x;
+		var posZ = value + grid.position.z;
+		
+		arr[i] = {};
+		arr[i].x = Math.abs(posX - point.position.x);
+		arr[i].z = Math.abs(posZ - point.position.z);
+		arr[i].posX = posX;
+		arr[i].posZ = posZ;
+	}
+	
+	var min = { x: arr[0].x, z: arr[0].z, posX: arr[0].posX, posZ: arr[0].posZ };
+	
+	for(var i = 1; i < arr.length; i++)
+	{
+		if(min.x > arr[i].x) { min.x = arr[i].x; min.posX = arr[i].posX; }
+		if(min.z > arr[i].z) { min.z = arr[i].z; min.posZ = arr[i].posZ; }
+	}
+	
+			
+	
+	if(min.x > 0.04) { min.posX = spPoint(new THREE.Vector3(-10, 0, min.posZ), new THREE.Vector3(10, 0, min.posZ), point.position).x; }
+	if(min.z > 0.04) { min.posZ = spPoint(new THREE.Vector3(min.posX, 0, 10), new THREE.Vector3(min.posX, 0, -10), point.position).z; }
+	
+	
+	point.position.x = min.posX;
+	point.position.z = min.posZ;
+}
 
 
 

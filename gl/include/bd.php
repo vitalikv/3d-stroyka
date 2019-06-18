@@ -118,7 +118,7 @@ $infProject['settings']['calc'] = [ 'fundament' => '' ];
 $infProject['settings']['land'] = [ 'o' => false ];
 $infProject['settings']['unit'] = [ 'wall' => 1, 'floor' => 1 ];
 $infProject['settings']['camera'] = [ 'type' => '2d', 'zoom' => 1, 'limitZoom' => 1 ];
-$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5 ];
+$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5, 'pos' => [ 'y' => -0.1 ] ];
 $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 
 $infProject['scene'] = [ 'tool' => [] ];

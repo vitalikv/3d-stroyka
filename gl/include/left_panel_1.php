@@ -103,7 +103,7 @@
 	<div class="left-input-block">
 		<div class="left-input-block-header">сетка</div>
 		<div class="input-height">
-		<div class="text_1">вкл/выкл</div>
+		<div data-action ='grid_show_1' class="button1"><p>Вкл/Выкл</p></div>
 		</div>
 		
 		<div class="left-input-block-header">размер ячейки</div>
@@ -115,6 +115,7 @@
 		<div class="left-input-block-header">привязка</div>
 		<div class="input-height">
 			<div data-action ='grid_move_1' class="button1"><p>Вкл/Выкл</p></div>
+			<div data-action ='grid_link_1' class="button1"><p>Вкл/Выкл</p></div>
 		</div>
 	</div>
 	<?}?>
