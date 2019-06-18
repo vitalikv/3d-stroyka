@@ -86,6 +86,7 @@ function moveWFPoint(event, obj)
 
 
 
+// привязка мышки к сетки
 function posLinkGrid(cdm)
 {
 	if(!infProject.scene.grid.link) return;

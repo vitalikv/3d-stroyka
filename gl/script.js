@@ -1196,7 +1196,7 @@ function clickInterface(cdm)
 		mouseDownRight();
 	}
 
-	
+	console.log(cdm);
 	if(cdm)
 	{		
 		deActiveSelected();	
