@@ -125,8 +125,8 @@ function posLinkGrid(cdm)
 	
 			
 	
-	if(min.x > 0.04) { min.posX = spPoint(new THREE.Vector3(-10, 0, min.posZ), new THREE.Vector3(10, 0, min.posZ), point.position).x; }
-	if(min.z > 0.04) { min.posZ = spPoint(new THREE.Vector3(min.posX, 0, 10), new THREE.Vector3(min.posX, 0, -10), point.position).z; }
+	//if(min.x > 0.04) { min.posX = spPoint(new THREE.Vector3(-10, 0, min.posZ), new THREE.Vector3(10, 0, min.posZ), point.position).x; }
+	//if(min.z > 0.04) { min.posZ = spPoint(new THREE.Vector3(min.posX, 0, 10), new THREE.Vector3(min.posX, 0, -10), point.position).z; }
 	
 	
 	point.position.x = min.posX;
@@ -140,7 +140,9 @@ function dragToolWFPoint(cdm)
 {	
 	var obj = cdm.obj;
 	
-	if(obj.userData.wf_point.line.o) return;
+	//if(obj.userData.wf_point.line.o) return;
+	
+	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
 	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 		
@@ -150,6 +152,9 @@ function dragToolWFPoint(cdm)
 	for(var i = 0; i < infProject.scene.array.tube.length; i++)
 	{ 		
 		var line = infProject.scene.array.tube[i];
+		
+		if(line_1 == line) continue;	// пропускаем свою трубу
+		
 		var v = line.geometry.vertices;
 		
 		if(v.length < 2) continue;
@@ -183,7 +188,7 @@ function dragToolWFPoint(cdm)
 	if(arr.length > 0) 
 	{  
 		obj.userData.wf_point.cross = {o: arr[0].cross, point: arr[0].point};
-		obj.position.copy(arr[0].p1);
+		obj.position.copy(arr[0].p1);  
 	}
 	
 	renderCamera();
@@ -337,7 +342,7 @@ function upLineWF(point)
 // кликнули, когда к мышки привязан Point Tool
 function clickPointToolsWF(obj)
 {
-	if(obj.userData.wf_point.line.o) return;
+	//if(obj.userData.wf_point.line.o) return;
 	
 	var cross = obj.userData.wf_point.cross.o;
 	
@@ -345,7 +350,7 @@ function clickPointToolsWF(obj)
 	
 	var tag = cross.userData.tag;	
 	
-	if(tag == 'wf_line') 
+	if(tag == 'wf_line' && !obj.userData.wf_point.line.o) 
 	{		
 		obj.userData.wf_point.type = '';
 		clickO.move = null;	
@@ -372,13 +377,13 @@ function clickPointToolsWF(obj)
 		line.geometry.elementsNeedUpdate = true;		
 	}
 	if(tag == 'wf_point')
-	{
+	{		
 		var line = cross.userData.wf_point.line.o;
 		var p = line.userData.wf_line.point;
 		
 		var geometry = new THREE.Geometry();
 		
-		if(cross == p[0])	// добавляем все в обратном порядке, кроме нулевого элемента
+		if(cross == p[0])	// добавляем все в обратном порядке
 		{		
 			var arrP = [];
 			
@@ -390,19 +395,42 @@ function clickPointToolsWF(obj)
 			
 			line.userData.wf_line.point = arrP;
 		}
-		else if(cross == p[p.length - 1])	// добавляем все, кроме последнего
+		else if(cross == p[p.length - 1])	// добавляем все
 		{
 			geometry.vertices = line.geometry.vertices; 
 		}
 
-		geometry.vertices[geometry.vertices.length] = obj.position;
+		var line_1 = obj.userData.wf_point.line.o;
+		
+		if(line_1)	// у точки есть линия (последнюю точку не добавляем)
+		{			
+			for(var i = line_1.userData.wf_line.point.length - 2; i > -1; i--)
+			{
+				var point = line_1.userData.wf_line.point[i];
+				
+				geometry.vertices[geometry.vertices.length] = point.position;
+				point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
+				line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
+			}
+			
+			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
+			scene.remove(line_1);
+			scene.remove(obj);	
+
+			clickO = resetPop.clickO();
+		}
+		else	// у точки нет линии, это tool
+		{
+			geometry.vertices[geometry.vertices.length] = obj.position;
+			
+			obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
+			line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку			
+		}		
 		
 		line.geometry = geometry;	
 		line.geometry.verticesNeedUpdate = true; 
 		line.geometry.elementsNeedUpdate = true;
 
-		obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
-		line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку
 	}
 	
 	// обновляем geometry трубы
