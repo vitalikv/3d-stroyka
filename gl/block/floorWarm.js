@@ -59,7 +59,7 @@ function moveWFPoint(event, obj)
 	
 	dragToolWFPoint({obj : clickO.move});	// проверяем соединения с другими теплыми полами
 	
-	posLinkGrid({point: obj});
+	if(!obj.userData.wf_point.cross.o) { posLinkGrid({point: obj}); } 	// привязка к сетке
 	
 	// обновляем geometry линии
 	if(obj.userData.wf_point.line.o)
@@ -82,6 +82,7 @@ function moveWFPoint(event, obj)
 // привязка мышки к сетки
 function posLinkGrid(cdm)
 {
+	if(!infProject.scene.grid.show) return;
 	if(!infProject.scene.grid.link) return;
 	
 	var point = cdm.point;
@@ -137,6 +138,9 @@ function dragToolWFPoint(cdm)
 	
 	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
 	
+	var posMouse = obj.position;	
+	posMouse.y = infProject.settings.tube.h;	
+	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 		
 	var arr = [];	
@@ -173,6 +177,26 @@ function dragToolWFPoint(cdm)
 			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: cross};
 			continue; 
 		}
+		
+		if(!obj.userData.wf_point.line.o)
+		{
+			// пускаем перпендикуляр от точки на прямую
+			for(var i2 = 0; i2 < v.length - 1; i2++)
+			{
+				if(!calScal(v[i2], v[i2 + 1], posMouse)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
+				
+				var pos = spPoint(v[i2], v[i2 + 1], posMouse);  
+				var pos = new THREE.Vector3(pos.x, posMouse.y, pos.z);	// получаем точку пересечения точки на прямую
+				
+				var dist = pos.distanceTo(posMouse);
+				
+				if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
+				
+				var point_1 = line.userData.wf_line.point[i2];
+				var point_2 = line.userData.wf_line.point[i2];
+				arr[arr.length] = {dist: dist, p1: pos, p2: posMouse, cross: line, point: [point_1, point_2]};
+			}			
+		}		
 	}
 		
 		
@@ -338,7 +362,7 @@ function clickPointToolsWF(obj)
 	//if(obj.userData.wf_point.line.o) return;
 	
 	var cross = obj.userData.wf_point.cross.o;
-	console.log(33333, obj);
+	
 	if(!cross) return;
 	
 	var tag = cross.userData.tag;	
@@ -367,7 +391,11 @@ function clickPointToolsWF(obj)
 		
 		line.geometry = geometry;	
 		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;		
+		line.geometry.elementsNeedUpdate = true;
+		
+		obj.userData.wf_point.cross = { o : null, point : [] };	
+
+		clickO = resetPop.clickO();
 	}
 	if(tag == 'wf_point')
 	{		
@@ -417,7 +445,7 @@ function clickPointToolsWF(obj)
 			geometry.vertices[geometry.vertices.length] = obj.position;
 			
 			obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
-			line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку			
+			line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку	
 		}		
 		
 		line.geometry = geometry;	
@@ -520,6 +548,7 @@ function deletePointWF(obj)
 
 
 
+// удаляем линию
 function deleteLineWF(line)
 {
 	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	

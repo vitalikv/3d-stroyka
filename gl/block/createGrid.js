@@ -102,7 +102,6 @@ function showHideGrid()
 		if(infProject.scene.grid.active) { startEndMoveGrid(); }
 		
 		infProject.scene.grid.show = false;
-		infProject.scene.grid.link = false;
 	}
 	else
 	{
