@@ -324,12 +324,16 @@ function onDocumentMouseUp( event )
 			else { clickO.move = null; }
 		}
 		else if (tag == 'wf_point') 
-		{
+		{ 
 			if(obj.userData.wf_point.type == 'tool') 
 			{ 
 				upLineWF(obj);
 			}
-			else { clickO.move = null; }			
+			else 
+			{ 
+				if(obj.userData.wf_point.cross.o) { clickPointToolsWF(obj); }
+				clickO.move = null; 
+			}			
 		}		
 		else { clickO.move = null; }		
 	}
@@ -344,6 +348,8 @@ function onDocumentMouseUp( event )
 	
 	infProject.tools.axis[0].visible = false;
 	infProject.tools.axis[1].visible = false;	
+	
+	clickO.offset = new THREE.Vector3();
 	
 	renderCamera();
 }

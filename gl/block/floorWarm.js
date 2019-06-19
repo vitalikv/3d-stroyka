@@ -38,7 +38,7 @@ function clickWFPoint(intersect)
 	var obj = intersect.object;	
 	clickO.move = obj;	
 	
-	offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
+	clickO.offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 }
@@ -51,20 +51,13 @@ function moveWFPoint(event, obj)
 {
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
-	if(intersects.length == 0) return;
+	if(intersects.length == 0) return;	
 	
-	if(obj.userData.wf_point.type == 'tool') 
-	{ 
-		obj.position.copy(intersects[0].point); 
-		obj.position.y = infProject.settings.tube.h;
-		dragToolWFPoint({obj : clickO.move}); 
-	}
-	else
-	{
-		var pos = new THREE.Vector3().addVectors( intersects[0].point, offset );
-		obj.position.copy(pos);
-		obj.position.y = infProject.settings.tube.h;
-	}
+	var pos = new THREE.Vector3().addVectors( intersects[0].point, clickO.offset );
+	obj.position.copy(pos);	
+	obj.position.y = infProject.settings.tube.h;
+	
+	dragToolWFPoint({obj : clickO.move});	// проверяем соединения с другими теплыми полами
 	
 	posLinkGrid({point: obj});
 	
@@ -191,7 +184,7 @@ function dragToolWFPoint(cdm)
 		obj.position.copy(arr[0].p1);  
 	}
 	
-	renderCamera();
+	//renderCamera();
 }
 
 
@@ -345,7 +338,7 @@ function clickPointToolsWF(obj)
 	//if(obj.userData.wf_point.line.o) return;
 	
 	var cross = obj.userData.wf_point.cross.o;
-	
+	console.log(33333, obj);
 	if(!cross) return;
 	
 	var tag = cross.userData.tag;	
@@ -521,7 +514,7 @@ function deletePointWF(obj)
 	
  	scene.remove(obj);	// удаляем точку
 	
-	clickO = resetPop.clickO;
+	clickO = resetPop.clickO();
 }
 
 
@@ -538,9 +531,7 @@ function deleteLineWF(line)
 
 	scene.remove(line);
 	
-	console.log(infProject.scene.array.tube.length);
-	
-	clickO = resetPop.clickO;
+	clickO = resetPop.clickO();
 }
 
 

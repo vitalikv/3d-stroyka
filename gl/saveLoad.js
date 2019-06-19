@@ -56,6 +56,7 @@ var resetPop =
 		inf.down = null;
 		inf.move = null;
 		inf.up = null;
+		inf.offset = new THREE.Vector3();
 		inf.pos = { clickDown : new THREE.Vector3() };
 		inf.click = { wall : [], point : [] };  
 		inf.selectBox = { arr : [], drag : false, move : false, walls : [], walls_2 : [], point : [] };
