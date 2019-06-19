@@ -24,7 +24,7 @@ function mouseDownRight()
 	
 	if(obj)
 	{
-		if(obj.userData.tag == 'free_dw') { scene.remove(obj); clickO = resetPop.clickO(); }
+		if(obj.userData.tag == 'free_dw') { scene.remove(obj); }
 		
 		if(obj.userData.tag == 'point') 
 		{ 	
@@ -40,8 +40,6 @@ function mouseDownRight()
 				
 				if(point.userData.point.last.cdm == 'new_point_1') { deletePoint( point ).wall.userData.id = point.userData.point.last.cross.walls.old; }
 			}
-			
-			clickO = resetPop.clickO();
 		}
 		else if (obj.userData.tag == 'wf_point' ) 
 		{
@@ -49,7 +47,7 @@ function mouseDownRight()
 		}			
 	}	
 	
-	clickO.move = null;	
+	clickO = resetPop.clickO();	
 }
 
 

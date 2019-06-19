@@ -9,6 +9,8 @@ function updateKeyDown()
 	
 	var flag = false;
 	
+	var keys = clickO.keys;  
+	
 	if ( camera == cameraTop )
 	{
 		if ( keys[ 87 ] || keys[ 38 ] ) 

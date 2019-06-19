@@ -154,7 +154,6 @@ var resolutionD_h = window.screen.availHeight;
 var kof_rd = 1;
 
 var countId = 2;
-var keys = [];
 var camera = cameraTop;
 var height_wall = infProject.settings.height;
 var width_wall = infProject.settings.wall.width;
@@ -1548,16 +1547,13 @@ document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
 document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );
 document.body.addEventListener( 'touchend', onDocumentMouseUp, false );
 
-
-document.body.addEventListener("keydown", function (e) { keys[e.keyCode] = true; });
-document.body.addEventListener("keyup", function (e) { keys[e.keyCode] = false; });
-
 document.addEventListener('DOMMouseScroll', mousewheel, false);
 document.addEventListener('mousewheel', mousewheel, false);	
 
 
 document.body.addEventListener("keydown", function (e) 
 { 
+	if(clickO.keys[e.keyCode]) return;
 	
 	if(infProject.activeInput) 
 	{ 
@@ -1584,7 +1580,13 @@ document.body.addEventListener("keydown", function (e)
 
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
+	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
+	
 } );
+
+document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });
+document.body.addEventListener("keyup", function (e) { clickO.keys[e.keyCode] = false; });
+
 
 
 // проверяем правильность ввода числа
