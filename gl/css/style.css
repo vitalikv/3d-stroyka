@@ -466,6 +466,28 @@ canvas
 }
 
 
+.top_panel_2 .tp_left_1
+{
+	position: absolute;
+	width: auto;	
+	height: 100%; 
+	top: 0px;
+	left: 20px;
+	text-decoration: none;
+}
+
+
+.top_panel_2 .tp_right_1
+{
+	position: absolute;
+	width: auto;	
+	height: 100%; 
+	top: 0px;
+	right: 20px;	
+	text-decoration: none;	
+}
+
+
 .toolbar
 {
 	position: relative;
@@ -545,13 +567,19 @@ canvas
 }
 
 
-.button1-wrap 
+.button1-wrap-1 
+{ 
+	padding:0 2px;
+	display: -webkit-box;
+	display: flex;	
+}
+
+.button1-wrap-2
 { 
 	padding:0 15px;
 	display: -webkit-box;
 	display: flex;	
 }
-
 
 .button1:hover { cursor: pointer }
 
@@ -580,10 +608,8 @@ canvas
 	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
 	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
 	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
-	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;  
-  
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;   
 }
-
 
 .button1 img 
 {
@@ -600,6 +626,12 @@ canvas
 	display: block;
 	padding:0 15px;
 	margin: 0;	
+}
+
+
+.top_panel_2 .tp_left_1 .button1, .top_panel_2 .tp_right_1 .button1
+{
+	width: 100px;
 }	
 
 a.link_page_1

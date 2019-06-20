@@ -1,13 +1,61 @@
-
+$(document).ready(function(){
 
 $('[data-action="top_panel_1"]').mousemove(function (e) { e.stopPropagation(); });
 		
 $('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
 $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
 
-
-$('[data-action="2D"]').on('mousedown', function(e) { return clickInterface({button:'2D'}); }); 	
-$('[data-action="3D"]').mousedown(function () { return clickInterface({button:'3D'}); }); 	
+$('[infcam]').on('mousedown', function(e) 
+{  
+	var value = $(this).attr('infcam');
+	var txt = (value == '3D') ? '2D' : '3D';
+	$(this).text(txt);
+	$(this).attr({"infcam": txt});
+	
+	if(value == '3D')
+	{
+		$('[nameId="top_menu_b1"]').hide();
+		$('[nameId="top_menu_b2"]').hide();
+		$('[inf_type="mode_1"]').hide();
+	}
+	else
+	{
+		if($('[nameId="top_menu_b1"]').attr('inf-visible') == 'true') { $('[nameId="top_menu_b1"]').show(); }
+		if($('[nameId="top_menu_b2"]').attr('inf-visible') == 'true') { $('[nameId="top_menu_b2"]').show();	}
+		$('[inf_type="mode_1"]').show();
+	}
+	
+	clickInterface({button: value});
+	return false; 
+}); 
+ 	
+	
+$('[inf_type]').on('mousedown', function(e)
+{
+	var value = $(this).attr('inf_type');	
+	
+	if(value == 'mode_1')
+	{
+		var txt = $(this).text();
+		
+		var txt = (txt == 'План') ? 'Монтаж' : 'План'; console.log(value, txt);
+		$(this).text(txt);
+		
+		if(txt == 'Монтаж')
+		{
+			$('[nameId="top_menu_b1"]').hide(); $('[nameId="top_menu_b1"]').attr('inf-visible', 'false');
+			$('[nameId="top_menu_b2"]').show();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'true');
+		}
+		else
+		{
+			$('[nameId="top_menu_b2"]').hide();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'false');
+			$('[nameId="top_menu_b1"]').show();	$('[nameId="top_menu_b1"]').attr('inf-visible', 'true');		
+		}
+	}
+	
+	return false;
+});
+	
 $('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface({button:'create_tube_1'}); }); 
 $('[data-action="create_wd_1"]').mousedown(function () { return clickInterface({button:'create_wd_1'}); });
@@ -108,4 +156,4 @@ function checkClickUINameID(name)
 
 
 
-
+});

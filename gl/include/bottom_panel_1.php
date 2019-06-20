@@ -7,10 +7,10 @@
 		<div class="toolbar" nameId='wall_menu_1' style="display: none;">
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">					
-				<div class="button1-wrap">
+				<div class="button1-wrap-2">
 					<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
 				</div>					
-				<div class="button1-wrap">
+				<div class="button1-wrap-2">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
@@ -20,7 +20,7 @@
 		<div class="toolbar" nameId='point_menu_1' style="display: none;">
 			<div class="toolbar-header">точка</div>
 			<div class="toolbar-menu">
-				<div class="button1-wrap">
+				<div class="button1-wrap-2">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
@@ -63,7 +63,7 @@
 				<input type="text" nameId='size-wd-height' data-input='wd_1' value = 0>
 			</div>	
 							
-			<div class="button1-wrap">
+			<div class="button1-wrap-2">
 				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 			</div>			
 		</div>

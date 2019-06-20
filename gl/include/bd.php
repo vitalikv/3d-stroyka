@@ -5,9 +5,9 @@ $url = $_SERVER['REQUEST_URI'];
 $path = "/gl/";
 
 $title = '';
-$interface['wall_1'] = 1;
-$interface['tube_1'] = 1;
-$interface['estimate'] = 1;
+$interface['wall_1'] = 0;
+$interface['tube_1'] = 0;
+$interface['estimate'] = 0;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
 $interface['wd_2'] = 0;
@@ -96,11 +96,13 @@ if($url == '/calculator/warm_floor')
 { 
 	$title = 'Расчет теплого пола 3D'; 
 	$nameId = 'теплый пол';
+	$interface['wall_1'] = 1;
 	$interface['tube_1'] = 1;	
 	$interface['wd_2'] = 1;
 	$interface['wd_3'] = 1;
 	$interface['wall_b1'] = 1;
 	$interface['grid_tube_1'] = 1;
+	$interface['estimate'] = 1;
 }
 
 

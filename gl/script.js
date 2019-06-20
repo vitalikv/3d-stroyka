@@ -1201,7 +1201,7 @@ function clickInterface(cdm)
 		deActiveSelected();	
 		
 		if(cdm.button == '2D')
-		{
+		{  			
 			if(infProject.settings.interface.button.cam2d == 'front') { changeCamera(cameraWall); }
 			else { changeCamera(cameraTop); } 
 		}
