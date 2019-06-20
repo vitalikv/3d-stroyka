@@ -85,6 +85,7 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.ruler = {};
 	obj.userData.door.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3(), x : 0, y : 0 };
 	obj.userData.door.topMenu = true;
+	obj.userData.door.active = { click: true, hover: true };
 	
 	clickO.move = obj; 
 	clickO.last_obj = obj;

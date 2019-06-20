@@ -17,10 +17,20 @@ function activeHover2D( event )
 	
 	var rayhit = null;
 	
-	var hoverO = hoverCursorLineWF(event);
+	var ray = hoverCursorLineWF(event);	
+	if(ray) { rayhit = ray; }
+
+	var ray = rayIntersect( event, infProject.scene.array.door, 'arr' );
+	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }
 	
-	if(hoverO) { rayhit = hoverO; }
-	else { rayhit = detectRayHit( event, 'activeHover' ); }	
+	var ray = rayIntersect( event, infProject.scene.array.window, 'arr' );
+	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }
+
+	var ray = rayIntersect( event, infProject.scene.array.point, 'arr' );
+	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }
+
+	var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );
+	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }	
 
 	if ( rayhit ) 
 	{

@@ -834,6 +834,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.arrO = [];
 	wall.userData.wall.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3() }; 
 	wall.userData.wall.area = { top : 0 }; 
+	wall.userData.wall.active = { click: true, hover: true };
 	
 	wall.userData.wall.brick = { arr : [] };
 	wall.userData.wall.plaster = { o : null };
@@ -1264,7 +1265,7 @@ function deActiveSelected()
 function showHideObjMode_1(cdm)
 {
 	var visible_1 = (cdm.type == 'Монтаж') ? true : false;
-	var visible_2 = (cdm.type == 'Монтаж') ? false : true;
+	var visible_2 = (cdm.type == 'Монтаж') ? false : true;	//для стен, wd
 	
 	var point = infProject.scene.array.point;
 	
@@ -1280,6 +1281,28 @@ function showHideObjMode_1(cdm)
 	}
 	
 	showHideArrObj(wf, visible_1);
+	
+	var wall = infProject.scene.array.wall;
+	for(var i = 0; i < wall.length; i++)
+	{
+		wall[i].userData.wall.active.click = visible_2;
+		wall[i].userData.wall.active.hover = visible_2;
+	}
+	
+	var door = infProject.scene.array.door;
+	for(var i = 0; i < door.length; i++)
+	{
+		door[i].userData.door.active.click = visible_2;
+		door[i].userData.door.active.hover = visible_2;
+	}
+	
+	var window = infProject.scene.array.window;
+	for(var i = 0; i < window.length; i++)
+	{
+		window[i].userData.door.active.click = visible_2;
+		window[i].userData.door.active.hover = visible_2;
+	}		
+
 }
 
 
