@@ -835,7 +835,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3() }; 
 	wall.userData.wall.area = { top : 0 }; 
 	
-	wall.userData.wall.block = { arr : [] };
+	wall.userData.wall.brick = { arr : [] };
 	wall.userData.wall.plaster = { o : null };
 	wall.userData.wall.room = { side : 0, side2 : [null,null,null] };
 	
@@ -1258,6 +1258,29 @@ function deActiveSelected()
 	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }		
 }
 
+
+
+// прячем/показываем объекты в режиме план/монтаж + блокировка действий 
+function showHideObjMode_1(cdm)
+{
+	var visible_1 = (cdm.type == 'Монтаж') ? true : false;
+	var visible_2 = (cdm.type == 'Монтаж') ? false : true;
+	
+	var point = infProject.scene.array.point;
+	
+	showHideArrObj(infProject.scene.array.point, visible_2);
+
+
+	var wf = [];
+	var tube = infProject.scene.array.tube;
+	
+	for ( var i = 0; i < tube.length; i++ )
+	{
+		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }	
+	}
+	
+	showHideArrObj(wf, visible_1);
+}
 
 
 

@@ -10,7 +10,7 @@ function getFormWallR_1()
 	//--------------------
 	
 	var seam = $('input[name="block_seam"]:checked').val();	// толщина шва
-	infProject.settings.wall.block.seam = Number(seam);
+	infProject.settings.wall.brick.seam = Number(seam);
 	
 	//--------------------
 	
@@ -31,14 +31,14 @@ function getFormWallR_1()
 		else { size = {x:0.6, y:0.2, z:0.2}; }		
 	}
 	
-	infProject.settings.wall.block.size = size;
+	infProject.settings.wall.brick.size = size;
 	
 	//--------------------
 	
 	
 	if(infProject.settings.project == 'wall_kirpich')
 	{
-		infProject.settings.wall.block.layer = $('input[name="block_layer"]:checked').val();		// тип укладки	
+		infProject.settings.wall.brick.layer = $('input[name="block_layer"]:checked').val();		// тип укладки	
 	}
 	
 		
@@ -51,16 +51,16 @@ function checkChangeFormWallR()
 	if(infProject.settings.project == 'wall_block' || infProject.settings.project == 'wall_kirpich'){}
 	else return;
 
-	var size = infProject.settings.wall.block.size;
-	var seam = infProject.settings.wall.block.seam;
-	var layer = infProject.settings.wall.block.layer;
+	var size = infProject.settings.wall.brick.size;
+	var seam = infProject.settings.wall.brick.seam;
+	var layer = infProject.settings.wall.brick.layer;
 	
 	
 	getFormWallR_1();
 	
-	var size_2 = infProject.settings.wall.block.size;
-	var seam_2 = infProject.settings.wall.block.seam;
-	var layer_2 = infProject.settings.wall.block.layer;
+	var size_2 = infProject.settings.wall.brick.size;
+	var seam_2 = infProject.settings.wall.brick.seam;
+	var layer_2 = infProject.settings.wall.brick.layer;
 	
 	var up = false;
 	
@@ -88,14 +88,14 @@ function createFormWallR()
 {	
 	
 		
-	var size = infProject.settings.wall.block.size;		// размер блока кирпича
-	var seam = infProject.settings.wall.block.seam;		// толщина шва
+	var size = infProject.settings.wall.brick.size;		// размер блока кирпича
+	var seam = infProject.settings.wall.brick.seam;		// толщина шва
 
 	// создаем стену
 	var point1 = createPoint( new THREE.Vector3(-3,0,0), 0 );
 	var point2 = createPoint( new THREE.Vector3(3,0,0), 0 );
 	
-	var layer = infProject.settings.wall.block.layer;
+	var layer = infProject.settings.wall.brick.layer;
 	
 	if(layer == '0.5'){ var width = size.z - seam; }
 	else if(layer == '1'){ var width = size.x - seam; }
@@ -135,7 +135,7 @@ function createFormWallR()
 	var material = new THREE.MeshLambertMaterial( { color : 0xffffff } );
 
 	// загружаем текстуру кирпича
-	new THREE.TextureLoader().load(infProject.path+infProject.settings.wall.block.material.link, function ( image )  
+	new THREE.TextureLoader().load(infProject.path+infProject.settings.wall.brick.material.link, function ( image )  
 	{
 		material.color = new THREE.Color( 0xffffff );
 		var texture = image;			
@@ -155,10 +155,10 @@ function createFormWallR()
 		renderCamera();
 	});	
 	
-	wall.userData.wall.block.size = size;
-	wall.userData.wall.block.seam = seam;
-	wall.userData.wall.block.geometry = geometry;
-	wall.userData.wall.block.material = material;
+	wall.userData.wall.brick.size = size;
+	wall.userData.wall.brick.seam = seam;
+	wall.userData.wall.brick.geometry = geometry;
+	wall.userData.wall.brick.material = material;
 	
 	resetSideBlockWall({start:true,wall:wall});
 	cutSideBlockWall({wall:wall});	// обрезаем кирпичи по краям стены
@@ -172,7 +172,7 @@ function createFormWallR()
 function resetSideBlockWall(cdm)
 {
 	if(cdm.start){}
-	else if(cdm.wall.userData.wall.block.arr.length > 0){}
+	else if(cdm.wall.userData.wall.brick.arr.length > 0){}
 	else { return; }
 
 	
@@ -180,20 +180,20 @@ function resetSideBlockWall(cdm)
 	var p = wall.userData.wall.p;
 	var dist = p[0].position.distanceTo(p[1].position);	
 	
-	for(var i = wall.userData.wall.block.arr.length - 1; i > -1; i--)
+	for(var i = wall.userData.wall.brick.arr.length - 1; i > -1; i--)
 	{
-		var block = wall.userData.wall.block.arr[i];
+		var block = wall.userData.wall.brick.arr[i];
 		scene.remove(block);
 		if(block.geometry) { block.geometry.dispose(); }
 	}	
 	
-	wall.userData.wall.block.arr = [];
-	var geometry = wall.userData.wall.block.geometry;
-	var material = wall.userData.wall.block.material;
-	var size = wall.userData.wall.block.size;
+	wall.userData.wall.brick.arr = [];
+	var geometry = wall.userData.wall.brick.geometry;
+	var material = wall.userData.wall.brick.material;
+	var size = wall.userData.wall.brick.size;
 	var height = wall.userData.wall.height_1;
-	var seam = wall.userData.wall.block.seam;
-	var layer = infProject.settings.wall.block.layer;
+	var seam = wall.userData.wall.brick.seam;
+	var layer = infProject.settings.wall.brick.layer;
 	
 
 	
@@ -317,7 +317,7 @@ function resetSideBlockWall(cdm)
 						block.position.add(startPos);
 						if(qt[n].rotY) { block.rotation.y = qt[n].rotY; }
 						
-						wall.userData.wall.block.arr[wall.userData.wall.block.arr.length] = block;
+						wall.userData.wall.brick.arr[wall.userData.wall.brick.arr.length] = block;
 						scene.add(block);
 						
 						block.userData.tag = 'block_1';
@@ -354,7 +354,7 @@ function cutSideBlockWall(cdm)
 {
 	var wall = cdm.wall;
 	
-	if(wall.userData.wall.block.arr.length == 0) return;
+	if(wall.userData.wall.brick.arr.length == 0) return;
 	
 	var p = wall.userData.wall.p;
 	
@@ -406,7 +406,7 @@ function cutSideBlockWall(cdm)
 	
 	
 	// обрезаем кирпичи по бокам стены
-	var arrB = wall.userData.wall.block.arr;
+	var arrB = wall.userData.wall.brick.arr;
 	
 	for ( var i = 0; i < arrB.length; i++ )
 	{

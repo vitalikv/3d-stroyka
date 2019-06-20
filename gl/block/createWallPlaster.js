@@ -10,7 +10,7 @@ function getFormWallR_12()
 	//--------------------
 	
 	var seam = $('input[name="block_seam"]:checked').val();	// толщина шва
-	infProject.settings.wall.block.seam = Number(seam);
+	infProject.settings.wall.brick.seam = Number(seam);
 	
 	//--------------------
 	
@@ -31,14 +31,14 @@ function getFormWallR_12()
 		else { size = {x:0.6, y:0.2, z:0.2}; }		
 	}
 	
-	infProject.settings.wall.block.size = size;
+	infProject.settings.wall.brick.size = size;
 	
 	//--------------------
 	
 	
 	if(infProject.settings.project == 'wall_kirpich')
 	{
-		infProject.settings.wall.block.layer = $('input[name="block_layer"]:checked').val();		// тип укладки	
+		infProject.settings.wall.brick.layer = $('input[name="block_layer"]:checked').val();		// тип укладки	
 	}
 	
 		
@@ -51,16 +51,16 @@ function checkChangeFormWallR2()
 	if(infProject.settings.project == 'wall_block' || infProject.settings.project == 'wall_kirpich'){}
 	else return;
 
-	var size = infProject.settings.wall.block.size;
-	var seam = infProject.settings.wall.block.seam;
-	var layer = infProject.settings.wall.block.layer;
+	var size = infProject.settings.wall.brick.size;
+	var seam = infProject.settings.wall.brick.seam;
+	var layer = infProject.settings.wall.brick.layer;
 	
 	
 	getFormWallR_1();
 	
-	var size_2 = infProject.settings.wall.block.size;
-	var seam_2 = infProject.settings.wall.block.seam;
-	var layer_2 = infProject.settings.wall.block.layer;
+	var size_2 = infProject.settings.wall.brick.size;
+	var seam_2 = infProject.settings.wall.brick.seam;
+	var layer_2 = infProject.settings.wall.brick.layer;
 	
 	var up = false;
 	

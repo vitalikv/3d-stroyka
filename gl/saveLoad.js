@@ -84,9 +84,9 @@ function resetScene()
 		if(obj_line[i].userData.wall.outline) { scene.remove(obj_line[i].userData.wall.outline); }
 		if(obj_line[i].userData.wall.zone) { scene.remove(obj_line[i].userData.wall.zone.label); }
 
-		for(var i2 = obj_line[i].userData.wall.block.arr.length - 1; i2 > -1; i2--)
+		for(var i2 = obj_line[i].userData.wall.brick.arr.length - 1; i2 > -1; i2--)
 		{
-			var block = obj_line[i].userData.wall.block.arr[i2];
+			var block = obj_line[i].userData.wall.brick.arr[i2];
 			scene.remove(block);			
 		}			
 		
@@ -99,7 +99,7 @@ function resetScene()
 		obj_line[i].userData.wall.p = [];
 		obj_line[i].userData.wall.outline = null;
 		obj_line[i].userData.wall.zone = null;
-		obj_line[i].userData.wall.block.arr = [];
+		obj_line[i].userData.wall.brick.arr = [];
 		
 		scene.remove(obj_line[i]); 
 	}

@@ -248,9 +248,9 @@ function cutMeshBlockBSP( wd )
 {  
 	var wall = wd.userData.door.wall;
 
-	if(wall.userData.wall.block.arr.length == 0) return;
+	if(wall.userData.wall.brick.arr.length == 0) return;
 	
-	var arrB = wall.userData.wall.block.arr;
+	var arrB = wall.userData.wall.brick.arr;
 	var wd2 = createCloneWD_BSP( wd );
 		
 	
@@ -261,7 +261,7 @@ function cutMeshBlockBSP( wd )
 	wd2.geometry.computeBoundingBox();
 	var bound = wd2.geometry.boundingBox;
 	
-	var size = infProject.settings.wall.block.size;
+	var size = infProject.settings.wall.brick.size;
 	
 
 	

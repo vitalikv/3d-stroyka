@@ -169,10 +169,10 @@ function moveWD_2( wd, pos )
 		wd.material.opacity = 1.0; 		 	
 
 		// полностью восстанавливаем кирпичную стену
-		var arrB = wall.userData.wall.block.arr;
+		var arrB = wall.userData.wall.brick.arr;
 		for ( var i = 0; i < arrB.length; i++ )
 		{
-			arrB[i].geometry = wall.userData.wall.block.geometry.clone();
+			arrB[i].geometry = wall.userData.wall.brick.geometry.clone();
 		} 
 
 		cutSideBlockWall({wall:wall});
