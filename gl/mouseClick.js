@@ -106,7 +106,7 @@ function onDocumentMouseDown( event )
 	clickO.obj = null; 
 	clickO.rayhit = null;	
 	
-	clickRayHit( detectRayHit( event, 'click' ) ); 
+	clickRayHit(event); 
 
 	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); showMenuObjUI_2D( clickO.obj ); }
 	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
@@ -119,92 +119,46 @@ function onDocumentMouseDown( event )
 
 
 
-function detectRayHit( event, cdm )
-{
-	var result = hoverCursorLineWF(event);
-	
-	if(result) { return result; }
-	
-	var intersects = rayIntersect( event, scene.children, 'arr' );
-
-	var um = [];
-	for ( var i = 0; i < intersects.length; i++ )
-	{
-		if ( intersects[ i ].object.userData.tag ) { um[ um.length ] = { numRay: i, tag: intersects[ i ].object.userData.tag }; }
-	}
-
-	var num = -1;
-
-	if ( cdm == 'click' )
-	{
-		var cdm = { intersects: um, tag: [ 'toggle_gp', 'pivot', 'gizmo', 'move_control', 'controll_wd' ] };		
-		if ( camera == cameraTop ) { cdm.tag[ cdm.tag.length ] = 'window'; cdm.tag[ cdm.tag.length ] = 'door'; }
-		num = clickFirstHit_1( cdm );
-		
-		// если кликнули на контроллер для приметивов
-		// преверяем если ближи к нам был POP приметив, то мы его активируем, иначе, выбранным объектом будет контроллер
-		if ( num != -1 )
-		{
-			if(intersects[ num ].object.userData.tag == 'toggle_gp' && camera == camera3D)
-			{
-				var num2 = -1;
-				for ( var i = 0; i < intersects.length; i++ ) { if(intersects[ i ].object.userData.tag == 'obj') { num2 = i; break; } }
-				
-				if(num2 != -1)
-				{
-					if(num2 < num) { num = num2; }
-				}
-			}
-		}
-
-		var cdm = { intersects: um, tag: [ 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'obj', 'wf_point', 'point', 'wall', 'room', 'ceiling', 'group_pop' ] };
-		if ( num == -1 ) { num = clickFirstHit_2( cdm ); }
-	}
-	else
-	{
-		var cdm = { intersects: um, tag: [ 'controll_wd', 'window', 'door', 'toggle_gp', 'move_control', 'gizmo', 'wf_point', 'point', 'wall' ] };
-		num = clickFirstHit_1( cdm );  
-	}
-
-	return ( num == -1 ) ? null : intersects[ num ];
-}
-
-
-// определяем порядок по важности выбранного объекта (выбирается, тот который стоит в начале списка cdm.tag)
-function clickFirstHit_1( cdm )
-{
-	for ( var i = 0; i < cdm.tag.length; i++ )
-	{
-		for ( var i2 = 0; i2 < cdm.intersects.length; i2++ )
-		{
-			if ( cdm.tag[ i ] == cdm.intersects[ i2 ].tag ) { return cdm.intersects[ i2 ].numRay; }
-		}
-	}
-
-	return -1;
-}
-
-
-// если кликнули на объект и он есть в списке, то его выбираем 
-function clickFirstHit_2( cdm )
-{
-	for ( var i = 0; i < cdm.intersects.length; i++ )
-	{
-		for ( var i2 = 0; i2 < cdm.tag.length; i2++ )
-		{
-			if ( cdm.intersects[ i ].tag == cdm.tag[ i2 ] ) { return cdm.intersects[ i ].numRay; }
-		}
-	}
-
-	return -1;
-}
-
-
-
-
-
-function clickRayHit( rayhit )
+function clickRayHit(event)
 { 
+	var rayhit = null;	
+	
+	if(!infProject.scene.block.click.tube)
+	{
+		var ray = hoverCursorLineWF(event);	
+		if(ray) { rayhit = ray; }		
+	}
+
+	if(!infProject.scene.block.click.controll_wd)
+	{
+		var ray = rayIntersect( event, arrSize.cube, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}
+	
+	if(!infProject.scene.block.click.door)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.door, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}
+	
+	if(!infProject.scene.block.click.window)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.window, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}
+	
+	if(!infProject.scene.block.click.point)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.point, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}
+
+	if(!infProject.scene.block.click.wall)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}	
+	
 	if ( !rayhit ) return;
 
 	var object = rayhit.object;

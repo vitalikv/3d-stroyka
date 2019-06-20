@@ -53,6 +53,7 @@ $('[inf_type]').on('mousedown', function(e)
 			$('[nameId="top_menu_b1"]').show();	$('[nameId="top_menu_b1"]').attr('inf-visible', 'true');
 			showHideObjMode_1({type: (txt == 'Монтаж')?'План':'Монтаж'});
 		}
+		deActiveSelected();
 	}
 	
 	return false;

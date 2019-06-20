@@ -167,6 +167,8 @@ var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
+infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false};
+infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false};
 infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
@@ -834,7 +836,7 @@ function createOneWall3( point1, point2, width, cdm )
 	wall.userData.wall.arrO = [];
 	wall.userData.wall.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3() }; 
 	wall.userData.wall.area = { top : 0 }; 
-	wall.userData.wall.active = { click: true, hover: true };
+	//wall.userData.wall.active = { click: true, hover: true };
 	
 	wall.userData.wall.brick = { arr : [] };
 	wall.userData.wall.plaster = { o : null };
@@ -1267,42 +1269,39 @@ function showHideObjMode_1(cdm)
 	var visible_1 = (cdm.type == 'Монтаж') ? true : false;
 	var visible_2 = (cdm.type == 'Монтаж') ? false : true;	//для стен, wd
 	
-	var point = infProject.scene.array.point;
 	
-	showHideArrObj(infProject.scene.array.point, visible_2);
+	showHideArrObj(infProject.scene.array.point, visible_2);	// прячем/показываем
 
 
 	var wf = [];
-	var tube = infProject.scene.array.tube;
-	
+	var tube = infProject.scene.array.tube;	
 	for ( var i = 0; i < tube.length; i++ )
 	{
 		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }	
-	}
+	}	
+	showHideArrObj(wf, visible_1);	// прячем/показываем
 	
-	showHideArrObj(wf, visible_1);
+	// блокируем/разблокируем объекты
+	infProject.scene.block.click.tube = visible_2;
+	infProject.scene.block.hover.tube = visible_2;
 	
-	var wall = infProject.scene.array.wall;
-	for(var i = 0; i < wall.length; i++)
-	{
-		wall[i].userData.wall.active.click = visible_2;
-		wall[i].userData.wall.active.hover = visible_2;
-	}
-	
-	var door = infProject.scene.array.door;
-	for(var i = 0; i < door.length; i++)
-	{
-		door[i].userData.door.active.click = visible_2;
-		door[i].userData.door.active.hover = visible_2;
-	}
-	
-	var window = infProject.scene.array.window;
-	for(var i = 0; i < window.length; i++)
-	{
-		window[i].userData.door.active.click = visible_2;
-		window[i].userData.door.active.hover = visible_2;
-	}		
+	infProject.scene.block.click.wall = visible_1;
+	infProject.scene.block.hover.wall = visible_1;
 
+	infProject.scene.block.click.point = visible_1;
+	infProject.scene.block.hover.point = visible_1;
+
+	infProject.scene.block.click.window = visible_1;
+	infProject.scene.block.hover.window = visible_1;
+
+	infProject.scene.block.click.door = visible_1;
+	infProject.scene.block.hover.door = visible_1;
+
+	infProject.scene.block.click.room = visible_1;
+	infProject.scene.block.hover.room = visible_1;
+
+	infProject.scene.block.click.controll_wd = visible_1;
+	infProject.scene.block.hover.controll_wd = visible_1;		
 }
 
 
