@@ -5,7 +5,7 @@
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
-	var point = new THREE.Mesh( infProject.tools.point.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
+	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
 	point.position.copy( cdm.pos );		
 	point.position.y = infProject.settings.tube.h;	
 	
@@ -397,6 +397,8 @@ function clickPointToolsWF(obj)
 		
 		obj.userData.wf_point.cross = { o : null, point : [] };	
 
+		hideMenuUI(obj);
+		
 		clickO = resetPop.clickO();
 	}
 	if(tag == 'wf_point')
@@ -614,7 +616,7 @@ function showWF_line_UI(line)
 	
 	$('[nameId="size_tube_diameter_2"]').val(16);
 	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
-	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
+	$('[nameId="size_tube_dist_2"]').val(Math.round(length * 100)/100);
 }
 
 

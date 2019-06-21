@@ -172,6 +172,7 @@ infProject.scene.block.hover = {wall: false, point: false, door: false, window: 
 infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
+infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.tube = { h : 0.2 };

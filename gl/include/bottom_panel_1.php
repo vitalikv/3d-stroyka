@@ -86,7 +86,7 @@
 			
 			<div class="input-size">
 				<div class="text_1">длина (м)</div>
-				<div class="text_1" nameId='size_tube_dist_2'>0.5</div>
+				<input type="text" nameId='size_tube_dist_2' data-input='' value = 0>
 			</div>	
 
 			<div class="button1-wrap-2">
