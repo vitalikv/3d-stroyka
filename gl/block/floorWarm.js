@@ -75,6 +75,8 @@ function moveWFPoint(event, obj)
 			newTubeWF({line : line});
 		}
 	}
+	
+	showWF_point_UI(obj);
 }
 
 
@@ -506,6 +508,8 @@ function deletePointWF(obj)
 {
 	//arr_wf.point.pop();	// удаляем последнее значение в массиве
 	
+	hideMenuUI(obj);
+	
 	var line = obj.userData.wf_point.line.o;
 	
 	if(line)
@@ -516,6 +520,7 @@ function deletePointWF(obj)
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
 			scene.remove(line.userData.wf_line.point[0]);
 			scene.remove(line.userData.wf_line.point[1]);
+			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 			scene.remove(line);	
 			line = null;			
 		}
@@ -535,6 +540,9 @@ function deletePointWF(obj)
 			line.geometry.elementsNeedUpdate = true;
 
 			line.material.color = new THREE.Color(infProject.listColor.lineTube2D);
+			
+			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
+			
 			// создаем трубу
 			//newTubeWF({line : line, createLine : true});
 		}
@@ -551,12 +559,16 @@ function deletePointWF(obj)
 // удаляем линию
 function deleteLineWF(line)
 {
+	hideMenuUI(line);
+	
 	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	
 	
 	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
 	{
 		scene.remove(line.userData.wf_line.point[i]);		
 	}
+	
+	if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 
 	scene.remove(line);
 	
@@ -564,6 +576,45 @@ function deleteLineWF(line)
 }
 
 
+// при выделении точки, показываем меню
+function showWF_point_UI(point)
+{
+	var line = point.userData.wf_point.line.o;
+	
+	var length = 0;
+	
+	if(line)
+	{
+		var v = line.geometry.vertices;
+		
+		for(var i = 0; i < v.length - 1; i++)
+		{
+			length += v[i].distanceTo(v[i + 1]);
+		}		
+	}
 
+	$('[nameId="size_tube_dist_3"]').val(Math.round(length * 100)/100);
+	
+	$('[nameId="wf_point_menu_1"]').show();
+}
+
+
+// при выделении трубы, показываем меню
+function showWF_line_UI(line)  
+{
+	$('[nameId="tube_menu_1"]').show();
+		
+	var v = line.geometry.vertices;
+	var length = 0;
+	
+	for(var i = 0; i < v.length - 1; i++)
+	{
+		length += v[i].distanceTo(v[i + 1]);
+	}
+	
+	$('[nameId="size_tube_diameter_2"]').val(16);
+	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
+	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
+}
 
 

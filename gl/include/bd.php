@@ -23,6 +23,8 @@ $interface['raschet_kirpicha'] = 0;
 $interface['raschet_blokov'] = 0;
 $interface['wall_b1'] = 0;
 $interface['grid_tube_1'] = 0;
+$interface['tube_b1'] = 0;
+
 	
 
 if($url == '/calculator/monolit_fundament' || $url == '/calculator/monolit_fundament1')	
@@ -103,6 +105,7 @@ if($url == '/calculator/warm_floor')
 	$interface['wall_b1'] = 1;
 	$interface['grid_tube_1'] = 1;
 	$interface['estimate'] = 1;
+	$interface['tube_b1'] = 1;
 }
 
 

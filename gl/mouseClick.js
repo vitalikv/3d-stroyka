@@ -323,7 +323,9 @@ function hideMenuObjUI_2D( o )
 			case 'wall': hideMenuUI(o);  break;
 			case 'point': hideMenuUI(o);  break;
 			case 'door': hideSizeWD(o); break;
-			case 'window': hideSizeWD(o); break;			
+			case 'window': hideSizeWD(o); break;
+			case 'wf_line': hideMenuUI(o); break;
+			case 'wf_point': hideMenuUI(o); break;
 		}
 	}
 }
@@ -344,6 +346,8 @@ function showMenuObjUI_2D( o )
 			case 'point': $('[nameId="point_menu_1"]').show(); break;
 			case 'door': showRulerWD( o ); break;
 			case 'window': showRulerWD( o ); break;
+			case 'wf_line': showWF_line_UI( o ); break;
+			case 'wf_point': showWF_point_UI( o ); break;
 		}	
 	}
 	
@@ -449,7 +453,9 @@ function hideMenuUI(obj)
 	if(tag == 'wall') { $('[nameId="wall_menu_1"]').hide(); }
 	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
-	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }		
+	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
+	else if(tag == 'wf_line') { $('[nameId="tube_menu_1"]').hide(); }
+	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); }
 }
 
 
