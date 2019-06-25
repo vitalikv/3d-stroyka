@@ -7,6 +7,7 @@ $path = "/gl/";
 $title = '';
 $interface['wall_1'] = 0;
 $interface['tube_1'] = 0;
+$interface['mode_1'] = 0;
 $interface['estimate'] = 0;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
@@ -98,6 +99,7 @@ if($url == '/calculator/warm_floor')
 { 
 	$title = 'Расчет теплого пола 3D'; 
 	$nameId = 'теплый пол';
+	$interface['mode_1'] = 1;
 	$interface['wall_1'] = 1;
 	$interface['tube_1'] = 1;	
 	$interface['wd_2'] = 1;
@@ -244,7 +246,7 @@ else if($url == '/calculator/warm_floor')
 	$infProject['settings']['grid']['count'] = null;
 	$infProject['settings']['grid']['pos'] = [ 'y' => 0.19 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;
-	
+	$infProject['settings']['interface']['button'] = [ 'mode_1' => 'plan' ];
 }
 
 

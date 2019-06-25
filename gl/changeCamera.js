@@ -10,6 +10,16 @@ function changeCamera(cam)
 	
 	camera = cam;
 
+	if(infProject.settings.interface.button.mode_1) 
+	{
+		if(infProject.settings.interface.button.mode_1 == 'plan') { var str_1 = 'План'; var str_2 = 'motag'; }
+		else { var str_1 = 'Монтаж'; var str_2 = 'plan'; }
+		
+		console.log(str_1, infProject.settings.interface.button.mode_1);
+		showHideObjMode_1({type: str_1});
+		
+		infProject.settings.interface.button.mode_1 = str_2;
+	}
 	
 	if(camera == cameraTop)
 	{					

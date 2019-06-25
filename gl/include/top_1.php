@@ -14,9 +14,11 @@
 
 <div class="top_panel_2" style="z-index: 1;">
 
+	<? if($interface['mode_1'] == 1){ ?>
 	<div class="tp_left_1">
 		<div inf_type = 'mode_1' class="button1">Монтаж</div>
 	</div>
+	<? } ?>	
 	
 	<div class="tp_right_1">		
 		<div infcam = '3D' class="button1">3D</div>			
