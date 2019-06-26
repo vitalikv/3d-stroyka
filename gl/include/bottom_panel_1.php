@@ -74,19 +74,19 @@
 	<div class="toolbar" nameId='tube_menu_1' style="display: none;">
 		<div class="toolbar-header">труба</div>
 		<div class="toolbar-menu">				
-			<div class="input-size">
+			<div class="input-size-2">
 				<div class="text_1">диаметр (мм)</div>
 				<input type="text" nameId='size_tube_diameter_2' data-input='' value = 0>
 			</div>
 			
-			<div class="input-size">
+			<div class="input-size-2">
 				<div class="text_1">цвет</div>
-				<input type="text" nameId='size-wall-height' value = 0>
+				<div class="color_1_red" nameId='color_tube_1_red'></div> 
 			</div>					 
 			
-			<div class="input-size">
+			<div class="input-size-2">
 				<div class="text_1">длина (м)</div>
-				<input type="text" nameId='size_tube_dist_2' data-input='' value = 0>
+				<div class="text_input_1" nameId='size_tube_dist_2'>0</div>
 			</div>	
 
 			<div class="button1-wrap-2">
@@ -98,9 +98,9 @@
 	<div class="toolbar" nameId='wf_point_menu_1' style="display: none;">
 		<div class="toolbar-header">точка</div>
 		<div class="toolbar-menu">
-			<div class="input-size">
+			<div class="input-size-2">
 				<div class="text_1">длина (м)</div>
-				<input type="text" nameId='size_tube_dist_3' data-input='' value = 0>
+				<div class="text_input_1" nameId='size_tube_dist_3'>0</div>
 			</div>
 			
 			<div class="button1-wrap-2">

@@ -484,15 +484,15 @@ function newTubeWF(cdm)
 	var pipeSpline = new THREE.CatmullRomCurve3(points);
 	pipeSpline.curveType = 'catmullrom';
 	pipeSpline.tension = 0;
-	var params = { extrusionSegments: 30, radiusSegments: 12, closed: false };
+	var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
 	
-	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.1, params.radiusSegments, params.closed );	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.02, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();			
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: true } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ) );	
 		line.userData.wf_line.tube = tube;
 		scene.add( tube );
 	}
@@ -546,7 +546,7 @@ function deletePointWF(obj)
 			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 			
 			// создаем трубу
-			//newTubeWF({line : line, createLine : true});
+			newTubeWF({line : line, createLine : true});
 		}
 	}
 	
@@ -595,7 +595,7 @@ function showWF_point_UI(point)
 		}		
 	}
 
-	$('[nameId="size_tube_dist_3"]').val(Math.round(length * 100)/100);
+	$('[nameId="size_tube_dist_3"]').text(Math.round(length * 100)/100);
 	
 	$('[nameId="wf_point_menu_1"]').show();
 }
@@ -616,7 +616,7 @@ function showWF_line_UI(line)
 	
 	$('[nameId="size_tube_diameter_2"]').val(16);
 	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
-	$('[nameId="size_tube_dist_2"]').val(Math.round(length * 100)/100);
+	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
 }
 
 
