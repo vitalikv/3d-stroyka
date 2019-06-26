@@ -9,23 +9,15 @@ function changeCamera(cam)
 	deActiveSelected();
 	
 	camera = cam;
-
-	if(infProject.settings.interface.button.mode_1) 
-	{
-		if(infProject.settings.interface.button.mode_1 == 'plan') { var str_1 = 'План'; var str_2 = 'motag'; }
-		else { var str_1 = 'Монтаж'; var str_2 = 'plan'; }
-		
-		console.log(str_1, infProject.settings.interface.button.mode_1);
-		showHideObjMode_1({type: str_1});
-		
-		infProject.settings.interface.button.mode_1 = str_2;
-	}
 	
 	if(camera == cameraTop)
 	{					
 		changeDepthColor();			
 		cameraZoomTop( camera.zoom );
 		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
+		
+		if(infProject.settings.interface.button.mode_1) { showHideObjMode_1({active: infProject.settings.interface.button.mode_1.active}); }
+		
 	}
 	else if(camera == camera3D)
 	{	
@@ -182,6 +174,81 @@ function detectZoomScreenWall()
 	camera.updateProjectionMatrix();
 }
 
+ 
+
+
+
+// прячем/показываем объекты в режиме план/монтаж + блокировка действий 
+function showHideObjMode_1(cdm)
+{ 
+	if(!cdm) cdm = {};
+	
+	if(cdm.active)
+	{
+		var txtButton = (infProject.settings.interface.button.mode_1.active == 'Монтаж')?'План':'Монтаж';
+	}
+	else
+	{
+		var txtButton = infProject.settings.interface.button.mode_1.active;	
+		infProject.settings.interface.button.mode_1.active = (txtButton == 'Монтаж')?'План':'Монтаж';		
+	}
+	
+	$('[inf_type="mode_1"]').text(txtButton);
+	
+	if(txtButton == 'Монтаж')
+	{
+		$('[nameId="top_menu_b1"]').hide(); $('[nameId="top_menu_b1"]').attr('inf-visible', 'false');
+		$('[nameId="top_menu_b2"]').show();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'true');
+	}
+	else
+	{
+		$('[nameId="top_menu_b2"]').hide();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'false');
+		$('[nameId="top_menu_b1"]').show();	$('[nameId="top_menu_b1"]').attr('inf-visible', 'true');
+	}
+
+	
+	var visible_1 = (infProject.settings.interface.button.mode_1.active == 'Монтаж') ? true : false;
+	var visible_2 = (infProject.settings.interface.button.mode_1.active == 'Монтаж') ? false : true;	//для стен, wd
+	
+	//----------
+		
+
+
+	var wf = [];
+	var tube = infProject.scene.array.tube;	
+	for ( var i = 0; i < tube.length; i++ )
+	{
+		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }	
+	}
+	
+	showHideArrObj(wf, visible_1);	// прячем/показываем точки у труб
+	showHideArrObj(infProject.scene.array.point, visible_2);	// прячем/показываем точки у стен
+	
+	// блокируем/разблокируем объекты
+	infProject.scene.block.click.tube = visible_2;
+	infProject.scene.block.hover.tube = visible_2;
+	
+	infProject.scene.block.click.wall = visible_1;
+	infProject.scene.block.hover.wall = visible_1;
+
+	infProject.scene.block.click.point = visible_1;
+	infProject.scene.block.hover.point = visible_1;
+
+	infProject.scene.block.click.window = visible_1;
+	infProject.scene.block.hover.window = visible_1;
+
+	infProject.scene.block.click.door = visible_1;
+	infProject.scene.block.hover.door = visible_1;
+
+	infProject.scene.block.click.room = visible_1;
+	infProject.scene.block.hover.room = visible_1;
+
+	infProject.scene.block.click.controll_wd = visible_1;
+	infProject.scene.block.hover.controll_wd = visible_1;
+
+
+	deActiveSelected();	
+}
 
 
 

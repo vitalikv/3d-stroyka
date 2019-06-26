@@ -30,34 +30,8 @@ $('[infcam]').on('mousedown', function(e)
 }); 
  	
 	
-$('[inf_type]').on('mousedown', function(e)
-{
-	var value = $(this).attr('inf_type');	
-	
-	if(value == 'mode_1')
-	{
-		var txt = $(this).text();
-		
-		var txt = (txt == 'План') ? 'Монтаж' : 'План'; console.log(value, txt);
-		$(this).text(txt);
-		
-		if(txt == 'Монтаж')
-		{
-			$('[nameId="top_menu_b1"]').hide(); $('[nameId="top_menu_b1"]').attr('inf-visible', 'false');
-			$('[nameId="top_menu_b2"]').show();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'true');
-			showHideObjMode_1({type: (txt == 'Монтаж')?'План':'Монтаж'});
-		}
-		else
-		{
-			$('[nameId="top_menu_b2"]').hide();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'false');
-			$('[nameId="top_menu_b1"]').show();	$('[nameId="top_menu_b1"]').attr('inf-visible', 'true');
-			showHideObjMode_1({type: (txt == 'Монтаж')?'План':'Монтаж'});
-		}
-		deActiveSelected();
-	}
-	
-	return false;
-});
+$('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); return false; });
+
 	
 $('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface({button:'create_tube_1'}); }); 

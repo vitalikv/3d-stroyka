@@ -1264,48 +1264,6 @@ function deActiveSelected()
 
 
 
-// прячем/показываем объекты в режиме план/монтаж + блокировка действий 
-function showHideObjMode_1(cdm)
-{
-	var visible_1 = (cdm.type == 'Монтаж') ? true : false;
-	var visible_2 = (cdm.type == 'Монтаж') ? false : true;	//для стен, wd
-	
-	
-	showHideArrObj(infProject.scene.array.point, visible_2);	// прячем/показываем
-
-
-	var wf = [];
-	var tube = infProject.scene.array.tube;	
-	for ( var i = 0; i < tube.length; i++ )
-	{
-		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }	
-	}	
-	showHideArrObj(wf, visible_1);	// прячем/показываем
-	
-	// блокируем/разблокируем объекты
-	infProject.scene.block.click.tube = visible_2;
-	infProject.scene.block.hover.tube = visible_2;
-	
-	infProject.scene.block.click.wall = visible_1;
-	infProject.scene.block.hover.wall = visible_1;
-
-	infProject.scene.block.click.point = visible_1;
-	infProject.scene.block.hover.point = visible_1;
-
-	infProject.scene.block.click.window = visible_1;
-	infProject.scene.block.hover.window = visible_1;
-
-	infProject.scene.block.click.door = visible_1;
-	infProject.scene.block.hover.door = visible_1;
-
-	infProject.scene.block.click.room = visible_1;
-	infProject.scene.block.hover.room = visible_1;
-
-	infProject.scene.block.click.controll_wd = visible_1;
-	infProject.scene.block.hover.controll_wd = visible_1;		
-}
-
-
 
 function upUvs_1( obj )
 { return;

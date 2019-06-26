@@ -246,7 +246,8 @@ else if($url == '/calculator/warm_floor')
 	$infProject['settings']['grid']['count'] = null;
 	$infProject['settings']['grid']['pos'] = [ 'y' => 0.19 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;
-	$infProject['settings']['interface']['button'] = [ 'mode_1' => 'plan' ];
+	$infProject['settings']['interface']['button']['mode_1'] = ['mode' => ['План', 'Монтаж'], 'active' => 'План'];
+	
 }
 
 
