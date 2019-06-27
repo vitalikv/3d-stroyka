@@ -31,6 +31,7 @@ $('[infcam]').on('mousedown', function(e)
  	
 	
 $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); return false; });
+$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); return false; });
 
 	
 $('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
@@ -72,6 +73,7 @@ $('input').blur(function () { infProject.activeInput = ''; });
 
 $('[data-action="estimate"]').mousedown(function () 
 { 
+	infProject.scene.block.key.scroll = true;
 	createEstimateJson();
 	$('.modal').css({"display":"block"});
 	$('[modal_body="estimate"]').css({"display":"block"}); 

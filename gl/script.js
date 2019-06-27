@@ -1606,7 +1606,7 @@ function checkNumberInput(cdm)
 {
 	var value = cdm.value;
 	
-	value = value.replace(",", ".");
+	if((/,/i).test( value )) { value = value.replace(",", "."); }
 	
 	if(!isNumeric(value)) return null; 
 	

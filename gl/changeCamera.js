@@ -18,13 +18,16 @@ function changeCamera(cam)
 		
 		if(infProject.settings.interface.button.mode_1) { showHideObjMode_1({active: infProject.settings.interface.button.mode_1.active}); }
 		
+		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').hide(); }
 	}
 	else if(camera == camera3D)
 	{	
 		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
-		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;		 
+		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
+
+		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').show(); }
 	}
 	else if(camera == cameraWall)
 	{  
@@ -252,5 +255,32 @@ function showHideObjMode_1(cdm)
 
 
 
+
+
+
+// прячем/показываем объекты в режиме план/монтаж + блокировка действий 
+function showHideWallHeight_1(cdm)
+{ 
+	if(!cdm) cdm = {};
+	
+	
+	
+	
+	if(cdm.active)
+	{
+		var txtButton = (infProject.settings.interface.button.showHideWall_1.active == 'Спрятать стены')?'Показать стены':'Спрятать стены';
+	}
+	else
+	{
+		var txtButton = infProject.settings.interface.button.showHideWall_1.active;	
+		infProject.settings.interface.button.showHideWall_1.active = (txtButton == 'Спрятать стены')?'Показать стены':'Спрятать стены';
+		
+		$('[nameId="showHideWall_1_b"]').text(infProject.settings.interface.button.showHideWall_1.active);
+	}
+	
+	
+	if(txtButton == 'Спрятать стены') { changeAllHeightWall_1({height: 0.3}); }
+	else { changeAllHeightWall_1({height: infProject.settings.height}); }
+}
 
 

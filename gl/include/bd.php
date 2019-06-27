@@ -109,6 +109,7 @@ if($url == '/calculator/warm_floor')
 	$interface['estimate'] = 1;
 	$interface['tube_b1'] = 1;
 	$interface['wall_2']['bottom'] = ['width_1' => 1];
+	$interface['wall_2']['top'] = ['showHideWall_1' => 1];
 }
 
 
@@ -239,6 +240,7 @@ else if($url == '/calculator/warm_floor')
 	$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';
 	$infProject['settings']['floor']['o'] = true;
+	$infProject['settings']['floor']['areaPoint'] = 'inside';
 	$infProject['settings']['floor']['color'] = 0xf7f2d5;
 	$infProject['settings']['wall']['label'] = 'double';
 	$infProject['settings']['wall']['color']['top'] = 0xded3b8;
@@ -248,7 +250,7 @@ else if($url == '/calculator/warm_floor')
 	$infProject['settings']['grid']['pos'] = [ 'y' => 0.19 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;
 	$infProject['settings']['interface']['button']['mode_1'] = ['mode' => ['План', 'Монтаж'], 'active' => 'План'];
-	
+	$infProject['settings']['interface']['button']['showHideWall_1'] = ['active' => 'Спрятать стены'];
 }
 
 

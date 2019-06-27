@@ -508,6 +508,8 @@ function inputWidthOneWall(cdm)
 	
 	clickPointUP_BSP(wallR);
 	
+	$('[nameId="size_wall_width_1"]').val(wall.userData.wall.width);
+	
 	renderCamera();
 }
 
@@ -516,59 +518,47 @@ function inputWidthOneWall(cdm)
 
 
 
-// изменение ширины стены (undo|redo)
-function inputWidthWall_2(wall, z) 
-{
-
-	var wallR = detectChangeArrWall_2(wall);
+// изменение высоты всех стен при переключении камеры cameraTop/camera3D 
+function changeAllHeightWall_1(cdm)
+{  
+	if(infProject.scene.array.wall.length == 0) return;
 	
-	clickMovePoint_BSP(wallR);
-			
-	var v = wall.geometry.vertices;		
-
-	v[0].z = v[1].z = v[6].z = v[7].z = z[0];
-	v[4].z = v[5].z = v[10].z = v[11].z = z[1];	
-
-	wall.geometry.verticesNeedUpdate = true; 
-	wall.geometry.elementsNeedUpdate = true;
+	var wall = infProject.scene.array.wall[0];
 	
-	wall.geometry.computeBoundingSphere();
-	wall.geometry.computeBoundingBox();
-	wall.geometry.computeFaceNormals();	
+	var height = cdm.height;
 	
-	var width = Math.abs(v[0].z) + Math.abs(v[4].z);	
-	wall.userData.wall.width = Math.round(width * 100) / 100;
-	wall.userData.wall.offsetZ = v[0].z + v[4].z;	
+	var height = checkNumberInput({ value: height, unit: 1, limit: {min: 0.1, max: 5} });
 	
-	//upLineYY(wall.userData.wall.p[0]);
-	//upLineYY(wall.userData.wall.p[1]);
-	var p0 = wall.userData.wall.p[0];
-	var p1 = wall.userData.wall.p[1];
-	upLineYY_2(p0, p0.p, p0.w, p0.start);	
-    upLineYY_2(p1, p1.p, p1.w, p1.start);	
+	if(!height) 
+	{
+		return;
+	}		
 	
-	// меняем ширину wd
-	for ( var i = 0; i < wall.userData.wall.arrO.length; i++ )
-	{ 
-		var wd = wall.userData.wall.arrO[i];	
-		var v = wd.geometry.vertices;
-		var f = wd.userData.door.form.v;
+	clickMovePoint_BSP( infProject.scene.array.wall );
+	
+	for ( var i = 0; i < infProject.scene.array.wall.length; i++ )
+	{
+		var v = infProject.scene.array.wall[i].geometry.vertices;
 		
-		for ( var i2 = 0; i2 < f.minZ.length; i2++ ) { v[f.minZ[i2]].z = wall.geometry.vertices[4].z; }
-		for ( var i2 = 0; i2 < f.maxZ.length; i2++ ) { v[f.maxZ[i2]].z = wall.geometry.vertices[0].z; }	
-
-		wd.geometry.verticesNeedUpdate = true; 
-		wd.geometry.elementsNeedUpdate = true;
-		wd.geometry.computeBoundingSphere();
-		wd.geometry.computeBoundingBox();
-		wd.geometry.computeFaceNormals();		
-	}	
+		v[1].y = height;
+		v[3].y = height;
+		v[5].y = height;
+		v[7].y = height;
+		v[9].y = height;
+		v[11].y = height;
+		infProject.scene.array.wall[i].geometry.verticesNeedUpdate = true;
+		infProject.scene.array.wall[i].geometry.elementsNeedUpdate = true;
+		
+		infProject.scene.array.wall[i].userData.wall.height_1 = Math.round(height * 100) / 100;
+	}
 	
-	upLabelPlan_1( wallR );	 				
-	getYardageSpace( compileArrPickZone(wall) );
+	upLabelPlan_1( infProject.scene.array.wall );
+	clickPointUP_BSP( infProject.scene.array.wall );
 	
-	clickPointUP_BSP(wallR);
+	renderCamera();
 }
+	
+	
 
 
 

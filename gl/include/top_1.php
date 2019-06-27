@@ -59,7 +59,12 @@
 			</div>
 			<? } ?>			
 		</div>	
-		
+	
+		<? if($interface['wall_2']['top']['showHideWall_1'] == 1){ ?>
+		<div class="button1-wrap-1" nameId='showHideWall_1' style="display: none;"> 
+			<div nameId='showHideWall_1_b' class="button1">Спрятать стены</div>
+		</div>		
+		<? } ?>
 		
 		<? if($interface['estimate'] == 1){ ?>
 		<div class="button1-wrap-1">
