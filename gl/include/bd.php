@@ -121,7 +121,7 @@ $infProject['activeDiv'] = null;
 
 $infProject['settings']['project'] = '';
 $infProject['settings']['height'] = 2.5;
-$infProject['settings']['floor'] = [ 'o' => false, 'posY' => 0.1, 'height' => 0.1, 'changeY' => false, 'areaPoint' => 'center', 'material' => null ];
+$infProject['settings']['floor'] = [ 'o' => false, 'posY' => 0.1, 'height' => 0.1, 'changeY' => false, 'areaPoint' => 'center', 'material' => null, 'label'=> true ];
 $infProject['settings']['wall'] = [ 'width' => 0.3, 'label' => '', 'dist' => 'center', 'material' => null, 'block' => null ]; 
 $infProject['settings']['calc'] = [ 'fundament' => '' ];
 $infProject['settings']['land'] = [ 'o' => false ];
@@ -241,6 +241,7 @@ else if($url == '/calculator/warm_floor')
 	$infProject['settings']['project'] = 'warm_floor';
 	$infProject['settings']['floor']['o'] = true;
 	$infProject['settings']['floor']['areaPoint'] = 'inside';
+	$infProject['settings']['floor']['label'] = false;
 	$infProject['settings']['floor']['color'] = 0xf7f2d5;
 	$infProject['settings']['wall']['label'] = 'double';
 	$infProject['settings']['wall']['color']['top'] = 0xded3b8;

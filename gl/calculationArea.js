@@ -348,7 +348,7 @@ function getYardageSpace( room )
 		
 		upLabelArea2(room[u].label, res, '80', 'rgba(255,255,255,1)', true);
 		
-		room[u].label.visible = true;
+		if(infProject.settings.floor.label) room[u].label.visible = true;
 	}	
 }
 

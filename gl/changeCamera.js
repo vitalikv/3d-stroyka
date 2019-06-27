@@ -264,8 +264,6 @@ function showHideWallHeight_1(cdm)
 	if(!cdm) cdm = {};
 	
 	
-	
-	
 	if(cdm.active)
 	{
 		var txtButton = (infProject.settings.interface.button.showHideWall_1.active == 'Спрятать стены')?'Показать стены':'Спрятать стены';
@@ -275,7 +273,7 @@ function showHideWallHeight_1(cdm)
 		var txtButton = infProject.settings.interface.button.showHideWall_1.active;	
 		infProject.settings.interface.button.showHideWall_1.active = (txtButton == 'Спрятать стены')?'Показать стены':'Спрятать стены';
 		
-		$('[nameId="showHideWall_1_b"]').text(infProject.settings.interface.button.showHideWall_1.active);
+		$('[nameId="showHideWall_1"]').text(infProject.settings.interface.button.showHideWall_1.active);
 	}
 	
 	

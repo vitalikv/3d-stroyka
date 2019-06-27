@@ -66,9 +66,11 @@ function createFloor(cdm)
 	}
 	
 	if(infProject.settings.floor.o)
-	{ 
+	{ 	
 		room[n].label = createLabelCameraWall({ count : 1, text : 0, size : 65, ratio : {x:256*4, y:256}, geometry : infProject.geometry.labelFloor, opacity : 0.5 })[0];
 		
+		if(!infProject.settings.floor.label) room[n].label.visible = false;
+			
 		getYardageSpace( [room[n]] ); 
 		scene.add( room[n] ); 
 		scene.add( ceiling[n] );		
