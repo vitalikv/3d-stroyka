@@ -6,6 +6,7 @@ $path = "/gl/";
 
 $title = '';
 $interface['wall_1'] = 0;
+$interface['wall_2'] = ['top'=>[], 'left'=>[], 'right'=>[], 'bottom'=>[]];
 $interface['tube_1'] = 0;
 $interface['mode_1'] = 0;
 $interface['estimate'] = 0;
@@ -104,10 +105,10 @@ if($url == '/calculator/warm_floor')
 	$interface['tube_1'] = 1;	
 	$interface['wd_2'] = 1;
 	$interface['wd_3'] = 1;
-	$interface['wall_b1'] = 1;
 	$interface['grid_tube_1'] = 1;
 	$interface['estimate'] = 1;
 	$interface['tube_b1'] = 1;
+	$interface['wall_2']['bottom'] = ['width_1' => 1];
 }
 
 
@@ -253,5 +254,29 @@ else if($url == '/calculator/warm_floor')
 
 
 $jsonPhp = json_encode($infProject);
+
+
+//getFindValue_1([['wall_2'],['bottom'],['width_1']]);
+
+function getFindValue_1($array)
+{
+	$arr = [];
+	
+	for ($i = 0; $i<count($array); $i++) 
+	{
+		$arr[$array[$i][0]] = [];
+		//if(!isset($infProject[$arr[$i]])) { $arr = []; break; }
+		
+	}
+	
+	echo '<pre>'; 
+	print_r($arr); 
+	echo '</pre>';
+	
+	//var_dump($arr);
+}
+
+
+
 
 ?>

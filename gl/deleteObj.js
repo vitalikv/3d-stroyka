@@ -32,7 +32,8 @@ function deleteWall_1( wall )
 {	
 	//hideMenuObjUI_2D(wall);
 //calculationZoneFundament_1(wall)
-
+	hideMenuUI(wall);
+	
 	var points = wall.userData.wall.p;
 
 	var arrZone = detectCommonZone_1( wall );
@@ -171,6 +172,8 @@ function deletePoint( point )
 {
 	if(!point){ return [ null, null ]; }
 	if(point.p.length != 2){ return [ null, null ]; }
+	
+	hideMenuUI(point);
 	
 	var wall_1 = point.w[0];
 	var wall_2 = point.w[1];

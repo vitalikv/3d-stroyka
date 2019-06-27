@@ -12,10 +12,12 @@ function showLengthWallUI( wall )
 	var y = Math.abs( v[1].y - v[0].y );	
 	var z = Math.abs( v[4].z - v[0].z );
 	
-	$('[nameId="size-wall-length"]').val(Math.round(x * 100)/100);
-	$('[nameId="size-wall-height"]').val(Math.round(y * 100)/100);
-	$('[nameId="size-wall-width"]').val(Math.round(z * 100)/100);
+	//$('[nameId="size-wall-length"]').val(Math.round(x * 100)/100);
+	//$('[nameId="size-wall-height"]').val(Math.round(y * 100)/100);
+	//$('[nameId="size-wall-width"]').val(Math.round(z * 100)/100);
 
+	$('[nameId="size_wall_width_1"]').val(wall.userData.wall.width);
+	
 	//toggleButtonMenuWidthWall(wall);
 }
 
@@ -419,24 +421,21 @@ function updateWall(wall, cdm)
 function inputWidthOneWall(cdm) 
 {
 	var wall = cdm.wall;
-	var unit = cdm.width.unit;
+	//var unit = cdm.width.unit;
 	var width = cdm.width.value;
 	var offset = cdm.offset;
-
-
-	if(!isNumeric(width)) 
-	{
-		width = wall.userData.wall.width;	
-	}
-	else
-	{
-		if(unit == 'cm'){ width /= 100; }
-		else if(unit == 'mm'){ width /= 1000; }		
-	}
-		
-	
+	console.log(width);
 	if(!wall){ return; } 
 	if(wall.userData.tag != 'wall'){ return; } 
+	
+	var width = checkNumberInput({ value: width, unit: 1, limit: {min: 0.01, max: 1} });
+	
+	if(!width) 
+	{
+		$('[nameid="size_wall_width_1"]').val(wall.userData.wall.width);
+		
+		return;
+	}		
 
 	var wallR = detectChangeArrWall_2(wall);
 	
@@ -508,8 +507,6 @@ function inputWidthOneWall(cdm)
 	getYardageSpace( compileArrPickZone(wall) );
 	
 	clickPointUP_BSP(wallR);
-
-	if(camera == camera3D) {}
 	
 	renderCamera();
 }

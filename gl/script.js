@@ -1563,6 +1563,8 @@ document.body.addEventListener("keydown", function (e)
 	{ 
 		if(e.keyCode == 13)
 		{
+			console.log(infProject.activeInput);
+			
 			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
 			//if(infProject.activeInput == 'input-width') { inputWidthOneWall({wall:obj_line[0], width:{value:7, unit:'cm'}, offset:'wallRedBlueArrow'}) } 
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
@@ -1575,6 +1577,12 @@ document.body.addEventListener("keydown", function (e)
 			if(infProject.activeInput == 'size-grid-tube-xy-1')
 			{
 				updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});
+			}
+			if(infProject.activeInput == 'size_wall_width_1') 
+			{ 
+				var width = $('[nameid="size_wall_width_1"]').val();
+				
+				inputWidthOneWall({wall:clickO.last_obj, width:{value: width}, offset:'wallRedBlueArrow'}) 
 			}
 		}		
 		 
