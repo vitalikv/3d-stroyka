@@ -125,7 +125,7 @@ function showRulerWD(obj)
 		
 		var arr = detectDirectionWall_1(wall, 2, detectRoomWallSide(wall, 0));
 		boundPos[2] = arr[0].clone();
-		boundPos[3] = arr[2].clone(); 		
+		boundPos[3] = arr[2].clone();  		
 	}	
 	
 	

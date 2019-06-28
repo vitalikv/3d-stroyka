@@ -403,14 +403,15 @@ function detectDirectionWall_1(wall, index, room)
 		var arrN = (arrS[i] == 2) ? [4,5,11,10] : [0,1,7,6];
 
 		for (i2 = 0; i2 < arrN.length; i2++)
-		{
+		{ 
 			if(i == 0) { arrV2[arrV2.length] = v[arrN[i2]].clone(); }
 			else 
 			{ 
 				var worldV = arrW[i].localToWorld( v[arrN[i2]].clone() ); 
-				arrV2[arrV2.length] = arrW[0].worldToLocal( worldV ); 
+				arrV2[arrV2.length] = arrW[0].worldToLocal( worldV );  
 			}
 		}
+		
 	}
 	
 	// находим из значений вершин всех стен min/max значения ширины и высоты

@@ -151,7 +151,7 @@ function upLabelPlan_1(arrWall, Zoom)
 		if(!Zoom)	// если это не zoom, то обновляем значения
 		{
 			var v = wall.geometry.vertices; wall.geometry.verticesNeedUpdate = true;
-			for ( var i2 = 0; i2 < v.length; i2++ ) { wall.userData.wall.v[i2] = v[i2].clone(); }	// обновляем vertices			
+			for ( var i2 = 0; i2 < v.length; i2++ ) { wall.userData.wall.v[i2] = v[i2].clone(); }	// обновляем vertices		
 		}
 		
 		getWallAreaTop( wall );

@@ -75,7 +75,10 @@ function createFloor(cdm)
 		scene.add( room[n] ); 
 		scene.add( ceiling[n] );		
 	}
-
+	else
+	{
+		upLabelPlan_1(arrW); // если нет пола (фундамент, то считаем длину стен)
+	}
 
 	// определяем к какой стороне стены принадлежит зона и записываем зону к этой стене 
 	for ( var i = 0; i < arrW.length; i++ ) 
@@ -86,7 +89,7 @@ function createFloor(cdm)
 	
 	addParamPointOnZone(arrP, room[n]);
 	
-	upLabelPlan_1(arrW);
+	
 	
 	return room[n];
 }
