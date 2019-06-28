@@ -44,10 +44,12 @@ function mouseDownRight()
 		else if (obj.userData.tag == 'wf_point' ) 
 		{
 			if(obj.userData.wf_point.type == 'tool') { deletePointWF(obj); }			
-		}			
+		}
+
+		clickO = resetPop.clickO();
 	}	
 	
-	clickO = resetPop.clickO();	
+	clickO.move = null;	
 }
 
 

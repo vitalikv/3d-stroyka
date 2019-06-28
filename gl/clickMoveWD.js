@@ -199,11 +199,14 @@ function moveWD_2( wd, pos )
 	var bound = wd.userData.door.bound;
 	
 	if(pos.x + x_min < bound.min.x){ pos.x = bound.min.x - x_min; }
-	else if(pos.x + x_max > bound.max.x){ pos.x = bound.max.x - x_max; }		
+	else if(pos.x + x_max > bound.max.x){ pos.x = bound.max.x - x_max; }	
 	
-	if(pos.y + y_min < bound.min.y){ pos.y = bound.min.y - y_min; }
-	else if(pos.y + y_max > bound.max.y){ pos.y = bound.max.y - y_max; }
-
+	// ограничение по высоте при перемещении wd
+	if(camera != cameraTop)
+	{
+		if(pos.y + y_min < bound.min.y){ pos.y = bound.min.y - y_min; }
+		else if(pos.y + y_max > bound.max.y){ pos.y = bound.max.y - y_max; }
+	}	
 	
 	if(camera == cameraTop){ pos.z = 0; }	
 	
@@ -217,8 +220,6 @@ function moveWD_2( wd, pos )
 	//UI('window_above_floor_1').val(Math.round(wd.userData.door.h1 * 100) * 10);
 	
 	for ( var i = 0; i < arrSize.cube.length; i++ ) { arrSize.cube[i].position.add( pos2 ); } 	// меняем расположение контроллеров
-	
-
 	
 	showRulerWD_2D(wd); 	// перемещаем линейки и лайблы
 	showRulerWD_3D(wd);
