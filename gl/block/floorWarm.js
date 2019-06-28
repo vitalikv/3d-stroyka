@@ -37,6 +37,7 @@ function clickWFPoint(intersect)
 	
 	var obj = intersect.object;	
 	clickO.move = obj;	
+	clickO.actMove = false;
 	
 	clickO.offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );
@@ -52,6 +53,23 @@ function moveWFPoint(event, obj)
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
 	if(intersects.length == 0) return;	
+	
+	if(!clickO.actMove)
+	{
+		clickO.actMove = true;
+		
+		var line = obj.userData.wf_point.line.o;
+		
+		if(line) 
+		{ 
+			//line.material.color = new THREE.Color(infProject.listColor.active2D);
+			
+			if(line.userData.wf_line.tube)
+			{
+				line.userData.wf_line.tube.visible = false;
+			}			 
+		}
+	}
 	
 	var pos = new THREE.Vector3().addVectors( intersects[0].point, clickO.offset );
 	obj.position.copy(pos);	
@@ -72,7 +90,7 @@ function moveWFPoint(event, obj)
 		// обновляем geometry трубы
 		if(line.userData.wf_line.tube)
 		{
-			newTubeWF({line : line});
+			//newTubeWF({line : line});
 		}
 	}
 	
@@ -326,7 +344,7 @@ function upLineWF(point)
 		geometry.vertices.push(point.position);
 		
 		//0x777777
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1 }) );
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
 		line.userData.tag = 'wf_line';
 		line.userData.wf_line = {};
 		line.userData.wf_line.tube = null;
@@ -354,6 +372,32 @@ function upLineWF(point)
 	line.userData.wf_line.point.push(point_2);
 
 	clickO.move = point_2;
+}
+
+
+
+// сняли клик, когда перетаскивали точку
+function clickWFPointUp(point)
+{
+	if(point.userData.wf_point.cross.o) { clickPointToolsWF(point); clickO.move = null; return; }
+	
+	if(clickO.actMove)
+	{		
+		var line = point.userData.wf_point.line.o;
+		
+		if(line) 
+		{ 
+			//line.material.color = new THREE.Color(infProject.listColor.active2D);
+			
+			if(line.userData.wf_line.tube)
+			{
+				newTubeWF({line : line});
+				line.userData.wf_line.tube.visible = true;
+			}			 
+		}
+	}
+	
+	clickO.move = null;
 }
 
 
@@ -441,7 +485,8 @@ function clickPointToolsWF(obj)
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
 			scene.remove(line_1);
 			scene.remove(obj);	
-
+			
+			hideMenuUI(obj);
 			clickO = resetPop.clickO();
 		}
 		else	// у точки нет линии, это tool
@@ -484,7 +529,12 @@ function newTubeWF(cdm)
 	var pipeSpline = new THREE.CatmullRomCurve3(points);
 	pipeSpline.curveType = 'catmullrom';
 	pipeSpline.tension = 0;
-	var params = { extrusionSegments: 100, radiusSegments: 12, closed: false };
+	
+	var length = 0;
+	var v = line.geometry.vertices;	
+	for(var i = 0; i < v.length - 1; i++) { length += v[i].distanceTo(v[i + 1]); }		
+	
+	var params = { extrusionSegments: Math.round(length * 10), radiusSegments: 12, closed: false };
 	
 	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.02, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
@@ -492,8 +542,10 @@ function newTubeWF(cdm)
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false, lightMap : lightMap_1 } ) );	
 		line.userData.wf_line.tube = tube;
+		tube.userData.wf_tube = {}
+		tube.userData.wf_tube.color = tube.material.color.clone();
 		scene.add( tube );
 	}
 	else

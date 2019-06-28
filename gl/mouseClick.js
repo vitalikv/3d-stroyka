@@ -107,6 +107,7 @@ function onDocumentMouseDown( event )
 	 
 	clickO.obj = null; 
 	clickO.rayhit = null;	
+	clickO.actMove = false;
 	
 	clickRayHit(event); 
 
@@ -287,8 +288,7 @@ function onDocumentMouseUp( event )
 			}
 			else 
 			{ 
-				if(obj.userData.wf_point.cross.o) { clickPointToolsWF(obj); }
-				clickO.move = null; 
+				clickWFPointUp(obj); 
 			}			
 		}		
 		else { clickO.move = null; }		

@@ -105,8 +105,7 @@ if($url == '/calculator/warm_floor')
 	$interface['tube_1'] = 1;	
 	$interface['wd_2'] = 1;
 	$interface['wd_3'] = 1;
-	$interface['grid_tube_1'] = 1;
-	$interface['estimate'] = 1;
+	$interface['grid_tube_1'] = 1;	
 	$interface['tube_b1'] = 1;
 	$interface['wall_2']['bottom'] = ['width_1' => 1];
 	$interface['wall_2']['top'] = ['showHideWall_1' => 1];

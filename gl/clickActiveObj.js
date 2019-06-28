@@ -65,8 +65,13 @@ function activeHover2D( event )
 		else if ( tag == 'wf_point' ) { object.material.color = new THREE.Color(infProject.listColor.hover2D); }
 		else if ( tag == 'wall' ) { object.material[ 3 ].color = new THREE.Color(infProject.listColor.hover2D); }		
 		else if ( tag == 'controll_wd' ) { if(clickO.last_obj == object.obj) { activeHover2D_2(); return; } }
-		else if ( tag == 'wf_line' ) { object.material.color = new THREE.Color(infProject.listColor.hover2D); } 
-		
+		else if ( tag == 'wf_line' ) 
+		{ 
+			object.material.color = new THREE.Color(infProject.listColor.hover2D); 
+			
+			var tube = object.userData.wf_line.tube;
+			if(tube) { tube.material.color = new THREE.Color(infProject.listColor.hover2D); }
+		}		
 		activeHover2D_2();
 
 		clickO.hover = object;
@@ -92,7 +97,13 @@ function activeHover2D_2()
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = object.userData.material[ 3 ].color; }
 	else if ( tag == 'wf_point' ) { object.material.color = object.userData.wf_point.color; }
 	else if ( tag == 'point' ) { object.material.color = object.userData.point.color; }
-	else if ( tag == 'wf_line' ) { object.material.color = object.userData.wf_line.color; }
+	else if ( tag == 'wf_line' ) 
+	{ 
+		object.material.color = object.userData.wf_line.color; 
+		
+		var tube = object.userData.wf_line.tube;
+		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
+	}
 	
 	clickO.hover = null;
 }
@@ -113,7 +124,13 @@ function objActiveColor_2D(obj)
 	else if(tag == 'wall'){ if(obj.userData.parent) { obj = obj.userData.parent; } obj.material[3].color = new THREE.Color(infProject.listColor.active2D); } 	
 	else if(tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
 	else if(tag == 'wf_point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
-	else if(tag == 'wf_line'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
+	else if(tag == 'wf_line')
+	{ 
+		obj.material.color = new THREE.Color(infProject.listColor.active2D);
+
+		var tube = obj.userData.wf_line.tube;
+		if(tube) { tube.material.color = new THREE.Color(infProject.listColor.active2D); }		
+	}
 	
 	if(clickO.hover == obj) { clickO.hover = null; }
 }
@@ -140,7 +157,13 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(infProject.listColor.door2D); }	
 	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
-	else if(o.userData.tag == 'wf_line'){ o.material.color = o.userData.wf_line.color; }
+	else if(o.userData.tag == 'wf_line')
+	{ 
+		o.material.color = o.userData.wf_line.color; 
+		
+		var tube = o.userData.wf_line.tube;
+		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
+	}
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
 } 
