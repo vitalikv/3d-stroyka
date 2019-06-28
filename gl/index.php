@@ -10,8 +10,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title><?=$title?></title>
 
-	<link rel="stylesheet" href="<?=$path?>css/style.css"> 
-	<link rel="stylesheet" href="<?=$path?>css/toggle.css">
+	<link rel="stylesheet" href="<?=$path?>css/style.css?<?=$vrs?>"> 
+	<link rel="stylesheet" href="<?=$path?>css/toggle.css?<?=$vrs?>">
 </head>
 
 <body>
