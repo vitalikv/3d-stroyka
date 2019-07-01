@@ -73,7 +73,7 @@
 	<?if($interface['tube_b1'] == 1){?>
 	<div class="toolbar" nameId='tube_menu_1' style="display: none;">
 		<div class="toolbar-header">труба</div>
-		<div class="toolbar-menu">				
+		<div class="toolbar-menu" nameId='bb_menu_tube_menu_1'>				
 			<div class="input-size-2">
 				<div class="text_1">диаметр (мм)</div>
 				<input type="text" nameId='size_tube_diameter_2' data-input='size_tube_diameter_2' value = 0>
@@ -81,7 +81,7 @@
 			
 			<div class="input-size-2">
 				<div class="text_1">цвет</div>
-				<div class="color_1_red" nameId='color_tube_1_red'></div> 
+				<div class="color_1_red" nameId='color_tube_1_default'></div> 
 			</div>					 
 			
 			<div class="input-size-2">
@@ -92,6 +92,16 @@
 			<div class="button1-wrap-2">
 				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 			</div>			
+		</div>
+		
+		<div class="toolbar-menu" nameId='bb_menu_tube_menu_2' style="display: none;">
+			<div class="color_tube_1_change" color_tube_1_change='e5e5e5' style="background-color:#e5e5e5;"></div>
+			<div class="color_tube_1_change" color_tube_1_change='0252f2' style="background-color:#0252f2;"></div>
+			<div class="color_tube_1_change" color_tube_1_change='f2b202' style="background-color:#f2b202;"></div> 
+			<div class="color_tube_1_change" color_tube_1_change='9602f2' style="background-color:#9602f2;"></div>
+			<div class="color_tube_1_change" color_tube_1_change='f202e2' style="background-color:#f202e2;"></div>
+			<div class="color_tube_1_change" color_tube_1_change='828282' style="background-color:#828282;"></div>
+			<div class="color_tube_1_change" color_tube_1_change='141414' style="background-color:#141414;"></div>
 		</div>
 	</div>
 

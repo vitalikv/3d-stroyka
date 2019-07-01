@@ -862,6 +862,7 @@ a.link_page_1
 }
 
 
+
 .bottom_panel_1 .toolbar .toolbar-menu .button1-wrap 
 { 
 	padding:15px 15px;
@@ -935,8 +936,8 @@ a.link_page_1
 .bottom_panel_1 .toolbar .toolbar-menu .input-size-2 .color_1_red
 {
 	display: block;
-	width:	60px;
-	height: 20px;
+	width:	40px;
+	height: 30px;
 	margin: auto;
 	
 	border-radius: 3px;	
@@ -947,4 +948,17 @@ a.link_page_1
 }
 
 
+.color_tube_1_change
+{
+	display: block;
+	width:	40px;
+	height: 40px;
+	margin: 10px;
+	
+	border-radius: 3px;	
+	border: 1px solid #b3b3b3;
+	
+	background-color:#cfcfcf;
+	cursor: pointer;
+}
 

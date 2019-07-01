@@ -297,7 +297,7 @@ function hoverCursorLineWF()
 	
 	if(arr.length > 0) 
 	{  
-		getNearLineWF(arr[0]);
+		//getNearLineWF(arr[0]);
 		result = { object : arr[0].cross, point : posMouse };
 	}
 	
@@ -542,7 +542,7 @@ function newTubeWF(cdm)
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff00ff, wireframe: false, lightMap : lightMap_1 } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x0252f2, wireframe: false, lightMap : lightMap_1 } ) );	
 		line.userData.wf_line.tube = tube;
 		tube.userData.wf_tube = {}
 		tube.userData.wf_tube.color = tube.material.color.clone();
