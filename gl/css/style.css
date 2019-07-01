@@ -805,6 +805,46 @@ a.link_page_1
 	display: flex;	
 }
 
+.button_youtube
+{
+	display: -webkit-box;
+	display: flex;		
+	width: auto;
+	height: 20px; 
+	margin:auto;
+	text-decoration:none; 
+	text-align:center; 
+	padding:11px 11px; 
+	border:solid 1px #b3b3b3; 
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px; 
+	border-radius: 4px; 
+	font:18px Arial, Helvetica, sans-serif; 
+	font-weight:bold; 
+	color:#737373; 
+	background-color:#ffffff; 
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); 
+	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
+	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+
+	cursor: pointer;
+}
+
+
+.button_youtube img 
+{
+	display: block;	
+	height: 95%;
+	margin: 0; 
+	-o-object-fit: contain;
+	object-fit: contain;	
+}
 
 
 .bottom_panel_1  
