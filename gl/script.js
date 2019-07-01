@@ -175,7 +175,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
 infProject.listColor = resetPop.listColor(); 
-infProject.settings.tube = { h : 0.2 };
+
 
 console.log(infProject);
 
@@ -1582,7 +1582,13 @@ document.body.addEventListener("keydown", function (e)
 			{ 
 				var width = $('[nameid="size_wall_width_1"]').val();
 				
-				inputWidthOneWall({wall:clickO.last_obj, width:{value: width}, offset:'wallRedBlueArrow'}) 
+				inputWidthOneWall({wall:clickO.last_obj, width:{value: width}, offset:'wallRedBlueArrow'}); 
+			}
+			if(infProject.activeInput == 'size_tube_diameter_2')
+			{
+				var size = $('[nameid="size_tube_diameter_2"]').val();
+				
+				inputWF_tubeDiametr({line: clickO.last_obj, size: size});
 			}
 		}		
 		 

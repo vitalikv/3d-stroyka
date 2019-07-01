@@ -7,7 +7,7 @@ function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
 	point.position.copy( cdm.pos );		
-	point.position.y = infProject.settings.tube.h;	
+	point.position.y = infProject.settings.wf_tube.pos.y;	
 	
 	point.renderOrder = 1;
 	
@@ -73,7 +73,7 @@ function moveWFPoint(event, obj)
 	
 	var pos = new THREE.Vector3().addVectors( intersects[0].point, clickO.offset );
 	obj.position.copy(pos);	
-	obj.position.y = infProject.settings.tube.h;
+	obj.position.y = infProject.settings.wf_tube.pos.y;
 	
 	dragToolWFPoint({obj : clickO.move});	// проверяем соединения с другими теплыми полами
 	
@@ -159,7 +159,7 @@ function dragToolWFPoint(cdm)
 	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
 	
 	var posMouse = obj.position;	
-	posMouse.y = infProject.settings.tube.h;	
+	posMouse.y = infProject.settings.wf_tube.pos.y;	
 	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 		
@@ -244,7 +244,7 @@ function hoverCursorLineWF()
 	if(intersects.length == 0) return null;
 	
 	var posMouse = intersects[0].point;	
-	posMouse.y = infProject.settings.tube.h;
+	posMouse.y = infProject.settings.wf_tube.pos.y;
 	
 	var arr = [];	
 	var z = 0.1 / camera.zoom;
@@ -534,9 +534,9 @@ function newTubeWF(cdm)
 	var v = line.geometry.vertices;	
 	for(var i = 0; i < v.length - 1; i++) { length += v[i].distanceTo(v[i + 1]); }		
 	
-	var params = { extrusionSegments: Math.round(length * 10), radiusSegments: 12, closed: false };
+	var params = { extrusionSegments: Math.round(length * 30), radiusSegments: 12, closed: false };
 	
-	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, 0.02, params.radiusSegments, params.closed );	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, infProject.settings.wf_tube.d, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();			
 
@@ -553,6 +553,7 @@ function newTubeWF(cdm)
 		line.userData.wf_line.tube.geometry = geometry;
 	}
 	
+	renderCamera();
 }
 
 
@@ -666,9 +667,33 @@ function showWF_line_UI(line)
 		length += v[i].distanceTo(v[i + 1]);
 	}
 	
-	$('[nameId="size_tube_diameter_2"]').val(16);
+	$('[nameId="size_tube_diameter_2"]').val(infProject.settings.wf_tube.d * 1000);
 	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
 	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
+}
+
+
+// input меняем диаметр трубы
+function inputWF_tubeDiametr(cdm)
+{
+	var line = cdm.line;
+	
+	if(!line) return;	
+	if(line.userData.tag != 'wf_line') return;
+	
+	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.05} });
+	
+	if(!size) 
+	{
+		var size = infProject.settings.wf_tube.d; // перводим в мм
+		$('[nameId="size_tube_diameter_2"]').val(size);
+		
+		return;
+	}
+	
+	infProject.settings.wf_tube.d = size;
+	$('[nameId="size_tube_diameter_2"]').val(Math.round(size * 100)*10);
+	if(line.userData.wf_line.tube) newTubeWF({line : line});
 }
 
 
