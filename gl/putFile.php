@@ -28,6 +28,7 @@ saveLoad.js
 script.js
 block/floorWarm.js
 eventClick.js
+clickMovePivot.js
 ';
 
 

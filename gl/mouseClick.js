@@ -126,6 +126,9 @@ function clickRayHit(event)
 { 
 	var rayhit = null;	
 	
+	var ray = rayIntersect( event, infProject.tools.pivot.children, 'arr' );
+	if(ray.length > 0) { rayhit = ray[0]; }
+	
 	if(!infProject.scene.block.click.tube)
 	{
 		var ray = hoverCursorLineWF(event);	
@@ -176,6 +179,7 @@ function clickRayHit(event)
 	if(camera == cameraTop)
 	{  
 		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
+		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
@@ -185,7 +189,8 @@ function clickRayHit(event)
 	}
 	else if(camera == camera3D)
 	{
-		if( tag == 'wall' ) { clickO.obj = object; }
+		if( tag == 'pivot' ) { clickPivot( rayhit ); }
+		else if( tag == 'wall' ) { clickO.obj = object; }
 	}	
 	else if(camera == cameraWall)
 	{
@@ -227,7 +232,8 @@ function onDocumentMouseMove( event )
 	{
 		var tag = obj.userData.tag;
 		
-		if ( tag == 'wall' ) { moveWall( event, obj ); }
+		if( tag == 'pivot' ) { movePivot( event ); }
+		else if ( tag == 'wall' ) { moveWall( event, obj ); }
 		else if ( tag == 'window' ) { moveWD( event, obj ); }
 		else if ( tag == 'door' ) { moveWD( event, obj ); }
 		else if ( tag == 'controll_wd' ) { moveToggleChangeWin( event, obj ); }
