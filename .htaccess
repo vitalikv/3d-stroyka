@@ -17,6 +17,7 @@ RewriteRule ^buy$ buy.php
 RewriteRule ^contact$ contact.php
 RewriteRule ^get_pay$ components/get_pay.php
 RewriteRule ^calculator\/.*$ gl/index.php
+RewriteRule ^putfile$ gl/putfile.php
 
 
 RewriteRule ^download$ download.php
