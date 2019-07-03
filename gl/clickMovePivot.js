@@ -46,7 +46,7 @@ function createPivot()
 	
 	scene.add( pivot );
 
-	
+	//pivot.rotation.set(0.2, 0.5, 0);
 	pivot.visible = true;
 	
 	return pivot;
@@ -127,7 +127,7 @@ function clickPivot( intersect )
 	var axis = obj.userData.axis;
 	pivot.userData.active.axis = axis;	
 		
-	console.log(axis);
+	console.log(pivot);
 	if(axis == 'x')
 	{ 
 		planeMath.rotation.set( Math.PI/2, 0, 0 );
@@ -147,16 +147,46 @@ function clickPivot( intersect )
 	{ 
 		planeMath.rotation.set( 0, 0, 0 ); 
 		pivot.userData.active.dir = dir_y.clone(); 
-		pivot.userData.active.qt = qt_plus_y.clone(); 
+		pivot.userData.active.qt = qt_plus_y.clone();
+
+		var mx = new THREE.Matrix4().compose(pivot.position, obj.quaternion, new THREE.Vector3(1,1,1));
+				
 	}	
 	else if(axis == 'xz' || axis == 'center')
 	{ 
 		planeMath.rotation.set( Math.PI/2, 0, 0 ); 
 	}		 
 	
+	var posL = camera.getWorldDirection().projectOnVector(new THREE.Vector3(1,0,0));
+	console.log(posL);
+	scene.add(new THREE.ArrowHelper( new THREE.Vector3(-0.7,0.7,-0.7), intersect.point, 1, 0xff0000 ));
+	
+	var dir = new THREE.Vector3().subVectors( intersect.point, camera.position ).normalize();
+	
+	//planeMath.quaternion.copy( pivot.quaternion.clone().multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2, 0, 0))).multiply( obj.quaternion ) );
+	planeMath.quaternion.copy( pivot.quaternion.clone().multiply( obj.quaternion ).multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2, 0, 0))) );
+	
+	planeMath.quaternion.copy( new THREE.Quaternion().setFromUnitVectors(planeMath.getWorldDirection(), new THREE.Vector3(-0.7,0.7,-0.7)) );
 	
 	planeMath.position.copy( intersect.point );
 } 
+
+var dgfdf = 0;
+var sadasd = false;
+function loopRTYY()
+{
+	if(!sadasd) return;
+	
+	//planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0.01, 0, 0)));
+	
+	var cos = Math.cos(dgfdf);
+	var sin = Math.sin(dgfdf);
+	console.log(cos, sin);
+	dgfdf += 0.01;
+	planeMath.quaternion.multiply( new THREE.Quaternion().setFromUnitVectors(planeMath.getWorldDirection(), new THREE.Vector3(cos,0,sin)) );
+	
+	renderCamera()
+}
 
 
 

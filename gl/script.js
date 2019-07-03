@@ -92,7 +92,7 @@ function animate()
 
 	cameraZoomTopLoop();	
 	moveCameraToNewPosition();
-	
+	loopRTYY()
 	updateKeyDown();
 }
 
@@ -257,7 +257,8 @@ function createPillar()
 
 function createPlaneMath()
 {
-	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	//var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	var geometry = new THREE.PlaneGeometry( 10, 10 );
 	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5, side: THREE.DoubleSide } );
 	//material.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, material );
@@ -1558,11 +1559,11 @@ document.addEventListener('mousewheel', mousewheel, false);
 document.body.addEventListener("keydown", function (e) 
 { 
 	if(clickO.keys[e.keyCode]) return;
-	
+	if(e.keyCode == 13) sadasd = !sadasd;
 	if(infProject.activeInput) 
 	{ 
 		if(e.keyCode == 13)
-		{
+		{ 
 			console.log(infProject.activeInput);
 			
 			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
