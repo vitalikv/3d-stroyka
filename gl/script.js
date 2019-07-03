@@ -92,7 +92,7 @@ function animate()
 
 	cameraZoomTopLoop();	
 	moveCameraToNewPosition();
-	loopRTYY()
+	
 	updateKeyDown();
 }
 
@@ -167,8 +167,8 @@ var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
-infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false};
-infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false};
+infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
+infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
@@ -218,7 +218,7 @@ camera3D.lookAt(centerCam);
 
 //----------- start
 
-
+var cube = createObject();
 
 
 function createPillar()
@@ -257,10 +257,10 @@ function createPillar()
 
 function createPlaneMath()
 {
-	//var geometry = new THREE.PlaneGeometry( 10000, 10000 );
-	var geometry = new THREE.PlaneGeometry( 10, 10 );
-	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5, side: THREE.DoubleSide } );
-	//material.visible = false; 
+	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	//var geometry = new THREE.PlaneGeometry( 10, 10 );
+	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
+	material.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, material );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.userData.tag = 'planeMath';	

@@ -126,8 +126,11 @@ function clickRayHit(event)
 { 
 	var rayhit = null;	
 	
-	var ray = rayIntersect( event, infProject.tools.pivot.children, 'arr' );
-	if(ray.length > 0) { rayhit = ray[0]; }
+	if(infProject.tools.pivot.visible)
+	{
+		var ray = rayIntersect( event, infProject.tools.pivot.children, 'arr' );
+		if(ray.length > 0) { rayhit = ray[0]; }		
+	}
 	
 	if(!infProject.scene.block.click.tube)
 	{
@@ -163,7 +166,18 @@ function clickRayHit(event)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );
 		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
-	}	
+	}
+
+	
+	if(!infProject.scene.block.click.obj)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.obj, 'arr' );
+		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }			
+	}
+	
+	
+	
+	
 	
 	if ( !rayhit ) return;
 
@@ -186,11 +200,13 @@ function clickRayHit(event)
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
+		else if( tag == 'obj' ) { clickObject( rayhit ); }
 	}
 	else if(camera == camera3D)
 	{
 		if( tag == 'pivot' ) { clickPivot( rayhit ); }
 		else if( tag == 'wall' ) { clickO.obj = object; }
+		else if( tag == 'obj' ) { clickObject( rayhit ); }
 	}	
 	else if(camera == cameraWall)
 	{
@@ -325,6 +341,7 @@ function hideMenuObjUI_2D( o )
 	if(o)
 	{ 
 		objDeActiveColor_2D(); 
+		deActiveObj(o);
 		
 		switch ( o.userData.tag ) 
 		{  
@@ -388,6 +405,8 @@ function hideMenuObjUI_3D( o )
 {
 	if ( o )
 	{  
+		deActiveObj(o);
+		
 		switch ( o.userData.tag ) 
 		{
 

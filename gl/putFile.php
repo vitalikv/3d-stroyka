@@ -29,6 +29,7 @@ script.js
 block/floorWarm.js
 eventClick.js
 clickMovePivot.js
+clickObj.js
 ';
 
 

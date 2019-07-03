@@ -1,8 +1,4 @@
 
-var param_pivot = { click : false, obj : null, axis : '', posS : 0, dir : '', qt : '' };
-
-var arrP_4 = [];
-var arrP_5 = [];
 
 
 
@@ -10,7 +6,9 @@ var arrP_5 = [];
 function createPivot()
 {
 	var pivot = new THREE.Object3D();
-	pivot.userData.active = { axis: '', startPos: new THREE.Vector3(), dir: new THREE.Vector3(), qt: new THREE.Quaternion() };
+	pivot.userData.pivot = {};
+	pivot.userData.pivot.active = { axis: '', startPos: new THREE.Vector3(), dir: new THREE.Vector3(), qt: new THREE.Quaternion() };
+	pivot.userData.pivot.obj = null;
 	
 	var param = [];
 	param[0] = {axis: 'x', size_1: new THREE.Vector3(1, 0.1, 0.1), size_2: new THREE.Vector3(1, 0.2, 0.2), rot: new THREE.Vector3(0, 0, 0), color: 'rgb(247, 72, 72)', opacity: 0};
@@ -47,7 +45,7 @@ function createPivot()
 	scene.add( pivot );
 
 	//pivot.rotation.set(0.2, 0.5, 0);
-	pivot.visible = true;
+	pivot.visible = false;
 	
 	return pivot;
 }
@@ -120,12 +118,12 @@ function clickPivot( intersect )
 	
 	var pos = pivot.position.clone();
 	
-	pivot.userData.active.startPos = pos;
+	pivot.userData.pivot.active.startPos = pos;
 	
 	clickO.offset = new THREE.Vector3().subVectors( pos, intersect.point );
 	
 	var axis = obj.userData.axis;
-	pivot.userData.active.axis = axis;	
+	pivot.userData.pivot.active.axis = axis;	
 		
 	console.log(pivot);
 	if(axis == 'x')
@@ -133,21 +131,21 @@ function clickPivot( intersect )
 		planeMath.rotation.set( Math.PI/2, 0, 0 );
 		var dir = new THREE.Vector3();
 		var dir = pivot.getWorldDirection(dir); 		
-		pivot.userData.active.dir = new THREE.Vector3(-dir.z, 0, dir.x).normalize();	
-		pivot.userData.active.qt = quaternionDirection( pivot.userData.active.dir ); 
+		pivot.userData.pivot.active.dir = new THREE.Vector3(-dir.z, 0, dir.x).normalize();	
+		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 
 	}
 	else if(axis == 'z')
 	{ 
 		planeMath.rotation.set( Math.PI/2, 0, 0 ); 
 		var dir = new THREE.Vector3();
-		pivot.userData.active.dir = pivot.getWorldDirection(dir); 
-		pivot.userData.active.qt = quaternionDirection( pivot.userData.active.dir ); 
+		pivot.userData.pivot.active.dir = pivot.getWorldDirection(dir); 
+		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 
 	}
 	else if(axis == 'y')
 	{ 
 		planeMath.rotation.set( 0, 0, 0 ); 
-		pivot.userData.active.dir = dir_y.clone(); 
-		pivot.userData.active.qt = qt_plus_y.clone();
+		pivot.userData.pivot.active.dir = dir_y.clone(); 
+		pivot.userData.pivot.active.qt = qt_plus_y.clone();
 
 		var mx = new THREE.Matrix4().compose(pivot.position, obj.quaternion, new THREE.Vector3(1,1,1));
 				
@@ -157,36 +155,11 @@ function clickPivot( intersect )
 		planeMath.rotation.set( Math.PI/2, 0, 0 ); 
 	}		 
 	
-	var posL = camera.getWorldDirection().projectOnVector(new THREE.Vector3(1,0,0));
-	console.log(posL);
-	scene.add(new THREE.ArrowHelper( new THREE.Vector3(-0.7,0.7,-0.7), intersect.point, 1, 0xff0000 ));
-	
-	var dir = new THREE.Vector3().subVectors( intersect.point, camera.position ).normalize();
-	
-	//planeMath.quaternion.copy( pivot.quaternion.clone().multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2, 0, 0))).multiply( obj.quaternion ) );
-	planeMath.quaternion.copy( pivot.quaternion.clone().multiply( obj.quaternion ).multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI/2, 0, 0))) );
-	
-	planeMath.quaternion.copy( new THREE.Quaternion().setFromUnitVectors(planeMath.getWorldDirection(), new THREE.Vector3(-0.7,0.7,-0.7)) );
 	
 	planeMath.position.copy( intersect.point );
 } 
 
-var dgfdf = 0;
-var sadasd = false;
-function loopRTYY()
-{
-	if(!sadasd) return;
-	
-	//planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0.01, 0, 0)));
-	
-	var cos = Math.cos(dgfdf);
-	var sin = Math.sin(dgfdf);
-	console.log(cos, sin);
-	dgfdf += 0.01;
-	planeMath.quaternion.multiply( new THREE.Quaternion().setFromUnitVectors(planeMath.getWorldDirection(), new THREE.Vector3(cos,0,sin)) );
-	
-	renderCamera()
-}
+
 
 
 
@@ -199,28 +172,28 @@ function movePivot( event )
 	var pivot = infProject.tools.pivot;
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );
 
-	if(pivot.userData.active.axis == 'xz')
+	if(pivot.userData.pivot.active.axis == 'xz')
 	{
-		var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
-		pivot.position.add( pos2 );	
-		//gizmo.position.add( pos2 );
-		//param_pivot.obj.position.add( pos2 );
-		return;			
+		
 	}		
+	else
+	{
+		var subV = new THREE.Vector3().subVectors( pos, pivot.userData.pivot.active.startPos );
+		var locD = localTransformPoint(subV, pivot.userData.pivot.active.qt);						
+		
+		var v1 = new THREE.Vector3().addScaledVector( pivot.userData.pivot.active.dir, locD.z );
+		pos = new THREE.Vector3().addVectors( pivot.userData.pivot.active.startPos, v1 );			
+	}
 	
-	
-	var subV = new THREE.Vector3().subVectors( pos, pivot.userData.active.startPos );
-	var locD = localTransformPoint(subV, pivot.userData.active.qt);						
-	
-	var v1 = new THREE.Vector3().addScaledVector( pivot.userData.active.dir, locD.z );
-	pos = new THREE.Vector3().addVectors( pivot.userData.active.startPos, v1 );	
 	 
 	
 	
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
+	
+	if(pivot.userData.pivot.obj) { pivot.userData.pivot.obj.position.add( pos2 ); }
+		
 	//gizmo.position.add( pos2 );
-	//param_pivot.obj.position.add( pos2 );
 
 }
 
