@@ -125,7 +125,7 @@ function clickPivot( intersect )
 	var axis = obj.userData.axis;
 	pivot.userData.pivot.active.axis = axis;	
 		
-	console.log(pivot);
+	
 	if(axis == 'x')
 	{ 
 		planeMath.rotation.set( Math.PI/2, 0, 0 );

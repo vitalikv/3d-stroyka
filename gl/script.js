@@ -219,6 +219,7 @@ camera3D.lookAt(centerCam);
 //----------- start
 
 var cube = createObject();
+var cube2 = createObject(); cube2.position.set(3, 0, 3);
 
 
 function createPillar()
@@ -1258,8 +1259,8 @@ function deActiveSelected()
 {
 	clickO.obj = null;
 	
-	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ) }
-	else if ( camera == camera3D ) {  }
+	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
+	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
 	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }		
 }
 
