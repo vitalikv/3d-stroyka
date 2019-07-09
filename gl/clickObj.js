@@ -22,13 +22,30 @@ function createObject()
 
 function clickObject( intersect )
 {
-	var pivot = infProject.tools.pivot;
+	var obj = intersect.object;
 	
-	pivot.visible = true;
+	obj.updateMatrixWorld();
+	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
 	
-	pivot.userData.pivot.obj = intersect.object;
-	
-	pivot.position.copy(intersect.object.position);
+	if(1==2)
+	{
+		var pivot = infProject.tools.pivot;	
+		pivot.visible = true;	
+		pivot.userData.pivot.obj = obj;
+		pivot.position.copy(pos);		
+	}
+	if(1==1)
+	{
+		var gizmo = infProject.tools.gizmo;
+					
+		gizmo.position.copy( pos );
+		gizmo.rotation.copy( obj.rotation );
+		gizmo.visible = true;
+		gizmo.userData.gizmo.obj = obj;
+		
+		clippingGizmo360(intersect.object); 		
+	}
+
 }
 
 
@@ -42,17 +59,22 @@ function deActiveObj(obj)
 	if(obj.userData.tag != 'obj') return;
 	
 	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;
 	
 	if(clickO.obj)
 	{
-		if(pivot.userData.pivot.obj == clickO.obj) return;
-		
+		if(pivot.userData.pivot.obj == clickO.obj) return;		
 		if(clickO.obj.userData.tag == 'pivot') return;
+		
+		if(gizmo.userData.gizmo.obj == clickO.obj) return;		
+		if(clickO.obj.userData.tag == 'gizmo') return;		
 	}	
 	
 	pivot.visible = false;
+	gizmo.visible = false;
 	
 	pivot.userData.pivot.obj = null;
+	gizmo.userData.gizmo.obj = null;
 	
 	clickO.obj = null;
 	clickO.last_obj = null;

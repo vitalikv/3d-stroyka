@@ -173,11 +173,12 @@ infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
-infProject.tools = { pivot: createPivot(), cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
+infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall : [], point : createToolPoint(), axis : [createLineAxis(), createLineAxis()] }
 infProject.listColor = resetPop.listColor(); 
 
 
 console.log(infProject);
+
 
 
 // cutoff боковые отсечки для линеек
@@ -258,10 +259,10 @@ function createPillar()
 
 function createPlaneMath()
 {
-	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
-	//var geometry = new THREE.PlaneGeometry( 10, 10 );
-	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
-	material.visible = false; 
+	//var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	var geometry = new THREE.PlaneGeometry( 10, 10 );
+	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5, side: THREE.DoubleSide } );
+	//material.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, material );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.userData.tag = 'planeMath';	

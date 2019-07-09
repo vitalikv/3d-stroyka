@@ -132,6 +132,15 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 	
+	if(infProject.tools.gizmo.visible)
+	{
+		var arr = [];
+		for ( var i = 0; i < 3; i++ ){ arr[i] = infProject.tools.gizmo.children[i]; }
+		
+		var ray = rayIntersect( event, arr, 'arr' );
+		if(ray.length > 0) { rayhit = ray[0]; }		
+	}	
+	
 	if(!infProject.scene.block.click.tube)
 	{
 		var ray = hoverCursorLineWF(event);	
@@ -194,6 +203,7 @@ function clickRayHit(event)
 	{  
 		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
 		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
+		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); } 
 		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
@@ -205,8 +215,9 @@ function clickRayHit(event)
 	else if(camera == camera3D)
 	{
 		if( tag == 'pivot' ) { clickPivot( rayhit ); }
+		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }
 		else if( tag == 'wall' ) { clickO.obj = object; }
-		else if( tag == 'obj' ) { clickObject( rayhit ); }
+		else if( tag == 'obj' ) { clickObject( rayhit ); } 
 	}	
 	else if(camera == cameraWall)
 	{
@@ -249,6 +260,7 @@ function onDocumentMouseMove( event )
 		var tag = obj.userData.tag;
 		
 		if( tag == 'pivot' ) { movePivot( event ); }
+		else if ( tag == 'gizmo' ) { moveGizmo( event ); }
 		else if ( tag == 'wall' ) { moveWall( event, obj ); }
 		else if ( tag == 'window' ) { moveWD( event, obj ); }
 		else if ( tag == 'door' ) { moveWD( event, obj ); }

@@ -2,7 +2,7 @@
 
 
 
-
+// создаем Pivot
 function createPivot()
 {
 	var pivot = new THREE.Object3D();
@@ -41,6 +41,9 @@ function createPivot()
 		}
 	}	
 		
+	pivot.add( createCone({axis: 'z', pos: new THREE.Vector3(0,0,-1), rot: new THREE.Vector3(-Math.PI/2,0,0), color: 0x0000ff}) );
+	pivot.add( createCone({axis: 'x', pos: new THREE.Vector3(1,0,0), rot: new THREE.Vector3(0,0,-Math.PI/2), color: 0xff0000}) );
+	pivot.add( createCone({axis: 'y', pos: new THREE.Vector3(0,1,0), rot: new THREE.Vector3(0,0,0), color: 0x00ff00}) );
 	
 	scene.add( pivot );
 
@@ -105,8 +108,44 @@ function createGeometryPivot(x, y, z)
 }
 
 
+// создаем конусы для Pivot
+function createCone(cdm)
+{	
+	var n = 0;
+	var v = [];
+	var circle = infProject.geometry.circle;
+	
+	for ( var i = 0; i < circle.length; i++ )
+	{
+		v[n] = new THREE.Vector3().addScaledVector( circle[i].clone().normalize(), 0.06 );
+		v[n].y = 0;		
+		n++;		
+		
+		v[n] = new THREE.Vector3();
+		v[n].y = 0;
+		n++;
+		
+		v[n] = new THREE.Vector3().addScaledVector( circle[i].clone().normalize(), 0.003 );
+		v[n].y = 0.25;
+		n++;	
+		
+		v[n] = new THREE.Vector3();
+		v[n].y = 0.25;
+		n++;		
+	}	
 
-
+	
+	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : cdm.color, wireframe:false, lightMap : lightMap_1 } ) ); 
+	obj.userData.tag = 'pivot';
+	obj.userData.axis = cdm.axis;
+	obj.renderOrder = 2;
+	obj.position.copy(cdm.pos);
+	obj.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);
+	//obj.visible = false;	
+	scene.add( obj );
+	
+	return obj;
+}
 
 
 // кликнули на pivot

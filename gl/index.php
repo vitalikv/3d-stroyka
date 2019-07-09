@@ -58,6 +58,7 @@
 	<script src="<?=$path?>block/createGrid.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>clickMoveGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMovePivot.js?<?=$vrs?>"></script>
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>

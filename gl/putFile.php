@@ -30,6 +30,7 @@ block/floorWarm.js
 eventClick.js
 clickMovePivot.js
 clickObj.js
+clickMoveGizmo.js
 ';
 
 
