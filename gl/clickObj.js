@@ -27,14 +27,15 @@ function clickObject( intersect )
 	obj.updateMatrixWorld();
 	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
 	
-	if(1==2)
+	if(infProject.settings.active.pg == 'pivot')
 	{
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
 		pivot.position.copy(pos);		
 	}
-	if(1==1)
+	
+	if(infProject.settings.active.pg == 'gizmo')
 	{
 		var gizmo = infProject.tools.gizmo;
 					
@@ -52,7 +53,7 @@ function clickObject( intersect )
 
 
 
-function deActiveObj(obj)
+function hidePivotGizmo(obj)
 {
 	if(!obj) return;
 	if(!obj.userData.tag) return;
@@ -76,8 +77,18 @@ function deActiveObj(obj)
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
 	
-	clickO.obj = null;
+	//clickO.obj = null;
 	clickO.last_obj = null;
+	console.log('hide', obj);
+	$('[nameId="obj_b_menu_1"]').hide();
+}
+
+
+
+// при выделении объекта, показываем меню
+function showObjUI()
+{	
+	$('[nameId="obj_b_menu_1"]').show();
 }
 
 

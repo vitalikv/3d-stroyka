@@ -73,24 +73,25 @@ function createGizmo360()
 	gizmo.userData.gizmo = {};
 	gizmo.userData.gizmo.obj = null;
 	gizmo.userData.gizmo.active = { axis: '', startPos: new THREE.Vector3(), rotY: 0 };
+
 	
-	var arr = [];
-	arr[0] = ['x', new THREE.Vector3(0, 0, 0), 'rgb(48, 154, 186)'];
-	arr[1] = ['y', new THREE.Vector3(0, 0, Math.PI/2), 'rgb(168, 69, 69)'];
-	arr[2] = ['z', new THREE.Vector3(Math.PI/2, 0, 0), 'rgb(34, 99, 34)'];
+	var param = [];
+	param[0] = {axis: 'x', rot: new THREE.Vector3(0, 0, 0), color: 'rgb(247, 72, 72)'};
+	param[1] = {axis: 'y', rot: new THREE.Vector3(0, 0, Math.PI/2), color: 'rgb(17, 255, 0)'};
+	param[2] = {axis: 'z', rot: new THREE.Vector3(Math.PI/2, 0, 0), color: 'rgb(72, 116, 247)'};	
 	
-	for ( var i = 0; i < 3; i++ )
+	for ( var i = 0; i < param.length; i++ )
 	{
-		var material = new THREE.MeshBasicMaterial({ color: arr[i][2], depthTest: false, transparent: true, opacity: 0.0 });
-		//var material = new THREE.MeshBasicMaterial({ color: arr[i][2] });
+		var material = new THREE.MeshBasicMaterial({ color: param[i].color, depthTest: false, transparent: true, opacity: 0.0 });
+		material.visible = false;
+		//var material = new THREE.MeshBasicMaterial({ color: param[i].color });
 		var obj = new THREE.Mesh( createGeometryCircle(v), material );
 		obj.userData.tag = 'gizmo'; 
-		obj.userData.axis = arr[i][0];		
-		//obj.visible = false;
-		obj.rotation.set( arr[i][1].x, arr[i][1].y, arr[i][1].z );	
+		obj.userData.axis = param[i].axis;		
+		obj.rotation.set( param[i].rot.x, param[i].rot.y, param[i].rot.z );	
 		
 	
-		var obj2 = new THREE.Mesh( createGeometryCircle(v2), new THREE.MeshLambertMaterial({ color: arr[i][2], depthTest: false, clippingPlanes : [ new THREE.Plane() ], lightMap : lightMap_1 }) );
+		var obj2 = new THREE.Mesh( createGeometryCircle(v2), new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, clippingPlanes : [ new THREE.Plane() ], lightMap : lightMap_1 }) );
 		obj2.renderOrder = 3;
 		//obj2.visible = false;
 		obj2.material.clippingPlanes[0].copy(new THREE.Plane());
@@ -116,7 +117,7 @@ function createGizmo360()
 }
 
 
-//var helpers = null;
+
 
 
 // прячем текстуру если она находится за плоскостью 
@@ -146,7 +147,7 @@ function clippingGizmo360( objPop )
 }
 
 
-var param_obj = {};
+
 
 
 // кликнули на gizmo

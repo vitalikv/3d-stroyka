@@ -217,7 +217,7 @@ function clickRayHit(event)
 		if( tag == 'pivot' ) { clickPivot( rayhit ); }
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }
 		else if( tag == 'wall' ) { clickO.obj = object; }
-		else if( tag == 'obj' ) { clickObject( rayhit ); } 
+		else if( tag == 'obj' ) {  } 
 	}	
 	else if(camera == cameraWall)
 	{
@@ -353,7 +353,6 @@ function hideMenuObjUI_2D( o )
 	if(o)
 	{ 
 		objDeActiveColor_2D(); 
-		deActiveObj(o);
 		
 		switch ( o.userData.tag ) 
 		{  
@@ -363,6 +362,7 @@ function hideMenuObjUI_2D( o )
 			case 'window': hideSizeWD(o); break;
 			case 'wf_line': hideMenuUI(o); break;
 			case 'wf_point': hideMenuUI(o); break;
+			case 'obj': hidePivotGizmo(o); break;
 		}
 	}
 }
@@ -385,6 +385,7 @@ function showMenuObjUI_2D( o )
 			case 'window': showRulerWD( o ); break;
 			case 'wf_line': showWF_line_UI( o ); break;
 			case 'wf_point': showWF_point_UI( o ); break;
+			case 'obj': showObjUI( o ); break;
 		}	
 	}
 	
@@ -405,6 +406,7 @@ function showMenuObjUI_3D( o, stop )
 		switch ( o.userData.tag ) 
 		{
 			case 'wall': clickWall_3D( rayhit ); break;
+			case 'obj': clickObject( rayhit ); showObjUI( o ); break;
 		}
 	}
 	
@@ -416,12 +418,10 @@ function showMenuObjUI_3D( o, stop )
 function hideMenuObjUI_3D( o )
 {
 	if ( o )
-	{  
-		deActiveObj(o);
-		
+	{  		
 		switch ( o.userData.tag ) 
 		{
-
+			case 'obj': hidePivotGizmo(o); break;
 		}
 	}
 }
@@ -495,6 +495,7 @@ function hideMenuUI(obj)
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
 	else if(tag == 'wf_line') { $('[nameId="tube_menu_1"]').hide(); }
 	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); }
+	
 }
 
 
