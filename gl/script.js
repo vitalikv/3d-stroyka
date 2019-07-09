@@ -1260,6 +1260,7 @@ function clickInterface(cdm)
 function deActiveSelected()
 {
 	clickO.obj = null;
+	clickO.rayhit = null;
 	
 	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
 	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
@@ -1562,7 +1563,7 @@ document.addEventListener('mousewheel', mousewheel, false);
 document.body.addEventListener("keydown", function (e) 
 { 
 	if(clickO.keys[e.keyCode]) return;
-	if(e.keyCode == 13) sadasd = !sadasd;
+	
 	if(infProject.activeInput) 
 	{ 
 		if(e.keyCode == 13)
@@ -1603,7 +1604,7 @@ document.body.addEventListener("keydown", function (e)
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
-	
+	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  // alt + v
 } );
 
 document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });

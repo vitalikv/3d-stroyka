@@ -135,7 +135,7 @@ function createCone(cdm)
 	}	
 
 	
-	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : cdm.color, wireframe:false, lightMap : lightMap_1 } ) ); 
+	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : cdm.color, wireframe:false, depthTest: false, lightMap : lightMap_1 } ) ); 
 	obj.userData.tag = 'pivot';
 	obj.userData.axis = cdm.axis;
 	obj.renderOrder = 2;

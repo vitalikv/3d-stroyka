@@ -62,13 +62,13 @@ function hidePivotGizmo(obj)
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
 	
-	if(clickO.obj)
+	if(clickO.rayhit)
 	{
-		if(pivot.userData.pivot.obj == clickO.obj) return;		
-		if(clickO.obj.userData.tag == 'pivot') return;
+		if(pivot.userData.pivot.obj == clickO.rayhit.object) return;		
+		if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		
-		if(gizmo.userData.gizmo.obj == clickO.obj) return;		
-		if(clickO.obj.userData.tag == 'gizmo') return;		
+		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
+		if(clickO.rayhit.object.userData.tag == 'gizmo') return;		
 	}	
 	
 	pivot.visible = false;
@@ -79,7 +79,7 @@ function hidePivotGizmo(obj)
 	
 	//clickO.obj = null;
 	clickO.last_obj = null;
-	console.log('hide', obj);
+	console.log("obj_b_menu_1", obj);
 	$('[nameId="obj_b_menu_1"]').hide();
 }
 

@@ -105,15 +105,15 @@ function onDocumentMouseDown( event )
 		}
 	}
 	 
-	clickO.obj = null; 
-	clickO.rayhit = null;	
-	clickO.actMove = false;
-	
-	clickRayHit(event); 
+	clickO.obj = null; 	
+	clickO.actMove = false;	
+	clickO.rayhit = clickRayHit(event); 
 
-	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); showMenuObjUI_2D( clickO.obj ); }
+	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
 	else if ( camera == camera3D ) { hideMenuObjUI_3D( clickO.last_obj ); }
-	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); showMenuObjUI_Wall(clickO.obj); }
+	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }
+	
+	clickMouseActive({type: 'down'});
 	
 	renderCamera();
 }
@@ -185,52 +185,83 @@ function clickRayHit(event)
 	}
 	
 	
-	
-	
-	
-	if ( !rayhit ) return;
+	return rayhit;
+}
 
-	var object = rayhit.object;
-	
-	consoleInfo( object );
-	
-	var tag = object.userData.tag;
-	
-	clickO.obj = object;
-	clickO.rayhit = rayhit;	
 
-	if(camera == cameraTop)
+function clickMouseActive(cdm)
+{
+	if(!clickO.rayhit) return;
+
+	var obj = clickO.obj = clickO.rayhit.object;
+	
+	var tag = obj.userData.tag;
+	var rayhit = clickO.rayhit;
+	var flag = true;
+	
+	if(cdm.type == 'down')
 	{  
 		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
 		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); } 
-		else if( tag == 'wall' ) { clickWall_2D( rayhit ); }
+		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
+		else if( tag == 'wall' && camera == cameraWall ) { clickWall_3D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
-		else if( tag == 'obj' ) { clickObject( rayhit ); }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject( rayhit ); }
+		else { flag = false; }
 	}
-	else if(camera == camera3D)
-	{
-		if( tag == 'pivot' ) { clickPivot( rayhit ); }
-		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }
-		else if( tag == 'wall' ) { clickO.obj = object; }
-		else if( tag == 'obj' ) {  } 
+	else if(cdm.type == 'up')
+	{		
+		if( tag == 'wall' ) {  }
+		else if( tag == 'obj' && camera == camera3D ) { clickObject( rayhit ); }
+		else { flag = false; }
 	}	
-	else if(camera == cameraWall)
+	else 
+	{ 
+		flag = false; 
+	}
+	
+	if(flag) 
 	{
-		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
-		else if( tag == 'wall' ) { clickWall_3D( rayhit ); }
-		else if( tag == 'window' ) { clickWD( rayhit ); }
-		else if( tag == 'door' ) { clickWD( rayhit ); }
-		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
+		if(camera == cameraTop)
+		{
+			objActiveColor_2D(obj);
+			
+			if(tag == 'wall') { showLengthWallUI( obj ); }
+			else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); }
+			else if(tag == 'door') { showRulerWD( obj ); }
+			else if(tag == 'window') { showRulerWD( obj ); }
+			else if(tag == 'wf_line') { showWF_line_UI( obj ); }
+			else if(tag == 'wf_point') { showWF_point_UI( obj ); }
+			else if(tag == 'obj') { showObjUI( obj ); }
+			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
+			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }			
+		}		
+		else if(camera == camera3D)
+		{
+			if(tag == 'wall') {  }
+			else if(tag == 'obj') { showObjUI( obj ); }	
+			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
+			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
+		}
+		else if(camera == cameraWall)
+		{
+			if(tag == 'wall') { showLengthWallUI( obj ); }
+			else if(tag == 'controll_wd') { obj = obj.userData.controll_wd.obj; }
+			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
+			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }						
+		}
+		
+		
+		clickO.last_obj = obj;
+		
+		consoleInfo( obj );
 	}
 }
-
-
-
 
 
 function onDocumentMouseMove( event ) 
@@ -289,7 +320,8 @@ function onDocumentMouseMove( event )
 function onDocumentMouseUp( event )  
 {
 
-	if ( !long_click && camera == camera3D ) { showMenuObjUI_3D( clickO.obj ); }
+	if(!long_click && camera == camera3D) { clickMouseActive({type: 'up'}); }
+	
 	
 	var obj = clickO.move;	
 	
@@ -369,52 +401,6 @@ function hideMenuObjUI_2D( o )
 
 
 
-function showMenuObjUI_2D( o )
-{
-	var rayhit = clickO.rayhit;
-	
-	if(o)
-	{
-		objActiveColor_2D(o);
-		
-		switch ( o.userData.tag ) 
-		{
-			case 'wall': showLengthWallUI( o ); break;
-			case 'point': $('[nameId="point_menu_1"]').show(); break;
-			case 'door': showRulerWD( o ); break;
-			case 'window': showRulerWD( o ); break;
-			case 'wf_line': showWF_line_UI( o ); break;
-			case 'wf_point': showWF_point_UI( o ); break;
-			case 'obj': showObjUI( o ); break;
-		}	
-	}
-	
-		
-	clickO.last_obj = o;
-}
-
-
-
-
-
-function showMenuObjUI_3D( o, stop )
-{
-	var rayhit = clickO.rayhit;
-
-	if ( o )
-	{
-		switch ( o.userData.tag ) 
-		{
-			case 'wall': clickWall_3D( rayhit ); break;
-			case 'obj': clickObject( rayhit ); showObjUI( o ); break;
-		}
-	}
-	
-	clickO.last_obj = o;
-	clickO.obj = null;
-}
-
-
 function hideMenuObjUI_3D( o )
 {
 	if ( o )
@@ -425,7 +411,6 @@ function hideMenuObjUI_3D( o )
 		}
 	}
 }
-
 
 
 
@@ -458,26 +443,6 @@ function hideMenuObjUI_Wall(o)
 }
 
 
-
-// показываем меню (cameraWall)
-function showMenuObjUI_Wall(o, stop) 
-{
-	if(!o) { return; }		
-	
-	if(o.userData.tag)
-	{
-		var tag = o.userData.tag;
-		
-		if(tag == 'wall') { showLengthWallUI( o ); }
-		else if(tag == 'controll_wd') { o = o.userData.controll_wd.obj; }
-		else if(tag == 'window') { showRulerWD( o ); showTableWD( o ); }
-		else if(tag == 'door') { showRulerWD( o ); showTableWD( o ); }			
-	}
-	
-
-	clickO.last_obj = o;		
-	clickO.obj = null;
-}
 
 
 
