@@ -259,10 +259,10 @@ function createPillar()
 
 function createPlaneMath()
 {
-	//var geometry = new THREE.PlaneGeometry( 10000, 10000 );
-	var geometry = new THREE.PlaneGeometry( 10, 10 );
+	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
+	//var geometry = new THREE.PlaneGeometry( 10, 10 );
 	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5, side: THREE.DoubleSide } );
-	//material.visible = false; 
+	material.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, material );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.userData.tag = 'planeMath';	
