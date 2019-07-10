@@ -77,6 +77,8 @@ $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); retu
 $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); return false; });
 
 	
+$('[data-action="select_pivot"]').mousedown(function () { return switchPivotGizmo({mode:'pivot'}); });
+$('[data-action="select_gizmo"]').mousedown(function () { return switchPivotGizmo({mode:'gizmo'}); });	
 $('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface({button:'create_tube_1'}); }); 
 $('[data-action="create_wd_1"]').mousedown(function () { return clickInterface({button:'create_wd_1'}); });

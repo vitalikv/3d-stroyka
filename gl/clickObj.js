@@ -10,7 +10,7 @@
 
 function createObject()
 {
-	var cube = new THREE.Mesh( createGeometryCube(0.5, 0.5, 0.5), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
+	var cube = new THREE.Mesh( createGeometryCube(0.5, 0.5, 0.5), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
 	scene.add( cube ); 	
 	cube.userData.tag = 'obj';
 	
@@ -20,9 +20,8 @@ function createObject()
 }
 
 
-function clickObject( intersect )
+function clickObject( obj, intersect )
 {
-	var obj = intersect.object;
 	
 	obj.updateMatrixWorld();
 	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
@@ -44,15 +43,28 @@ function clickObject( intersect )
 		gizmo.visible = true;
 		gizmo.userData.gizmo.obj = obj;
 		
-		clippingGizmo360(intersect.object); 		
+		clippingGizmo360(obj); 		
 	}
 
 }
 
 
 
+// удаление объекта
+function deleteObjectPop(obj)
+{
+	clickO = resetPop.clickO();
+	
+	hidePivotGizmo(obj);
+	
+	deleteValueFromArrya({arr : infProject.scene.array.obj, o : obj});
+	
+	scene.remove( obj );	
+}
 
 
+
+// скрываем Pivot/Gizmo
 function hidePivotGizmo(obj)
 {
 	if(!obj) return;
@@ -79,18 +91,36 @@ function hidePivotGizmo(obj)
 	
 	//clickO.obj = null;
 	clickO.last_obj = null;
-	console.log("obj_b_menu_1", obj);
+	
 	$('[nameId="obj_b_menu_1"]').hide();
 }
 
 
 
-// при выделении объекта, показываем меню
+// при выделении объекта, показываем меню 
 function showObjUI()
 {	
 	$('[nameId="obj_b_menu_1"]').show();
 }
 
+
+
+// переключаем Pivot/Gizmo
+function switchPivotGizmo(cdm)
+{
+	var obj = null;
+	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;	
+	
+	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; pivot.visible = false; }	
+	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; gizmo.visible = false; }
+	
+	if(!obj) return;
+	
+	infProject.settings.active.pg = cdm.mode;		console.log(222, infProject.settings.active.pg);
+	
+	clickObject( obj, null );
+}
 
 
 

@@ -10,6 +10,7 @@ function updateKeyDown()
 	var flag = false;
 	
 	var keys = clickO.keys;  
+	if(keys.length == 0) return;
 	
 	if ( camera == cameraTop )
 	{

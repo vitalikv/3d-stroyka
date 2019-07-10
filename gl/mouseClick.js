@@ -211,13 +211,13 @@ function clickMouseActive(cdm)
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
-		else if( tag == 'obj' && camera == cameraTop ) { clickObject( rayhit ); }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject( obj, rayhit ); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
 	{		
 		if( tag == 'wall' ) {  }
-		else if( tag == 'obj' && camera == camera3D ) { clickObject( rayhit ); }
+		else if( tag == 'obj' && camera == camera3D ) { clickObject( obj, rayhit ); }
 		else { flag = false; }
 	}	
 	else 
