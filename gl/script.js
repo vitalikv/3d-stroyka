@@ -1655,6 +1655,36 @@ $(document).ready(function ()
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
+	
+	
+	
+	new THREE.MTLLoader().load
+	( 
+		'/gl/export/nasos.mtl',
+		
+		function ( materials ) 
+		{
+			materials.preload();
+			
+			new THREE.OBJLoader().setMaterials( materials ).load						
+			( 
+				'/gl/export/nasos.obj', 
+				function ( object ) 
+				{		console.log(333333, object);
+					object.position.set(-2,0,1);
+					object.scale.set(0.1, 0.1, 0.1);
+					
+	object.children[0].userData.tag = 'obj';
+	
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = object.children[0];
+	
+					scene.add( object );
+				} 
+			);
+		}
+	);	
+	
+	
 });
 
 

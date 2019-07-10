@@ -49,7 +49,9 @@
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
     <script src="<?=$path?>js/jquery.js"></script>
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
-    
+	<script src="<?=$path?>js/OBJLoader.js"></script>
+	<script src="<?=$path?>js/MTLLoader.js"></script>   
+	
 	<script src="<?=$path?>meshBSP.js"></script> 	
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     

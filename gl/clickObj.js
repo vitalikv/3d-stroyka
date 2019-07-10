@@ -117,7 +117,7 @@ function switchPivotGizmo(cdm)
 	
 	if(!obj) return;
 	
-	infProject.settings.active.pg = cdm.mode;		console.log(222, infProject.settings.active.pg);
+	infProject.settings.active.pg = cdm.mode;		
 	
 	clickObject( obj, null );
 }
