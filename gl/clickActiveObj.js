@@ -55,9 +55,7 @@ function activeHover2D( event )
 	{
 		// выделяем объект
 		var object = rayhit.object;
-		var tag = object.userData.tag; 		
-		
-		if(tag == 'wall') { if(object.userData.parent) { object = object.userData.parent; } }			
+		var tag = object.userData.tag; 				
 
 		if ( clickO.last_obj == object ) { activeHover2D_2(); return; }	// объект активирован (крансый цвет), поэтому не подсвечиваем
 		if ( clickO.hover == object ) { return; }				// объект уже подсвечен
@@ -124,7 +122,7 @@ function objActiveColor_2D(obj)
 	
 	if(tag == 'window'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
 	else if(tag == 'point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
-	else if(tag == 'wall'){ if(obj.userData.parent) { obj = obj.userData.parent; } obj.material[3].color = new THREE.Color(infProject.listColor.active2D); } 	
+	else if(tag == 'wall'){ obj.material[3].color = new THREE.Color(infProject.listColor.active2D); } 	
 	else if(tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
 	else if(tag == 'wf_point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
 	else if(tag == 'wf_line')
@@ -154,7 +152,7 @@ function objDeActiveColor_2D()
 		if(clickO.rayhit.object.userData.tag == 'controll_wd'){ if(clickO.rayhit.object.userData.controll_wd.obj == o) { return; } }      		
 	}
 	 
-	if(o.userData.tag == 'wall'){ if(o.userData.parent) { o = o.userData.parent; } o.material[3].color = o.userData.material[3].color; }	
+	if(o.userData.tag == 'wall'){ o.material[3].color = o.userData.material[3].color; }	
 	else if(o.userData.tag == 'point'){ o.material.color = o.userData.point.color; }	
 	else if(o.userData.tag == 'window'){ o.material.color = new THREE.Color(infProject.listColor.window2D); }
 	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(infProject.listColor.door2D); }	

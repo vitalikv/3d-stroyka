@@ -168,9 +168,7 @@ function dragToolPoint( event, obj )
 			plane = object; 
 		} 			
 		else if(object.userData.tag == 'wall')
-		{ 
-			if(object.userData.parent) { object = object.userData.parent; }
-			
+		{ 			
 			var flag = true;
 			for ( var i2 = 0; i2 < object.userData.wall.p.length; i2++ ) 
 			{				

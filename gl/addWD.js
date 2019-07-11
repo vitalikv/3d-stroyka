@@ -124,7 +124,6 @@ function dragWD_2( event, obj )
 			if(object.userData.tag == 'planeMath'){ obj.position.copy( intersects[i].point ); } 			
 			else if(object.userData.tag == 'wall')
 			{ 
-				if(object.userData.tag_2){ if(object.userData.tag_2 == 'child_wall'){ object = object.parent; } }
 				wall = object; 
 				obj.rotation.copy( wall.rotation ); 
 				pos = intersects[i].point; 

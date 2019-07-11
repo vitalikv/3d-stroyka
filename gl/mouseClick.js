@@ -232,7 +232,7 @@ function clickMouseActive(cdm)
 		{
 			objActiveColor_2D(obj);
 			
-			if(tag == 'wall') { showLengthWallUI( obj ); }
+			if(tag == 'wall') { console.log(111, obj); showLengthWallUI( obj ); }
 			else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); }
 			else if(tag == 'door') { showRulerWD( obj ); }
 			else if(tag == 'window') { showRulerWD( obj ); }
@@ -488,7 +488,6 @@ function consoleInfo( obj )
 	}
 	else if( tag == 'wall' )
 	{ 
-		if(obj.userData.parent) { obj = obj.userData.parent; }
 		console.log(obj);
 		console.log( "wall id : " + obj.userData.id + " index : " + clickO.index + " | point : " + obj.userData.wall.p[0].userData.id + " | " + obj.userData.wall.p[1].userData.id + " | userData : ", obj.userData ); 
 	}
