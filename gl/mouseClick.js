@@ -201,13 +201,14 @@ function clickMouseActive(cdm)
 	
 	if(cdm.type == 'down')
 	{  
-		if(clickToolWD(clickO.move)) { console.log(clickO.last_obj); }
+		if(clickToolWD(clickO.move)) { flag = false; }
 		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); } 
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'wall' && camera == cameraWall ) { clickWall_3D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' ) { clickWFPoint( rayhit ); }
+		else if( tag == 'wf_line' ) {  }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
@@ -216,7 +217,7 @@ function clickMouseActive(cdm)
 	}
 	else if(cdm.type == 'up')
 	{		
-		if( tag == 'wall' ) {  }
+		if( tag == 'wall' && camera == camera3D ) {  }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject( obj, rayhit ); }
 		else { flag = false; }
 	}	
@@ -397,6 +398,8 @@ function hideMenuObjUI_2D( o )
 			case 'obj': hidePivotGizmo(o); break;
 		}
 	}
+	
+	clickO.last_obj = null;
 }
 
 

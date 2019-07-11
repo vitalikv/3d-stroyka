@@ -220,8 +220,7 @@ camera3D.lookAt(centerCam);
 
 //----------- start
 
-var cube = createObject();
-var cube2 = createObject(); cube2.position.set(3, 0, 3);
+
 
 
 function createPillar()
@@ -1656,7 +1655,8 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 	
-	
+var cube = createObject();
+var cube2 = createObject(); cube2.position.set(3, 0, 3);	
 	
 	new THREE.MTLLoader().load
 	( 
@@ -1671,14 +1671,27 @@ $(document).ready(function ()
 				'/gl/export/nasos.obj', 
 				function ( object ) 
 				{		console.log(333333, object);
-					object.position.set(-2,0,1);
-					object.scale.set(0.1, 0.1, 0.1);
+					//object.position.set(-2,0,1);
+					//object.scale.set(0.1, 0.1, 0.1);
 					
-	object.children[0].userData.tag = 'obj';
+					var obj = object.children[0];
+					
+					if(1==2)
+					{
+						var box = new THREE.Box3().setFromObject( obj );
+						var center = new THREE.Vector3();
+						box.getCenter( center );
+						obj.position.sub( center );										
+					}
+					
+					var v = obj.geometry.attributes.position.array;
+					
+					obj.material.lightMap = lightMap_1;
+					
+					obj.userData.tag = 'obj';
+					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = object.children[0];
-	
-					scene.add( object );
+					scene.add( object.children[0] );
 				} 
 			);
 		}

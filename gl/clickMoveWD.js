@@ -231,13 +231,13 @@ function moveWD_2( wd, pos )
 // скрываем размеры и котнроллеры у окна/двери
 function hideSizeWD( obj )
 {	
-	if(clickO.obj) 
+	if(clickO.rayhit) 
 	{
-		if(clickO.obj == obj) return;	// кликнули на один и тот же активный объект
+		if(clickO.rayhit.object == obj) return;	// кликнули на один и тот же активный объект
 		
-		if(clickO.obj.userData.tag == 'controll_wd')
+		if(clickO.rayhit.object.userData.tag == 'controll_wd')
 		{
-			if(clickO.obj.userData.controll_wd.obj == obj) { return; }
+			if(clickO.rayhit.object.userData.controll_wd.obj == obj) { return; }
 		}		
 	}		
 		

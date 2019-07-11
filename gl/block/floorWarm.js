@@ -402,7 +402,7 @@ function clickWFPointUp(point)
 
 
 
-// кликнули, когда к мышки привязан Point Tool
+// кликнули/отпустили, когда перетаскивали Point 
 function clickPointToolsWF(obj)
 {
 	//if(obj.userData.wf_point.line.o) return;
@@ -472,14 +472,35 @@ function clickPointToolsWF(obj)
 		var line_1 = obj.userData.wf_point.line.o;
 		
 		if(line_1)	// у точки есть линия (последнюю точку не добавляем)
-		{			
-			for(var i = line_1.userData.wf_line.point.length - 2; i > -1; i--)
+		{	
+			var p = line_1.userData.wf_line.point;
+			
+			if(obj == p[0])
+			{ 
+				for(var i = 0; i < line_1.userData.wf_line.point.length; i++)
+				{ 
+					var point = line_1.userData.wf_line.point[i];
+					
+					if(obj == point) continue;
+					
+					geometry.vertices[geometry.vertices.length] = point.position;
+					point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
+					line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
+				}				
+			}
+			
+			if(obj == p[p.length - 1])
 			{
-				var point = line_1.userData.wf_line.point[i];
-				
-				geometry.vertices[geometry.vertices.length] = point.position;
-				point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
-				line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
+				for(var i = line_1.userData.wf_line.point.length - 1; i > -1; i--)
+				{
+					var point = line_1.userData.wf_line.point[i];
+					
+					if(obj == point) continue;
+					
+					geometry.vertices[geometry.vertices.length] = point.position;
+					point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
+					line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
+				}					
 			}
 			
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});

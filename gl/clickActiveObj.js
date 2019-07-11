@@ -3,8 +3,8 @@
 // при наведение мыши над объектом (без клика) меняем цвет
 function activeHover2D( event )
 {
-	if ( camera != cameraTop ) { return; }
-	if ( isMouseDown1 ) { return; }
+	if (camera != cameraTop) { return; }
+	if (isMouseDown1) { return; }
 
 	if ( clickO.move ) 
 	{
@@ -12,11 +12,14 @@ function activeHover2D( event )
 		
 		if (tag == 'free_dw') { return; }
 		if (tag == 'point') { if (clickO.move.userData.point.type) return; }
-		if (tag == 'wf_point') { if (clickO.move.userData.wf_point.type == 'tool') return; }
+		if (tag == 'wf_point') { if (clickO.move.userData.wf_point.type == 'tool') return; }		
 	}
 	
 	var rayhit = null;
-	
+		
+	var ray = rayIntersect( event, arrSize.cube, 'arr' );
+	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }	
+		
 	if(!infProject.scene.block.hover.tube)
 	{
 		var ray = hoverCursorLineWF(event);	
@@ -114,7 +117,7 @@ function activeHover2D_2()
 // кликнули на объект (выделение) (cameraTop)
 function objActiveColor_2D(obj)
 { 
-	if(!obj) { return; }  
+	if(!obj) { return; }   
 	if(clickO.last_obj == obj) { return; }
 			
 	var tag = obj.userData.tag;
@@ -146,9 +149,9 @@ function objDeActiveColor_2D()
 	
 	var o = clickO.last_obj;	
 
-	if(clickO.obj)
-	{  
-		if(clickO.obj.userData.tag == 'controll_wd'){ if(clickO.obj.userData.controll_wd.obj == o) { return; } }      		
+	if(clickO.rayhit)
+	{    
+		if(clickO.rayhit.object.userData.tag == 'controll_wd'){ if(clickO.rayhit.object.userData.controll_wd.obj == o) { return; } }      		
 	}
 	 
 	if(o.userData.tag == 'wall'){ if(o.userData.parent) { o = o.userData.parent; } o.material[3].color = o.userData.material[3].color; }	

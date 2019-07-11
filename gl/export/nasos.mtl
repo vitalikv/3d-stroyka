@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 10.07.2019 14:59:52
+# File Created: 10.07.2019 20:36:31
 
 newmtl nasos_1_1
 	Ns 21.0000
@@ -36,8 +36,8 @@ newmtl nasos_1_3
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka nasos_1.png
-	map_Kd nasos_1.png
+	map_Ka nasos_1.jpg
+	map_Kd nasos_1.jpg
 
 newmtl Material__197
 	Ns 10.0000
@@ -50,5 +50,5 @@ newmtl Material__197
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka rezba_2.png
-	map_Kd rezba_2.png
+	map_Ka rezba_2.jpg
+	map_Kd rezba_2.jpg
