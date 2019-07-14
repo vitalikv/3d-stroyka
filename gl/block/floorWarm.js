@@ -402,7 +402,7 @@ function clickWFPointUp(point)
 
 
 
-// кликнули/отпустили, когда перетаскивали Point 
+// добавляем точку/создаем линию
 function clickPointToolsWF(obj)
 {
 	//if(obj.userData.wf_point.line.o) return;
@@ -516,6 +516,8 @@ function clickPointToolsWF(obj)
 			
 			obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
 			line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку	
+			
+			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 		}		
 		
 		line.geometry = geometry;	
@@ -527,7 +529,7 @@ function clickPointToolsWF(obj)
 	// обновляем geometry трубы
 	if(line)
 	{
-		if(line.userData.wf_line.tube) newTubeWF({line : line});
+		if(line.userData.wf_line.tube) { newTubeWF({line : line}); }
 	}	
 	
 	//obj.userData.wf_point.cross = { o : null, point : [] };
