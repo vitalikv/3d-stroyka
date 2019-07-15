@@ -1163,6 +1163,10 @@ function clickButton( event )
 				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
 				clickO.move = point;				
 			}
+			else if(clickO.button == 'create_tube_box_1')
+			{
+				clickO.move = createTubeBox();				
+			}			
 		}
 		if(camera == cameraWall)
 		{
@@ -1221,6 +1225,10 @@ function clickInterface(cdm)
 		{
 			clickO.button = 'create_tube_1';
 		}
+		else if(cdm.button == 'create_tube_box_1')
+		{
+			clickO.button = 'create_tube_box_1';
+		}		
 		else if(cdm.button == 'grid_show_1')
 		{
 			showHideGrid(); 
@@ -1639,9 +1647,7 @@ $(document).ready(function ()
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
-	
-var cube = createObject();
-var cube2 = createObject(); cube2.position.set(3, 0, 3);	
+		
 	
 	new THREE.MTLLoader().load
 	( 

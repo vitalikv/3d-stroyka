@@ -3,23 +3,6 @@
 
 
 
-
-
-
-
-
-function createObject()
-{
-	var cube = new THREE.Mesh( createGeometryCube(0.5, 0.5, 0.5), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
-	scene.add( cube ); 	
-	cube.userData.tag = 'obj';
-	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = cube;
-	
-	return cube;
-}
-
-
 function clickObject( obj, intersect )
 {
 	

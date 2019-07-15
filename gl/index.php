@@ -59,6 +59,7 @@
 	<script src="<?=$path?>block/createWallPlaster.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>block/createGrid.js?<?=$vrs?>"></script>
 	
+	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMoveGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMovePivot.js?<?=$vrs?>"></script>

@@ -1,7 +1,7 @@
 
 
 
-<div class="bottom_panel_1" data-action ='top_panel_1' style="z-index: 1;">	
+<div class="bottom_panel_1" style="z-index: 1;">	
 
 	<?if($interface['click_wall_2D'] == 1){?>
 		<div class="toolbar" nameId='wall_menu_1' style="display: none;">
@@ -71,7 +71,7 @@
 	<?}?>
 	
 	<?if($interface['tube_b1'] == 1){?>
-	<div class="toolbar" nameId='tube_menu_1' style="display: none;">
+	<div class="toolbar" data-action ='top_panel_1' nameId='tube_menu_1' style="display: none;">
 		<div class="toolbar-header">труба</div>
 		<div class="toolbar-menu" nameId='bb_menu_tube_menu_1'>				
 			<div class="input-size-2">
@@ -105,7 +105,7 @@
 		</div>
 	</div>
 
-	<div class="toolbar" nameId='wf_point_menu_1' style="display: none;">
+	<div class="toolbar" data-action ='top_panel_1' nameId='wf_point_menu_1' style="display: none;">
 		<div class="toolbar-header">точка</div>
 		<div class="toolbar-menu">
 			<div class="input-size-2">
