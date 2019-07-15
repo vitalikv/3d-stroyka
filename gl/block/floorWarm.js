@@ -565,10 +565,10 @@ function newTubeWF(cdm)
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x0252f2, wireframe: false, lightMap : lightMap_1 } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: line.material.color.getHex(), wireframe: false, lightMap : lightMap_1 } ) );	
 		line.userData.wf_line.tube = tube;
 		tube.userData.wf_tube = {}
-		tube.userData.wf_tube.color = tube.material.color.clone();
+		tube.userData.wf_tube.color = line.material.color.clone();
 		scene.add( tube );
 	}
 	else
@@ -581,7 +581,7 @@ function newTubeWF(cdm)
 
 
 
-// удаляем последнию точку (нажали на правую кнопку мыши, когда создаем линию)
+// удаляем точку
 function deletePointWF(obj)
 {
 	//arr_wf.point.pop();	// удаляем последнее значение в массиве
@@ -617,7 +617,7 @@ function deletePointWF(obj)
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
 
-			line.material.color = new THREE.Color(infProject.listColor.lineTube2D);
+			line.material.color = line.userData.wf_line.color.clone();
 			
 			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 			
@@ -693,6 +693,8 @@ function showWF_line_UI(line)
 	$('[nameId="size_tube_diameter_2"]').val(infProject.settings.wf_tube.d * 1000);
 	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
 	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
+	
+	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
 }
 
 
