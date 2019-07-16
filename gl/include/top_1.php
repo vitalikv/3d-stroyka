@@ -43,12 +43,6 @@
 				<!--<div data-action ='wall' class="button1"><img src="/img/paint.png"></div>-->
 				<div data-action ='wall' class="button1">Стена</div>
 			</div>
-			<? } ?>
-
-			<? if($interface['wd_1'] == 1){ ?>
-			<div class="button1-wrap-1">
-				<div data-action ='create_wd_1' class="button1">Проём</div>
-			</div>
 			<? } ?>	
 
 			<? if($interface['wd_2'] == 1){ ?>

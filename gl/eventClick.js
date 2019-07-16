@@ -82,7 +82,6 @@ $('[data-action="select_gizmo"]').mousedown(function () { return switchPivotGizm
 $('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { return clickInterface({button:'create_tube_1'}); }); 
 $('[data-action="create_tube_box_1"]').mousedown(function () { return clickInterface({button:'create_tube_box_1'}); }); 
-$('[data-action="create_wd_1"]').mousedown(function () { return clickInterface({button:'create_wd_1'}); });
 $('[data-action="create_wd_2"]').mousedown(function () { return clickInterface({button:'create_wd_2'}); });
 $('[data-action="create_wd_3"]').mousedown(function () { return clickInterface({button:'create_wd_3'}); });
 $('[data-action="grid_show_1"]').mousedown(function () { return clickInterface({button:'grid_show_1'}); });

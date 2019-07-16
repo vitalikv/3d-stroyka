@@ -1,6 +1,9 @@
 
 
 
+
+
+
 function createTubeBox()
 {
 	var cube = new THREE.Mesh( createGeometryCube(1.0, 0.02, 1.0), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
@@ -13,108 +16,27 @@ function createTubeBox()
 }
 
  
-// создаем линии для 2D контроллеров
-function createLineBoxPop()
-{
-	var arr = [];
-	var material = new THREE.MeshLambertMaterial({ color: 0xcccccc, side: THREE.DoubleSide, transparent: true, opacity: 1, depthTest: false }); 
-	
-	for ( var i = 0; i < 4; i++ )
-	{
-		arr[i] = new THREE.Mesh( createGeometryWD( 1, 0.01, 0.01 ), material ); 	
-		arr[i].visible = false;		
-		scene.add( arr[i] );		
-	}
-	
-	arr[0].userData.lineBoxPop = { p : [6,7] };
-	arr[1].userData.lineBoxPop = { p : [6,7] };
-	arr[2].userData.lineBoxPop = { p : [6,5] };
-	arr[3].userData.lineBoxPop = { p : [6,5] };
-	
-	return arr;
-}
+
 
 
 
 // создаем пустой куб, для масштабирования приметивов
 function createBoxPop()
 {
-	var material = new THREE.MeshLambertMaterial({ color: 0xcccccc, transparent: true, opacity: 0.0 }); 
+	var material = new THREE.MeshLambertMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0 }); 
 	var box = new THREE.Mesh( createGeometryWD(1, 1, 1), material ); 	
 	box.userData.tag = 'boxPop';
 	box.userData.boxPop = {};
 	box.userData.boxPop.popObj = null;
 	box.userData.line = [];
 	box.renderOrder = 1;
-	box.visible = false;
+	box.visible = true;
 	scene.add( box );
-	
-	
-	var arr = [];
-	var material = new THREE.MeshLambertMaterial({ color: 0x222222, side: THREE.DoubleSide }); 
-	
-	for ( var i = 0; i < 12; i++ )
-	{
-		arr[i] = new THREE.Mesh( createGeometryWD( 0.01, 0.01, 0.01 ), material ); 	
-		box.userData.line[i] = arr[i];	
-		box.add( arr[i] );		
-	}	
-	
-	upLineScaleBox(box, box.userData.line);
+
 
 	return box;
 }
 
-
-// обновляем размеры граней куба
-function upLineScaleBox(cube, line)
-{	
-	var v = cube.geometry.vertices;
-	
-	var arr = [];
-	
-	arr[0] = {n2:3, n1:0, rot:0};
-	arr[1] = {n2:4, n1:3, rot:Math.PI/2};
-	arr[2] = {n2:4, n1:7, rot:0};
-	arr[3] = {n2:7, n1:0, rot:Math.PI/2};
-	
-	arr[4] = {n2:2, n1:1, rot:0};
-	arr[5] = {n2:5, n1:2, rot:Math.PI/2};
-	arr[6] = {n2:5, n1:6, rot:0};
-	arr[7] = {n2:6, n1:1, rot:Math.PI/2};	
-	
-	for ( var i = 0; i < 8; i++ )
-	{
-		line[i].position.copy( v[arr[i].n1] );
-		line[i].rotation.y = arr[i].rot;
-		
-		var d = v[arr[i].n2].distanceTo( v[arr[i].n1] );
-		
-		var v2 = line[i].geometry.vertices;		
-		v2[3].x = v2[2].x = v2[4].x = v2[5].x = d;
-		line[i].geometry.verticesNeedUpdate = true;
-		line[i].geometry.elementsNeedUpdate = true;
-	}
-	
-
-	arr[8] = {n2:1, n1:0};
-	arr[9] = {n2:2, n1:3};
-	arr[10] = {n2:6, n1:7};
-	arr[11] = {n2:5, n1:4};
-	
-	for ( var i = 8; i < arr.length; i++ )
-	{
-		line[i].position.copy( v[arr[i].n1] );
-		
-		var d = v[arr[i].n2].distanceTo( v[arr[i].n1] );
-		
-		var v2 = line[i].geometry.vertices;				
-		v2[1].y = v2[2].y = v2[5].y = v2[6].y = d; 
-		line[i].geometry.verticesNeedUpdate = true;
-		line[i].geometry.elementsNeedUpdate = true;
-	}	
-	
-}
 
 
 // создаем 6 контроллеров для изменения длины/ширины box (для camera3D)
@@ -159,43 +81,6 @@ function createControlBoxPop3D()
 
 
 
- 
-// кликнули на POP объект, расставляем box и контроллеры (центрируем boxPop на положении POP объекта)
-function showBoxPop(obj)
-{
-	if(camera == cameraWall) return;
-	if(!obj.userData.obj3D) return;
-	if(!obj.userData.obj3D.boxPop) return;
-	
-	boxPop.userData.boxPop.popObj = obj; 
-	
-	obj.geometry.computeBoundingBox();
-	obj.geometry.computeBoundingSphere();
-	var x = (Math.abs(obj.geometry.boundingBox.max.x) + Math.abs(obj.geometry.boundingBox.min.x));
-	var y = (Math.abs(obj.geometry.boundingBox.max.y) + Math.abs(obj.geometry.boundingBox.min.y));
-	var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));
-
-	// поправка на масштаб объекта
-	x *= obj.scale.x;
-	y *= obj.scale.y;
-	z *= obj.scale.z;	
-	
-	changeSizeBoxPop(x, y, z); 	// подгоняем boxPop под размер POP объекта
-
-	// центрируем boxPop на POP объекте
-	boxPop.position.copy( obj.localToWorld( obj.geometry.boundingSphere.center.clone() ) );
-	boxPop.rotation.copy( obj.rotation );	
-	//if(camera == camera3D) { boxPop.visible = true; }
-	boxPop.visible = true;
-	
-	boxPop.updateMatrixWorld();
-	showToggleGp();		// устанавливаем контроллеры
-		
-	obj.userData.obj3D.controller = 'scale';
-
-	param_pivot.obj = obj;
-}
-
 
 
 // устанавливаем контроллеры
@@ -209,7 +94,7 @@ function showToggleGp()
 	var z_left = boxPop.localToWorld( new THREE.Vector3(0, 0, v[0].z) ); 
 	var z_right = boxPop.localToWorld( new THREE.Vector3(0, 0, v[7].z) );
 	
-	var arrGp = toolHandle.scale.cube3D;
+	var arrGp = infProject.tools.wf.cube;
 	
 	arrGp[0].position.copy(x_left);
 	arrGp[1].position.copy(x_right);
@@ -273,10 +158,9 @@ function showHelperNormal(obj)
 // скрываем box и контроллеры
 function hideBoxPop()
 {
-	boxPop.userData.boxPop.popObj = null;
 	boxPop.visible = false;
  
-	for ( var i = 0; i < toolHandle.scale.cube3D.length; i++ ) { toolHandle.scale.cube3D[i].visible = false; }	
+	for ( var i = 0; i < infProject.tools.wf.cube.length; i++ ) { infProject.tools.wf.cube[i].visible = false; }	
 }
 
 
@@ -286,7 +170,7 @@ function clickToggleGp( intersect )
 {
 	var obj = obj_selected = intersect.object;  
 	
-	var arrGp = toolHandle.scale.cube3D; 	
+	var arrGp = infProject.tools.wf.cube; 	
 	
 	
 	var n = [];
@@ -406,12 +290,7 @@ function inputScaleObjPop(cdm)
 	var scale = obj.userData.obj3D.sizeStart; 
 	 
 	obj.scale.set(x2/scale.x, y2/scale.y, z2/scale.z);	
-	obj.updateMatrixWorld();
-	showBoxPop(obj);
-	
-	upMenuScaleObjPop(obj); 	// обновляем в меню размер объекта длина/ширина/высота
-	
-	hideMenuTextureObjPop();
+	obj.updateMatrixWorld();	
 	
 	renderCamera();
 }
@@ -458,7 +337,7 @@ function moveToggleGp( event )
 	var pos2 = new THREE.Vector3().subVectors( posNew, obj.position );	
 	obj.position.copy(posNew);		
 
-	var arrGp = toolHandle.scale.cube3D;
+	var arrGp = infProject.tools.wf.cube;
 	
 	// перетаскиваем второстепенные контроллеры
 	pos2.divideScalar( 2 );

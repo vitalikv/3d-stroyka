@@ -121,7 +121,7 @@
 	<?}?>
 
 	<?if($interface['wall_2']['bottom']['width_1'] == 1){?>
-		<div class="toolbar" nameId='wall_menu_1' style="display: none;">
+		<div class="toolbar" data-action ='top_panel_1' nameId='wall_menu_1' style="display: none;">
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">								 			
 				<div class="input-size">
@@ -133,7 +133,7 @@
 				</div>				
 			</div>
 		</div>	
-		<div class="toolbar" nameId='point_menu_1' style="display: none;">
+		<div class="toolbar" data-action ='top_panel_1' nameId='point_menu_1' style="display: none;">
 			<div class="toolbar-header">точка</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
@@ -145,7 +145,7 @@
 	
 	
 	<?if($interface['obj_b1'] == 1){?>
-		<div class="toolbar" nameId='obj_b_menu_1' style="display: none;">
+		<div class="toolbar" data-action ='top_panel_1' nameId='obj_b_menu_1' style="display: none;">
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">

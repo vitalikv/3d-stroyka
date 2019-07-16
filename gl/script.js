@@ -174,9 +174,13 @@ infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
+infProject.tools.wf = { plane: createBoxPop(), cube: createControlBoxPop3D() };
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot' };
 
+
+var boxPop = infProject.tools.wf.plane;
+showToggleGp();		// устанавливаем контроллеры
 
 console.log(infProject);
 
@@ -1146,10 +1150,6 @@ function clickButton( event )
 
 				if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
 			}
-			else if(clickO.button == 'create_wd_1')
-			{
-				createEmptyFormWD_1({type:'window'});
-			}
 			else if(clickO.button == 'create_wd_2')
 			{
 				createEmptyFormWD_1({type:'door'});
@@ -1170,7 +1170,7 @@ function clickButton( event )
 		}
 		if(camera == cameraWall)
 		{
-			if(clickO.button == 'create_wd_1')
+			if(clickO.button == 'create_wd_3')
 			{
 				createEmptyFormWD_1({type:'window'});
 			}
@@ -1208,10 +1208,6 @@ function clickInterface(cdm)
 		else if(cdm.button == 'point_1')
 		{
 			clickO.button = 'create_wall';
-		}
-		else if(cdm.button == 'create_wd_1')
-		{
-			clickO.button = 'create_wd_1';
 		}
 		else if(cdm.button == 'create_wd_2')
 		{
@@ -1648,6 +1644,7 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		
+
 	
 	new THREE.MTLLoader().load
 	( 
