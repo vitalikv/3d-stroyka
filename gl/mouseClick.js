@@ -232,10 +232,10 @@ function clickMouseActive(cdm)
 		{
 			objActiveColor_2D(obj);
 			
-			if(tag == 'wall') { console.log(111, obj); showLengthWallUI( obj ); }
+			if(tag == 'wall') { showLengthWallUI( obj ); }
 			else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); }
-			else if(tag == 'door') { showRulerWD( obj ); }
-			else if(tag == 'window') { showRulerWD( obj ); }
+			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }
+			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
 			else if(tag == 'wf_line') { showWF_line_UI( obj ); }
 			else if(tag == 'wf_point') { showWF_point_UI( obj ); }
 			else if(tag == 'obj') { showObjUI( obj ); }
@@ -391,8 +391,8 @@ function hideMenuObjUI_2D( o )
 		{  
 			case 'wall': hideMenuUI(o);  break;
 			case 'point': hideMenuUI(o);  break;
-			case 'door': hideSizeWD(o); break;
-			case 'window': hideSizeWD(o); break;
+			case 'door': hideSizeWD(o); hideMenuUI(o); break;
+			case 'window': hideSizeWD(o); hideMenuUI(o); break;
 			case 'wf_line': hideMenuUI(o); break;
 			case 'wf_point': hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;

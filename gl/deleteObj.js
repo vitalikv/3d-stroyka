@@ -310,7 +310,7 @@ function deleteWinDoor( obj )
 	if(obj.userData.tag == 'window') { hideMenuUI(obj); }
 	if(obj.userData.tag == 'door') { hideMenuUI(obj); }
 	
-	clickO.obj = null;
+	clickO = resetPop.clickO();
 	hideSizeWD( obj ); 
 
 	if(camera == camera3D)
@@ -324,9 +324,6 @@ function deleteWinDoor( obj )
 	if(obj.userData.tag == 'door') { deleteValueFromArrya({arr : infProject.scene.array.door, o : obj}); }
 	
 	scene.remove( obj );	
-	
-	clickO.obj = null; 
-	clickO.last_obj = null;
 }
 
 

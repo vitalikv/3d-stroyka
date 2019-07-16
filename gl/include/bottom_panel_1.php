@@ -58,7 +58,7 @@
 				<input type="text" nameId='size-wd-length' data-input='wd_1' value = 0>
 			</div>
 			
-			<div class="input-size">
+			<div class="input-size" style="display: none;">
 				<div class="text_1">высота (м)</div>
 				<input type="text" nameId='size-wd-height' data-input='wd_1' value = 0>
 			</div>	

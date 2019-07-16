@@ -102,7 +102,8 @@ if($url == '/calculator/warm_floor')
 	$nameId = 'теплый пол';
 	$interface['mode_1'] = 1;
 	$interface['wall_1'] = 1;
-	$interface['tube_1'] = 1;	
+	$interface['tube_1'] = 1;
+	$interface['wd_1'] = 1;	
 	$interface['wd_2'] = 1;
 	$interface['wd_3'] = 1;
 	$interface['grid_tube_1'] = 1;	
