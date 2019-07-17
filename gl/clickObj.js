@@ -1,9 +1,57 @@
 
 
+// кликнули на 3D объект в 2D режиме, подготавляем к перемещению
+function clickObject2D( obj, intersect )
+{	
+	var obj = clickO.move = intersect.object;  
+	
+	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
+	
+	planeMath.position.copy( intersect.point );
+	planeMath.rotation.set( Math.PI/2, 0, 0 );
+}
 
 
 
-function clickObject( obj, intersect )
+// перемещение по 2D плоскости 
+function moveObjectPop( event )
+{	
+	var intersects = rayIntersect( event, planeMath, 'one' ); 
+	
+	if(intersects.length == 0) return;
+	
+	var obj = clickO.move;
+	
+	if(!clickO.actMove)
+	{
+		clickO.actMove = true;
+		
+		if(obj.userData.tag == 'boxWF') { hideControlWF(); }
+	}	
+	
+	
+	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
+	
+	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+	obj.position.add( pos2 );	
+}
+
+
+
+
+function clickMouseUpObject(obj)
+{
+	if(clickO.actMove)
+	{		
+		if(obj.userData.tag == 'boxWF') { showToggleGp(); }
+	}	
+}
+
+
+
+
+// кликнули на 3D объект, ставим pivot
+function clickObject3D( obj, intersect )
 {
 	
 	obj.updateMatrixWorld();
@@ -28,7 +76,6 @@ function clickObject( obj, intersect )
 		
 		clippingGizmo360(obj); 		
 	}
-
 }
 
 
@@ -102,7 +149,7 @@ function switchPivotGizmo(cdm)
 	
 	infProject.settings.active.pg = cdm.mode;		
 	
-	clickObject( obj, null );
+	clickObject3D( obj, null );
 }
 
 

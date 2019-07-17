@@ -139,6 +139,12 @@ function clickRayHit(event)
 		
 		var ray = rayIntersect( event, arr, 'arr' );
 		if(ray.length > 0) { rayhit = ray[0]; }		
+	}
+
+	if(infProject.tools.wf.cube[0].visible)
+	{
+		var ray = rayIntersect( event, infProject.tools.wf.cube, 'arr' );  
+		if(ray.length > 0) { rayhit = ray[0]; }		
 	}	
 	
 	if(!infProject.scene.block.click.tube)
@@ -212,13 +218,16 @@ function clickMouseActive(cdm)
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
-		else if( tag == 'obj' && camera == cameraTop ) { clickObject( obj, rayhit ); }
+		else if( tag == 'scaleBox_control' ) { clickToggleGp( rayhit ); }
+		else if( tag == 'wf_line' ) {  }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
+		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
 	}
 	else if(cdm.type == 'up')
 	{		
 		if( tag == 'wall' && camera == camera3D ) {  }
-		else if( tag == 'obj' && camera == camera3D ) { clickObject( obj, rayhit ); }
+		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, rayhit ); }
 		else { flag = false; }
 	}	
 	else 
@@ -300,9 +309,10 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'point' ) { movePoint( event, obj ); }
 		else if ( tag == 'wf_point' ) { moveWFPoint( event, obj ); }
 		else if ( tag == 'move_control' ) { moveObjectControls( event ); }
-		else if ( tag == 'room' ) { cameraMove3D( event ); }
-		else if ( tag == 'toggle_gp' ) { moveToggleGp( event ); }
+		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }
+		else if ( tag == 'room' ) { cameraMove3D( event ); }		
 		else if ( tag == 'free_dw' ) { dragWD_2( event, obj ); }
+		else if ( tag == 'boxWF' && camera == cameraTop ) { moveObjectPop( event ); }
 	}
 	else 
 	{
@@ -339,6 +349,7 @@ function onDocumentMouseUp( event )
 		else if(tag == 'wall') { clickWallMouseUp(obj); }
 		else if(tag == 'window' || obj.userData.tag == 'door') { clickWDMouseUp(obj); }	
 		else if(tag == 'controll_wd') { clickMouseUpToggleWD(obj); } 
+		else if(tag == 'boxWF') { clickMouseUpObject(obj); }
 		
 		
 		if(tag == 'free_dw') {  }

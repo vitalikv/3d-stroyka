@@ -265,7 +265,7 @@ function createPlaneMath()
 {
 	var geometry = new THREE.PlaneGeometry( 10000, 10000 );
 	//var geometry = new THREE.PlaneGeometry( 10, 10 );
-	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5, side: THREE.DoubleSide } );
+	var material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0, side: THREE.DoubleSide } );
 	material.visible = false; 
 	var planeMath = new THREE.Mesh( geometry, material );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -1645,46 +1645,47 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		
 
-	
-	new THREE.MTLLoader().load
-	( 
-		'/gl/export/nasos.mtl',
-		
-		function ( materials ) 
-		{
-			materials.preload();
+	if(1==2)
+	{
+		new THREE.MTLLoader().load
+		( 
+			'/gl/export/nasos.mtl',
 			
-			new THREE.OBJLoader().setMaterials( materials ).load						
-			( 
-				'/gl/export/nasos.obj', 
-				function ( object ) 
-				{		console.log(333333, object);
-					//object.position.set(-2,0,1);
-					//object.scale.set(0.1, 0.1, 0.1);
-					
-					var obj = object.children[0];
-					
-					if(1==2)
-					{
-						var box = new THREE.Box3().setFromObject( obj );
-						var center = new THREE.Vector3();
-						box.getCenter( center );
-						obj.position.sub( center );										
-					}
-					
-					var v = obj.geometry.attributes.position.array;
-					
-					obj.material.lightMap = lightMap_1;
-					
-					obj.userData.tag = 'obj';
-					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-	
-					scene.add( object.children[0] );
-				} 
-			);
-		}
-	);	
-	
+			function ( materials ) 
+			{
+				materials.preload();
+				
+				new THREE.OBJLoader().setMaterials( materials ).load						
+				( 
+					'/gl/export/nasos.obj', 
+					function ( object ) 
+					{		console.log(333333, object);
+						//object.position.set(-2,0,1);
+						//object.scale.set(0.1, 0.1, 0.1);
+						
+						var obj = object.children[0];
+						
+						if(1==2)
+						{
+							var box = new THREE.Box3().setFromObject( obj );
+							var center = new THREE.Vector3();
+							box.getCenter( center );
+							obj.position.sub( center );										
+						}
+						
+						var v = obj.geometry.attributes.position.array;
+						
+						obj.material.lightMap = lightMap_1;
+						
+						obj.userData.tag = 'obj';
+						infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+		
+						scene.add( object.children[0] );
+					} 
+				);
+			}
+		);					
+	}
 	
 });
 
