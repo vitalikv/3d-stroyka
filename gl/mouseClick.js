@@ -314,6 +314,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'room' ) { cameraMove3D( event ); }		
 		else if ( tag == 'free_dw' ) { dragWD_2( event, obj ); }
 		else if ( tag == 'boxWF' && camera == cameraTop ) { moveObjectPop( event ); }
+		else if ( tag == 'obj' && camera == cameraTop ) { moveObjectPop( event ); }
 	}
 	else 
 	{
@@ -350,7 +351,7 @@ function onDocumentMouseUp( event )
 		else if(tag == 'wall') { clickWallMouseUp(obj); }
 		else if(tag == 'window' || obj.userData.tag == 'door') { clickWDMouseUp(obj); }	
 		else if(tag == 'controll_wd') { clickMouseUpToggleWD(obj); } 
-		else if(tag == 'boxWF') { clickMouseUpObject(obj); }
+		else if(tag == 'boxWF' || tag == 'obj') { clickMouseUpObject(obj); }
 		else if(tag == 'scaleBox_control') { clickO.last_obj = infProject.tools.wf.plane; }
 		
 		if(tag == 'free_dw') {  }

@@ -21,7 +21,7 @@ function createTubeBox()
 
 
 // создаем пустой куб, для масштабирования приметивов
-function createBoxPop()
+function createPlaneWF()
 {
 	var material = new THREE.MeshLambertMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, lightMap : lightMap_1 }); 
 	var box = new THREE.Mesh( createGeometryWD(1, 0.02, 1), material ); 	
@@ -30,7 +30,7 @@ function createBoxPop()
 	box.userData.boxPop.popObj = null;
 	box.userData.line = [];
 	box.renderOrder = 1;
-	box.visible = true;
+	box.visible = false;
 	scene.add( box );
 
 	box.position.y = 0.2;

@@ -174,7 +174,7 @@ infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
-infProject.tools.wf = { plane: createBoxPop(), cube: createControlBoxPop3D() };
+infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot' };
 
@@ -1163,7 +1163,8 @@ function clickButton( event )
 			}
 			else if(clickO.button == 'create_tube_box_1')
 			{
-				clickO.move = createTubeBox();				
+				clickO.move = infProject.tools.wf.plane;
+				infProject.tools.wf.plane.visible = true;
 			}			
 		}
 		if(camera == cameraWall)
@@ -1222,6 +1223,7 @@ function clickInterface(cdm)
 		else if(cdm.button == 'create_tube_box_1')
 		{
 			clickO.button = 'create_tube_box_1';
+			infProject.tools.wf.plane.visible = false;
 		}		
 		else if(cdm.button == 'grid_show_1')
 		{
