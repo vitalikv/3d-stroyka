@@ -159,16 +159,6 @@ function showHelperNormal(obj)
 
 
 
-// скрываем контроллеры
-function hideControlWF()
-{
-	//boxPop.visible = false;
- 
-	for ( var i = 0; i < infProject.tools.wf.cube.length; i++ ) { infProject.tools.wf.cube[i].visible = false; }	
-}
-
-
-
 // кликнули на контроллер
 function clickToggleGp( intersect )
 {
@@ -353,6 +343,8 @@ function moveToggleGp( event )
 	// центруем Cube относительно контроллеров
 	var sumPos = new THREE.Vector3();
 	for ( var i = 0; i < 4; i++ ) { sumPos.add(arrGp[i].position); }
+	
+	var boxPop = infProject.tools.wf.plane;
 	boxPop.position.copy( sumPos.divideScalar( 4 ) );
 	
 	// находим ширину/длину/высоту куба с помощью расстояний между контроллерами
@@ -362,72 +354,15 @@ function moveToggleGp( event )
 	
 	changeSizeBoxPop(x, y, z);
 	
-	// меняем масштаб POP объекта и его положение
-	if(1==2)
-	{
-		var popObj = boxPop.userData.boxPop.popObj; 		
-		var dX = Math.abs(popObj.geometry.boundingBox.max.x) + Math.abs(popObj.geometry.boundingBox.min.x);
-		var dY = Math.abs(popObj.geometry.boundingBox.max.y) + Math.abs(popObj.geometry.boundingBox.min.y);	 
-		var dZ = Math.abs(popObj.geometry.boundingBox.max.z) + Math.abs(popObj.geometry.boundingBox.min.z);
-		
-		popObj.scale.set(x / dX, y / dY, z / dZ); 
-		
-		popObj.updateMatrixWorld();
-		var pos = popObj.localToWorld( popObj.geometry.boundingSphere.center.clone() );
-		popObj.position.add( new THREE.Vector3().subVectors( boxPop.position, pos ) );
-		
-		//objectControls.position.copy( popObj.position );
-		//gizmo.position.copy( popObj.position );
-		
-		if(popObj.userData.obj3D.lotid == 72184)
-		{
-			for (var i = 0; i < popObj.children[0].children.length; i++)
-			{
-				var child = popObj.children[0].children[i];
-				
-				if(!child.userData.uvs) continue;
-				
-				var scale = child.getWorldScale( new THREE.Vector3() );		
-				
-				var uvs = child.userData.uvs.array;
-				var uvs2 = [];
-				
-				var offset = new THREE.Vector3();
-				offset.x = ((uvs[0]*scale.x) - uvs[0])/2;
-				offset.y = ((uvs[0]*scale.y) - uvs[0])/2;
-				offset.z = ((uvs[0]*scale.z) - uvs[0])/2;
-				
-				for (var i2 = 0; i2 < uvs.length; i2++)
-				{
-					uvs2[i2] = uvs[i2];
-					
-					if(i2 % 2 == 0)
-					{ 						 
-						if(i == 0 || i == 2 || i == 4 || i == 5){ uvs2[i2] *= scale.x; uvs2[i2] -= offset.x; }
-						else{ uvs2[i2] *= scale.z; uvs2[i2] -= offset.z; }
-					}
-					else 
-					{ 
-						if(i == 1 || i == 2 || i == 3 || i == 4){ uvs2[i2] *= scale.y; uvs2[i2] -= offset.y;}
-						else{ uvs2[i2] *= scale.z; uvs2[i2] -= offset.z; }
-					}  
-				}	
 
-				
-				
-				
-				child.geometry.attributes.uv.array = new Float32Array(uvs2);
-				//console.log(popObj.children[0].children[0].geometry.attributes.uv.array);
-				child.geometry.attributes.uv.needsUpdate = true;			
-			}			
-		}
-	}
 }
 
 
 // меняем размеры boxPop
 function changeSizeBoxPop(x, y, z)
 {	
+	var boxPop = infProject.tools.wf.plane;
+	
 	var v = boxPop.geometry.vertices;
 	v[0].x = v[1].x = v[7].x = v[6].x = -x / 2;
 	v[3].x = v[2].x = v[4].x = v[5].x = x / 2;
@@ -444,6 +379,37 @@ function changeSizeBoxPop(x, y, z)
 
 
 
+// скрываем контроллеры
+function hideControlWF()
+{
+	if(clickO.rayhit)
+	{
+		if(clickO.rayhit.object.userData.tag == 'scaleBox_control') return;
+	}
+	
+	for ( var i = 0; i < infProject.tools.wf.cube.length; i++ ) { infProject.tools.wf.cube[i].visible = false; }	
+}
+
+
+// скрываем контроллеры
+function hideBoxWF_UI()
+{
+	if(clickO.rayhit)
+	{
+		if(clickO.rayhit.object.userData.tag == 'scaleBox_control') return;
+	}
+	
+	$('[nameId="box_wf_b1"]').hide();	
+}
+
+
+
+
+// при выделении точки, показываем меню
+function showBoxWF_UI()
+{		
+	$('[nameId="box_wf_b1"]').show();
+}
 
 
 

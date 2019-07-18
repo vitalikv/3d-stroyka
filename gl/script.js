@@ -179,8 +179,6 @@ infProject.listColor = resetPop.listColor();
 infProject.settings.active = { pg: 'pivot' };
 
 
-var boxPop = infProject.tools.wf.plane;
-showToggleGp();		// устанавливаем контроллеры
 
 console.log(infProject);
 

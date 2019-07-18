@@ -144,6 +144,18 @@
 	<?}?>
 	
 	
+	<?if($interface['box_wf_b1'] == 1){?>
+		<div class="toolbar" data-action ='top_panel_1' nameId='box_wf_b1' style="display: none;">
+			<div class="toolbar-header">контур</div>
+			<div class="toolbar-menu"> 			
+				<div style="margin: 10px;">
+					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				</div>			
+			</div>
+		</div>		
+	<?}?>	
+	
+	
 	<?if($interface['obj_b1'] == 1){?>
 		<div class="toolbar" data-action ='top_panel_1' nameId='obj_b_menu_1' style="display: none;">
 			<div class="toolbar-header">объект</div>
