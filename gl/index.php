@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title><?=$title?></title>
+	<title>Программа теплый пол 3D калькулькулятор</title>
 
 	<link rel="stylesheet" href="<?=$path?>css/style.css?<?=$vrs?>"> 
 	<link rel="stylesheet" href="<?=$path?>css/toggle.css?<?=$vrs?>">
@@ -27,7 +27,7 @@
 	<? include("include/left_panel_1.php");  ?>	
 	<? include("include/bottom_panel_1.php");  ?>	
 	<? include("include/modal_window_1.php");  ?>
-	
+	<? include("include/modal_window_2.php");  ?>
 	
 	<div class="help" style=" z-index: 1;">
 		<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube" data-action ='top_panel_1' target="_blank">

@@ -151,14 +151,32 @@ $('[data-action="modal"]').mousedown(function ()
 	checkChangeFormWallR();			
 	clickInterface(); 
 	$('[data-action="modal"]').css({"display":"none"}); 
-})
-;			
+});
+
+			
 $('[data-action="modal_window_close"]').mousedown(function () 
 {  
 	infProject.scene.block.key.scroll = false;
 	checkChangeFormWallR();
 	$('[data-action="modal"]').css({"display":"none"}); 
 });
+
+
+
+$('[data-action="modal_1"]').mousedown(function () 
+{	
+	infProject.scene.block.key.scroll = false; 
+	$('[data-action="modal_1"]').css({"display":"none"}); 
+});
+
+			
+$('[data-action="modal_window_close_1"]').mousedown(function () 
+{  
+	infProject.scene.block.key.scroll = false;
+	$('[data-action="modal_1"]').css({"display":"none"}); 
+});
+
+
   
   
 function editText(input) 
