@@ -23,28 +23,19 @@
 		console.log('version '+ vr);		
 	</script>
 	
-	<? include("include/top_1.php");  ?>		 
-	<? include("include/left_panel_1.php");  ?>	
-	<? include("include/bottom_panel_1.php");  ?>	
-	<? include("include/modal_window_1.php");  ?>
-	<? include("include/modal_window_2.php");  ?>
+	<? include("include/top_1.php"); ?>		 
+	<? include("include/left_panel_1.php"); ?>	
+	<? include("include/right_panel_1.php"); ?>
+	<? include("include/bottom_panel_1.php"); ?>	
+	<? include("include/modal_window_1.php"); ?>
+	<? include("include/modal_window_2.php"); ?>
 	
 	<div class="help" style=" z-index: 1;">
 		<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube" data-action ='top_panel_1' target="_blank">
 			<img src="<?=$path?>/img/button_youtube.png">
 			<div style="padding-left:10px;">видеоинструкция</div>
 		</a>
-	</div>		
-	
-	<?if(2 == 1){?>
-	<!--hidden='true'-->
-		
-	<div class="right_panel_1" data-action ='right_panel_1'>			
-		<a href="/calculator/monolit_fundament" class="link_page_1">монолитный<br>фундамент</a>
-		<a href="/calculator/lentochnii_fundament" class="link_page_1">ленточный<br>фундамент</a>
-		<a href="/calculator/svaynyy_fundament" class="link_page_1">свайный<br>фундамент</a>
-	</div>	
-	<?}?>	
+	</div>			
 	
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
     <script src="<?=$path?>js/jquery.js"></script>

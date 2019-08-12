@@ -1,6 +1,6 @@
 
 
-<div class="left_panel_1" data-action ='left_panel_1' style="z-index: 1;">
+<div class="left_panel_1" data-action ='left_panel_1' ui_1="" style="z-index: 1;">
 
 	
 	<?if($interface['monolit_fundament'] == 1){?>

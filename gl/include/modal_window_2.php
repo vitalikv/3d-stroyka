@@ -1,7 +1,7 @@
 
 
 
-<div class="modal_1" data-action ='modal_1' style="display: block;">
+<div class="modal_1" data-action ='modal_1' ui_1="" style="display: block;">
 	<div class="modal_wrap">
 		<div class="modal_window" data-action ='modal_window'>
 			<div class="modal_window_close" data-action ='modal_window_close_1'>
