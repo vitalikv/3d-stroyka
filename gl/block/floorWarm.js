@@ -356,6 +356,8 @@ function upLineWF(point)
 		infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
 		
 		point.userData.wf_point.line.o = line;
+		
+		updateListTubeUI_1({o: line, type: 'add'}); // ui меню
 	}
 	
 	
@@ -576,6 +578,8 @@ function newTubeWF(cdm)
 		line.userData.wf_line.tube.geometry = geometry;
 	}
 	
+	updateListTubeUI_1({o: line, type: 'update'});
+	
 	renderCamera();
 }
 
@@ -599,6 +603,9 @@ function deletePointWF(obj)
 			scene.remove(line.userData.wf_line.point[0]);
 			scene.remove(line.userData.wf_line.point[1]);
 			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
+			
+			updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
+			
 			scene.remove(line);	
 			line = null;			
 		}
@@ -648,6 +655,8 @@ function deleteLineWF(line)
 	
 	if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 
+	updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
+	
 	scene.remove(line);
 	
 	clickO = resetPop.clickO();
@@ -720,5 +729,62 @@ function inputWF_tubeDiametr(cdm)
 	$('[nameId="size_tube_diameter_2"]').val(Math.round(size * 100)*10);
 	if(line.userData.wf_line.tube) newTubeWF({line : line});
 }
+
+
+
+// UI список труб обновляем/добавляем/удаляем 
+function updateListTubeUI_1(cdm)
+{
+	if(cdm.type == 'add')
+	{
+		var line = cdm.o;
+		
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
+		<div class="right_panel_1_1_list_item_color">\
+		</div>\
+		<div class="right_panel_1_1_list_item_text">труба</div>\
+		</div>';
+		
+		$('[list_ui="wf"]').prepend(str);
+		
+		var q = $('[list_ui="wf"]')[0].children[0];
+
+		q.uuid = line.uuid;
+		$(q.children[0]).css('background-color', '#'+line.userData.wf_line.color.clone().getHexString());
+		
+		infProject.ui.list_wf[infProject.ui.list_wf.length] = q;	
+	}
+	
+	if(cdm.type == 'delete')
+	{
+		for(var i = 0; i < infProject.ui.list_wf.length; i++)
+		{
+			if(infProject.ui.list_wf[i].uuid == cdm.uuid) { infProject.ui.list_wf[i].remove(); break; }
+		}		
+		
+	}
+	
+	if(cdm.type == 'update')
+	{
+		var q = null;
+		var line = cdm.o;
+		
+		for(var i = 0; i < infProject.ui.list_wf.length; i++)
+		{
+			if(infProject.ui.list_wf[i].uuid == line.uuid) { q = infProject.ui.list_wf[i]; break; }
+		}
+
+		if(q)
+		{
+			console.log(cdm, $('[list_ui="wf"]'), $(q.children[0]));
+			
+			$(q.children[0]).css('background-color', '#'+line.userData.wf_line.color.clone().getHexString());
+			$(q.children[1]).text('труба 22');
+			
+		}
+	}
+}
+
 
 
