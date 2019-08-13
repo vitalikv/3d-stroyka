@@ -8,12 +8,15 @@
 		
 		<div class="right_panel_1_1_list" list_ui="wf">
 			
-			<?if(2 == 1){?>
+			<?if(1 == 2){?>
 			<div class="right_panel_1_1_list_item">
 				<div class="right_panel_1_1_list_item_color"></div>
 				<div class="right_panel_1_1_list_item_text">
 					труба 20
-				</div>			
+				</div>	
+				<div class="right_panel_1_1_list_item_text">
+					3.2м
+				</div>				
 			</div>
 			<?}?>
 			

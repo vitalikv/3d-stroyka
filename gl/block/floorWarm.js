@@ -350,6 +350,7 @@ function upLineWF(point)
 		line.userData.wf_line.tube = null;
 		line.userData.wf_line.point = [point];
 		line.userData.wf_line.color = new THREE.Color(infProject.listColor.lineTube2D);
+		line.userData.wf_line.diameter = infProject.settings.wf_tube.d;
 		scene.add( line );
 		
 		
@@ -404,7 +405,7 @@ function clickWFPointUp(point)
 
 
 
-// добавляем точку/создаем линию
+// добавляем точку/создаем линию/объединяем линии
 function clickPointToolsWF(obj)
 {
 	//if(obj.userData.wf_point.line.o) return;
@@ -505,6 +506,8 @@ function clickPointToolsWF(obj)
 				}					
 			}
 			
+			updateListTubeUI_1({uuid: line_1.uuid, type: 'delete'});
+			
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
 			scene.remove(line_1);
 			scene.remove(obj);	
@@ -561,7 +564,7 @@ function newTubeWF(cdm)
 	
 	var params = { extrusionSegments: Math.round(length * 30), radiusSegments: 12, closed: false };
 	
-	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, infProject.settings.wf_tube.d, params.radiusSegments, params.closed );	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, line.userData.wf_line.diameter, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();			
 
@@ -699,7 +702,7 @@ function showWF_line_UI(line)
 		length += v[i].distanceTo(v[i + 1]);
 	}
 	
-	$('[nameId="size_tube_diameter_2"]').val(infProject.settings.wf_tube.d * 1000);
+	$('[nameId="size_tube_diameter_2"]').val(line.userData.wf_line.diameter * 1000);
 	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
 	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
 	
@@ -715,21 +718,59 @@ function inputWF_tubeDiametr(cdm)
 	if(!line) return;	
 	if(line.userData.tag != 'wf_line') return;
 	
-	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.05} });
+	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.05}, int: true });
 	
 	if(!size) 
 	{
-		var size = infProject.settings.wf_tube.d; // перводим в мм
+		var size = line.userData.wf_line.diameter; // перводим в мм
 		$('[nameId="size_tube_diameter_2"]').val(size);
 		
 		return;
 	}
 	
 	infProject.settings.wf_tube.d = size;
-	$('[nameId="size_tube_diameter_2"]').val(Math.round(size * 100)*10);
+	line.userData.wf_line.diameter = size;
+	$('[nameId="size_tube_diameter_2"]').val(size * 1000);
 	if(line.userData.wf_line.tube) newTubeWF({line : line});
 }
 
+
+
+// меняем цвет трубы input
+$('[color_tube_1_change]').on('mousedown', function(e) 
+{  
+	var line = clickO.last_obj;
+	
+	if(!line) return;	
+	if(line.userData.tag != 'wf_line') return;
+	
+	
+	var color = $(this).attr('color_tube_1_change');
+	
+	$('[nameId="color_tube_1_default"]').css('background-color', '#'+color);
+	$('[nameId="bb_menu_tube_menu_1"]').show();
+	$('[nameId="bb_menu_tube_menu_2"]').hide();
+	
+	
+	var color = Number('0x'+color); 
+	
+	line.material.color = new THREE.Color(color);
+	line.userData.wf_line.color = line.material.color.clone();
+	
+	var tube = line.userData.wf_line.tube;
+	
+	if(tube) 
+	{ 
+		tube.material.color = new THREE.Color(color); 
+		tube.userData.wf_tube.color = tube.material.color.clone();
+	}
+	
+	updateListTubeUI_1({o: line, type: 'update'});
+	
+	renderCamera();
+	
+	return false; 
+});
 
 
 // UI список труб обновляем/добавляем/удаляем 
@@ -744,6 +785,7 @@ function updateListTubeUI_1(cdm)
 		<div class="right_panel_1_1_list_item_color">\
 		</div>\
 		<div class="right_panel_1_1_list_item_text">труба</div>\
+		<div class="right_panel_1_1_list_item_text"></div>\
 		</div>';
 		
 		$('[list_ui="wf"]').prepend(str);
@@ -770,6 +812,8 @@ function updateListTubeUI_1(cdm)
 		var q = null;
 		var line = cdm.o;
 		
+		console.log('update', line.userData);
+		
 		for(var i = 0; i < infProject.ui.list_wf.length; i++)
 		{
 			if(infProject.ui.list_wf[i].uuid == line.uuid) { q = infProject.ui.list_wf[i]; break; }
@@ -777,11 +821,17 @@ function updateListTubeUI_1(cdm)
 
 		if(q)
 		{
-			console.log(cdm, $('[list_ui="wf"]'), $(q.children[0]));
+			//console.log(cdm, $('[list_ui="wf"]'), $(q.children[0]));
 			
 			$(q.children[0]).css('background-color', '#'+line.userData.wf_line.color.clone().getHexString());
-			$(q.children[1]).text('труба 22');
+			$(q.children[1]).text('труба '+line.userData.wf_line.diameter * 1000);
 			
+			var v = line.geometry.vertices;
+			var length = 0;				
+			for(var i = 0; i < v.length - 1; i++){ length += v[i].distanceTo(v[i + 1]); }
+			
+			$(q.children[1]).text('труба '+line.userData.wf_line.diameter * 1000);
+			$(q.children[2]).text(Math.round(length * 100)/100+'м');			
 		}
 	}
 }

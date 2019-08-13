@@ -1600,7 +1600,7 @@ document.body.addEventListener("keyup", function (e) { clickO.keys[e.keyCode] = 
 
 
 
-// проверяем правильность ввода числа
+// проверяем правильность ввода числа (вводим число в своих единицах, отдаем в метрах)
 function checkNumberInput(cdm)
 {
 	var value = cdm.value;
@@ -1611,16 +1611,17 @@ function checkNumberInput(cdm)
 	
 	value = Number(value);
 	
+	
+	if(cdm.int)
+	{ 
+		value = Math.round(value); console.log(value);  
+	}	
+	
 	if(cdm.unit)
 	{
 		if(cdm.unit == 0.01) { value /= 100; } // см
 		else if(cdm.unit == 0.001) { value /= 1000; } // мм
-	}
-	
-	if(cdm.round)
-	{
-		value = Math.round(value * 100) / 100;  
-	}	
+	}		
 
 	if(cdm.limit)
 	{

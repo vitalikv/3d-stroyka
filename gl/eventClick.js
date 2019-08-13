@@ -40,38 +40,7 @@ $('[nameId="color_tube_1_default"]').on('mousedown', function(e)
 });
 
 
-$('[color_tube_1_change]').on('mousedown', function(e) 
-{  
-	var line = clickO.last_obj;
-	
-	if(!line) return;	
-	if(line.userData.tag != 'wf_line') return;
-	
-	
-	var color = $(this).attr('color_tube_1_change');
-	
-	$('[nameId="color_tube_1_default"]').css('background-color', '#'+color);
-	$('[nameId="bb_menu_tube_menu_1"]').show();
-	$('[nameId="bb_menu_tube_menu_2"]').hide();
-	
-	
-	var color = Number('0x'+color); 
-	
-	line.material.color = new THREE.Color(color);
-	line.userData.wf_line.color = line.material.color.clone();
-	
-	var tube = line.userData.wf_line.tube;
-	
-	if(tube) 
-	{ 
-		tube.material.color = new THREE.Color(color); 
-		tube.userData.wf_tube.color = tube.material.color.clone();
-	}
-	
-	renderCamera();
-	
-	return false; 
-});  
+  
  
 	
 $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); return false; });
