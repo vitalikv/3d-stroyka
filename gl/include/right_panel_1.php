@@ -4,7 +4,7 @@
 
 	<?if($interface['grid_tube_1'] == 1){?>
 	<div class="right_panel_1_1">
-		<div class="right_panel_1_1_h">Список</div>
+		<div class="right_panel_1_1_h">Список труб</div>
 		
 		<div class="right_panel_1_1_list" list_ui="wf">
 			

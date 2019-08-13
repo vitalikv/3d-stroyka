@@ -6,6 +6,8 @@ $('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstar
 $('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
 $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
 
+$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); });
+
 $('[infcam]').on('mousedown', function(e) 
 {  
 	var value = $(this).attr('infcam');

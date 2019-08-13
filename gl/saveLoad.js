@@ -291,7 +291,7 @@ function saveFile(cdm)
 	
 	$.ajax
 	({
-		url: 'saveJson.php',
+		url: infProject.path+'saveJson.php',
 		type: 'POST',
 		data: {myarray: json},
 		dataType: 'json',
@@ -421,8 +421,7 @@ function getJsonGeometry()
 		rooms[i] = { pointid : [] };
 		
 		rooms[i].id = room[i].userData.id;  
-		rooms[i].name = 'Room';
-		rooms[i].roomSType = detectNameRoom('textToId', room[i].userData.room.roomType);		
+		rooms[i].name = 'Room';	
 		
 		rooms[i].pointid = [];
 		var s = 0; for ( var i2 = room[i].p.length - 1; i2 >= 1; i2-- ) { rooms[i].pointid[s] = room[i].p[i2].userData.id; s++; }  
@@ -473,26 +472,18 @@ function loadFile(file)
 {
 	$.ajax
 	({
-		url: '/t/fileJson.json',
+		url: infProject.path+'t/fileJson.json',
 		type: 'POST',
 		dataType: 'json',
 		success: function(json)
 		{ 
-			json.code_server = 200;
-			loadTotalLotid(json); 	// загрузка json
+			resetScene();
+			loadFilePL(json); 	// загрузка json
 		},
 	});	
 }
 
 
-function loadTotalLotid(arr)
-{
-	resetScene();	
-		
-	UI.setView('2D');	// переключаемся в 2D
-	
-	loadFilePL(arr);
-}
 
 
 
@@ -506,10 +497,7 @@ function loadFilePL(arr)
 	var point = arr.floors[0].points;
 	var walls = arr.floors[0].walls;
 	var rooms = arr.floors[0].rooms;
-	var obj_pop = [];
 	
-
-	//if(height_wall < 0.1) { height_wall = 3; }	
 			
 	var wall = [];
 	
@@ -533,11 +521,6 @@ function loadFilePL(arr)
 			if(wall[i].points[1].id == point[i2].id) { wall[i].points[1].pos = new THREE.Vector3(point[i2].pos.x, 0, -point[i2].pos.z); }
 		}
 		
-		
-		wall[i].material = [];
-		wall[i].material[0] = { lotid : 4954, color : {r : 93, g : 87, b : 83 }, scale : new THREE.Vector2(1,1) };
-		wall[i].material[1] = { lotid : 4954, color : {r : 93, g : 87, b : 83 }, scale : new THREE.Vector2(1,1) };
-		
 
 		var arrO = [];
 		
@@ -552,13 +535,9 @@ function loadFilePL(arr)
 			wall[i].arrO[i2] = {  }
 			
 			wall[i].arrO[i2].id = arrO[i2].id;
-			wall[i].arrO[i2].lotid = arrO[i2].lotid;
 			wall[i].arrO[i2].pos = new THREE.Vector3(Math.round(arrO[i2].startPointDist * 100) / 100, Math.round(arrO[i2].over_floor * 100) / 100, 0);
 			wall[i].arrO[i2].size = new THREE.Vector2(Math.round(arrO[i2].width * 100) / 100, Math.round(arrO[i2].height * 100) / 100);
-			if(arrO[i2].open_type) { wall[i].arrO[i2].open = arrO[i2].open_type; }
 			wall[i].arrO[i2].type = arrO[i2].type;
-			
-			if(arrO[i2].options){ wall[i].arrO[i2].options = arrO[i2].options; }
 		} 	
 	}
 	
@@ -611,9 +590,7 @@ function loadFilePL(arr)
 
 		var dir = new THREE.Vector3().subVectors( point2.position, point1.position ).normalize();
 		var offsetZ = localTransformPoint(wall[i].offsetV, quaternionDirection(dir)).z;
-		var inf = { id : wall[i].id, offsetZ : -offsetZ, height : wall[i].height, material : wall[i].material, load : true };
-		
-		if(infProject.type == 2) { wall[i].width = 0.3; }
+		var inf = { id : wall[i].id, offsetZ : -offsetZ, height : wall[i].height, load : true };
 		
 		var obj = createOneWall3( point1, point2, wall[i].width, inf ); 		
 		
@@ -624,12 +601,9 @@ function loadFilePL(arr)
 	
 	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY_2(obj_point[i], obj_point[i].p, obj_point[i].w, obj_point[i].start); }
 	
-	//upLabelPlan_1(obj_line);	// размеры стен
-	// создаем и устанавливаем все стены (без окон/дверей)
+	upLabelPlan_1(infProject.scene.array.wall);	// размеры стен
 
-	
-
-	if(infProject.type == 1) { detectRoomZone(); }
+	detectRoomZone();
 	
 
 	
@@ -647,23 +621,11 @@ function loadFilePL(arr)
 			
 			var intP = obj.localToWorld( wall[i].arrO[i2].pos.clone() );  						
 
-			// если не смогли загрузить дверь, то загружаем проем
-			var flag = true;
-			
-			for ( var i3 = 0; i3 < pool_pop.length; i3++ ) { if(pool_pop[i3].id == wall[i].arrO[i2].lotid) { if(!pool_pop[i3].empty) { flag = false; break; } } } 
-			 
-			if(flag) 
-			{ 
-				if(wall[i].arrO[i2].type == 'door') { wall[i].arrO[i2].lotid = 575; delete wall[i].arrO[i2].open; } 
-				else if(wall[i].arrO[i2].type == 'window') { wall[i].arrO[i2].lotid = 8747; }
-			}
-
-			var inf = { status : 'load', id : wall[i].arrO[i2].id, lotid: wall[i].arrO[i2].lotid, pos : intP, wall : obj };	 		
-			if(wall[i].arrO[i2].size) { inf.size = wall[i].arrO[i2].size; }
-			if(wall[i].arrO[i2].open) { inf.open_type = wall[i].arrO[i2].open; } 
-			if(wall[i].arrO[i2].options) { inf.options = wall[i].arrO[i2].options; }				
+			var inf = { status : 'load', id : wall[i].arrO[i2].id, pos : intP, wall : obj, type : wall[i].arrO[i2].type };	 		
+			if(wall[i].arrO[i2].size) { inf.size = wall[i].arrO[i2].size; }				
 						 
-			createEmptyFormWD(inf);
+						 console.log(inf);
+			createEmptyFormWD_1(inf);
 		}		
 	}
 	// устанавливаем окна/двери
@@ -685,14 +647,13 @@ function loadFilePL(arr)
 	// восстанавливаем countId
 	
 	
-	upLabelPlan_1(obj_line);
+	
 	calculationAreaFundament_2();
 	
 	centerCamera2D();
 	cameraZoomTop( camera.zoom );
 	
-	emitAction('load-project-end');
-	emitAction('stop-fake-loading');
+
 	renderCamera();
 	
 	//getSkeleton_1(room); 
@@ -884,30 +845,6 @@ function loadStartForm(cdm)
 
  
 
-
-// конверитруем типы в текст комнат
-function detectNameRoom(cdm, value)
-{
-	var list = roomTypes;		
-	
-	if(cdm == 'idToText')
-	{
-		if(isNumeric(value)) 		// если число
-		{
-			for ( var i = 0; i < list.length; i++ ) { if(value == list[i].id) { return list[i].caption; } }
-		}
-		else
-		{
-			for ( var i = 0; i < list.length; i++ ) { if(value == list[i].alias) { return list[i].caption; } }		
-		}		
-	}
-	else if(cdm == 'textToId')
-	{
-		for ( var i = 0; i < list.length; i++ ) { if(value == list[i].caption) { return list[i].alias; } }
-	}
-	
-	return 'null';
-}
 
 
 

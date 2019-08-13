@@ -404,11 +404,7 @@ canvas
 
 .go-home p
 {
-	display: block;
-    position: absolute;
-    top: 50%;	
-	left: 15px;
-	margin-top: -0.5em;	
+	margin:0.5em 15px;	
 	font-family: arial,sans-serif;
 	font-size: 20px;	
 	color: #666;
@@ -416,7 +412,7 @@ canvas
 }
 
 
-.menu-link
+.top_menu_right_1
 {
 	position: absolute;
 	width: auto;	
@@ -429,28 +425,20 @@ canvas
 }
 
 
-.menu-link_1
+.top_menu_right_1_text
 {
-	display: block;		
-	font-family: arial,sans-serif;
-	font-size: 20px;
-	color: #666;
-	margin: auto;
-}
-
-
-.menu-link_2  
-{
-	position: absolute;
-	top: 100%;
-	left: 0;
-	width: 100%;
+	margin:0.5em 15px;	
 	
-	border: 1px solid #111111;
+	font-family: arial,sans-serif;
+	font-size: 20px;	
+	color: #666;
+	text-align:center;  
 }
 
 
-.top_panel_1 .go-home:hover
+
+
+.top_panel_1 .go-home:hover, .top_menu_right_1:hover
 {
 	background-image: -moz-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%); 
 	background-image: -webkit-linear-gradient(bottom ,#e3e3e3 100%, #ffffff 0%);

@@ -33,7 +33,17 @@ function createEmptyFormWD_1(cdm)
 	spline[2] = new THREE.Vector2( 0.5, 1.1 );
 	spline[3] = new THREE.Vector2( -0.5, 1.1 );		
 	
-	if(type == 'window')
+	if(cdm.size)
+	{
+		var x = cdm.size.x/2;
+		var y = cdm.size.y/2;
+		
+		spline[0] = new THREE.Vector2( -x, -y );	
+		spline[1] = new THREE.Vector2( x, -y );
+		spline[2] = new THREE.Vector2( x, y );
+		spline[3] = new THREE.Vector2( -x, y );			
+	}
+	else if(type == 'window')
 	{
 		spline[0] = new THREE.Vector2( -0.5, -0.5 );	
 		spline[1] = new THREE.Vector2( 0.5, -0.5 );
@@ -87,10 +97,24 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.topMenu = true;
 	//obj.userData.door.active = { click: true, hover: true };
 	
-	clickO.move = obj; 
-	clickO.last_obj = obj;
+	scene.add( obj );
 	
-	scene.add( obj );  
+	
+	if(cdm.status)
+	{
+		obj.userData.id = cdm.id;
+		obj.position.copy(cdm.pos);
+		
+		obj.position.y += (obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y) / 2; 	
+		
+		changeWidthWD(obj, cdm.wall);		// выставляем ширину окна/двери равную ширине стены
+		addWD({ obj: obj, wall: obj.userData.door.wall, pos: obj.position });
+	}
+	else
+	{
+		clickO.move = obj; 
+		clickO.last_obj = obj;		
+	}
 }
 
 
@@ -153,8 +177,6 @@ function dragWD_2( event, obj )
 	}		
 
 	changeWidthWD(obj, wall);	
-	
-	obj.userData.door.wall = wall;
 }
 
 
@@ -189,13 +211,13 @@ function addWD( cdm )
 	var obj = cdm.obj;
 	var wall = obj.userData.door.wall;
 	var pos = obj.position;
-	var type = obj.userData.door.type;
+	obj.userData.tag = obj.userData.door.type;
 	
 	pos.y -= 0.001;		// делаем чуть ниже уровня пола
 	obj.position.copy( pos );
 	obj.rotation.copy( wall.rotation ); 
 	obj.material.transparent = false;
-	clickO.obj = obj;
+	
 	
 	if(camera == cameraTop)
 	{ 
@@ -210,14 +232,12 @@ function addWD( cdm )
 		obj.material.opacity = 0;					
 	}	
 	
-	changeWidthWD(obj, wall);		// выставляем ширину окна/двери равную ширине стены
+	//changeWidthWD(obj, wall);		// выставляем ширину окна/двери равную ширине стены
 	
 	// обновляем(пересчитываем) размеры двери/окна/двери (если измениалась ширина)
 	obj.geometry.computeBoundingBox(); 	
 	obj.geometry.computeBoundingSphere();
-	
-	obj.userData.tag = type;
-	obj.userData.door.wall = wall;  
+  
 	
 	if(!obj.userData.id) { obj.userData.id = countId; countId++; }  
 	
@@ -267,7 +287,7 @@ function changeWidthWD(obj, wall)
 	
 	var width = wall.userData.wall.width; 
 	wall.geometry.computeBoundingBox();
-	
+	console.log(width);
 	
 	for ( var i = 0; i < minZ.length; i++ ) { v[minZ[i]].z = wall.geometry.boundingBox.min.z; }
 	for ( var i = 0; i < maxZ.length; i++ ) { v[maxZ[i]].z = wall.geometry.boundingBox.max.z; }
@@ -278,7 +298,8 @@ function changeWidthWD(obj, wall)
 	obj.geometry.computeBoundingBox();	
 	obj.geometry.computeFaceNormals();		
 	
-	obj.userData.door.width = width;	
+	obj.userData.door.width = width;
+	obj.userData.door.wall = wall;
 } 
  
  

@@ -1639,7 +1639,7 @@ var docReady = false;
 $(document).ready(function () 
 { 
 	docReady = true; 
-	//loadFile('');
+	loadFile('');
 	if(infProject.scene.load != '') { loadStartForm({form: infProject.scene.load}); }
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }

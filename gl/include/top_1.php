@@ -3,12 +3,8 @@
 <div class="top_panel_1" data-action ='top_panel_1' style=" z-index: 1;">
 	<a href="/" class="go-home"><p>На главную</p></a>
 	<div class="title_1"><h1><?=$title?></h1></div>
-	<div class="menu-link" style="display: none;">
-		<div class="menu-link_1">Список калькуляторов</div>
-		<div class="menu-link_2">
-			<a href="/" class="button12">Список калькуляторов</a>
-			<a href="/" class="button12">Список калькуляторов</a>
-		</div>			
+	<div class="top_menu_right_1">
+		<div class="top_menu_right_1_text" nameId="save_pr_1">Сохранить</div>
 	</div>				
 </div>
 
