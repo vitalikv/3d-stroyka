@@ -8,6 +8,29 @@ $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(
 
 $('[nameId="save_pr_1"]').mousedown(function () { saveFile(); });
 
+
+$('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });
+$('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI({el: this}); });
+
+$('[add_lotid]').mousedown(function () { loadObjServer({lotid: this.attributes.add_lotid.value}); });
+
+
+// переключаем меню (каталог/список)
+function changeRightMenuUI(cdm)
+{
+	if(cdm.el.attributes.nameId.value == "button_wrap_catalog") 
+	{
+		$('[nameId="wrap_catalog"]').show();
+		$('[nameId="wrap_list_obj"]').hide();
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_list_obj") 
+	{
+		$('[nameId="wrap_catalog"]').hide();
+		$('[nameId="wrap_list_obj"]').show();
+	}	
+}
+
+
 $('[infcam]').on('mousedown', function(e) 
 {  
 	var value = $(this).attr('infcam');

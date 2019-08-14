@@ -32,6 +32,7 @@ clickMovePivot.js
 clickObj.js
 clickMoveGizmo.js
 scaleBox.js
+loadObj.js
 ';
 
 

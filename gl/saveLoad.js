@@ -455,6 +455,18 @@ function getJsonGeometry()
 	
 
 	
+	for ( var i = 0; i < infProject.scene.array.obj.length; i++ )
+	{
+		var obj = infProject.scene.array.obj[i];
+		
+		var m = furn.length;
+		furn[m] = {};
+		furn[m].id = obj.userData.id;
+		furn[m].lotid = obj.userData.obj3D.lotid;
+		furn[m].pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
+		furn[m].rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
+	}
+	
 	json.floors[0].points = points;
 	json.floors[0].walls = walls;
 	json.floors[0].rooms = rooms;
@@ -497,7 +509,7 @@ function loadFilePL(arr)
 	var point = arr.floors[0].points;
 	var walls = arr.floors[0].walls;
 	var rooms = arr.floors[0].rooms;
-	
+	var furn = arr.floors[0].furn;
 			
 	var wall = [];
 	
@@ -631,7 +643,11 @@ function loadFilePL(arr)
 	// устанавливаем окна/двери
 	
 			
-
+	for ( var i = 0; i < furn.length; i++ )
+	{
+		furn[i].pos.z *= -1;
+		loadObjServer(furn[i])
+	}
 
 	
 	// восстанавливаем countId

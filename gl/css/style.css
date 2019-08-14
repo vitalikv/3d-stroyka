@@ -570,6 +570,50 @@ canvas
 }
 
 
+.right_panel_1_1_wrap
+{
+	display: -webkit-box;
+	display: flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;	
+}
+
+.right_panel_1_item
+{
+	position: relative;
+	display: -webkit-box;
+	display: flex;
+	margin: 10px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+
+.right_panel_1_item_block
+{
+	height: 30px;
+	width: 70px;
+	margin: 0px;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	background-color:#fff;
+	cursor: pointer;
+}
+
+
+.right_panel_1_item_block_text
+{
+	margin:0.5em auto;
+	
+	font-family: arial,sans-serif;
+	font-size: 14px;
+	color: #666;
+	text-align:center;
+}
+
+
+
+
 .right_panel_1_1_h
 {
 	display: block;

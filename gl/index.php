@@ -1,5 +1,5 @@
 <? include("include/bd.php");  ?>
-<?php $vrs = '=3' ?>
+<?php $vrs = '=4' ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -67,7 +67,8 @@
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
     <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
-
+	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
+	
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    

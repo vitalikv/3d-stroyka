@@ -68,7 +68,7 @@ function movePointWallPlaneMath(point)
 {
 	updateShapeFloor(point.zone); 
 	
-	clickPointUP_BSP(point.w);
+	clickPointUP_BSP(param_wall.wallR);
 }
 
 

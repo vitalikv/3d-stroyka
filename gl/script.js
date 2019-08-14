@@ -1650,7 +1650,7 @@ $(document).ready(function ()
 	{
 		new THREE.MTLLoader().load
 		( 
-			'/gl/export/nasos.mtl',
+			infProject.path+'export/nasos.mtl',
 			
 			function ( materials ) 
 			{
@@ -1658,13 +1658,15 @@ $(document).ready(function ()
 				
 				new THREE.OBJLoader().setMaterials( materials ).load						
 				( 
-					'/gl/export/nasos.obj', 
+					infProject.path+'export/nasos.obj', 
 					function ( object ) 
-					{		console.log(333333, object);
-						//object.position.set(-2,0,1);
+					{		
+						
 						//object.scale.set(0.1, 0.1, 0.1);
 						
 						var obj = object.children[0];
+						
+						obj.position.set(3,1,-1.5);
 						
 						if(1==2)
 						{
@@ -1679,9 +1681,12 @@ $(document).ready(function ()
 						obj.material.lightMap = lightMap_1;
 						
 						obj.userData.tag = 'obj';
+						obj.userData.id = countId; countId++;
+						obj.userData.obj3D = {};
+						obj.userData.obj3D.lotid = 1; 
 						infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 		
-						scene.add( object.children[0] );
+						scene.add( obj );
 					} 
 				);
 			}
