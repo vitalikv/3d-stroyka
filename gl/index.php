@@ -8,8 +8,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Программа теплый пол 3D калькулькулятор</title>
-	<meta name="description" content="Программа теплый пол позволяет быстро спроектировать и подсчитать количество труб. Она рассчитана на людей, которые хотят самостоятельно сделать теплый пол на даче, в загородном доме или в квартире. В программе есть 3D режим который наглядно покажет, то что вы спроектировали." />
+	<title><?=$title?></title>
+	<meta name="description" content="<?=$description?>" />
 	<link rel="stylesheet" href="<?=$path?>css/style.css?<?=$vrs?>"> 
 	<link rel="stylesheet" href="<?=$path?>css/toggle.css?<?=$vrs?>">
 </head>

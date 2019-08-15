@@ -303,6 +303,21 @@ function saveFile(cdm)
 		error: function(json){ console.log(json);  }
 	});	
 	
+	
+	$.ajax
+	({
+		url: infProject.path+'components/buy_1.php',
+		type: 'POST',
+		data: {json: json},
+		dataType: 'json',
+		success: function(json)
+		{ 			
+			console.log(json); 
+		},
+		error: function(json){ console.log(json);  }
+	});	
+	
+	
 	if(1==2)
 	{
 		var csv = JSON.stringify( txt );	

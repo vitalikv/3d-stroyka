@@ -1,10 +1,16 @@
 <? 
+require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
+
+
+
 
 $url = $_SERVER['REQUEST_URI'];
 
 $path = "/gl/";
 
 $title = '';
+$h1 = '';
+$description = '';
 $interface['wall_1'] = 0;
 $interface['wall_2'] = ['top'=>[], 'left'=>[], 'right'=>[], 'bottom'=>[]];
 $interface['tube_1'] = 0;
@@ -99,7 +105,9 @@ if($url == '/calculator/raschet_blokov')
 }
 if($url == '/calculator/warm_floor')	
 { 
-	$title = 'Расчет теплого пола 3D'; 
+	$title = 'Программа теплый пол 3D калькулькулятор';
+	$h1 = 'Расчет теплого пола 3D';
+	$description = 'Программа теплый пол позволяет быстро спроектировать и подсчитать количество труб. Она рассчитана на людей, которые хотят самостоятельно сделать теплый пол на даче, в загородном доме или в квартире. В программе есть 3D режим который наглядно покажет, то что вы спроектировали.';
 	$nameId = 'теплый пол';
 	$interface['mode_1'] = 1;
 	$interface['wall_1'] = 1;
