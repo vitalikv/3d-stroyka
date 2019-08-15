@@ -90,7 +90,7 @@ function moveWFPoint(event, obj)
 		// обновляем geometry трубы
 		if(line.userData.wf_line.tube)
 		{
-			//newTubeWF({line : line});
+			//geometryTubeWF({line : line});
 		}
 	}
 	
@@ -328,7 +328,49 @@ function getNearLineWF(cdm)
 }
 
 
-// создаем/обновляем линию
+
+// создаем линию
+function createLineWF(cdm)
+{
+	var point = cdm.point;
+	
+	var geometry = new THREE.Geometry();
+	
+	for(var i = 0; i < point.length; i++)
+	{
+		geometry.vertices.push(point[i].position);
+	}		
+	
+	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);
+	
+	
+	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
+	line.material.color = color;
+	
+	line.userData.tag = 'wf_line';
+	line.userData.wf_line = {};
+	line.userData.wf_line.tube = null;
+	line.userData.wf_line.point = point;
+	line.userData.wf_line.color = color;
+	line.userData.wf_line.diameter = cdm.diameter;
+	scene.add( line );
+	
+	
+	infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
+	
+	for(var i = 0; i < point.length; i++)
+	{
+		point[i].userData.wf_point.line.o = line;
+	}			
+	
+	updateListTubeUI_1({o: line, type: 'add'}); // обновляем список материалов
+
+	return line;
+}
+
+
+
+// создаем или продолжаем прокладывать линию
 function upLineWF(point)
 {
 	if(point.userData.wf_point.cross.o) { point.userData.wf_point.cross = { o : null, point : [] }; return; }
@@ -338,29 +380,10 @@ function upLineWF(point)
 	var line = point.userData.wf_point.line.o;
 	
 	// создаем новую линию
-	if(!point.userData.wf_point.line.o)
+	if(!line)
 	{
-		var geometry = new THREE.Geometry();
-		geometry.vertices.push(point.position);
-		
-		//0x777777
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
-		line.userData.tag = 'wf_line';
-		line.userData.wf_line = {};
-		line.userData.wf_line.tube = null;
-		line.userData.wf_line.point = [point];
-		line.userData.wf_line.color = new THREE.Color(infProject.listColor.lineTube2D);
-		line.userData.wf_line.diameter = infProject.settings.wf_tube.d;
-		scene.add( line );
-		
-		
-		infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
-		
-		point.userData.wf_point.line.o = line;
-		
-		updateListTubeUI_1({o: line, type: 'add'}); // ui меню
-	}
-	
+		line = createLineWF({point: [point], diameter: infProject.settings.wf_tube.d});
+	}	
 	
 	var point_2 = createPointWF({ pos : point.position.clone(), type : 'tool', line : line }); 
 			
@@ -394,7 +417,7 @@ function clickWFPointUp(point)
 			
 			if(line.userData.wf_line.tube)
 			{
-				newTubeWF({line : line});
+				geometryTubeWF({line : line});
 				line.userData.wf_line.tube.visible = true;
 			}			 
 		}
@@ -534,7 +557,7 @@ function clickPointToolsWF(obj)
 	// обновляем geometry трубы
 	if(line)
 	{
-		if(line.userData.wf_line.tube) { newTubeWF({line : line}); }
+		if(line.userData.wf_line.tube) { geometryTubeWF({line : line}); }
 	}	
 	
 	//obj.userData.wf_point.cross = { o : null, point : [] };
@@ -543,7 +566,7 @@ function clickPointToolsWF(obj)
 
 
 // создаем или обновляем форму трубы
-function newTubeWF(cdm)
+function geometryTubeWF(cdm)
 {
 	var line = cdm.line;
 	
@@ -581,7 +604,7 @@ function newTubeWF(cdm)
 		line.userData.wf_line.tube.geometry = geometry;
 	}
 	
-	updateListTubeUI_1({o: line, type: 'update'});
+	updateListTubeUI_1({o: line, type: 'update'});	// обновляем список материалов 
 	
 	renderCamera();
 }
@@ -632,7 +655,7 @@ function deletePointWF(obj)
 			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
 			
 			// создаем трубу
-			newTubeWF({line : line, createLine : true});
+			geometryTubeWF({line : line, createLine : true});
 		}
 	}
 	
@@ -731,7 +754,7 @@ function inputWF_tubeDiametr(cdm)
 	infProject.settings.wf_tube.d = size;
 	line.userData.wf_line.diameter = size;
 	$('[nameId="size_tube_diameter_2"]').val(size * 1000);
-	if(line.userData.wf_line.tube) newTubeWF({line : line});
+	if(line.userData.wf_line.tube) geometryTubeWF({line : line});
 }
 
 

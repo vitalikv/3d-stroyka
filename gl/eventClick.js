@@ -12,9 +12,7 @@ $('[nameId="save_pr_1"]').mousedown(function () { saveFile(); });
 $('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });
 $('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI({el: this}); });
 
-$('[add_lotid]').mousedown(function () { loadObjServer({lotid: this.attributes.add_lotid.value}); });
-
-
+ 
 // переключаем меню (каталог/список)
 function changeRightMenuUI(cdm)
 {
@@ -82,6 +80,7 @@ $('[data-action="create_wd_3"]').mousedown(function () { return clickInterface({
 $('[data-action="grid_show_1"]').mousedown(function () { return clickInterface({button:'grid_show_1'}); });
 $('[data-action="grid_move_1"]').mousedown(function () { return clickInterface({button:'grid_move_1'}); });
 $('[data-action="grid_link_1"]').mousedown(function () { return clickInterface({button:'grid_link_1'}); });
+$('[add_lotid]').mousedown(function () { return clickInterface({button: 'add_lotid', value: this.attributes.add_lotid.value}); });
 $('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 
 

@@ -38,7 +38,7 @@
 		</div>
 		
 		<div class="right_panel_1_1_wrap" nameId="wrap_catalog">
-			<div class="right_panel_1_1_h">каталог</div>
+			<div class="right_panel_1_1_h">Каталог</div>
 			
 			<div class="right_panel_1_1_list" list_ui="catalog">
 				

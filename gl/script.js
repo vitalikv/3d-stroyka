@@ -1114,6 +1114,10 @@ function clickButton( event )
 {
 	if(!clickO.button) return;
 	
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return;
+	
 	if(camera == cameraTop)
 	{
 		planeMath.position.set(0, 0, 0);
@@ -1127,57 +1131,56 @@ function clickButton( event )
 		planeMath.position.add(dir);  
 		planeMath.rotation.copy( camera.rotation ); 
 		planeMath.updateMatrixWorld();		
-	}
+	}	
 	
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	
-	if ( intersects.length > 0 )
-	{		
-		if(camera == cameraTop)
-		{ 
-			if(clickO.button == 'create_wall')
-			{
-				clickO.obj = null; 
-				clickO.last_obj = null;
-				
-				var point = createPoint( intersects[0].point, 0 );
-				point.position.y = 0;
-				point.userData.point.type = clickO.button; 
-				clickO.move = point;
-
-				if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
-			}
-			else if(clickO.button == 'create_wd_2')
-			{
-				createEmptyFormWD_1({type:'door'});
-			}
-			else if(clickO.button == 'create_wd_3')
-			{
-				createEmptyFormWD_1({type:'window'});
-			}			
-			else if(clickO.button == 'create_tube_1')
-			{
-				var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
-				clickO.move = point;				
-			}
-			else if(clickO.button == 'create_tube_box_1')
-			{
-				clickO.move = infProject.tools.wf.plane;
-				infProject.tools.wf.plane.visible = true;
-			}			
-		}
-		if(camera == cameraWall)
+	if(camera == cameraTop)
+	{ 
+		if(clickO.button == 'create_wall')
 		{
-			if(clickO.button == 'create_wd_3')
-			{
-				createEmptyFormWD_1({type:'window'});
-			}
+			clickO.obj = null; 
+			clickO.last_obj = null;
+			
+			var point = createPoint( intersects[0].point, 0 );
+			point.position.y = 0;
+			point.userData.point.type = clickO.button; 
+			clickO.move = point;
+
+			if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
 		}
-		
-		clickO.buttonAct = clickO.button;
-		clickO.button = null;
+		else if(clickO.button == 'create_wd_2')
+		{
+			createEmptyFormWD_1({type:'door'});
+		}
+		else if(clickO.button == 'create_wd_3')
+		{
+			createEmptyFormWD_1({type:'window'});
+		}			
+		else if(clickO.button == 'create_tube_1')
+		{
+			var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
+			clickO.move = point;				
+		}
+		else if(clickO.button == 'create_tube_box_1')
+		{
+			clickO.move = infProject.tools.wf.plane;
+			infProject.tools.wf.plane.visible = true;
+		}
+		else if(clickO.button == 'add_lotid')
+		{
+			loadObjServer({lotid: clickO.options, pos: intersects[0].point, cursor: true});
+		}		
 	}
+	if(camera == cameraWall)
+	{
+		if(clickO.button == 'create_wd_3')
+		{
+			createEmptyFormWD_1({type:'window'});
+		}
+	}
+	
+	clickO.buttonAct = clickO.button;
+	clickO.button = null;
+
 	
 }	
 	
@@ -1224,7 +1227,12 @@ function clickInterface(cdm)
 		{
 			clickO.button = 'create_tube_box_1';
 			infProject.tools.wf.plane.visible = false;
-		}		
+		}
+		else if(cdm.button == 'add_lotid')
+		{
+			clickO.button = 'add_lotid';
+			clickO.options = cdm.value;
+		}			
 		else if(cdm.button == 'grid_show_1')
 		{
 			showHideGrid(); 

@@ -9,7 +9,7 @@ function loadObjServer(cdm)
 
 	if(lotid == 1)
 	{
-		inf = {obj: '/gl/export/nasos.obj', material: '/gl/export/nasos.mtl'}
+		inf = {obj: infProject.path+'export/nasos.obj', material: infProject.path+'export/nasos.mtl'}
 	}
 	
 	new THREE.MTLLoader().load
@@ -40,9 +40,14 @@ function loadObjServer(cdm)
 					if(cdm.id){ obj.userData.id = cdm.id; }
 					else { obj.userData.id = countId; countId++; }
 					
+					obj.userData.obj3D = {};
+					obj.userData.obj3D.lotid = lotid;					
+					
 					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	
 					scene.add( obj );
+					
+					if(cdm.cursor) { clickO.move = obj; }
 				} 
 			);
 		}

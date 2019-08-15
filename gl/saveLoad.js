@@ -62,6 +62,7 @@ var resetPop =
 		inf.click = { wall : [], point : [] };  
 		inf.selectBox = { arr : [], drag : false, move : false, walls : [], walls_2 : [], point : [] };
 		inf.keys = [];
+		inf.options = null;
 		
 		return inf;
 	},
@@ -328,7 +329,6 @@ function getJsonGeometry()
 			{ 
 				points : [],
 				walls : [],	
-				furn : [],
 				rooms : [],
 				height : height_wall,
 				version : '1'
@@ -340,6 +340,8 @@ function getJsonGeometry()
 	var walls = [];
 	var rooms = [];
 	var furn = [];
+	var pipe = [];
+	
 	
 	for ( var i = 0; i < obj_line.length; i++ )
 	{	
@@ -467,10 +469,32 @@ function getJsonGeometry()
 		furn[m].rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
 	}
 	
+	
+	for ( var i = 0; i < infProject.scene.array.tube.length; i++ )
+	{
+		var tube = infProject.scene.array.tube[i].userData.wf_line;
+		
+		var m = pipe.length;
+		pipe[m] = {};
+		pipe[m].id = infProject.scene.array.tube[i].userData.id;
+		pipe[m].diameter = tube.diameter;
+		pipe[m].color = tube.color;
+		
+		pipe[m].point = [];
+		
+		for ( var i2 = 0; i2 < tube.point.length; i2++ )
+		{
+			pipe[m].point[i2] = {};
+			pipe[m].point[i2].id = tube.point[i2].userData.id;
+			pipe[m].point[i2].pos = tube.point[i2].position.clone();
+		}
+	}
+	
 	json.floors[0].points = points;
 	json.floors[0].walls = walls;
 	json.floors[0].rooms = rooms;
-	json.floors[0].furn = furn;
+	json.furn = furn;
+	json.pipe = pipe;
 	
 	return json;
 }
@@ -509,7 +533,8 @@ function loadFilePL(arr)
 	var point = arr.floors[0].points;
 	var walls = arr.floors[0].walls;
 	var rooms = arr.floors[0].rooms;
-	var furn = arr.floors[0].furn;
+	var furn = (arr.furn) ? arr.furn : [];
+	var pipe = (arr.pipe) ? arr.pipe : [];
 			
 	var wall = [];
 	
@@ -648,6 +673,19 @@ function loadFilePL(arr)
 		furn[i].pos.z *= -1;
 		loadObjServer(furn[i])
 	}
+	
+	for ( var i = 0; i < pipe.length; i++ )
+	{
+		var p = [];
+		for ( var i2 = 0; i2 < pipe[i].point.length; i2++ )
+		{
+			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos});
+		}
+		
+		var line = createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 
+		
+		geometryTubeWF({line : line, createLine : true});	
+	}	
 
 	
 	// восстанавливаем countId

@@ -45,6 +45,10 @@ function mouseDownRight()
 		{
 			if(obj.userData.wf_point.type == 'tool') { deletePointWF(obj); }			
 		}
+		else if(obj.userData.tag == 'obj')
+		{
+			deleteObjectPop(obj); console.log(infProject.scene.array.obj);
+		}		
 
 		clickO = resetPop.clickO();
 	}	
