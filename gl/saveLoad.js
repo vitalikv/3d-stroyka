@@ -304,11 +304,12 @@ function saveFile(cdm)
 	});	
 	
 	
+	// сохраняем в бд
 	$.ajax
 	({
-		url: infProject.path+'components/buy_1.php',
+		url: infProject.path+'components/saveSql.php',
 		type: 'POST',
-		data: {json: json},
+		data: {json: json, id: 4},
 		dataType: 'json',
 		success: function(json)
 		{ 			
@@ -521,17 +522,38 @@ function getJsonGeometry()
 
 function loadFile(file) 
 {
-	$.ajax
-	({
-		url: infProject.path+'t/fileJson.json',
-		type: 'POST',
-		dataType: 'json',
-		success: function(json)
-		{ 
-			resetScene();
-			loadFilePL(json); 	// загрузка json
-		},
-	});	
+	
+	if(1==2)	// загрузка json из папки
+	{
+		$.ajax
+		({
+			url: infProject.path+'t/fileJson.json',
+			type: 'POST',
+			dataType: 'json',
+			success: function(json)
+			{ 
+				resetScene();
+				loadFilePL(json); 	// загрузка json
+			},
+		});			
+	}
+	else	// загрузка json из бд
+	{
+		$.ajax
+		({
+			url: infProject.path+'components/loadSql.php',
+			type: 'POST',
+			data: {id: 4},
+			dataType: 'json',
+			success: function(json)
+			{ 
+				resetScene();
+				loadFilePL(json); 	// загрузка json
+			},
+		});		
+		
+	}
+	
 }
 
 
