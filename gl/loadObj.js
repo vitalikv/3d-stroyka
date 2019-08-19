@@ -10,6 +10,7 @@ function loadObjServer(cdm)
 	if(lotid == 1)
 	{
 		inf = {obj: infProject.path+'export/nasos.obj', material: infProject.path+'export/nasos.mtl'}
+		inf.planeMath = 1.5;
 	}
 	
 	new THREE.MTLLoader().load
@@ -31,6 +32,13 @@ function loadObjServer(cdm)
 					var obj = object.children[0];
 					
 					if(cdm.pos){ obj.position.copy(cdm.pos); }
+					else if(inf.planeMath)
+					{ 
+						obj.position.y = inf.planeMath;
+						planeMath.position.y = inf.planeMath; 
+						planeMath.updateMatrixWorld(); console.log(obj.position.y);
+					}
+					
 					if(cdm.rot){ obj.rotation.copy(cdm.rot); }					
 					
 					obj.material.lightMap = lightMap_1;
@@ -46,6 +54,8 @@ function loadObjServer(cdm)
 					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	
 					scene.add( obj );
+					
+					updateListTubeUI_1({o: obj, type: 'add'});
 					
 					if(cdm.cursor) { clickO.move = obj; }
 				} 

@@ -796,27 +796,45 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 });
 
 
-// UI список труб обновляем/добавляем/удаляем 
+// UI список труб добавляем/обновляем/удаляем 
 function updateListTubeUI_1(cdm)
 {
 	if(cdm.type == 'add')
 	{
-		var line = cdm.o;
+		var obj = cdm.o;
 		
-		var str = 
-		'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
-		<div class="right_panel_1_1_list_item_color">\
-		</div>\
-		<div class="right_panel_1_1_list_item_text">труба</div>\
-		<div class="right_panel_1_1_list_item_text"></div>\
-		</div>';
+		var tag = obj.userData.tag; 
+		
+		if(tag == 'wf_line')
+		{
+			var str = 
+			'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
+			<div class="right_panel_1_1_list_item_color"></div>\
+			<div class="right_panel_1_1_list_item_text">труба</div>\
+			<div class="right_panel_1_1_list_item_text"></div>\
+			</div>';			
+		}
+		else if(tag == 'obj')
+		{
+			var str = 
+			'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
+			<div class="right_panel_1_1_list_item_text">насос</div>\
+			</div>';			
+		}
+		else
+		{
+			return;
+		}
+		
+		console.log(tag);
 		
 		$('[list_ui="wf"]').prepend(str);
 		
 		var q = $('[list_ui="wf"]')[0].children[0];
-
-		q.uuid = line.uuid;
-		$(q.children[0]).css('background-color', '#'+line.userData.wf_line.color.clone().getHexString());
+		q.uuid = obj.uuid;
+		
+		
+		if(tag == 'wf_line') { $(q.children[0]).css('background-color', '#'+obj.userData.wf_line.color.clone().getHexString()); }
 		
 		infProject.ui.list_wf[infProject.ui.list_wf.length] = q;	
 	}

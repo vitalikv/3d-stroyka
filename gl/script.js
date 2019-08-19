@@ -1112,11 +1112,7 @@ function changeHeightWall()
 // нажали на кнопку интерфейса, загружаем объект	
 function clickButton( event )
 {
-	if(!clickO.button) return;
-	
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	if(intersects.length == 0) return;
+	if(!clickO.button) return;	
 	
 	if(camera == cameraTop)
 	{
@@ -1129,9 +1125,14 @@ function clickButton( event )
 		dir.addScalar(-10);
 		planeMath.position.copy(camera.position);
 		planeMath.position.add(dir);  
-		planeMath.rotation.copy( camera.rotation ); 
-		planeMath.updateMatrixWorld();		
-	}	
+		planeMath.rotation.copy( camera.rotation ); 				
+	}
+	
+	planeMath.updateMatrixWorld();
+
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return;	
 	
 	if(camera == cameraTop)
 	{ 
@@ -1167,7 +1168,7 @@ function clickButton( event )
 		}
 		else if(clickO.button == 'add_lotid')
 		{
-			loadObjServer({lotid: clickO.options, pos: intersects[0].point, cursor: true});
+			loadObjServer({lotid: clickO.options, cursor: true});
 		}		
 	}
 	if(camera == cameraWall)

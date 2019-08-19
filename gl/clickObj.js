@@ -89,6 +89,8 @@ function deleteObjectPop(obj)
 	
 	deleteValueFromArrya({arr : infProject.scene.array.obj, o : obj});
 	
+	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
+	
 	scene.remove( obj );	
 }
 
