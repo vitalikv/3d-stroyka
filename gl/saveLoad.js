@@ -741,6 +741,7 @@ function loadFilePL(arr)
 	
 	calculationAreaFundament_2();
 	
+	changeCamera(cameraTop);
 	centerCamera2D();
 	cameraZoomTop( camera.zoom );
 	

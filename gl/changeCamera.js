@@ -22,6 +22,8 @@ function changeCamera(cam)
 	}
 	else if(camera == camera3D)
 	{	
+		blockActiveObj({visible_1: true, visible_2: true});
+		
 		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
@@ -111,7 +113,12 @@ function changeDepthColor()
 	
 	for ( var i = 0; i < wall.length; i++ )
 	{
-		if(wall[i].children[0]) wall[i].children[0].visible = visible_2;	// скрываем штукатурку
+		if(wall[i].children[0]) wall[i].children[0].visible = visible_2;	// скрываем штукатурку 
+				
+		for ( var i2 = 0; i2 < wall[i].label.length; i2++ )
+		{
+			wall[i].label[i2].visible = visible;
+		}
 	}
 	
 	for ( var i = 0; i < point.length; i++ )
@@ -227,7 +234,20 @@ function showHideObjMode_1(cdm)
 	showHideArrObj(wf, visible_1);	// прячем/показываем точки у труб
 	showHideArrObj(infProject.scene.array.point, visible_2);	// прячем/показываем точки у стен
 	
-	// блокируем/разблокируем объекты
+
+	blockActiveObj({visible_1: visible_1, visible_2: visible_2});
+
+	deActiveSelected();	
+}
+
+
+
+// блокируем/разблокируем объекты
+function blockActiveObj(cdm)
+{
+	var visible_1 = cdm.visible_1;
+	var visible_2 = cdm.visible_2;
+	
 	infProject.scene.block.click.tube = visible_2;
 	infProject.scene.block.hover.tube = visible_2;
 	
@@ -247,14 +267,8 @@ function showHideObjMode_1(cdm)
 	infProject.scene.block.hover.room = visible_1;
 
 	infProject.scene.block.click.controll_wd = visible_1;
-	infProject.scene.block.hover.controll_wd = visible_1;
-
-
-	deActiveSelected();	
+	infProject.scene.block.hover.controll_wd = visible_1;	
 }
-
-
-
 
 
 
