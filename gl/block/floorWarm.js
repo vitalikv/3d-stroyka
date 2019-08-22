@@ -826,8 +826,6 @@ function updateListTubeUI_1(cdm)
 			return;
 		}
 		
-		console.log(tag);
-		
 		$('[list_ui="wf"]').prepend(str);
 		
 		var q = $('[list_ui="wf"]')[0].children[0];

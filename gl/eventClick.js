@@ -6,6 +6,9 @@ $('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstar
 $('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
 $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
 
+
+$('[nameId="butt_main_menu"]').mousedown(function () { $('[nameId="background_main_menu"]').css({"display":"block"}); });
+$('[nameId="reset_scene_1"]').mousedown(function () { resetScene(); });
 $('[nameId="save_pr_1"]').mousedown(function () { saveFile(); });
 
 
@@ -112,7 +115,6 @@ $('input').blur(function () { infProject.activeInput = ''; });
 
 $('[data-action="estimate"]').mousedown(function () 
 { 
-	infProject.scene.block.key.scroll = true;
 	createEstimateJson();
 	$('.modal').css({"display":"block"});
 	$('[modal_body="estimate"]').css({"display":"block"}); 
@@ -126,7 +128,6 @@ $('[data-action="form_1"]').mousedown(function ()
 	console.log('form_1');
 	getFormWallR_1();
 	checkClickUINameID('form_1');
-	infProject.scene.block.key.scroll = true;
 	clickInterface();
 	$('.modal').css({"display":"block"});
 	$('[modal_body="estimate"]').css({"display":"none"});
@@ -141,7 +142,6 @@ $('[data-action="modal_window"]').mousedown(function () { return false; });
 
 $('[data-action="modal"]').mousedown(function () 
 {	
-	infProject.scene.block.key.scroll = false;
 	checkChangeFormWallR();			
 	clickInterface(); 
 	$('[data-action="modal"]').css({"display":"none"}); 
@@ -150,7 +150,6 @@ $('[data-action="modal"]').mousedown(function ()
 			
 $('[data-action="modal_window_close"]').mousedown(function () 
 {  
-	infProject.scene.block.key.scroll = false;
 	checkChangeFormWallR();
 	$('[data-action="modal"]').css({"display":"none"}); 
 });
@@ -158,15 +157,13 @@ $('[data-action="modal_window_close"]').mousedown(function ()
 
 
 $('[data-action="modal_1"]').mousedown(function () 
-{	
-	infProject.scene.block.key.scroll = false; 
+{	 
 	$('[data-action="modal_1"]').css({"display":"none"}); 
 });
 
 			
 $('[data-action="modal_window_close_1"]').mousedown(function () 
 {  
-	infProject.scene.block.key.scroll = false;
 	$('[data-action="modal_1"]').css({"display":"none"}); 
 });
 

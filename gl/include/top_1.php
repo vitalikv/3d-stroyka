@@ -1,13 +1,14 @@
 
 
 <div class="top_panel_1" data-action ='top_panel_1' style=" z-index: 1;">
-	<a href="/" class="go-home"><p>На главную</p></a>
+	<div class="go-home" nameId="butt_main_menu"><p>Меню</p></div>
 	<div class="title_1"><h1><?=$h1?></h1></div>
-	<div class="top_menu_right_1">
+	<!--<div class="top_menu_right_1">
 		<div class="top_menu_right_1_text" nameId="save_pr_1">Сохранить</div>
-	</div>				
+	</div>-->				
 </div>
 
+<noindex>
 <div class="top_panel_2" style="z-index: 1;">
 
 	<? if($interface['mode_1'] == 1){ ?>
@@ -71,5 +72,5 @@
 		
 	</div> 
 </div>
-
+</noindex>
 

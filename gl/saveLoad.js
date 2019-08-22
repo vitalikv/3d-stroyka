@@ -79,37 +79,38 @@ function resetScene()
 {	
 	hideMenuUI(clickO.last_obj);
 	
-	for ( var i = 0; i < obj_line.length; i++ )
-	{ 
-		scene.remove(obj_line[i].label[0]); 
-		scene.remove(obj_line[i].label[1]);
-		if(obj_line[i].userData.wall.outline) { scene.remove(obj_line[i].userData.wall.outline); }
-		if(obj_line[i].userData.wall.zone) { scene.remove(obj_line[i].userData.wall.zone.label); }
+	
+	var wall = infProject.scene.array.wall;
+	var point = infProject.scene.array.point;
+	var tube = infProject.scene.array.tube;
+	var obj = infProject.scene.array.obj;
 
-		for(var i2 = obj_line[i].userData.wall.brick.arr.length - 1; i2 > -1; i2--)
+	for ( var i = 0; i < wall.length; i++ )
+	{ 
+		scene.remove(wall[i].label[0]); 
+		scene.remove(wall[i].label[1]);
+		if(wall[i].userData.wall.outline) { scene.remove(wall[i].userData.wall.outline); }
+		if(wall[i].userData.wall.zone) { scene.remove(wall[i].userData.wall.zone.label); }
+
+		for(var i2 = wall[i].userData.wall.brick.arr.length - 1; i2 > -1; i2--)
 		{
-			var block = obj_line[i].userData.wall.brick.arr[i2];
+			var block = wall[i].userData.wall.brick.arr[i2];
 			scene.remove(block);			
 		}			
 		
-		for(var i2 = obj_line[i].children.length - 1; i2 > -1; i2--)
-		{ 
-			scene.remove(obj_line[i].children[i2]);
-		}
+		wall[i].label = [];
+		wall[i].userData.wall.p = [];
+		wall[i].userData.wall.outline = null;
+		wall[i].userData.wall.zone = null;
+		wall[i].userData.wall.brick.arr = [];
 		
-		obj_line[i].label = [];
-		obj_line[i].userData.wall.p = [];
-		obj_line[i].userData.wall.outline = null;
-		obj_line[i].userData.wall.zone = null;
-		obj_line[i].userData.wall.brick.arr = [];
-		
-		scene.remove(obj_line[i]); 
+		scene.remove(wall[i]); 
 	}
 	
-	for ( var i = 0; i < obj_point.length; i++ )
+	for ( var i = 0; i < point.length; i++ )
 	{ 
-		if(obj_point[i].userData.point.pillar) { scene.remove( obj_point[i].userData.point.pillar ); }
-		scene.remove(obj_point[i]); 
+		if(point[i].userData.point.pillar) { scene.remove( point[i].userData.point.pillar ); }
+		scene.remove(point[i]); 
 	}	
 	
 	for ( var i = 0; i < infProject.scene.array.window.length; i++ ){ scene.remove(infProject.scene.array.window[i]); }
@@ -122,7 +123,31 @@ function resetScene()
 		if(room[i].userData.room.outline) { scene.remove(room[i].userData.room.outline); }
 		scene.remove(room[i]); 
 		scene.remove( ceiling[i] );	
+	}
+
+	for ( var i = 0; i < tube.length; i++ )
+	{
+		for ( var i2 = tube[i].userData.wf_line.point.length - 1; i2 > -1; i2-- )
+		{
+			scene.remove(tube[i].userData.wf_line.point[i2]);		
+		}
+		
+		if(tube[i].userData.wf_line.tube) { scene.remove(tube[i].userData.wf_line.tube); }
+	
+		scene.remove(tube[i]);		
+	}
+	
+	for ( var i = 0; i < obj.length; i++ )
+	{ 
+		scene.remove(obj[i]);
 	}	
+	
+	
+	// удаляем список материалов UI
+	for(var i = 0; i < infProject.ui.list_wf.length; i++)
+	{
+		infProject.ui.list_wf[i].remove();
+	}		
 	
 	disposeHierchy(scene, disposeNode);
 	
@@ -158,8 +183,17 @@ function resetScene()
 	clickO = resetPop.clickO();
 	infProject.scene.array = resetPop.infProjectSceneArray();
 
+	getConsoleRendererInfo();
 }
 
+
+
+function getConsoleRendererInfo()
+{	
+	console.log(renderer.info.programs);
+	console.log(renderer.info.render);
+	console.log(renderer.info.memory, scene);	
+}
 
 
 // удалем из GPU объекты
@@ -290,6 +324,7 @@ function saveFile(cdm)
 { 
 	var json = JSON.stringify( getJsonGeometry() );
 	
+	// сохраняем в папку
 	$.ajax
 	({
 		url: infProject.path+'saveJson.php',
@@ -358,12 +393,12 @@ function getJsonGeometry()
 	var furn = [];
 	var pipe = [];
 	
+	var wall = infProject.scene.array.wall;
+	//var point = infProject.scene.array.point;
 	
-	for ( var i = 0; i < obj_line.length; i++ )
-	{	
-		var wall = obj_line[i];
-		
-		var p = wall.userData.wall.p;
+	for ( var i = 0; i < wall.length; i++ )
+	{			
+		var p = wall[i].userData.wall.p;
 		
 		for ( var i2 = 0; i2 < p.length; i2++ )  
 		{
@@ -382,33 +417,33 @@ function getJsonGeometry()
 	
 	
 	
-	for ( var i = 0; i < obj_line.length; i++ )
+	for ( var i = 0; i < wall.length; i++ )
 	{ 
-		var p = obj_line[i].userData.wall.p;
+		var p = wall[i].userData.wall.p;
 		
 		walls[i] = { }; 
 		
-		walls[i].id = obj_line[i].userData.id;
+		walls[i].id = wall[i].userData.id;
 		walls[i].pointStart = p[0].userData.id;
 		walls[i].pointEnd = p[1].userData.id;
-		walls[i].width = obj_line[i].userData.wall.width; 
-		walls[i].height = obj_line[i].userData.wall.height_1; 
+		walls[i].width = wall[i].userData.wall.width; 
+		walls[i].height = wall[i].userData.wall.height_1; 
 
 
 		var x1 = p[1].position.z - p[0].position.z;
 		var z1 = p[0].position.x - p[1].position.x;	
 		var dir = new THREE.Vector3(z1, 0, -x1).normalize();						// перпендикуляр стены  (перевернуты x и y)
-		dir.multiplyScalar( obj_line[i].userData.wall.offsetZ );
+		dir.multiplyScalar( wall[i].userData.wall.offsetZ );
 		walls[i].startShift = new THREE.Vector3(dir.z, 0, dir.x);
 				
-		var wd = saveWindows(obj_line[i]);		
+		var wd = saveWindows(wall[i]);		
 		walls[i].windows = wd.windows;
 		walls[i].doors = wd.doors;
 		
 
 		walls[i].colors = [];
-		var mat = obj_line[i].userData.material;
-		var arr = [{containerID : 'wall3d_'+obj_line[i].userData.id+'_p2', num : 1}, {containerID : 'wall3d_'+obj_line[i].userData.id+'_p1', num : 2}];				
+		var mat = wall[i].userData.material;
+		var arr = [{containerID : 'wall3d_'+wall[i].userData.id+'_p2', num : 1}, {containerID : 'wall3d_'+wall[i].userData.id+'_p1', num : 2}];				
 		
 		for ( var i2 = 0; i2 < arr.length; i2++ )
 		{
@@ -424,7 +459,7 @@ function getJsonGeometry()
 			
 			walls[i].colors[i2].matMod.mapingRotate = 0; 
 			
-			var map = obj_line[i].material[arr[i2].num].map;
+			var map = wall[i].material[arr[i2].num].map;
 			if(map) 
 			{
 				walls[i].colors[i2].matMod.texOffset = map.offset;
@@ -910,11 +945,13 @@ function loadStartForm(cdm)
 	}
 	
 	
+	var wall = infProject.scene.array.wall;
+	var point = infProject.scene.array.point;
 	
-	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY(obj_point[i]); }	
-	if(obj_line.length > 0) detectRoomZone();
-	if(obj_line.length > 0) upLabelPlan_1(obj_line);
-	if(obj_line.length > 0) createWallZone(obj_line[0])
+	for ( var i = 0; i < point.length; i++ ) { upLineYY(point[i]); }	
+	if(wall.length > 0) detectRoomZone();
+	if(wall.length > 0) upLabelPlan_1(wall);
+	if(wall.length > 0) createWallZone(wall[0])
 	
 	//width_wall = 0.3;
 	
