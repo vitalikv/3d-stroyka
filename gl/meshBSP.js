@@ -147,11 +147,14 @@ function MeshBSP( wd, objsBSP, wall )
 
 	var wdBSP = new ThreeBSP( wdClone );    
 	var wallBSP = new ThreeBSP( wallClone ); 			// копируем выбранную стену	
-	var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
+	var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы
+	
+	wall.geometry.dispose();	
+	
 	wall.geometry = newBSP.toGeometry();	
 	
 	wall.geometry.computeFaceNormals();
-
+ 
 	for ( var i = 0; i < wall.geometry.faces.length; i++ )
 	{
 		wall.geometry.faces[i].normal.normalize();
@@ -184,7 +187,9 @@ function MeshBSP( wd, objsBSP, wall )
 			else if(wall_2.geometry.faces[i].normal.y == 1) { wall_2.geometry.faces[i].materialIndex = 3; }
 			else if(wall_2.geometry.faces[i].normal.y == -1) { wall_2.geometry.faces[i].materialIndex = 3; }
 		}	
-	}	
+	}
+
+	
 }
 
  

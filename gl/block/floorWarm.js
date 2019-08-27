@@ -346,7 +346,7 @@ function createLineWF(cdm)
 	
 	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
 	line.material.color = color;
-	
+	 
 	line.userData.tag = 'wf_line';
 	line.userData.wf_line = {};
 	line.userData.wf_line.tube = null;
@@ -601,6 +601,7 @@ function geometryTubeWF(cdm)
 	}
 	else
 	{
+		line.userData.wf_line.tube.geometry.dispose();
 		line.userData.wf_line.tube.geometry = geometry;
 	}
 	
@@ -626,12 +627,22 @@ function deletePointWF(obj)
 		if(line.userData.wf_line.point.length == 2)
 		{		
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
+			
+			disposeNode(line.userData.wf_line.point[0]);
+			disposeNode(line.userData.wf_line.point[1]);
+			
 			scene.remove(line.userData.wf_line.point[0]);
 			scene.remove(line.userData.wf_line.point[1]);
-			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
+			
+			if(line.userData.wf_line.tube) 
+			{ 
+				disposeNode(line.userData.wf_line.tube);
+				scene.remove(line.userData.wf_line.tube); 
+			}
 			
 			updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
 			
+			disposeNode(line);
 			scene.remove(line);	
 			line = null;			
 		}
@@ -652,13 +663,18 @@ function deletePointWF(obj)
 
 			line.material.color = line.userData.wf_line.color.clone();
 			
-			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
+			if(line.userData.wf_line.tube) 
+			{ 
+				disposeNode(line.userData.wf_line.tube);
+				scene.remove(line.userData.wf_line.tube); 
+			}
 			
 			// создаем трубу
 			geometryTubeWF({line : line, createLine : true});
 		}
 	}
 	
+	disposeNode(obj);
  	scene.remove(obj);	// удаляем точку
 	
 	clickO = resetPop.clickO();
@@ -676,13 +692,19 @@ function deleteLineWF(line)
 	
 	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
 	{
+		disposeNode(line.userData.wf_line.point[i]);
 		scene.remove(line.userData.wf_line.point[i]);		
 	}
 	
-	if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
+	if(line.userData.wf_line.tube) 
+	{ 
+		disposeNode(line.userData.wf_line.tube);
+		scene.remove(line.userData.wf_line.tube); 
+	}
 
 	updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
 	
+	disposeNode(line);
 	scene.remove(line);
 	
 	clickO = resetPop.clickO();

@@ -82,15 +82,21 @@ function resetScene()
 	
 	var wall = infProject.scene.array.wall;
 	var point = infProject.scene.array.point;
+	var window = infProject.scene.array.window;
+	var door = infProject.scene.array.door;
 	var tube = infProject.scene.array.tube;
 	var obj = infProject.scene.array.obj;
 
 	for ( var i = 0; i < wall.length; i++ )
 	{ 
+		disposeNode(wall[i]);
+		disposeNode(wall[i].label[0]);
+		disposeNode(wall[i].label[1]);
+		
 		scene.remove(wall[i].label[0]); 
 		scene.remove(wall[i].label[1]);
 		if(wall[i].userData.wall.outline) { scene.remove(wall[i].userData.wall.outline); }
-		if(wall[i].userData.wall.zone) { scene.remove(wall[i].userData.wall.zone.label); }
+		if(wall[i].userData.wall.zone) { disposeNode(wall[i].userData.wall.zone.label); scene.remove(wall[i].userData.wall.zone.label); }
 
 		for(var i2 = wall[i].userData.wall.brick.arr.length - 1; i2 > -1; i2--)
 		{
@@ -110,35 +116,56 @@ function resetScene()
 	for ( var i = 0; i < point.length; i++ )
 	{ 
 		if(point[i].userData.point.pillar) { scene.remove( point[i].userData.point.pillar ); }
+		disposeNode(point[i]);
 		scene.remove(point[i]); 
 	}	
 	
-	for ( var i = 0; i < infProject.scene.array.window.length; i++ ){ scene.remove(infProject.scene.array.window[i]); }
-	for ( var i = 0; i < infProject.scene.array.door.length; i++ ){ scene.remove(infProject.scene.array.door[i]); }	
+	for ( var i = 0; i < window.length; i++ )
+	{ 
+		disposeNode(window[i]); 
+		scene.remove(window[i]); 
+	}
+	
+	for ( var i = 0; i < door.length; i++ )
+	{ 
+		disposeNode(door[i]); 
+		scene.remove(door[i]); 
+	}	
 	
 	
 	for ( var i = 0; i < room.length; i++ )
 	{		
+		disposeNode(room[i]);
+		disposeNode(room[i].label);
+		disposeNode(ceiling[i]);
+		
 		scene.remove(room[i].label); 
 		if(room[i].userData.room.outline) { scene.remove(room[i].userData.room.outline); }
 		scene.remove(room[i]); 
-		scene.remove( ceiling[i] );	
+		scene.remove(ceiling[i]);	
 	}
 
 	for ( var i = 0; i < tube.length; i++ )
 	{
 		for ( var i2 = tube[i].userData.wf_line.point.length - 1; i2 > -1; i2-- )
 		{
+			disposeNode(tube[i].userData.wf_line.point[i2]);
 			scene.remove(tube[i].userData.wf_line.point[i2]);		
 		}
 		
-		if(tube[i].userData.wf_line.tube) { scene.remove(tube[i].userData.wf_line.tube); }
+		if(tube[i].userData.wf_line.tube) 
+		{ 
+			disposeNode(tube[i].userData.wf_line.tube);
+			scene.remove(tube[i].userData.wf_line.tube); 
+		}
 	
+		disposeNode(tube[i]);
 		scene.remove(tube[i]);		
 	}
 	
 	for ( var i = 0; i < obj.length; i++ )
 	{ 
+		disposeNode(obj[i]);
 		scene.remove(obj[i]);
 	}	
 	
@@ -149,7 +176,7 @@ function resetScene()
 		infProject.ui.list_wf[i].remove();
 	}		
 	
-	disposeHierchy(scene, disposeNode);
+	//disposeHierchy(scene, disposeNode);
 	
 	
 	obj_point = [];
@@ -196,6 +223,10 @@ function getConsoleRendererInfo()
 }
 
 
+
+
+
+
 // удалем из GPU объекты
 function disposeHierchy(node, callback) 
 {
@@ -219,7 +250,7 @@ function disposeHierchy(node, callback)
 
 function disposeNode(node) 
 {
-        if (node instanceof THREE.Mesh) 
+        if (node instanceof THREE.Mesh || node instanceof THREE.Line) 
 		{
             if (node.geometry) { node.geometry.dispose(); }
 			

@@ -102,6 +102,7 @@ $(document).ready(function(){
 						<a href="/" class="window_main_menu_content_1_item">Главная страница</a>
 						<div class="window_main_menu_content_1_item" nameId="reset_scene_1">Пустой проект</div>
 						<div class="window_main_menu_content_1_item">Личный кабинет</div>
+						<div class="window_main_menu_content_1_item" nameId="load_pr_1">Загрузить</div>
 						<div class="window_main_menu_content_1_item" nameId="save_pr_1">Сохранить</div>
 					</div>
 				</div>			

@@ -9,7 +9,8 @@ $('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(
 
 $('[nameId="butt_main_menu"]').mousedown(function () { $('[nameId="background_main_menu"]').css({"display":"block"}); });
 $('[nameId="reset_scene_1"]').mousedown(function () { resetScene(); });
-$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); });
+$('[nameId="load_pr_1"]').mousedown(function () { loadFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
+$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
 
 
 $('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });

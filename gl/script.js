@@ -1600,8 +1600,9 @@ document.body.addEventListener("keydown", function (e)
 
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
+	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
-	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  // alt + v
+	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
 } );
 
 document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });
