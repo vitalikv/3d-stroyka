@@ -31,6 +31,9 @@
 	<script src="<?=$path?>js/OBJLoader.js"></script>
 	<script src="<?=$path?>js/MTLLoader.js"></script>   
 	
+	<script src="<?=$path?>js/loader/inflate.min.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
+	
 	
 	<? include("include/top_1.php"); ?>
 	<? include("include/modal_window_2.php"); ?>

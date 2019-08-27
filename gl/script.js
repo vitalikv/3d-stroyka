@@ -1644,6 +1644,9 @@ function checkNumberInput(cdm)
 
 
 
+
+
+
 var docReady = false;
 
 $(document).ready(function () 
@@ -1655,6 +1658,21 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		
+
+
+	var loader = new THREE.FBXLoader();
+	loader.load( infProject.path+'export/9075.fbx', function ( object ) 
+	{
+		object.traverse( function ( child ) {
+			if ( child.isMesh ) 
+			{
+				child.castShadow = true;
+				child.receiveShadow = true;
+			}
+		} );
+		scene.add( object );
+	});
+
 
 	if(1==2)
 	{
