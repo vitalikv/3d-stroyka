@@ -1662,10 +1662,10 @@ $(document).ready(function ()
 
 	var loader = new THREE.FBXLoader();
 	loader.load( infProject.path+'export/9075.fbx', function ( object ) 
-	{
+	{ console.log(222, object);
 		object.traverse( function ( child ) {
 			if ( child.isMesh ) 
-			{
+			{ console.log(child.name);
 				child.castShadow = true;
 				child.receiveShadow = true;
 			}

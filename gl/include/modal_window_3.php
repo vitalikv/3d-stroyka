@@ -2,7 +2,7 @@
 <style type="text/css">
 .background_main_menu 
 {
-	display: none;
+	display: block;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -16,10 +16,9 @@
 {
 	position: relative;
 	margin: auto;
-	width: 450px;
-	height: 450px;	
-	max-width: 80%;
-	max-height: 80%;	
+	width: 95%;
+	height: 95%;	
+	
 	background: white;
 	border-radius: 8px;
 	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
@@ -33,18 +32,28 @@
 .window_main_menu_content_1
 {	
 	position: relative;
-	margin: 30px auto 0 auto;
+	margin: 30px auto 0 0;
+}
+
+
+.window_main_menu_content_1_row
+{
 	display: -webkit-box;
 	display: flex;
+}
 
+.window_main_menu_content_1_column
+{
+	display: -webkit-box;
+	display: flex;
 	flex-direction: column;
-	-webkit-flex-direction: column;	 
+	-webkit-flex-direction: column;
 }
 
 
 .window_main_menu_content_1_item
 {
-	margin: 5px auto;
+	margin: 5px 20px;
 	padding: 10px 0;
 	width: 250px;	
 	
@@ -98,12 +107,28 @@ $(document).ready(function(){
 			</div>
 			<div class='modal_body'>
 				<div class='modal_body_content'>
+					<div class="window_main_menu_content_1">					
+						<div class="window_main_menu_content_1_row">
+							<div class="window_main_menu_content_1_column">
+								<a href="/" class="window_main_menu_content_1_item">Главная страница</a>
+								<div class="window_main_menu_content_1_item" nameId="reset_scene_1">Пустой проект</div>
+								<div class="window_main_menu_content_1_item" nameId="load_pr_1">Загрузить</div>
+								<div class="window_main_menu_content_1_item" nameId="save_pr_1">Сохранить</div>													
+							</div>
+							<div class="window_main_menu_content_1_column">
+								<a href="/" class="window_main_menu_content_1_item">Главная страница</a>
+								<div class="window_main_menu_content_1_item" nameId="reset_scene_1">Пустой проект</div>
+								<div class="window_main_menu_content_1_item" nameId="load_pr_1">Загрузить</div>
+								<div class="window_main_menu_content_1_item" nameId="save_pr_1">Сохранить</div>													
+							</div>							
+						</div>
+						<div class="window_main_menu_content_1_row">
+						
+						</div>						
+					</div>
+					
 					<div class="window_main_menu_content_1">
-						<a href="/" class="window_main_menu_content_1_item">Главная страница</a>
-						<div class="window_main_menu_content_1_item" nameId="reset_scene_1">Пустой проект</div>
-						<div class="window_main_menu_content_1_item">Личный кабинет</div>
-						<div class="window_main_menu_content_1_item" nameId="load_pr_1">Загрузить</div>
-						<div class="window_main_menu_content_1_item" nameId="save_pr_1">Сохранить</div>
+					
 					</div>
 				</div>			
 			</div>
