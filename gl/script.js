@@ -1661,16 +1661,27 @@ $(document).ready(function ()
 
 
 	var loader = new THREE.FBXLoader();
-	loader.load( infProject.path+'export/9075.fbx', function ( object ) 
-	{ console.log(222, object);
-		object.traverse( function ( child ) {
+	loader.load( infProject.path+'export/nasos2.fbx', function ( obj ) 
+	{ console.log(222, obj);
+		
+		obj = obj.children[0];
+		obj.position.set(0,0,0);
+
+		obj.userData.tag = 'obj';
+		obj.userData.id = countId; countId++;
+		obj.userData.obj3D = {};
+		obj.userData.obj3D.lotid = 1; 
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+						
+	
+		obj.traverse( function ( child ) {
 			if ( child.isMesh ) 
 			{ console.log(child.name);
 				child.castShadow = true;
 				child.receiveShadow = true;
 			}
 		} );
-		scene.add( object );
+		scene.add( obj );
 	});
 
 
