@@ -176,6 +176,8 @@ function resetScene()
 		infProject.ui.list_wf[i].remove();
 	}		
 	
+	infProject.ui.list_wf = [];
+	
 	//disposeHierchy(scene, disposeNode);
 	
 	

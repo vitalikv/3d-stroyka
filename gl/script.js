@@ -1657,9 +1657,9 @@ $(document).ready(function ()
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
-		
-
-
+		 
+	 
+	
 	var loader = new THREE.FBXLoader();
 	loader.load( infProject.path+'export/nasos2.fbx', function ( obj ) 
 	{ console.log(222, obj);
