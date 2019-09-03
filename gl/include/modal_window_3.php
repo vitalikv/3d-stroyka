@@ -190,14 +190,27 @@
 	
 	border-radius: 3px;	
 	font-family: arial,sans-serif;
-	font-size: 18px;
+	font-size: 17px;
 	color: #666;
 	
-	text-shadow: 0 -1px rgb(46,53,58);
-	text-decoration: none;
 	line-height: 2em;
-	padding: 0;
-	outline: none;
+	padding: 0 10px;
+}
+
+
+.window_main_menu_form_reg_info_1
+{
+	margin: 30px auto 0 auto;
+	padding: 20px;
+	
+	font:15px Arial, Helvetica, sans-serif;
+	text-align:center;
+	
+	background-color:#ffffff;
+	border:solid 1px #b3b3b3; 
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px; 
+	border-radius: 3px;	
 }
 
 
@@ -268,7 +281,56 @@ $(document).ready(function(){
 			$('[nameId="act_reg_1"]').text('Зарегистрироваться');
 			$('[nameId="act_reg_1"]').attr("b_type", "reg_2");
 		}	
-	}	
+	}
+
+
+	
+
+
+
+ 
+$('[nameId="input_reg_mail"]').blur(function()
+{
+	var pattern = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	var mail = $('[nameId="input_reg_mail"]');
+	$('[nameId="info_reg_1_1"]').attr('success_1', false);
+	
+	var flag = false;
+	
+	if(mail.val() != '')
+	{
+		if(pattern.test(mail.val()))
+		{
+			$('[nameId="info_reg_1_1"]').attr('success_1', true);
+			$('[nameId="info_reg_1_1"]').hide();
+			flag = true;
+		}
+		else
+		{
+			$('[nameId="info_reg_1_1"]').show();
+			$('[nameId="info_reg_1_1"]').text('Не верно указанна почта');			
+		}
+	}
+	else
+	{
+		
+		$('[nameId="info_reg_1_1"]').show();
+		$('[nameId="info_reg_1_1"]').text('Укажите e-mail');
+	}
+	
+	
+	if(flag)
+	{ console.log(333);
+		$('[nameId="info_reg_1"]').hide();
+	}
+	else
+	{
+		$('[nameId="info_reg_1"]').show();
+	}
+});
+
+
+	
 });	 
 </script>
 
@@ -354,14 +416,26 @@ $(document).ready(function(){
 												<div class="window_main_menu_form_reg_block_1_label">
 													почта
 												</div>											
-												<input class="input_form_reg" type="text" value = 0>
+												<input class="input_form_reg" type="text" nameId="input_reg_mail" value="">
 											</div>
 											<div class="window_main_menu_form_reg_block_1_1">
 												<div class="window_main_menu_form_reg_block_1_label">
 													пароль
 												</div>											
-												<input class="input_form_reg" type="text" value = 0>
+												<input class="input_form_reg" type="text" nameId="input_reg_pass" value="">
 											</div>
+											
+											<div class="window_main_menu_form_reg_block_1_1">
+												<div nameId="info_reg_1" class="window_main_menu_form_reg_info_1" style="display: none;">
+													<div nameId="info_reg_1_1" style="display: none;" success_1="false">
+														Почта указана
+													</div>
+													<div nameId="info_reg_1_2" style="display: none;" success_1="false">
+														Пароль указана
+													</div>													
+												</div>
+											</div>
+											
 											<div class="window_main_menu_button_reg_1" b_type="reg_1" nameId="act_reg_1">
 												Войти
 											</div>
