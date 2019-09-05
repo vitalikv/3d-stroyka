@@ -197,21 +197,39 @@
 	padding: 0 10px;
 }
 
+.wm_reg_text_1
+{
+	font:15px Arial, Helvetica, sans-serif;
+	text-align:center;	
+}
 
-.window_main_menu_form_reg_info_1
+
+.wm_reg_12
 {
 	margin: 30px auto 0 auto;
-	padding: 20px;
-	
-	font:15px Arial, Helvetica, sans-serif;
-	text-align:center;
-	
+	padding: 20px;		
+}
+
+
+.wm_reg_13
+{
+	margin: 30px auto 0 auto;
+	width:70%;
+	padding: 40px;
+	font-size: 17px;
+}
+
+
+.wm_reg_border_1
+{
 	background-color:#ffffff;
 	border:solid 1px #b3b3b3; 
 	-webkit-border-radius:3px;
 	-moz-border-radius:3px; 
 	border-radius: 3px;	
 }
+
+
 
 
 .window_main_menu_button_reg_1
@@ -286,48 +304,187 @@ $(document).ready(function(){
 
 	
 
+$('[nameId="act_reg_1"]').mousedown(function () { checkRegDataIU(); });
 
 
- 
-$('[nameId="input_reg_mail"]').blur(function()
+// вход/регистрация пользователя (проверка правильности ввода данных почта/пароль)
+function checkRegDataIU()
 {
-	var pattern = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	var pattern_2 = /^[a-z0-9]{4,20}$/i;
 	var mail = $('[nameId="input_reg_mail"]');
-	$('[nameId="info_reg_1_1"]').attr('success_1', false);
+	var pass = $('[nameId="input_reg_pass"]');
 	
-	var flag = false;
+	var inf_block = $('[nameId="info_reg_1"]');
+	var inf_str_1 = $('[nameId="info_reg_1_1"]');
+	var inf_str_2 = $('[nameId="info_reg_1_2"]');
 	
+	inf_block.hide();
+	inf_str_1.hide();
+	inf_str_2.hide();
+	
+	var flag_1 = false;
+	var flag_2 = false;
+	
+	mail.val(mail.val().trim());	// удаляем пробелы  
+	pass.val(pass.val().trim());	// удаляем пробелы 
+	
+	// проверка почты
 	if(mail.val() != '')
 	{
-		if(pattern.test(mail.val()))
+		if(pattern_1.test(mail.val()))
 		{
-			$('[nameId="info_reg_1_1"]').attr('success_1', true);
-			$('[nameId="info_reg_1_1"]').hide();
-			flag = true;
+			flag_1 = true;
 		}
 		else
 		{
-			$('[nameId="info_reg_1_1"]').show();
-			$('[nameId="info_reg_1_1"]').text('Не верно указанна почта');			
+			inf_str_1.show();
+			inf_str_1.text('Не верно указанна почта');			
 		}
 	}
 	else
+	{		
+		inf_str_1.show();
+		inf_str_1.text('Укажите e-mail');
+	}
+	
+	
+	// проверка пароля
+	if(pass.val() != '')
 	{
-		
-		$('[nameId="info_reg_1_1"]').show();
-		$('[nameId="info_reg_1_1"]').text('Укажите e-mail');
-	}
-	
-	
-	if(flag)
-	{ console.log(333);
-		$('[nameId="info_reg_1"]').hide();
-	}
+		if(pattern_2.test(pass.val()))
+		{
+			flag_2 = true;
+		}
+		else
+		{
+			inf_str_2.show();
+			inf_str_2.html('Не верно указан пароль<br>(Только цифры и латинские буквы от 4 до 20 знаков)');			
+		}
+	}		
 	else
-	{
-		$('[nameId="info_reg_1"]').show();
+	{		
+		inf_str_2.show();
+		inf_str_2.text('Укажите пароль');
 	}
-});
+	
+	
+	// данные введены верно
+	if(flag_1 && flag_2)
+	{ 
+		inf_block.hide();
+		
+		//console.log();
+		var type = $('[nameId="act_reg_1"]').attr("b_type");
+		
+		$.ajax
+		({
+			type: "POST",					
+			url: infProject.path+'components/regUser.php',
+			data: {"type": type, "mail": mail.val(), "pass": pass.val()},
+			dataType: 'json',
+			success: function(data)
+			{  
+				if(type=='reg_1')
+				{
+					if(data.success)
+					{
+						infProject.user.id = data.info.id;
+						infProject.user.mail = data.info.mail;
+						infProject.user.pass = data.info.pass;
+
+						//$('[nameId="reg_content_1"]').show();
+						//$('[nameId="reg_content_2"]').hide();
+
+						getListProject({id: data.info.id});
+					}
+					else
+					{
+						console.log(data.err.desc);
+					}
+				}
+				else if(type=='reg_2')
+				{
+					if(data.success)
+					{
+						infProject.user.id = data.info.id;
+						infProject.user.mail = data.info.mail;
+						infProject.user.pass = data.info.pass;						
+					}
+					else
+					{
+						if(data.err) console.log(data.err.desc);
+					}
+				}				
+			}
+		});		
+	}
+	else	// данные введены НЕ верно
+	{  
+		inf_block.show();
+	}
+};
+
+
+// получаем с сервера список проектов принадлежащих пользователю
+function getListProject(cdm)
+{
+	$.ajax
+	({
+		type: "POST",					
+		url: infProject.path+'components/loadListProject.php',
+		data: {"id": cdm.id },
+		dataType: 'json',
+		success: function(data)
+		{  
+			console.log(data); 
+			
+			var html_load = '';
+			var html_save = '';
+			
+			for(var i = 0; i < 2; i++)
+			{
+				console.log(i, data[i]);
+				if(data[i]) continue;
+				
+				data[i] = {id: 0} 
+			}
+			
+			for(var i = 0; i < data.length; i++)
+			{
+				html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">Новый проект</div>';
+				html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">Новый проект</div>';
+			}
+			
+			$('[nameId="wm_list_save"]').html(html_save);
+			$('[nameId="wm_list_load"]').html(html_load);
+			
+			$('[nameId="save_pr_1"]').on('mousedown', function(){ clickButtonSaveProjectUI(this); });
+			$('[nameId="load_pr_1"]').on('mousedown', function(){ clickButtonLoadProjectUI(this); });
+		}
+	});	
+}
+
+
+
+
+// кликнули на кнопку сохранить проекта
+function clickButtonSaveProjectUI(el)
+{
+	saveFile({id: el.attributes.projectid.value}); 
+	
+	$('[nameId="background_main_menu"]').css({"display":"none"});
+}
+
+
+
+// кликнули на кнопку загрузки проекта
+function clickButtonLoadProjectUI(el)
+{
+	loadFile({id: el.attributes.projectid.value}); 
+	
+	$('[nameId="background_main_menu"]').css({"display":"none"});
+}
 
 
 	
@@ -368,13 +525,8 @@ $('[nameId="input_reg_mail"]').blur(function()
 									<div class="window_main_menu_content_1_h1">
 										Загрузить
 									</div>
-									<div class="window_main_menu_content_1_wrap_1">
-										<div class="window_main_menu_content_block_1">
-											Пустой проект
-										</div>
-										<div class="window_main_menu_content_block_1">
-											Пустой проект
-										</div>										
+									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_load">
+										
 									</div>
 								</div>
 								
@@ -382,66 +534,80 @@ $('[nameId="input_reg_mail"]').blur(function()
 									<div class="window_main_menu_content_1_h1">
 										Сохранить
 									</div>
-									<div class="window_main_menu_content_1_wrap_1">
-										<div class="window_main_menu_content_block_1" nameId="save_pr_1">
-											Новый проект
-										</div>
-										<div class="window_main_menu_content_block_1" nameId="save_pr_1">
-											Новый проект
-										</div>										
+									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_save">
+										
 									</div>
 								</div>
 								
 								<div wwm_1="button_main_menu_reg_1" list_ui="window_main_menu_content" style="display: block;">
-									<div class="window_main_menu_content_1_h1">
-										Войдите или зарегистрируйтесь
+								
+									<div nameId="reg_content_1" style="display: none;">
+									
+										<div class="window_main_menu_content_1_h1">
+											Вход выполнен
+										</div>									
+									
+										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
+											Вы авторизовались.<br><br>Теперь вам доступно сохранение и загрузка проектов. 
+										</div>									
+									
 									</div>
-									<div class="window_main_menu_form_reg">
-										<div class="window_main_menu_form_reg_block_1">
-										
-										
-		<div class="window_main_menu_form_reg_top_1">
-			<div class="window_main_menu_form_reg_top_1_block" nameId="button_check_reg_1">
-				<div class="window_main_menu_form_reg_top_1_block_text">
-					вход
-				</div>	
-			</div>
-			<div class="window_main_menu_form_reg_top_1_block" nameId="button_check_reg_2">
-				<div class="window_main_menu_form_reg_top_1_block_text">
-					регистрация
-				</div>	
-			</div>			
-		</div>										
-											<div class="window_main_menu_form_reg_block_1_1">
-												<div class="window_main_menu_form_reg_block_1_label">
-													почта
-												</div>											
-												<input class="input_form_reg" type="text" nameId="input_reg_mail" value="">
-											</div>
-											<div class="window_main_menu_form_reg_block_1_1">
-												<div class="window_main_menu_form_reg_block_1_label">
-													пароль
-												</div>											
-												<input class="input_form_reg" type="text" nameId="input_reg_pass" value="">
-											</div>
-											
-											<div class="window_main_menu_form_reg_block_1_1">
-												<div nameId="info_reg_1" class="window_main_menu_form_reg_info_1" style="display: none;">
-													<div nameId="info_reg_1_1" style="display: none;" success_1="false">
-														Почта указана
-													</div>
-													<div nameId="info_reg_1_2" style="display: none;" success_1="false">
-														Пароль указана
-													</div>													
-												</div>
-											</div>
-											
-											<div class="window_main_menu_button_reg_1" b_type="reg_1" nameId="act_reg_1">
-												Войти
-											</div>
+								
+									<div nameId="reg_content_2" style="display: block;">
+									
+										<div class="window_main_menu_content_1_h1">
+											Войдите или зарегистрируйтесь
 										</div>
-																				
-									</div>
+										<div class="window_main_menu_form_reg">
+											<div class="window_main_menu_form_reg_block_1">
+											
+											
+												<div class="window_main_menu_form_reg_top_1">
+													<div class="window_main_menu_form_reg_top_1_block" nameId="button_check_reg_1">
+														<div class="window_main_menu_form_reg_top_1_block_text">
+															вход
+														</div>	
+													</div>
+													<div class="window_main_menu_form_reg_top_1_block" nameId="button_check_reg_2">
+														<div class="window_main_menu_form_reg_top_1_block_text">
+															регистрация
+														</div>	
+													</div>			
+												</div>	
+												
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div class="window_main_menu_form_reg_block_1_label">
+														почта
+													</div>											
+													<input class="input_form_reg" type="text" nameId="input_reg_mail" value="">
+												</div>
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div class="window_main_menu_form_reg_block_1_label">
+														пароль
+													</div>											
+													<input class="input_form_reg" type="text" nameId="input_reg_pass" value="">
+												</div>
+												
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div nameId="info_reg_1" class="wm_reg_12 wm_reg_border_1 wm_reg_text_1" style="display: none;">
+														<div nameId="info_reg_1_1" style="display: none;">
+															Почта указана
+														</div>
+														<div nameId="info_reg_1_2" style="display: none;">
+															Пароль указана
+														</div>													
+													</div>
+												</div>
+												
+												<div class="window_main_menu_button_reg_1" b_type="reg_1" nameId="act_reg_1">
+													Войти
+												</div>
+											</div>																					
+										</div>
+										
+									</div>								
+								
+								
 								</div>								
 								
 								<div wwm_1="button_help" list_ui="window_main_menu_content" style="display: none;">

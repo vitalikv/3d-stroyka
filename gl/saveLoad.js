@@ -355,6 +355,8 @@ function saveWindows(wall)
 
 function saveFile(cdm) 
 { 
+	if(!cdm.id) return;
+	
 	var json = JSON.stringify( getJsonGeometry() );
 	
 	// сохраняем в папку
@@ -377,7 +379,7 @@ function saveFile(cdm)
 	({
 		url: infProject.path+'components/saveSql.php',
 		type: 'POST',
-		data: {json: json, id: 4},
+		data: {json: json, id: cdm.id},
 		dataType: 'json',
 		success: function(json)
 		{ 			
@@ -588,8 +590,10 @@ function getJsonGeometry()
 
 
 
-function loadFile(file) 
+function loadFile(cdm) 
 {
+	if(cdm.id == 0) { resetScene(); return; }	 
+	
 	
 	if(1==2)	// загрузка json из папки
 	{
@@ -611,7 +615,7 @@ function loadFile(file)
 		({
 			url: infProject.path+'components/loadSql.php',
 			type: 'POST',
-			data: {id: 4},
+			data: {id: cdm.id},
 			dataType: 'json',
 			success: function(json)
 			{ 

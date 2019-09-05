@@ -130,6 +130,11 @@ $infProject = array('url' => $url, 'title' => $title, 'nameId' => $nameId, 'path
 $infProject['activeInput'] = '';
 $infProject['activeDiv'] = null;
 
+$infProject['user'] = [];
+$infProject['user']['id'] = null;
+$infProject['user']['mail'] = null;
+$infProject['user']['pass'] = null;
+
 $infProject['settings']['project'] = '';
 $infProject['settings']['height'] = 2.5;
 $infProject['settings']['floor'] = [ 'o' => false, 'posY' => 0.1, 'height' => 0.1, 'changeY' => false, 'areaPoint' => 'center', 'material' => null, 'label'=> true ];

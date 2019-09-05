@@ -13,8 +13,8 @@ $('[nameId="button_main_menu_reg_1"]').mousedown(function () { changeMainMenuUI(
 $('[nameId="button_load_1"]').mousedown(function () { changeMainMenuUI({value: 'button_load_1'}); });
 $('[nameId="button_save_1"]').mousedown(function () { changeMainMenuUI({value: 'button_save_1'}); });
 $('[nameId="button_help"]').mousedown(function () { changeMainMenuUI({value: 'button_help'}); });
-$('[nameId="load_pr_1"]').mousedown(function () { loadFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
-$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
+//$('[nameId="load_pr_1"]').mousedown(function () { loadFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
+//$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
 
 
 
@@ -28,8 +28,6 @@ function getSlotMainMenuUI()
 	
 	for ( var i = 0; i < q.length; i++ )
 	{
-		console.log(111, q[i].attributes.wwm_1.value); 
-		//$(q[i]).hide();
 		infProject.ui.main_menu[infProject.ui.main_menu.length] = q[i];
 	}
 }
