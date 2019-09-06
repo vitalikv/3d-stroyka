@@ -35,7 +35,7 @@ function createPlaneWF()
 
 	box.position.y = 0.2;
 	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = box;
+	//infProject.scene.array.obj[infProject.scene.array.obj.length] = box;
 
 	return box;
 }

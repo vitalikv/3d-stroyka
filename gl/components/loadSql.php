@@ -11,7 +11,7 @@ if(!preg_match("/^[0-9]+$/i", $id)) { exit; }
 
 
 // находим e-mail, Имя, codepro
-$sql = "SELECT * FROM user WHERE id = :id";
+$sql = "SELECT * FROM project WHERE id = :id";
 $r = $db->prepare($sql);
 $r->bindValue(':id', $id, PDO::PARAM_STR);
 $r->execute();

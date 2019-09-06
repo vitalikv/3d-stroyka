@@ -54,7 +54,7 @@
 {
 	display: block;
 	flex: 1 1 100%;
-	background: orange;
+	/*background: orange;*/
 }
 
 .window_main_menu_content_1_item
@@ -393,27 +393,48 @@ function checkRegDataIU()
 						infProject.user.mail = data.info.mail;
 						infProject.user.pass = data.info.pass;
 
-						//$('[nameId="reg_content_1"]').show();
-						//$('[nameId="reg_content_2"]').hide();
+						$('[nameId="reg_content_1"]').show();
+						$('[nameId="reg_content_2"]').hide();
 
-						getListProject({id: data.info.id});
+						getListProject({id: infProject.user.id});
 					}
 					else
 					{
-						console.log(data.err.desc);
+						if(data.err.desc)
+						{
+							console.log(data.err.desc);
+							inf_str_1.text(data.err.desc);
+							
+							inf_block.show();
+							inf_str_1.show();
+							inf_str_1.show();
+							inf_str_2.hide();													
+						}
 					}
 				}
 				else if(type=='reg_2')
 				{
 					if(data.success)
 					{
-						infProject.user.id = data.info.id;
-						infProject.user.mail = data.info.mail;
-						infProject.user.pass = data.info.pass;						
+						inf_str_1.text("Вы успешно зарегистрировались");
+						
+						inf_block.show();
+						inf_str_1.show();
+						inf_str_1.show();
+						inf_str_2.hide();												
 					}
 					else
-					{
-						if(data.err) console.log(data.err.desc);
+					{						
+						if(data.err.desc)
+						{
+							console.log(data.err.desc);
+							inf_str_1.text(data.err.desc);
+							
+							inf_block.show();
+							inf_str_1.show();
+							inf_str_1.show();
+							inf_str_2.hide();													
+						}						
 					}
 				}				
 			}
@@ -437,23 +458,22 @@ function getListProject(cdm)
 		dataType: 'json',
 		success: function(data)
 		{  
-			console.log(data); 
+			//console.log(data); 
 			
 			var html_load = '';
 			var html_save = '';
 			
 			for(var i = 0; i < 2; i++)
 			{
-				console.log(i, data[i]);
 				if(data[i]) continue;
 				
-				data[i] = {id: 0} 
+				data[i] = {id: 0, name: 'Пустой проект'}
 			}
 			
 			for(var i = 0; i < data.length; i++)
 			{
-				html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">Новый проект</div>';
-				html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">Новый проект</div>';
+				html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">'+data[i].name+'</div>';
+				html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">'+data[i].name+'</div>';
 			}
 			
 			$('[nameId="wm_list_save"]').html(html_save);
@@ -472,6 +492,8 @@ function getListProject(cdm)
 function clickButtonSaveProjectUI(el)
 {
 	saveFile({id: el.attributes.projectid.value}); 
+	
+	getListProject({id: infProject.user.id});
 	
 	$('[nameId="background_main_menu"]').css({"display":"none"});
 }
@@ -526,7 +548,15 @@ function clickButtonLoadProjectUI(el)
 										Загрузить
 									</div>
 									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_load">
+										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
+											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться. 
 										
+											<div style="max-width: 350px; margin: auto;">
+												<div class="window_main_menu_button_reg_1" nameId="button_main_menu_reg_1">
+													Авторизоваться
+												</div>	
+											</div>	
+										</div>										
 									</div>
 								</div>
 								
@@ -535,7 +565,15 @@ function clickButtonLoadProjectUI(el)
 										Сохранить
 									</div>
 									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_save">
-										
+										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
+											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
+
+											<div style="max-width: 350px; margin: auto;">
+												<div class="window_main_menu_button_reg_1" nameId="button_main_menu_reg_1">
+													Авторизоваться
+												</div>	
+											</div>											
+										</div>										
 									</div>
 								</div>
 								
@@ -611,6 +649,9 @@ function clickButtonLoadProjectUI(el)
 								</div>								
 								
 								<div wwm_1="button_help" list_ui="window_main_menu_content" style="display: none;">
+									<div class="window_main_menu_content_1_h1">
+										Полезная информация
+									</div>								
 									<div style="margin: 30px; font-family: arial,sans-serif; font-size: 20px; color: #666;">
 										Приветствуем.<br> 
 										Здесь вы сможете нарисовать и подсчитать количество труб для водяных полов в онлайн режиме. 

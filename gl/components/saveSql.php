@@ -3,36 +3,62 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 
 $id = trim($_POST['id']);
-$logo = trim('dbnz');
+$user_id = trim($_POST['user_id']);
+//$pass = trim($_POST['pass']);
+$name = 'Проект ('.date("G:i").' '.date("d-m-Y").')';
 $json = $_POST['json'];  
-$date = date("Y-m-d-G-i");
+//$date = date("Y-m-d-G-i");
 
-if(!$id)
+
+
+$id = addslashes($id);
+if(!preg_match("/^[0-9]+$/i", $id)) { exit; }
+
+$user_id = addslashes($user_id);
+if(!preg_match("/^[0-9]+$/i", $user_id)) { exit; }
+
+
+$inf = array();
+$inf['user_id'] = $user_id;
+//$inf['mail'] = $mail;
+	
+
+if($id == 0)
 {
-	$sql = "INSERT INTO user (logo, json, date) VALUES ( :logo, :json, :date)";
+	$sql = "INSERT INTO project (user_id, name, json) VALUES (:user_id, :name, :json)";
 
 	$r = $db->prepare($sql);
-	$r->bindValue(':logo', $logo);
+	$r->bindValue(':user_id', $user_id);
+	$r->bindValue(':name', $name);
 	$r->bindValue(':json', $json);
-	$r->bindValue(':date', $date);
 	$r->execute();
 
 
 	$count = $r->rowCount();
 
-	if($count==1){ echo $db->lastInsertId(); }
-	else{ echo 'оишбка'; }
+	if($count==1)
+	{ 
+		$inf['success'] = true;
+		$inf['id'] = $db->lastInsertId(); 	
+	}
+	else
+	{  
+		$inf['success'] = false;
+		$inf['err']['code'] = 1;
+		$inf['err']['desc'] = 'неверная почта или пароль';
+	}
 }
 else
 {
-	$sql = "UPDATE user SET json = :json WHERE id = :id";
+	$sql = "UPDATE project SET json = :json, name = :name WHERE id = :id";
 	$r = $db->prepare($sql);
 	$r->bindValue(':id', $id);
+	$r->bindValue(':name', $name);
 	$r->bindValue(':json', $json);
 	$r->execute();
-
-	echo $id;
 }
+
+echo json_encode( $inf );
 
 ?>
 

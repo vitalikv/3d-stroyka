@@ -379,7 +379,7 @@ function saveFile(cdm)
 	({
 		url: infProject.path+'components/saveSql.php',
 		type: 'POST',
-		data: {json: json, id: cdm.id},
+		data: {json: json, id: cdm.id, user_id: infProject.user.id},
 		dataType: 'json',
 		success: function(json)
 		{ 			

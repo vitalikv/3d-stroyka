@@ -1660,29 +1660,33 @@ $(document).ready(function ()
 		 
 	 
 	
-	var loader = new THREE.FBXLoader();
-	loader.load( infProject.path+'export/nasos2.fbx', function ( obj ) 
-	{ console.log(222, obj);
-		
-		obj = obj.children[0];
-		obj.position.set(0,0,0);
+	if(1==2)
+	{
+		var loader = new THREE.FBXLoader();
+		loader.load( infProject.path+'export/nasos2.fbx', function ( obj ) 
+		{ console.log(222, obj);
+			
+			obj = obj.children[0];
+			obj.position.set(0,0,0);
 
-		obj.userData.tag = 'obj';
-		obj.userData.id = countId; countId++;
-		obj.userData.obj3D = {};
-		obj.userData.obj3D.lotid = 1; 
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-						
-	
-		obj.traverse( function ( child ) {
-			if ( child.isMesh ) 
-			{ console.log(child.name);
-				child.castShadow = true;
-				child.receiveShadow = true;
-			}
-		} );
-		scene.add( obj );
-	});
+			obj.userData.tag = 'obj';
+			obj.userData.id = countId; countId++;
+			obj.userData.obj3D = {};
+			obj.userData.obj3D.lotid = 1; 
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+							
+		
+			obj.traverse( function ( child ) {
+				if ( child.isMesh ) 
+				{ console.log(child.name);
+					child.castShadow = true;
+					child.receiveShadow = true;
+				}
+			} );
+			scene.add( obj );
+		});
+		
+	}
 
 
 	if(1==2)
