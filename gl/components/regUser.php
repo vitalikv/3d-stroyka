@@ -66,6 +66,7 @@ if($type == 'reg_2')
 	$inf['mail'] = $mail;
 	$inf['date'] = $date;
 	
+	$token = md5($mail.''.$pass);
 	
 	if($res)	// такой mail, уже есть в базе
 	{
@@ -75,12 +76,13 @@ if($type == 'reg_2')
 	}
 	else		// mail в базе нет, можно записывть нового пользователя  
 	{
-		$sql = "INSERT INTO user (pass, mail, date) VALUES ( :pass, :mail, :date)";
+		$sql = "INSERT INTO user (pass, mail, date, token) VALUES ( :pass, :mail, :date, :token)";
 
 		$r = $db->prepare($sql);
 		$r->bindValue(':pass', $pass);
 		$r->bindValue(':mail', $mail);
 		$r->bindValue(':date', $date);
+		$r->bindValue(':token', $token);
 		$r->execute();
 
 		$count = $r->rowCount();
@@ -89,7 +91,12 @@ if($type == 'reg_2')
 		if($count==1)
 		{ 
 			$inf['success'] = true;
-			$inf['id'] = $db->lastInsertId(); 
+			$inf['id'] = $db->lastInsertId();
+
+			$cdm = array();
+			$cdm['mail'] = $mail;
+			$cdm['token'] = $token;
+			sendMess($cdm);
 		}
 		else
 		{ 
@@ -103,6 +110,21 @@ if($type == 'reg_2')
 }
 
 
+
+// отправляем сообщение активации почты 
+function sendMess($inf)
+{
+	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@engineering-plan.ru";
+
+	$arrayTo = array($inf['mail'].', engineering-plan@mail.ru');
+	$email = implode(",", $arrayTo);
+
+
+	$tema = "Программа теплый пол «активация почты»";
+	$mess = 'Здравствуйте, вы зарегистрировались на сайте http://отопление-дома-своими-руками.рф (программа теплый пол). Чтобы закончить регистрацию, пройдите по <a href="http://отопление-дома-своими-руками.рф/active_1/'.$inf['token'].'">ссылке</a>.<br><br>';
+	
+	mail($email, $tema, $mess, $mail_form);	
+}
 
 
 ?>
