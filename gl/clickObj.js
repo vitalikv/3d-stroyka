@@ -76,6 +76,8 @@ function clickObject3D( obj, intersect )
 		
 		clippingGizmo360(obj); 		
 	}
+	
+	setScalePivotGizmo();
 }
 
 

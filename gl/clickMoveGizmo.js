@@ -13,8 +13,8 @@ function createGizmo360()
 	{
 		var angle = g * i;
 		circle[i] = new THREE.Vector3();
-		circle[i].x = Math.sin(angle);
-		circle[i].z = Math.cos(angle);
+		circle[i].x = Math.sin(angle)*0.5;
+		circle[i].z = Math.cos(angle)*0.5;
 		//circle[i].y = 0;
 	}	
 	
@@ -107,7 +107,7 @@ function createGizmo360()
 	gizmo.visible = false;
 	
 	// Sphere
-	var geometry = new THREE.SphereGeometry( 0.98, 32, 32 );
+	var geometry = new THREE.SphereGeometry( 0.98*0.5, 32, 32 );
 	var material = new THREE.MeshLambertMaterial( {color: 0x000000, depthTest: false, transparent: true, opacity: 0.1} );
 	var sphere = new THREE.Mesh( geometry, material );
 	sphere.renderOrder = 3;

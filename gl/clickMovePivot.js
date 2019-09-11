@@ -11,9 +11,9 @@ function createPivot()
 	pivot.userData.pivot.obj = null;
 	
 	var param = [];
-	param[0] = {axis: 'x', size_1: new THREE.Vector3(1, 0.1, 0.1), size_2: new THREE.Vector3(1, 0.2, 0.2), rot: new THREE.Vector3(0, 0, 0), color: 'rgb(247, 72, 72)', opacity: 0};
-	param[1] = {axis: 'y', size_1: new THREE.Vector3(1, 0.1, 0.1), size_2: new THREE.Vector3(1, 0.2, 0.2), rot: new THREE.Vector3(0, 0, Math.PI/2), color: 'rgb(17, 255, 0)', opacity: 0};
-	param[2] = {axis: 'z', size_1: new THREE.Vector3(1, 0.1, 0.1), size_2: new THREE.Vector3(1, 0.2, 0.2), rot: new THREE.Vector3(0, Math.PI/2, 0), color: 'rgb(72, 116, 247)', opacity: 0};
+	param[0] = {axis: 'x', size_1: new THREE.Vector3(0.6, 0.1, 0.1), size_2: new THREE.Vector3(0.6, 0.2, 0.2), rot: new THREE.Vector3(0, 0, 0), color: 'rgb(247, 72, 72)', opacity: 0};
+	param[1] = {axis: 'y', size_1: new THREE.Vector3(0.6, 0.1, 0.1), size_2: new THREE.Vector3(0.6, 0.2, 0.2), rot: new THREE.Vector3(0, 0, Math.PI/2), color: 'rgb(17, 255, 0)', opacity: 0};
+	param[2] = {axis: 'z', size_1: new THREE.Vector3(0.6, 0.1, 0.1), size_2: new THREE.Vector3(0.6, 0.2, 0.2), rot: new THREE.Vector3(0, Math.PI/2, 0), color: 'rgb(72, 116, 247)', opacity: 0};
 	param[3] = {axis: 'xz', size_1: new THREE.Vector3(0.3, 0.001, 0.3), pos: new THREE.Vector3(0.01, 0.0, -0.16), color: 'rgb(194, 194, 194)', opacity: 0.4};
 	param[4] = {axis: 'center', size_1: new THREE.Vector3(0.03, 0.03, 0.03), pos: new THREE.Vector3(-0.015, 0.0, 0.0), color: 'rgb(102, 102, 102)', opacity: 1};
 	
@@ -34,16 +34,16 @@ function createPivot()
 		
 		if(param[i].size_2)
 		{
-			var axis = new THREE.Mesh( createGeometryPivot(1, 0.02, 0.02), new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, lightMap : lightMap_1 }) );	
+			var axis = new THREE.Mesh( createGeometryPivot(0.6, 0.02, 0.02), new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, lightMap : lightMap_1 }) );	
 			axis.renderOrder = 2;
 			//axis.rotation.set( arr[i][1].x, arr[i][1].y, arr[i][1].z );		
 			obj.add( axis );					
 		}
 	}	
 		
-	pivot.add( createCone({axis: 'z', pos: new THREE.Vector3(0,0,-1), rot: new THREE.Vector3(-Math.PI/2,0,0), color: 0x0000ff}) );
-	pivot.add( createCone({axis: 'x', pos: new THREE.Vector3(1,0,0), rot: new THREE.Vector3(0,0,-Math.PI/2), color: 0xff0000}) );
-	pivot.add( createCone({axis: 'y', pos: new THREE.Vector3(0,1,0), rot: new THREE.Vector3(0,0,0), color: 0x00ff00}) );
+	pivot.add( createCone({axis: 'z', pos: new THREE.Vector3(0,0,-0.6), rot: new THREE.Vector3(-Math.PI/2,0,0), color: 0x0000ff}) );
+	pivot.add( createCone({axis: 'x', pos: new THREE.Vector3(0.6,0,0), rot: new THREE.Vector3(0,0,-Math.PI/2), color: 0xff0000}) );
+	pivot.add( createCone({axis: 'y', pos: new THREE.Vector3(0,0.6,0), rot: new THREE.Vector3(0,0,0), color: 0x00ff00}) );
 	
 	scene.add( pivot );
 
@@ -235,5 +235,37 @@ function movePivot( event )
 	//gizmo.position.add( pos2 );
 
 }
+
+
+
+// масштаб Pivot/Gizmo
+function setScalePivotGizmo()
+{
+	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;
+	
+	var pVis = false;
+	var gVis = false;
+	
+	if(pivot.visible) pVis = true;
+	if(gizmo.visible) gVis = true;	
+	if(!pVis && !gVis) { return; }
+	
+	var obj = null;
+	
+	if(pVis) obj = pivot.userData.pivot.obj;
+	if(gVis) obj = gizmo.userData.gizmo.obj;
+	if(!obj) return;
+	
+	var dist = camera.position.distanceTo(obj.position);
+	
+	var scale = dist/6;	
+	
+	if(pVis) pivot.scale.set( scale,scale,scale );
+	if(gVis) gizmo.scale.set( scale,scale,scale );
+	
+	
+}
+
 
 

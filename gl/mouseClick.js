@@ -133,7 +133,7 @@ function clickRayHit(event)
 	if(infProject.tools.pivot.visible)
 	{
 		var ray = rayIntersect( event, infProject.tools.pivot.children, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
 	}
 	
 	if(infProject.tools.gizmo.visible)

@@ -344,6 +344,8 @@ function mousewheel( e )
 		if ( k < 1 ) cameraZoomWall();				
 	}
 	
+	setScalePivotGizmo();
+	
 	renderCamera();
 }
 

@@ -1687,6 +1687,21 @@ $(document).ready(function ()
 				} );
 				scene.add( obj );
 				
+				if(i==0 && 1==2)
+				{
+					var txt = obj.toJSON();
+					//console.log(csv);
+					var csv = JSON.stringify( txt );	
+					var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
+					
+					var link = document.createElement('a');
+					document.body.appendChild(link);
+					link.href = csvData;
+					link.target = '_blank';
+					link.download = 'filename.json';
+					link.click();			
+				}				
+				
 			}
 		});
 		
