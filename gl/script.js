@@ -1709,9 +1709,28 @@ $(document).ready(function ()
 	
 	
 	
+	var loader = new THREE.FBXLoader();
+	loader.load( infProject.path+'import/nasos_z.fbx', function ( objects ) 
+	{ 		
+		var obj = objects.children[0];
+		obj.position.set(0,0,0);
+
+		obj.userData.tag = 'obj';
+		obj.userData.id = countId; countId++;
+		obj.userData.obj3D = {};
+		obj.userData.obj3D.lotid = 1; 
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+		
+		//obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
+
+		scene.add( obj );
+		
+		console.log(infProject.scene.array.obj);
+		
+		console.log(222, obj);
+	});		
 	
-	
-	if(1==1)	
+	if(1==2)	
 	{
 		
 		var loader = new THREE.FBXLoader();
@@ -1731,16 +1750,16 @@ $(document).ready(function ()
 		});		
 		
 		
-var oReq = new XMLHttpRequest();
-oReq.open("POST", infProject.path+'export/kran3.bin', true);
-oReq.onload = function (oEvent) {
-  console.log(444, oReq.response);
-  
- 				var obj = new THREE.FBXLoader().parse(oReq.response)
-				scene.add( obj ); 
-};
-oReq.send();		
-				
+		var oReq = new XMLHttpRequest();
+		oReq.open("POST", infProject.path+'export/kran3.bin', true);
+		oReq.onload = function (oEvent) 
+		{
+			console.log(444, oReq.response);
+
+			var obj = new THREE.FBXLoader().parse(oReq.response)
+			scene.add( obj ); 
+		};
+		oReq.send();						
 		
 	}	
 
