@@ -1660,7 +1660,7 @@ $(document).ready(function ()
 		 
 	 
 	
-	if(1==1)
+	if(1==2)
 	{
 		var loader = new THREE.FBXLoader();
 		loader.load( infProject.path+'export/arrobj.fbx', function ( objects ) 
@@ -1706,10 +1706,76 @@ $(document).ready(function ()
 		});
 		
 	}
+	
+	
+	
+	
+	
+	if(1==1)	
+	{
+		
+		var loader = new THREE.FBXLoader();
+		loader.load( infProject.path+'export/kran3.bin', function ( objects ) 
+		{ console.log(222, objects);
+			
+			var obj = objects.children[0];
+			obj.position.set(3,0,0);
+
+			obj.userData.tag = 'obj';
+			obj.userData.id = countId; countId++;
+			obj.userData.obj3D = {};
+			obj.userData.obj3D.lotid = 1; 
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+
+			scene.add( obj );
+		});		
+		
+		
+var oReq = new XMLHttpRequest();
+oReq.open("POST", infProject.path+'export/kran3.bin', true);
+oReq.onload = function (oEvent) {
+  console.log(444, oReq.response);
+  
+ 				var obj = new THREE.FBXLoader().parse(oReq.response)
+				scene.add( obj ); 
+};
+oReq.send();		
+				
+		
+	}	
 
 
 	if(1==2)
 	{
+		
+		$.ajax
+		({
+			url: infProject.path+'components/fbxLoadSql.php',
+			type: 'POST',
+			success: function(fbx)
+			{ 
+
+
+				var loader = new THREE.FBXLoader(); console.log(222, fbx);
+				loader.parse( fbx, function ( objects ) 
+				{ 
+					
+					var obj = objects.children[i];
+					obj.position.set(0,0,1);
+
+					obj.userData.tag = 'obj';
+					obj.userData.id = countId; countId++;
+					obj.userData.obj3D = {};
+					obj.userData.obj3D.lotid = 1; 
+					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;									
+
+					scene.add( obj );				
+				});
+										
+			},
+		});			
+		
+		
 		new THREE.MTLLoader().load
 		( 
 			infProject.path+'export/nasos.mtl',

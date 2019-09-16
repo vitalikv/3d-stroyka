@@ -42,15 +42,6 @@
 			
 			<div class="right_panel_1_1_list" list_ui="catalog">
 				
-				<?if(1 == 1){?>
-				<div class="right_panel_1_1_list_item" add_lotid="1">
-					<div class="right_panel_1_1_list_item_color"></div>
-					<div class="right_panel_1_1_list_item_text">
-						насос
-					</div>					
-				</div>
-				<?}?>
-				
 			</div>
 		</div>
 		

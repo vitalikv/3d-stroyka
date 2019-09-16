@@ -28,9 +28,9 @@
 			<div class="button1-wrap-1">
 				<div data-action ='create_tube_1' class="button1">Труба</div>
 			</div>
-			<div class="button1-wrap-1">
+			<!--<div class="button1-wrap-1">
 				<div data-action ='create_tube_box_1' class="button1">Контур</div>
-			</div>			
+			</div>-->			
 			<? } ?>		
 		</div>
 		
