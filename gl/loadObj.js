@@ -17,7 +17,7 @@ function loadObjServer(cdm)
 	
 	
 	var loader = new THREE.FBXLoader();
-	loader.load( infProject.path+'import/nasos_z.fbx', function ( object ) 						
+	loader.load( inf.obj, function ( object ) 						
 	{ 
 		//object.scale.set(0.1, 0.1, 0.1);
 		
@@ -28,6 +28,7 @@ function loadObjServer(cdm)
 		{ 
 			obj.position.y = inf.planeMath;
 			planeMath.position.y = inf.planeMath; 
+			planeMath.rotation.set(-Math.PI/2, 0, 0);
 			planeMath.updateMatrixWorld(); 
 		}
 		

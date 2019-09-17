@@ -1172,7 +1172,14 @@ function clickButton( event )
 			loadObjServer({lotid: clickO.options, cursor: true});
 		}		
 	}
-	if(camera == cameraWall)
+	else if(camera == camera3D)
+	{
+		if(clickO.button == 'add_lotid')
+		{
+			loadObjServer({lotid: clickO.options, cursor: true});
+		}		
+	}
+	else if(camera == cameraWall)
 	{
 		if(clickO.button == 'create_wd_3')
 		{

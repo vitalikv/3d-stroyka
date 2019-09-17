@@ -36,7 +36,7 @@
 	
 	
 	<? include("include/top_1.php"); ?>
-	<? //include("include/modal_window_2.php"); ?>
+	<? include("include/modal_window_2.php"); ?>
 	
 	<noindex>		 
 	<? include("include/left_panel_1.php"); ?>	
