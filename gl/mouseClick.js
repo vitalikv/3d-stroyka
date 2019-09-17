@@ -193,7 +193,7 @@ function clickRayHit(event)
 		var ray = rayIntersect( event, infProject.scene.array.obj, 'arr' );
 		
 		if(ray.length > 0)
-		{
+		{   
 			if(rayhit)
 			{
 				if(rayhit.distance > ray[0].distance) { rayhit = ray[0]; }				

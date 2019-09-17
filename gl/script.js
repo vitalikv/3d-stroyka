@@ -964,11 +964,12 @@ function rayIntersect( event, obj, t )
 	raycaster.setFromCamera( mouse, camera );
 	
 	var intersects = null;
-	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); }
-	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj, true ); }	
+	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); } 
+	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj ); }
 	
 	return intersects;
 }
+
 
 
 
@@ -1708,27 +1709,26 @@ $(document).ready(function ()
 	}
 	
 	
+	if(1==2)
+	{
+		var loader = new THREE.FBXLoader();
+		loader.load( infProject.path+'import/nasos_z.fbx', function ( objects ) 
+		{ 		
+			var obj = objects.children[0];
+			obj.position.set(0,0,0);
+
+			obj.userData.tag = 'obj';
+			obj.userData.id = countId; countId++;
+			obj.userData.obj3D = {};
+			obj.userData.obj3D.lotid = 1; 
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+			
+			obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
+
+			scene.add( obj );
+		});				
+	}
 	
-	var loader = new THREE.FBXLoader();
-	loader.load( infProject.path+'import/nasos_z.fbx', function ( objects ) 
-	{ 		
-		var obj = objects.children[0];
-		obj.position.set(0,0,0);
-
-		obj.userData.tag = 'obj';
-		obj.userData.id = countId; countId++;
-		obj.userData.obj3D = {};
-		obj.userData.obj3D.lotid = 1; 
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-		
-		//obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
-
-		scene.add( obj );
-		
-		console.log(infProject.scene.array.obj);
-		
-		console.log(222, obj);
-	});		
 	
 	if(1==2)	
 	{
