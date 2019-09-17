@@ -235,7 +235,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wf_line' ) {  }
-		else if( tag == 'obj' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
 	}

@@ -50,7 +50,7 @@ function clickMouseUpObject(obj)
 
 
 
-// кликнули на 3D объект, ставим pivot
+// кликнули на 3D объект, ставим pivot/gizmo
 function clickObject3D( obj, intersect )
 {
 	
@@ -62,7 +62,18 @@ function clickObject3D( obj, intersect )
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
-		pivot.position.copy(pos);		
+		pivot.position.copy(pos);
+
+		if(camera == cameraTop)
+		{
+			pivot.children[1].visible = false;
+			pivot.children[7].visible = false;
+		}
+		else
+		{
+			pivot.children[1].visible = true;
+			pivot.children[7].visible = true;
+		}
 	}
 	
 	if(infProject.settings.active.pg == 'gizmo')
@@ -70,9 +81,24 @@ function clickObject3D( obj, intersect )
 		var gizmo = infProject.tools.gizmo;
 					
 		gizmo.position.copy( pos );
-		gizmo.rotation.copy( obj.rotation );
+		
 		gizmo.visible = true;
 		gizmo.userData.gizmo.obj = obj;
+		
+		if(camera == cameraTop)
+		{
+			gizmo.children[1].visible = false;
+			gizmo.children[2].visible = false;
+			
+			gizmo.rotation.set(0,0,0);
+		}
+		else
+		{
+			gizmo.children[1].visible = true;
+			gizmo.children[2].visible = true;
+			
+			gizmo.rotation.copy( obj.rotation );
+		}		
 		
 		clippingGizmo360(obj); 		
 	}

@@ -257,12 +257,24 @@ function setScalePivotGizmo()
 	if(gVis) obj = gizmo.userData.gizmo.obj;
 	if(!obj) return;
 	
-	var dist = camera.position.distanceTo(obj.position);
-	
-	var scale = dist/6;	
-	
-	if(pVis) pivot.scale.set( scale,scale,scale );
-	if(gVis) gizmo.scale.set( scale,scale,scale );
+	if(camera == cameraTop)
+	{
+		var dist = camera.position.distanceTo(obj.position);
+		
+		var scale = 1/camera.zoom+0.5;	
+		
+		if(pVis) pivot.scale.set( scale,scale,scale );
+		if(gVis) gizmo.scale.set( scale,scale,scale );
+	}
+	else
+	{
+		var dist = camera.position.distanceTo(obj.position);
+		
+		var scale = dist/6;	
+		
+		if(pVis) pivot.scale.set( scale,scale,scale );
+		if(gVis) gizmo.scale.set( scale,scale,scale );		
+	}
 	
 	
 }

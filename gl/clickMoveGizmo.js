@@ -17,56 +17,14 @@ function createGizmo360()
 		circle[i].z = Math.cos(angle)*0.5;
 		//circle[i].y = 0;
 	}	
+
 	
+	var pipeSpline = new THREE.CatmullRomCurve3(circle);
+	pipeSpline.curveType = 'catmullrom';
+	pipeSpline.tension = 0;
 	
-	var kf = 0.03;
-	var n = 0;
-	var v = [];
-	for ( var i = 0; i < circle.length; i++ )
-	{
-		var dir = circle[i].clone().normalize();
-		var v1 = new THREE.Vector3().addScaledVector( dir, 0.06 );
-		v[n] = new THREE.Vector3().addVectors( circle[i], v1 );
-		v[n].y -= kf / 2;		
-		n++;		
-		
-		var v1 = new THREE.Vector3().addScaledVector( dir, -0.06 );
-		v[n] = new THREE.Vector3().addVectors( circle[i], v1 );
-		v[n].y -= kf / 2;
-		n++;
-		
-		v[n] = v[n - 2].clone();
-		v[n].y += kf;
-		n++;	
-		
-		v[n] = v[n - 2].clone();
-		v[n].y += kf;
-		n++;		
-	}	
-	
-	var n = 0;
-	var v2 = [];
-	for ( var i = 0; i < circle.length; i++ )
-	{
-		var dir = circle[i].clone().normalize();
-		var v1 = new THREE.Vector3().addScaledVector( dir, 0.001 );
-		v2[n] = new THREE.Vector3().addVectors( circle[i], v1 );
-		v2[n].y -= kf / 2;		
-		n++;		
-		
-		var v1 = new THREE.Vector3().addScaledVector( dir, -0.001 );
-		v2[n] = new THREE.Vector3().addVectors( circle[i], v1 );
-		v2[n].y -= kf / 2;
-		n++;
-		
-		v2[n] = v2[n - 2].clone();
-		v2[n].y += kf;
-		n++;	
-		
-		v2[n] = v2[n - 2].clone();
-		v2[n].y += kf;
-		n++;		
-	}	
+	var geometry_1 = new THREE.TubeBufferGeometry( pipeSpline, circle.length, 0.03, 12, true );	
+	var geometry_2 = new THREE.TubeBufferGeometry( pipeSpline, circle.length, 0.01, 12, true );
 	
 	
 	var gizmo = new THREE.Object3D();
@@ -76,22 +34,22 @@ function createGizmo360()
 
 	
 	var param = [];
-	param[0] = {axis: 'x', rot: new THREE.Vector3(0, 0, 0), color: 'rgb(247, 72, 72)'};
-	param[1] = {axis: 'y', rot: new THREE.Vector3(0, 0, Math.PI/2), color: 'rgb(17, 255, 0)'};
+	param[0] = {axis: 'x', rot: new THREE.Vector3(0, 0, 0), color: 'rgb(17, 255, 0)'};
+	param[1] = {axis: 'y', rot: new THREE.Vector3(0, 0, Math.PI/2), color: 'rgb(247, 72, 72)'};
 	param[2] = {axis: 'z', rot: new THREE.Vector3(Math.PI/2, 0, 0), color: 'rgb(72, 116, 247)'};	
 	
 	for ( var i = 0; i < param.length; i++ )
 	{
-		var material = new THREE.MeshBasicMaterial({ color: param[i].color, depthTest: false, transparent: true, opacity: 0.0 });
+		var material = new THREE.MeshBasicMaterial({ color: param[i].color, depthTest: false, transparent: true, opacity: 1.0 });
 		material.visible = false;
 		//var material = new THREE.MeshBasicMaterial({ color: param[i].color });
-		var obj = new THREE.Mesh( createGeometryCircle(v), material );
+		var obj = new THREE.Mesh( geometry_1, material );
 		obj.userData.tag = 'gizmo'; 
 		obj.userData.axis = param[i].axis;		
 		obj.rotation.set( param[i].rot.x, param[i].rot.y, param[i].rot.z );	
 		
 	
-		var obj2 = new THREE.Mesh( createGeometryCircle(v2), new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, clippingPlanes : [ new THREE.Plane() ], lightMap : lightMap_1 }) );
+		var obj2 = new THREE.Mesh( geometry_2, new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, clippingPlanes : [ new THREE.Plane() ], lightMap : lightMap_1 }) );
 		obj2.renderOrder = 3;
 		//obj2.visible = false;
 		obj2.material.clippingPlanes[0].copy(new THREE.Plane());
@@ -185,12 +143,17 @@ function clickGizmo( intersect )
 
 	
 	planeMath.position.copy( gizmo.position );		
-	//planeMath.rotation.copy( gizmo.rotation );
 	
-
-	var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );								// создаем Quaternion повернутый на выбранную ось	
-	var q2 = new THREE.Quaternion().setFromEuler( obj.rotation ).multiply( quaternion );		// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
-	planeMath.quaternion.copy( q2 );								
+	if(camera == cameraTop)
+	{
+		planeMath.rotation.set(Math.PI/2, 0, 0);
+	}
+	else
+	{
+		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );								// создаем Quaternion повернутый на выбранную ось	
+		var q2 = new THREE.Quaternion().setFromEuler( obj.rotation ).multiply( quaternion );// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
+		planeMath.quaternion.copy( q2 );										
+	}
 
 	
 	planeMath.updateMatrixWorld();
@@ -221,8 +184,17 @@ function moveGizmo( event )
 	var dir = planeMath.worldToLocal( intersects[ 0 ].point.clone() );	
 	var rotY = Math.atan2(dir.x, dir.y);
 	
-	var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY - gizmo.userData.gizmo.active.rotY );
-	obj.quaternion.multiply ( quaternion );			
+	
+	
+	if(camera == cameraTop) 
+	{ 
+		obj.rotateOnWorldAxis(new THREE.Vector3(0,1,0), rotY - gizmo.userData.gizmo.active.rotY); 
+	}
+	else 
+	{ 
+		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY - gizmo.userData.gizmo.active.rotY );
+		obj.quaternion.multiply( quaternion ); 
+	}		
 	
 
 	obj.updateMatrixWorld();
@@ -231,7 +203,7 @@ function moveGizmo( event )
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
 	
-	gizmo.rotation.copy( obj.rotation ); 
+	if(camera != cameraTop) { gizmo.rotation.copy( obj.rotation ); }
 }
 
 
