@@ -83,24 +83,32 @@ function clippingGizmo360( objPop )
 {
 	var plane = new THREE.Plane();	
 	
-	var group = new THREE.Group();
-	group.position.copy(objPop.position);
-	group.lookAt(camera.position);
-	group.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
-	group.updateMatrixWorld();
-	
-	
-	//var dir = new THREE.Vector3().subVectors( camera.position, objPop.position ).normalize();
-	//var qt = quaternionDirection(dir.clone());
-	//var mx = new THREE.Matrix4().compose(objPop.position, qt, new THREE.Vector3(1,1,1));
-	//plane.applyMatrix4(mx);	
-	plane.applyMatrix4(group.matrixWorld);	
-	
-	infProject.tools.gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);
-	infProject.tools.gizmo.children[1].children[0].material.clippingPlanes[0].copy(plane);
-	infProject.tools.gizmo.children[2].children[0].material.clippingPlanes[0].copy(plane);	
-	
-	//showHelperNormal(objPop)
+	if(camera == cameraTop)
+	{
+		plane = new THREE.Plane(new THREE.Vector3(0,1,0), 100);
+		infProject.tools.gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);		
+	}
+	else
+	{
+		var group = new THREE.Group();
+		group.position.copy(objPop.position);
+		group.lookAt(camera.position);
+		group.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
+		group.updateMatrixWorld();
+		
+		
+		//var dir = new THREE.Vector3().subVectors( camera.position, objPop.position ).normalize();
+		//var qt = quaternionDirection(dir.clone());
+		//var mx = new THREE.Matrix4().compose(objPop.position, qt, new THREE.Vector3(1,1,1));
+		//plane.applyMatrix4(mx);	
+		plane.applyMatrix4(group.matrixWorld);	
+		
+		infProject.tools.gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);
+		infProject.tools.gizmo.children[1].children[0].material.clippingPlanes[0].copy(plane);
+		infProject.tools.gizmo.children[2].children[0].material.clippingPlanes[0].copy(plane);	
+		
+		//showHelperNormal(objPop)		
+	}
 
 }
 

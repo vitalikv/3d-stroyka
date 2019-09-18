@@ -142,7 +142,7 @@ function clickRayHit(event)
 		for ( var i = 0; i < 3; i++ ){ arr[i] = infProject.tools.gizmo.children[i]; }
 		
 		var ray = rayIntersect( event, arr, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
 	}
 
 	if(infProject.tools.wf.cube[0].visible)

@@ -258,9 +258,7 @@ function setScalePivotGizmo()
 	if(!obj) return;
 	
 	if(camera == cameraTop)
-	{
-		var dist = camera.position.distanceTo(obj.position);
-		
+	{		
 		var scale = 1/camera.zoom+0.5;	
 		
 		if(pVis) pivot.scale.set( scale,scale,scale );
@@ -275,8 +273,6 @@ function setScalePivotGizmo()
 		if(pVis) pivot.scale.set( scale,scale,scale );
 		if(gVis) gizmo.scale.set( scale,scale,scale );		
 	}
-	
-	
 }
 
 

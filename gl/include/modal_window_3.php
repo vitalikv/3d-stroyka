@@ -289,6 +289,12 @@ $(document).ready(function(){
 	// переключаем в главном меню в форме регистрация кнопки: вход/регистрация
 	function changeMainMenuRegistMenuUI(cdm)
 	{
+		var inf_str_1 = $('[nameId="info_reg_1_1"]');
+		var inf_str_2 = $('[nameId="info_reg_1_2"]');
+		
+		inf_str_1.hide();
+		inf_str_2.hide();		
+	
 		if(cdm.el.attributes.nameId.value == "button_check_reg_1") 
 		{
 			$('[nameId="act_reg_1"]').text('Войти');
@@ -403,7 +409,7 @@ function checkRegDataIU()
 						if(data.err.desc)
 						{
 							console.log(data.err.desc);
-							inf_str_1.text(data.err.desc);
+							inf_str_1.html(data.err.desc);
 							
 							inf_block.show();
 							inf_str_1.show();
@@ -416,7 +422,8 @@ function checkRegDataIU()
 				{
 					if(data.success)
 					{
-						inf_str_1.text("Вы успешно зарегистрировались");
+						//inf_str_1.html("мы отправили вам письмо<br>зайдите в вашу почту и подтвердите регистрацию");
+						inf_str_1.html("Вы успешно зарегистрировались");						
 						
 						inf_block.show();
 						inf_str_1.show();
@@ -428,7 +435,7 @@ function checkRegDataIU()
 						if(data.err.desc)
 						{
 							console.log(data.err.desc);
-							inf_str_1.text(data.err.desc);
+							inf_str_1.html(data.err.desc);
 							
 							inf_block.show();
 							inf_str_1.show();

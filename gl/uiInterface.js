@@ -51,17 +51,17 @@ function updateListTubeUI_1(cdm)
 		if(tag == 'wf_line')
 		{
 			var str = 
-			'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
+			'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
 			<div class="right_panel_1_1_list_item_color"></div>\
 			<div class="right_panel_1_1_list_item_text">труба</div>\
 			<div class="right_panel_1_1_list_item_text"></div>\
 			</div>';			
 		}
 		else if(tag == 'obj')
-		{
+		{   
 			var str = 
-			'<div class="right_panel_1_1_list_item" uuid="'+cdm.o.uuid+'">\
-			<div class="right_panel_1_1_list_item_text">насос</div>\
+			'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
+			<div class="right_panel_1_1_list_item_text">'+obj.userData.obj3D.nameRus+'</div>\
 			</div>';			
 		}
 		else

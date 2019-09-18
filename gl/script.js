@@ -1609,6 +1609,7 @@ document.body.addEventListener("keydown", function (e)
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
 	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
+	if(clickO.keys[18] && e.keyCode == 77) { loadFile({id:1}); }				// alt + m
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
 } );
@@ -1716,7 +1717,7 @@ $(document).ready(function ()
 	}
 	
 	
-	if(1==1)
+	if(1==2)
 	{
 		var loader = new THREE.FBXLoader();
 		loader.load( infProject.path+'import/bak_1.fbx', function ( objects )  

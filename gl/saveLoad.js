@@ -769,8 +769,7 @@ function loadFilePL(arr)
 
 			var inf = { status : 'load', id : wall[i].arrO[i2].id, pos : intP, wall : obj, type : wall[i].arrO[i2].type };	 		
 			if(wall[i].arrO[i2].size) { inf.size = wall[i].arrO[i2].size; }				
-						 
-						 console.log(inf);
+						
 			createEmptyFormWD_1(inf);
 		}		
 	}
@@ -780,6 +779,12 @@ function loadFilePL(arr)
 	for ( var i = 0; i < furn.length; i++ )
 	{
 		furn[i].pos.z *= -1;
+		
+		if(furn[i].rot)			
+		{
+			furn[i].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
+		}
+		
 		loadObjServer(furn[i])
 	}
 	
@@ -806,6 +811,11 @@ function loadFilePL(arr)
 			if(index > countId) { countId = index; }
 		} 
 	}
+	for ( var i = 0; i < furn.length; i++ ) 
+	{ 
+		var index = parseInt(furn[i].id);
+		if(index > countId) { countId = index; }
+	}	
 	countId++; 
 	// восстанавливаем countId
 	

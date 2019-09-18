@@ -96,7 +96,7 @@ if($type == 'reg_2')
 			$cdm = array();
 			$cdm['mail'] = $mail;
 			$cdm['token'] = $token;
-			sendMess($cdm);
+			//sendMess($cdm);
 		}
 		else
 		{ 
