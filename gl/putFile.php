@@ -33,7 +33,7 @@ clickObj.js
 clickMoveGizmo.js
 scaleBox.js
 loadObj.js
-uiInterface
+uiInterface.js
 ';
 
 

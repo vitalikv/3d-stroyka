@@ -1,5 +1,5 @@
 <? include("include/bd.php");  ?>
-<?php $vrs = '=5' ?>
+<?php $vrs = '=6' ?>
 
 <!DOCTYPE html>
 <html lang="en">

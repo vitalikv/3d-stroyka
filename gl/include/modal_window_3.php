@@ -289,9 +289,11 @@ $(document).ready(function(){
 	// переключаем в главном меню в форме регистрация кнопки: вход/регистрация
 	function changeMainMenuRegistMenuUI(cdm)
 	{
+		var inf_block = $('[nameId="info_reg_1"]');
 		var inf_str_1 = $('[nameId="info_reg_1_1"]');
 		var inf_str_2 = $('[nameId="info_reg_1_2"]');
 		
+		inf_block.hide();
 		inf_str_1.hide();
 		inf_str_2.hide();		
 	
@@ -422,8 +424,8 @@ function checkRegDataIU()
 				{
 					if(data.success)
 					{
-						//inf_str_1.html("мы отправили вам письмо<br>зайдите в вашу почту и подтвердите регистрацию");
-						inf_str_1.html("Вы успешно зарегистрировались");						
+						inf_str_1.html("на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)");
+						//inf_str_1.html("Вы успешно зарегистрировались");						
 						
 						inf_block.show();
 						inf_str_1.show();
@@ -456,7 +458,7 @@ function checkRegDataIU()
 
 // получаем с сервера список проектов принадлежащих пользователю
 function getListProject(cdm)
-{
+{  
 	$.ajax
 	({
 		type: "POST",					

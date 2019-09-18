@@ -36,9 +36,18 @@ if($type == 'reg_1')
 	$inf['mail'] = $mail;
 	
 	if($res)
-	{ 
-		$inf['success'] = true;
-		$inf['info'] = $res;
+	{ 		
+		if($res['active'])
+		{
+			$inf['success'] = true;
+			$inf['info'] = $res;			
+		}
+		else
+		{
+			$inf['success'] = false;
+			$inf['err']['code'] = 2;
+			$inf['err']['desc'] = 'Регистрация не завершена<br><br>на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)';						
+		}
 	}
 	else
 	{ 
@@ -96,7 +105,7 @@ if($type == 'reg_2')
 			$cdm = array();
 			$cdm['mail'] = $mail;
 			$cdm['token'] = $token;
-			//sendMess($cdm);
+			sendMess($cdm);
 		}
 		else
 		{ 
@@ -114,9 +123,9 @@ if($type == 'reg_2')
 // отправляем сообщение активации почты 
 function sendMess($inf)
 {
-	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@engineering-plan.ru";
+	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:otoplenie-doma@mail.ru";
 
-	$arrayTo = array($inf['mail'].', engineering-plan@mail.ru');
+	$arrayTo = array($inf['mail'].', otoplenie-doma@mail.ru');
 	$email = implode(",", $arrayTo);
 
 
