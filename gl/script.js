@@ -1716,10 +1716,10 @@ $(document).ready(function ()
 	}
 	
 	
-	if(1==2)
+	if(1==1)
 	{
 		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'import/nasos_z.fbx', function ( objects ) 
+		loader.load( infProject.path+'import/bak_1.fbx', function ( objects )  
 		{ 		
 			var obj = objects.children[0];
 			obj.position.set(0,0,0);
@@ -1731,7 +1731,8 @@ $(document).ready(function ()
 			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 			
 			obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
-
+			obj.material.visible = false;
+			
 			scene.add( obj );
 		});				
 	}

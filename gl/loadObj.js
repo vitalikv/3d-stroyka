@@ -14,7 +14,26 @@ function loadObjServer(cdm)
 		inf = {obj: infProject.path+'import/nasos_z.fbx'}
 		inf.planeMath = 0.5;
 	}
-	
+	else if(lotid == 2)
+	{
+		inf = {obj: infProject.path+'import/kotel_1.fbx'}
+		inf.planeMath = 1.5;
+	}
+	else if(lotid == 3)
+	{
+		inf = {obj: infProject.path+'import/budres_900.fbx'}
+		inf.planeMath = 0.8;
+	}
+	else if(lotid == 4)
+	{
+		inf = {obj: infProject.path+'import/bak_1.fbx'}
+		inf.planeMath = 0.5;
+	}	
+	else if(lotid == 5)
+	{
+		inf = {obj: infProject.path+'import/kollector_1.fbx'}
+		inf.planeMath = 0.5;
+	}	
 	
 	var loader = new THREE.FBXLoader();
 	loader.load( inf.obj, function ( object ) 						
@@ -42,6 +61,7 @@ function loadObjServer(cdm)
 		obj.userData.obj3D = {};
 		obj.userData.obj3D.lotid = lotid;
 		obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
+		obj.material.visible = false;
 		
 		// накладываем на материал объекта lightMap
 		obj.traverse(function(child) 
