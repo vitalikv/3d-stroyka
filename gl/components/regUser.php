@@ -123,7 +123,7 @@ if($type == 'reg_2')
 // отправляем сообщение активации почты 
 function sendMess($inf)
 {
-	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:otoplenie-doma@mail.ru";
+	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai";
 
 	$arrayTo = array($inf['mail'].', otoplenie-doma@mail.ru');
 	$email = implode(",", $arrayTo);

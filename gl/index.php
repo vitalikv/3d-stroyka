@@ -1,4 +1,4 @@
-<? include("include/bd.php");  ?>
+<? require_once("include/bd.php");  ?>
 <?php $vrs = '=6' ?>
 
 <!DOCTYPE html>
@@ -35,15 +35,15 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
-	<? include("include/top_1.php"); ?>
-	<? include("include/modal_window_2.php"); ?>
+	<? require_once("include/top_1.php"); ?>
+	<? require_once("include/modal_window_2.php"); ?>
 	
 	<noindex>		 
-	<? include("include/left_panel_1.php"); ?>	
-	<? include("include/right_panel_1.php"); ?>
-	<? include("include/bottom_panel_1.php"); ?>	
-	<? include("include/modal_window_1.php"); ?>
-	<? include("include/modal_window_3.php"); ?>
+	<? require_once("include/left_panel_1.php"); ?>	
+	<? require_once("include/right_panel_1.php"); ?>
+	<? require_once("include/bottom_panel_1.php"); ?>	
+	<? require_once("include/modal_window_1.php"); ?>
+	<? require_once("include/modal_window_3.php"); ?>
 		
 	
 	<div class="help" style=" z-index: 1;">

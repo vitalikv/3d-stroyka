@@ -261,7 +261,42 @@
 	cursor: pointer;
 }
 
- 
+.inf_contact
+{
+	margin: 50px auto;
+	
+	width: 550px;
+	height: 250px;		
+	
+	border: 1px solid #b3b3b3; 
+	border-radius: 3px;
+
+	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
+	background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); 
+	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
+	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+}
+
+
+.inf_contact_text
+{
+	display: flex; /* Флексы */
+	align-items: center; /* Выравнивание текста по вертикали */
+	justify-content: center; /* Выравнивание текста по горизонтали */
+
+	margin: auto;
+	width: 80%;
+	height: 100%;
+	
+	font-family: arial,sans-serif;
+	font-size: 25px;
+	color: #666;	
+} 
 </style>
 
 
@@ -279,8 +314,8 @@ $(document).ready(function(){
 	});
 	
 	$('[nameId="window_main_menu"]').mousedown(function () { return false; });
-	
-	
+		
+		
 
 	$('[nameId="button_check_reg_1"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });
 	$('[nameId="button_check_reg_2"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });	
@@ -548,7 +583,8 @@ function clickButtonLoadProjectUI(el)
 								<div class="window_main_menu_content_1_item" nameId="reset_scene_1">Пустой проект</div>
 								<div class="window_main_menu_content_1_item" nameId="button_load_1">Загрузить</div>
 								<div class="window_main_menu_content_1_item" nameId="button_save_1">Сохранить</div>
-								<div class="window_main_menu_content_1_item" nameId="button_help">Видеоинструкция</div> 
+								<div class="window_main_menu_content_1_item" nameId="button_help">Видеоинструкция</div>
+								<div class="window_main_menu_content_1_item" nameId="button_contact">Контакты</div>
 							</div>
 							<div class="window_main_menu_content_1_column">
 								
@@ -672,6 +708,17 @@ function clickButtonLoadProjectUI(el)
 										<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1" target="_blank">
 											<img src="<?=$path?>/img/wf_logo.jpg">
 										</a>					
+									</div>		
+								</div>
+
+								<div wwm_1="button_contact" list_ui="window_main_menu_content" style="display: none;">
+									<div class="window_main_menu_content_1_h1">
+										Контакты
+									</div>								
+									<div class="inf_contact">
+										<div class="inf_contact_text">
+											otoplenie-doma@mail.ru
+										</div>
 									</div>		
 								</div>								
 								
