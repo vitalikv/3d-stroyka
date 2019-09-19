@@ -3,8 +3,8 @@ $(document).ready(function(){
 $('[data-action="top_panel_1"]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });
 $('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });
 		
-$('[data-action="top_panel_1"]').mousedown(function () { return clickInterface(); });
-$('[data-action="left_panel_1"]').mousedown(function () { return clickInterface(); });
+$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); });
+$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); });
 
 
 // переключаем разделы
@@ -176,7 +176,7 @@ $('[data-action="form_1"]').mousedown(function ()
 });
 
 
-$('[data-action="modal_window"]').mousedown(function () { return false; });		
+$('[data-action="modal_window"]').mousedown(function (e) { e.stopPropagation(); });		
 
 
 $('[data-action="modal"]').mousedown(function () 

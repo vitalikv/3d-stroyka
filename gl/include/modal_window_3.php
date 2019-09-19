@@ -313,7 +313,7 @@ $(document).ready(function(){
 		$('[nameId="background_main_menu"]').css({"display":"none"}); 
 	});
 	
-	$('[nameId="window_main_menu"]').mousedown(function () { return false; });
+	$('[nameId="window_main_menu"]').mousedown(function (e) { e.stopPropagation(); });
 		
 		
 
