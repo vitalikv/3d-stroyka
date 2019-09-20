@@ -43,7 +43,6 @@ function changeMainMenuUI(cdm)
 	
 	for ( var i = 0; i < q.length; i++ )
 	{
-		console.log(q[i]);
 		if(q[i].attributes.wwm_1.value == cdm.value) { $(q[i]).show(); continue; }  		
 	
 		$(q[i]).hide();		

@@ -428,7 +428,7 @@ function checkRegDataIU()
 			dataType: 'json',
 			success: function(data)
 			{  
-				if(type=='reg_1')
+				if(type=='reg_1')	// авторизация пользователя
 				{
 					if(data.success)
 					{
@@ -455,7 +455,7 @@ function checkRegDataIU()
 						}
 					}
 				}
-				else if(type=='reg_2')
+				else if(type=='reg_2')	// регистрация нового пользователя
 				{
 					if(data.success)
 					{
@@ -490,6 +490,9 @@ function checkRegDataIU()
 	}
 };
 
+	
+});	
+
 
 // получаем с сервера список проектов принадлежащих пользователю
 function getListProject(cdm)
@@ -502,8 +505,6 @@ function getListProject(cdm)
 		dataType: 'json',
 		success: function(data)
 		{  
-			//console.log(data); 
-			
 			var html_load = '';
 			var html_save = '';
 			
@@ -522,6 +523,7 @@ function getListProject(cdm)
 			
 			$('[nameId="wm_list_save"]').html(html_save);
 			$('[nameId="wm_list_load"]').html(html_load);
+	
 			
 			$('[nameId="save_pr_1"]').on('mousedown', function(){ clickButtonSaveProjectUI(this); });
 			$('[nameId="load_pr_1"]').on('mousedown', function(){ clickButtonLoadProjectUI(this); });
@@ -529,17 +531,12 @@ function getListProject(cdm)
 	});	
 }
 
-
-
-
 // кликнули на кнопку сохранить проекта
 function clickButtonSaveProjectUI(el)
 {
-	saveFile({id: el.attributes.projectid.value}); 
+	saveFile({id: el.attributes.projectid.value, upUI: true}); 
 	
-	getListProject({id: infProject.user.id});
-	
-	$('[nameId="background_main_menu"]').css({"display":"none"});
+	$('[nameId="background_main_menu"]').hide();
 }
 
 
@@ -549,12 +546,9 @@ function clickButtonLoadProjectUI(el)
 {
 	loadFile({id: el.attributes.projectid.value}); 
 	
-	$('[nameId="background_main_menu"]').css({"display":"none"});
+	$('[nameId="background_main_menu"]').hide();
 }
-
-
-	
-});	 
+ 
 </script>
 
 
