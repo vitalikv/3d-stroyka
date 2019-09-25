@@ -104,7 +104,8 @@
 	
 	margin: 35px auto;
 	padding: 10px 0;
-	width: 350px;	
+	width: 45%;	
+	max-width: 350px;
 	height: 250px;
 	
 	font-family: arial,sans-serif;
@@ -248,16 +249,7 @@
 	font:18px Arial, Helvetica, sans-serif; 
 	font-weight:bold; 
 	color:#737373; 
-	background-color:#ffffff; 
-	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); 
-	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
-	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
-	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
-	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+
 	cursor: pointer;
 }
 
@@ -265,21 +257,11 @@
 {
 	margin: 50px auto;
 	
-	width: 550px;
+	max-width: 550px;
 	height: 250px;		
 	
 	border: 1px solid #b3b3b3; 
 	border-radius: 3px;
-
-	background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-	background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); 
-	background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
-	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
-	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
-	box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
 }
 
 
@@ -296,7 +278,36 @@
 	font-family: arial,sans-serif;
 	font-size: 25px;
 	color: #666;	
-} 
+}
+
+
+
+
+@media screen and (max-width:850px), screen and (max-device-width:850px) 
+{
+	.window_main_menu_content_1_item
+	{
+		width: 150px;
+		font-size: 16px;
+	}
+	
+	.window_main_menu_content_1_h1
+	{
+		font-size: 18px;	
+	}
+	
+	.inf_contact
+	{
+		height: 150px;
+		width: 90%;
+	}	
+	
+	.inf_contact_text
+	{
+		font-size: 18px;	
+	}	
+}
+ 
 </style>
 
 
@@ -591,7 +602,7 @@ function clickButtonLoadProjectUI(el)
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться. 
 										
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1" nameId="button_main_menu_reg_1">
+												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
 													Авторизоваться
 												</div>	
 											</div>	
@@ -608,7 +619,7 @@ function clickButtonLoadProjectUI(el)
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1" nameId="button_main_menu_reg_1">
+												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
 													Авторизоваться
 												</div>	
 											</div>											
@@ -676,7 +687,7 @@ function clickButtonLoadProjectUI(el)
 													</div>
 												</div>
 												
-												<div class="window_main_menu_button_reg_1" b_type="reg_1" nameId="act_reg_1">
+												<div class="window_main_menu_button_reg_1 button_gradient_1" b_type="reg_1" nameId="act_reg_1">
 													Войти
 												</div>
 											</div>																					
@@ -691,17 +702,22 @@ function clickButtonLoadProjectUI(el)
 									<div class="window_main_menu_content_1_h1">
 										Полезная информация
 									</div>								
-									<div style="margin: 30px; font-family: arial,sans-serif; font-size: 20px; color: #666;">
+									<div class="modal_wind_2" style="margin: 30px;">
 										Приветствуем.<br> 
 										Здесь вы сможете нарисовать и подсчитать количество труб для водяных полов в онлайн режиме. 
 										Эта программа создана, чтобы простой человек без специальных знаний мог быстро спроектировать теплый пол для загородного или частного дома.
 									</div>
-									<div style="margin: 70px 30px 30px 30px; font-family: arial,sans-serif; font-size: 20px; color: #666;">
+									<div class="modal_wind_2" style="margin: 70px 30px 30px 30px;">
 										Посмотрите короткое видео, как пользоваться программой:
 
-										<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1" target="_blank">
-											<img src="<?=$path?>/img/wf_logo.jpg">
-										</a>					
+										<div class="flex_1">
+											<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1 button_gradient_1" target="_blank">
+												<img src="<?=$path?>/img/you_1.jpg">
+											</a>					
+											<a href="https://www.youtube.com/watch?v=DQl4HWaDiKc" class="button_youtube_1 button_gradient_1" target="_blank">
+												<img src="<?=$path?>/img/you_2.jpg">
+											</a>											
+										</div>					
 									</div>		
 								</div>
 
@@ -709,7 +725,7 @@ function clickButtonLoadProjectUI(el)
 									<div class="window_main_menu_content_1_h1">
 										Контакты
 									</div>								
-									<div class="inf_contact">
+									<div class="inf_contact button_gradient_1">
 										<div class="inf_contact_text">
 											otoplenie-doma@mail.ru
 										</div>

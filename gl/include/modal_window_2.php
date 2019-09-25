@@ -1,5 +1,15 @@
 
 
+<style type="text/css">
+
+
+
+
+
+
+
+</style>
+
 
 <div class="modal_1" data-action ='modal_1' ui_1="" style="display: block;">
 	<div class="modal_wrap">
@@ -18,17 +28,22 @@
 			</div>
 			<div class='modal_body'>
 				<div class='modal_body_content' style="display: block;">
-					<div style="margin: 30px; font-family: arial,sans-serif; font-size: 20px; color: #666;">
+					<div class="modal_wind_2" style="margin: 30px;">
 						Приветствуем.<br> 
 						Здесь вы сможете нарисовать и подсчитать количество труб для водяных полов в онлайн режиме. 
 						Эта программа создана, чтобы простой человек без специальных знаний мог быстро спроектировать теплый пол для загородного или частного дома.
 					</div>
-					<div style="margin: 70px 30px 30px 30px; font-family: arial,sans-serif; font-size: 20px; color: #666;">
+					<div class="modal_wind_2" style="margin: 70px 30px 30px 30px;">
 						Посмотрите короткое видео, как пользоваться программой:
 
-						<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1" target="_blank">
-							<img src="<?=$path?>/img/wf_logo.jpg">
-						</a>					
+						<div class="flex_1">
+							<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1 button_gradient_1" target="_blank">
+								<img src="<?=$path?>/img/you_1.jpg">
+							</a>					
+							<a href="https://www.youtube.com/watch?v=DQl4HWaDiKc" class="button_youtube_1 button_gradient_1" target="_blank">
+								<img src="<?=$path?>/img/you_2.jpg">
+							</a>											
+						</div>
 					</div>
 				</div>			
 			</div>
