@@ -374,12 +374,14 @@ function saveFile(cdm)
 	});	
 	
 	
+	var preview = saveAsImagePreview();
+	
 	// сохраняем в бд
 	$.ajax
 	({
 		url: infProject.path+'components/saveSql.php',
 		type: 'POST',
-		data: {json: json, id: cdm.id, user_id: infProject.user.id},
+		data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
 		dataType: 'json',
 		success: function(json)
 		{ 			
@@ -387,7 +389,7 @@ function saveFile(cdm)
 			
 			if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
 		},
-		error: function(json){ console.log(json);  }
+		error: function(json){ console.log(json); }
 	});	
 	
 	

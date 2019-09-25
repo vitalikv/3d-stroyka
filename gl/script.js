@@ -11,6 +11,8 @@ var context = canvas.getContext( 'webgl2', { antialias: false } );
 var renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context, preserveDrawingBuffer: true, } );
 
 
+//renderer.gammaInput = true;
+//renderer.gammaOutput = true;
 renderer.localClippingEnabled = true;
 //renderer.autoClear = false;
 renderer.setPixelRatio( window.devicePixelRatio );
@@ -103,8 +105,8 @@ function renderCamera()
 {
 	camera.updateMatrixWorld();			
 	
-	renderer.autoClear = true;
-	renderer.clear();
+	//renderer.autoClear = true;
+	//renderer.clear();
 	renderer.render(scene, camera);
 }
 
@@ -1348,13 +1350,13 @@ function saveAsImage()
 		renderer.antialias = true;
 		renderer.render( scene, camera );
 		
-		var strMime = "image/jpeg";
-		var imgData = renderer.domElement.toDataURL(strMime, 0.7);	
+		var strMime = "image/png";
+		var imgData = renderer.domElement.toDataURL(strMime);	
 
 		renderer.antialias = false;
 		renderer.render( scene, camera );
  
-		openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.jpg");
+		openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.png");
 	} 
 	catch (e) 
 	{
@@ -1363,13 +1365,44 @@ function saveAsImage()
 	}
 }
 
+
+// screenshot сохраняем в bd
+function saveAsImagePreview() 
+{ 
+	try 
+	{		
+		var rd = 400/w_w;
+		var flag = infProject.scene.grid.obj.visible;
+		
+		if(flag) { infProject.scene.grid.obj.visible = false; }
+		renderer.setSize( 400, w_h*rd );
+		renderer.antialias = true;
+		renderer.render( scene, camera );
+		
+		var imgData = renderer.domElement.toDataURL("image/jpeg", 0.7);	
+
+		if(flag) { infProject.scene.grid.obj.visible = true; }
+		renderer.setSize( w_w, w_h );
+		renderer.antialias = false;
+		renderer.render( scene, camera );
+		
+		return imgData;
+	} 
+	catch (e) 
+	{
+		console.log(e);
+		return null;
+	}
+}
+
+
 // открыть или сохранить screenshot
 var openFileImage = function (strData, filename) 
 {
 	var link = document.createElement('a');
 	
 	if(typeof link.download === 'string') 
-	{
+	{		
 		document.body.appendChild(link); //Firefox requires the link to be in the body
 		link.download = filename;
 		link.href = strData;
