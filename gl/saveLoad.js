@@ -32,7 +32,8 @@ var resetPop =
 	{
 		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [], tube : [] };
 		array.fundament = [];
-		array.lineGrid = { limit : false };		
+		array.lineGrid = { limit : false };
+		array.arrObj = [];
 		
 		return array;
 	},
