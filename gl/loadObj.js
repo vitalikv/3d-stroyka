@@ -5,6 +5,8 @@
 
 function loadObjServer(cdm)
 { 
+	// cdm - информация, которая пришла из вне
+	// inf - статическая инфа из базы
 	console.log(cdm);
 	
 	if(!cdm.lotid) return;
@@ -116,7 +118,7 @@ function addArrayObj(cdm)
 function setParamObj(inf, cdm)
 {
 	var obj = inf.obj;
-	console.log(5555555, cdm);
+	
 	if(cdm.pos){ obj.position.copy(cdm.pos); }
 	else if(inf.planeMath)
 	{ 

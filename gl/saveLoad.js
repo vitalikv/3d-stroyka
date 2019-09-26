@@ -33,7 +33,7 @@ var resetPop =
 		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [], tube : [] };
 		array.fundament = [];
 		array.lineGrid = { limit : false };
-		array.arrObj = [];
+		array.arrObj = (infProject.start)? infProject.scene.array.arrObj : [];
 		
 		return array;
 	},

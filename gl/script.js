@@ -179,7 +179,7 @@ infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [],
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot' };
-
+infProject.start = true;
 
 
 console.log(infProject);
