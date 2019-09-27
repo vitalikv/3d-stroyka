@@ -160,8 +160,9 @@ function dragToolWFPoint(cdm)
 	
 	var posMouse = obj.position;	
 	posMouse.y = infProject.settings.wf_tube.pos.y;	
-	
 	obj.userData.wf_point.cross = { o : null, point : [] };
+	
+	if(line_1 && line_1.material.color != new THREE.Color(0xff0000)) line_1.material.color = new THREE.Color(0xff0000);
 		
 	var arr = [];	
 	var z = 0.1 / camera.zoom;
@@ -345,7 +346,7 @@ function createLineWF(cdm)
 	
 	
 	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
-	line.material.color = color;
+	//line.material.color = color;
 	 
 	line.userData.tag = 'wf_line';
 	line.userData.wf_line = {};
@@ -354,7 +355,6 @@ function createLineWF(cdm)
 	line.userData.wf_line.color = color;
 	line.userData.wf_line.diameter = cdm.diameter;
 	scene.add( line );
-	
 	
 	infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
 	
