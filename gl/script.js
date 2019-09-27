@@ -1633,6 +1633,10 @@ document.body.addEventListener("keydown", function (e)
 				
 				inputWF_tubeDiametr({line: clickO.last_obj, size: size});
 			}
+			else if(infProject.activeInput == 'dp_inf_1_proj')
+			{
+				inputLoadProject();
+			}
 		}		
 		 
 		return; 
@@ -1642,13 +1646,31 @@ document.body.addEventListener("keydown", function (e)
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
 	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
-	if(clickO.keys[18] && e.keyCode == 77) { loadFile({id:1}); }				// alt + m
+	if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
 } );
 
 document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });
 document.body.addEventListener("keyup", function (e) { clickO.keys[e.keyCode] = false; });
+
+
+
+function inputLoadProject()
+{
+	var visible = $('[nameid="dp_inf_1"]').is(":visible");
+	
+	$('[nameid="dp_inf_1"]').toggle();
+	
+	if(visible)
+	{
+		var num = Number($('[nameid="dp_inf_1_proj"]').val());
+		
+		loadFile({id: num});
+		
+		console.log(num);
+	}
+}
 
 
 
