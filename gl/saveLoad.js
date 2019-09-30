@@ -375,7 +375,8 @@ function saveFile(cdm)
 	});	
 	
 	
-	var preview = saveAsImagePreview();
+	//var preview = saveAsImagePreview();
+	var preview = null;
 	
 	// сохраняем в бд
 	$.ajax

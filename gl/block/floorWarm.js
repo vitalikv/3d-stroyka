@@ -593,7 +593,7 @@ function geometryTubeWF(cdm)
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: line.material.color.getHex(), wireframe: false, lightMap : lightMap_1 } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: line.userData.wf_line.color.getHex(), wireframe: false, lightMap : lightMap_1 } ) );	
 		line.userData.wf_line.tube = tube;
 		tube.userData.wf_tube = {}
 		tube.userData.wf_tube.color = line.material.color.clone();
