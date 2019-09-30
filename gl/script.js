@@ -1716,13 +1716,14 @@ var docReady = false;
 $(document).ready(function () 
 { 
 	docReady = true; 
-	loadFile('');
+	
 	if(infProject.scene.load != '') { loadStartForm({form: infProject.scene.load}); }
 
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
 	 
+	loadObjServer({lotid: 3});
 	
 	if(1==2)
 	{

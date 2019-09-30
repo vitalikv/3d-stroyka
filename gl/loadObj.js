@@ -173,6 +173,36 @@ function setParamObj(inf, cdm)
 	
 	renderCamera();
 	
+	
+	if(cdm.lotid == 3)
+	{
+		obj.position.set(0,1,0);
+		
+		obj.updateMatrixWorld();
+		
+		var obj1 = obj.children[1];
+		var obj2 = obj.children[2];
+		
+		var pos1 = obj1.getWorldPosition(new THREE.Vector3());
+		var q1 = obj1.getWorldQuaternion(new THREE.Quaternion());
+		
+		var pos2 = obj2.getWorldPosition(new THREE.Vector3());
+		var q2 = obj2.getWorldQuaternion(new THREE.Quaternion());		
+		
+		scene.add( obj1 );
+		scene.add( obj2 );
+		
+		obj1.position.copy(pos1);
+		obj1.quaternion.copy(q1);
+		
+		obj2.position.copy(pos2);
+		obj2.quaternion.copy(q2);
+
+		
+		console.log(obj1.position)
+		obj1.position.z += 1;
+		obj2.position.z += 1;
+	}
 }
 
 
