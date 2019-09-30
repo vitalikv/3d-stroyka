@@ -161,6 +161,9 @@
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
+					<div data-action ='join_element' class="button1">соединить</div>
+				</div>			
+				<div style="margin: 10px;">
 					<div data-action ='select_pivot' class="button1">перемещение</div>
 				</div>
 				<div style="margin: 10px;">

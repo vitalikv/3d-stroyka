@@ -1257,8 +1257,7 @@ function clickInterface(cdm)
 			linkGrid(); 
 		}		
 	}
-	
-	return false;
+
 }	
 
 
@@ -1723,12 +1722,12 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
 	 
-	loadObjServer({lotid: 3});
+	loadObjServer({lotid: 6});
 	
 	if(1==2)
 	{
 		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'export/arrobj.fbx', function ( objects ) 
+		loader.load( infProject.path+'export/rad_al_secziy_500_.fbx', function ( objects ) 
 		{ console.log(222, objects);
 			
 			for ( var i = 0; i < objects.children.length; i++ )

@@ -13,32 +13,56 @@ function loadObjServer(cdm)
 	
 	var lotid = cdm.lotid;
 	var inf = {};
+	inf.joinPoint = [];
 	
 	if(lotid == 1)
 	{
-		inf = {url: infProject.path+'import/nasos_z.fbx', name: 'насос'}
+		inf.url = infProject.path+'import/nasos_z.fbx'; 
+		inf.name = 'насос';
 		inf.planeMath = 0.5;
 	}
 	else if(lotid == 2)
 	{
-		inf = {url: infProject.path+'import/kotel_1.fbx', name: 'котел'}
+		inf.url = infProject.path+'import/kotel_1.fbx'; 
+		inf.name = 'котел';
 		inf.planeMath = 1.5;
 	}
 	else if(lotid == 3)
 	{
-		inf = {url: infProject.path+'import/budres_900.fbx', name: 'радиатор'}
+		inf.url = infProject.path+'import/budres_900.fbx'; 
+		inf.name = 'радиатор';
 		inf.planeMath = 0.8;
 	}
 	else if(lotid == 4)
 	{
-		inf = {url: infProject.path+'import/bak_1.fbx', name: 'расширительный бак'}
+		inf.url = infProject.path+'import/bak_1.fbx'; 
+		inf.name = 'расширительный бак';
 		inf.planeMath = 0.5;
 	}	
 	else if(lotid == 5)
 	{
-		inf = {url: infProject.path+'import/kollector_1.fbx', name: 'коллектор'}
+		inf.url = infProject.path+'import/kollector_1.fbx'; 
+		inf.name = 'коллектор';
 		inf.planeMath = 0.5;
-	}	
+	}
+	else if(lotid == 6)
+	{
+		inf.url = infProject.path+'export/rad_al_secziy_500_.fbx'; 
+		inf.name = 'радиатор алюминиевый';
+		inf.planeMath = 0.5;
+		
+		inf.joinPoint[0] = {name: 'size_1_L_', size: '1', joinObj: null};
+		inf.joinPoint[1] = {name: 'size_2_L_', size: '1', joinObj: null};
+		inf.joinPoint[2] = {name: 'size_1_R_', size: '1', joinObj: null};
+		inf.joinPoint[3] = {name: 'size_2_R_', size: '1', joinObj: null};		
+	}
+	else if(lotid == 7)
+	{
+		inf.url = infProject.path+'export/soedin_al_rad_1.fbx'; 
+		inf.name = 'соединение алюминиевого радиатора';
+		inf.planeMath = 0.5;		
+	}
+
 	
 	var exist = getArrayObj({lotid: lotid});
 	
@@ -202,6 +226,26 @@ function setParamObj(inf, cdm)
 		console.log(obj1.position)
 		obj1.position.z += 1;
 		obj2.position.z += 1;
+	}
+	
+	if(cdm.lotid == 6)
+	{
+
+		obj.traverse( function ( child ) 
+		{
+			if ( child.isMesh ) 
+			{ 
+				console.log(child.name);
+				
+				for(var i = 0; i < inf.joinPoint.length; i++)
+				{
+					if(child.name == inf.joinPoint[i].name)
+					{
+						child.userData.joinObj = null;						 
+					}
+				}
+			}
+		});		
 	}
 }
 

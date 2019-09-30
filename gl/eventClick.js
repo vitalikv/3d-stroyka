@@ -107,21 +107,22 @@ $('[nameId="color_tube_1_default"]').on('mousedown', function(e)
   
  
 	
-$('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); return false; });
-$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); return false; });
+$('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); });
+$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
-	
-$('[data-action="select_pivot"]').mousedown(function () { return switchPivotGizmo({mode:'pivot'}); });
-$('[data-action="select_gizmo"]').mousedown(function () { return switchPivotGizmo({mode:'gizmo'}); });	
-$('[data-action="wall"]').mousedown(function () { return clickInterface({button:'point_1'}); });
-$('[data-action="create_tube_1"]').mousedown(function () { return clickInterface({button:'create_tube_1'}); }); 
-$('[data-action="create_tube_box_1"]').mousedown(function () { return clickInterface({button:'create_tube_box_1'}); }); 
-$('[data-action="create_wd_2"]').mousedown(function () { return clickInterface({button:'create_wd_2'}); });
-$('[data-action="create_wd_3"]').mousedown(function () { return clickInterface({button:'create_wd_3'}); });
-$('[data-action="grid_show_1"]').mousedown(function () { return clickInterface({button:'grid_show_1'}); });
-$('[data-action="grid_move_1"]').mousedown(function () { return clickInterface({button:'grid_move_1'}); });
-$('[data-action="grid_link_1"]').mousedown(function () { return clickInterface({button:'grid_link_1'}); });
-$('[add_lotid]').mousedown(function () { return clickInterface({button: 'add_lotid', value: this.attributes.add_lotid.value}); });
+
+$('[data-action="join_element"]').mousedown(function () { joinElement(); });	
+$('[data-action="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
+$('[data-action="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });	
+$('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });
+$('[data-action="create_tube_1"]').mousedown(function () { clickInterface({button:'create_tube_1'}); }); 
+$('[data-action="create_tube_box_1"]').mousedown(function () { clickInterface({button:'create_tube_box_1'}); }); 
+$('[data-action="create_wd_2"]').mousedown(function () { clickInterface({button:'create_wd_2'}); });
+$('[data-action="create_wd_3"]').mousedown(function () { clickInterface({button:'create_wd_3'}); });
+$('[data-action="grid_show_1"]').mousedown(function () { clickInterface({button:'grid_show_1'}); });
+$('[data-action="grid_move_1"]').mousedown(function () { clickInterface({button:'grid_move_1'}); });
+$('[data-action="grid_link_1"]').mousedown(function () { clickInterface({button:'grid_link_1'}); });
+$('[add_lotid]').mousedown(function () { clickInterface({button: 'add_lotid', value: this.attributes.add_lotid.value}); });
 $('[data-action="screenshot"]').mousedown(function () { saveAsImage(); return false; }); 				
 
 
