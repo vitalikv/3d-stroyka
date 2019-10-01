@@ -133,7 +133,7 @@ function addArrayObj(cdm)
 		}
 	}	
 	
-	arrObj[arrObj.length] = {lotid: lotid, obj: obj.clone()};
+	//arrObj[arrObj.length] = {lotid: lotid, obj: obj.clone()}; 
 }
 
 
@@ -230,22 +230,33 @@ function setParamObj(inf, cdm)
 	
 	if(cdm.lotid == 6)
 	{
-
+		var arr = [];
+		
 		obj.traverse( function ( child ) 
 		{
 			if ( child.isMesh ) 
 			{ 
-				console.log(child.name);
+				//console.log(child.name);
 				
 				for(var i = 0; i < inf.joinPoint.length; i++)
 				{
 					if(child.name == inf.joinPoint[i].name)
 					{
-						child.userData.joinObj = null;						 
+						child.userData.joinObj = null;
+						child.userData.tag = 'joinPoint';
+						
+						arr[arr.length] = child;
 					}
 				}
 			}
-		});		
+		});
+
+		if(arr.length > 0) 
+		{ 
+			obj.userData.joinPoint = {visible: false, arr: arr}; 
+		}
+		
+		//obj.position.set(0,1,0);
 	}
 }
 

@@ -29,7 +29,7 @@ function createFloor(cdm)
 	
 	var material =new THREE.MeshLambertMaterial( { color : color, lightMap : lightMap_1 } );
 	
-	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ), material ); 
+	room[n] = new THREE.Mesh( new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, depth: infProject.settings.floor.height } ), material ); 
 	
 	room[n].position.set( 0, infProject.settings.floor.posY, 0 );
 	room[n].rotation.set( Math.PI / 2, 0, 0 );	
@@ -139,7 +139,7 @@ function updateShapeFloor(arrRoom)
 		
 		var shape = new THREE.Shape( point );				
 
-		var geometry = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, amount: infProject.settings.floor.height } ); 
+		var geometry = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, depth: infProject.settings.floor.height } ); 
 		
 		arrRoom[i].geometry.vertices = geometry.vertices;
 		arrRoom[i].geometry.faces = geometry.faces;		

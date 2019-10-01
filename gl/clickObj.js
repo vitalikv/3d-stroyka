@@ -183,26 +183,7 @@ function switchPivotGizmo(cdm)
 }
 
 
-function joinElement(cdm)
-{
-	var obj = clickO.obj;
-	
-	if(!obj) return;
-	
-	obj.traverse( function ( child ) 
-	{
-		if ( child.isMesh ) 
-		{ 
-			if(child.userData.joinObj !== undefined)
-			{
-				console.log(child.name);
-				
-				child.material.color = new THREE.Color(0xff0000);
-			}
-			
-		}
-	});	
-}
+
 
 
 

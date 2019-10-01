@@ -130,6 +130,12 @@ function clickRayHit(event)
 { 
 	var rayhit = null;	
 	
+	if(infProject.scene.array.joinPoint.length > 0)
+	{
+		var ray = rayIntersect( event, infProject.scene.array.joinPoint, 'arr' ); 
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
+	}	
+	
 	if(infProject.tools.pivot.visible)
 	{
 		var ray = rayIntersect( event, infProject.tools.pivot.children, 'arr' );
@@ -235,6 +241,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wf_line' ) {  }
+		else if( tag == 'joinPoint' ) { clickJoinPoint({rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
@@ -265,7 +272,8 @@ function clickMouseActive(cdm)
 			else if(tag == 'boxWF') { showToggleGp(); showBoxWF_UI(); }
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
-			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }			
+			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
+			else if(tag == 'joinPoint') { showHideJoinObjUI({visible: true}); }
 		}		
 		else if(camera == camera3D)
 		{
@@ -273,6 +281,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
+			else if(tag == 'joinPoint') { showHideJoinObjUI({visible: true}); }
 		}
 		else if(camera == cameraWall)
 		{
@@ -425,6 +434,7 @@ function hideMenuObjUI_2D( o )
 			case 'wf_point': hideMenuUI(o); break;
 			case 'boxWF': hideControlWF(); hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;
+			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
 		}
 	}
 	
@@ -440,6 +450,7 @@ function hideMenuObjUI_3D( o )
 		switch ( o.userData.tag ) 
 		{
 			case 'obj': hidePivotGizmo(o); break;
+			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
 		}
 	}
 }

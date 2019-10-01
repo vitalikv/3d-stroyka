@@ -22,7 +22,7 @@ function createPivot()
 	{
 		var geometry = createGeometryPivot(param[i].size_1.x, param[i].size_1.y, param[i].size_1.z);
 		
-		var obj = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({ color: param[i].color, transparent: true, opacity: param[i].opacity, depthTest: false, lightMap : lightMap_1 }) );
+		var obj = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ color: param[i].color, transparent: true, opacity: param[i].opacity, depthTest: false }) );
 		obj.userData.tag = 'pivot';
 		obj.userData.axis = param[i].axis;	
 		obj.renderOrder = 2;
@@ -34,7 +34,7 @@ function createPivot()
 		
 		if(param[i].size_2)
 		{
-			var axis = new THREE.Mesh( createGeometryPivot(0.6, 0.02, 0.02), new THREE.MeshLambertMaterial({ color: param[i].color, depthTest: false, lightMap : lightMap_1 }) );	
+			var axis = new THREE.Mesh( createGeometryPivot(0.6, 0.02, 0.02), new THREE.MeshPhongMaterial({ color: param[i].color, depthTest: false }) );	
 			axis.renderOrder = 2;
 			//axis.rotation.set( arr[i][1].x, arr[i][1].y, arr[i][1].z );		
 			obj.add( axis );					
@@ -135,7 +135,7 @@ function createCone(cdm)
 	}	
 
 	
-	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : cdm.color, wireframe:false, depthTest: false, lightMap : lightMap_1 } ) ); 
+	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshPhongMaterial( { color : cdm.color, wireframe:false, depthTest: false } ) ); 
 	obj.userData.tag = 'pivot';
 	obj.userData.axis = cdm.axis;
 	obj.renderOrder = 2;

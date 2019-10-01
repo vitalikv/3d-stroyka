@@ -111,7 +111,7 @@ $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); });
 $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
 
-$('[data-action="join_element"]').mousedown(function () { joinElement(); });	
+$('[data-action="join_point"]').mousedown(function () { showHideJoinPoint(); });	
 $('[data-action="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
 $('[data-action="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });	
 $('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });

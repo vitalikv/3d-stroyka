@@ -34,6 +34,7 @@ clickMoveGizmo.js
 scaleBox.js
 loadObj.js
 uiInterface.js
+joinElement.js
 ';
 
 

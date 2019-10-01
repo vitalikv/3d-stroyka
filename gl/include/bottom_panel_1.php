@@ -161,7 +161,7 @@
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='join_element' class="button1">соединить</div>
+					<div data-action ='join_point' class="button1">точки</div>
 				</div>			
 				<div style="margin: 10px;">
 					<div data-action ='select_pivot' class="button1">перемещение</div>
@@ -172,6 +172,19 @@
 				<div style="margin: 10px;">
 					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
+			</div>
+		</div>
+
+
+		<div class="toolbar" data-action ='top_panel_1' nameId='join_obj_b_menu_1' style="display: none;">
+			<div class="toolbar-header">соединить объекты</div>
+			<div class="toolbar-menu">
+				<div style="margin: 10px;">
+					<div data-action ='join_element' class="button1">соединить</div>
+				</div>			
+				<div style="margin: 10px;">
+					<div data-action ='cancel_join_element' class="button1">отмена</div>
+				</div>		
 			</div>
 		</div>		
 	<?}?>

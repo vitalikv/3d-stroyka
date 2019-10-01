@@ -1722,7 +1722,8 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
 	 
-	loadObjServer({lotid: 6});
+	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
+	loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
 	
 	if(1==2)
 	{

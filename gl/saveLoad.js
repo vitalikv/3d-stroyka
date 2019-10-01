@@ -31,9 +31,10 @@ var resetPop =
 	infProjectSceneArray : function()
 	{
 		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [], tube : [] };
+		array.joinPoint = [];  // если объект выделен и включен режим соединения, то все точки соединения этого объекта записываются сюда
 		array.fundament = [];
 		array.lineGrid = { limit : false };
-		array.arrObj = (infProject.start)? infProject.scene.array.arrObj : [];
+		array.arrObj = (infProject.start)? infProject.scene.array.arrObj : [];	// массив клонируемых объектов
 		
 		return array;
 	},
