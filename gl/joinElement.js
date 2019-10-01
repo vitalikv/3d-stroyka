@@ -14,8 +14,17 @@ function showHideJoinPoint(cdm)
 	
 	if(obj.userData.joinPoint)
 	{
-		// точки-соединители скрыты, значит нужно показать их
-		if(!obj.userData.joinPoint.visible)
+		var flag = obj.userData.joinPoint.arr[0].visible;
+		
+		for(var i = 0; i < infProject.scene.array.joinPoint.length; i++)
+		{
+			infProject.scene.array.joinPoint[i].visible = false;				
+		}
+		
+		infProject.scene.array.joinPoint = [];
+		
+
+		if(!flag)
 		{
 			for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
 			{
@@ -26,22 +35,10 @@ function showHideJoinPoint(cdm)
 				
 				infProject.scene.array.joinPoint[infProject.scene.array.joinPoint.length] = o;				
 			}
-
-			obj.userData.joinPoint.visible = true;
+			
 		}
-		else	// скрываем точки-соединители
-		{
-			for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
-			{
-				var o = obj.userData.joinPoint.arr[i];
-				
-				o.visible = false;
-				
-				deleteValueFromArrya({arr : infProject.scene.array.joinPoint, o : o});				
-			}
 
-			obj.userData.joinPoint.visible = false;
-		}
+
 	}
 
 }

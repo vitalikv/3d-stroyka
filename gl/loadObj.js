@@ -244,6 +244,7 @@ function setParamObj(inf, cdm)
 					{
 						child.userData.joinObj = null;
 						child.userData.tag = 'joinPoint';
+						child.visible = false;
 						
 						arr[arr.length] = child;
 					}
