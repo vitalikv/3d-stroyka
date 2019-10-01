@@ -167,6 +167,7 @@ var arrWallFront = [];
 
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
+infProject.scene.joinPoint = resetPop.joinPoint();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};

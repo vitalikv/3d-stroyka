@@ -38,6 +38,19 @@ var resetPop =
 		
 		return array;
 	},
+	
+	joinPoint : function()
+	{
+		var array = {};
+		
+		array.item_1 = null;
+		array.item_2 = null;
+		
+		array.arr_1 = [];
+		array.arr_2 = [];
+		
+		return array;
+	},
 
 	listColor : function()
 	{	

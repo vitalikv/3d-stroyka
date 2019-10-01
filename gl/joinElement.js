@@ -1,5 +1,8 @@
 
 
+var typeJoin = false; 
+var selectJoinPoint = { first: null, two: null };
+
 
 // нажимаем на кнопку соединить (нижнее меню), показываем/скрываем у объекта точки стыковки 
 function showHideJoinPoint(cdm)
@@ -23,6 +26,7 @@ function showHideJoinPoint(cdm)
 		
 		infProject.scene.array.joinPoint = [];
 		
+		selectJoinPoint = { first: null, two: null };
 
 		if(!flag)
 		{
@@ -51,8 +55,37 @@ function clickJoinPoint(cdm)
 	var rayhit = cdm.rayhit;
 	var obj = rayhit.object;
 	
+	typeJoin = false;
 	
-	obj.material.color = new THREE.Color(0xff0000);
+	if(!selectJoinPoint.first) 
+	{ 
+		obj.material.color = new THREE.Color(0xff0000);
+		
+		selectJoinPoint.first = obj;
+		typeJoin = true;
+	}
+	else if(selectJoinPoint.first == obj) 
+	{
+		obj.material.color = new THREE.Color(0x00ff00);
+		
+		selectJoinPoint.first = null;
+	}
+	else
+	{
+		var parent = selectJoinPoint.first.parent;
+		
+		if(parent == obj.parent)
+		{
+			selectJoinPoint.first.material.color = new THREE.Color(0x00ff00);
+			
+			obj.material.color = new THREE.Color(0xff0000);
+			
+			selectJoinPoint.first = obj;
+			typeJoin = true;
+		}
+	}
+	
+	
 }
 
 
@@ -68,6 +101,7 @@ function showHideJoinObjUI(cdm)
 		$('[nameId="join_obj_b_menu_1"]').hide();
 	}	
 }
+
 
 
 function joinElement(cdm)
