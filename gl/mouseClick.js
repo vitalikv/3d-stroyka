@@ -132,8 +132,18 @@ function clickRayHit(event)
 	
 	if(infProject.tools.joint.visible)
 	{
-		var ray = rayIntersect( event, infProject.tools.joint.userData.joint.arrJ_1, 'arr' ); 
-		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
+		var o = infProject.tools.joint.userData.joint.obj;
+		
+		if(o)
+		{
+			if(o.userData.joinPoint)
+			{
+				
+				var ray = rayIntersect( event, o.userData.joinPoint.arr, 'arr' ); 
+				if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
+
+			}				
+		}
 	}	
 	
 	if(infProject.tools.pivot.visible)
@@ -274,7 +284,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { showHideJoinObjUI({visible: true}); }
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; showHideJoinObjUI({visible: true}); }
 		}		
 		else if(camera == camera3D)
 		{
@@ -282,7 +292,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { showHideJoinObjUI({visible: true}); }
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; showHideJoinObjUI({visible: true}); }
 		}
 		else if(camera == cameraWall)
 		{

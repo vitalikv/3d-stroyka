@@ -1,6 +1,6 @@
 
 
-var typeJoin = false; 
+
 var selectJoinPoint = { first: null, two: null }; 
 
 
@@ -11,8 +11,7 @@ function createJoinP()
 	obj.userData.tag = 'joint';
 	obj.userData.joint = {};
 	obj.userData.joint.obj = null;
-	obj.userData.joint.arrJ_1 = [];		// все соединители для 1-ого выбранного объекта
-	obj.userData.joint.arrJ_2 = [];
+	obj.userData.joint.obj_2 = null;
 	obj.userData.joint.link_1 = null;
 	obj.userData.joint.link_2 = null;
 	obj.renderOrder = 1;
@@ -32,8 +31,6 @@ function showJoinPoint(cdm)
 	if(!obj) return;	
 	if(!obj.userData.joinPoint) return;
 	
-
-	infProject.tools.joint.userData.joint.arrJ_1 = [];
 	
 	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
 	{
@@ -41,8 +38,6 @@ function showJoinPoint(cdm)
 		
 		o.visible = true;
 		o.material.color = new THREE.Color(0x00ff00);
-		
-		infProject.tools.joint.userData.joint.arrJ_1[i] = o;
 	}
 }
 
@@ -51,19 +46,29 @@ function showJoinPoint(cdm)
 // скрываем у объекта точки-соединители 
 function hideJoinPoint(cdm)
 {
-	var obj = cdm.obj;
+	var joint = infProject.tools.joint;
 	
-	if(!obj) return;	
-	if(!obj.userData.joinPoint) return;
+	var arr = [joint.userData.joint.obj, joint.userData.joint.obj_2];
 	
-
-	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
+	
+	for(var i = 0; i < arr.length; i++)
 	{
-		var o = obj.userData.joinPoint.arr[i];
+		var obj = arr[i];
 		
-		o.visible = false;
-		o.material.color = new THREE.Color(0x00ff00);			
+		if(!obj) continue;	
+		if(!obj.userData.joinPoint) continue;		
+
+		for(var i2 = 0; i2 < obj.userData.joinPoint.arr.length; i2++)
+		{
+			var o = obj.userData.joinPoint.arr[i2];
+			
+			o.visible = false;
+			o.material.color = new THREE.Color(0x00ff00);			
+		}
+
+		obj.userData.joinPoint.active = null;
 	}
+	
 }
 
 
@@ -74,36 +79,20 @@ function clickJoinPoint(cdm)
 {
 	var rayhit = cdm.rayhit;
 	var obj = rayhit.object;
+	var parent = obj.parent;
 	
-	typeJoin = false;
 	
-	if(!selectJoinPoint.first) 
-	{ 
-		obj.material.color = new THREE.Color(0xff0000);
-		
-		selectJoinPoint.first = obj;
-		typeJoin = true;
-	}
-	else if(selectJoinPoint.first == obj) 
+	if(parent.userData.joinPoint.active)
 	{
-		obj.material.color = new THREE.Color(0x00ff00);
-		
-		selectJoinPoint.first = null;
+		parent.userData.joinPoint.active.material.color = new THREE.Color(0x00ff00);
+		parent.userData.joinPoint.active = null;
 	}
-	else
-	{
-		var parent = selectJoinPoint.first.parent;
-		
-		if(parent == obj.parent)
-		{
-			selectJoinPoint.first.material.color = new THREE.Color(0x00ff00);
-			
-			obj.material.color = new THREE.Color(0xff0000);
-			
-			selectJoinPoint.first = obj;
-			typeJoin = true;
-		}
-	}
+	
+	
+	obj.material.color = new THREE.Color(0xff0000);
+	parent.userData.joinPoint.active = obj;
+	
+
 	
 	
 }

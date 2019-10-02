@@ -254,7 +254,7 @@ function setParamObj(inf, cdm)
 
 		if(arr.length > 0) 
 		{ 
-			obj.userData.joinPoint = {visible: false, arr: arr}; 
+			obj.userData.joinPoint = {visible: false, arr: arr, active: null}; 
 		}
 		
 		//obj.position.set(0,1,0);

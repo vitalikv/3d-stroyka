@@ -106,10 +106,13 @@ function clickObject3D( obj, intersect )
 	if(infProject.settings.active.pg == 'joint') 
 	{ 
 		var joint = infProject.tools.joint;
-		joint.visible = true;	
-		joint.userData.joint.obj = obj;
+		joint.visible = true;			
 		joint.position.copy(pos);
 		joint.rotation.copy( obj.rotation );
+		
+		if(!joint.userData.joint.obj) { joint.userData.joint.obj = obj; }
+		else if (joint.userData.joint.obj == obj) {}
+		else { joint.userData.joint.obj_2 = obj; }
 		
 		showJoinPoint({obj: obj}); 
 	}
@@ -153,14 +156,27 @@ function hidePivotGizmo(obj)
 		
 		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
 		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-
-		if(clickO.rayhit.object.userData.tag == 'joinPoint') return;
+console.log(8888);
+		if(joint.userData.joint.obj == clickO.rayhit.object) { $('[nameId="obj_b_menu_1"]').hide(); return; }
+console.log(9999);		
+		if(clickO.rayhit.object.userData.tag == 'joinPoint') { $('[nameId="obj_b_menu_1"]').hide(); return; }
+		
+		if(joint.visible && joint.userData.joint.obj && clickO.rayhit.object.userData.tag == 'obj')
+		{
+			var o = joint.userData.joint.obj;
+			
+			if(o.userData.joinPoint.active)
+			{
+				$('[nameId="obj_b_menu_1"]').hide(); return;
+			}
+			
+		}
 	}	
-	
+console.log(100000);	
 	pivot.visible = false;
 	gizmo.visible = false;
 	joint.visible = false;
-	hideJoinPoint({obj: joint.userData.joint.obj});
+	hideJoinPoint();
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
@@ -170,14 +186,27 @@ function hidePivotGizmo(obj)
 	clickO.last_obj = null;
 	
 	$('[nameId="obj_b_menu_1"]').hide();
+	showHideJoinObjUI({visible: false});
 }
 
 
 
 // при выделении объекта, показываем меню 
 function showObjUI()
-{	
-	$('[nameId="obj_b_menu_1"]').show();
+{
+	var joint = infProject.tools.joint;
+	
+	if(joint.userData.joint.obj && joint.userData.joint.obj_2)
+	{
+		showHideJoinObjUI({visible: true});
+	}
+	else
+	{
+		$('[nameId="obj_b_menu_1"]').show();
+		
+		showHideJoinObjUI({visible: false});		
+	}
+	
 }
 
 
@@ -192,11 +221,15 @@ function switchPivotGizmo(cdm)
 	
 	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; pivot.visible = false; }	
 	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; gizmo.visible = false; }
-	if(infProject.settings.active.pg == 'joint'){ obj = joint.userData.joint.obj; joint.visible = false; hideJoinPoint({obj: obj}); }
+	if(infProject.settings.active.pg == 'joint'){ obj = joint.userData.joint.obj; joint.visible = false; hideJoinPoint(); }
 	
 	if(!obj) return;
 	
-	infProject.settings.active.pg = cdm.mode;		
+	infProject.settings.active.pg = cdm.mode;
+
+	pivot.userData.pivot.obj = null;
+	gizmo.userData.gizmo.obj = null;
+	joint.userData.joint.obj = null;	
 
 	clickObject3D( obj, null );
 }
