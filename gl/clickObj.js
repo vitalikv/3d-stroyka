@@ -103,6 +103,17 @@ function clickObject3D( obj, intersect )
 		clippingGizmo360(obj); 		
 	}
 	
+	if(infProject.settings.active.pg == 'joint') 
+	{ 
+		var joint = infProject.tools.joint;
+		joint.visible = true;	
+		joint.userData.joint.obj = obj;
+		joint.position.copy(pos);
+		joint.rotation.copy( obj.rotation );
+		
+		showJoinPoint({obj: obj}); 
+	}
+	
 	setScalePivotGizmo();
 }
 
@@ -133,6 +144,7 @@ function hidePivotGizmo(obj)
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
+	var joint = infProject.tools.joint;
 	
 	if(clickO.rayhit)
 	{
@@ -140,16 +152,21 @@ function hidePivotGizmo(obj)
 		if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		
 		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
-		if(clickO.rayhit.object.userData.tag == 'gizmo') return;		
+		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
+
+		if(clickO.rayhit.object.userData.tag == 'joinPoint') return;
 	}	
 	
 	pivot.visible = false;
 	gizmo.visible = false;
+	joint.visible = false;
+	hideJoinPoint({obj: joint.userData.joint.obj});
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
+	joint.userData.joint.obj = null;
 	
-	//clickO.obj = null;
+	//clickO.obj = null;  
 	clickO.last_obj = null;
 	
 	$('[nameId="obj_b_menu_1"]').hide();
@@ -165,20 +182,22 @@ function showObjUI()
 
 
 
-// переключаем Pivot/Gizmo
+// переключаем Pivot/Gizmo/joint
 function switchPivotGizmo(cdm)
 {
 	var obj = null;
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;	
+	var joint = infProject.tools.joint;
 	
 	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; pivot.visible = false; }	
 	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; gizmo.visible = false; }
+	if(infProject.settings.active.pg == 'joint'){ obj = joint.userData.joint.obj; joint.visible = false; hideJoinPoint({obj: obj}); }
 	
 	if(!obj) return;
 	
 	infProject.settings.active.pg = cdm.mode;		
-	
+
 	clickObject3D( obj, null );
 }
 

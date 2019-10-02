@@ -130,9 +130,9 @@ function clickRayHit(event)
 { 
 	var rayhit = null;	
 	
-	if(infProject.scene.array.joinPoint.length > 0)
+	if(infProject.tools.joint.visible)
 	{
-		var ray = rayIntersect( event, infProject.scene.array.joinPoint, 'arr' ); 
+		var ray = rayIntersect( event, infProject.tools.joint.userData.joint.arrJ_1, 'arr' ); 
 		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
 	}	
 	
@@ -241,7 +241,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wf_line' ) {  }
-		else if( tag == 'joinPoint' ) { clickJoinPoint({rayhit: rayhit}); }
+		else if( tag == 'joinPoint' && camera == cameraTop ) { clickJoinPoint({rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
@@ -249,6 +249,7 @@ function clickMouseActive(cdm)
 	else if(cdm.type == 'up')
 	{		
 		if( tag == 'wall' && camera == camera3D ) {  }
+		else if( tag == 'joinPoint' && camera == camera3D ) { clickJoinPoint({rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, rayhit ); }
 		else { flag = false; }
 	}	

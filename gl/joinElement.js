@@ -1,51 +1,71 @@
 
 
 var typeJoin = false; 
-var selectJoinPoint = { first: null, two: null };
+var selectJoinPoint = { first: null, two: null }; 
 
 
-// нажимаем на кнопку соединить (нижнее меню), показываем/скрываем у объекта точки стыковки 
-function showHideJoinPoint(cdm)
+function createJoinP()
 {
-	var obj = clickO.obj;
-	
-	if(!obj) return;
-	
-	//infProject.tools.pivot.visible = false;
-	//infProject.tools.gizmo.visible = false;	
-	
-	
-	if(obj.userData.joinPoint)
-	{
-		var flag = obj.userData.joinPoint.arr[0].visible;
-		
-		for(var i = 0; i < infProject.scene.array.joinPoint.length; i++)
-		{
-			infProject.scene.array.joinPoint[i].visible = false;				
-		}
-		
-		infProject.scene.array.joinPoint = [];
-		
-		selectJoinPoint = { first: null, two: null };
+	var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
+	var obj = new THREE.Mesh( createGeometryWD(0.01, 0.01, 0.01), material ); 	
+	obj.userData.tag = 'joint';
+	obj.userData.joint = {};
+	obj.userData.joint.obj = null;
+	obj.userData.joint.arrJ_1 = [];		// все соединители для 1-ого выбранного объекта
+	obj.userData.joint.arrJ_2 = [];
+	obj.userData.joint.link_1 = null;
+	obj.userData.joint.link_2 = null;
+	obj.renderOrder = 1;
+	obj.visible = false;
+	scene.add( obj );
 
-		if(!flag)
-		{
-			for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
-			{
-				var o = obj.userData.joinPoint.arr[i];
-				
-				o.visible = true;
-				o.material.color = new THREE.Color(0x00ff00);
-				
-				infProject.scene.array.joinPoint[infProject.scene.array.joinPoint.length] = o;				
-			}
-			
-		}
-
-
-	}
-
+	return obj;	
 }
+
+
+
+// показываем точки-соединители
+function showJoinPoint(cdm)
+{
+	var obj = cdm.obj;
+	
+	if(!obj) return;	
+	if(!obj.userData.joinPoint) return;
+	
+
+	infProject.tools.joint.userData.joint.arrJ_1 = [];
+	
+	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
+	{
+		var o = obj.userData.joinPoint.arr[i];
+		
+		o.visible = true;
+		o.material.color = new THREE.Color(0x00ff00);
+		
+		infProject.tools.joint.userData.joint.arrJ_1[i] = o;
+	}
+}
+
+
+
+// скрываем у объекта точки-соединители 
+function hideJoinPoint(cdm)
+{
+	var obj = cdm.obj;
+	
+	if(!obj) return;	
+	if(!obj.userData.joinPoint) return;
+	
+
+	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
+	{
+		var o = obj.userData.joinPoint.arr[i];
+		
+		o.visible = false;
+		o.material.color = new THREE.Color(0x00ff00);			
+	}
+}
+
 
 
 
