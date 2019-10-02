@@ -162,6 +162,11 @@ function cameraMove3D( event )
 
 			camera.position.add( centerCam );  
 			camera.lookAt( centerCam );
+			
+			var gizmo = infProject.tools.gizmo;
+			
+			if(gizmo.visible) clippingGizmo360(gizmo.userData.gizmo.obj);
+			
 		}
 		if ( isMouseDown3 )    
 		{
