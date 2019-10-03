@@ -144,6 +144,19 @@ function clickRayHit(event)
 
 			}				
 		}
+		
+		var o = infProject.tools.joint.userData.joint.obj_2;
+		
+		if(o)
+		{
+			if(o.userData.joinPoint)
+			{
+				
+				var ray = rayIntersect( event, o.userData.joinPoint.arr, 'arr' ); 
+				if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
+
+			}				
+		}		
 	}	
 	
 	if(infProject.tools.pivot.visible)

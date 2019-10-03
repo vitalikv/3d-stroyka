@@ -1724,6 +1724,7 @@ $(document).ready(function ()
 	 
 	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
 	loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
+	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 1)});
 	
 	if(1==2)
 	{

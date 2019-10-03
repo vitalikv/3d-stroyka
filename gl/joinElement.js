@@ -4,6 +4,7 @@
 var selectJoinPoint = { first: null, two: null }; 
 
 
+// создаем инструмент 
 function createJoinP()
 {
 	var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
@@ -12,8 +13,6 @@ function createJoinP()
 	obj.userData.joint = {};
 	obj.userData.joint.obj = null;
 	obj.userData.joint.obj_2 = null;
-	obj.userData.joint.link_1 = null;
-	obj.userData.joint.link_2 = null;
 	obj.renderOrder = 1;
 	obj.visible = false;
 	scene.add( obj );
@@ -31,6 +30,20 @@ function showJoinPoint(cdm)
 	if(!obj) return;	
 	if(!obj.userData.joinPoint) return;
 	
+	var joint = infProject.tools.joint;
+	
+	console.log(3334, joint.userData.joint.obj, obj)
+	
+	if(joint.userData.joint.obj_2 == obj) return;
+	
+	// объект не равен ни 1, ни 2 
+	if(joint.userData.joint.obj)
+	{
+		if(joint.userData.joint.obj.userData.joinPoint.active)
+		{
+			hideJoinPoint({clear: 2});
+		}		
+	}
 	
 	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
 	{
@@ -39,6 +52,8 @@ function showJoinPoint(cdm)
 		o.visible = true;
 		o.material.color = new THREE.Color(0x00ff00);
 	}
+	
+	obj.userData.joinPoint.active = null;
 }
 
 
@@ -46,9 +61,13 @@ function showJoinPoint(cdm)
 // скрываем у объекта точки-соединители 
 function hideJoinPoint(cdm)
 {
-	var joint = infProject.tools.joint;
+	if(!cdm) cdm = {};
+	
+	var joint = infProject.tools.joint;	
 	
 	var arr = [joint.userData.joint.obj, joint.userData.joint.obj_2];
+	
+	if(cdm.clear) arr = [joint.userData.joint.obj_2];
 	
 	
 	for(var i = 0; i < arr.length; i++)
@@ -115,7 +134,29 @@ function showHideJoinObjUI(cdm)
 
 function joinElement(cdm)
 {
+	if(!cdm) cdm = {};
 	
+	var joint = infProject.tools.joint;
+	
+	var obj = infProject.tools.joint.userData.joint.obj;
+	var obj_2 = infProject.tools.joint.userData.joint.obj_2;
+	
+	if(!obj) return;
+	if(!obj_2) return;
+	
+	var o1 = obj.userData.joinPoint.active;
+	var o2 = obj_2.userData.joinPoint.active;
+
+	if(!o1) return;
+	if(!o2) return;
+
+
+	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
+	var pos2 = o2.getWorldPosition(new THREE.Vector3());
+	
+	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
+	
+	obj_2.position.add(pos);
 }
 
 

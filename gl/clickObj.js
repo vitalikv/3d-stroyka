@@ -110,11 +110,11 @@ function clickObject3D( obj, intersect )
 		joint.position.copy(pos);
 		joint.rotation.copy( obj.rotation );
 		
+		showJoinPoint({obj: obj}); 
+		
 		if(!joint.userData.joint.obj) { joint.userData.joint.obj = obj; }
 		else if (joint.userData.joint.obj == obj) {}
 		else { joint.userData.joint.obj_2 = obj; }
-		
-		showJoinPoint({obj: obj}); 
 	}
 	
 	setScalePivotGizmo();
@@ -181,6 +181,7 @@ console.log(100000);
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
 	joint.userData.joint.obj = null;
+	joint.userData.joint.obj_2 = null;
 	
 	//clickO.obj = null;  
 	clickO.last_obj = null;
@@ -196,7 +197,7 @@ function showObjUI()
 {
 	var joint = infProject.tools.joint;
 	
-	if(joint.userData.joint.obj && joint.userData.joint.obj_2)
+	if(joint.visible && joint.userData.joint.obj && joint.userData.joint.obj_2)
 	{
 		showHideJoinObjUI({visible: true});
 	}
@@ -229,7 +230,8 @@ function switchPivotGizmo(cdm)
 
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
-	joint.userData.joint.obj = null;	
+	joint.userData.joint.obj = null;
+	joint.userData.joint.obj_2 = null;	
 
 	clickObject3D( obj, null );
 }
