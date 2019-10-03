@@ -156,9 +156,8 @@ function hidePivotGizmo(obj)
 		
 		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
 		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-console.log(8888);
-		if(joint.userData.joint.obj == clickO.rayhit.object) { $('[nameId="obj_b_menu_1"]').hide(); return; }
-console.log(9999);		
+
+		if(joint.userData.joint.obj == clickO.rayhit.object) { $('[nameId="obj_b_menu_1"]').hide(); return; }		
 		if(clickO.rayhit.object.userData.tag == 'joinPoint') { $('[nameId="obj_b_menu_1"]').hide(); return; }
 		
 		if(joint.visible && joint.userData.joint.obj && clickO.rayhit.object.userData.tag == 'obj')
@@ -172,7 +171,7 @@ console.log(9999);
 			
 		}
 	}	
-console.log(100000);	
+	
 	pivot.visible = false;
 	gizmo.visible = false;
 	joint.visible = false;

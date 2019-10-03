@@ -13,6 +13,9 @@ function createJoinP()
 	obj.userData.joint = {};
 	obj.userData.joint.obj = null;
 	obj.userData.joint.obj_2 = null;
+	obj.userData.joint.material = {};
+	obj.userData.joint.material.active = new THREE.MeshLambertMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+	obj.userData.joint.material.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 	obj.renderOrder = 1;
 	obj.visible = false;
 	scene.add( obj );
@@ -32,8 +35,6 @@ function showJoinPoint(cdm)
 	
 	var joint = infProject.tools.joint;
 	
-	console.log(3334, joint.userData.joint.obj, obj)
-	
 	if(joint.userData.joint.obj_2 == obj) return;
 	
 	// объект не равен ни 1, ни 2 
@@ -50,7 +51,7 @@ function showJoinPoint(cdm)
 		var o = obj.userData.joinPoint.arr[i];
 		
 		o.visible = true;
-		o.material.color = new THREE.Color(0x00ff00);
+		o.material = joint.userData.joint.material.default;
 	}
 	
 	obj.userData.joinPoint.active = null;
@@ -82,7 +83,7 @@ function hideJoinPoint(cdm)
 			var o = obj.userData.joinPoint.arr[i2];
 			
 			o.visible = false;
-			o.material.color = new THREE.Color(0x00ff00);			
+			o.material = joint.userData.joint.material.default;			
 		}
 
 		obj.userData.joinPoint.active = null;
@@ -100,15 +101,16 @@ function clickJoinPoint(cdm)
 	var obj = rayhit.object;
 	var parent = obj.parent;
 	
+	var joint = infProject.tools.joint;
 	
 	if(parent.userData.joinPoint.active)
 	{
-		parent.userData.joinPoint.active.material.color = new THREE.Color(0x00ff00);
+		parent.userData.joinPoint.active.material = joint.userData.joint.material.default;
 		parent.userData.joinPoint.active = null;
 	}
 	
 	
-	obj.material.color = new THREE.Color(0xff0000);
+	obj.material = joint.userData.joint.material.active;
 	parent.userData.joinPoint.active = obj;
 	
 
@@ -154,9 +156,18 @@ function joinElement(cdm)
 	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
 	var pos2 = o2.getWorldPosition(new THREE.Vector3());
 	
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());
+	
 	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
 	
 	obj_2.position.add(pos);
+	obj_2.quaternion.copy(q);
+	
+	clickO.rayhit = null;
+	
+	hidePivotGizmo(obj);
+	
+	console.log(222);
 }
 
 

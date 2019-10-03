@@ -258,6 +258,13 @@ function setParamObj(inf, cdm)
 		}
 		
 		//obj.position.set(0,1,0);
+		//obj.rotation.set(0,1,0);
+		
+		var quaternion = new THREE.Quaternion();
+		quaternion.x = -0.7071067811865475;
+		quaternion.w = 0.7071067811865476;
+		
+		obj.quaternion.multiply(quaternion);
 	}
 }
 

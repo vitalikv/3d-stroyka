@@ -164,6 +164,7 @@ var obj_line = [];
 var room = [];
 var ceiling = [];
 var arrWallFront = [];
+var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
 var clickO = resetPop.clickO();
 infProject.scene.array = resetPop.infProjectSceneArray();
@@ -200,7 +201,6 @@ arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, ma
 
 
 var planeMath = createPlaneMath();
-var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3();
