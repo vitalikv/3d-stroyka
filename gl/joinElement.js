@@ -153,15 +153,15 @@ function joinElement(cdm)
 	if(!o2) return;
 
 
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());
+	obj_2.quaternion.copy(q);
+	obj_2.updateMatrixWorld();
+	
 	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
 	var pos2 = o2.getWorldPosition(new THREE.Vector3());
-	
-	var q = o1.getWorldQuaternion(new THREE.Quaternion());
-	
-	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
-	
+	var pos = new THREE.Vector3().subVectors( pos1, pos2 );	
 	obj_2.position.add(pos);
-	obj_2.quaternion.copy(q);
+	
 	
 	clickO.rayhit = null;
 	
