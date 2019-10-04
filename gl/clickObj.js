@@ -53,8 +53,8 @@ function clickMouseUpObject(obj)
 // кликнули на 3D объект, ставим pivot/gizmo
 function clickObject3D( obj, intersect )
 {
-	var type = '';
-	if(obj.parent.userData.tag)
+	
+	if(obj.parent.userData.groupObj)
 	{
 		obj = obj.parent;
 	}		
@@ -171,7 +171,17 @@ function hidePivotGizmo(obj)
 		{
 			var o = joint.userData.joint.obj;
 			
-			if(o.userData.joinPoint.active)
+			if(o.userData.groupObj) 
+			{				
+				for(var i = 0; i < o.children.length; i++)
+				{
+					if(o.children[i].userData.joinPoint.active)
+					{
+						$('[nameId="obj_b_menu_1"]').hide(); return;
+					}
+				}
+			}			
+			else if(o.userData.joinPoint.active)
 			{
 				$('[nameId="obj_b_menu_1"]').hide(); return;
 			}

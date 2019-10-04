@@ -132,31 +132,8 @@ function clickRayHit(event)
 	
 	if(infProject.tools.joint.visible)
 	{
-		var o = infProject.tools.joint.userData.joint.obj;
-		
-		if(o)
-		{
-			if(o.userData.joinPoint)
-			{
-				
-				var ray = rayIntersect( event, o.userData.joinPoint.arr, 'arr' ); 
-				if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
-
-			}				
-		}
-		
-		var o = infProject.tools.joint.userData.joint.obj_2;
-		
-		if(o)
-		{
-			if(o.userData.joinPoint)
-			{
-				
-				var ray = rayIntersect( event, o.userData.joinPoint.arr, 'arr' ); 
-				if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
-
-			}				
-		}		
+		var ray = clickRayJoinPoint();
+		if(ray) { return ray; }
 	}	
 	
 	if(infProject.tools.pivot.visible)

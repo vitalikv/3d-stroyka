@@ -23,27 +23,60 @@ function createJoinP()
 
 
 
+function clickRayJoinPoint()
+{
+	var rayhit = null;
+	var o = infProject.tools.joint.userData.joint.obj;
+	
+	if(o)
+	{
+		var ray = rayIntersect( event, getArrayJointPoint({obj: o}), 'arr' ); 
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
+	}
+	
+	var o = infProject.tools.joint.userData.joint.obj_2;
+	
+	if(o)
+	{
+		var ray = rayIntersect( event, getArrayJointPoint({obj: o}), 'arr' ); 
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
+	}		
+	
+	return null;
+}
+
+
 // показываем точки-соединители
 function showJoinPoint(cdm)
 {
 	var obj = cdm.obj;
 	
 	if(!obj) return;	
-	if(!obj.userData.joinPoint) return;
 	
-	var joint = infProject.tools.joint;
+	if(obj.userData.joinPoint) { type = 'obj'; }
+	else if(obj.userData.groupObj) { type = 'group'; }
+	else { return; }
 	
 	hideJoinPoint({clear: 2});
 	
-	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
-	{
-		var o = obj.userData.joinPoint.arr[i];
-		
-		o.visible = true;
-		o.material = joint.userData.joint.material.default;
-	}
+	if(obj.userData.groupObj) { var arr = obj.children; }
+	else { var arr = [obj]; }
 	
-	obj.userData.joinPoint.active = null;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		var arrO = arr[i].userData.joinPoint.arr;
+		
+		for(var i2 = 0; i2 < arrO.length; i2++)
+		{
+			var o = arrO[i2];
+			
+			o.visible = true;
+			o.material = infProject.tools.joint.userData.joint.material.default;
+		}
+		
+		arr[i].userData.joinPoint.active = null;		
+	}
 }
 
 
@@ -65,17 +98,29 @@ function hideJoinPoint(cdm)
 		var obj = arr[i];
 		
 		if(!obj) continue;	
-		if(!obj.userData.joinPoint) continue;		
-
-		for(var i2 = 0; i2 < obj.userData.joinPoint.arr.length; i2++)
+		
+		if(obj.userData.joinPoint) { type = 'obj'; }
+		else if(obj.userData.groupObj) { type = 'group'; }		
+		else { continue; }
+ 		
+		if(obj.userData.groupObj) { var arr2 = obj.children; }
+		else { var arr2 = [obj]; }
+	
+		for(var n = 0; n < arr2.length; n++)
 		{
-			var o = obj.userData.joinPoint.arr[i2];
+			var arrO = arr2[n].userData.joinPoint.arr;
 			
-			o.visible = false;
-			o.material = joint.userData.joint.material.default;			
-		}
+			for(var i2 = 0; i2 < arrO.length; i2++)
+			{
+				var o = arrO[i2];
+				
+				o.visible = false;
+				o.material = joint.userData.joint.material.default;			
+			}
 
-		obj.userData.joinPoint.active = null;
+			arr2[n].userData.joinPoint.active = null;			
+		}
+		
 	}
 	
 }
@@ -90,16 +135,14 @@ function clickJoinPoint(cdm)
 	var obj = rayhit.object;
 	var parent = obj.parent;
 	
-	var joint = infProject.tools.joint;
-	
 	if(parent.userData.joinPoint.active)
 	{
-		parent.userData.joinPoint.active.material = joint.userData.joint.material.default;
+		parent.userData.joinPoint.active.material = infProject.tools.joint.userData.joint.material.default;
 		parent.userData.joinPoint.active = null;
 	}
 	
 	
-	obj.material = joint.userData.joint.material.active;
+	obj.material = infProject.tools.joint.userData.joint.material.active;
 	parent.userData.joinPoint.active = obj;
 	
 
@@ -122,6 +165,57 @@ function showHideJoinObjUI(cdm)
 }
 
 
+
+// получаем все точки-соединители , даже если это группа объектов
+function getArrayJointPoint(cdm)
+{
+	var o = cdm.obj;
+	var arr = [];
+	
+	if(o.userData.groupObj) 
+	{				
+		for(var i = 0; i < o.children.length; i++)
+		{
+			for(var i2 = 0; i2 < o.children[i].userData.joinPoint.arr.length; i2++)
+			{
+				arr[arr.length] = o.children[i].userData.joinPoint.arr[i2];
+			}
+		}
+	}
+	else
+	{
+		arr = o.userData.joinPoint.arr;
+	}
+
+	return arr;	
+}
+
+
+// находим вделеную точку-соединитель
+function getActiveJointPoint(cdm)
+{
+	var o = cdm.obj;
+	
+	if(o.userData.groupObj) 
+	{				
+		for(var i = 0; i < o.children.length; i++)
+		{
+			if(o.children[i].userData.joinPoint.active)
+			{
+				return o.children[i].userData.joinPoint.active;
+			}
+		}
+	}
+	else
+	{
+		return o.userData.joinPoint.active;
+	}
+
+	return null;
+}
+
+
+
 // соединяем элементы
 function joinElement(cdm)
 {
@@ -135,8 +229,8 @@ function joinElement(cdm)
 	if(!obj) return;
 	if(!obj_2) return;
 	
-	var o1 = obj.userData.joinPoint.active;
-	var o2 = obj_2.userData.joinPoint.active;
+	var o1 = getActiveJointPoint({obj: obj});  
+	var o2 = getActiveJointPoint({obj: obj_2});
 
 	if(!o1) return;
 	if(!o2) return;
@@ -158,11 +252,12 @@ function joinElement(cdm)
 	
 	//if(obj.parent )
 		
-	if(1==2)
+	if(1==1)
 	{
 		var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
 		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 		group.userData.tag = 'group';
+		group.userData.groupObj = true;
 		
 		var pos = new THREE.Vector3();
 		var arr = [obj, obj_2];
