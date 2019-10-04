@@ -67,7 +67,7 @@ function loadObjServer(cdm)
 	var exist = getArrayObj({lotid: lotid});
 	
 	if(exist)
-	{
+	{ 
 		var obj = getArrayObj(cdm);
 		inf.obj = obj.clone();
 		if(obj) { setParamObj(inf, cdm); }
@@ -133,7 +133,7 @@ function addArrayObj(cdm)
 		}
 	}	
 	
-	//arrObj[arrObj.length] = {lotid: lotid, obj: obj.clone()}; 
+	arrObj[arrObj.length] = {lotid: lotid, obj: obj.clone()}; 
 }
 
 
@@ -242,11 +242,19 @@ function setParamObj(inf, cdm)
 				{
 					if(child.name == inf.joinPoint[i].name)
 					{
-						child.userData.joinObj = null;
-						child.userData.tag = 'joinPoint';
-						child.visible = false;
+						child.visible = false;						
 						
-						arr[arr.length] = child;
+						var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.userData.joint.material.default );
+						cube.position.copy(child.position);
+						cube.rotation.copy(child.rotation);
+						cube.visible = false;
+						
+						cube.userData.tag = 'joinPoint';						
+						cube.userData.joinObj = null;
+						
+						obj.add( cube );
+						
+						arr[arr.length] = cube;
 					}
 				}
 			}
@@ -256,9 +264,6 @@ function setParamObj(inf, cdm)
 		{ 
 			obj.userData.joinPoint = {visible: false, arr: arr, active: null}; 
 		}
-		
-		//obj.position.set(0,1,0);
-		//obj.rotation.set(0,1,0);
 		
 
 	}

@@ -1,8 +1,6 @@
 
 
 
-var selectJoinPoint = { first: null, two: null }; 
-
 
 // создаем инструмент 
 function createJoinP()
@@ -35,16 +33,7 @@ function showJoinPoint(cdm)
 	
 	var joint = infProject.tools.joint;
 	
-	if(joint.userData.joint.obj_2 == obj) return;
-	
-	// объект не равен ни 1, ни 2 
-	if(joint.userData.joint.obj)
-	{
-		if(joint.userData.joint.obj.userData.joinPoint.active)
-		{
-			hideJoinPoint({clear: 2});
-		}		
-	}
+	hideJoinPoint({clear: 2});
 	
 	for(var i = 0; i < obj.userData.joinPoint.arr.length; i++)
 	{
@@ -133,7 +122,7 @@ function showHideJoinObjUI(cdm)
 }
 
 
-
+// соединяем элементы
 function joinElement(cdm)
 {
 	if(!cdm) cdm = {};
@@ -167,7 +156,8 @@ function joinElement(cdm)
 	
 	hidePivotGizmo(obj);
 	
-	console.log(222);
+	//if(obj.parent )
+
 }
 
 

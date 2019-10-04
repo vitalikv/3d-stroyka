@@ -356,43 +356,48 @@ function saveWindows(wall)
 
 function saveFile(cdm) 
 { 
-	if(!cdm.id) return;
 	
 	var json = JSON.stringify( getJsonGeometry() );
 	
-	// сохраняем в папку
-	$.ajax
-	({
-		url: infProject.path+'saveJson.php',
-		type: 'POST',
-		data: {myarray: json},
-		dataType: 'json',
-		success: function(json)
-		{ 			
-			console.log(json); 
-		},
-		error: function(json){ console.log(json);  }
-	});	
+	if(cdm.json)
+	{
+		// сохраняем в папку
+		$.ajax
+		({
+			url: infProject.path+'saveJson.php',
+			type: 'POST',
+			data: {myarray: json},
+			dataType: 'json',
+			success: function(json)
+			{ 			
+				console.log(json); 
+			},
+			error: function(json){ console.log(json);  }
+		});			
+	}
 	
 	
-	//var preview = saveAsImagePreview();
-	var preview = null;
-	
-	// сохраняем в бд
-	$.ajax
-	({
-		url: infProject.path+'components/saveSql.php',
-		type: 'POST',
-		data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
-		dataType: 'json',
-		success: function(json)
-		{ 			
-			console.log(json);
-			
-			if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
-		},
-		error: function(json){ console.log(json); }
-	});	
+	if(cdm.id)
+	{
+		//var preview = saveAsImagePreview();
+		var preview = null;
+		
+		// сохраняем в бд
+		$.ajax
+		({
+			url: infProject.path+'components/saveSql.php',
+			type: 'POST',
+			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
+			dataType: 'json',
+			success: function(json)
+			{ 			
+				console.log(json);
+				
+				if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
+			},
+			error: function(json){ console.log(json); }
+		});			
+	}
 	
 	
 	if(1==2)
@@ -601,7 +606,7 @@ function loadFile(cdm)
 	if(cdm.id == 0) { resetScene(); return; }	 
 	
 	
-	if(1==2)	// загрузка json из папки
+	if(cdm.json)	// загрузка json из папки
 	{
 		$.ajax
 		({

@@ -1646,6 +1646,7 @@ document.body.addEventListener("keydown", function (e)
 	
 	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
 	if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
+	if(clickO.keys[18] && e.keyCode == 84) { saveFile({json: true}); }			// alt + t
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
 	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
 } );
@@ -1655,6 +1656,7 @@ document.body.addEventListener("keyup", function (e) { clickO.keys[e.keyCode] = 
 
 
 
+// загрзука проекта из базы через input
 function inputLoadProject()
 {
 	var visible = $('[nameid="dp_inf_1"]').is(":visible");
@@ -1722,8 +1724,9 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
 	 
+	//loadFile({json: true}); 
 	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
-	loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
+	loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0), rot: new THREE.Vector3(0, 0, 0)});
 	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 1)});
 	
 	if(1==2)
@@ -1772,28 +1775,7 @@ $(document).ready(function ()
 		});
 		
 	}
-	
-	
-	if(1==2)
-	{
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'import/bak_1.fbx', function ( objects )  
-		{ 		
-			var obj = objects.children[0];
-			obj.position.set(0,0,0);
-
-			obj.userData.tag = 'obj';
-			obj.userData.id = countId; countId++;
-			obj.userData.obj3D = {};
-			obj.userData.obj3D.lotid = 1; 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-			
-			obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.0 } );
-			obj.material.visible = false;
-			
-			scene.add( obj );
-		});				
-	}
+		
 	
 	
 	if(1==2)	
@@ -1830,81 +1812,7 @@ $(document).ready(function ()
 	}	
 
 
-	if(1==2)
-	{
-		
-		$.ajax
-		({
-			url: infProject.path+'components/fbxLoadSql.php',
-			type: 'POST',
-			success: function(fbx)
-			{ 
 
-
-				var loader = new THREE.FBXLoader(); console.log(222, fbx);
-				loader.parse( fbx, function ( objects ) 
-				{ 
-					
-					var obj = objects.children[i];
-					obj.position.set(0,0,1);
-
-					obj.userData.tag = 'obj';
-					obj.userData.id = countId; countId++;
-					obj.userData.obj3D = {};
-					obj.userData.obj3D.lotid = 1; 
-					infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;									
-
-					scene.add( obj );				
-				});
-										
-			},
-		});			
-		
-		
-		new THREE.MTLLoader().load
-		( 
-			infProject.path+'export/nasos.mtl',
-			
-			function ( materials ) 
-			{
-				materials.preload();
-				
-				new THREE.OBJLoader().setMaterials( materials ).load						
-				( 
-					infProject.path+'export/nasos.obj', 
-					function ( object ) 
-					{		
-						
-						//object.scale.set(0.1, 0.1, 0.1);
-						
-						var obj = object.children[0];
-						
-						obj.position.set(3,1,-1.5);
-						
-						if(1==2)
-						{
-							var box = new THREE.Box3().setFromObject( obj );
-							var center = new THREE.Vector3();
-							box.getCenter( center );
-							obj.position.sub( center );										
-						}
-						
-						var v = obj.geometry.attributes.position.array;
-						
-						obj.material.lightMap = lightMap_1;
-						
-						obj.userData.tag = 'obj';
-						obj.userData.id = countId; countId++;
-						obj.userData.obj3D = {};
-						obj.userData.obj3D.lotid = 1; 
-						infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-		
-						scene.add( obj );
-					} 
-				);
-			}
-		);					
-	}
 	
 });
 

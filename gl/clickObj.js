@@ -53,9 +53,15 @@ function clickMouseUpObject(obj)
 // кликнули на 3D объект, ставим pivot/gizmo
 function clickObject3D( obj, intersect )
 {
+	var type = '';
+	if(obj.parent.userData.tag)
+	{
+		obj = obj.parent;
+	}		
 	
 	obj.updateMatrixWorld();
-	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
+	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+	
 	
 	if(infProject.settings.active.pg == 'pivot')
 	{
@@ -124,7 +130,7 @@ function clickObject3D( obj, intersect )
 
 // удаление объекта
 function deleteObjectPop(obj)
-{
+{ 
 	clickO = resetPop.clickO();
 	
 	hidePivotGizmo(obj);
@@ -133,7 +139,8 @@ function deleteObjectPop(obj)
 	
 	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
 	
-	scene.remove( obj );	
+	disposeNode(obj);
+	scene.remove(obj);	
 }
 
 
