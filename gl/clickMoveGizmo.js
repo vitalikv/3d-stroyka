@@ -159,7 +159,7 @@ function clickGizmo( intersect )
 	else
 	{
 		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );								// создаем Quaternion повернутый на выбранную ось	
-		var q2 = new THREE.Quaternion().setFromEuler( obj.rotation ).multiply( quaternion );// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
+		var q2 = obj.quaternion.clone().multiply( quaternion );// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
 		planeMath.quaternion.copy( q2 );										
 	}
 

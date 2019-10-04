@@ -1817,3 +1817,43 @@ $(document).ready(function ()
 });
 
 
+
+
+
+
+
+
+
+
+
+if(1==2)
+{
+	var material = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false }); 
+	var cube = new THREE.Mesh( new THREE.BoxGeometry( 0.5, 0.5, 0.5 ), material );
+	scene.add( cube );
+
+	var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false }); 
+	var cube2 = new THREE.Mesh( new THREE.BoxGeometry( 0.3, 0.3, 0.3 ), material );
+	scene.add( cube2 );
+	cube2.position.x = 2;
+
+	cube2.applyMatrix( new THREE.Matrix4().makeRotationFromQuaternion(new THREE.Quaternion().setFromEuler( new THREE.Euler(0,Math.PI/4,0) )) );
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

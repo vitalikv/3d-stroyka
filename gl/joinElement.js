@@ -157,8 +157,38 @@ function joinElement(cdm)
 	hidePivotGizmo(obj);
 	
 	//if(obj.parent )
-
+		
+	if(1==2)
+	{
+		var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
+		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
+		group.userData.tag = 'group';
+		
+		var pos = new THREE.Vector3();
+		var arr = [obj, obj_2];
+		for(var i = 0; i < arr.length; i++)
+		{
+			pos.add( arr[i].position );
+		}
+		pos.divideScalar( arr.length );
+		
+		group.position.copy(pos);
+		group.rotation.copy(obj.rotation);
+		
+		scene.add( group );
+		 
+		group.attach(obj);
+		group.attach(obj_2);
+		
+		console.log(222, group);		
+	}
 }
+
+
+
+
+
+
 
 
 
