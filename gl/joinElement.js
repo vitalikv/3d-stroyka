@@ -166,6 +166,30 @@ function showHideJoinObjUI(cdm)
 
 
 
+// получаем все соединенные объекты в группе
+function getArrayJointObj(cdm)
+{
+	var o = cdm.obj;
+	var arr = [];
+	
+	if(o.parent.userData.groupObj) 
+	{		
+		for(var i = 0; i < o.parent.children.length; i++)
+		{
+			if(!o.parent.children[i].userData.tag) continue;
+			
+			arr[arr.length] = o.parent.children[i];
+		}
+	}
+	else
+	{
+		arr[0] = o;
+	}
+
+	return arr;	
+}
+
+
 // получаем все точки-соединители , даже если это группа объектов
 function getArrayJointPoint(cdm)
 {

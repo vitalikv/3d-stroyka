@@ -135,12 +135,25 @@ function deleteObjectPop(obj)
 	
 	hidePivotGizmo(obj);
 	
-	deleteValueFromArrya({arr : infProject.scene.array.obj, o : obj});
+	var arr = getArrayJointObj({obj: obj});
+	 
+	for(var i = 0; i < arr.length; i++)
+	{	
+		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});
+	}	
 	
 	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
 	
-	disposeNode(obj);
-	scene.remove(obj);	
+	if(obj.parent.userData.groupObj)
+	{
+		disposeNode(obj.parent);
+		scene.remove(obj.parent);			
+	}
+	else
+	{
+		disposeNode(obj);
+		scene.remove(obj);			
+	}
 }
 
 
@@ -150,13 +163,13 @@ function hidePivotGizmo(obj)
 {
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
-	if(obj.userData.tag != 'obj' || obj.userData.groupObj) return;
+	if(obj.userData.tag == 'obj' || obj.userData.groupObj) {}
+	else { return; }
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
-	
-	console.log(99999999, obj, clickO.rayhit); 
+
 	
 	if(clickO.rayhit)
 	{
@@ -180,7 +193,7 @@ function hidePivotGizmo(obj)
 		}
 	}	
 	
-	console.log(99999999, obj);
+	
 	
 	pivot.visible = false;
 	gizmo.visible = false;
