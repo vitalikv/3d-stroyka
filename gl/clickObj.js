@@ -149,12 +149,14 @@ function deleteObjectPop(obj)
 function hidePivotGizmo(obj)
 {
 	if(!obj) return;
-	if(!obj.userData.tag) return;
-	if(obj.userData.tag != 'obj') return;
+	if(!obj.userData.tag) return;	
+	if(obj.userData.tag != 'obj' || obj.userData.groupObj) return;
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
+	
+	console.log(99999999, obj, clickO.rayhit); 
 	
 	if(clickO.rayhit)
 	{
@@ -171,23 +173,14 @@ function hidePivotGizmo(obj)
 		{
 			var o = joint.userData.joint.obj;
 			
-			if(o.userData.groupObj) 
-			{				
-				for(var i = 0; i < o.children.length; i++)
-				{
-					if(o.children[i].userData.joinPoint.active)
-					{
-						$('[nameId="obj_b_menu_1"]').hide(); return;
-					}
-				}
-			}			
-			else if(o.userData.joinPoint.active)
+			if(getActiveJointPoint({obj: o}))
 			{
 				$('[nameId="obj_b_menu_1"]').hide(); return;
-			}
-			
+			}			
 		}
 	}	
+	
+	console.log(99999999, obj);
 	
 	pivot.visible = false;
 	gizmo.visible = false;

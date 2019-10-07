@@ -261,19 +261,53 @@ function joinElement(cdm)
 		
 		var pos = new THREE.Vector3();
 		var arr = [obj, obj_2];
+		var arr2 = [];
+		
 		for(var i = 0; i < arr.length; i++)
 		{
-			pos.add( arr[i].position );
+			if(arr[i].userData.groupObj)
+			{				
+				arr[i].updateMatrixWorld();
+				
+				for(var i2 = arr[i].children.length - 1; i2 > -1; i2--)
+				{
+					var o = arr[i].children[i2];
+					
+					var pos1 = o.getWorldPosition(new THREE.Vector3());
+					var q1 = o.getWorldQuaternion(new THREE.Quaternion());						
+					
+					scene.add(o);
+					
+					o.position.copy(pos1);
+					o.quaternion.copy(q1);					
+					pos.add( pos1 );
+					
+					arr2[arr2.length] = o;
+				}
+				
+				disposeNode(arr[i]);
+				scene.remove(arr[i]);	
+				
+			}
+			else
+			{
+				pos.add( arr[i].position );
+				
+				arr2[arr2.length] = arr[i];
+			}			
 		}
-		pos.divideScalar( arr.length );
+		
+		pos.divideScalar( arr2.length );
 		
 		group.position.copy(pos);
 		group.rotation.copy(obj.rotation);
 		
 		scene.add( group );
 		 
-		group.attach(obj);
-		group.attach(obj_2);
+		for(var i = 0; i < arr2.length; i++)
+		{
+			group.attach(arr2[i]);
+		}			
 		
 		console.log(222, group);		
 	}
