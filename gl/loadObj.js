@@ -243,12 +243,16 @@ function setParamObj(inf, cdm)
 				{
 					if(child.name == inf.joinPoint[i].name)
 					{
-						child.visible = false;						
+						//child.visible = false;						
 						
 						var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.userData.joint.material.default );
 						cube.position.copy(child.position);
-						cube.rotation.copy(child.rotation);
-						cube.visible = false;
+						cube.quaternion.copy(child.quaternion);
+						//cube.visible = false;
+						cube.rotation.y = +1;
+						child.rotation.y = +1;
+						var axesHelper = new THREE.AxesHelper( 0.2 );
+						cube.add( axesHelper );							
 						
 						cube.userData.tag = 'joinPoint';
 						cube.userData.id = id;  id++;
@@ -256,7 +260,7 @@ function setParamObj(inf, cdm)
 						
 						obj.add( cube );
 						
-						arr[arr.length] = cube;
+						arr[arr.length] = child;
 					}
 				}
 			}
@@ -265,6 +269,26 @@ function setParamObj(inf, cdm)
 		if(arr.length > 0) 
 		{ 
 			obj.userData.joinPoint = {visible: false, arr: arr, active: null}; 
+			
+			obj.updateMatrixWorld();
+			
+			for(var i = 0; i < arr.length; i++)
+			{						
+				//arr[i].updateMatrixWorld();
+				var axesHelper = new THREE.AxesHelper( 0.2 );
+				//arr[i].add( axesHelper );				
+				var q1 = arr[i].getWorldQuaternion(new THREE.Quaternion());
+				
+				var pos1 = arr[i].getWorldPosition(new THREE.Vector3());		
+				var normalMatrix = new THREE.Matrix3().getNormalMatrix( arr[i].matrixWorld );
+				var newNoraml = new THREE.Vector3(1,0,0).applyMatrix3( normalMatrix ).normalize();
+				//scene.add(new THREE.ArrowHelper( newNoraml, pos1, 0.5, 0xff0000 ));				
+				
+				scene.add( arr[i] );
+				
+				arr[i].position.copy(pos1);
+				arr[i].quaternion.copy(q1);
+			}
 		}
 		
 
