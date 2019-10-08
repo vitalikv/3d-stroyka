@@ -71,6 +71,8 @@ function showJoinPoint(cdm)
 		{
 			var o = arrO[i2];
 			
+			if(o.userData.joinObj) continue; 	// точка уже соеденина с другой точкой
+			
 			o.visible = true;
 			o.material = infProject.tools.joint.userData.joint.material.default;
 		}
@@ -278,6 +280,7 @@ function joinElement(cdm)
 		
 	if(1==1)
 	{
+		// создаем новую группу
 		var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
 		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 		group.userData.tag = 'group';
@@ -287,12 +290,14 @@ function joinElement(cdm)
 		var arr = [obj, obj_2];
 		var arr2 = [];
 		
+		// получаем все объекты для добавления в группу
 		for(var i = 0; i < arr.length; i++)
 		{
 			if(arr[i].userData.groupObj)
 			{				
 				arr[i].updateMatrixWorld();
 				
+				// если объект состоит из группы объекто, то сначала вытаскиваем эти объекты и удалем группу
 				for(var i2 = arr[i].children.length - 1; i2 > -1; i2--)
 				{
 					var o = arr[i].children[i2];
@@ -313,7 +318,7 @@ function joinElement(cdm)
 				scene.remove(arr[i]);	
 				
 			}
-			else
+			else	// у объекта нет группу, он оодин, сразу добавляем в массив
 			{
 				pos.add( arr[i].position );
 				
@@ -328,12 +333,16 @@ function joinElement(cdm)
 		
 		scene.add( group );
 		 
+		// добавляем полученные объекты в новую группу
 		for(var i = 0; i < arr2.length; i++)
 		{
 			group.attach(arr2[i]);
 		}			
 		
-		console.log(222, group);		
+		o1.userData.joinObj = o2;
+		o2.userData.joinObj = o1;
+		
+		//console.log(222, o1);		
 	}
 }
 

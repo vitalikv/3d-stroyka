@@ -231,6 +231,7 @@ function setParamObj(inf, cdm)
 	if(cdm.lotid == 6)
 	{
 		var arr = [];
+		var id = 0;
 		
 		obj.traverse( function ( child ) 
 		{
@@ -249,8 +250,9 @@ function setParamObj(inf, cdm)
 						cube.rotation.copy(child.rotation);
 						cube.visible = false;
 						
-						cube.userData.tag = 'joinPoint';						
-						cube.userData.joinObj = null;
+						cube.userData.tag = 'joinPoint';
+						cube.userData.id = id;  id++;
+						cube.userData.joinObj = null;						 
 						
 						obj.add( cube );
 						
