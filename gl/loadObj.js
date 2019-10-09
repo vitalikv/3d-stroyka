@@ -164,7 +164,7 @@ function setParamObj(inf, cdm)
 	obj.userData.obj3D.nameRus = inf.name;  
 	obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
 	obj.material.visible = false;
-	
+	//obj.rotation.y += 1;
 	// накладываем на материал объекта lightMap
 	obj.traverse(function(child) 
 	{
@@ -249,7 +249,7 @@ function setParamObj(inf, cdm)
 						cube.position.copy(child.position);
 						cube.quaternion.copy(child.quaternion);
 						cube.visible = false;
-						
+						//cube.rotation.y += 1;
 						var axesHelper = new THREE.AxesHelper( 0.2 );
 						cube.add( axesHelper );							
 						
@@ -273,6 +273,8 @@ function setParamObj(inf, cdm)
 		
 
 	}
+
+
 }
 
 
