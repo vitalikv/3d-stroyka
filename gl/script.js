@@ -1776,6 +1776,24 @@ $(document).ready(function ()
 		
 	}
 		
+		
+	if(1==2)
+	{
+		new THREE.ObjectLoader().load
+		(
+			infProject.path+'export/filename.json',
+			
+			function ( obj )
+			{
+				infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+				
+				//obj.rotation.set(0,0,0);
+
+				scene.add( obj );		
+			}
+		);	
+		
+	}
 	
 	
 	if(1==2)	
