@@ -70,6 +70,7 @@ function loadObjServer(cdm)
 	{ 
 		var obj = getArrayObj(cdm);
 		inf.obj = obj.clone();
+		console.log('---------');
 		if(obj) { setParamObj(inf, cdm); }
 	}
 	else

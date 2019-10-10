@@ -12,8 +12,8 @@ function createJoinP()
 	obj.userData.joint.obj = null;
 	obj.userData.joint.obj_2 = null;
 	obj.userData.joint.material = {};
-	obj.userData.joint.material.active = new THREE.MeshLambertMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	obj.userData.joint.material.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+	obj.userData.joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+	obj.userData.joint.material.default = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 	obj.renderOrder = 1;
 	obj.visible = false;
 	scene.add( obj );
@@ -252,6 +252,9 @@ function joinElement(cdm)
 	var obj = infProject.tools.joint.userData.joint.obj;
 	var obj_2 = infProject.tools.joint.userData.joint.obj_2;
 	
+	if(cdm.obj) { obj = cdm.obj; }
+	if(cdm.obj_2) { obj_2 = cdm.obj_2; }
+	
 	if(!obj) return;
 	if(!obj_2) return;
 	
@@ -281,7 +284,7 @@ function joinElement(cdm)
 	if(1==1)
 	{
 		// создаем новую группу
-		var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
+		var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
 		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 		group.userData.tag = 'group';
 		group.userData.groupObj = true;
@@ -308,8 +311,10 @@ function joinElement(cdm)
 					scene.add(o);
 					
 					o.position.copy(pos1);
-					o.quaternion.copy(q1);					
-					pos.add( pos1 );
+					o.quaternion.copy(q1);
+
+					arr[i].updateMatrixWorld();
+					pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );
 					
 					arr2[arr2.length] = o;
 				}
@@ -320,7 +325,8 @@ function joinElement(cdm)
 			}
 			else	// у объекта нет группу, он оодин, сразу добавляем в массив
 			{
-				pos.add( arr[i].position );
+				arr[i].updateMatrixWorld();
+				pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );
 				
 				arr2[arr2.length] = arr[i];
 			}			
@@ -329,9 +335,12 @@ function joinElement(cdm)
 		pos.divideScalar( arr2.length );
 		
 		group.position.copy(pos);
-		group.rotation.copy(obj.rotation);
-		
+		group.rotation.copy(obj.rotation);		
 		scene.add( group );
+		
+	
+		createGroupObj({group: group, arrO: arr2});
+		
 		 
 		// добавляем полученные объекты в новую группу
 		for(var i = 0; i < arr2.length; i++)
@@ -344,13 +353,14 @@ function joinElement(cdm)
 		
 		
 		getGroupFreeNearlyJP({obj: group});
-		//console.log(222, o1);		
+		//console.log(222, o1);	
+		
 	}
 }
 
 
 
-// получаем не соединенные точки-соединители, которые находятся близко друг к другу
+// получаем не соединенные точки-соединители, которые находятся близко друг к другу -> и соединяем их
 function getGroupFreeNearlyJP(cdm)
 {
 	var arr = getArrayJointPoint({obj: cdm.obj});
@@ -394,6 +404,72 @@ function getGroupFreeNearlyJP(cdm)
 
 
 
+// создать группу объектов
+function createGroupObj(cdm)
+{
+	var group = cdm.group;
+	var arrO = cdm.arrO;
+	
+	group.updateMatrixWorld();
+	var v = [];
+	var Y = 0;
+	
+	for(var i = 0; i < arrO.length; i++)
+	{
+		var obj = arrO[i];
+		
+		obj.updateMatrixWorld();
+		obj.geometry.computeBoundingBox();	
+		
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, 0, 0) ) );
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, 0, 0) ) );
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, obj.geometry.boundingBox.min.y, 0) ) );
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, obj.geometry.boundingBox.max.y, 0) ) );
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, 0, obj.geometry.boundingBox.min.z) ) );
+		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, 0, obj.geometry.boundingBox.max.z) ) );
+
+		Y += obj.position.y;
+	}
+	
+	var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
+	
+	for(var i = 0; i < v.length; i++)
+	{
+		if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+		if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+		if(v[i].y < bound.min.y) { bound.min.y = v[i].y; }
+		if(v[i].y > bound.max.y) { bound.max.y = v[i].y; }
+		if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+		if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+	}
+	
+
+	changeSizeGeometryWD({obj: group, size: {x: (bound.max.x-bound.min.x), y: (bound.max.y-bound.min.y), z: (bound.max.z-bound.min.z)}});
+
+}
+
+
+// меняем размеры boxPop
+function changeSizeGeometryWD(cdm)
+{	
+	var obj = cdm.obj;
+	var x = cdm.size.x;
+	var y = cdm.size.y;
+	var z = cdm.size.z;
+	console.log(cdm.size);
+	var v = obj.geometry.vertices;
+	v[0].x = v[1].x = v[7].x = v[6].x = -x / 2;
+	v[3].x = v[2].x = v[4].x = v[5].x = x / 2;
+	v[0].y = v[3].y = v[7].y = v[4].y = -y / 2;
+	v[1].y = v[2].y = v[5].y = v[6].y = y / 2;	
+	v[4].z = v[5].z = v[6].z = v[7].z = -z / 2;
+	v[0].z = v[1].z = v[2].z = v[3].z = z / 2;
+	
+	obj.geometry.verticesNeedUpdate = true;
+	obj.geometry.elementsNeedUpdate = true;
+	obj.geometry.computeBoundingBox();
+	obj.geometry.computeBoundingSphere();
+}
 
 
 
