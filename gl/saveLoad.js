@@ -34,6 +34,7 @@ var resetPop =
 		array.fundament = [];
 		array.lineGrid = { limit : false };
 		array.arrObj = (infProject.start)? infProject.scene.array.arrObj : [];	// массив клонируемых объектов
+		array.group = [];
 		
 		return array;
 	},
@@ -87,7 +88,8 @@ function resetScene()
 	var door = infProject.scene.array.door;
 	var tube = infProject.scene.array.tube;
 	var obj = infProject.scene.array.obj;
-
+	var group = infProject.scene.array.group;
+	
 	for ( var i = 0; i < wall.length; i++ )
 	{ 
 		disposeNode(wall[i]);
@@ -168,6 +170,12 @@ function resetScene()
 	{ 
 		disposeNode(obj[i]);
 		scene.remove(obj[i]);
+	}
+
+	for ( var i = 0; i < group.length; i++ )
+	{ 
+		disposeNode(group[i]);
+		scene.remove(group[i]);
 	}	
 	
 	
@@ -558,12 +566,29 @@ function getJsonGeometry()
 	{
 		var obj = infProject.scene.array.obj[i];
 		
+		var group = null;
+		
+		if(obj.parent.userData.groupObj)	// если объект приналежит группе
+		{
+			var pos = obj.getWorldPosition(new THREE.Vector3());
+			pos.z = -pos.z;
+			var rot = new THREE.Euler().setFromQuaternion( obj.getWorldQuaternion(new THREE.Quaternion()) );
+			var rot = new THREE.Vector3( THREE.Math.radToDeg(rot.x), THREE.Math.radToDeg(rot.y), THREE.Math.radToDeg(rot.z) );
+			group = 'group';
+		}
+		else
+		{
+			var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
+			var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
+		}
+			
 		var m = furn.length;
 		furn[m] = {};
 		furn[m].id = obj.userData.id;
 		furn[m].lotid = obj.userData.obj3D.lotid;
-		furn[m].pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
-		furn[m].rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
+		furn[m].pos = pos;
+		furn[m].rot = rot;
+		if(group) { furn[m].group = group; }
 	}
 	
 	

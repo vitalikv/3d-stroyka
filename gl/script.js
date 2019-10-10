@@ -1724,10 +1724,10 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
 	 
-	//loadFile({json: true}); 
-	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
-	loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
-	loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 1), rot: new THREE.Vector3(0, 1, 0)});
+	loadFile({json: true}); 
+	//loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
+	//loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
+	//loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 1), rot: new THREE.Vector3(0, 1, 0)});
 	
 	if(1==2)
 	{

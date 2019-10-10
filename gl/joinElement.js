@@ -242,7 +242,10 @@ function getActiveJointPoint(cdm)
 
 
 
-// соединяем элементы
+
+
+
+// соединяем элементы и создаем группу
 function joinElement(cdm)
 {
 	if(!cdm) cdm = {};
@@ -289,6 +292,8 @@ function joinElement(cdm)
 		group.userData.tag = 'group';
 		group.userData.groupObj = true;
 		
+		infProject.scene.array.group[infProject.scene.array.group.length] = group;
+		
 		var pos = new THREE.Vector3();
 		var arr = [obj, obj_2];
 		var arr2 = [];
@@ -313,12 +318,15 @@ function joinElement(cdm)
 					o.position.copy(pos1);
 					o.quaternion.copy(q1);
 
-					arr[i].updateMatrixWorld();
-					pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );
+					o.updateMatrixWorld();
+					pos.add( o.localToWorld( o.geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта
 					
 					arr2[arr2.length] = o;
 				}
 				
+				
+				// удаляем группу
+				deleteValueFromArrya({arr : infProject.scene.array.group, o : arr[i]});
 				disposeNode(arr[i]);
 				scene.remove(arr[i]);	
 				
@@ -326,7 +334,7 @@ function joinElement(cdm)
 			else	// у объекта нет группу, он оодин, сразу добавляем в массив
 			{
 				arr[i].updateMatrixWorld();
-				pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );
+				pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта
 				
 				arr2[arr2.length] = arr[i];
 			}			
