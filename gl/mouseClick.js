@@ -439,6 +439,7 @@ function hideMenuObjUI_2D( o )
 			case 'wf_point': hideMenuUI(o); break;
 			case 'boxWF': hideControlWF(); hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;
+			case 'group': hidePivotGizmo(o); break;
 			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
 		}
 	}
@@ -455,6 +456,7 @@ function hideMenuObjUI_3D( o )
 		switch ( o.userData.tag ) 
 		{
 			case 'obj': hidePivotGizmo(o); break;
+			case 'group': hidePivotGizmo(o); break;
 			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
 		}
 	}

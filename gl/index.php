@@ -89,7 +89,7 @@
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	
-	<?if($url == '/calculator/warm_floor'){?> <script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> <?}?>
+	<script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> 
 
 	
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>	

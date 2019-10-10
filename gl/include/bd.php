@@ -122,6 +122,25 @@ if($url == '/calculator/warm_floor')
 	$interface['wall_2']['top'] = ['showHideWall_1' => 1];
 	$interface['obj_b1'] = 1;
 }
+if($url == '/calculator/radiator')	
+{ 
+	$title = 'Test';
+	$h1 = '----';
+	$description = '';
+	$nameId = '';
+	$interface['mode_1'] = 1;
+	$interface['wall_1'] = 1;
+	$interface['tube_1'] = 1;
+	$interface['wd_1'] = 1;	
+	$interface['wd_2'] = 1;
+	$interface['wd_3'] = 1;
+	$interface['grid_tube_1'] = 1;	
+	$interface['tube_b1'] = 1;
+	$interface['box_wf_b1'] = 1;
+	$interface['wall_2']['bottom'] = ['width_1' => 1];
+	$interface['wall_2']['top'] = ['showHideWall_1' => 1];
+	$interface['obj_b1'] = 1;
+}
 
 
 
@@ -256,7 +275,7 @@ else if($url == '/calculator/raschet_blokov')
 	$infProject['settings']['wall']['block']['layer'] = '0.5';
 	$infProject['settings']['wall']['block']['material'] = ['o' => null, 'link' => 'img/load/block_1.jpg'];
 }
-else if($url == '/calculator/warm_floor')
+else if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 {
 	//$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';

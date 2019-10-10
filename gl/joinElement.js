@@ -168,7 +168,7 @@ function showHideJoinObjUI(cdm)
 
 
 
-// получаем все соединенные объекты в группе
+// получаем все соединенные объекты у группы (если это объект без группы, то отправляем только его)
 function getArrayJointObj(cdm)
 {
 	var o = cdm.obj;
@@ -192,7 +192,7 @@ function getArrayJointObj(cdm)
 }
 
 
-// получаем все точки-соединители , даже если это группа объектов
+// получаем все точки-соединители (у группы или отдельного объекта)
 function getArrayJointPoint(cdm)
 {
 	var o = cdm.obj;
@@ -217,7 +217,7 @@ function getArrayJointPoint(cdm)
 }
 
 
-// находим вделеную точку-соединитель
+// находим вделеную точку-соединитель (у группы или отдельного объекта)
 function getActiveJointPoint(cdm)
 {
 	var o = cdm.obj;
@@ -342,11 +342,54 @@ function joinElement(cdm)
 		o1.userData.joinObj = o2;
 		o2.userData.joinObj = o1;
 		
+		
+		getGroupFreeNearlyJP({obj: group});
 		//console.log(222, o1);		
 	}
 }
 
 
+
+// получаем не соединенные точки-соединители, которые находятся близко друг к другу
+function getGroupFreeNearlyJP(cdm)
+{
+	var arr = getArrayJointPoint({obj: cdm.obj});
+	
+	var arr2 = [];
+	
+	cdm.obj.updateMatrixWorld();
+	
+	// получаем все не соединенные точки из группы
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.joinObj) continue;
+		
+		arr2[arr2.length] = {o: arr[i], pos: arr[i].getWorldPosition(new THREE.Vector3())};
+		
+	}	
+
+	var arr3 = [];
+	
+	// получаем точки расположенные близко друг к другу
+	for(var i = 0; i < arr2.length; i++)
+	{
+		for(var i2 = 0; i2 < arr2.length; i2++)
+		{
+			if(arr2[i].o == arr2[i2].o) continue;
+			
+			if(comparePos(arr2[i].pos, arr2[i2].pos)) 
+			{
+				arr3[arr3.length] = {o1: arr2[i].o, o2: arr2[i2].o};
+
+				//arr2[i].o.material = infProject.tools.joint.userData.joint.material.active;
+				//arr2[i2].o.material = infProject.tools.joint.userData.joint.material.active;
+				
+				arr2[i].o.userData.joinObj = arr2[i2].o;
+				arr2[i2].o.userData.joinObj = arr2[i].o;				
+			}
+		}
+	}
+}
 
 
 
