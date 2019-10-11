@@ -64,14 +64,13 @@ function loadObjServer(cdm)
 	}
 
 	
-	var exist = getArrayObj({lotid: lotid});
+	var obj = getObjFromBase({lotid: lotid});
 	
-	if(exist)
+	if(obj)
 	{ 
-		var obj = getArrayObj(cdm);
 		inf.obj = obj.clone();
 		console.log('---------');
-		if(obj) { setParamObj(inf, cdm); }
+		if(obj) { addObjInScene(inf, cdm); }
 	}
 	else
 	{
@@ -83,11 +82,18 @@ function loadObjServer(cdm)
 			
 			var obj = object.children[0];
 			
-			addArrayObj({lotid: lotid, obj: obj});
+			addObjInBase({lotid: lotid, obj: obj});
 			
-			inf.obj = obj;
-			
-			setParamObj(inf, cdm);			
+			if(cdm.loadFromFile)	// загрузка из сохраненного файла 
+			{
+				loadObjFromBase({lotid: lotid, furn: cdm.furn});
+			}
+			else					// добавляем объект в сцену 
+			{
+				inf.obj = obj;
+				
+				addObjInScene(inf, cdm);							
+			}
 		});
 	
 	}
@@ -100,10 +106,10 @@ function loadObjServer(cdm)
 
 
 // ищем был ли до этого объект добавлен в сцену (если был, то береме сохраненную копию)
-function getArrayObj(cdm)
+function getObjFromBase(cdm)
 {
 	var lotid = cdm.lotid;								// объекты в сцене 
-	var arrObj = infProject.scene.array.arrObj;		// объекты в памяти	
+	var arrObj = infProject.scene.array.base;		// объекты в памяти	
 	
 	for(var i = 0; i < arrObj.length; i++)
 	{
@@ -119,28 +125,29 @@ function getArrayObj(cdm)
 
 
 
-// добавляем новый объект из сцены в массив клонов
-function addArrayObj(cdm)
+// добавляем новый объект в базу объектов (добавляются только уникальные объекты, кторых нет в базе)
+function addObjInBase(cdm)
 {
 	var lotid = cdm.lotid;								// объекты в сцене
 	var obj = cdm.obj;
-	var arrObj = infProject.scene.array.arrObj;			// объекты в памяти	
+	var base = infProject.scene.array.base;			// объекты в памяти	
 	
-	for(var i = 0; i < arrObj.length; i++)
+	for(var i = 0; i < base.length; i++)
 	{
-		if(arrObj[i].lotid == lotid)
-		{  console.log(lotid);
+		if(base[i].lotid == lotid)
+		{  
 			return null;
 		}
 	}	
 	
-	arrObj[arrObj.length] = {lotid: lotid, obj: obj.clone()}; 
+	base[base.length] = {lotid: lotid, obj: obj.clone()}; 
 }
 
 
 
 
-function setParamObj(inf, cdm)
+// добавляем объект в сцену
+function addObjInScene(inf, cdm)
 {
 	var obj = inf.obj;
 	
@@ -199,9 +206,9 @@ function setParamObj(inf, cdm)
 	renderCamera();
 	
 	
-	if(cdm.lotid == 3)
+	if(cdm.lotid == 111223)
 	{
-		obj.position.set(0,1,0);
+		//obj.position.set(0,1,0);
 		
 		obj.updateMatrixWorld();
 		

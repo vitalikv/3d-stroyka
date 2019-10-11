@@ -33,7 +33,7 @@ var resetPop =
 		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [], tube : [] };
 		array.fundament = [];
 		array.lineGrid = { limit : false };
-		array.arrObj = (infProject.start)? infProject.scene.array.arrObj : [];	// массив клонируемых объектов
+		array.base = (infProject.start)? infProject.scene.array.base : [];	// массив клонируемых объектов
 		array.group = [];
 		
 		return array;
@@ -219,6 +219,7 @@ function resetScene()
 	camera3D.userData.camera.click = { pos : new THREE.Vector3() }; 
 	
 	clickO = resetPop.clickO();
+	infProject.project = null;
 	infProject.scene.array = resetPop.infProjectSceneArray();
 
 	getConsoleRendererInfo();
@@ -584,8 +585,8 @@ function getJsonGeometry()
 			
 		var m = furn.length;
 		furn[m] = {};
-		furn[m].id = obj.userData.id;
-		furn[m].lotid = obj.userData.obj3D.lotid;
+		furn[m].id = Number(obj.userData.id);
+		furn[m].lotid = Number(obj.userData.obj3D.lotid);
 		furn[m].pos = pos;
 		furn[m].rot = rot;
 		if(group) { furn[m].group = group; }
@@ -673,7 +674,9 @@ function loadFilePL(arr)
 {                 		
 	if(!arr) return;
 	
-	console.log(arr);
+	//console.log(arr);
+	
+	infProject.project = { file: arr, load: { furn: [] } };
 		
 	var point = arr.floors[0].points;
 	var walls = arr.floors[0].walls;
@@ -812,17 +815,7 @@ function loadFilePL(arr)
 	// устанавливаем окна/двери
 	
 			
-	for ( var i = 0; i < furn.length; i++ )
-	{
-		furn[i].pos.z *= -1;
-		
-		if(furn[i].rot)			
-		{
-			furn[i].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
-		}
-		
-		loadObjServer(furn[i])
-	}
+
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
@@ -835,32 +828,14 @@ function loadFilePL(arr)
 		var line = createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 
 		
 		geometryTubeWF({line : line, createLine : true});	
-	}	
+	}
+
+
+	loadObjInBase({furn: furn});
 
 	
-	// восстанавливаем countId
-	for ( var i = 0; i < scene.children.length; i++ ) 
-	{ 
-		if(scene.children[i].userData.id) 
-		{ 
-			var index = parseInt(scene.children[i].userData.id);
-			if(index > countId) { countId = index; }
-		} 
-	}
-	for ( var i = 0; i < furn.length; i++ ) 
-	{ 
-		var index = parseInt(furn[i].id);
-		if(index > countId) { countId = index; }
-	}	
-	countId++; 
-	// восстанавливаем countId
-	
-	
-	
+	readyProject();
 	calculationAreaFundament_2();
-	
-	changeCamera(cameraTop);
-	centerCamera2D();
 	cameraZoomTop( camera.zoom );
 	
 
@@ -870,8 +845,76 @@ function loadFilePL(arr)
 }
 
 
+// сохранение объектов в базу (создаем уникальную копию)
+function loadObjInBase(cdm)
+{
+	var furn = cdm.furn;
+	var lotid = [];
+	
+	for ( var i = 0; i < furn.length; i++ )
+	{
+		lotid[lotid.length] = Number(furn[i].lotid); 
+	}
+	
+	lotid = [...new Set(lotid)];  
+	
+	for ( var i = 0; i < lotid.length; i++ )
+	{
+		loadObjServer({lotid: lotid[i], loadFromFile: true, furn: furn});
+	}	
+}
 
 
+// получаем объект из базы (копируем копию объекта и добавляем в сцену)
+function loadObjFromBase(cdm)
+{ 
+	var furn = cdm.furn;
+	
+	for ( var i = 0; i < furn.length; i++ )
+	{
+		if(Number(cdm.lotid) == Number(furn[i].lotid))
+		{
+			furn[i].pos.z *= -1;
+			
+			if(furn[i].rot)			
+			{
+				furn[i].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
+			}
+			
+			loadObjServer(furn[i]);
+
+			infProject.project.load.furn[infProject.project.load.furn.length] = furn[i].id;
+			
+			if(infProject.project.load.furn.length == infProject.project.file.furn.length)
+			{
+				readyProject();
+			}
+		}
+	}	
+}
+
+
+
+function readyProject(cdm)
+{
+	
+	// восстанавливаем countId
+	for ( var i = 0; i < scene.children.length; i++ ) 
+	{ 
+		if(scene.children[i].userData.id) 
+		{ 
+			var index = parseInt(scene.children[i].userData.id);
+			if(index > countId) { countId = index; }
+		} 
+	}	
+	countId++; 
+	// восстанавливаем countId	
+	
+	console.log('READY', countId);
+	
+	changeCamera(cameraTop);
+	centerCamera2D();	
+}
 
 
 function loadStartForm(cdm) 

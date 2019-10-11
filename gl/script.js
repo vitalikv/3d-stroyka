@@ -167,6 +167,7 @@ var arrWallFront = [];
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
 var clickO = resetPop.clickO();
+infProject.project = null;
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
