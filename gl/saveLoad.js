@@ -446,7 +446,9 @@ function getJsonGeometry()
 	var walls = [];
 	var rooms = [];
 	var furn = [];
+	var group = [];
 	var pipe = [];
+	
 	
 	var wall = infProject.scene.array.wall;
 	//var point = infProject.scene.array.point;
@@ -567,7 +569,7 @@ function getJsonGeometry()
 	{
 		var obj = infProject.scene.array.obj[i];
 		
-		var group = null;
+		var gr = null;
 		
 		if(obj.parent.userData.groupObj)	// если объект приналежит группе
 		{
@@ -575,7 +577,7 @@ function getJsonGeometry()
 			pos.z = -pos.z;
 			var rot = new THREE.Euler().setFromQuaternion( obj.getWorldQuaternion(new THREE.Quaternion()) );
 			var rot = new THREE.Vector3( THREE.Math.radToDeg(rot.x), THREE.Math.radToDeg(rot.y), THREE.Math.radToDeg(rot.z) );
-			group = 'group';
+			gr = { name: 'group', id: obj.parent.userData.id }; 
 		}
 		else
 		{
@@ -589,7 +591,35 @@ function getJsonGeometry()
 		furn[m].lotid = Number(obj.userData.obj3D.lotid);
 		furn[m].pos = pos;
 		furn[m].rot = rot;
-		if(group) { furn[m].group = group; }
+		if(gr) { furn[m].group = gr; }
+	}
+	
+	
+	for ( var i = 0; i < infProject.scene.array.group.length; i++ )
+	{
+		var obj = infProject.scene.array.group[i];
+		
+		var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
+		var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
+
+		var arrO = [];
+		
+		for ( var i2 = 0; i2 < obj.children.length; i2++ )
+		{
+			var child = obj.children[i2];
+			
+			if(!child.userData.tag) continue;
+			if(child.userData.tag != 'obj') continue;
+			
+			arrO[arrO.length] = { id: Number(child.userData.id) };
+		}
+		
+		var m = group.length;
+		group[m] = {};
+		group[m].id = Number(obj.userData.id);
+		group[m].pos = pos;
+		group[m].rot = rot;
+		group[m].obj = arrO;
 	}
 	
 	
@@ -617,6 +647,7 @@ function getJsonGeometry()
 	json.floors[0].walls = walls;
 	json.floors[0].rooms = rooms;
 	json.furn = furn;
+	json.group = group;
 	json.pipe = pipe;
 	
 	return json;
@@ -887,6 +918,18 @@ function loadObjFromBase(cdm)
 			
 			if(infProject.project.load.furn.length == infProject.project.file.furn.length)
 			{
+				var group = infProject.project.file.group;
+				
+				for ( var i2 = 0; i2 < group.length; i2++ )
+				{					
+					group[i2].pos.z *= -1;
+					group[i2].rot = new THREE.Vector3( THREE.Math.degToRad(group[i2].rot.x), THREE.Math.degToRad(group[i2].rot.y), THREE.Math.degToRad(group[i2].rot.z) );
+					
+					createGroupObj_2(group[i2]);
+				}
+				
+				
+				
 				readyProject();
 			}
 		}

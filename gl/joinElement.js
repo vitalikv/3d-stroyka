@@ -291,6 +291,7 @@ function joinElement(cdm)
 		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 		group.userData.tag = 'group';
 		group.userData.groupObj = true;
+		group.userData.id = countId; countId++;
 		
 		infProject.scene.array.group[infProject.scene.array.group.length] = group;
 		
@@ -347,7 +348,7 @@ function joinElement(cdm)
 		scene.add( group );
 		
 	
-		createGroupObj({group: group, arrO: arr2});
+		formGroupObj({group: group, arrO: arr2});
 		
 		 
 		// добавляем полученные объекты в новую группу
@@ -412,15 +413,14 @@ function getGroupFreeNearlyJP(cdm)
 
 
 
-// создать группу объектов
-function createGroupObj(cdm)
+// создать форму для группы объектов
+function formGroupObj(cdm)
 {
 	var group = cdm.group;
 	var arrO = cdm.arrO;
 	
 	group.updateMatrixWorld();
 	var v = [];
-	var Y = 0;
 	
 	for(var i = 0; i < arrO.length; i++)
 	{
@@ -435,8 +435,6 @@ function createGroupObj(cdm)
 		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, obj.geometry.boundingBox.max.y, 0) ) );
 		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, 0, obj.geometry.boundingBox.min.z) ) );
 		v[v.length] = group.worldToLocal( obj.localToWorld( new THREE.Vector3(0, 0, obj.geometry.boundingBox.max.z) ) );
-
-		Y += obj.position.y;
 	}
 	
 	var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
@@ -478,6 +476,48 @@ function changeSizeGeometryWD(cdm)
 	obj.geometry.computeBoundingBox();
 	obj.geometry.computeBoundingSphere();
 }
+
+
+
+// создаем группу и добавляем туда объекты (из сохраненного файла)
+function createGroupObj_2(cdm)
+{
+	var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
+	var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
+	group.userData.tag = 'group';
+	group.userData.groupObj = true;
+	group.userData.id = cdm.id;
+	
+	infProject.scene.array.group[infProject.scene.array.group.length] = group;
+
+
+	group.position.copy(cdm.pos);
+	group.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);		
+	scene.add( group );
+	
+	
+	var arr2 = [];
+	for(var i2 = 0; i2 < cdm.obj.length; i2++)
+	{
+		arr2[arr2.length] = findObjFromId( 'obj', cdm.obj[i2].id );
+	}	
+	
+	
+	formGroupObj({group: group, arrO: arr2});
+	
+	 
+	// добавляем полученные объекты в новую группу
+	for(var i = 0; i < arr2.length; i++)
+	{
+		group.attach(arr2[i]);
+	}	
+
+	getGroupFreeNearlyJP({obj: group});
+	
+}
+
+
+
 
 
 

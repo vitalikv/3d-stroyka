@@ -1548,6 +1548,8 @@ function findObjFromId( cdm, id )
 	var window = infProject.scene.array.window;
 	var door = infProject.scene.array.door;	
 	var room = infProject.scene.array.room;
+	var obj = infProject.scene.array.obj; 
+	
 	
 	if(cdm == 'wall')
 	{
@@ -1573,7 +1575,12 @@ function findObjFromId( cdm, id )
 	else if(cdm == 'room')
 	{
 		for ( var i = 0; i < room.length; i++ ){ if(room[i].userData.id == id){ return room[i]; } }
-	}	
+	}
+	else if(cdm == 'obj')
+	{
+		for ( var i = 0; i < obj.length; i++ ){ if(obj[i].userData.id == id){ return obj[i]; } }
+	}
+	
 	return null;
 }
 
