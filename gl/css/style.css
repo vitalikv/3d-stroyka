@@ -586,6 +586,7 @@ canvas
 .right_panel_1_1
 {
 	height: 100%;
+	width: 300px;
 	border: 1px solid #b3b3b3; 
 	background-color:#f1f1f1;		
    
@@ -708,6 +709,38 @@ canvas
 	margin: 5px;
 	width: 25px;
 	background-color:#ff0000;		
+}
+
+
+
+.rp_obj
+{
+	margin: auto 10px;
+	border:solid 1px #b3b3b3;
+}
+
+
+.rp_obj_name
+{
+	
+}
+
+
+.rp_obj_name input
+{
+	display: block;
+	width:80%;
+	margin: auto;
+	
+	border-radius: 3px;	
+	font-size: 18px;
+	text-align:  center;
+	
+	text-shadow: 0 -1px rgb(46,53,58);
+	text-decoration: none;
+	line-height: 2em;
+	padding: 0;
+	outline: none;
 }
 
 

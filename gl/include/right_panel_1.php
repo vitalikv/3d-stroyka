@@ -105,6 +105,11 @@ function showHideCatalogMenuUI(cdm)
 	<div class="flex_column_1 right_panel_1_1" nameId="panel_catalog_1">
 		<div class="flex_1 bottom_line_1">
 			<div class="right_panel_1_item">
+				<div class="right_panel_1_item_block" nameId="button_wrap_object">
+					<div class="right_panel_1_item_block_text">
+						объект
+					</div>	
+				</div>			
 				<div class="right_panel_1_item_block" nameId="button_wrap_catalog">
 					<div class="right_panel_1_item_block_text">
 						каталог
@@ -120,6 +125,22 @@ function showHideCatalogMenuUI(cdm)
 				+
 			</div>
 		</div>
+	
+
+		<div class="flex_column_1" nameId="wrap_object">
+			<div class="right_panel_1_1_h">Объект</div>
+			
+			
+			<div class="rp_obj" list_ui="object">  
+			
+				<div class="rp_obj_name">
+					<input type="text" nameid="rp_obj_name" data-input="rp_obj_name" value="Название">					
+				</div>
+			
+			</div>
+			
+		</div>
+
 		
 		<div class="flex_column_1" nameId="wrap_list_obj" style="display: none;">
 			<div class="right_panel_1_1_h">Список материалов</div>
@@ -141,7 +162,8 @@ function showHideCatalogMenuUI(cdm)
 			</div>
 		</div>
 		
-		<div class="flex_column_1" nameId="wrap_catalog">
+		
+		<div class="flex_column_1" nameId="wrap_catalog" style="display: none;">
 			<div class="right_panel_1_1_h">Каталог</div>
 			
 			<div class="right_panel_1_1_list" list_ui="catalog">

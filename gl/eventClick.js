@@ -52,20 +52,28 @@ function changeMainMenuUI(cdm)
 
 $('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });
 $('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI({el: this}); });
+$('[nameId="button_wrap_object"]').mousedown(function () { changeRightMenuUI({el: this}); });
 
  
 // переключаем меню (каталог/список)
 function changeRightMenuUI(cdm)
 {
+	$('[nameId="wrap_catalog"]').hide();
+	$('[nameId="wrap_list_obj"]').hide();
+	$('[nameId="wrap_object"]').hide();
+	
+	
 	if(cdm.el.attributes.nameId.value == "button_wrap_catalog") 
 	{
 		$('[nameId="wrap_catalog"]').show();
-		$('[nameId="wrap_list_obj"]').hide();
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_list_obj") 
 	{
-		$('[nameId="wrap_catalog"]').hide();
 		$('[nameId="wrap_list_obj"]').show();
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_object") 
+	{
+		$('[nameId="wrap_object"]').show();
 	}	
 }
 
