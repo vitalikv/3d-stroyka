@@ -107,7 +107,7 @@ function renderCamera()
 	
 	//renderer.autoClear = true;
 	//renderer.clear();
-	renderer.render(scene, camera);
+	composer.render();
 }
 
 
@@ -221,6 +221,40 @@ camera3D.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( ph
 	
 camera3D.position.add(centerCam);	
 camera3D.lookAt(centerCam);
+
+
+
+
+// outline render
+if(1==1)
+{
+	var composer = new THREE.EffectComposer( renderer );
+	var renderPass = new THREE.RenderPass( scene, cameraTop );
+	var outlinePass = new THREE.OutlinePass( new THREE.Vector2( w_w, w_h ), scene, cameraTop );
+	composer.setSize( w_w, w_h );
+	composer.addPass( renderPass );
+	composer.addPass( outlinePass );
+
+
+	outlinePass.visibleEdgeColor.set( '#25db00' );
+	outlinePass.hiddenEdgeColor.set( '#25db00' );
+	outlinePass.edgeStrength = Number( 5 );		// сила/прочность
+	outlinePass.edgeThickness = Number( 0.01 );	// толщина
+
+	outlinePass.selectedObjects = [];
+
+
+	function outlineAddObj( obj )
+	{	
+		outlinePass.selectedObjects = [ obj ];  console.log(outlinePass);
+	}
+
+	function outlineRemoveObj()
+	{
+		outlinePass.selectedObjects = [];
+	}	
+}
+
 
 
 //----------- start

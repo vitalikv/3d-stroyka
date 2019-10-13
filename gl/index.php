@@ -31,6 +31,12 @@
 	<script src="<?=$path?>js/OBJLoader.js"></script>
 	<script src="<?=$path?>js/MTLLoader.js"></script>   
 	
+	<script src="<?=$path?>js/dp/EffectComposer.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>js/dp/CopyShader.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>js/dp/RenderPass.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>js/dp/ShaderPass.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>js/dp/OutlinePass.js?<?=$vrs?>"></script>
+	
 	<script src="<?=$path?>js/loader/inflate.min.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	

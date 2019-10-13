@@ -123,6 +123,8 @@ function clickObject3D( obj, intersect )
 		else { joint.userData.joint.obj_2 = obj; }
 	}
 	
+	outlineAddObj(obj);
+	
 	setScalePivotGizmo();
 }
 
@@ -154,6 +156,8 @@ function deleteObjectPop(obj)
 		disposeNode(obj);
 		scene.remove(obj);			
 	}
+	
+	outlineRemoveObj();
 }
 
 
@@ -210,6 +214,8 @@ function hidePivotGizmo(obj)
 	
 	$('[nameId="obj_b_menu_1"]').hide();
 	showHideJoinObjUI({visible: false});
+	
+	outlineRemoveObj();
 }
 
 

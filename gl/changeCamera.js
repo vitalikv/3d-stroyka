@@ -9,6 +9,9 @@ function changeCamera(cam)
 	deActiveSelected();
 	
 	camera = cam;
+	renderPass.camera = cam;
+	outlinePass.renderCamera = cam;
+
 	
 	if(camera == cameraTop)
 	{					
