@@ -35,24 +35,49 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
-	<? require_once("include/top_1.php"); ?>
-	<? //require_once("include/modal_window_2.php"); ?>
-	
-	<noindex>		 
-	<? require_once("include/left_panel_1.php"); ?>	
-	<? require_once("include/right_panel_1.php"); ?>
-	<? require_once("include/bottom_panel_1.php"); ?>	
-	<? require_once("include/modal_window_1.php"); ?>
-	<? require_once("include/modal_window_3.php"); ?>
+	<div class="frame">
+			
+		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
+			<div class="go_home" nameId="butt_main_menu">
+				<div class="go_home_txt">
+					Меню
+				</div>
+			</div>
+			<div class="title_1"><h1><?=$h1?></h1></div>
+			<!--<div class="top_menu_right_1">
+				<div class="top_menu_right_1_text" nameId="save_pr_1">Сохранить</div>
+			</div>-->				
+		</div>	
 		
+		<div class="flex_1 height100">
+			
+			<div style="flex-grow:1; position: relative;">
+				<? require_once("include/top_1.php"); ?>
+				<? //require_once("include/modal_window_2.php"); ?>
+				
+				<noindex>		 
+				<? require_once("include/left_panel_1.php"); ?>	
+				
+				<? require_once("include/bottom_panel_1.php"); ?>	
+				<? require_once("include/modal_window_1.php"); ?>
+				<? require_once("include/modal_window_3.php"); ?>
+					
+				
+				<div class="help">
+					<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
+						<img src="<?=$path?>/img/button_youtube.png">
+						<div style="padding-left:10px;">видеоинструкция</div>
+					</a>	
+				</div>
+				</noindex>
+			</div>
+			
+			<? require_once("include/right_panel_1.php"); ?>
+			
+		</div>
 	
-	<div class="help" style=" z-index: 1;">
-		<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
-			<img src="<?=$path?>/img/button_youtube.png">
-			<div style="padding-left:10px;">видеоинструкция</div>
-		</a>
-	</div>	
-	</noindex>
+	</div>
+	
 	
 	
 	<script src="<?=$path?>meshBSP.js"></script> 	

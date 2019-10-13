@@ -28,9 +28,16 @@
 
 .button_show_panel_catalog
 {
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
+	position: fixed;
+	right: 0;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+	list-style: none;
+	margin-left: 0;
+	padding-left: 0;		
+	
+
 	width: 30px;	
 	height: 180px;	
 	border: 1px solid #b3b3b3; 
@@ -114,7 +121,7 @@ function showHideCatalogMenuUI(cdm)
 			</div>
 		</div>
 		
-		<div class="right_panel_1_1_wrap" nameId="wrap_list_obj" style="display: none;">
+		<div class="flex_column_1" nameId="wrap_list_obj" style="display: none;">
 			<div class="right_panel_1_1_h">Список материалов</div>
 			
 			<div class="right_panel_1_1_list" list_ui="wf">
@@ -134,7 +141,7 @@ function showHideCatalogMenuUI(cdm)
 			</div>
 		</div>
 		
-		<div class="right_panel_1_1_wrap" nameId="wrap_catalog">
+		<div class="flex_column_1" nameId="wrap_catalog">
 			<div class="right_panel_1_1_h">Каталог</div>
 			
 			<div class="right_panel_1_1_list" list_ui="catalog">

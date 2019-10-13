@@ -8,10 +8,10 @@
 			<div class="toolbar-header">стена</div>
 			<div class="toolbar-menu">					
 				<div class="button1-wrap-2">
-					<div data-action ='addPointCenterWall' class="button1"><p>Добавить точку</p></div>
+					<div data-action ='addPointCenterWall' class="button1 button_gradient_1"><p>Добавить точку</p></div>
 				</div>					
 				<div class="button1-wrap-2">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>
@@ -21,7 +21,7 @@
 			<div class="toolbar-header">точка</div>
 			<div class="toolbar-menu">
 				<div class="button1-wrap-2">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>	
@@ -64,7 +64,7 @@
 			</div>	
 							
 			<div class="button1-wrap-2">
-				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 			</div>			
 		</div>
 	</div>	
@@ -90,7 +90,7 @@
 			</div>	
 
 			<div class="button1-wrap-2">
-				<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 			</div>			
 		</div>
 		
@@ -114,7 +114,7 @@
 			</div>
 			
 			<div class="button1-wrap-2">
-				<div data-action ='deleteObj' nameId='delete_wf_point_1' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+				<div data-action ='deleteObj' nameId='delete_wf_point_1' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 			</div>			
 		</div>
 	</div>	
@@ -129,7 +129,7 @@
 					<input type="text" nameId='size_wall_width_1' data-input='size_wall_width_1' value = 0>
 				</div>
 				<div class="button1-wrap-2">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>				
 			</div>
 		</div>	
@@ -137,7 +137,7 @@
 			<div class="toolbar-header">точка</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>		
@@ -149,7 +149,7 @@
 			<div class="toolbar-header">контур</div>
 			<div class="toolbar-menu"> 			
 				<div style="margin: 10px;">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>		
@@ -161,16 +161,16 @@
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='join_point' class="button1">точки</div>
+					<div data-action ='join_point' class="button1 button_gradient_1">точки</div>
 				</div>			
 				<div style="margin: 10px;">
-					<div data-action ='select_pivot' class="button1">перемещение</div>
+					<div data-action ='select_pivot' class="button1 button_gradient_1">перемещение</div>
 				</div>
 				<div style="margin: 10px;">
-					<div data-action ='select_gizmo' class="button1">вращение</div>
+					<div data-action ='select_gizmo' class="button1 button_gradient_1">вращение</div>
 				</div>				
 				<div style="margin: 10px;">
-					<div data-action ='deleteObj' class="button1"><img src="<?=$path?>/img/waste.png"></div>
+					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
 				</div>			
 			</div>
 		</div>
@@ -180,10 +180,10 @@
 			<div class="toolbar-header">соединить объекты</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='join_element' class="button1">соединить</div>
+					<div data-action ='join_element' class="button1 button_gradient_1">соединить</div>
 				</div>			
 				<div style="margin: 10px;">
-					<div data-action ='cancel_join_element' class="button1">отмена</div>
+					<div data-action ='cancel_join_element' class="button1 button_gradient_1">отмена</div>
 				</div>		
 			</div>
 		</div>		
