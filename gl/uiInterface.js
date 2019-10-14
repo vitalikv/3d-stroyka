@@ -120,3 +120,94 @@ function updateListTubeUI_1(cdm)
 
 
 
+// при выделении объекта меняем боковое меню
+function clickObjUI(cdm)
+{
+	if(!cdm) { cdm = {}; }	
+	if(!cdm.obj) return;
+	
+	var obj = cdm.obj;
+	var inf = null;
+	
+	if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
+	else if(obj.userData.groupObj) { inf = obj.userData.groupObj; }
+	else { return; }
+	
+	$('[nameId="rp_obj_name"]').val(inf.nameRus);
+	
+	
+	showGroupObjUI({obj : obj});
+	
+}
+
+
+
+// кликнули на группу объектов, показываем в меню дочерние объекты
+function showGroupObjUI(cdm)
+{
+	if(!cdm) { cdm = {}; }	
+	if(!cdm.obj) return;
+	
+	var obj = cdm.obj;			
+	
+	
+	// удаляем старый списко (если он есть)
+	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	{
+		infProject.ui.group_obj[i].el.remove();
+	}	
+	
+	infProject.ui.group_obj = [];
+	
+	if(!obj.userData.groupObj) return;
+	
+	// добавляем новый список объектов из группы
+	for(var i = 0; i < obj.children.length; i++)
+	{
+		var child = obj.children[i];
+		
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
+		</div>';
+
+		$('[nameId="rp_obj_group"]').prepend(str);		
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
+		
+		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: child };
+
+		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
+	}
+
+}
+
+
+// кликнули на меню дочерних объектов группы
+function clickItemObjNameUI(cdm)
+{
+	var item = cdm.el;
+	
+	var value = item.attr('uuid');
+	var obj = null;
+	
+	// снимаем старые выдиления  
+	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	{
+		if(infProject.ui.group_obj[i].el[0] == item[0]){ obj = infProject.ui.group_obj[i].obj; } 
+		infProject.ui.group_obj[i].el.css('background-color', '#ffffff');
+	}	
+	
+	// выделяем новый пункт на который кликнули 
+	item.css('background-color', '#00ff00');
+	
+	
+	console.log(value, obj); 
+	
+	//outlineAddObj(obj);   
+	
+	renderCamera();
+}
+
+
+
+

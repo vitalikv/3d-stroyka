@@ -169,9 +169,6 @@ $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 $infProject['scene'] = [ 'tool' => [] ];
 $infProject['scene']['load'] = '';
 
-$infProject['ui']['list_wf'] = [];
-$infProject['ui']['main_menu'] = [];
-
 
 
 if($url == '/calculator/monolit_fundament') 

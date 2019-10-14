@@ -75,7 +75,7 @@ $('[nameId="button_show_panel_catalog"]').mousedown(function () { showHideCatalo
 $('[nameId="button_catalog_close"]').mousedown(function () { showHideCatalogMenuUI({show: false}); });
 
 
-// скрываем/показываем меню с катлогом и материалами UI
+// скрываем/показываем правое меню UI
 function showHideCatalogMenuUI(cdm)
 {
 	var show = cdm.show;
@@ -134,10 +134,15 @@ function showHideCatalogMenuUI(cdm)
 			<div class="rp_obj" list_ui="object">  
 			
 				<div class="rp_obj_name">
-					<input type="text" nameid="rp_obj_name" data-input="rp_obj_name" value="Название">					
+					<input type="text" nameId="rp_obj_name" data-input="rp_obj_name" value="Название">					
 				</div>
-			
-			</div>
+				
+				<div class="right_panel_1_1_h">Группа</div>
+				<div class="right_panel_1_1_list" nameId="rp_obj_group">
+					
+				</div>
+				
+			</div> 
 			
 		</div>
 

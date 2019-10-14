@@ -661,11 +661,10 @@ canvas
 .right_panel_1_1_list
 {
 	display: block;
-	margin: 10px;
 	
 	min-height: 350px;
 	max-height: 350px;
-	width: 250px;
+	margin: auto 10px;
 	
 	border: 1px solid #ccc;
 	border-radius: 3px;
@@ -716,7 +715,7 @@ canvas
 .rp_obj
 {
 	margin: auto 10px;
-	border:solid 1px #b3b3b3;
+	border:solid 1px #b3b3b3; 
 }
 
 
@@ -729,18 +728,31 @@ canvas
 .rp_obj_name input
 {
 	display: block;
-	width:80%;
 	margin: auto;
-	
-	border-radius: 3px;	
+	margin-bottom: 10px;
+	width: 99%;
+		
 	font-size: 18px;
-	text-align:  center;
+	text-align: center;
+	color: #666;
 	
-	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
 	line-height: 2em;
 	padding: 0;
-	outline: none;
+	
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	background-color:#fff;
+	
+	-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 2px rgba(154, 147, 140, 0.5); 
+	-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 2px rgba(154, 147, 140, 0.5);  
+	box-shadow:0px 0px 2px #bababa, inset 0px 0px 2px rgba(154, 147, 140, 0.5); 	
+}
+
+
+.rp_obj .right_panel_1_1_list
+{
+	margin: 0;
 }
 
 
@@ -911,7 +923,6 @@ canvas
 	font-size: 18px;
 	text-align:  center;
 	
-	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
 	line-height: 2em;
 	padding: 0;
@@ -1116,7 +1127,6 @@ canvas
 	font-size: 18px;
 	text-align:  center;
 	
-	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
 	line-height: 2em;
 	padding: 0;
@@ -1143,7 +1153,6 @@ canvas
 	text-align:  center;
 	font-family: arial,sans-serif;
 	
-	text-shadow: 0 -1px rgb(46,53,58);
 	text-decoration: none;
 	line-height: 2em;
 	padding: 0;

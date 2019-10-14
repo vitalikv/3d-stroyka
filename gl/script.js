@@ -87,6 +87,7 @@ var cube = new THREE.Mesh( createGeometryCube(0.07, 0.07, 0.07), new THREE.MeshL
 
 
 
+
 //----------- render
 function animate() 
 {
@@ -181,8 +182,12 @@ infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), joint: creat
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot' };
-infProject.start = true;
+infProject.start = true; 
 
+infProject.ui = {}
+infProject.ui.list_wf = [];
+infProject.ui.main_menu = [];
+infProject.ui.group_obj = [];  
 
 console.log(infProject);
 
@@ -246,7 +251,7 @@ if(1==1)
 
 	function outlineAddObj( obj )
 	{	
-		outlinePass.selectedObjects = [ obj ];  console.log(outlinePass);
+		outlinePass.selectedObjects = [ obj ];  
 	}
 
 	function outlineRemoveObj()
@@ -255,7 +260,13 @@ if(1==1)
 	}	
 }
 
+var cube = new THREE.Mesh( createGeometryCube(2.07, 1.07, 1.07), new THREE.MeshLambertMaterial( { color : 0x030202 } ) );
+scene.add( cube ); 
+var cube_2 = new THREE.Mesh( createGeometryCube(0.57, 0.5, 0.5), new THREE.MeshLambertMaterial( { color : 0x0000ff } ) );
+cube_2.position.y = 1;
+cube.add( cube_2 );
 
+outlineAddObj(cube_2);
 
 //----------- start
 

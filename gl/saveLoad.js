@@ -187,6 +187,14 @@ function resetScene()
 	
 	infProject.ui.list_wf = [];
 	
+	// удаляем список дочерних объектов UI
+	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	{
+		infProject.ui.group_obj[i].el.remove();
+	}	
+	
+	infProject.ui.group_obj = [];
+	
 	//disposeHierchy(scene, disposeNode);
 	
 	

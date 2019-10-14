@@ -290,8 +290,9 @@ function joinElement(cdm)
 		var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
 		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 		group.userData.tag = 'group';
-		group.userData.groupObj = true;
 		group.userData.id = countId; countId++;
+		group.userData.groupObj = {};	
+		group.userData.groupObj.nameRus = 'группа 1';
 		
 		infProject.scene.array.group[infProject.scene.array.group.length] = group;
 		
@@ -483,10 +484,13 @@ function changeSizeGeometryWD(cdm)
 function createGroupObj_2(cdm)
 {
 	var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
+	//material.visible = false;
 	var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 	group.userData.tag = 'group';
-	group.userData.groupObj = true;
 	group.userData.id = cdm.id;
+	group.userData.groupObj = {};	
+	group.userData.groupObj.nameRus = 'группа 2';
+	
 	
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
 

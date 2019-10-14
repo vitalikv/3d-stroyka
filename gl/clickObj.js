@@ -61,7 +61,7 @@ function clickObject3D( obj, intersect )
 	
 	obj.updateMatrixWorld();
 	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
-	
+	 
 	
 	if(infProject.settings.active.pg == 'pivot')
 	{
@@ -124,7 +124,7 @@ function clickObject3D( obj, intersect )
 	}
 	
 	outlineAddObj(obj);
-	
+	clickObjUI({obj: obj});
 	setScalePivotGizmo();
 }
 
