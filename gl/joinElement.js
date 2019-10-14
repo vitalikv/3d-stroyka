@@ -485,7 +485,8 @@ function createGroupObj_2(cdm)
 {
 	var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
 	//material.visible = false;
-	var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
+	var group = new THREE.Group();
+	//var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 	group.userData.tag = 'group';
 	group.userData.id = cdm.id;
 	group.userData.groupObj = {};	
@@ -507,7 +508,7 @@ function createGroupObj_2(cdm)
 	}	
 	
 	
-	formGroupObj({group: group, arrO: arr2});
+	//formGroupObj({group: group, arrO: arr2});
 	
 	 
 	// добавляем полученные объекты в новую группу

@@ -260,13 +260,7 @@ if(1==1)
 	}	
 }
 
-var cube = new THREE.Mesh( createGeometryCube(2.07, 1.07, 1.07), new THREE.MeshLambertMaterial( { color : 0x030202 } ) );
-scene.add( cube ); 
-var cube_2 = new THREE.Mesh( createGeometryCube(0.57, 0.5, 0.5), new THREE.MeshLambertMaterial( { color : 0x0000ff } ) );
-cube_2.position.y = 1;
-cube.add( cube_2 );
 
-outlineAddObj(cube_2);
 
 //----------- start
 

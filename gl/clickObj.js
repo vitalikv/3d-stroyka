@@ -53,14 +53,21 @@ function clickMouseUpObject(obj)
 // кликнули на 3D объект, ставим pivot/gizmo
 function clickObject3D( obj, intersect )
 {
-	
-	if(obj.parent.userData.groupObj)
+console.log(3333, obj);
+	if(obj.parent.userData.groupObj)	// объект у которого есть группа
 	{
 		obj = obj.parent;
-	}		
-	
-	obj.updateMatrixWorld();
-	var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+		var pos = obj.position;
+	}
+	else if(obj.userData.groupObj)		// группа
+	{
+		var pos = obj.position;
+	}	
+	else								// объект без группы
+	{
+		obj.updateMatrixWorld();
+		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+	}
 	 
 	
 	if(infProject.settings.active.pg == 'pivot')

@@ -129,9 +129,17 @@ function clickGizmo( intersect )
 	var axis = intersect.object.userData.axis;
 	gizmo.userData.gizmo.active.axis = axis;
 	
-	obj.updateMatrixWorld();
-	gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
+
 	
+	if(obj.userData.groupObj)		// группа
+	{
+		gizmo.userData.gizmo.active.startPos = obj.position;
+	}	
+	else								// объект без группы
+	{
+		obj.updateMatrixWorld();
+		gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+	}	
 	
 	if(axis == 'y')
 	{
@@ -204,9 +212,17 @@ function moveGizmo( event )
 		obj.quaternion.multiply( quaternion ); 
 	}		
 	
-
-	obj.updateMatrixWorld();
-	var newPosCenter = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
+	
+	if(obj.userData.groupObj)		// группа
+	{
+		var newPosCenter = obj.position;
+	}	
+	else								// объект без группы
+	{
+		obj.updateMatrixWorld();
+		var newPosCenter = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );				
+	}	
+	
 	obj.position.add( new THREE.Vector3().subVectors( gizmo.userData.gizmo.active.startPos, newPosCenter ) );		
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
