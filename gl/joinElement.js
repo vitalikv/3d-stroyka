@@ -515,6 +515,8 @@ function createGroupObj_2(cdm)
 	for(var i = 0; i < arr2.length; i++)
 	{
 		group.attach(arr2[i]);
+		
+		arr2[i].userData.obj3D.group = group; 
 	}	
 
 	getGroupFreeNearlyJP({obj: group});

@@ -211,6 +211,8 @@ function clickItemObjNameUI(cdm)
 	obj.position.copy(pos1);
 	obj.quaternion.copy(q1);	
 	
+	clickO.last_obj = obj;
+	
 	clickObject3D(obj, {element: true});   
 }
 

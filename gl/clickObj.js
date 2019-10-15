@@ -183,7 +183,15 @@ function hidePivotGizmo(obj)
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
 
-			
+	
+	// восстанавливаем группу у объекта
+	if(obj.userData.obj3D)
+	{   
+		if(obj.userData.obj3D.group && !obj.parent.userData.groupObj)
+		{
+			obj.userData.obj3D.group.attach(obj);
+		}
+	}			
 	
 	if(clickO.rayhit)
 	{
