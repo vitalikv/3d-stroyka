@@ -56,12 +56,12 @@ function clickObject3D( obj, cdm )
 	if(!cdm) { cdm = {}; }
 	
 	
-	if(obj.parent.userData.groupObj && !cdm.element)	// объект у которого есть группа
+	if(obj.parent.userData.groupObj)	// объект у которого есть группа
 	{
 		obj = obj.parent;
 		var pos = obj.position;
 	}
-	else if(obj.userData.groupObj && !cdm.element)		// группа
+	else if(obj.userData.groupObj)		// группа
 	{
 		var pos = obj.position;
 	}	
@@ -69,7 +69,6 @@ function clickObject3D( obj, cdm )
 	{
 		obj.updateMatrixWorld();
 		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
-		obj.userData.obj3D.posCenter = obj.geometry.boundingSphere.center.clone();
 	}
 	 
 	
@@ -113,7 +112,7 @@ function clickObject3D( obj, cdm )
 			gizmo.children[1].visible = true;
 			gizmo.children[2].visible = true;
 			
-			gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+			gizmo.rotation.copy( obj.rotation );
 		}		
 		
 		clippingGizmo360(obj); 		
@@ -184,6 +183,7 @@ function hidePivotGizmo(obj)
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
 
+			
 	
 	if(clickO.rayhit)
 	{

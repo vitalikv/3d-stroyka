@@ -201,11 +201,17 @@ function clickItemObjNameUI(cdm)
 	item.css('background-color', '#00ff00');
 	
 	
-	console.log(value, obj); 
+	
+
+	var pos1 = obj.getWorldPosition(new THREE.Vector3());
+	var q1 = obj.getWorldQuaternion(new THREE.Quaternion());
+
+	scene.add(obj);
+	
+	obj.position.copy(pos1);
+	obj.quaternion.copy(q1);	
 	
 	clickObject3D(obj, {element: true});   
-	
-	renderCamera();
 }
 
 

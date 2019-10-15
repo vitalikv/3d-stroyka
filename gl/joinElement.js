@@ -492,7 +492,7 @@ function createGroupObj_2(cdm)
 	group.userData.groupObj = {};	
 	group.userData.groupObj.nameRus = 'группа 2';
 	
-	
+	console.log(group);
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
 
 
