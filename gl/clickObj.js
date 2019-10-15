@@ -51,22 +51,25 @@ function clickMouseUpObject(obj)
 
 
 // кликнули на 3D объект, ставим pivot/gizmo
-function clickObject3D( obj, intersect )
+function clickObject3D( obj, cdm )
 {
-console.log(3333, obj);
-	if(obj.parent.userData.groupObj)	// объект у которого есть группа
+	if(!cdm) { cdm = {}; }
+	
+	
+	if(obj.parent.userData.groupObj && !cdm.element)	// объект у которого есть группа
 	{
 		obj = obj.parent;
 		var pos = obj.position;
 	}
-	else if(obj.userData.groupObj)		// группа
+	else if(obj.userData.groupObj && !cdm.element)		// группа
 	{
 		var pos = obj.position;
 	}	
 	else								// объект без группы
 	{
 		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
+		obj.userData.obj3D.posCenter = obj.geometry.boundingSphere.center.clone();
 	}
 	 
 	
@@ -110,7 +113,7 @@ console.log(3333, obj);
 			gizmo.children[1].visible = true;
 			gizmo.children[2].visible = true;
 			
-			gizmo.rotation.copy( obj.rotation );
+			gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
 		}		
 		
 		clippingGizmo360(obj); 		
@@ -131,7 +134,7 @@ console.log(3333, obj);
 	}
 	
 	outlineAddObj(obj);
-	clickObjUI({obj: obj});
+	if(!cdm.element) { clickObjUI({obj: obj}); }
 	setScalePivotGizmo();
 }
 

@@ -91,7 +91,17 @@ function clippingGizmo360( objPop )
 	else
 	{
 		var group = new THREE.Group();
-		group.position.copy(objPop.position);
+		
+		if(objPop.parent.userData.groupObj)		// объект из группы
+		{
+			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));
+		}			
+		else
+		{
+			group.position.copy(objPop.position);
+		}
+		
+		
 		group.lookAt(camera.position);
 		group.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
 		group.updateMatrixWorld();
@@ -138,7 +148,7 @@ function clickGizmo( intersect )
 	else								// объект без группы
 	{
 		obj.updateMatrixWorld();
-		gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());			
 	}	
 	
 	if(axis == 'y')
@@ -166,8 +176,9 @@ function clickGizmo( intersect )
 	}
 	else
 	{
-		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );								// создаем Quaternion повернутый на выбранную ось	
-		var q2 = obj.quaternion.clone().multiply( quaternion );// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
+		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );			// создаем Quaternion повернутый на выбранную ось
+		var q1 = obj.getWorldQuaternion(new THREE.Quaternion());
+		var q2 = q1.multiply( quaternion );												// умножаем на предведущий Quaternion	 		
 		planeMath.quaternion.copy( q2 );										
 	}
 
@@ -209,7 +220,9 @@ function moveGizmo( event )
 	else 
 	{ 
 		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY - gizmo.userData.gizmo.active.rotY );
-		obj.quaternion.multiply( quaternion ); 
+		var q1 = obj.getWorldQuaternion(new THREE.Quaternion());
+		
+		obj.quaternion.multiply( quaternion );	
 	}		
 	
 	
@@ -227,7 +240,7 @@ function moveGizmo( event )
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
 	
-	if(camera != cameraTop) { gizmo.rotation.copy( obj.rotation ); }
+	if(camera != cameraTop) { gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) ); }
 }
 
 

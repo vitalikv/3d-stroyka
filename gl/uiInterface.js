@@ -203,7 +203,7 @@ function clickItemObjNameUI(cdm)
 	
 	console.log(value, obj); 
 	
-	outlineAddObj(obj);   
+	clickObject3D(obj, {element: true});   
 	
 	renderCamera();
 }
