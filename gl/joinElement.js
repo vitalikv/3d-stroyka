@@ -511,7 +511,11 @@ function createGroupObj_2(cdm)
 	//formGroupObj({group: group, arrO: arr2});
 	
 
+var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x00ff00, transparent: true, opacity: 1, depthTest: false } ) );
+scene.add( cube );
 
+
+	
 	  
 	// добавляем полученные объекты в новую группу
 	for(var i = 0; i < arr2.length; i++)
@@ -533,45 +537,30 @@ function createGroupObj_2(cdm)
 			//o.rotation.set(0,0,0);
 			scene.add(o);
 			
+	
+			var axis = new THREE.Vector3(0,0,1); 
+			var theta = Math.PI/4;
+			
+
+			o.position.sub(cdm.pos);
+			//o.position.y = 1;
+			
+var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
+cube.position.copy(o.position);
+scene.add( cube );				
+
+
 			o.updateMatrixWorld();
-			var v1 = o.localToWorld(new THREE.Vector3(1,0,0));
+			var v1 = o.localToWorld(axis.clone());
 			var v2 = o.localToWorld( o.geometry.boundingSphere.center.clone() );
 			var vX = new THREE.Vector3().subVectors(v1, v2).normalize();
 			scene.add(new THREE.ArrowHelper( vX, v2, 0.2, 0xff0000 ));
 			
-
-			var v1 = o.localToWorld(new THREE.Vector3(0,0,1));
-			var vX = new THREE.Vector3().subVectors(v1, v2).normalize();
-			var help = new THREE.ArrowHelper( vX, v2, 0.2, 0x00ff00 );
-			help.line.material = new THREE.MeshLambertMaterial( { color : 0x00ff00, transparent: true, opacity: 1, depthTest: false } );
-			scene.add(help);
+			var axis2 = vX;
 			
-			console.log(3333, help);
-		
-			var axis = new THREE.Vector3(1,0,0); 
-			var theta = Math.PI/4;
-			
-var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
-cube.position.copy(o.position);
-scene.add( cube );	
-
-
-var quaternion = new THREE.Quaternion().setFromAxisAngle( axis, theta );
-var rot = new THREE.Euler().setFromQuaternion(quaternion);
-
-var pos = applyRotVec(o.position, new THREE.Vector3(rot.x,rot.y,rot.z));
-
-console.log(pos);
-	
-o.position.copy(pos);	
-
-
-			//o.position.sub(cdm.pos);
-			//o.position.applyAxisAngle(axis, theta); // rotate the POSITION
-			//o.position.add(p1);
-			
+			o.position.applyAxisAngle(axis2, theta); // rotate the POSITION						
 			o.rotateOnAxis(axis, theta);
-			
+			o.position.add(cdm.pos);
 		}
 	}	
 
