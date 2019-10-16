@@ -930,7 +930,7 @@ function loadObjFromBase(cdm)
 				
 				for ( var i2 = 0; i2 < group.length; i2++ )
 				{					
-					group[i2].pos.z *= -1;
+					group[i2].pos = new THREE.Vector3( group[i2].pos.x, group[i2].pos.y, -group[i2].pos.z );
 					group[i2].rot = new THREE.Vector3( THREE.Math.degToRad(group[i2].rot.x), THREE.Math.degToRad(group[i2].rot.y), THREE.Math.degToRad(group[i2].rot.z) );
 					
 					createGroupObj_2(group[i2]);

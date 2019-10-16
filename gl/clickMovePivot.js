@@ -209,6 +209,7 @@ function movePivot( event )
 	if(intersects.length == 0) return;
 	
 	var pivot = infProject.tools.pivot;
+	var obj = pivot.userData.pivot.obj;
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );
 
 	if(pivot.userData.pivot.active.axis == 'xz')
@@ -230,9 +231,22 @@ function movePivot( event )
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
 	
-	if(pivot.userData.pivot.obj) { pivot.userData.pivot.obj.position.add( pos2 ); }
+	// у объекта есть группа
+	if(obj.userData.obj3D.group && !pivot.userData.pivot.element)
+	{
+		var arr = obj.userData.obj3D.group.userData.groupObj.child;
 		
-	//gizmo.position.add( pos2 );
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].position.add( pos2 );
+		}
+		 
+		obj.userData.obj3D.group.userData.groupObj.pos.add( pos2 ); 
+	}
+	else 
+	{ 
+		obj.position.add( pos2 ); 
+	}
 
 }
 
@@ -266,7 +280,14 @@ function setScalePivotGizmo()
 	}
 	else
 	{
-		var dist = camera.position.distanceTo(obj.position);
+		if(obj.userData.obj3D.group)
+		{
+			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.pos);
+		}
+		else
+		{
+			var dist = camera.position.distanceTo(obj.position);
+		}			
 		
 		var scale = dist/6;	
 		

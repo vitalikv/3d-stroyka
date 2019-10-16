@@ -129,8 +129,9 @@ function clickObjUI(cdm)
 	var obj = cdm.obj;
 	var inf = null;
 	
-	if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
-	else if(obj.userData.groupObj) { inf = obj.userData.groupObj; }
+	
+	if(obj.userData.obj3D.group) { inf = obj.userData.obj3D.group.userData.groupObj; }
+	else if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
 	else { return; }
 	
 	$('[nameId="rp_obj_name"]').val(inf.nameRus);
@@ -142,7 +143,7 @@ function clickObjUI(cdm)
 
 
 
-// кликнули на группу объектов, показываем в меню дочерние объекты
+// кликнули на группу объектов, показываем информацию в правом меню UI
 function showGroupObjUI(cdm)
 {
 	if(!cdm) { cdm = {}; }	
@@ -159,12 +160,14 @@ function showGroupObjUI(cdm)
 	
 	infProject.ui.group_obj = [];
 	
-	if(!obj.userData.groupObj) return;
+	if(!obj.userData.obj3D.group) return;
+	
+	var arr = obj.userData.obj3D.group.userData.groupObj.child; 
 	
 	// добавляем новый список объектов из группы
-	for(var i = 0; i < obj.children.length; i++)
+	for(var i = 0; i < arr.length; i++)
 	{
-		var child = obj.children[i];
+		var child = arr[i];
 		
 		var str = 
 		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\

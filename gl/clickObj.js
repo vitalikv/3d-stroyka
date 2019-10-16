@@ -55,28 +55,22 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-	
-	if(obj.parent.userData.groupObj)	// объект у которого есть группа
+	if(obj.userData.obj3D.group && !cdm.element)
 	{
-		obj = obj.parent;
-		var pos = obj.position;
+		var pos = obj.userData.obj3D.group.userData.groupObj.pos;  
 	}
-	else if(obj.userData.groupObj)		// группа
-	{
-		var pos = obj.position;
-	}	
-	else								// объект без группы
+	else
 	{
 		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
-	}
-	 
+		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
+	}	 
 	
 	if(infProject.settings.active.pg == 'pivot')
 	{
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
+		pivot.userData.pivot.element = cdm.element;
 		pivot.position.copy(pos);
 
 		if(camera == cameraTop)
@@ -99,6 +93,7 @@ function clickObject3D( obj, cdm )
 		
 		gizmo.visible = true;
 		gizmo.userData.gizmo.obj = obj;
+		gizmo.userData.gizmo.element = cdm.element;
 		
 		if(camera == cameraTop)
 		{
@@ -132,12 +127,39 @@ function clickObject3D( obj, cdm )
 		else { joint.userData.joint.obj_2 = obj; }
 	}
 	
-	outlineAddObj(obj);
+	outlineAddObj(obj, {element: cdm.element});
 	if(!cdm.element) { clickObjUI({obj: obj}); }
 	setScalePivotGizmo();
 }
 
 
+
+// пролучить все объекты принадлежащие группе 
+function getObjsFromGroup( obj ) 
+{	
+	var arr = [ obj ];
+	
+	if(obj.userData.obj3D)
+	{
+		if(obj.userData.obj3D.group)
+		{
+			var objs = infProject.scene.array.obj;
+			var arr = [];
+			
+			for(var i = 0; i < objs.length; i++)
+			{
+				if(!objs[i].userData.obj3D.group) continue;
+				if(obj.userData.obj3D.group != objs[i].userData.obj3D.group) continue;
+				
+				arr[arr.length] = objs[i];
+			}
+		}
+	}
+	
+	return arr;  
+}
+	
+	
 
 // удаление объекта
 function deleteObjectPop(obj)
@@ -176,22 +198,12 @@ function hidePivotGizmo(obj)
 {
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
-	if(obj.userData.tag == 'obj' || obj.userData.groupObj) {}
-	else { return; }
+	if(obj.userData.tag != 'obj') return;
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
-
-	
-	// восстанавливаем группу у объекта
-	if(obj.userData.obj3D)
-	{   
-		if(obj.userData.obj3D.group && !obj.parent.userData.groupObj)
-		{
-			obj.userData.obj3D.group.attach(obj);
-		}
-	}			
+				
 	
 	if(clickO.rayhit)
 	{

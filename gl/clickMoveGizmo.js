@@ -131,9 +131,9 @@ function clickGizmo( intersect )
 	
 
 	
-	if(obj.userData.groupObj)		// группа
+	if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
-		gizmo.userData.gizmo.active.startPos = obj.position;
+		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.pos;
 	}	
 	else								// объект без группы
 	{
@@ -209,21 +209,40 @@ function moveGizmo( event )
 	else 
 	{ 
 		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY - gizmo.userData.gizmo.active.rotY );
-		obj.quaternion.multiply( quaternion ); 
+		
+		if(obj.userData.obj3D.group)
+		{
+			var arr = obj.userData.obj3D.group.userData.groupObj.child;
+			console.log(axis);
+			for(var i = 0; i < arr.length; i++)
+			{
+				arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+				arr[i].position.applyAxisAngle(dr, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
+				arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+				
+				arr[i].quaternion.multiply( quaternion );
+			}			
+		}
+		else
+		{
+			obj.rotateOnAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);
+			//obj.quaternion.multiply( quaternion );
+		}		 
 	}		
 	
-	
-	if(obj.userData.groupObj)		// группа
+			
+	if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
-		var newPosCenter = obj.position;
+		var newPosCenter = obj.userData.obj3D.group.userData.groupObj.pos;
 	}	
 	else								// объект без группы
 	{
 		obj.updateMatrixWorld();
-		var newPosCenter = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );				
+		var newPosCenter = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );
+		obj.position.add( new THREE.Vector3().subVectors( gizmo.userData.gizmo.active.startPos, newPosCenter ) );
 	}	
 	
-	obj.position.add( new THREE.Vector3().subVectors( gizmo.userData.gizmo.active.startPos, newPosCenter ) );		
+			
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
 	

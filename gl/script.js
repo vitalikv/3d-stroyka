@@ -249,9 +249,14 @@ if(1==1)
 	outlinePass.selectedObjects = [];
 
 
-	function outlineAddObj( obj )
+	function outlineAddObj( obj, cdm )
 	{	
-		outlinePass.selectedObjects = [ obj ];  
+		if(!cdm) cdm = {};
+		
+		var arr = [obj];
+		if(!cdm.element) { var arr = getObjsFromGroup( obj ); }		
+		
+		outlinePass.selectedObjects = arr;  
 	}
 
 	function outlineRemoveObj()

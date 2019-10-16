@@ -483,22 +483,22 @@ function changeSizeGeometryWD(cdm)
 // создаем группу и добавляем туда объекты (из сохраненного файла)
 function createGroupObj_2(cdm)
 {
-	var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
+	//var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
 	//material.visible = false;
-	var group = new THREE.Group();
+	//var group = new THREE.Group();
 	//var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
+	
+	var group = {};
+	group.userData = {};
 	group.userData.tag = 'group';
 	group.userData.id = cdm.id;
 	group.userData.groupObj = {};	
 	group.userData.groupObj.nameRus = 'группа 2';
+	group.userData.groupObj.pos = cdm.pos;
+	group.userData.groupObj.rot = cdm.rot;
+	group.userData.groupObj.child = [];
 	
-	console.log(group);
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
-
-
-	group.position.copy(cdm.pos);
-	group.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);		
-	scene.add( group );
 	
 	
 	var arr2 = [];
@@ -510,16 +510,63 @@ function createGroupObj_2(cdm)
 	
 	//formGroupObj({group: group, arrO: arr2});
 	
-	 
+
+
+	  
 	// добавляем полученные объекты в новую группу
 	for(var i = 0; i < arr2.length; i++)
 	{
-		group.attach(arr2[i]);
+		arr2[i].userData.obj3D.group = group;
+		group.userData.groupObj.child[i] = arr2[i];
 		
-		arr2[i].userData.obj3D.group = group; 
+		//arr2[i].rotation.y += 0.5; 
+		
+		if(1==1)
+		{
+			arr2[i].userData = {}; 
+			
+			var o = arr2[i].clone();
+			var q = o.quaternion.clone();
+			var p1 = o.position.clone().sub(cdm.pos);
+			//o.position.set(0,0,0);
+			
+			//o.rotation.set(0,0,0);
+			scene.add(o);
+			
+			o.updateMatrixWorld();
+			var v1 = o.localToWorld(new THREE.Vector3(1,0,0));
+			var v2 = o.localToWorld( o.geometry.boundingSphere.center.clone() );
+			var vX = new THREE.Vector3().subVectors(v1, v2).normalize();
+			scene.add(new THREE.ArrowHelper( vX, v2, 0.2, 0xff0000 ));
+			
+
+			var v1 = o.localToWorld(new THREE.Vector3(0,0,1));
+			var vX = new THREE.Vector3().subVectors(v1, v2).normalize();
+			var help = new THREE.ArrowHelper( vX, v2, 0.2, 0x00ff00 );
+			help.line.material = new THREE.MeshLambertMaterial( { color : 0x00ff00, transparent: true, opacity: 1, depthTest: false } );
+			scene.add(help);
+			
+			console.log(3333, help);
+		
+			var axis = v1.normalize(); 
+			var theta = Math.PI/4;
+			
+var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
+cube.position.copy(o.position);
+scene.add( cube );			
+			//o.position.sub(cdm.pos);
+			o.position.applyAxisAngle(axis, theta); // rotate the POSITION
+			//o.position.add(p1);
+			
+			o.rotateOnAxis(axis, theta);
+			
+			
+
+			
+		}
 	}	
 
-	getGroupFreeNearlyJP({obj: group});
+	//getGroupFreeNearlyJP({obj: group});
 	
 }
 
