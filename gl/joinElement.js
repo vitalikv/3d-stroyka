@@ -548,20 +548,29 @@ function createGroupObj_2(cdm)
 			
 			console.log(3333, help);
 		
-			var axis = v1.normalize(); 
+			var axis = new THREE.Vector3(1,0,0); 
 			var theta = Math.PI/4;
 			
 var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
 cube.position.copy(o.position);
-scene.add( cube );			
+scene.add( cube );	
+
+
+var quaternion = new THREE.Quaternion().setFromAxisAngle( axis, theta );
+var rot = new THREE.Euler().setFromQuaternion(quaternion);
+
+var pos = applyRotVec(o.position, new THREE.Vector3(rot.x,rot.y,rot.z));
+
+console.log(pos);
+	
+o.position.copy(pos);	
+
+
 			//o.position.sub(cdm.pos);
-			o.position.applyAxisAngle(axis, theta); // rotate the POSITION
+			//o.position.applyAxisAngle(axis, theta); // rotate the POSITION
 			//o.position.add(p1);
 			
 			o.rotateOnAxis(axis, theta);
-			
-			
-
 			
 		}
 	}	
@@ -570,7 +579,40 @@ scene.add( cube );
 	
 }
 
+function applyRotVec(point, rot) 
+{
+	var radX = rot.x;
+	var radY = rot.y;
+	var radZ = rot.z;
+	var sinX = Math.sin(radX);
+	var cosX = Math.cos(radX);
+	var sinY = Math.sin(radY);
+	var cosY = Math.cos(radY);
+	var sinZ = Math.sin(radZ);
+	var cosZ = Math.cos(radZ);
 
+	var xAxis = new THREE.Vector3(
+		cosY * cosZ,
+		cosX * sinZ + sinX * sinY * cosZ,
+		sinX * sinZ - cosX * sinY * cosZ
+	);
+	var yAxis = new THREE.Vector3(
+		-cosY * sinZ,
+		cosX * cosZ - sinX * sinY * sinZ,
+		sinX * cosZ + cosX * sinY * sinZ
+	);
+	var zAxis = new THREE.Vector3(
+		sinY,
+		-sinX * cosY,
+		cosX * cosY
+	);
+	
+	var v1 = new THREE.Vector3().addScaledVector(xAxis, point.x);
+	var v2 = new THREE.Vector3().addScaledVector(yAxis, point.y);
+	var v3 = new THREE.Vector3().addScaledVector(zAxis, point.z);
+
+	return v1.add(v2).add(v3);
+}
 
 
 
