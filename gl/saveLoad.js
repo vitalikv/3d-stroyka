@@ -579,19 +579,14 @@ function getJsonGeometry()
 		
 		var gr = null;
 		
-		if(obj.parent.userData.groupObj)	// если объект приналежит группе
+		if(obj.userData.obj3D.group)	// если объект приналежит группе
 		{
-			var pos = obj.getWorldPosition(new THREE.Vector3());
-			pos.z = -pos.z;
-			var rot = new THREE.Euler().setFromQuaternion( obj.getWorldQuaternion(new THREE.Quaternion()) );
-			var rot = new THREE.Vector3( THREE.Math.radToDeg(rot.x), THREE.Math.radToDeg(rot.y), THREE.Math.radToDeg(rot.z) );
-			gr = { name: 'group', id: obj.parent.userData.id }; 
+			gr = { name: 'group', id: obj.userData.obj3D.group.userData.id }; 
 		}
-		else
-		{
-			var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
-			var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
-		}
+		
+		var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
+		var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
+		
 			
 		var m = furn.length;
 		furn[m] = {};
@@ -605,21 +600,20 @@ function getJsonGeometry()
 	
 	for ( var i = 0; i < infProject.scene.array.group.length; i++ )
 	{
-		var obj = infProject.scene.array.group[i];
+		var obj = infProject.scene.array.group[i].userData.groupObj.centerObj;
 		
 		var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
 		var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
 
 		var arrO = [];
+		var child = infProject.scene.array.group[i].userData.groupObj.child;
 		
-		for ( var i2 = 0; i2 < obj.children.length; i2++ )
-		{
-			var child = obj.children[i2];
+		for ( var i2 = 0; i2 < child.length; i2++ )
+		{			
+			if(!child[i2].userData.tag) continue;
+			if(child[i2].userData.tag != 'obj') continue;
 			
-			if(!child.userData.tag) continue;
-			if(child.userData.tag != 'obj') continue;
-			
-			arrO[arrO.length] = { id: Number(child.userData.id) };
+			arrO[arrO.length] = { id: Number(child[i2].userData.id) };
 		}
 		
 		var m = group.length;

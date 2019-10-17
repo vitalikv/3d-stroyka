@@ -62,7 +62,15 @@ function loadObjServer(cdm)
 		inf.name = 'соединение алюминиевого радиатора';
 		inf.planeMath = 0.5;		
 	}
+	else if(lotid == 8)
+	{
+		inf.url = infProject.path+'export/kran_sgon_3s4.fbx'; 
+		inf.name = 'шаровой кран';
+		inf.planeMath = 0.5;
 
+		inf.joinPoint[0] = {name: 'Box001', size: '1', joinObj: null};
+		inf.joinPoint[1] = {name: 'Box002', size: '1', joinObj: null};		
+	}
 	
 	var obj = getObjFromBase({lotid: lotid});
 	
@@ -236,7 +244,7 @@ function addObjInScene(inf, cdm)
 		obj2.position.z += 1;
 	}
 	
-	if(cdm.lotid == 6)
+	if(1 == 1)
 	{
 		var arr = [];
 		var id = 0;

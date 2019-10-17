@@ -277,7 +277,7 @@ function joinElement(cdm)
 	
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].quaternion.multiply(diff);		// diff разницу умнажаем, чтобы получить то же угол
+		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол
 		arr_2[i].updateMatrixWorld();		
 	}
 	
