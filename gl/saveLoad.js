@@ -933,6 +933,13 @@ function loadObjFromBase(cdm)
 					group[i2].pos = new THREE.Vector3( group[i2].pos.x, group[i2].pos.y, -group[i2].pos.z );
 					group[i2].rot = new THREE.Vector3( THREE.Math.degToRad(group[i2].rot.x), THREE.Math.degToRad(group[i2].rot.y), THREE.Math.degToRad(group[i2].rot.z) );
 					
+					var arrId = []; 
+					for ( var i3 = 0; i3 < group[i2].obj.length; i3++ )
+					{
+						arrId[arrId.length] = group[i2].obj[i3].id;
+					}
+					group[i2].obj = { id: arrId };
+					
 					createGroupObj_2(group[i2]);
 				}
 				

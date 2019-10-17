@@ -147,8 +147,29 @@ function clickObject3D( obj, cdm )
 }
 
 
-
-
+// пролучить все объекты принадлежащие группе (минус центральный куб)
+function getObjsFromGroup_1( obj )
+{
+	var arr = [ obj ];
+	
+	if(obj.userData.obj3D)
+	{
+		if(obj.userData.obj3D.group)
+		{
+			var objs = obj.userData.obj3D.group.userData.groupObj.child;
+			var arr = [];
+			
+			for(var i = 0; i < objs.length; i++)
+			{
+				if(!objs[i].userData.obj3D) continue;
+				
+				arr[arr.length] = objs[i];
+			}
+		}
+	}
+	
+	return arr;	
+}
 
 // пролучить все объекты принадлежащие группе 
 function getObjsFromGroup( obj ) 

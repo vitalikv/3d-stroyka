@@ -269,100 +269,110 @@ function joinElement(cdm)
 
 
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());
-	obj_2.quaternion.copy(q);
-	obj_2.updateMatrixWorld();
+	
+	var diff = new THREE.Quaternion().multiplyQuaternions(obj_2.quaternion.clone().inverse(), q);	// разница между Quaternions
+		
+	var arr_2 = getObjsFromGroup_1( obj_2 );
+
+	
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].quaternion.multiply(diff);		// diff разницу умнажаем, чтобы получить то же угол
+		arr_2[i].updateMatrixWorld();		
+	}
 	
 	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
 	var pos2 = o2.getWorldPosition(new THREE.Vector3());
-	var pos = new THREE.Vector3().subVectors( pos1, pos2 );	
-	obj_2.position.add(pos);
+	
+
+	if(arr_2.length == 1)	// одиночный объект
+	{
+		var pos = new THREE.Vector3().subVectors( pos1, pos2 );
+		
+		for(var i = 0; i < arr_2.length; i++)
+		{
+			arr_2[i].position.add(pos);		
+		}	
+	}
+	else	// группа
+	{
+		// вращаем position объектов, относительно точки-соединителя
+		for(var i = 0; i < arr_2.length; i++)
+		{
+			arr_2[i].position.sub(pos2);
+			arr_2[i].position.applyQuaternion(diff); 	
+			arr_2[i].position.add(pos2);
+		}
+		
+		// после вращения vector, обновляем положение точки-соединителя
+		obj_2.updateMatrixWorld();
+		var pos2 = o2.getWorldPosition(new THREE.Vector3());
+		var pos = new THREE.Vector3().subVectors( pos1, pos2 );
+		
+		for(var i = 0; i < arr_2.length; i++)
+		{
+			arr_2[i].position.add(pos);		
+		}			
+	}	
 	
 	
 	clickO.rayhit = null;
 	
 	hidePivotGizmo(obj);
-	
-	//if(obj.parent )
+
 		
 	if(1==1)
-	{
-		// создаем новую группу
-		var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
-		var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
-		group.userData.tag = 'group';
-		group.userData.id = countId; countId++;
-		group.userData.groupObj = {};	
-		group.userData.groupObj.nameRus = 'группа 1';
+	{		
+		var arr_1 = getObjsFromGroup_1( obj );
 		
-		infProject.scene.array.group[infProject.scene.array.group.length] = group;
 		
-		var pos = new THREE.Vector3();
-		var arr = [obj, obj_2];
-		var arr2 = [];
 		
-		// получаем все объекты для добавления в группу
-		for(var i = 0; i < arr.length; i++)
+		detachObjsGroup({obj: obj, child: arr_1});
+		detachObjsGroup({obj: obj_2, child: arr_2});
+		
+		// разбиваем группу 
+		function detachObjsGroup(cdm)
 		{
-			if(arr[i].userData.groupObj)
-			{				
-				arr[i].updateMatrixWorld();
+			var obj = cdm.obj;			
+			if(!obj.userData.obj3D.group) return;
 				
-				// если объект состоит из группы объекто, то сначала вытаскиваем эти объекты и удалем группу
-				for(var i2 = arr[i].children.length - 1; i2 > -1; i2--)
-				{
-					var o = arr[i].children[i2];
-					
-					var pos1 = o.getWorldPosition(new THREE.Vector3());
-					var q1 = o.getWorldQuaternion(new THREE.Quaternion());						
-					
-					scene.add(o);
-					
-					o.position.copy(pos1);
-					o.quaternion.copy(q1);
-
-					o.updateMatrixWorld();
-					pos.add( o.localToWorld( o.geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта
-					
-					arr2[arr2.length] = o;
-				}
-				
-				
-				// удаляем группу
-				deleteValueFromArrya({arr : infProject.scene.array.group, o : arr[i]});
-				disposeNode(arr[i]);
-				scene.remove(arr[i]);	
-				
-			}
-			else	// у объекта нет группу, он оодин, сразу добавляем в массив
+			var child = (cdm.child) ? cdm.child : getObjsFromGroup_1( obj ); 
+			
+			var group = obj.userData.obj3D.group;
+			var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
+			
+			for(var i = 0; i < child.length; i++)
 			{
-				arr[i].updateMatrixWorld();
-				pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта
-				
-				arr2[arr2.length] = arr[i];
-			}			
+				child[i].userData.obj3D.group = null;
+			}
+			
+			// удаляем группу
+			deleteValueFromArrya({arr : infProject.scene.array.group, o : group});	
+			
+			// удаляем центральный куб
+			disposeNode(centerObj);
+			scene.remove(centerObj);							
 		}
 		
-		pos.divideScalar( arr2.length );
+		var arr = arr_1.concat(arr_2);	// объединяем массивы
 		
-		group.position.copy(pos);
-		group.rotation.copy(obj.rotation);		
-		scene.add( group );
+		// находим общий центр 
+		var pos = new THREE.Vector3();
 		
-	
-		formGroupObj({group: group, arrO: arr2});
-		
-		 
-		// добавляем полученные объекты в новую группу
-		for(var i = 0; i < arr2.length; i++)
+		for(var i = 0; i < arr.length; i++)
 		{
-			group.attach(arr2[i]);
-		}			
+			arr[i].updateMatrixWorld();
+			pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта		
+		}
 		
-		o1.userData.joinObj = o2;
-		o2.userData.joinObj = o1;
+		pos.divideScalar( arr.length );
+				
 		
+		// создаем новую группу	
+		var group = createGroupObj_1({pos: pos, rot: obj.rotation, nameRus: 'новая группа', obj: {o: arr} });	
 		
-		getGroupFreeNearlyJP({obj: group});
+		//formGroupObj({group: group, arrO: arr2});
+		//getGroupFreeNearlyJP({obj: group});
 		//console.log(222, o1);	
 		
 	}
@@ -452,41 +462,37 @@ function formGroupObj(cdm)
 	
 
 	changeSizeGeometryWD({obj: group, size: {x: (bound.max.x-bound.min.x), y: (bound.max.y-bound.min.y), z: (bound.max.z-bound.min.z)}});
-
-}
-
-
-// меняем размеры boxPop
-function changeSizeGeometryWD(cdm)
-{	
-	var obj = cdm.obj;
-	var x = cdm.size.x;
-	var y = cdm.size.y;
-	var z = cdm.size.z;
-	console.log(cdm.size);
-	var v = obj.geometry.vertices;
-	v[0].x = v[1].x = v[7].x = v[6].x = -x / 2;
-	v[3].x = v[2].x = v[4].x = v[5].x = x / 2;
-	v[0].y = v[3].y = v[7].y = v[4].y = -y / 2;
-	v[1].y = v[2].y = v[5].y = v[6].y = y / 2;	
-	v[4].z = v[5].z = v[6].z = v[7].z = -z / 2;
-	v[0].z = v[1].z = v[2].z = v[3].z = z / 2;
 	
-	obj.geometry.verticesNeedUpdate = true;
-	obj.geometry.elementsNeedUpdate = true;
-	obj.geometry.computeBoundingBox();
-	obj.geometry.computeBoundingSphere();
+	// меняем размеры boxPop
+	function changeSizeGeometryWD(cdm)
+	{	
+		var obj = cdm.obj;
+		var x = cdm.size.x;
+		var y = cdm.size.y;
+		var z = cdm.size.z;
+		console.log(cdm.size);
+		var v = obj.geometry.vertices;
+		v[0].x = v[1].x = v[7].x = v[6].x = -x / 2;
+		v[3].x = v[2].x = v[4].x = v[5].x = x / 2;
+		v[0].y = v[3].y = v[7].y = v[4].y = -y / 2;
+		v[1].y = v[2].y = v[5].y = v[6].y = y / 2;	
+		v[4].z = v[5].z = v[6].z = v[7].z = -z / 2;
+		v[0].z = v[1].z = v[2].z = v[3].z = z / 2;
+		
+		obj.geometry.verticesNeedUpdate = true;
+		obj.geometry.elementsNeedUpdate = true;
+		obj.geometry.computeBoundingBox();
+		obj.geometry.computeBoundingSphere();
+	}	
 }
 
 
-
-// создаем группу и добавляем туда объекты (из сохраненного файла)
-function createGroupObj_2(cdm)
+function createGroupObj_1(cdm)
 {
-	//var material = new THREE.MeshPhongMaterial({ color: 0x0000ff, transparent: true, opacity: 0.5 }); 
-	//material.visible = false;
-	//var group = new THREE.Group();
-	//var group = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
+	if(!cdm.id) { cdm.id = countId; countId++; }
+	if(!cdm.pos) { cdm.pos = new THREE.Vector3(); }
+	if(!cdm.rot) { cdm.rot = new THREE.Vector3(); }
+	if(!cdm.nameRus) { cdm.nameRus = 'группа'; }
 	
 	var group = {};
 	group.userData = {};
@@ -500,24 +506,36 @@ function createGroupObj_2(cdm)
 	group.userData.groupObj.child = [];
 	
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
-	
-	
-	var arr2 = [];
-	for(var i2 = 0; i2 < cdm.obj.length; i2++)
-	{
-		arr2[arr2.length] = findObjFromId( 'obj', cdm.obj[i2].id );
-	}	
-	
-	var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0xcccccc, transparent: true, opacity: 1, depthTest: false } ) );
+
+
+	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc, transparent: true, opacity: 1, depthTest: false } ); 
+	//material.visible = false;	
+	var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), material );
 	cube.userData.tag = 'group_center';
 	cube.position.copy(cdm.pos);
 	cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);
 	scene.add(cube);
 	
-	group.userData.groupObj.centerObj = cube;
-	group.userData.groupObj.child[0] = cube; 		
+	group.userData.groupObj.centerObj = cube; 
+	group.userData.groupObj.child[0] = cube;
+
 	
-	//formGroupObj({group: group, arrO: arr2});
+	var arr2 = [];
+	 
+	if(cdm.obj.id)
+	{
+		for(var i = 0; i < cdm.obj.id.length; i++)
+		{
+			arr2[arr2.length] = findObjFromId( 'obj', cdm.obj.id[i] ); 
+		}			
+	}
+	else if(cdm.obj.o)
+	{
+		for(var i = 0; i < cdm.obj.o.length; i++)
+		{
+			arr2[arr2.length] = cdm.obj.o[i]; 
+		}			
+	}
 	
 	  
 	// добавляем полученные объекты в новую группу
@@ -525,47 +543,19 @@ function createGroupObj_2(cdm)
 	{
 		arr2[i].userData.obj3D.group = group;
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
-		
-		//arr2[i].rotation.y += 0.5; 
-		
-		if(1==2)
-		{
-			arr2[i].userData = {}; 
-			
-			var o = arr2[i].clone();
-			var q = o.quaternion.clone();
-			var p1 = o.position.clone().sub(cdm.pos);
-			//o.position.set(0,0,0);
-			
-			//o.rotation.set(0,0,0);
-			scene.add(o);
-			
-	
-			var axis = new THREE.Vector3(0,0,1); 
-			var theta = Math.PI/4;
-			
-
-			o.position.sub(cdm.pos);
-			//o.position.y = 1;
-			
-var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
-cube.position.copy(o.position);
-scene.add( cube );				
-
-
-			o.updateMatrixWorld();
-			var v1 = o.localToWorld(axis.clone());
-			var v2 = o.localToWorld( o.geometry.boundingSphere.center.clone() );
-			var vX = new THREE.Vector3().subVectors(v1, v2).normalize();
-			scene.add(new THREE.ArrowHelper( vX, v2, 0.2, 0xff0000 ));
-			
-			var axis2 = vX;
-			
-			o.position.applyAxisAngle(axis2, theta); // rotate the POSITION						
-			o.rotateOnAxis(axis, theta);
-			o.position.add(cdm.pos); 
-		}
 	}	
+
+	return group;
+}
+
+
+// создаем группу и добавляем туда объекты (из сохраненного файла)
+function createGroupObj_2(cdm)
+{	
+	var group = createGroupObj_1(cdm);
+	
+	
+	
 
 	//getGroupFreeNearlyJP({obj: group});
 	
