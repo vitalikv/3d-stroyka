@@ -261,8 +261,10 @@ function setScalePivotGizmo()
 	var pVis = false;
 	var gVis = false;
 	
-	if(pivot.visible) pVis = true;
-	if(gizmo.visible) gVis = true;	
+	var element = false;
+	
+	if(pivot.visible) { pVis = true; element = pivot.userData.pivot.element; }
+	if(gizmo.visible) { gVis = true; element = gizmo.userData.gizmo.element; }	
 	if(!pVis && !gVis) { return; }
 	
 	var obj = null;
@@ -280,13 +282,13 @@ function setScalePivotGizmo()
 	}
 	else
 	{
-		if(obj.userData.obj3D.group)
+		if(obj.userData.obj3D.group && !element)
 		{
 			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.pos);
 		}
 		else
 		{
-			var dist = camera.position.distanceTo(obj.position);
+			var dist = camera.position.distanceTo(obj.position); 
 		}			
 		
 		var scale = dist/6;	

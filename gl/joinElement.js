@@ -496,6 +496,7 @@ function createGroupObj_2(cdm)
 	group.userData.groupObj.nameRus = 'группа 2';
 	group.userData.groupObj.pos = cdm.pos;
 	group.userData.groupObj.rot = cdm.rot;
+	group.userData.groupObj.centerObj = null;
 	group.userData.groupObj.child = [];
 	
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
@@ -507,6 +508,14 @@ function createGroupObj_2(cdm)
 		arr2[arr2.length] = findObjFromId( 'obj', cdm.obj[i2].id );
 	}	
 	
+	var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0xcccccc, transparent: true, opacity: 1, depthTest: false } ) );
+	cube.userData.tag = 'group_center';
+	cube.position.copy(cdm.pos);
+	cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);
+	scene.add(cube);
+	
+	group.userData.groupObj.centerObj = cube;
+	group.userData.groupObj.child[0] = cube; 		
 	
 	//formGroupObj({group: group, arrO: arr2});
 	
@@ -515,7 +524,7 @@ function createGroupObj_2(cdm)
 	for(var i = 0; i < arr2.length; i++)
 	{
 		arr2[i].userData.obj3D.group = group;
-		group.userData.groupObj.child[i] = arr2[i];
+		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 		
 		//arr2[i].rotation.y += 0.5; 
 		

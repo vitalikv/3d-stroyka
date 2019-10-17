@@ -109,7 +109,14 @@ function clickObject3D( obj, cdm )
 			
 			if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)
 			{
-				gizmo.quaternion.copy( new THREE.Quaternion() );
+				if(1==2)	// глобальный gizmo
+				{
+					gizmo.quaternion.copy( new THREE.Quaternion() );
+				}
+				else		// локальный gizmo, относительно centerObj
+				{
+					gizmo.rotation.copy( obj.userData.obj3D.group.userData.groupObj.centerObj.rotation );
+				}				
 			}
 			else
 			{
@@ -138,6 +145,8 @@ function clickObject3D( obj, cdm )
 	if(!cdm.element) { clickObjUI({obj: obj}); }
 	setScalePivotGizmo();
 }
+
+
 
 
 

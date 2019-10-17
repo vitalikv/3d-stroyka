@@ -169,6 +169,8 @@ function showGroupObjUI(cdm)
 	{
 		var child = arr[i];
 		
+		if(!child.userData.obj3D) continue;
+		
 		var str = 
 		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\
 		<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
