@@ -91,7 +91,16 @@ function clippingGizmo360( objPop )
 	else
 	{
 		var group = new THREE.Group();
-		group.position.copy(objPop.position);
+
+		if(objPop.userData.obj3D.group && !infProject.tools.gizmo.userData.gizmo.element)
+		{
+			group.position.copy(objPop.userData.obj3D.group.userData.groupObj.pos);  
+		}		
+		else
+		{
+			group.position.copy(objPop.position);
+		}
+		
 		group.lookAt(camera.position);
 		group.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
 		group.updateMatrixWorld();
@@ -166,9 +175,16 @@ function clickGizmo( intersect )
 	}
 	else
 	{
-		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );								// создаем Quaternion повернутый на выбранную ось	
-		var q2 = obj.quaternion.clone().multiply( quaternion );// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
-		planeMath.quaternion.copy( q2 );										
+		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		{
+			planeMath.quaternion.copy( new THREE.Quaternion().setFromAxisAngle( dr, rotY ) );
+		}
+		else
+		{
+			var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );			// создаем Quaternion повернутый на выбранную ось	
+			var q2 = obj.quaternion.clone().multiply( quaternion );							// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
+			planeMath.quaternion.copy( q2 );													
+		}
 	}
 
 	
@@ -210,30 +226,49 @@ function moveGizmo( event )
 	{ 
 		var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY - gizmo.userData.gizmo.active.rotY );
 		
-		if(obj.userData.obj3D.group)
+		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
 		{
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;
-			console.log(axis);
+			
 			for(var i = 0; i < arr.length; i++)
 			{
-				arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
-				arr[i].position.applyAxisAngle(dr, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
-				arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
-				
-				arr[i].quaternion.multiply( quaternion );
+				// вращение каждого объекта по локальной оси
+				if(1==2)
+				{
+					//arr[i].updateMatrixWorld();
+					var v1 = arr[i].localToWorld( dr.clone() );
+					var v2 = arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() );
+					var dir = new THREE.Vector3().subVectors(v1, v2).normalize();				
+					
+					arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+					arr[i].position.applyAxisAngle(dir, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
+					arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+					
+					arr[i].quaternion.multiply( quaternion );					
+				}
+				else		// вращение каждого объекта по глобальной оси (объекты в группе движутся вместе)
+				{
+					//arr[i].updateMatrixWorld();
+					arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+					arr[i].position.applyAxisAngle(dr, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
+					arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+					
+					//arr[i].quaternion.multiply( quaternion );
+					arr[i].rotateOnWorldAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);					
+				}				
 			}			
 		}
-		else
+		else	// объект без группы
 		{
-			obj.rotateOnAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);
-			//obj.quaternion.multiply( quaternion );
+			//obj.rotateOnAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);
+			obj.quaternion.multiply( quaternion );
 		}		 
 	}		
 	
 			
 	if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
-		var newPosCenter = obj.userData.obj3D.group.userData.groupObj.pos;
+		
 	}	
 	else								// объект без группы
 	{
@@ -246,7 +281,17 @@ function moveGizmo( event )
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
 	
-	if(camera != cameraTop) { gizmo.rotation.copy( obj.rotation ); }
+	if(camera != cameraTop) 
+	{ 
+		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		{
+			
+		}
+		else
+		{
+			gizmo.rotation.copy( obj.rotation );
+		}		 
+	}
 }
 
 

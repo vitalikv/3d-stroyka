@@ -107,7 +107,14 @@ function clickObject3D( obj, cdm )
 			gizmo.children[1].visible = true;
 			gizmo.children[2].visible = true;
 			
-			gizmo.rotation.copy( obj.rotation );
+			if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)
+			{
+				gizmo.quaternion.copy( new THREE.Quaternion() );
+			}
+			else
+			{
+				gizmo.rotation.copy( obj.rotation );
+			}			
 		}		
 		
 		clippingGizmo360(obj); 		

@@ -510,12 +510,6 @@ function createGroupObj_2(cdm)
 	
 	//formGroupObj({group: group, arrO: arr2});
 	
-
-var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), new THREE.MeshLambertMaterial( { color : 0x00ff00, transparent: true, opacity: 1, depthTest: false } ) );
-scene.add( cube );
-
-
-	
 	  
 	// добавляем полученные объекты в новую группу
 	for(var i = 0; i < arr2.length; i++)
@@ -525,7 +519,7 @@ scene.add( cube );
 		
 		//arr2[i].rotation.y += 0.5; 
 		
-		if(1==1)
+		if(1==2)
 		{
 			arr2[i].userData = {}; 
 			
@@ -560,7 +554,7 @@ scene.add( cube );
 			
 			o.position.applyAxisAngle(axis2, theta); // rotate the POSITION						
 			o.rotateOnAxis(axis, theta);
-			o.position.add(cdm.pos);
+			o.position.add(cdm.pos); 
 		}
 	}	
 
@@ -568,40 +562,7 @@ scene.add( cube );
 	
 }
 
-function applyRotVec(point, rot) 
-{
-	var radX = rot.x;
-	var radY = rot.y;
-	var radZ = rot.z;
-	var sinX = Math.sin(radX);
-	var cosX = Math.cos(radX);
-	var sinY = Math.sin(radY);
-	var cosY = Math.cos(radY);
-	var sinZ = Math.sin(radZ);
-	var cosZ = Math.cos(radZ);
 
-	var xAxis = new THREE.Vector3(
-		cosY * cosZ,
-		cosX * sinZ + sinX * sinY * cosZ,
-		sinX * sinZ - cosX * sinY * cosZ
-	);
-	var yAxis = new THREE.Vector3(
-		-cosY * sinZ,
-		cosX * cosZ - sinX * sinY * sinZ,
-		sinX * cosZ + cosX * sinY * sinZ
-	);
-	var zAxis = new THREE.Vector3(
-		sinY,
-		-sinX * cosY,
-		cosX * cosY
-	);
-	
-	var v1 = new THREE.Vector3().addScaledVector(xAxis, point.x);
-	var v2 = new THREE.Vector3().addScaledVector(yAxis, point.y);
-	var v3 = new THREE.Vector3().addScaledVector(zAxis, point.z);
-
-	return v1.add(v2).add(v3);
-}
 
 
 
