@@ -150,18 +150,83 @@ function showCenterObjUI(cdm)
 	
 	var obj = cdm.obj;		
 
+	clearCenterObjUI();	// очищаем список дочерних объектов группы (если он есть)
+	
 	var arr = getArrayJointPoint({obj: obj});
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
-		arr[i].visible = true;
-		arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+		//arr[i].visible = true;
+		//arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+		
+		var child = arr[i];
+		
+		if(!child.userData.centerPoint) continue;
+		
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'">\
+		<div class="right_panel_1_1_list_item_text">'+child.userData.centerPoint.nameRus+'</div>\
+		</div>';
+
+		$('[nameId="rp_obj_center"]').prepend(str);		
+		var el = $($('[nameId="rp_obj_center"]')[0].children[0]);
+		
+		infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: child };
+
+		el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) });		
 	}
 
-	obj.userData.obj3D.joinPoint.active = null;	
+	obj.userData.obj3D.centerP.active = null;	
 	 
-	//for(var i = 0; i < arr.length; i++)
+	// добавляем в список главный центр	
+	var str = 
+	'<div class="right_panel_1_1_list_item" uuid="center_item">\
+	<div class="right_panel_1_1_list_item_text">центр</div>\
+	</div>';	
+	
+	$('[nameId="rp_obj_center"]').prepend(str); 
+	var el = $($('[nameId="rp_obj_center"]')[0].children[0]);	
+	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: arr[0] };
+	el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) }); 
 }
+
+
+
+// очищаем список дочерних объектов группы UI
+function clearCenterObjUI(cdm)
+{
+	for(var i = 0; i < infProject.ui.center_obj.length; i++)
+	{
+		infProject.ui.center_obj[i].el.remove();
+	}	
+	
+	infProject.ui.center_obj = [];	
+}
+
+
+
+// кликнули на меню центров объекта
+function clickItemCenterObjUI(cdm)
+{
+	var item = cdm.el;
+	var obj = null;
+	
+	var value = item.attr('uuid');	
+	
+	// снимаем старые выдиления  
+	for(var i = 0; i < infProject.ui.center_obj.length; i++)
+	{
+		if(infProject.ui.center_obj[i].el[0] == item[0]){ obj = infProject.ui.center_obj[i].obj; } 
+		infProject.ui.center_obj[i].el.css('background-color', '#ffffff');
+	}	
+	
+	// выделяем новый пункт на который кликнули 
+	item.css('background-color', '#00ff00');
+	
+	
+	
+}
+
 
 
 // кликнули объект, показываем список дочерних объектов (правом меню UI)
@@ -207,7 +272,7 @@ function showGroupObjUI(cdm)
 	</div>';	
 	
 	$('[nameId="rp_obj_group"]').prepend(str); 
-	var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	console.log(el);
+	var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
 	infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
 	el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
 	

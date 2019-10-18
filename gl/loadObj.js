@@ -271,7 +271,8 @@ function addObjInScene(inf, cdm)
 						
 						cube.userData.tag = 'joinPoint';
 						cube.userData.id = id;  id++;
-						cube.userData.joinObj = null;						 
+						cube.userData.centerPoint = { join: null };						 
+						cube.userData.centerPoint.nameRus = inf.joinPoint[i].name;
 						
 						obj.add( cube );
 						
@@ -283,7 +284,7 @@ function addObjInScene(inf, cdm)
 
 		if(arr.length > 0) 
 		{ 
-			obj.userData.obj3D.joinPoint = {visible: false, arr: arr, active: null}; 
+			obj.userData.obj3D.centerP = {visible: false, arr: arr, active: null}; 
 
 		}
 		

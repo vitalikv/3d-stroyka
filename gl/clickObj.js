@@ -134,7 +134,7 @@ function clickObject3D( obj, cdm )
 		joint.position.copy(pos);
 		joint.rotation.copy( obj.rotation );
 		
-		showJoinPoint({obj: obj}); 
+		showJoinPoint({obj: obj, element: cdm.element}); 
 		
 		if(!joint.userData.joint.obj) { joint.userData.joint.obj = obj; }
 		else if (joint.userData.joint.obj == obj) {}
@@ -267,7 +267,7 @@ function hidePivotGizmo(obj)
 		{
 			var o = joint.userData.joint.obj;
 			
-			if(getActiveJointPoint({obj: o}))
+			if(o.userData.obj3D.centerP.active)
 			{
 				$('[nameId="obj_b_menu_1"]').hide(); return;
 			}			

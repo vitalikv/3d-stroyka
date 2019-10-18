@@ -188,6 +188,8 @@ infProject.ui = {}
 infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
 infProject.ui.group_obj = [];  
+infProject.ui.center_obj = [];
+
 
 console.log(infProject);
 

@@ -197,6 +197,15 @@ function resetScene()
 	
 	infProject.ui.group_obj = [];
 	
+	
+	// удаляем список центров объекта UI
+	for(var i = 0; i < infProject.ui.center_obj.length; i++)
+	{
+		infProject.ui.center_obj[i].el.remove();
+	}	
+	
+	infProject.ui.center_obj = [];	
+	
 	//disposeHierchy(scene, disposeNode);
 	
 	
@@ -936,7 +945,7 @@ function loadObjFromBase(cdm)
 					}
 					group[i2].obj = { id: arrId };
 					
-					createGroupObj_2(group[i2]);
+					createGroupObj_1(group[i2]);
 				}
 				
 				

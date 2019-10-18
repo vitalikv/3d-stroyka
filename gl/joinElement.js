@@ -49,36 +49,22 @@ function clickRayJoinPoint()
 // показываем точки-соединители
 function showJoinPoint(cdm)
 {
+	if(!cdm.obj) return;
 	var obj = cdm.obj;
+
+	if(cdm.element) { hideJoinPoint(); }
+	else { hideJoinPoint({clear: 2}); }
 	
-	if(!obj) return;	
-	
-	if(obj.userData.obj3D.joinPoint) { type = 'obj'; }
-	else if(obj.userData.groupObj) { type = 'group'; }
-	else { return; }
-	
-	hideJoinPoint({clear: 2});
-	
-	if(obj.userData.groupObj) { var arr = obj.children; }
-	else { var arr = [obj]; }
-	
+	var arr = getArrayJointPoint({obj: obj, element: cdm.element});
 	
 	for(var i = 0; i < arr.length; i++)
-	{
-		var arrO = arr[i].userData.obj3D.joinPoint.arr;
+	{		
+		if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
 		
-		for(var i2 = 0; i2 < arrO.length; i2++)
-		{
-			var o = arrO[i2];
-			
-			if(o.userData.joinObj) continue; 	// точка уже соеденина с другой точкой
-			
-			o.visible = true;
-			o.material = infProject.tools.joint.userData.joint.material.default;
-		}
-		
-		arr[i].userData.obj3D.joinPoint.active = null;		
-	}
+		arr[i].visible = true;
+		arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+	}	
+	
 }
 
 
@@ -99,30 +85,17 @@ function hideJoinPoint(cdm)
 	{
 		var obj = arr[i];
 		
-		if(!obj) continue;	
-		
-		if(obj.userData.obj3D.joinPoint) { type = 'obj'; }
-		else if(obj.userData.groupObj) { type = 'group'; }		
-		else { continue; }
- 		
-		if(obj.userData.groupObj) { var arr2 = obj.children; }
-		else { var arr2 = [obj]; }
-	
-		for(var n = 0; n < arr2.length; n++)
-		{
-			var arrO = arr2[n].userData.obj3D.joinPoint.arr;
-			
-			for(var i2 = 0; i2 < arrO.length; i2++)
-			{
-				var o = arrO[i2];
-				
-				o.visible = false;
-				o.material = joint.userData.joint.material.default;			
-			}
+		if(!obj) continue;
 
-			arr2[n].userData.obj3D.joinPoint.active = null;			
+		var arr2 = getArrayJointPoint({obj: obj});
+	
+		for(var i2 = 0; i2 < arr2.length; i2++)
+		{
+			arr2[i2].visible = false;
+			arr2[i2].material = joint.userData.joint.material.default;					
 		}
 		
+		arr[i].userData.obj3D.centerP.active = null;
 	}
 	
 }
@@ -137,19 +110,15 @@ function clickJoinPoint(cdm)
 	var obj = rayhit.object;
 	var parent = obj.parent;
 	
-	if(parent.userData.obj3D.joinPoint.active)
+	if(parent.userData.obj3D.centerP.active)
 	{
-		parent.userData.obj3D.joinPoint.active.material = infProject.tools.joint.userData.joint.material.default;
-		parent.userData.obj3D.joinPoint.active = null;
+		parent.userData.obj3D.centerP.active.material = infProject.tools.joint.userData.joint.material.default;
+		parent.userData.obj3D.centerP.active = null;
 	}
 	
 	
 	obj.material = infProject.tools.joint.userData.joint.material.active;
-	parent.userData.obj3D.joinPoint.active = obj;
-	
-
-	
-	
+	parent.userData.obj3D.centerP.active = obj;
 }
 
 
@@ -176,7 +145,7 @@ function getArrayJointPoint(cdm)
 	var o = cdm.obj;
 	var arr = [];
 	
-	if(o.userData.obj3D.group) 
+	if(o.userData.obj3D.group && !cdm.element) 
 	{		
 		var group = o.userData.obj3D.group;
 		var child = group.userData.groupObj.child;
@@ -185,44 +154,19 @@ function getArrayJointPoint(cdm)
 		{
 			if(!child[i].userData.obj3D) continue;
 			
-			for(var i2 = 0; i2 < child[i].userData.obj3D.joinPoint.arr.length; i2++)
+			for(var i2 = 0; i2 < child[i].userData.obj3D.centerP.arr.length; i2++)
 			{
-				arr[arr.length] = child[i].userData.obj3D.joinPoint.arr[i2];
+				arr[arr.length] = child[i].userData.obj3D.centerP.arr[i2];
 			}
 		}
 	}
 	else
 	{
-		arr = o.userData.obj3D.joinPoint.arr;
+		arr = o.userData.obj3D.centerP.arr;
 	}
 
 	return arr;	
 }
-
-
-// находим вделеную точку-соединитель (у группы или отдельного объекта)
-function getActiveJointPoint(cdm)
-{
-	var o = cdm.obj;
-	
-	if(o.userData.groupObj) 
-	{				
-		for(var i = 0; i < o.children.length; i++)
-		{
-			if(o.children[i].userData.obj3D.joinPoint.active)
-			{
-				return o.children[i].userData.obj3D.joinPoint.active;
-			}
-		}
-	}
-	else
-	{
-		return o.userData.obj3D.joinPoint.active;
-	}
-
-	return null;
-}
-
 
 
 
@@ -244,8 +188,8 @@ function joinElement(cdm)
 	if(!obj) return;
 	if(!obj_2) return;
 	
-	var o1 = getActiveJointPoint({obj: obj});  
-	var o2 = getActiveJointPoint({obj: obj_2});
+	var o1 = obj.userData.obj3D.centerP.active;   
+	var o2 = obj_2.userData.obj3D.centerP.active;
 
 	if(!o1) return;
 	if(!o2) return;
@@ -351,57 +295,15 @@ function joinElement(cdm)
 				
 		
 		// создаем новую группу	
-		var group = createGroupObj_1({pos: pos, rot: obj.rotation, nameRus: 'новая группа', obj: {o: arr} });	
+		createGroupObj_1({pos: pos, rot: obj.rotation, nameRus: 'новая группа', obj: {o: arr} });	
 		
 		//formGroupObj({group: group, arrO: arr2});
-		//getGroupFreeNearlyJP({obj: group});
-		//console.log(222, o1);	
-		
 	}
 }
 
 
 
-// получаем не соединенные точки-соединители, которые находятся близко друг к другу -> и соединяем их
-function getGroupFreeNearlyJP(cdm)
-{
-	var arr = getArrayJointPoint({obj: cdm.obj});
-	
-	var arr2 = [];
-	
-	cdm.obj.updateMatrixWorld();
-	
-	// получаем все не соединенные точки из группы
-	for(var i = 0; i < arr.length; i++)
-	{
-		if(arr[i].userData.joinObj) continue;
-		
-		arr2[arr2.length] = {o: arr[i], pos: arr[i].getWorldPosition(new THREE.Vector3())};
-		
-	}	
 
-	var arr3 = [];
-	
-	// получаем точки расположенные близко друг к другу
-	for(var i = 0; i < arr2.length; i++)
-	{
-		for(var i2 = 0; i2 < arr2.length; i2++)
-		{
-			if(arr2[i].o == arr2[i2].o) continue;
-			
-			if(comparePos(arr2[i].pos, arr2[i2].pos)) 
-			{
-				arr3[arr3.length] = {o1: arr2[i].o, o2: arr2[i2].o};
-
-				//arr2[i].o.material = infProject.tools.joint.userData.joint.material.active;
-				//arr2[i2].o.material = infProject.tools.joint.userData.joint.material.active;
-				
-				arr2[i].o.userData.joinObj = arr2[i2].o;
-				arr2[i2].o.userData.joinObj = arr2[i].o;				
-			}
-		}
-	}
-}
 
 
 
@@ -481,7 +383,7 @@ function createGroupObj_1(cdm)
 	group.userData.tag = 'group';
 	group.userData.id = cdm.id;
 	group.userData.groupObj = {};	
-	group.userData.groupObj.nameRus = 'группа 2';
+	group.userData.groupObj.nameRus = cdm.nameRus;
 	group.userData.groupObj.pos = cdm.pos;
 	group.userData.groupObj.rot = cdm.rot;
 	group.userData.groupObj.centerObj = null;
@@ -526,23 +428,45 @@ function createGroupObj_1(cdm)
 		arr2[i].userData.obj3D.group = group;
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 	}	
-
-	return group;
+	
+	getGroupFreeNearlyJP({obj: arr2[0]});
 }
 
 
-// создаем группу и добавляем туда объекты (из сохраненного файла)
-function createGroupObj_2(cdm)
-{	
-	var group = createGroupObj_1(cdm);
-	
-	
-	
 
-	//getGroupFreeNearlyJP({obj: group});
+// получаем не соединенные точки-соединители, которые находятся близко друг к другу -> и соединяем их
+function getGroupFreeNearlyJP(cdm)
+{
+	var arr = getArrayJointPoint({obj: cdm.obj});
 	
+	//cdm.obj.updateMatrixWorld();
+	
+	var arr2 = [];
+	
+	// получаем все не соединенные точки из группы
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.centerPoint.join) continue;
+		
+		arr2[arr2.length] = {o: arr[i], pos: arr[i].getWorldPosition(new THREE.Vector3())};
+		
+	}	
+	
+	// получаем точки расположенные близко друг к другу
+	for(var i = 0; i < arr2.length; i++)
+	{
+		for(var i2 = 0; i2 < arr2.length; i2++)
+		{
+			if(arr2[i].o == arr2[i2].o) continue;
+			
+			if(comparePos(arr2[i].pos, arr2[i2].pos)) 
+			{				
+				arr2[i].o.userData.centerPoint.join = arr2[i2].o;
+				arr2[i2].o.userData.centerPoint.join = arr2[i].o;				
+			}
+		}
+	}
 }
-
 
 
 
