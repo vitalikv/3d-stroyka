@@ -283,7 +283,7 @@ function addObjInScene(inf, cdm)
 
 		if(arr.length > 0) 
 		{ 
-			obj.userData.joinPoint = {visible: false, arr: arr, active: null}; 
+			obj.userData.obj3D.joinPoint = {visible: false, arr: arr, active: null}; 
 
 		}
 		

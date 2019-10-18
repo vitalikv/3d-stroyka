@@ -53,7 +53,7 @@ function showJoinPoint(cdm)
 	
 	if(!obj) return;	
 	
-	if(obj.userData.joinPoint) { type = 'obj'; }
+	if(obj.userData.obj3D.joinPoint) { type = 'obj'; }
 	else if(obj.userData.groupObj) { type = 'group'; }
 	else { return; }
 	
@@ -65,7 +65,7 @@ function showJoinPoint(cdm)
 	
 	for(var i = 0; i < arr.length; i++)
 	{
-		var arrO = arr[i].userData.joinPoint.arr;
+		var arrO = arr[i].userData.obj3D.joinPoint.arr;
 		
 		for(var i2 = 0; i2 < arrO.length; i2++)
 		{
@@ -77,7 +77,7 @@ function showJoinPoint(cdm)
 			o.material = infProject.tools.joint.userData.joint.material.default;
 		}
 		
-		arr[i].userData.joinPoint.active = null;		
+		arr[i].userData.obj3D.joinPoint.active = null;		
 	}
 }
 
@@ -101,7 +101,7 @@ function hideJoinPoint(cdm)
 		
 		if(!obj) continue;	
 		
-		if(obj.userData.joinPoint) { type = 'obj'; }
+		if(obj.userData.obj3D.joinPoint) { type = 'obj'; }
 		else if(obj.userData.groupObj) { type = 'group'; }		
 		else { continue; }
  		
@@ -110,7 +110,7 @@ function hideJoinPoint(cdm)
 	
 		for(var n = 0; n < arr2.length; n++)
 		{
-			var arrO = arr2[n].userData.joinPoint.arr;
+			var arrO = arr2[n].userData.obj3D.joinPoint.arr;
 			
 			for(var i2 = 0; i2 < arrO.length; i2++)
 			{
@@ -120,7 +120,7 @@ function hideJoinPoint(cdm)
 				o.material = joint.userData.joint.material.default;			
 			}
 
-			arr2[n].userData.joinPoint.active = null;			
+			arr2[n].userData.obj3D.joinPoint.active = null;			
 		}
 		
 	}
@@ -137,15 +137,15 @@ function clickJoinPoint(cdm)
 	var obj = rayhit.object;
 	var parent = obj.parent;
 	
-	if(parent.userData.joinPoint.active)
+	if(parent.userData.obj3D.joinPoint.active)
 	{
-		parent.userData.joinPoint.active.material = infProject.tools.joint.userData.joint.material.default;
-		parent.userData.joinPoint.active = null;
+		parent.userData.obj3D.joinPoint.active.material = infProject.tools.joint.userData.joint.material.default;
+		parent.userData.obj3D.joinPoint.active = null;
 	}
 	
 	
 	obj.material = infProject.tools.joint.userData.joint.material.active;
-	parent.userData.joinPoint.active = obj;
+	parent.userData.obj3D.joinPoint.active = obj;
 	
 
 	
@@ -168,28 +168,6 @@ function showHideJoinObjUI(cdm)
 
 
 
-// получаем все соединенные объекты у группы (если это объект без группы, то отправляем только его)
-function getArrayJointObj(cdm)
-{
-	var o = cdm.obj;
-	var arr = [];
-	
-	if(o.parent.userData.groupObj) 
-	{		
-		for(var i = 0; i < o.parent.children.length; i++)
-		{
-			if(!o.parent.children[i].userData.tag) continue;
-			
-			arr[arr.length] = o.parent.children[i];
-		}
-	}
-	else
-	{
-		arr[0] = o;
-	}
-
-	return arr;	
-}
 
 
 // получаем все точки-соединители (у группы или отдельного объекта)
@@ -198,19 +176,24 @@ function getArrayJointPoint(cdm)
 	var o = cdm.obj;
 	var arr = [];
 	
-	if(o.userData.groupObj) 
-	{				
-		for(var i = 0; i < o.children.length; i++)
+	if(o.userData.obj3D.group) 
+	{		
+		var group = o.userData.obj3D.group;
+		var child = group.userData.groupObj.child;
+		
+		for(var i = 0; i < child.length; i++)
 		{
-			for(var i2 = 0; i2 < o.children[i].userData.joinPoint.arr.length; i2++)
+			if(!child[i].userData.obj3D) continue;
+			
+			for(var i2 = 0; i2 < child[i].userData.obj3D.joinPoint.arr.length; i2++)
 			{
-				arr[arr.length] = o.children[i].userData.joinPoint.arr[i2];
+				arr[arr.length] = child[i].userData.obj3D.joinPoint.arr[i2];
 			}
 		}
 	}
 	else
 	{
-		arr = o.userData.joinPoint.arr;
+		arr = o.userData.obj3D.joinPoint.arr;
 	}
 
 	return arr;	
@@ -226,15 +209,15 @@ function getActiveJointPoint(cdm)
 	{				
 		for(var i = 0; i < o.children.length; i++)
 		{
-			if(o.children[i].userData.joinPoint.active)
+			if(o.children[i].userData.obj3D.joinPoint.active)
 			{
-				return o.children[i].userData.joinPoint.active;
+				return o.children[i].userData.obj3D.joinPoint.active;
 			}
 		}
 	}
 	else
 	{
-		return o.userData.joinPoint.active;
+		return o.userData.obj3D.joinPoint.active;
 	}
 
 	return null;
@@ -268,13 +251,12 @@ function joinElement(cdm)
 	if(!o2) return;
 
 
-	var q = o1.getWorldQuaternion(new THREE.Quaternion());
-	
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
 	var diff = new THREE.Quaternion().multiplyQuaternions(obj_2.quaternion.clone().inverse(), q);	// разница между Quaternions
 		
 	var arr_2 = getObjsFromGroup_1( obj_2 );
 
-	
+	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
 		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол

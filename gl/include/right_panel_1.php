@@ -104,7 +104,7 @@ function showHideCatalogMenuUI(cdm)
 	<?if($interface['grid_tube_1'] == 1){?>
 	<div class="flex_column_1 right_panel_1_1" nameId="panel_catalog_1">
 		<div class="flex_1 bottom_line_1">
-			<div class="right_panel_1_item">
+			<div class="flex_1 relative_1 right_panel_1_item">
 				<div class="right_panel_1_item_block" nameId="button_wrap_object">
 					<div class="right_panel_1_item_block_text">
 						объект
@@ -127,23 +127,48 @@ function showHideCatalogMenuUI(cdm)
 		</div>
 	
 
-		<div class="flex_column_1" nameId="wrap_object">
-			<div class="right_panel_1_1_h">Объект</div>
-			
-			
-			<div class="rp_obj" list_ui="object">  
-			
-				<div class="rp_obj_name">
-					<input type="text" nameId="rp_obj_name" data-input="rp_obj_name" value="Название">					
-				</div>
+		<div nameId="wrap_object">
+			<div class="flex_column_1" nameId="wrap_object_1" style="display: block;">
+				<div class="right_panel_1_1_h">Объект</div>
 				
-				<div class="right_panel_1_1_h">Группа</div>
-				<div class="right_panel_1_1_list" nameId="rp_obj_group">
+				
+				<div class="rp_obj" list_ui="object">  
+				
+					<div class="rp_obj_name">
+						<input type="text" nameId="rp_obj_name" data-input="rp_obj_name" value="Название">					
+					</div>
 					
-				</div>
-				
-			</div> 
-			
+					<div class="flex_1 bottom_line_1">
+						<div class="flex_1 relative_1">
+							<div class="right_panel_1_item_block" nameId="button_wrap_obj_center">
+								<div class="right_panel_1_item_block_text">
+									Центр
+								</div>	
+							</div>			
+							<div class="right_panel_1_item_block" nameId="button_wrap_obj_child">
+								<div class="right_panel_1_item_block_text">
+									Группа
+								</div>	
+							</div>			
+						</div>
+					</div>
+					
+					<div nameId="wrap_obj_center">
+						<div class="right_panel_1_1_h">Центр</div>
+						<div class="right_panel_1_1_list" nameId="rp_obj_center">
+							
+						</div>
+					</div>
+					
+					<div nameId="wrap_obj_child" style="display: none;">
+						<div class="right_panel_1_1_h">Группа</div>
+						<div class="right_panel_1_1_list" nameId="rp_obj_group">
+							
+						</div>
+					</div>					
+					
+				</div> 
+			</div>	
 		</div>
 
 		

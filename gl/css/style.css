@@ -55,6 +55,12 @@ canvas
 }
 
 
+.relative_1
+{
+	position: relative;	
+}
+
+
 .height100
 {
 	height: 100%;
@@ -609,9 +615,6 @@ canvas
 
 .right_panel_1_item
 {
-	position: relative;
-	display: -webkit-box;
-	display: flex;
 	margin: 10px 10px 0 10px;	
 }
 

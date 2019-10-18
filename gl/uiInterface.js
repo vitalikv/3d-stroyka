@@ -138,12 +138,33 @@ function clickObjUI(cdm)
 	
 	
 	showGroupObjUI({obj : obj});
-	
+	showCenterObjUI({obj : obj});
 }
 
 
+// кликнули объект, показываем центры объекта (правом меню UI)
+function showCenterObjUI(cdm)
+{
+	if(!cdm) { cdm = {}; }	
+	if(!cdm.obj) return;
+	
+	var obj = cdm.obj;		
 
-// кликнули на группу объектов, показываем информацию в правом меню UI
+	var arr = getArrayJointPoint({obj: obj});
+	
+	for(var i = 0; i < arr.length; i++)
+	{		
+		arr[i].visible = true;
+		arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+	}
+
+	obj.userData.obj3D.joinPoint.active = null;	
+	 
+	//for(var i = 0; i < arr.length; i++)
+}
+
+
+// кликнули объект, показываем список дочерних объектов (правом меню UI)
 function showGroupObjUI(cdm)
 {
 	if(!cdm) { cdm = {}; }	
@@ -151,18 +172,13 @@ function showGroupObjUI(cdm)
 	
 	var obj = cdm.obj;			
 	
-	
-	// удаляем старый списко (если он есть)
-	for(var i = 0; i < infProject.ui.group_obj.length; i++)
-	{
-		infProject.ui.group_obj[i].el.remove();
-	}	
-	
-	infProject.ui.group_obj = [];
+		
+	clearChildGroupUI();	// очищаем список дочерних объектов группы (если он есть)
 	
 	if(!obj.userData.obj3D.group) return;
 	
-	var arr = obj.userData.obj3D.group.userData.groupObj.child; 
+	var group = obj.userData.obj3D.group;
+	var arr = group.userData.groupObj.child; 
 	
 	// добавляем новый список объектов из группы
 	for(var i = 0; i < arr.length; i++)
@@ -183,17 +199,41 @@ function showGroupObjUI(cdm)
 
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
 	}
-
+	
+	// добавляем в список группу	
+	var str = 
+	'<div class="right_panel_1_1_list_item" uuid="group_item" group_item_obj="">\
+	<div class="right_panel_1_1_list_item_text">'+group.userData.groupObj.nameRus+'</div>\
+	</div>';	
+	
+	$('[nameId="rp_obj_group"]').prepend(str); 
+	var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	console.log(el);
+	infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
+	el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
+	
 }
+
+
+// очищаем список дочерних объектов группы UI
+function clearChildGroupUI(cdm)
+{
+	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	{
+		infProject.ui.group_obj[i].el.remove();
+	}	
+	
+	infProject.ui.group_obj = [];	
+}
+
 
 
 // кликнули на меню дочерних объектов группы
 function clickItemObjNameUI(cdm)
 {
 	var item = cdm.el;
-	
-	var value = item.attr('uuid');
 	var obj = null;
+	
+	var value = item.attr('uuid');	
 	
 	// снимаем старые выдиления  
 	for(var i = 0; i < infProject.ui.group_obj.length; i++)
@@ -205,20 +245,22 @@ function clickItemObjNameUI(cdm)
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
 	
-	
-	
-
-	var pos1 = obj.getWorldPosition(new THREE.Vector3());
-	var q1 = obj.getWorldQuaternion(new THREE.Quaternion());
-
-	scene.add(obj);
-	
-	obj.position.copy(pos1);
-	obj.quaternion.copy(q1);	
+	if(value == 'group_item')
+	{  
+		obj = infProject.ui.group_obj[0].obj;
+		clickObject3D(obj, {click_child: true}); 
+		
+		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
+	}
+	else
+	{
+		clickObject3D(obj, {element: true});
+		
+		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
+	}	
+		
 	
 	clickO.last_obj = obj;
-	
-	clickObject3D(obj, {element: true});   
 }
 
 

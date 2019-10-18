@@ -50,13 +50,13 @@ function changeMainMenuUI(cdm)
 }
 
 
-$('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI({el: this}); });
-$('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI({el: this}); });
-$('[nameId="button_wrap_object"]').mousedown(function () { changeRightMenuUI({el: this}); });
+$('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
+$('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
+$('[nameId="button_wrap_object"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 
  
 // переключаем меню (каталог/список)
-function changeRightMenuUI(cdm)
+function changeRightMenuUI_1(cdm)
 {
 	$('[nameId="wrap_catalog"]').hide();
 	$('[nameId="wrap_list_obj"]').hide();
@@ -76,6 +76,29 @@ function changeRightMenuUI(cdm)
 		$('[nameId="wrap_object"]').show();
 	}	
 }
+
+
+
+$('[nameId="button_wrap_obj_center"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+$('[nameId="button_wrap_obj_child"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+
+// переключаем меню (центр/группа)
+function changeRightMenuUI_2(cdm)
+{
+	$('[nameId="wrap_obj_center"]').hide();
+	$('[nameId="wrap_obj_child"]').hide();
+	
+	
+	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
+	{
+		$('[nameId="wrap_obj_center"]').show();
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
+	{
+		$('[nameId="wrap_obj_child"]').show();
+	}	
+}
+
 
 
 $('[infcam]').on('mousedown', function(e) 

@@ -174,8 +174,10 @@ function resetScene()
 
 	for ( var i = 0; i < group.length; i++ )
 	{ 
-		disposeNode(group[i]);
-		scene.remove(group[i]);
+		var centerObj = group[i].userData.groupObj.centerObj;
+		
+		disposeNode(centerObj);
+		scene.remove(centerObj); 
 	}	
 	
 	

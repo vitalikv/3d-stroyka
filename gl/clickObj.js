@@ -142,7 +142,11 @@ function clickObject3D( obj, cdm )
 	}
 	
 	outlineAddObj(obj, {element: cdm.element});
-	if(!cdm.element) { clickObjUI({obj: obj}); }
+	
+	if(cdm.element) { }
+	else if(cdm.click_child) { }
+	else { clickObjUI({obj: obj}); }	// обновляем правое меню
+	
 	setScalePivotGizmo();
 }
 
@@ -201,28 +205,34 @@ function getObjsFromGroup( obj )
 // удаление объекта
 function deleteObjectPop(obj)
 { 
-	clickO = resetPop.clickO();
+	clickO = resetPop.clickO(); 
 	
 	hidePivotGizmo(obj);
 	
-	var arr = getArrayJointObj({obj: obj});
-	 
-	for(var i = 0; i < arr.length; i++)
-	{	
-		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});
-	}	
+	var arr = [];
 	
-	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
-	
-	if(obj.parent.userData.groupObj)
+	if(obj.userData.obj3D.group)
 	{
-		disposeNode(obj.parent);
-		scene.remove(obj.parent);			
+		var group = obj.userData.obj3D.group;
+		arr = group.userData.groupObj.child;
+		 
+		for(var i = 0; i < arr.length; i++){ deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]}); }		
+		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
+
+		clearChildGroupUI();	// очищаем список дочерних объектов группы UI 
 	}
 	else
 	{
-		disposeNode(obj);
-		scene.remove(obj);			
+		arr[0] = obj;
+	}
+	
+	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
+	
+	
+	for(var i = 0; i < arr.length; i++)
+	{	
+		disposeNode(arr[i]);
+		scene.remove(arr[i]); 
 	}
 	
 	outlineRemoveObj();
@@ -280,7 +290,9 @@ function hidePivotGizmo(obj)
 	clickO.last_obj = null;
 	
 	$('[nameId="obj_b_menu_1"]').hide();
+	$('[nameId="wrap_object_1"]').hide();
 	showHideJoinObjUI({visible: false});
+	
 	
 	outlineRemoveObj();
 }
@@ -303,6 +315,7 @@ function showObjUI()
 		showHideJoinObjUI({visible: false});		
 	}
 	
+	$('[nameId="wrap_object_1"]').show();
 }
 
 
