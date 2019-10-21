@@ -288,7 +288,11 @@ function setScalePivotGizmo()
 	}
 	else
 	{
-		if(obj.userData.obj3D.group && !element)
+		if(obj.userData.tag == 'joinPoint')
+		{
+			var dist = camera.position.distanceTo(obj.getWorldPosition(new THREE.Vector3())); 
+		}			
+		else if(obj.userData.obj3D.group && !element)
 		{
 			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.pos);
 		}

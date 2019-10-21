@@ -94,7 +94,7 @@ function clippingGizmo360( objPop )
 
 		if(objPop.userData.tag == 'joinPoint')
 		{
-			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));  console.log(222, objPop.userData.tag); 
+			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));   
 		}
 		else if(objPop.userData.obj3D.group && !infProject.tools.gizmo.userData.gizmo.element)
 		{
@@ -143,8 +143,11 @@ function clickGizmo( intersect )
 	gizmo.userData.gizmo.active.axis = axis;
 	
 
-	
-	if(obj.userData.obj3D.group)		// у объекта есть группа
+	if(obj.userData.tag == 'joinPoint')
+	{
+		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());   
+	}
+	else if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
 		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.pos;
 	}	
@@ -179,7 +182,13 @@ function clickGizmo( intersect )
 	}
 	else
 	{
-		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		if(obj.userData.tag == 'joinPoint')
+		{
+			var quaternion = new THREE.Quaternion().setFromAxisAngle( dr, rotY );			// создаем Quaternion повернутый на выбранную ось	
+			var q2 = obj.getWorldQuaternion(new THREE.Quaternion()).clone().multiply( quaternion );		// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
+			planeMath.quaternion.copy( q2 );   
+		}		
+		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
 		{			
 			if(1==2)	// глобальный gizmo
 			{
@@ -256,8 +265,46 @@ function moveGizmo( event )
 	else 
 	{ 
 		
-		
-		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		if(obj.userData.tag == 'joinPoint')
+		{
+			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+			
+			// локальный gizmo, относительно centerObj (получаем направление оси)
+			if(1==1)
+			{
+				obj.parent.updateMatrixWorld();
+				var centerObj = obj;
+				
+				var v1 = centerObj.localToWorld( dr.clone() );
+				//var v2 = arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() );
+				var v2 = centerObj.getWorldPosition(new THREE.Vector3());
+				var dir = new THREE.Vector3().subVectors(v1, v2).normalize();								
+			}			
+			
+			for(var i = 0; i < arr.length; i++)
+			{
+				// локальный gizmo, относительно centerObj
+				if(1==1)
+				{
+					arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+					arr[i].position.applyAxisAngle(dir, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
+					arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+					
+					arr[i].rotateOnWorldAxis(dir, rotY - gizmo.userData.gizmo.active.rotY);					
+				}
+				else		// глобальный gizmo 
+				{
+					//arr[i].updateMatrixWorld();
+					arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+					arr[i].position.applyAxisAngle(dr, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
+					arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+					
+					//arr[i].quaternion.multiply( quaternion );
+					arr[i].rotateOnWorldAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);					
+				}				
+			}			
+		}			
+		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
 		{
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;
 			
@@ -311,8 +358,12 @@ function moveGizmo( event )
 		}		 
 	}		
 	
-			
-	if(obj.userData.obj3D.group)		// у объекта есть группа
+		
+	if(obj.userData.tag == 'joinPoint')
+	{
+		
+	}
+	else if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
 		
 	}	
@@ -329,7 +380,11 @@ function moveGizmo( event )
 	
 	if(camera != cameraTop) 
 	{ 
-		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		if(obj.userData.tag == 'joinPoint')
+		{
+			
+		}
+		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
 		{
 			var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
 			gizmo.rotation.copy( centerObj.rotation );

@@ -228,7 +228,7 @@ function clickItemCenterObjUI(cdm)
 
 
 	if(infProject.settings.active.pg == 'pivot'){ var tool = infProject.tools.pivot; }	 
-	if(infProject.settings.active.pg == 'gizmo'){ var tool = infProject.tools.gizmo; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tool = infProject.tools.gizmo; }	 
 	
 	if(value == 'center_item')
 	{
@@ -241,7 +241,11 @@ function clickItemCenterObjUI(cdm)
 		
 		tool.position.copy(pos1);	
 		tool.quaternion.copy(q);		
-		if(infProject.settings.active.pg == 'gizmo'){ clippingGizmo360( obj ); }
+		if(infProject.settings.active.pg == 'gizmo')
+		{ 
+			clippingGizmo360( obj ); 
+			infProject.tools.gizmo.userData.gizmo.obj = obj; 
+		}
 		setScalePivotGizmo();		
 	}
 }
