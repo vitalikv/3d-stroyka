@@ -167,33 +167,39 @@ function clickPivot( intersect )
 	
 	if(axis == 'x')
 	{ 
-		planeMath.rotation.set( Math.PI/2, 0, 0 );
 		var dir = new THREE.Vector3();
 		var dir = pivot.getWorldDirection(dir); 		
 		pivot.userData.pivot.active.dir = new THREE.Vector3(-dir.z, 0, dir.x).normalize();	
-		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 
+		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 	
 	}
 	else if(axis == 'z')
 	{ 
-		planeMath.rotation.set( Math.PI/2, 0, 0 ); 
 		var dir = new THREE.Vector3();
 		pivot.userData.pivot.active.dir = pivot.getWorldDirection(dir); 
-		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 
+		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir ); 	
 	}
 	else if(axis == 'y')
 	{ 
-		planeMath.rotation.set( 0, 0, 0 ); 
-		pivot.userData.pivot.active.dir = dir_y.clone(); 
-		pivot.userData.pivot.active.qt = qt_plus_y.clone();
-
-		var mx = new THREE.Matrix4().compose(pivot.position, obj.quaternion, new THREE.Vector3(1,1,1));
-				
+		//planeMath.rotation.set( 0, 0, 0 ); 
+		
+		pivot.updateMatrixWorld();
+		var dir = pivot.getWorldDirection(new THREE.Vector3());	   		
+		var dir = new THREE.Vector3(-dir.z, 0, dir.x).normalize().cross( dir )
+		
+		pivot.userData.pivot.active.dir = dir;  
+		pivot.userData.pivot.active.qt = quaternionDirection( pivot.userData.pivot.active.dir );	
 	}	
-	else if(axis == 'xz' || axis == 'center')
+	
+	
+	if(axis == 'xz' || axis == 'center')
 	{ 
 		planeMath.rotation.set( Math.PI/2, 0, 0 ); 
 	}		 
-	
+	else
+	{
+		planeMath.quaternion.copy( pivot.userData.pivot.active.qt ); 
+		planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2, 0, 0)));			
+	}
 	
 	planeMath.position.copy( intersect.point );
 } 

@@ -333,6 +333,10 @@ function switchPivotGizmo(cdm)
 	if(infProject.settings.active.pg == 'joint'){ obj = joint.userData.joint.obj; joint.visible = false; hideJoinPoint(); }
 	
 	if(!obj) return;
+
+	var element = false;
+	if(infProject.settings.active.pg == 'pivot'){ element = pivot.userData.pivot.element; }	
+	if(infProject.settings.active.pg == 'gizmo'){ element = gizmo.userData.gizmo.element; }		
 	
 	infProject.settings.active.pg = cdm.mode;
 
@@ -341,7 +345,7 @@ function switchPivotGizmo(cdm)
 	joint.userData.joint.obj = null;
 	joint.userData.joint.obj_2 = null;	
 
-	clickObject3D( obj, null );
+	clickObject3D( obj, {element: element} );
 }
 
 

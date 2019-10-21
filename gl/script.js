@@ -1358,10 +1358,6 @@ function upUvs_1( obj )
 
 
 
-var dir_y = new THREE.Vector3(0, 1, 0);
-var qt_plus_y = quaternionDirection( new THREE.Vector3(0, 1, 0) );
-
-
 
 //----------- Math			
 function localTransformPoint(dir1, qt)

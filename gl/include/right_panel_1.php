@@ -132,13 +132,13 @@ function showHideCatalogMenuUI(cdm)
 				<div class="right_panel_1_1_h">Объект</div>
 				
 				
-				<div class="rp_obj" list_ui="object">  
+				<div class="rp_obj">  
 				
 					<div class="rp_obj_name">
 						<input type="text" nameId="rp_obj_name" data-input="rp_obj_name" value="Название">					
 					</div>
 					
-					<div class="flex_1 bottom_line_1">
+					<div class="bottom_line_1">
 						<div class="flex_1 relative_1">		
 							<div class="right_panel_1_item_block" nameId="button_wrap_obj_child">
 								<div class="right_panel_1_item_block_text">
@@ -165,7 +165,18 @@ function showHideCatalogMenuUI(cdm)
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
 						</div>
-					</div>					
+					</div>	
+
+
+					<div class="flex_1">		
+						<div class="button1 button_gradient_1" data-action ='select_pivot'>
+							перемещение	
+						</div>	
+						<div class="button1 button_gradient_1" data-action ='select_gizmo'>
+							вращение	
+						</div>								
+					</div>
+					
 					
 				</div> 
 			</div>	

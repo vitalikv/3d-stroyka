@@ -186,7 +186,7 @@ function showCenterObjUI(cdm)
 	
 	$('[nameId="rp_obj_center"]').prepend(str); 
 	var el = $($('[nameId="rp_obj_center"]')[0].children[0]);	
-	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: arr[0] };
+	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: null }; 
 	el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) }); 
 }
 
@@ -225,6 +225,25 @@ function clickItemCenterObjUI(cdm)
 	
 	
 	
+
+
+	if(infProject.settings.active.pg == 'pivot'){ var tool = infProject.tools.pivot; }	 
+	if(infProject.settings.active.pg == 'gizmo'){ var tool = infProject.tools.gizmo; }	
+	
+	if(value == 'center_item')
+	{
+		
+	}
+	else
+	{
+		var pos1 = obj.getWorldPosition(new THREE.Vector3());
+		var q = obj.getWorldQuaternion(new THREE.Quaternion());
+		
+		tool.position.copy(pos1);	
+		tool.quaternion.copy(q);		
+		if(infProject.settings.active.pg == 'gizmo'){ clippingGizmo360( obj ); }
+		setScalePivotGizmo();		
+	}
 }
 
 

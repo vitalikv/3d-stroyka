@@ -79,7 +79,7 @@ function createGizmo360()
 
 
 // прячем текстуру если она находится за плоскостью 
-function clippingGizmo360( objPop )
+function clippingGizmo360( objPop ) 
 {
 	var plane = new THREE.Plane();	
 	
@@ -92,7 +92,11 @@ function clippingGizmo360( objPop )
 	{
 		var group = new THREE.Group();
 
-		if(objPop.userData.obj3D.group && !infProject.tools.gizmo.userData.gizmo.element)
+		if(objPop.userData.tag == 'joinPoint')
+		{
+			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));  console.log(222, objPop.userData.tag); 
+		}
+		else if(objPop.userData.obj3D.group && !infProject.tools.gizmo.userData.gizmo.element)
 		{
 			group.position.copy(objPop.userData.obj3D.group.userData.groupObj.pos);  
 		}		

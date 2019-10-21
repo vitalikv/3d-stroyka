@@ -242,7 +242,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wf_line' ) {  }
 		else if( tag == 'joinPoint' && camera == cameraTop ) { clickJoinPoint({rayhit: rayhit}); }
-		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, rayhit ); }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
 	}
@@ -250,7 +250,7 @@ function clickMouseActive(cdm)
 	{		
 		if( tag == 'wall' && camera == camera3D ) {  }
 		else if( tag == 'joinPoint' && camera == camera3D ) { clickJoinPoint({rayhit: rayhit}); }
-		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, rayhit ); }
+		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj ); }
 		else { flag = false; }
 	}	
 	else 
