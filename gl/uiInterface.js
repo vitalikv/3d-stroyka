@@ -233,37 +233,19 @@ function clickItemCenterObjUI(cdm)
 	
 	if(value == 'center_item')
 	{
-		
-		
 		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
 		{
-			var pos1 = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
-			var q = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());
+			clickObject3D(obj.parent);  	// obj.parent.userData.obj3D.group.userData.groupObj.centerObj
 		}
 		else	// объект
 		{
-			obj.parent.updateMatrixWorld();
-			var pos1 = obj.parent.localToWorld( obj.parent.geometry.boundingSphere.center.clone() );
-			var q = obj.parent.quaternion.clone();
+			clickObject3D(obj.parent);
 		}
-		
-		var obj = obj.parent;
 	}
 	else
 	{
-		var pos1 = obj.getWorldPosition(new THREE.Vector3());
-		var q = obj.getWorldQuaternion(new THREE.Quaternion());		
+		clickObject3D(obj);		
 	}
-	
-	tool.position.copy(pos1);	
-	tool.quaternion.copy(q);		
-	if(infProject.settings.active.pg == 'gizmo') 
-	{ 
-		clippingGizmo360( obj ); 
-		infProject.tools.gizmo.userData.gizmo.obj = obj; 
-	}
-	setScalePivotGizmo();		
-	
 	
 }
 
@@ -353,22 +335,18 @@ function clickItemObjNameUI(cdm)
 	if(value == 'group_item')
 	{  
 		obj = infProject.ui.group_obj[0].obj;
-		clickObject3D(obj, {group: true}); 
+		clickObject3D(obj, {group: true, outline: true}); 
 		showCenterObjUI({obj: obj, group: true});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
 	}
 	else
 	{
-		clickObject3D(obj, {group: false});
+		clickObject3D(obj, {group: false, outline: true});
 		showCenterObjUI({obj: obj, group: false});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
 	}	
-		
-	
-	
-	clickO.last_obj = obj;
 }
 
 

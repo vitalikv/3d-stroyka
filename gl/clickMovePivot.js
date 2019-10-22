@@ -237,8 +237,24 @@ function movePivot( event )
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
 	
-	// у объекта есть группа
-	if(obj.userData.obj3D.group && infProject.settings.active.group)
+	
+	if(obj.userData.tag == 'joinPoint')
+	{
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
+		{
+			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+			
+			for(var i = 0; i < arr.length; i++)
+			{
+				arr[i].position.add( pos2 );
+			}
+		}
+		else
+		{
+			obj.parent.position.add( pos2 );
+		}		
+	}
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
 	{
 		var arr = obj.userData.obj3D.group.userData.groupObj.child;
 		
@@ -247,7 +263,7 @@ function movePivot( event )
 			arr[i].position.add( pos2 );
 		}
 	}
-	else 
+	else 	// объект
 	{ 
 		obj.position.add( pos2 ); 
 	}

@@ -304,7 +304,7 @@ function moveGizmo( event )
 		centerO.updateMatrixWorld();		
 		var v1 = centerO.localToWorld( dr.clone() );
 		var v2 = centerO.getWorldPosition(new THREE.Vector3());
-		var dir = new THREE.Vector3().subVectors(v1, v2).normalize();	// локальный dir , глобальный -> new THREE.Vector3( 0, 1, 0 )										
+		var dir = new THREE.Vector3().subVectors(v1, v2).normalize();	// локальный dir , глобальный -> dr new THREE.Vector3( 0, 1, 0 )								
 
 		for(var i = 0; i < arr.length; i++)
 		{

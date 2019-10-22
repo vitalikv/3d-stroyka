@@ -55,17 +55,46 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
 	
-	if(obj.userData.obj3D.group && infProject.settings.active.group)
+	
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		var pos = obj.getWorldPosition(new THREE.Vector3()); 
+	}	
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 	{
 		var pos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());  
 	}
-	else
+	else			// объект
 	{
 		obj.updateMatrixWorld();
 		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
 	}	 
+	
+	
+	// gizmo
+	if(1==2)	// глобальный gizmo
+	{
+		var qt = new THREE.Quaternion();
+	}
+	else		// локальный gizmo, относительно centerObj
+	{					
+		if(obj.userData.tag == 'joinPoint')		// разъем
+		{
+			var qt = obj.getWorldQuaternion(new THREE.Quaternion()); 
+		}	
+		else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
+		{
+			var qt = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());  
+		}
+		else			// объект
+		{
+			var qt = obj.quaternion.clone();		
+		}	 		
+	}		
+	
+	
 	
 	if(infProject.settings.active.pg == 'pivot')
 	{
@@ -73,7 +102,8 @@ function clickObject3D( obj, cdm )
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
 		pivot.position.copy(pos);
-
+		pivot.quaternion.copy(qt);
+		
 		if(camera == cameraTop)
 		{
 			pivot.children[1].visible = false;
@@ -100,29 +130,15 @@ function clickObject3D( obj, cdm )
 			gizmo.children[1].visible = false;
 			gizmo.children[2].visible = false;
 			
-			gizmo.rotation.set(0,0,0);
+			//gizmo.rotation.set(0,0,0);
 		}
 		else
 		{
 			gizmo.children[1].visible = true;
-			gizmo.children[2].visible = true;
-			
-			if(obj.userData.obj3D.group && infProject.settings.active.group)
-			{
-				if(1==2)	// глобальный gizmo
-				{
-					gizmo.quaternion.copy( new THREE.Quaternion() );
-				}
-				else		// локальный gizmo, относительно centerObj
-				{
-					gizmo.rotation.copy( obj.userData.obj3D.group.userData.groupObj.centerObj.rotation );
-				}				
-			}
-			else
-			{
-				gizmo.rotation.copy( obj.rotation );
-			}			
-		}		
+			gizmo.children[2].visible = true;			
+		}
+
+		gizmo.quaternion.copy( qt );
 		
 		clippingGizmo360(obj); 		
 	}
@@ -141,8 +157,7 @@ function clickObject3D( obj, cdm )
 		else { joint.userData.joint.obj_2 = obj; }
 	}
 	
-	outlineAddObj(obj);	
-	
+	if(cdm.outline) { outlineAddObj(obj); }	
 	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
 	
 	setScalePivotGizmo();
