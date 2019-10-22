@@ -55,9 +55,11 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-	if(obj.userData.obj3D.group && !cdm.element)
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
+	
+	if(obj.userData.obj3D.group && infProject.settings.active.group)
 	{
-		var pos = obj.userData.obj3D.group.userData.groupObj.pos;  
+		var pos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());  
 	}
 	else
 	{
@@ -70,7 +72,6 @@ function clickObject3D( obj, cdm )
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
-		pivot.userData.pivot.element = cdm.element;
 		pivot.position.copy(pos);
 
 		if(camera == cameraTop)
@@ -93,7 +94,6 @@ function clickObject3D( obj, cdm )
 		
 		gizmo.visible = true;
 		gizmo.userData.gizmo.obj = obj;
-		gizmo.userData.gizmo.element = cdm.element;
 		
 		if(camera == cameraTop)
 		{
@@ -107,7 +107,7 @@ function clickObject3D( obj, cdm )
 			gizmo.children[1].visible = true;
 			gizmo.children[2].visible = true;
 			
-			if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)
+			if(obj.userData.obj3D.group && infProject.settings.active.group)
 			{
 				if(1==2)	// глобальный gizmo
 				{
@@ -134,18 +134,16 @@ function clickObject3D( obj, cdm )
 		joint.position.copy(pos);
 		joint.rotation.copy( obj.rotation );
 		
-		showJoinPoint({obj: obj, element: cdm.element}); 
+		showJoinPoint({obj: obj, group: infProject.settings.active.group}); 
 		
 		if(!joint.userData.joint.obj) { joint.userData.joint.obj = obj; }
 		else if (joint.userData.joint.obj == obj) {}
 		else { joint.userData.joint.obj_2 = obj; }
 	}
 	
-	outlineAddObj(obj, {element: cdm.element});
+	outlineAddObj(obj);	
 	
-	if(cdm.element) { }
-	else if(cdm.click_child) { }
-	else { clickObjUI({obj: obj}); }	// обновляем правое меню
+	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
 	
 	setScalePivotGizmo();
 }
@@ -332,20 +330,17 @@ function switchPivotGizmo(cdm)
 	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; gizmo.visible = false; }
 	if(infProject.settings.active.pg == 'joint'){ obj = joint.userData.joint.obj; joint.visible = false; hideJoinPoint(); }
 	
-	if(!obj) return;
-
-	var element = false;
-	if(infProject.settings.active.pg == 'pivot'){ element = pivot.userData.pivot.element; }	
-	if(infProject.settings.active.pg == 'gizmo'){ element = gizmo.userData.gizmo.element; }		
+	if(!obj) return;	
 	
-	infProject.settings.active.pg = cdm.mode;
+	infProject.settings.active.pg = cdm.mode;	
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
 
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
 	joint.userData.joint.obj = null;
 	joint.userData.joint.obj_2 = null;	
 
-	clickObject3D( obj, {element: element} );
+	clickObject3D( obj ); 
 }
 
 

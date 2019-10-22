@@ -152,7 +152,8 @@ function showCenterObjUI(cdm)
 
 	clearCenterObjUI();	// очищаем список дочерних объектов группы (если он есть)
 	
-	var arr = getArrayJointPoint({obj: obj});
+
+	var arr = getArrayJointPoint(cdm);
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -186,7 +187,7 @@ function showCenterObjUI(cdm)
 	
 	$('[nameId="rp_obj_center"]').prepend(str); 
 	var el = $($('[nameId="rp_obj_center"]')[0].children[0]);	
-	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: null }; 
+	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: arr[0] }; 
 	el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) }); 
 }
 
@@ -233,21 +234,37 @@ function clickItemCenterObjUI(cdm)
 	if(value == 'center_item')
 	{
 		
+		
+		if(obj.parent.userData.obj3D.group)		// группа
+		{
+			var pos1 = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
+			var q = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());
+		}
+		else	// объект
+		{
+			obj.parent.updateMatrixWorld();
+			var pos1 = obj.parent.localToWorld( obj.parent.geometry.boundingSphere.center.clone() );
+			var q = obj.parent.quaternion.copy(q);
+		}
+		
+		var obj = obj.parent;
 	}
 	else
 	{
 		var pos1 = obj.getWorldPosition(new THREE.Vector3());
-		var q = obj.getWorldQuaternion(new THREE.Quaternion());
-		
-		tool.position.copy(pos1);	
-		tool.quaternion.copy(q);		
-		if(infProject.settings.active.pg == 'gizmo')
-		{ 
-			clippingGizmo360( obj ); 
-			infProject.tools.gizmo.userData.gizmo.obj = obj; 
-		}
-		setScalePivotGizmo();		
+		var q = obj.getWorldQuaternion(new THREE.Quaternion());		
 	}
+	
+	tool.position.copy(pos1);	
+	tool.quaternion.copy(q);		
+	if(infProject.settings.active.pg == 'gizmo') 
+	{ 
+		clippingGizmo360( obj ); 
+		infProject.tools.gizmo.userData.gizmo.obj = obj; 
+	}
+	setScalePivotGizmo();		
+	
+	
 }
 
 
@@ -336,17 +353,20 @@ function clickItemObjNameUI(cdm)
 	if(value == 'group_item')
 	{  
 		obj = infProject.ui.group_obj[0].obj;
-		clickObject3D(obj, {click_child: true}); 
+		clickObject3D(obj, {group: true}); 
+		showCenterObjUI({obj: obj, group: true});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
 	}
 	else
 	{
-		clickObject3D(obj, {element: true});
+		clickObject3D(obj, {group: false});
+		showCenterObjUI({obj: obj, group: false});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
 	}	
 		
+	
 	
 	clickO.last_obj = obj;
 }

@@ -181,7 +181,7 @@ infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), joint: createJoinP(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.listColor = resetPop.listColor(); 
-infProject.settings.active = { pg: 'pivot' };
+infProject.settings.active = { pg: 'pivot', group: true };
 infProject.start = true; 
 
 infProject.ui = {}
@@ -256,7 +256,7 @@ if(1==1)
 		if(!cdm) cdm = {};
 		
 		var arr = [obj];
-		if(!cdm.element) { var arr = getObjsFromGroup( obj ); }		
+		if(infProject.settings.active.group) { var arr = getObjsFromGroup( obj ); }		
 		
 		outlinePass.selectedObjects = arr;  
 	}

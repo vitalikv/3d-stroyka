@@ -92,15 +92,15 @@ function clippingGizmo360( objPop )
 	{
 		var group = new THREE.Group();
 
-		if(objPop.userData.tag == 'joinPoint')
+		if(objPop.userData.tag == 'joinPoint')	// разъем
 		{
 			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));   
 		}
-		else if(objPop.userData.obj3D.group && !infProject.tools.gizmo.userData.gizmo.element)
+		else if(objPop.userData.obj3D.group && infProject.settings.active.group)	// группа
 		{
-			group.position.copy(objPop.userData.obj3D.group.userData.groupObj.pos);  
+			group.position.copy(objPop.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));  
 		}		
-		else
+		else	// объект
 		{
 			group.position.copy(objPop.position);
 		}
@@ -149,7 +149,7 @@ function clickGizmo( intersect )
 	}
 	else if(obj.userData.obj3D.group)		// у объекта есть группа
 	{
-		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.pos;
+		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
 	}	
 	else								// объект без группы
 	{
@@ -188,7 +188,7 @@ function clickGizmo( intersect )
 			var q2 = obj.getWorldQuaternion(new THREE.Quaternion()).clone().multiply( quaternion );		// конвертируем rotation в Quaternion и умножаем на предведущий Quaternion			
 			planeMath.quaternion.copy( q2 );   
 		}		
-		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа объектов
 		{			
 			if(1==2)	// глобальный gizmo
 			{
@@ -243,7 +243,7 @@ function moveGizmo( event )
 	
 	if(camera == cameraTop) 
 	{ 
-		if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа объектов
 		{
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;
 			
@@ -304,7 +304,7 @@ function moveGizmo( event )
 				}				
 			}			
 		}			
-		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа объектов
 		{
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;
 			
@@ -384,7 +384,7 @@ function moveGizmo( event )
 		{
 			
 		}
-		else if(obj.userData.obj3D.group && !gizmo.userData.gizmo.element)	// группа объектов
+		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа объектов
 		{
 			var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
 			gizmo.rotation.copy( centerObj.rotation );

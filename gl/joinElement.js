@@ -52,10 +52,10 @@ function showJoinPoint(cdm)
 	if(!cdm.obj) return;
 	var obj = cdm.obj;
 
-	if(cdm.element) { hideJoinPoint(); }
+	if(cdm.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
 	
-	var arr = getArrayJointPoint({obj: obj, element: cdm.element});
+	var arr = getArrayJointPoint({obj: obj, group: cdm.group});
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -145,7 +145,9 @@ function getArrayJointPoint(cdm)
 	var o = cdm.obj;
 	var arr = [];
 	
-	if(o.userData.obj3D.group && !cdm.element) 
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
+	
+	if(o.userData.obj3D.group && infProject.settings.active.group) 
 	{		
 		var group = o.userData.obj3D.group;
 		var child = group.userData.groupObj.child;
@@ -384,8 +386,6 @@ function createGroupObj_1(cdm)
 	group.userData.id = cdm.id;
 	group.userData.groupObj = {};	
 	group.userData.groupObj.nameRus = cdm.nameRus;
-	group.userData.groupObj.pos = cdm.pos;
-	group.userData.groupObj.rot = cdm.rot;
 	group.userData.groupObj.centerObj = null;
 	group.userData.groupObj.child = [];
 	

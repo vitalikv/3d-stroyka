@@ -238,7 +238,7 @@ function movePivot( event )
 	pivot.position.add( pos2 );
 	
 	// у объекта есть группа
-	if(obj.userData.obj3D.group && !pivot.userData.pivot.element)
+	if(obj.userData.obj3D.group && infProject.settings.active.group)
 	{
 		var arr = obj.userData.obj3D.group.userData.groupObj.child;
 		
@@ -246,8 +246,6 @@ function movePivot( event )
 		{
 			arr[i].position.add( pos2 );
 		}
-		 
-		obj.userData.obj3D.group.userData.groupObj.pos.add( pos2 ); 
 	}
 	else 
 	{ 
@@ -266,11 +264,10 @@ function setScalePivotGizmo()
 	
 	var pVis = false;
 	var gVis = false;
+
 	
-	var element = false;
-	
-	if(pivot.visible) { pVis = true; element = pivot.userData.pivot.element; }
-	if(gizmo.visible) { gVis = true; element = gizmo.userData.gizmo.element; }	
+	if(pivot.visible) { pVis = true; }
+	if(gizmo.visible) { gVis = true; }	
 	if(!pVis && !gVis) { return; }
 	
 	var obj = null;
@@ -292,9 +289,9 @@ function setScalePivotGizmo()
 		{
 			var dist = camera.position.distanceTo(obj.getWorldPosition(new THREE.Vector3())); 
 		}			
-		else if(obj.userData.obj3D.group && !element)
+		else if(obj.userData.obj3D.group && infProject.settings.active.group)
 		{
-			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.pos);
+			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));
 		}
 		else
 		{
