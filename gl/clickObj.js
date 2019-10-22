@@ -258,7 +258,7 @@ function hidePivotGizmo(obj)
 {
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
-	if(obj.userData.tag != 'obj') return;
+	//if(obj.userData.tag != 'obj') return;
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
@@ -273,8 +273,8 @@ function hidePivotGizmo(obj)
 		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
 		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
 
-		if(joint.userData.joint.obj == clickO.rayhit.object) { $('[nameId="obj_b_menu_1"]').hide(); return; }		
-		if(clickO.rayhit.object.userData.tag == 'joinPoint') { $('[nameId="obj_b_menu_1"]').hide(); return; }
+		if(joint.userData.joint.obj == clickO.rayhit.object) { return; }		
+		if(clickO.rayhit.object.userData.tag == 'joinPoint') { return; }
 		
 		if(joint.visible && joint.userData.joint.obj && clickO.rayhit.object.userData.tag == 'obj')
 		{
@@ -282,7 +282,7 @@ function hidePivotGizmo(obj)
 			
 			if(o.userData.obj3D.centerP.active)
 			{
-				$('[nameId="obj_b_menu_1"]').hide(); return;
+				return;
 			}			
 		}
 	}	
@@ -302,9 +302,7 @@ function hidePivotGizmo(obj)
 	//clickO.obj = null;  
 	clickO.last_obj = null;
 	
-	$('[nameId="obj_b_menu_1"]').hide();
 	$('[nameId="wrap_object_1"]').hide();
-	showHideJoinObjUI({visible: false});
 	
 	
 	outlineRemoveObj();
@@ -314,20 +312,7 @@ function hidePivotGizmo(obj)
 
 // при выделении объекта, показываем меню 
 function showObjUI()
-{
-	var joint = infProject.tools.joint;
-	
-	if(joint.visible && joint.userData.joint.obj && joint.userData.joint.obj_2)
-	{
-		showHideJoinObjUI({visible: true});
-	}
-	else
-	{
-		$('[nameId="obj_b_menu_1"]').show();
-		
-		showHideJoinObjUI({visible: false});		
-	}
-	
+{	
 	$('[nameId="wrap_object_1"]').show();
 }
 

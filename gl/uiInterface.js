@@ -155,6 +155,8 @@ function showCenterObjUI(cdm)
 
 	var arr = getArrayJointPoint(cdm);
 	
+	if(arr.length == 0) return; 	// у объекта нет разъемов
+	
 	for(var i = 0; i < arr.length; i++)
 	{		
 		//arr[i].visible = true;
@@ -262,7 +264,7 @@ function showGroupObjUI(cdm)
 		
 	clearChildGroupUI();	// очищаем список дочерних объектов группы (если он есть)
 	
-	if(!obj.userData.obj3D.group) return;
+	if(!obj.userData.obj3D.group) return;	// у объекта нет группы
 	
 	var group = obj.userData.obj3D.group;
 	var arr = group.userData.groupObj.child; 

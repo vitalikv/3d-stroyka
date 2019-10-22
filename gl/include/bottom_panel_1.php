@@ -174,19 +174,7 @@
 				</div>			
 			</div>
 		</div>
-
-
-		<div class="toolbar" data-action ='top_panel_1' nameId='join_obj_b_menu_1' style="display: none;">
-			<div class="toolbar-header">соединить объекты</div>
-			<div class="toolbar-menu">
-				<div style="margin: 10px;">
-					<div data-action ='join_element' class="button1 button_gradient_1">соединить</div>
-				</div>			
-				<div style="margin: 10px;">
-					<div data-action ='cancel_join_element' class="button1 button_gradient_1">отмена</div>
-				</div>		
-			</div>
-		</div>		
+		
 	<?}?>
 	
 	

@@ -274,7 +274,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; showHideJoinObjUI({visible: true}); }
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; }
 		}		
 		else if(camera == camera3D)
 		{
@@ -282,7 +282,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; showHideJoinObjUI({visible: true}); }
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; }
 		}
 		else if(camera == cameraWall)
 		{
@@ -439,8 +439,7 @@ function hideMenuObjUI_2D( o )
 			case 'wf_point': hideMenuUI(o); break;
 			case 'boxWF': hideControlWF(); hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;
-			case 'group': hidePivotGizmo(o); break;
-			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
+			case 'joinPoint': hidePivotGizmo(o); break;
 		}
 	}
 	
@@ -456,8 +455,7 @@ function hideMenuObjUI_3D( o )
 		switch ( o.userData.tag ) 
 		{
 			case 'obj': hidePivotGizmo(o); break;
-			case 'group': hidePivotGizmo(o); break;
-			case 'joinPoint': showHideJoinObjUI({visible: false}); break;
+			case 'joinPoint': hidePivotGizmo(o); break;
 		}
 	}
 }

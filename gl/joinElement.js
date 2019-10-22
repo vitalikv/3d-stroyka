@@ -95,7 +95,7 @@ function hideJoinPoint(cdm)
 			arr2[i2].material = joint.userData.joint.material.default;					
 		}
 		
-		arr[i].userData.obj3D.centerP.active = null;
+		if(arr2.length > 0) arr[i].userData.obj3D.centerP.active = null;
 	}
 	
 }
@@ -122,18 +122,7 @@ function clickJoinPoint(cdm)
 }
 
 
-// при выделении точки-соединителя, показываем меню 
-function showHideJoinObjUI(cdm)
-{
-	if(cdm.visible)
-	{
-		$('[nameId="join_obj_b_menu_1"]').show();
-	}
-	else
-	{
-		$('[nameId="join_obj_b_menu_1"]').hide();
-	}	
-}
+
 
 
 
@@ -147,7 +136,7 @@ function getArrayJointPoint(cdm)
 	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
 	
-	if(o.userData.obj3D.group && infProject.settings.active.group) 
+	if(o.userData.obj3D.group && infProject.settings.active.group) 	// группа
 	{		
 		var group = o.userData.obj3D.group;
 		var child = group.userData.groupObj.child;
@@ -162,9 +151,13 @@ function getArrayJointPoint(cdm)
 			}
 		}
 	}
-	else
+	else if(o.userData.obj3D.centerP)	// у объекта есть разъему
 	{
 		arr = o.userData.obj3D.centerP.arr;
+	}
+	else		// у объекта нет разъему
+	{
+		
 	}
 
 	return arr;	
@@ -395,7 +388,7 @@ function createGroupObj_1(cdm)
 	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc, transparent: true, opacity: 1, depthTest: false } ); 
 	//material.visible = false;	
 	var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), material );
-	cube.userData.tag = 'group_center';
+	cube.userData.tag = 'group_center'; 
 	cube.position.copy(cdm.pos);
 	cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);
 	scene.add(cube);

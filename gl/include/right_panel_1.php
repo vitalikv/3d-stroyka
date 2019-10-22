@@ -177,6 +177,10 @@ function showHideCatalogMenuUI(cdm)
 						</div>								
 					</div>
 					
+					<div class="button1 button_gradient_1" data-action ='join_point'>
+						точки	
+					</div>						
+					
 					
 				</div> 
 			</div>	
