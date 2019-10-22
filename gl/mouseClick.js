@@ -201,7 +201,7 @@ function clickRayHit(event)
 		if(ray.length > 0)
 		{   
 			if(rayhit)
-			{
+			{  
 				if(rayhit.distance > ray[0].distance) { rayhit = ray[0]; }				
 			}
 			else 

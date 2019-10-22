@@ -299,7 +299,7 @@ function hoverCursorLineWF()
 	if(arr.length > 0) 
 	{  
 		//getNearLineWF(arr[0]);
-		result = { object : arr[0].cross, point : posMouse };
+		result = { object : arr[0].cross, point : posMouse, distance: camera.position.distanceTo(arr[0].p1) };
 	}
 	
 	renderCamera();

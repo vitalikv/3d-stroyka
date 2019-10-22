@@ -235,7 +235,7 @@ function clickItemCenterObjUI(cdm)
 	{
 		
 		
-		if(obj.parent.userData.obj3D.group)		// группа
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
 		{
 			var pos1 = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
 			var q = obj.parent.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());
@@ -244,7 +244,7 @@ function clickItemCenterObjUI(cdm)
 		{
 			obj.parent.updateMatrixWorld();
 			var pos1 = obj.parent.localToWorld( obj.parent.geometry.boundingSphere.center.clone() );
-			var q = obj.parent.quaternion.copy(q);
+			var q = obj.parent.quaternion.clone();
 		}
 		
 		var obj = obj.parent;
