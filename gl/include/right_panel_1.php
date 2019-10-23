@@ -64,6 +64,26 @@
 }
 
 
+.block_rp_1
+{
+	width: 200px;
+	height: 60px;
+}
+
+.block_rp_text
+{
+	margin-left: 15px;
+	font-family: arial,sans-serif;
+	font-size: 17px;
+	color: #666;
+	text-decoration: none;
+
+	outline: none;
+}
+
+
+
+
 </style>
 
 
@@ -169,18 +189,20 @@ function showHideCatalogMenuUI(cdm)
 
 
 					<div class="flex_1">		
-						<div class="button1 button_gradient_1" data-action ='select_pivot'>
+						<div class="button1 button_gradient_1" nameId="select_pivot">
 							перемещение	
 						</div>	
-						<div class="button1 button_gradient_1" data-action ='select_gizmo'>
+						<div class="button1 button_gradient_1" nameId="select_gizmo">
 							вращение	
 						</div>								
 					</div>
 					
-					<div class="button1 button_gradient_1" data-action ='join_point'>
-						точки	
-					</div>						
-					
+					<div class="flex_1 align_items block_rp_1">
+						<div class="checkbox_1" nameId="show_hide_join_point">
+							<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
+						</div>
+						<div class="block_rp_text">Показать точки</div>						
+					</div>
 					
 				</div> 
 			</div>	

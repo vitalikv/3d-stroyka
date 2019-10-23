@@ -161,13 +161,13 @@
 			<div class="toolbar-header">объект</div>
 			<div class="toolbar-menu">
 				<div style="margin: 10px;">
-					<div data-action ='join_point' class="button1 button_gradient_1">точки</div>
+					<div nameId ='join_point' class="button1 button_gradient_1">точки</div>
 				</div>			
 				<div style="margin: 10px;">
-					<div data-action ='select_pivot' class="button1 button_gradient_1">перемещение</div>
+					<div nameId ='select_pivot' class="button1 button_gradient_1">перемещение</div>
 				</div>
 				<div style="margin: 10px;">
-					<div data-action ='select_gizmo' class="button1 button_gradient_1">вращение</div>
+					<div nameId ='select_gizmo' class="button1 button_gradient_1">вращение</div>
 				</div>				
 				<div style="margin: 10px;">
 					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>

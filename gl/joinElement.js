@@ -46,16 +46,47 @@ function clickRayJoinPoint()
 }
 
 
+
+function showHideJP()
+{
+	var joint = infProject.tools.joint;			
+
+	
+	if(joint.visible) 
+	{
+		hideJoinPoint();
+		joint.visible = false;
+		
+		$('[nameId="show_join_point_checked"]').hide();
+	}
+	else 
+	{
+		if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
+		if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
+
+		if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
+		
+		showJoinPoint({obj: obj});
+		
+		joint.position.copy(obj.position);		
+		joint.visible = true;
+		
+		$('[nameId="show_join_point_checked"]').show(); 
+	}
+}
+
+
+
 // показываем точки-соединители
 function showJoinPoint(cdm)
 {
 	if(!cdm.obj) return;
 	var obj = cdm.obj;
 
-	if(cdm.group) { hideJoinPoint(); }
+	if(infProject.settings.active.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
 	
-	var arr = getArrayJointPoint({obj: obj, group: cdm.group});
+	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -65,6 +96,7 @@ function showJoinPoint(cdm)
 		arr[i].material = infProject.tools.joint.userData.joint.material.default;	
 	}	
 	
+	infProject.tools.joint.userData.joint.obj = obj;
 }
 
 
@@ -98,6 +130,9 @@ function hideJoinPoint(cdm)
 		if(arr2.length > 0) arr[i].userData.obj3D.centerP.active = null;
 	}
 	
+	joint.userData.joint.obj = null;
+	joint.userData.joint.obj_2 = null;	
+	joint.visible = false;
 }
 
 

@@ -137,8 +137,8 @@ function clickObjUI(cdm)
 	$('[nameId="rp_obj_name"]').val(inf.nameRus);
 	
 	
-	showGroupObjUI({obj : obj});
-	showCenterObjUI({obj : obj});
+	showGroupObjUI({obj: obj, active: 'first'});
+	showCenterObjUI({obj: obj, active: 'first'});
 }
 
 
@@ -191,6 +191,12 @@ function showCenterObjUI(cdm)
 	var el = $($('[nameId="rp_obj_center"]')[0].children[0]);	
 	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: arr[0] }; 
 	el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) }); 
+	
+	// выделяем первый элемент  
+	if(cdm.active == 'first') 
+	{
+		el.css('background-color', '#00ff00');
+	}
 }
 
 
@@ -300,6 +306,11 @@ function showGroupObjUI(cdm)
 	infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
 	el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
 	
+	// выделяем первый элемент  
+	if(cdm.active == 'first') 
+	{
+		el.css('background-color', '#00ff00');
+	}	
 }
 
 
@@ -338,14 +349,14 @@ function clickItemObjNameUI(cdm)
 	{  
 		obj = infProject.ui.group_obj[0].obj;
 		clickObject3D(obj, {group: true, outline: true}); 
-		showCenterObjUI({obj: obj, group: true});
+		showCenterObjUI({obj: obj, group: true, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
 	}
 	else
 	{
-		clickObject3D(obj, {group: false, outline: true});
-		showCenterObjUI({obj: obj, group: false});
+		clickObject3D(obj, {group: false, outline: true}); 
+		showCenterObjUI({obj: obj, group: false, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
 	}	

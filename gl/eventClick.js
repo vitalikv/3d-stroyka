@@ -144,9 +144,10 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 
 //$('[data-action="join_element"]').mousedown(function () { joinElement(); });
 
-$('[data-action="join_point"]').mousedown(function () { switchPivotGizmo({mode:'joint'}); });	
-$('[data-action="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
-$('[data-action="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });	
+$('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	
+$('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
+$('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });	
+
 $('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { clickInterface({button:'create_tube_1'}); }); 
 $('[data-action="create_tube_box_1"]').mousedown(function () { clickInterface({button:'create_tube_box_1'}); }); 

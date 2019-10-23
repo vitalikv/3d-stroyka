@@ -44,7 +44,7 @@
 	<div class="frame">
 			
 		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
-			<div class="go_home" nameId="butt_main_menu">
+			<div class="go_home align_items" nameId="butt_main_menu">
 				<div class="go_home_txt">
 					Меню
 				</div>
