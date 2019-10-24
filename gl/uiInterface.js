@@ -178,23 +178,11 @@ function showCenterObjUI(cdm)
 
 		el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) });		
 	}
-
-		
-	 
-	// добавляем в список главный центр	
-	var str = 
-	'<div class="right_panel_1_1_list_item" uuid="center_item">\
-	<div class="right_panel_1_1_list_item_text">центр</div>\
-	</div>';	
-	
-	$('[nameId="rp_obj_center"]').prepend(str); 
-	var el = $($('[nameId="rp_obj_center"]')[0].children[0]);	
-	infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: arr[0] }; 
-	el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) }); 
 	
 	// выделяем первый элемент  
 	if(cdm.active == 'first') 
 	{ 
+		var el = $($('[nameId="rp_obj_center"]')[0].children[0]);
 		el.css('background-color', '#00ff00');
 	}
 }
@@ -245,6 +233,16 @@ function clickItemCenterObjUI(cdm)
 
 		obj = cdm.obj;
 	}
+	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
+	{
+		item = infProject.ui.center_obj[cdm.item].el;
+		obj = infProject.ui.center_obj[cdm.item].obj;
+	}
+	else
+	{
+		return;
+	}
+	
 	
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
@@ -260,7 +258,6 @@ function clickItemCenterObjUI(cdm)
 		{
 			clickObject3D(obj.parent);
 		}
-		activeJoinPoint({obj: obj.parent});
 	}
 	else	// разъем
 	{
@@ -284,45 +281,60 @@ function showGroupObjUI(cdm)
 		
 	clearChildGroupUI();	// очищаем список дочерних объектов группы (если он есть)
 	
-	if(!obj.userData.obj3D.group) return;	// у объекта нет группы
-	
-	var group = obj.userData.obj3D.group;
-	var arr = group.userData.groupObj.child; 
-	
-	// добавляем новый список объектов из группы
-	for(var i = 0; i < arr.length; i++)
+	if(obj.userData.obj3D.group) 	// группа
 	{
-		var child = arr[i];
+		var group = obj.userData.obj3D.group;
+		var arr = group.userData.groupObj.child; 
 		
-		if(!child.userData.obj3D) continue;
+		// добавляем новый список объектов из группы
+		for(var i = 0; i < arr.length; i++)
+		{
+			var child = arr[i];
+			
+			if(!child.userData.obj3D) continue;
+			
+			var str = 
+			'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\
+			<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
+			</div>';
+
+			$('[nameId="rp_obj_group"]').prepend(str);		
+			var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
+			
+			infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: child };
+
+			el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
+		}
 		
+		// добавляем в список группу	
 		var str = 
-		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\
-		<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
-		</div>';
-
-		$('[nameId="rp_obj_group"]').prepend(str);		
-		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
+		'<div class="right_panel_1_1_list_item" uuid="group_item" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">'+group.userData.groupObj.nameRus+'</div>\
+		</div>';	
 		
-		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: child };
-
-		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
+		$('[nameId="rp_obj_group"]').prepend(str); 
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
+		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
+		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
+	}
+	else	// у объекта нет группы
+	{
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">объект без группы</div>\
+		</div>';	
+		
+		$('[nameId="rp_obj_group"]').prepend(str); 
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
+		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: obj };
+		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });		
 	}
 	
-	// добавляем в список группу	
-	var str = 
-	'<div class="right_panel_1_1_list_item" uuid="group_item" group_item_obj="">\
-	<div class="right_panel_1_1_list_item_text">'+group.userData.groupObj.nameRus+'</div>\
-	</div>';	
-	
-	$('[nameId="rp_obj_group"]').prepend(str); 
-	var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
-	infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
-	el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
 	
 	// выделяем первый элемент  
 	if(cdm.active == 'first') 
 	{
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
 		el.css('background-color', '#00ff00');
 	}	
 }
@@ -344,20 +356,43 @@ function clearChildGroupUI(cdm)
 // кликнули на меню дочерних объектов группы
 function clickItemObjNameUI(cdm)
 {
-	var item = cdm.el;
+	var item = null;
 	var obj = null;
 	
-	var value = item.attr('uuid');	
+	
 	
 	// снимаем старые выдиления  
 	for(var i = 0; i < infProject.ui.group_obj.length; i++)
 	{
-		if(infProject.ui.group_obj[i].el[0] == item[0]){ obj = infProject.ui.group_obj[i].obj; } 
 		infProject.ui.group_obj[i].el.css('background-color', '#ffffff');
 	}	
 	
+	
+	if(cdm.el)		// кликнули на пункт в меню
+	{
+		for(var i = 0; i < infProject.ui.group_obj.length; i++)
+		{
+			if(infProject.ui.group_obj[i].el[0] == cdm.el[0]){ obj = infProject.ui.group_obj[i].obj; break; } 
+		}		
+		
+		item = cdm.el;
+	}
+	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
+	{
+		item = infProject.ui.group_obj[cdm.item].el;
+		obj = infProject.ui.group_obj[cdm.item].obj;
+	}
+	else
+	{
+		return;
+	}
+	
+	
+	
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
+	var value = item.attr('uuid');	
+	
 	
 	if(value == 'group_item')
 	{  

@@ -100,11 +100,13 @@ function changeRightMenuUI_2(cdm)
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
 	{
+		clickItemCenterObjUI({item: 0}); 
 		$('[nameId="wrap_obj_center"]').show();
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
-		$('[nameId="wrap_obj_child"]').show();
+		clickItemObjNameUI({item: 0});
+		$('[nameId="wrap_obj_child"]').show();		
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_align") 
 	{
