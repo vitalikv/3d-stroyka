@@ -137,7 +137,7 @@ function clickObjUI(cdm)
 	$('[nameId="rp_obj_name"]').val(inf.nameRus);
 	
 	
-	showGroupObjUI({obj: obj, active: 'first'});
+	showGroupObjUI({obj: obj, active: 'first'}); 
 	showCenterObjUI({obj: obj, active: 'first'});
 }
 
@@ -171,8 +171,8 @@ function showCenterObjUI(cdm)
 		<div class="right_panel_1_1_list_item_text">'+child.userData.centerPoint.nameRus+'</div>\
 		</div>';
 
-		$('[nameId="rp_obj_center"]').prepend(str);		
-		var el = $($('[nameId="rp_obj_center"]')[0].children[0]);
+		$('[nameId="rp_obj_center"]').append(str);		
+		var el = $($('[nameId="rp_obj_center"]')[0].children[$('[nameId="rp_obj_center"]')[0].children.length - 1]);
 		
 		infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: child };
 
@@ -202,13 +202,16 @@ function clearCenterObjUI(cdm)
 
 
 
-// кликнули на меню центров объекта
+// выбираем центр объекта
 function clickItemCenterObjUI(cdm)
 {
 	var item = null;
 	var obj = null;
 	
-	// снимаем старые выдиления  
+	if(infProject.ui.center_obj.length == 0) return;	// у объекта нет разъемов
+	
+	
+	// снимаем старые выдиления в UI 
 	for(var i = 0; i < infProject.ui.center_obj.length; i++)
 	{
 		infProject.ui.center_obj[i].el.css('background-color', '#ffffff');
@@ -244,27 +247,13 @@ function clickItemCenterObjUI(cdm)
 	}
 	
 	
-	// выделяем новый пункт на который кликнули 
+	// выделяем новый пункт на который кликнули UI
 	item.css('background-color', '#00ff00');
 	var value = item.attr('uuid');	 
 	
-	if(value == 'center_item')	// центр объекта или группы
-	{
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
-		{
-			clickObject3D(obj.parent);  	// obj.parent.userData.obj3D.group.userData.groupObj.centerObj
-		}
-		else	// объект
-		{
-			clickObject3D(obj.parent);
-		}
-	}
-	else	// разъем
-	{
-		clickObject3D(obj);	
-		activeJoinPoint({obj: obj}); 
-	}
-	
+	// выделяем объект в сцене
+	clickObject3D(obj);	
+	activeJoinPoint({obj: obj}); 
 		 
 }
 
@@ -285,6 +274,18 @@ function showGroupObjUI(cdm)
 	{
 		var group = obj.userData.obj3D.group;
 		var arr = group.userData.groupObj.child; 
+
+		// добавляем в список группу	
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="group_item" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">'+group.userData.groupObj.nameRus+'</div>\
+		</div>';	
+		
+		$('[nameId="rp_obj_group"]').append(str); 
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
+		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: obj };
+		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+
 		
 		// добавляем новый список объектов из группы
 		for(var i = 0; i < arr.length; i++)
@@ -298,24 +299,13 @@ function showGroupObjUI(cdm)
 			<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
 			</div>';
 
-			$('[nameId="rp_obj_group"]').prepend(str);		
-			var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
+			$('[nameId="rp_obj_group"]').append(str);		
+			var el = $($('[nameId="rp_obj_group"]')[0].children[$('[nameId="rp_obj_group"]')[0].children.length - 1]);
 			
 			infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: child };
 
 			el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
-		}
-		
-		// добавляем в список группу	
-		var str = 
-		'<div class="right_panel_1_1_list_item" uuid="group_item" group_item_obj="">\
-		<div class="right_panel_1_1_list_item_text">'+group.userData.groupObj.nameRus+'</div>\
-		</div>';	
-		
-		$('[nameId="rp_obj_group"]').prepend(str); 
-		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
-		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: arr[0] };
-		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) }); 
+		} 
 	}
 	else	// у объекта нет группы
 	{
@@ -324,7 +314,7 @@ function showGroupObjUI(cdm)
 		<div class="right_panel_1_1_list_item_text">объект без группы</div>\
 		</div>';	
 		
-		$('[nameId="rp_obj_group"]').prepend(str); 
+		$('[nameId="rp_obj_group"]').append(str); 
 		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
 		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: obj };
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });		
@@ -395,7 +385,7 @@ function clickItemObjNameUI(cdm)
 	
 	
 	if(value == 'group_item')
-	{  
+	{   
 		obj = infProject.ui.group_obj[0].obj;
 		clickObject3D(obj, {group: true, outline: true}); 
 		showCenterObjUI({obj: obj, group: true, active: 'first'});

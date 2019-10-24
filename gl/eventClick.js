@@ -87,7 +87,6 @@ function changeRightMenuUI_1(cdm)
 
 $('[nameId="button_wrap_obj_center"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 $('[nameId="button_wrap_obj_child"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
-$('[nameId="button_wrap_obj_align"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 $('[nameId="button_wrap_add_group"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 
 // переключаем меню (центр/группа)
@@ -95,22 +94,28 @@ function changeRightMenuUI_2(cdm)
 {
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
-	$('[nameId="wrap_obj_align"]').hide();
 	$('[nameId="wrap_add_group"]').hide();	
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
 	{
-		clickItemCenterObjUI({item: 0}); 
-		$('[nameId="wrap_obj_center"]').show();
+		var obj = getObjFromPivotGizmo();
+		
+		if(obj) 
+		{
+			clickItemCenterObjUI({item: 0}); 
+			$('[nameId="wrap_obj_center"]').show();
+		}		
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
-		clickItemObjNameUI({item: 0});
-		$('[nameId="wrap_obj_child"]').show();		
-	}
-	if(cdm.el.attributes.nameId.value == "button_wrap_obj_align") 
-	{
-		$('[nameId="wrap_obj_align"]').show();
+		var obj = getObjFromPivotGizmo();
+		
+		if(obj) 
+		{
+			hideJoinPoint({visible: 'full'});
+			clickItemObjNameUI({item: 0});
+			$('[nameId="wrap_obj_child"]').show();
+		}				
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_add_group") 
 	{

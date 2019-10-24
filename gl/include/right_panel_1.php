@@ -180,11 +180,6 @@ function showHideCatalogMenuUI(cdm)
 								<div class="right_panel_1_item_block_text">
 									Центр
 								</div>	
-							</div>
-							<div class="right_panel_1_item_block" nameId="button_wrap_obj_align">
-								<div class="right_panel_1_item_block_text">
-									Выровнять
-								</div>	
 							</div>	
 							<div class="right_panel_1_item_block" nameId="button_wrap_add_group">
 								<div class="right_panel_1_item_block_text">
@@ -214,7 +209,16 @@ function showHideCatalogMenuUI(cdm)
 								<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
 							</div>
 							<div class="block_rp_text">Показать точки</div>						
-						</div>						
+						</div>	
+						
+						<div>
+							<div class="button1 button_gradient_1" nameId="select_gizmo">
+								соединить	
+							</div>
+							<div class="right_panel_1_1_list" nameId="rp_obj_align">
+								
+							</div>							
+						</div>
 					</div>
 					
 					<div nameId="wrap_obj_child" style="display: none;">
@@ -233,12 +237,6 @@ function showHideCatalogMenuUI(cdm)
 						</div>												
 					</div>
 
-					<div nameId="wrap_obj_align" style="display: none;">
-						<div class="right_panel_1_1_h">Выровнять</div>
-						<div class="right_panel_1_1_list" nameId="rp_obj_align">
-							
-						</div>
-					</div>
 					
 					<div nameId="wrap_add_group" style="display: none;">
 						<div class="right_panel_1_1_h">Объединить</div>

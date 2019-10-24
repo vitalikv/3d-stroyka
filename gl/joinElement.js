@@ -102,6 +102,32 @@ function showJoinPoint(cdm)
 }
 
 
+function showJoinPoint_2(cdm)
+{
+	if(!cdm.obj) return;
+	var obj = cdm.obj;
+	
+	var joint = infProject.tools.joint;
+	
+	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});	
+	
+	for(var i = 0; i < arr.length; i++)
+	{		
+		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
+		
+		arr[i].visible = true;
+		arr[i].material = joint.material.default;	
+	}	
+	
+		
+	joint.p2 = arr;
+	
+	//$('[nameId="show_join_point_checked"]').show(); 
+	
+	//if(active) { activeJoinPoint({obj: active}); }
+}
+
+
 
 // скрываем у объекта точки-соединители 
 function hideJoinPoint(cdm)

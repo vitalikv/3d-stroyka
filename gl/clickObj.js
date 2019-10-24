@@ -57,6 +57,21 @@ function clickObject3D( obj, cdm )
 	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
 	
+	if(infProject.tools.joint.active_1)
+	{
+		if(obj.userData.tag == 'joinPoint')		// разъем
+		{
+			
+		}
+		else							// объект
+		{
+			showJoinPoint_2({obj: obj});
+			
+			return;
+		}
+		
+		
+	}
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
@@ -262,16 +277,11 @@ function hidePivotGizmo(obj)
 		//if(joint.obj_1 == clickO.rayhit.object) { return; }		
 		if(clickO.rayhit.object.userData.tag == 'joinPoint') { return; }
 		 
-		if(1==2)
+		if(1==1)
 		{
-			if(joint.visible && joint.obj_1 && clickO.rayhit.object.userData.tag == 'obj')
+			if(joint.active_1 && clickO.rayhit.object.userData.tag == 'obj')
 			{
-				var o = joint.obj_1;
-				
-				if(o.userData.obj3D.centerP.active)
-				{
-					return;
-				}			
+				return;			
 			}			
 		}
 	}	
@@ -307,12 +317,7 @@ function showObjUI()
 // переключаем Pivot/Gizmo/joint
 function switchPivotGizmo(cdm)
 {
-	var obj = null;
-	var pivot = infProject.tools.pivot;
-	var gizmo = infProject.tools.gizmo;	
-	
-	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; pivot.visible = false; }	
-	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; gizmo.visible = false; }
+	var obj = getObjFromPivotGizmo();
 	
 	if(!obj) return;	
 	
@@ -324,6 +329,21 @@ function switchPivotGizmo(cdm)
 
 	clickObject3D( obj ); 
 }
+
+
+// получаем активный объект
+function getObjFromPivotGizmo(cdm)
+{
+	var obj = null;
+	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;	
+	
+	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; }	
+	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; }
+	
+	return obj;	
+}
+
 
 
 

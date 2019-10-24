@@ -274,7 +274,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			//else if(tag == 'joinPoint') { obj = infProject.tools.joint.obj_1; } 
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
 		}		
 		else if(camera == camera3D)
 		{
@@ -282,7 +282,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			//else if(tag == 'joinPoint') { obj = infProject.tools.joint.obj_1; }
+			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; }
 		}
 		else if(camera == cameraWall)
 		{
