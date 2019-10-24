@@ -261,7 +261,7 @@ function addObjInScene(inf, cdm)
 					{
 						child.visible = false;						
 						
-						var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.userData.joint.material.default );
+						var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.material.default );
 						cube.position.copy(child.position);
 						cube.quaternion.copy(child.quaternion);
 						cube.visible = false;

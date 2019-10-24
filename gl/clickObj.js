@@ -258,17 +258,20 @@ function hidePivotGizmo(obj)
 		
 		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
 		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-
-		if(joint.userData.joint.obj == clickO.rayhit.object) { return; }		
+  
+		//if(joint.obj_1 == clickO.rayhit.object) { return; }		
 		if(clickO.rayhit.object.userData.tag == 'joinPoint') { return; }
-		
-		if(joint.visible && joint.userData.joint.obj && clickO.rayhit.object.userData.tag == 'obj')
+		 
+		if(1==2)
 		{
-			var o = joint.userData.joint.obj;
-			
-			if(o.userData.obj3D.centerP.active)
+			if(joint.visible && joint.obj_1 && clickO.rayhit.object.userData.tag == 'obj')
 			{
-				return;
+				var o = joint.obj_1;
+				
+				if(o.userData.obj3D.centerP.active)
+				{
+					return;
+				}			
 			}			
 		}
 	}	
@@ -277,7 +280,7 @@ function hidePivotGizmo(obj)
 	
 	pivot.visible = false;
 	gizmo.visible = false;
-	hideJoinPoint();
+	hideJoinPoint({visible: 'full'});
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;

@@ -53,6 +53,7 @@ function changeMainMenuUI(cdm)
 $('[nameId="button_wrap_catalog"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 $('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 $('[nameId="button_wrap_object"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
+$('[nameId="button_wrap_plan"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 
  
 // переключаем меню (каталог/список)
@@ -61,6 +62,7 @@ function changeRightMenuUI_1(cdm)
 	$('[nameId="wrap_catalog"]').hide();
 	$('[nameId="wrap_list_obj"]').hide();
 	$('[nameId="wrap_object"]').hide();
+	$('[nameId="wrap_plan"]').hide();
 	
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_catalog") 
@@ -74,6 +76,10 @@ function changeRightMenuUI_1(cdm)
 	if(cdm.el.attributes.nameId.value == "button_wrap_object") 
 	{
 		$('[nameId="wrap_object"]').show();
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_plan") 
+	{
+		$('[nameId="wrap_plan"]').show();
 	}	
 }
 
@@ -81,13 +87,16 @@ function changeRightMenuUI_1(cdm)
 
 $('[nameId="button_wrap_obj_center"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 $('[nameId="button_wrap_obj_child"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+$('[nameId="button_wrap_obj_align"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+$('[nameId="button_wrap_add_group"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 
 // переключаем меню (центр/группа)
 function changeRightMenuUI_2(cdm)
 {
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
-	
+	$('[nameId="wrap_obj_align"]').hide();
+	$('[nameId="wrap_add_group"]').hide();	
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
 	{
@@ -96,7 +105,15 @@ function changeRightMenuUI_2(cdm)
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
 		$('[nameId="wrap_obj_child"]').show();
-	}	
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_obj_align") 
+	{
+		$('[nameId="wrap_obj_align"]').show();
+	}
+	if(cdm.el.attributes.nameId.value == "button_wrap_add_group") 
+	{
+		$('[nameId="wrap_add_group"]').show();
+	}		
 }
 
 

@@ -160,7 +160,7 @@ function showCenterObjUI(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{		
 		//arr[i].visible = true;
-		//arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+		//arr[i].material = infProject.tools.joint.material.default;	
 		
 		var child = arr[i];
 		
@@ -179,7 +179,7 @@ function showCenterObjUI(cdm)
 		el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) });		
 	}
 
-	obj.userData.obj3D.centerP.active = null;	
+		
 	 
 	// добавляем в список главный центр	
 	var str = 
@@ -194,7 +194,7 @@ function showCenterObjUI(cdm)
 	
 	// выделяем первый элемент  
 	if(cdm.active == 'first') 
-	{
+	{ 
 		el.css('background-color', '#00ff00');
 	}
 }
@@ -217,29 +217,40 @@ function clearCenterObjUI(cdm)
 // кликнули на меню центров объекта
 function clickItemCenterObjUI(cdm)
 {
-	var item = cdm.el;
+	var item = null;
 	var obj = null;
-	
-	var value = item.attr('uuid');	
 	
 	// снимаем старые выдиления  
 	for(var i = 0; i < infProject.ui.center_obj.length; i++)
 	{
-		if(infProject.ui.center_obj[i].el[0] == item[0]){ obj = infProject.ui.center_obj[i].obj; } 
 		infProject.ui.center_obj[i].el.css('background-color', '#ffffff');
-	}	
+	}
+	
+	
+	if(cdm.el)	// кликнули на пункт в меню
+	{
+		for(var i = 0; i < infProject.ui.center_obj.length; i++)
+		{
+			if(infProject.ui.center_obj[i].el[0] == cdm.el[0]){ obj = infProject.ui.center_obj[i].obj; break; } 
+		}
+
+		item = cdm.el;
+	}
+	else if(cdm.obj)	// кликнули на объект в сцене
+	{
+		for(var i = 0; i < infProject.ui.center_obj.length; i++)
+		{
+			if(infProject.ui.center_obj[i].obj == cdm.obj){ item = infProject.ui.center_obj[i].el; break; } 
+		}
+
+		obj = cdm.obj;
+	}
 	
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
+	var value = item.attr('uuid');	 
 	
-	
-	
-
-
-	if(infProject.settings.active.pg == 'pivot'){ var tool = infProject.tools.pivot; }	 
-	if(infProject.settings.active.pg == 'gizmo'){ var tool = infProject.tools.gizmo; }	 
-	
-	if(value == 'center_item')
+	if(value == 'center_item')	// центр объекта или группы
 	{
 		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
 		{
@@ -249,12 +260,15 @@ function clickItemCenterObjUI(cdm)
 		{
 			clickObject3D(obj.parent);
 		}
+		activeJoinPoint({obj: obj.parent});
 	}
-	else
+	else	// разъем
 	{
-		clickObject3D(obj);		
+		clickObject3D(obj);	
+		activeJoinPoint({obj: obj}); 
 	}
 	
+		 
 }
 
 

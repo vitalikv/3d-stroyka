@@ -5,20 +5,18 @@
 // создаем инструмент 
 function createJoinP()
 {
-	var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1.0, depthTest: false }); 
-	var obj = new THREE.Mesh( createGeometryWD(0.01, 0.01, 0.01), material ); 	
-	obj.userData.tag = 'joint';
-	obj.userData.joint = {};
-	obj.userData.joint.obj = null;
-	obj.userData.joint.obj_2 = null;
-	obj.userData.joint.material = {};
-	obj.userData.joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	obj.userData.joint.material.default = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	obj.renderOrder = 1;
-	obj.visible = false;
-	scene.add( obj );
+	var joint = {};
+	joint.p1 = [];
+	joint.p2 = [];	
+	joint.active_1 = null;
+	joint.active_2 = null;		
+	joint.material = {};
+	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+	joint.material.default = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+	joint.visible = false;
+	
 
-	return obj;	
+	return joint;	
 }
 
 
@@ -26,21 +24,23 @@ function createJoinP()
 function clickRayJoinPoint()
 {
 	var rayhit = null;
-	var o = infProject.tools.joint.userData.joint.obj;
+	var arr = infProject.tools.joint.p1;
 	
-	if(o)
+	if(arr.length > 0)
 	{
-		var ray = rayIntersect( event, getArrayJointPoint({obj: o}), 'arr' ); 
-		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
+		var ray = rayIntersect( event, arr, 'arr' ); 
+		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }
+
+
+		var arr2 = infProject.tools.joint.p2;
+		
+		if(arr2)
+		{
+			var ray = rayIntersect( event, arr2, 'arr' ); 
+			if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
+		}				
 	}
 	
-	var o = infProject.tools.joint.userData.joint.obj_2;
-	
-	if(o)
-	{
-		var ray = rayIntersect( event, getArrayJointPoint({obj: o}), 'arr' ); 
-		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
-	}		
 	
 	return null;
 }
@@ -55,9 +55,6 @@ function showHideJP()
 	if(joint.visible) 
 	{
 		hideJoinPoint();
-		joint.visible = false;
-		
-		$('[nameId="show_join_point_checked"]').hide();
 	}
 	else 
 	{
@@ -66,12 +63,7 @@ function showHideJP()
 
 		if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
 		
-		showJoinPoint({obj: obj});
-		
-		joint.position.copy(obj.position);		
-		joint.visible = true;
-		
-		$('[nameId="show_join_point_checked"]').show(); 
+		showJoinPoint({obj: obj});			
 	}
 }
 
@@ -82,21 +74,31 @@ function showJoinPoint(cdm)
 {
 	if(!cdm.obj) return;
 	var obj = cdm.obj;
-
+	
+	var joint = infProject.tools.joint;
+	
+	var active = null;	
+	if(joint.active_1) { active = joint.active_1; }	
+	
 	if(infProject.settings.active.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
 	
-	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});
+	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});	
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
-		if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
+		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
 		
 		arr[i].visible = true;
-		arr[i].material = infProject.tools.joint.userData.joint.material.default;	
+		arr[i].material = joint.material.default;	
 	}	
 	
-	infProject.tools.joint.userData.joint.obj = obj;
+		
+	joint.p1 = arr;
+	joint.visible = true; 
+	$('[nameId="show_join_point_checked"]').show(); 
+	
+	if(active) { activeJoinPoint({obj: active}); }
 }
 
 
@@ -108,52 +110,54 @@ function hideJoinPoint(cdm)
 	
 	var joint = infProject.tools.joint;	
 	
-	var arr = [joint.userData.joint.obj, joint.userData.joint.obj_2];
+	var active = null;  
+	if(cdm.visible == 'full') {}
+	else if(joint.active_1) { active = joint.active_1; }
 	
-	if(cdm.clear) arr = [joint.userData.joint.obj_2];
-	
+	var arr = joint.p1; 
 	
 	for(var i = 0; i < arr.length; i++)
 	{
-		var obj = arr[i];
-		
-		if(!obj) continue;
-
-		var arr2 = getArrayJointPoint({obj: obj});
-	
-		for(var i2 = 0; i2 < arr2.length; i2++)
-		{
-			arr2[i2].visible = false;
-			arr2[i2].material = joint.userData.joint.material.default;					
-		}
-		
-		if(arr2.length > 0) arr[i].userData.obj3D.centerP.active = null;
+		arr[i].visible = false;
+		arr[i].material = joint.material.default;					
 	}
 	
-	joint.userData.joint.obj = null;
-	joint.userData.joint.obj_2 = null;	
+
+	joint.p1 = [];
+	joint.p2 = [];
+	joint.active_1 = null;
+	joint.active_2 = null;	
 	joint.visible = false;
+	$('[nameId="show_join_point_checked"]').hide();
+	
+	if(active) { activeJoinPoint({obj: active}); }
 }
 
 
 
-
-// клинули на точку-соединитель
-function clickJoinPoint(cdm)
+ 
+// активируем точку-соединитель 
+function activeJoinPoint(cdm)
 {
-	var rayhit = cdm.rayhit;
-	var obj = rayhit.object;
-	var parent = obj.parent;
+	var obj = null;
+	if(cdm.obj) { obj = cdm.obj; }
 	
-	if(parent.userData.obj3D.centerP.active)
+	if(!obj) return;
+	
+	var joint = infProject.tools.joint;
+	
+	if(joint.active_1)	// снимаем старое выделение 
 	{
-		parent.userData.obj3D.centerP.active.material = infProject.tools.joint.userData.joint.material.default;
-		parent.userData.obj3D.centerP.active = null;
+		if(!joint.visible) { joint.active_1.visible = false; }
+		joint.active_1.material = infProject.tools.joint.material.default;
+		joint.active_1 = null;		
 	}
 	
+	if(!joint.visible) { joint.p1 = [obj]; }
 	
-	obj.material = infProject.tools.joint.userData.joint.material.active;
-	parent.userData.obj3D.centerP.active = obj;
+	obj.material = joint.material.active;
+	obj.visible = true;
+	joint.active_1 = obj;
 }
 
 
@@ -209,8 +213,8 @@ function joinElement(cdm)
 	
 	var joint = infProject.tools.joint;
 	
-	var obj = infProject.tools.joint.userData.joint.obj;
-	var obj_2 = infProject.tools.joint.userData.joint.obj_2;
+	var obj = infProject.tools.joint.obj_1;
+	var obj_2 = infProject.tools.joint.obj_2;
 	
 	if(cdm.obj) { obj = cdm.obj; }
 	if(cdm.obj_2) { obj_2 = cdm.obj_2; }

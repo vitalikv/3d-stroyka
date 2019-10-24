@@ -125,6 +125,11 @@ function showHideCatalogMenuUI(cdm)
 	<div class="flex_column_1 right_panel_1_1" nameId="panel_catalog_1">
 		<div class="flex_1 bottom_line_1">
 			<div class="flex_1 relative_1 right_panel_1_item">
+				<div class="right_panel_1_item_block" nameId="button_wrap_plan">
+					<div class="right_panel_1_item_block_text">
+						план
+					</div>	
+				</div>			
 				<div class="right_panel_1_item_block" nameId="button_wrap_object">
 					<div class="right_panel_1_item_block_text">
 						объект
@@ -146,7 +151,13 @@ function showHideCatalogMenuUI(cdm)
 			</div>
 		</div>
 	
+	
+		<div class="flex_column_1" nameId="wrap_plan" style="display: none;">
+			<div class="right_panel_1_1_h">План</div>
 
+		</div>
+		
+		
 		<div nameId="wrap_object">
 			<div class="flex_column_1" nameId="wrap_object_1" style="display: block;">
 				<div class="right_panel_1_1_h">Объект</div>
@@ -169,7 +180,17 @@ function showHideCatalogMenuUI(cdm)
 								<div class="right_panel_1_item_block_text">
 									Центр
 								</div>	
-							</div>								
+							</div>
+							<div class="right_panel_1_item_block" nameId="button_wrap_obj_align">
+								<div class="right_panel_1_item_block_text">
+									Выровнять
+								</div>	
+							</div>	
+							<div class="right_panel_1_item_block" nameId="button_wrap_add_group">
+								<div class="right_panel_1_item_block_text">
+									Объединить
+								</div>	
+							</div>							
 						</div>
 					</div>
 					
@@ -178,6 +199,22 @@ function showHideCatalogMenuUI(cdm)
 						<div class="right_panel_1_1_list" nameId="rp_obj_center">
 							
 						</div>
+						
+						<div class="flex_1">		
+							<div class="button1 button_gradient_1" nameId="select_pivot">
+								перемещение	
+							</div>	
+							<div class="button1 button_gradient_1" nameId="select_gizmo">
+								вращение	
+							</div>								
+						</div>	
+
+						<div class="flex_1 align_items block_rp_1">
+							<div class="checkbox_1" nameId="show_hide_join_point">
+								<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
+							</div>
+							<div class="block_rp_text">Показать точки</div>						
+						</div>						
 					</div>
 					
 					<div nameId="wrap_obj_child" style="display: none;">
@@ -185,24 +222,30 @@ function showHideCatalogMenuUI(cdm)
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
 						</div>
-					</div>	
+						
+						<div class="flex_1">		
+							<div class="button1 button_gradient_1" nameId="select_pivot">
+								перемещение	
+							</div>	
+							<div class="button1 button_gradient_1" nameId="select_gizmo">
+								вращение	
+							</div>								
+						</div>												
+					</div>
 
-
-					<div class="flex_1">		
-						<div class="button1 button_gradient_1" nameId="select_pivot">
-							перемещение	
-						</div>	
-						<div class="button1 button_gradient_1" nameId="select_gizmo">
-							вращение	
-						</div>								
+					<div nameId="wrap_obj_align" style="display: none;">
+						<div class="right_panel_1_1_h">Выровнять</div>
+						<div class="right_panel_1_1_list" nameId="rp_obj_align">
+							
+						</div>
 					</div>
 					
-					<div class="flex_1 align_items block_rp_1">
-						<div class="checkbox_1" nameId="show_hide_join_point">
-							<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
+					<div nameId="wrap_add_group" style="display: none;">
+						<div class="right_panel_1_1_h">Объединить</div>
+						<div class="right_panel_1_1_list" nameId="rp_add_group">
+							
 						</div>
-						<div class="block_rp_text">Показать точки</div>						
-					</div>
+					</div>										
 					
 				</div> 
 			</div>	

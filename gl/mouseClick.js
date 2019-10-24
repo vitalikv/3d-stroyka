@@ -241,7 +241,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wf_line' ) {  }
-		else if( tag == 'joinPoint' && camera == cameraTop ) { clickJoinPoint({rayhit: rayhit}); }
+		else if( tag == 'joinPoint' && camera == cameraTop ) { clickItemCenterObjUI({obj: obj}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, {menu_1: true, group: true, outline: true} ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
@@ -249,7 +249,7 @@ function clickMouseActive(cdm)
 	else if(cdm.type == 'up')
 	{		
 		if( tag == 'wall' && camera == camera3D ) {  }
-		else if( tag == 'joinPoint' && camera == camera3D ) { clickJoinPoint({rayhit: rayhit}); }
+		else if( tag == 'joinPoint' && camera == camera3D ) { clickItemCenterObjUI({obj: obj}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {menu_1: true, group: true, outline: true} ); }
 		else { flag = false; }
 	}	
@@ -274,7 +274,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; }
+			//else if(tag == 'joinPoint') { obj = infProject.tools.joint.obj_1; } 
 		}		
 		else if(camera == camera3D)
 		{
@@ -282,7 +282,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'obj') { showObjUI( obj ); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.userData.joint.obj; }
+			//else if(tag == 'joinPoint') { obj = infProject.tools.joint.obj_1; }
 		}
 		else if(camera == cameraWall)
 		{
