@@ -174,7 +174,7 @@ function showCenterObjUI(cdm)
 		$('[nameId="rp_obj_center"]').append(str);		
 		var el = $($('[nameId="rp_obj_center"]')[0].children[$('[nameId="rp_obj_center"]')[0].children.length - 1]);
 		
-		infProject.ui.center_obj[infProject.ui.center_obj.length] = { el: el, obj: child };
+		infProject.ui.center_obj.o[infProject.ui.center_obj.o.length] = { el: el, obj: child };
 
 		el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) });		
 	}
@@ -187,17 +187,17 @@ function showCenterObjUI(cdm)
 	}
 }
 
-
+ 
 
 // очищаем список дочерних объектов группы UI
 function clearCenterObjUI(cdm)
 {
-	for(var i = 0; i < infProject.ui.center_obj.length; i++)
+	for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
 	{
-		infProject.ui.center_obj[i].el.remove();
+		infProject.ui.center_obj.o[i].el.remove();
 	}	
 	
-	infProject.ui.center_obj = [];	
+	infProject.ui.center_obj.o = [];	
 }
 
 
@@ -208,38 +208,38 @@ function clickItemCenterObjUI(cdm)
 	var item = null;
 	var obj = null;
 	
-	if(infProject.ui.center_obj.length == 0) return;	// у объекта нет разъемов
+	if(infProject.ui.center_obj.o.length == 0) return;	// у объекта нет разъемов
 	
 	
 	// снимаем старые выдиления в UI 
-	for(var i = 0; i < infProject.ui.center_obj.length; i++)
+	for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
 	{
-		infProject.ui.center_obj[i].el.css('background-color', '#ffffff');
+		infProject.ui.center_obj.o[i].el.css('background-color', '#ffffff');
 	}
 	
 	
 	if(cdm.el)	// кликнули на пункт в меню
 	{
-		for(var i = 0; i < infProject.ui.center_obj.length; i++)
+		for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
 		{
-			if(infProject.ui.center_obj[i].el[0] == cdm.el[0]){ obj = infProject.ui.center_obj[i].obj; break; } 
+			if(infProject.ui.center_obj.o[i].el[0] == cdm.el[0]){ obj = infProject.ui.center_obj.o[i].obj; break; } 
 		}
 
 		item = cdm.el;
 	}
 	else if(cdm.obj)	// кликнули на объект в сцене
 	{
-		for(var i = 0; i < infProject.ui.center_obj.length; i++)
+		for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
 		{
-			if(infProject.ui.center_obj[i].obj == cdm.obj){ item = infProject.ui.center_obj[i].el; break; } 
+			if(infProject.ui.center_obj.o[i].obj == cdm.obj){ item = infProject.ui.center_obj.o[i].el; break; } 
 		}
 
 		obj = cdm.obj;
 	}
 	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
 	{
-		item = infProject.ui.center_obj[cdm.item].el;
-		obj = infProject.ui.center_obj[cdm.item].obj;
+		item = infProject.ui.center_obj.o[cdm.item].el;
+		obj = infProject.ui.center_obj.o[cdm.item].obj;
 	}
 	else
 	{
@@ -252,9 +252,7 @@ function clickItemCenterObjUI(cdm)
 	var value = item.attr('uuid');	 
 	
 	// выделяем объект в сцене
-	clickObject3D(obj);	
-	activeJoinPoint({obj: obj}); 
-		 
+	clickObject3D(obj);		 
 }
 
 
@@ -283,7 +281,7 @@ function showGroupObjUI(cdm)
 		
 		$('[nameId="rp_obj_group"]').append(str); 
 		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
-		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: obj };
+		infProject.ui.group_obj.o[infProject.ui.group_obj.o.length] = { el: el, obj: obj };
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
 
 		
@@ -302,7 +300,7 @@ function showGroupObjUI(cdm)
 			$('[nameId="rp_obj_group"]').append(str);		
 			var el = $($('[nameId="rp_obj_group"]')[0].children[$('[nameId="rp_obj_group"]')[0].children.length - 1]);
 			
-			infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: child };
+			infProject.ui.group_obj.o[infProject.ui.group_obj.o.length] = { el: el, obj: child };
 
 			el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  
 		} 
@@ -316,7 +314,7 @@ function showGroupObjUI(cdm)
 		
 		$('[nameId="rp_obj_group"]').append(str); 
 		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);	
-		infProject.ui.group_obj[infProject.ui.group_obj.length] = { el: el, obj: obj };
+		infProject.ui.group_obj.o[infProject.ui.group_obj.o.length] = { el: el, obj: obj };
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });		
 	}
 	
@@ -333,17 +331,17 @@ function showGroupObjUI(cdm)
 // очищаем список дочерних объектов группы UI
 function clearChildGroupUI(cdm)
 {
-	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	for(var i = 0; i < infProject.ui.group_obj.o.length; i++)
 	{
-		infProject.ui.group_obj[i].el.remove();
+		infProject.ui.group_obj.o[i].el.remove();
 	}	
 	
-	infProject.ui.group_obj = [];	
+	infProject.ui.group_obj.o = [];	
 }
 
 
 
-// кликнули на меню дочерних объектов группы
+// выбираем группу или объект
 function clickItemObjNameUI(cdm)
 {
 	var item = null;
@@ -352,25 +350,25 @@ function clickItemObjNameUI(cdm)
 	
 	
 	// снимаем старые выдиления  
-	for(var i = 0; i < infProject.ui.group_obj.length; i++)
+	for(var i = 0; i < infProject.ui.group_obj.o.length; i++)
 	{
-		infProject.ui.group_obj[i].el.css('background-color', '#ffffff');
+		infProject.ui.group_obj.o[i].el.css('background-color', '#ffffff');
 	}	
 	
 	
 	if(cdm.el)		// кликнули на пункт в меню
 	{
-		for(var i = 0; i < infProject.ui.group_obj.length; i++)
+		for(var i = 0; i < infProject.ui.group_obj.o.length; i++)
 		{
-			if(infProject.ui.group_obj[i].el[0] == cdm.el[0]){ obj = infProject.ui.group_obj[i].obj; break; } 
+			if(infProject.ui.group_obj.o[i].el[0] == cdm.el[0]){ obj = infProject.ui.group_obj.o[i].obj; break; } 
 		}		
 		
 		item = cdm.el;
 	}
 	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
 	{
-		item = infProject.ui.group_obj[cdm.item].el;
-		obj = infProject.ui.group_obj[cdm.item].obj;
+		item = infProject.ui.group_obj.o[cdm.item].el;
+		obj = infProject.ui.group_obj.o[cdm.item].obj;
 	}
 	else
 	{
@@ -386,7 +384,7 @@ function clickItemObjNameUI(cdm)
 	
 	if(value == 'group_item')
 	{   
-		obj = infProject.ui.group_obj[0].obj;
+		obj = infProject.ui.group_obj.o[0].obj;
 		clickObject3D(obj, {group: true, outline: true}); 
 		showCenterObjUI({obj: obj, group: true, active: 'first'});
 		

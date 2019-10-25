@@ -139,10 +139,7 @@ function showJoinPoint_2(cdm)
 	
 		
 	joint.p2 = arr;
-	
-	//$('[nameId="show_join_point_checked"]').show(); 
-	
-	//if(active) { activeJoinPoint({obj: active}); }
+
 }
 
 
@@ -205,7 +202,7 @@ function activeJoinPoint(cdm)
 	}
 	
 	if(!joint.visible) { joint.p1 = [obj]; }
-	
+	 
 	obj.material = joint.material.active;
 	obj.visible = true;
 	joint.active_1 = obj;

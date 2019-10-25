@@ -94,11 +94,15 @@ function changeRightMenuUI_2(cdm)
 {
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
-	$('[nameId="wrap_add_group"]').hide();	
+	$('[nameId="wrap_add_group"]').hide();
+
+	infProject.ui.group_obj.active = false;
+	infProject.ui.center_obj.active = false;
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
 	{
 		var obj = getObjFromPivotGizmo();
+		infProject.ui.center_obj.active = true;
 		
 		if(obj) 
 		{
@@ -109,11 +113,12 @@ function changeRightMenuUI_2(cdm)
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
 		var obj = getObjFromPivotGizmo();
+		infProject.ui.group_obj.active = true;
 		
 		if(obj) 
 		{
 			hideJoinPoint({visible: 'full'});
-			clickItemObjNameUI({item: 0});
+			clickItemObjNameUI({item: 0});  
 			$('[nameId="wrap_obj_child"]').show();
 		}				
 	}
@@ -122,6 +127,10 @@ function changeRightMenuUI_2(cdm)
 		$('[nameId="wrap_add_group"]').show();
 	}		
 }
+
+
+
+
 
 
 

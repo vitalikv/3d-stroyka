@@ -65,26 +65,48 @@ function compareSelectedObjWithCurrent( cdm )
 }
 
 
-// кликнули на 3D объект, ставим pivot/gizmo
+// активируем 3D объект или разъем, ставим pivot/gizmo
 function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
 	
-	// один разъем уже выделин, кликаем на другой объект, чтобы показать его разъемы
-	if(infProject.tools.joint.active_1 && obj.userData.tag == 'obj')
-	{ 
-		if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))   
+	
+	// кликнули по объекту в сцене
+	if(cdm.click_obj)
+	{
+		// один разъем уже выделин 
+		if(infProject.tools.joint.active_1)
+		{ 
+			if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
+			{
+				showJoinPoint_2({obj: obj});
+				return;			
+			}
+			else		// кликаем на этот же объект (ничего не делаем)
+			{
+				return;
+			}
+		}
+		else if(infProject.ui.group_obj.active)
 		{
-			showJoinPoint_2({obj: obj}); 
-			return;
+			
+		}
+		else if(infProject.ui.center_obj.active)
+		{
+			var arr = getArrayJointPoint({obj: obj, group: true});
+			
+			if(arr.length > 0) { obj = arr[0]; }
 		}
 	}
 	
+	
+	// Position
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
-		var pos = obj.getWorldPosition(new THREE.Vector3()); 
+		var pos = obj.getWorldPosition(new THREE.Vector3());
+		activeJoinPoint({obj: obj});
 	}	
 	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 	{
@@ -97,7 +119,7 @@ function clickObject3D( obj, cdm )
 	}	 
 	
 	
-	// gizmo
+	// Quaternion
 	if(1==2)	// глобальный gizmo
 	{
 		var qt = new THREE.Quaternion();
@@ -167,8 +189,17 @@ function clickObject3D( obj, cdm )
 		clippingGizmo360(obj); 		
 	}	
 	
-	if(cdm.outline) { outlineAddObj(obj); }	
-	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
+	
+	if(infProject.ui.group_obj.active)		// показаны группы
+	{
+		if(cdm.outline) { outlineAddObj(obj); }	
+		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 					
+	}
+	else if(infProject.ui.center_obj.active)	// показаны центры
+	{
+		if(cdm.outline) { outlineAddObj(obj.parent); }	
+		if(cdm.menu_1) { clickObjUI({obj: obj.parent}); }		// обновляем правое меню 
+	}	
 	
 	setScalePivotGizmo();
 }

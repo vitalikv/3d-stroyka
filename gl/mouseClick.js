@@ -243,7 +243,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wf_line' ) {  }
 		else if( tag == 'joinPoint' && camera == cameraTop && rayhit.tag == 'act_1' ) { clickItemCenterObjUI({obj: obj}); }
 		else if( tag == 'joinPoint' && camera == cameraTop && rayhit.tag == 'act_2') { activeJoinPoint_2({obj: obj}); }
-		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, {menu_1: true, group: true, outline: true} ); }
+		else if( tag == 'obj' && camera == cameraTop ) { clickObject3D( obj, {click_obj: true, menu_1: true, group: true, outline: true} ); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
 		else { flag = false; }
 	}
@@ -252,7 +252,7 @@ function clickMouseActive(cdm)
 		if( tag == 'wall' && camera == camera3D ) {  }
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_1') { clickItemCenterObjUI({obj: obj}); }
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_2') { activeJoinPoint_2({obj: obj}); }
-		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {menu_1: true, group: true, outline: true} ); }
+		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, group: true, outline: true} ); }
 		else { flag = false; }
 	}	
 	else 

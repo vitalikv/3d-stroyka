@@ -187,8 +187,8 @@ infProject.start = true;
 infProject.ui = {}
 infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
-infProject.ui.group_obj = [];  
-infProject.ui.center_obj = [];
+infProject.ui.group_obj = {active: false, o: []};  
+infProject.ui.center_obj = {active: true, o: []}; 
 
 
 console.log(infProject);
