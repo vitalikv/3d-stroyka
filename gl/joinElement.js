@@ -29,7 +29,12 @@ function clickRayJoinPoint()
 	if(arr.length > 0)
 	{
 		var ray = rayIntersect( event, arr, 'arr' ); 
-		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }
+		if(ray.length > 0) 
+		{ 
+			rayhit = ray[0];
+			rayhit.tag = 'act_1';
+			return rayhit; 
+		}
 
 
 		var arr2 = infProject.tools.joint.p2;
@@ -37,7 +42,12 @@ function clickRayJoinPoint()
 		if(arr2)
 		{
 			var ray = rayIntersect( event, arr2, 'arr' ); 
-			if(ray.length > 0) { rayhit = ray[0]; return rayhit; }						
+			if(ray.length > 0) 
+			{ 
+				rayhit = ray[0];
+				rayhit.tag = 'act_2';
+				return rayhit; 
+			}						
 		}				
 	}
 	
@@ -102,6 +112,7 @@ function showJoinPoint(cdm)
 }
 
 
+// показываем точки-соединители для 2-ого выделенного объекта
 function showJoinPoint_2(cdm)
 {
 	if(!cdm.obj) return;
@@ -109,7 +120,14 @@ function showJoinPoint_2(cdm)
 	
 	var joint = infProject.tools.joint;
 	
-	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});	
+	if(obj.userData.obj3D.centerP)	// у объекта есть разъем
+	{
+		var arr = obj.userData.obj3D.centerP.arr;
+	}
+	else		// у объекта нет разъему
+	{
+		var arr = null;
+	}	
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -148,7 +166,14 @@ function hideJoinPoint(cdm)
 		arr[i].material = joint.material.default;					
 	}
 	
-
+	var arr = joint.p2;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].visible = false;
+		arr[i].material = joint.material.default;					
+	}
+	
 	joint.p1 = [];
 	joint.p2 = [];
 	joint.active_1 = null;
@@ -188,6 +213,29 @@ function activeJoinPoint(cdm)
 
 
 
+
+function activeJoinPoint_2(cdm)
+{
+	var obj = null;
+	if(cdm.obj) { obj = cdm.obj; } 
+	
+	if(!obj) return;
+	
+	var joint = infProject.tools.joint;
+	
+	if(joint.active_2)	// снимаем старое выделение 
+	{
+		//if(!joint.visible) { joint.active_2.visible = false; }
+		joint.active_2.material = infProject.tools.joint.material.default;
+		joint.active_2 = null;		
+	}
+	
+	//if(!joint.visible) { joint.p1 = [obj]; }
+	
+	obj.material = joint.material.active;
+	obj.visible = true;
+	joint.active_2 = obj;
+}
 
 
 
@@ -234,36 +282,45 @@ function getArrayJointPoint(cdm)
 
 // соединяем элементы и создаем группу
 function joinElement(cdm)
-{
+{ 
 	if(!cdm) cdm = {};
 	
-	var joint = infProject.tools.joint;
+	var joint = infProject.tools.joint;	
 	
-	var obj = infProject.tools.joint.obj_1;
-	var obj_2 = infProject.tools.joint.obj_2;
-	
-	if(cdm.obj) { obj = cdm.obj; }
-	if(cdm.obj_2) { obj_2 = cdm.obj_2; }
-	
-	if(!obj) return;
-	if(!obj_2) return;
-	
-	var o1 = obj.userData.obj3D.centerP.active;   
-	var o2 = obj_2.userData.obj3D.centerP.active;
+	var o1 = infProject.tools.joint.active_1;   
+	var o2 = infProject.tools.joint.active_2;
 
 	if(!o1) return;
 	if(!o2) return;
 
+	var obj = infProject.tools.joint.active_1.parent;
+	var obj_2 = infProject.tools.joint.active_2.parent;
 
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
-	var diff = new THREE.Quaternion().multiplyQuaternions(obj_2.quaternion.clone().inverse(), q);	// разница между Quaternions
-		
-	var arr_2 = getObjsFromGroup_1( obj_2 );
-
+	var diff = new THREE.Quaternion().multiplyQuaternions(o2.getWorldQuaternion(new THREE.Quaternion()).inverse(), q);	// разница между Quaternions
+	
+	
+	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 
+	{
+		var arr_2 = [obj_2];  
+	}
+	else
+	{
+		var arr_2 = getObjsFromGroup_1( obj_2 );
+	}
+	
+	obj_2.quaternion.multiply(diff);
+	obj_2.updateMatrixWorld();
+	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
+		if(arr_2[i] == obj_2) continue;
+		
 		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол
+		
+		
+		//arr_2[i].quaternion.copy(new THREE.Quaternion().multiplyQuaternions(arr_2[i].quaternion, diff));
 		arr_2[i].updateMatrixWorld();		
 	}
 	
@@ -307,7 +364,7 @@ function joinElement(cdm)
 	hidePivotGizmo(obj);
 
 		
-	if(1==1)
+	if(1==2)
 	{		
 		var arr_1 = getObjsFromGroup_1( obj );
 		

@@ -166,7 +166,7 @@ $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); });
 $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
 
-//$('[data-action="join_element"]').mousedown(function () { joinElement(); });
+$('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 $('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });

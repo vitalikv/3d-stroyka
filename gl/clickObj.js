@@ -49,6 +49,21 @@ function clickMouseUpObject(obj)
 
 
 
+// сравниваем выделенные объекты с текущим (если объект уже есть в массиве arr, то true) 
+function compareSelectedObjWithCurrent( cdm )
+{
+	var exist = false;
+	var obj = cdm.obj;
+	var arr = cdm.arr;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(obj == arr[i]) { exist = true; break; }
+	}
+	
+	return exist;
+}
+
 
 // кликнули на 3D объект, ставим pivot/gizmo
 function clickObject3D( obj, cdm )
@@ -57,20 +72,14 @@ function clickObject3D( obj, cdm )
 	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
 	
-	if(infProject.tools.joint.active_1)
-	{
-		if(obj.userData.tag == 'joinPoint')		// разъем
+	// один разъем уже выделин, кликаем на другой объект, чтобы показать его разъемы
+	if(infProject.tools.joint.active_1 && obj.userData.tag == 'obj')
+	{ 
+		if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))   
 		{
-			
-		}
-		else							// объект
-		{
-			showJoinPoint_2({obj: obj});
-			
+			showJoinPoint_2({obj: obj}); 
 			return;
 		}
-		
-		
 	}
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
@@ -324,8 +333,8 @@ function switchPivotGizmo(cdm)
 	infProject.settings.active.pg = cdm.mode;	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
 
-	pivot.userData.pivot.obj = null;
-	gizmo.userData.gizmo.obj = null;
+	infProject.tools.pivot.userData.pivot.obj = null;
+	infProject.tools.gizmo.userData.gizmo.obj = null;
 
 	clickObject3D( obj ); 
 }
