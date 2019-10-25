@@ -120,6 +120,16 @@ function showJoinPoint_2(cdm)
 	
 	var joint = infProject.tools.joint;
 	
+	var arr = joint.p2;
+	
+	// скрываем
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].visible = false;
+		arr[i].material = joint.material.default;					
+	}	
+	
+	
 	if(obj.userData.obj3D.centerP)	// у объекта есть разъем
 	{
 		var arr = obj.userData.obj3D.centerP.arr;
@@ -128,6 +138,7 @@ function showJoinPoint_2(cdm)
 	{
 		var arr = null;
 	}	
+	
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -284,14 +295,14 @@ function joinElement(cdm)
 	
 	var joint = infProject.tools.joint;	
 	
-	var o1 = infProject.tools.joint.active_1;   
-	var o2 = infProject.tools.joint.active_2;
+	var o2 = infProject.tools.joint.active_1;   
+	var o1 = infProject.tools.joint.active_2;
 
 	if(!o1) return;
 	if(!o2) return;
 
-	var obj = infProject.tools.joint.active_1.parent;
-	var obj_2 = infProject.tools.joint.active_2.parent;
+	var obj_2 = infProject.tools.joint.active_1.parent;
+	var obj = infProject.tools.joint.active_2.parent;
 
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
 	var diff = new THREE.Quaternion().multiplyQuaternions(o2.getWorldQuaternion(new THREE.Quaternion()).inverse(), q);	// разница между Quaternions
