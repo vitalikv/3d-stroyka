@@ -197,8 +197,16 @@ function clickObject3D( obj, cdm )
 	}
 	else if(infProject.ui.center_obj.active)	// показаны центры
 	{
-		if(cdm.outline) { outlineAddObj(obj.parent); }	
-		if(cdm.menu_1) { clickObjUI({obj: obj.parent}); }		// обновляем правое меню 
+		if(obj.userData.tag == 'joinPoint')
+		{
+			if(cdm.outline) { outlineAddObj(obj.parent); }	
+			if(cdm.menu_1) { clickObjUI({obj: obj.parent}); }		// обновляем правое меню 			
+		}
+		else
+		{
+			if(cdm.outline) { outlineAddObj(obj); }	
+			if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 								
+		}
 	}	
 	
 	setScalePivotGizmo();

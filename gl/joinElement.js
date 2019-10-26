@@ -136,7 +136,7 @@ function showJoinPoint_2(cdm)
 	}
 	else		// у объекта нет разъему
 	{
-		var arr = null;
+		var arr = [];
 	}	
 	
 	
