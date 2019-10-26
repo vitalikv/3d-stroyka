@@ -372,63 +372,60 @@ function joinElement(cdm)
 	hidePivotGizmo(obj);
 
 		
-	if(1==2)
-	{		
-		var arr_1 = getObjsFromGroup_1( obj );
-		
-		
-		
-		detachObjsGroup({obj: obj, child: arr_1});
-		detachObjsGroup({obj: obj_2, child: arr_2});
-		
-		// разбиваем группу 
-		function detachObjsGroup(cdm)
-		{
-			var obj = cdm.obj;			
-			if(!obj.userData.obj3D.group) return;
-				
-			var child = (cdm.child) ? cdm.child : getObjsFromGroup_1( obj ); 
-			
-			var group = obj.userData.obj3D.group;
-			var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
-			
-			for(var i = 0; i < child.length; i++)
-			{
-				child[i].userData.obj3D.group = null;
-			}
-			
-			// удаляем группу
-			deleteValueFromArrya({arr : infProject.scene.array.group, o : group});	
-			
-			// удаляем центральный куб
-			disposeNode(centerObj);
-			scene.remove(centerObj);							
-		}
-		
-		var arr = arr_1.concat(arr_2);	// объединяем массивы
-		
-		// находим общий центр 
-		var pos = new THREE.Vector3();
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			arr[i].updateMatrixWorld();
-			pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта		
-		}
-		
-		pos.divideScalar( arr.length );
-				
-		
-		// создаем новую группу	
-		createGroupObj_1({pos: pos, rot: obj.rotation, nameRus: 'новая группа', obj: {o: arr} });	
-		
-		//formGroupObj({group: group, arrO: arr2});
-	}
 }
 
 
 
+function addGroupObj()
+{
+	var arr = infProject.ui.add_group.o;
+	
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		detachObjsGroup({obj: arr[i]});
+	}	
 
+	
+	// разбиваем группу 
+	function detachObjsGroup(cdm)
+	{
+		var obj = cdm.obj;			
+		if(!obj.userData.obj3D.group) return;
+		
+		var group = obj.userData.obj3D.group;
+		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
+		
+		obj.userData.obj3D.group = null;
+		
+		// удаляем группу
+		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});	
+		
+		// удаляем центральный куб
+		disposeNode(centerObj);
+		scene.remove(centerObj);							
+	}
+
+	
+	// находим общий центр 
+	var pos = new THREE.Vector3();
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].updateMatrixWorld();
+		pos.add( arr[i].localToWorld( arr[i].geometry.boundingSphere.center.clone() ) );	// добавляем позицию центра объекта		
+	}
+	
+	pos.divideScalar( arr.length );
+			
+	
+	// создаем новую группу	
+	createGroupObj_1({pos: pos, rot: arr[0].rotation, nameRus: 'новая группа', obj: {o: arr} });	
+	
+	//formGroupObj({group: group, arrO: arr2});
+
+	
+}
 
 
 
@@ -552,7 +549,7 @@ function createGroupObj_1(cdm)
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 	}	
 	
-	getGroupFreeNearlyJP({obj: arr2[0]});
+	//getGroupFreeNearlyJP({obj: arr2[0]});
 }
 
 

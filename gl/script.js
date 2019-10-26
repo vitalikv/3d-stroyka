@@ -189,6 +189,7 @@ infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
 infProject.ui.group_obj = {active: false, o: []};  
 infProject.ui.center_obj = {active: true, o: []}; 
+infProject.ui.add_group = {active: false, o: []};
 
 
 console.log(infProject);
@@ -256,7 +257,8 @@ if(1==1)
 		if(!cdm) cdm = {};
 		
 		var arr = [obj];
-		if(infProject.settings.active.group) { var arr = getObjsFromGroup( obj ); }		
+		if(cdm.group) { var arr = cdm.group; }
+		else if(infProject.settings.active.group) { var arr = getObjsFromGroup( obj ); }		
 		
 		outlinePass.selectedObjects = arr;  
 	}

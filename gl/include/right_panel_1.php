@@ -180,12 +180,7 @@ function showHideCatalogMenuUI(cdm)
 								<div class="right_panel_1_item_block_text">
 									Центр
 								</div>	
-							</div>	
-							<div class="right_panel_1_item_block" nameId="button_wrap_add_group">
-								<div class="right_panel_1_item_block_text">
-									Объединить
-								</div>	
-							</div>							
+							</div>								
 						</div>
 					</div>
 					
@@ -234,16 +229,20 @@ function showHideCatalogMenuUI(cdm)
 							<div class="button1 button_gradient_1" nameId="select_gizmo">
 								вращение	
 							</div>								
-						</div>												
-					</div>
-
-					
-					<div nameId="wrap_add_group" style="display: none;">
-						<div class="right_panel_1_1_h">Объединить</div>
-						<div class="right_panel_1_1_list" nameId="rp_add_group">
-							
 						</div>
-					</div>										
+
+						<div>
+							<div class="button1 button_gradient_1" nameId="button_select_add_group">
+								выбрать	
+							</div>
+							<div class="right_panel_1_1_list" nameId="rp_add_group">
+								
+							</div>
+							<div class="button1 button_gradient_1" nameId="button_add_group">
+								объединить	
+							</div>							
+						</div>						
+					</div>									
 					
 				</div> 
 			</div>	

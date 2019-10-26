@@ -87,7 +87,7 @@ function changeRightMenuUI_1(cdm)
 
 $('[nameId="button_wrap_obj_center"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 $('[nameId="button_wrap_obj_child"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
-$('[nameId="button_wrap_add_group"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+
 
 // переключаем меню (центр/группа)
 function changeRightMenuUI_2(cdm)
@@ -122,10 +122,7 @@ function changeRightMenuUI_2(cdm)
 			$('[nameId="wrap_obj_child"]').show();
 		}				
 	}
-	if(cdm.el.attributes.nameId.value == "button_wrap_add_group") 
-	{
-		$('[nameId="wrap_add_group"]').show();
-	}		
+		
 }
 
 
@@ -176,6 +173,19 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 
 
 $('[nameId="join_element"]').mousedown(function () { joinElement(); });
+
+
+$('[nameId="button_select_add_group"]').mousedown(function () 
+{  
+	infProject.ui.add_group.active = !infProject.ui.add_group.active;
+	
+	var color = (infProject.ui.add_group.active) ? "#ff0000" : "#b3b3b3";
+	
+	$(this).css({"border-color": color});
+});  
+
+$('[nameId="button_add_group"]').mousedown(function () { addGroupObj(); });  
+
 
 $('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });

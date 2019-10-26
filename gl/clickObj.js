@@ -90,8 +90,29 @@ function clickObject3D( obj, cdm )
 			}
 		}
 		else if(infProject.ui.group_obj.active)
-		{
-			
+		{			
+			if(infProject.ui.add_group.active && getObjFromPivotGizmo())
+			{
+				infProject.ui.add_group.o = getObjsFromGroup_1( obj );
+				
+				var arr = [];
+				
+				for(var i = 0; i < infProject.ui.add_group.o.length; i++)
+				{
+					arr[arr.length] = infProject.ui.add_group.o[i];
+				}
+				
+				for(var i = 0; i < outlinePass.selectedObjects.length; i++)
+				{
+					arr[arr.length] = outlinePass.selectedObjects[i];
+				}				
+				
+				infProject.ui.add_group.o = arr;
+				
+				outlineAddObj(obj, {group: arr});
+				
+				return;
+			}
 		}
 		else if(infProject.ui.center_obj.active)
 		{
@@ -331,6 +352,11 @@ function hidePivotGizmo(obj)
 			{
 				return;			
 			}			
+		}
+		
+		if(infProject.ui.add_group.active && clickO.rayhit.object.userData.tag == 'obj')
+		{
+			return;
 		}
 	}	
 	
