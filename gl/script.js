@@ -180,6 +180,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), joint: createJoinP(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
+infProject.tools.add_group = {active: false, o1: [], o2: [], ui: []};  
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.start = true; 
@@ -189,7 +190,7 @@ infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
 infProject.ui.group_obj = {active: false, o: []};  
 infProject.ui.center_obj = {active: true, o: []}; 
-infProject.ui.add_group = {active: false, o: []};
+
 
 
 console.log(infProject);
@@ -257,7 +258,7 @@ if(1==1)
 		if(!cdm) cdm = {};
 		
 		var arr = [obj];
-		if(cdm.group) { var arr = cdm.group; }
+		if(cdm.arrO) { var arr = cdm.arrO; }
 		else if(infProject.settings.active.group) { var arr = getObjsFromGroup( obj ); }		
 		
 		outlinePass.selectedObjects = arr;  

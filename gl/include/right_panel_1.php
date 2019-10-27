@@ -232,7 +232,7 @@ function showHideCatalogMenuUI(cdm)
 						</div>
 
 						<div>
-							<div class="button1 button_gradient_1" nameId="button_select_add_group">
+							<div class="button1 button_gradient_1" nameId="button_active_add_group">
 								выбрать	
 							</div>
 							<div class="right_panel_1_1_list" nameId="rp_add_group">

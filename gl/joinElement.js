@@ -378,9 +378,19 @@ function joinElement(cdm)
 
 function addGroupObj()
 {
-	var arr = infProject.ui.add_group.o;
+	var arr = [];
 	
+	for(var i = 0; i < infProject.tools.add_group.o1.length; i++)
+	{
+		arr[arr.length] = infProject.tools.add_group.o1[i];
+	}
+
+	for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
+	{
+		arr[arr.length] = infProject.tools.add_group.o2[i];
+	}		
 	
+	console.log(55555, arr);
 	for(var i = 0; i < arr.length; i++)
 	{
 		detachObjsGroup({obj: arr[i]});

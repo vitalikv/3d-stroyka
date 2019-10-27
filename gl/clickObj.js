@@ -91,25 +91,32 @@ function clickObject3D( obj, cdm )
 		}
 		else if(infProject.ui.group_obj.active)
 		{			
-			if(infProject.ui.add_group.active && getObjFromPivotGizmo())
-			{
-				infProject.ui.add_group.o = getObjsFromGroup_1( obj );
+			if(infProject.tools.add_group.active && infProject.tools.add_group.o1.length)
+			{ 
+				var arr_1 = getObjsFromGroup_1( obj );
+				
+				for(var i = 0; i < arr_1.length; i++)
+				{
+					if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.add_group.o2}))
+					{
+						infProject.tools.add_group.o2[infProject.tools.add_group.o2.length] = arr_1[i];
+					}					
+				}
+				
 				
 				var arr = [];
 				
-				for(var i = 0; i < infProject.ui.add_group.o.length; i++)
+				for(var i = 0; i < infProject.tools.add_group.o1.length; i++)
 				{
-					arr[arr.length] = infProject.ui.add_group.o[i];
+					arr[arr.length] = infProject.tools.add_group.o1[i];
 				}
 				
-				for(var i = 0; i < outlinePass.selectedObjects.length; i++)
+				for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
 				{
-					arr[arr.length] = outlinePass.selectedObjects[i];
+					arr[arr.length] = infProject.tools.add_group.o2[i];
 				}				
 				
-				infProject.ui.add_group.o = arr;
-				
-				outlineAddObj(obj, {group: arr});
+				outlineAddObj(obj, {arrO: arr});
 				
 				return;
 			}
@@ -354,8 +361,8 @@ function hidePivotGizmo(obj)
 			}			
 		}
 		
-		if(infProject.ui.add_group.active && clickO.rayhit.object.userData.tag == 'obj')
-		{
+		if(infProject.tools.add_group.active && clickO.rayhit.object.userData.tag == 'obj')
+		{  
 			return;
 		}
 	}	
@@ -393,10 +400,16 @@ function switchPivotGizmo(cdm)
 {
 	var obj = getObjFromPivotGizmo();
 	
-	if(!obj) return;	
+	if(!obj) return;		
 	
 	infProject.settings.active.pg = cdm.mode;	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
+	
+	infProject.tools.pivot.visible = false;
+	infProject.tools.gizmo.visible = false;
+	
+	if(infProject.settings.active.pg == 'pivot'){ infProject.tools.pivot.visible = true; }	
+	if(infProject.settings.active.pg == 'gizmo'){ infProject.tools.gizmo.visible = true; }		
 
 	infProject.tools.pivot.userData.pivot.obj = null;
 	infProject.tools.gizmo.userData.gizmo.obj = null;
