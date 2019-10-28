@@ -152,7 +152,7 @@ function showCenterObjUI(cdm)
 	
 	var obj = cdm.obj;		
 
-	clearCenterObjUI();	// очищаем список дочерних объектов группы (если он есть)
+	clearListUI_1({list: infProject.ui.center_obj.o});	// очищаем список дочерних объектов группы (если он есть)
 	
 
 	var arr = getArrayJointPoint(cdm);
@@ -256,7 +256,7 @@ function showGroupObjUI(cdm)
 	var obj = cdm.obj;			
 	
 		
-	clearChildGroupUI();	// очищаем список дочерних объектов группы (если он есть)
+	clearListUI_1({list: infProject.ui.group_obj.o});	// очищаем список дочерних объектов группы (если он есть)
 	
 	if(obj.userData.obj3D.group) 	// группа
 	{
@@ -344,6 +344,7 @@ function clearChildGroupUI(cdm)
 }
 
 
+// очищаем список UI
 function clearListUI_1(cdm)
 {
 	var list = cdm.list;
@@ -353,11 +354,22 @@ function clearListUI_1(cdm)
 		list[i].el.remove();
 	}	
 	
-	list = [];	
-	
-	console.log(777777, cdm);
+	if(infProject.ui.group_obj.o == list) { infProject.ui.group_obj.o = []; }
+	if(infProject.ui.center_obj.o == list) { infProject.ui.center_obj.o = []; }
 }
 
+function clearListUI_2(cdm)
+{
+	var list = cdm.list;
+	
+	for(var i = 0; i < list.length; i++)
+	{
+		list[i].remove();
+	}	
+	
+
+	if(infProject.tools.add_group == list) { infProject.tools.add_group = {o:[], el:[]}; }
+}
 
 
 // выбираем группу или объект
@@ -427,6 +439,9 @@ function showListSelectedObjGroupUI(cdm)
 	
 	var arr = [];
 	
+	clearListUI_2({list: infProject.tools.add_group.el});
+	
+	
 	for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
 	{
 		var child = infProject.tools.add_group.o2[i];
@@ -441,7 +456,7 @@ function showListSelectedObjGroupUI(cdm)
 		$('[nameId="rp_add_group"]').append(str);		
 		var el = $($('[nameId="rp_add_group"]')[0].children[$('[nameId="rp_add_group"]')[0].children.length - 1]);
 		
-		infProject.tools.add_group.ui[i] = el;
+		infProject.tools.add_group.el[i] = el;
 
 		//el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  		
 	}	

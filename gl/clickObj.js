@@ -377,10 +377,12 @@ function hidePivotGizmo(obj)
 	pivot.visible = false;
 	gizmo.visible = false;
 	hideJoinPoint({visible: 'full'});
-	switchSelectAddObjGroup({active: false}); 
+	 
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
+	
+	switchSelectAddObjGroup({active: false});
 	
 	//clickO.obj = null;  
 	clickO.last_obj = null;
@@ -454,6 +456,10 @@ function switchSelectAddObjGroup(cdm)
 		infProject.tools.add_group.active = !infProject.tools.add_group.active;
 	}		
 	
+	if(!infProject.tools.add_group.active)
+	{
+		clearListUI_2({list: infProject.tools.add_group.el});
+	}
 	 
 	var color = (infProject.tools.add_group.active) ? "#ff0000" : "#b3b3b3";
 	

@@ -390,7 +390,7 @@ function addGroupObj()
 		arr[arr.length] = infProject.tools.add_group.o2[i];
 	}		
 	
-	console.log(55555, arr);
+	
 	for(var i = 0; i < arr.length; i++)
 	{
 		detachObjsGroup({obj: arr[i]});
