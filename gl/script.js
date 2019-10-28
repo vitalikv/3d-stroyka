@@ -188,8 +188,8 @@ infProject.start = true;
 infProject.ui = {}
 infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
-infProject.ui.group_obj = {active: false, o: []};  
-infProject.ui.center_obj = {active: true, o: []}; 
+infProject.ui.group_obj = {active: true, o: []};  
+infProject.ui.center_obj = {active: false, o: []}; 
 
 
 

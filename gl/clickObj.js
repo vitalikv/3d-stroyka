@@ -89,9 +89,9 @@ function clickObject3D( obj, cdm )
 				return;
 			}
 		}
-		else if(infProject.ui.group_obj.active)
+		else if(infProject.ui.group_obj.active)		// вкл вкладку группа
 		{			
-			if(infProject.tools.add_group.active && infProject.tools.add_group.o1.length)
+			if(infProject.tools.add_group.active && infProject.tools.add_group.o1.length)	// вкл режим выбрать объекты для объединения в группу
 			{ 
 				var arr_1 = getObjsFromGroup_1( obj );
 				
@@ -99,7 +99,10 @@ function clickObject3D( obj, cdm )
 				{
 					if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.add_group.o2}))
 					{
-						infProject.tools.add_group.o2[infProject.tools.add_group.o2.length] = arr_1[i];
+						if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.add_group.o1}))
+						{
+							infProject.tools.add_group.o2[infProject.tools.add_group.o2.length] = arr_1[i];
+						}						
 					}					
 				}
 				
@@ -116,12 +119,14 @@ function clickObject3D( obj, cdm )
 					arr[arr.length] = infProject.tools.add_group.o2[i];
 				}				
 				
+				showListSelectedObjGroupUI();
+				
 				outlineAddObj(obj, {arrO: arr});
 				
 				return;
 			}
 		}
-		else if(infProject.ui.center_obj.active)
+		else if(infProject.ui.center_obj.active)		// вкл вкладку центр 
 		{
 			var arr = getArrayJointPoint({obj: obj, group: true});
 			
@@ -372,6 +377,7 @@ function hidePivotGizmo(obj)
 	pivot.visible = false;
 	gizmo.visible = false;
 	hideJoinPoint({visible: 'full'});
+	switchSelectAddObjGroup({active: false}); 
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
@@ -434,7 +440,51 @@ function getObjFromPivotGizmo(cdm)
 
 
 
+// вкл/выкл выделение объектов для объединения в группу
+function switchSelectAddObjGroup(cdm)
+{
+	if(!cdm) cdm = {};
+	
+	if(cdm.active !== undefined) 
+	{
+		infProject.tools.add_group.active = cdm.active;
+	}
+	else
+	{
+		infProject.tools.add_group.active = !infProject.tools.add_group.active;
+	}		
+	
+	 
+	var color = (infProject.tools.add_group.active) ? "#ff0000" : "#b3b3b3";
+	
+	$('[nameId="button_active_add_group"]').css({"border-color": color});
+	
+	var obj = getObjFromPivotGizmo();
+	
+	if(obj)
+	{
+		outlineAddObj(obj);
+	}
+	else
+	{
+		outlineRemoveObj();
+	}
+	
+	if(infProject.tools.add_group.active)
+	{
+		infProject.tools.add_group.o1 = [];		
 
+		if(obj)
+		{
+			infProject.tools.add_group.o1 = getObjsFromGroup_1( obj );
+		}
+	}
+	else
+	{
+		infProject.tools.add_group.o1 = [];
+		infProject.tools.add_group.o2 = [];
+	}	
+}
 
 
 

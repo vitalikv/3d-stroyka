@@ -94,7 +94,6 @@ function changeRightMenuUI_2(cdm)
 {
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
-	$('[nameId="wrap_add_group"]').hide();
 
 	infProject.ui.group_obj.active = false;
 	infProject.ui.center_obj.active = false;
@@ -175,31 +174,11 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 $('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 
-$('[nameId="button_active_add_group"]').mousedown(function () 
-{  
-	infProject.tools.add_group.active = !infProject.tools.add_group.active;
-	
-	var color = (infProject.tools.add_group.active) ? "#ff0000" : "#b3b3b3";
-	
-	$(this).css({"border-color": color});
-	
-	if(infProject.tools.add_group.active)
-	{
-		infProject.tools.add_group.o1 = [];
-		var obj = getObjFromPivotGizmo();
 
-		if(obj)
-		{
-			infProject.tools.add_group.o1 = getObjsFromGroup_1( obj );
-		}
-	}
-	else
-	{
-		infProject.tools.add_group.o1 = [];
-		infProject.tools.add_group.o2 = [];
-	}		
-});  
 
+
+
+$('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup(); });  
 $('[nameId="button_add_group"]').mousedown(function () { addGroupObj(); });  
 
 

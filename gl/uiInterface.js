@@ -189,18 +189,6 @@ function showCenterObjUI(cdm)
 	}
 }
 
- 
-
-// очищаем список дочерних объектов группы UI
-function clearCenterObjUI(cdm)
-{
-	for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
-	{
-		infProject.ui.center_obj.o[i].el.remove();
-	}	
-	
-	infProject.ui.center_obj.o = [];	
-}
 
 
 
@@ -330,6 +318,20 @@ function showGroupObjUI(cdm)
 }
 
 
+
+// очищаем список дочерних объектов группы UI
+function clearCenterObjUI(cdm)
+{
+	for(var i = 0; i < infProject.ui.center_obj.o.length; i++)
+	{
+		infProject.ui.center_obj.o[i].el.remove();
+	}	
+	
+	infProject.ui.center_obj.o = [];	
+}
+
+//clearListUI_1({list: infProject.ui.group_obj.o});
+//clearListUI_1({list: infProject.ui.center_obj.o});
 // очищаем список дочерних объектов группы UI
 function clearChildGroupUI(cdm)
 {
@@ -339,6 +341,21 @@ function clearChildGroupUI(cdm)
 	}	
 	
 	infProject.ui.group_obj.o = [];	
+}
+
+
+function clearListUI_1(cdm)
+{
+	var list = cdm.list;
+	
+	for(var i = 0; i < list.length; i++)
+	{
+		list[i].el.remove();
+	}	
+	
+	list = [];	
+	
+	console.log(777777, cdm);
 }
 
 
@@ -400,6 +417,37 @@ function clickItemObjNameUI(cdm)
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
 	}	
 }
+
+
+
+// показываем список объектов которые будут объединены в новую группу
+function showListSelectedObjGroupUI(cdm) 
+{
+	if(infProject.tools.add_group.o2.length == 0) return;
+	
+	var arr = [];
+	
+	for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
+	{
+		var child = infProject.tools.add_group.o2[i];
+		
+		if(!child.userData.obj3D) continue;
+		
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+child.uuid+'" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
+		</div>';
+
+		$('[nameId="rp_add_group"]').append(str);		
+		var el = $($('[nameId="rp_add_group"]')[0].children[$('[nameId="rp_add_group"]')[0].children.length - 1]);
+		
+		infProject.tools.add_group.ui[i] = el;
+
+		//el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });  		
+	}	
+}
+
+
 
 
 

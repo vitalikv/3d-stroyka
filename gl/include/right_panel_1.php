@@ -184,7 +184,7 @@ function showHideCatalogMenuUI(cdm)
 						</div>
 					</div>
 					
-					<div nameId="wrap_obj_center">
+					<div nameId="wrap_obj_center" style="display: none;">
 						<div class="right_panel_1_1_h">Центр</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_center">
 							
@@ -216,7 +216,7 @@ function showHideCatalogMenuUI(cdm)
 						</div>
 					</div>
 					
-					<div nameId="wrap_obj_child" style="display: none;">
+					<div nameId="wrap_obj_child">
 						<div class="right_panel_1_1_h">Группа</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
