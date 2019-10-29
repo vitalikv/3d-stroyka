@@ -336,15 +336,21 @@ function joinElement(cdm)
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
 	var diff = new THREE.Quaternion().multiplyQuaternions(o2.getWorldQuaternion(new THREE.Quaternion()).inverse(), q);	// разница между Quaternions
 	
-	
-	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 
+	console.log(222, infProject.settings.active.group, obj_2.userData.obj3D.group);
+	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 	// второй объект из той же группы
 	{
 		var arr_2 = [obj_2];  
 	}
-	else
+	else if(obj_2.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
 		var arr_2 = getObjsFromGroup_1( obj_2 );
+		arr_2[arr_2.length] = obj_2.userData.obj3D.group.userData.groupObj.centerObj;
 	}
+	else	// объект без группы или объект с группой, но выдилен как отдельный объект
+	{
+		var arr_2 = [obj_2];
+	}
+	
 	
 	obj_2.quaternion.multiply(diff);
 	obj_2.updateMatrixWorld();
@@ -409,6 +415,10 @@ function addGroupObj()
 {
 	var arr = [];
 	
+	if(infProject.tools.merge_obj.o1.length > 0 && infProject.tools.merge_obj.o2.length > 0) {}
+	else { return; }
+	
+	
 	for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
 	{
 		arr[arr.length] = infProject.tools.merge_obj.o1[i];
@@ -459,11 +469,14 @@ function addGroupObj()
 			
 	
 	// создаем новую группу	
-	createGroupObj_1({pos: pos, rot: arr[0].rotation, nameRus: 'новая группа', obj: {o: arr} });	
+	var group = createGroupObj_1({pos: pos, rot: arr[0].rotation, nameRus: 'новая группа', obj: {o: arr} });	
 	
 	//formGroupObj({group: group, arrO: arr2});
 
+	switchSelectAddObjGroup({active: false});
 	
+	clickObject3D( arr[0], {click_obj: true, menu_1: true, group: true, outline: true} );
+
 }
 
 
@@ -589,6 +602,8 @@ function createGroupObj_1(cdm)
 	}	
 	
 	//getGroupFreeNearlyJP({obj: arr2[0]});
+	
+	return group;
 }
 
 

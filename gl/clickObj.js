@@ -75,7 +75,7 @@ function clickObject3D( obj, cdm )
 	
 	// кликнули по объекту в сцене
 	if(cdm.click_obj)
-	{ 
+	{   
 		if(infProject.tools.list_group.active)		// вкл вкладку группа
 		{			
 			if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length)	// вкл режим выбрать объекты для объединения в группу
@@ -511,11 +511,18 @@ function switchJoinObj(cdm)
 	{
 		infProject.tools.joint.active = !infProject.tools.joint.active;
 	}
+	
+	hideJoinPoint_2();
+	
+	if(!infProject.tools.merge_obj.active)
+	{
+		clearListUI_2({list: infProject.tools.joint.el});
+	}	
 
 	var color = (infProject.tools.joint.active) ? "#ff0000" : "#b3b3b3";	
 	$('[nameId="button_active_join_element"]').css({"border-color": color});
 
-	hideJoinPoint_2();	
+		
 }
 
 
