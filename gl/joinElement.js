@@ -7,9 +7,11 @@ function createJoinP()
 {
 	var joint = {};
 	joint.p1 = [];
-	joint.p2 = [];	
+	joint.p2 = [];
+	joint.el = [];
+	joint.active = false;
 	joint.active_1 = null;
-	joint.active_2 = null;		
+	joint.active_2 = null;	
 	joint.material = {};
 	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 	joint.material.default = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
@@ -122,12 +124,14 @@ function showJoinPoint_2(cdm)
 	
 	var arr = joint.p2;
 	
-	// скрываем
+	// скрываем старые точки
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].visible = false;
 		arr[i].material = joint.material.default;					
 	}	
+	
+	clearListUI_2({list: infProject.tools.joint.el});
 	
 	
 	if(obj.userData.obj3D.centerP)	// у объекта есть разъем
@@ -140,17 +144,25 @@ function showJoinPoint_2(cdm)
 	}	
 	
 	
+	// показываем все точки
 	for(var i = 0; i < arr.length; i++)
 	{		
-		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
-		
+		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой		
 		arr[i].visible = true;
-		arr[i].material = joint.material.default;	
+		arr[i].material = joint.material.default;
+		
+		createTextUI_1({obj: arr[i], nameId: "rp_obj_align", nameRus: arr[i].userData.centerPoint.nameRus, uuid: arr[i].uuid});
 	}	
 	
+	if(arr.length > 0) 
+	{
+		arr[0].material = joint.material.active;
 		
-	joint.p2 = arr;
+		var el = $($('[nameId="rp_obj_align"]')[0].children[0]);
+		el.css('background-color', '#00ff00');
 
+		joint.active_2 = arr[0];
+	}	
 }
 
 
@@ -192,6 +204,23 @@ function hideJoinPoint(cdm)
 	if(active) { activeJoinPoint({obj: active}); }
 }
 
+
+function hideJoinPoint_2(cdm)
+{
+	if(!cdm) cdm = {};
+	
+	var joint = infProject.tools.joint;		
+	
+	var arr = joint.p2;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].visible = false;
+		arr[i].material = joint.material.default;					
+	}
+	
+	joint.p2 = [];
+}
 
 
  
@@ -380,14 +409,14 @@ function addGroupObj()
 {
 	var arr = [];
 	
-	for(var i = 0; i < infProject.tools.add_group.o1.length; i++)
+	for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
 	{
-		arr[arr.length] = infProject.tools.add_group.o1[i];
+		arr[arr.length] = infProject.tools.merge_obj.o1[i];
 	}
 
-	for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
+	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
 	{
-		arr[arr.length] = infProject.tools.add_group.o2[i];
+		arr[arr.length] = infProject.tools.merge_obj.o2[i];
 	}		
 	
 	

@@ -182,9 +182,16 @@ function createTextUI_1(cdm)
 	
 	if(nameId == "rp_add_group")
 	{
-		var n = infProject.tools.add_group.el.length;	
-		infProject.tools.add_group.el[n] = el;
-	}		
+		var n = infProject.tools.merge_obj.el.length;	
+		infProject.tools.merge_obj.el[n] = el;
+	}	
+
+	if(nameId == "rp_obj_align")
+	{
+		var n = infProject.tools.joint.el.length;	
+		infProject.tools.joint.el[n] = el;
+		infProject.tools.joint.p2[n] = obj;
+	}	
 }
 
 
@@ -268,13 +275,13 @@ function showGroupObjUI(cdm)
 // показываем список объектов которые будут объединены в новую группу
 function showListSelectedObjGroupUI(cdm) 
 {
-	if(infProject.tools.add_group.o2.length == 0) return;	
+	if(infProject.tools.merge_obj.o2.length == 0) return;	
 	
-	clearListUI_2({list: infProject.tools.add_group.el});	
+	clearListUI_2({list: infProject.tools.merge_obj.el});	
 	
-	for(var i = 0; i < infProject.tools.add_group.o2.length; i++)
+	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
 	{
-		var child = infProject.tools.add_group.o2[i];		
+		var child = infProject.tools.merge_obj.o2[i];		
 		if(!child.userData.obj3D) continue;		
 		createTextUI_1({obj: child, nameId: "rp_add_group", nameRus: child.userData.obj3D.nameRus, uuid: child.uuid});  		
 	}	
@@ -293,9 +300,10 @@ function clearListUI_2(cdm)
 	}	
 	
 
-	if(infProject.tools.add_group.el == list) { infProject.tools.add_group.el = []; }
+	if(infProject.tools.merge_obj.el == list) { infProject.tools.merge_obj.el = []; }
 	if(infProject.tools.list_group.el == list) { infProject.tools.list_group.o1 = []; infProject.tools.list_group.el = []; }
 	if(infProject.tools.center_obj.el == list) { infProject.tools.center_obj.o1 = []; infProject.tools.center_obj.el = []; }
+	if(infProject.tools.joint.el == list) { infProject.tools.joint.p2 = []; infProject.tools.joint.el = []; }
 }
 
 
