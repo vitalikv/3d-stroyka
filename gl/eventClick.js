@@ -95,13 +95,13 @@ function changeRightMenuUI_2(cdm)
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
 
-	infProject.ui.group_obj.active = false;
-	infProject.ui.center_obj.active = false;
+	infProject.tools.list_group.active = false;
+	infProject.tools.center_obj.active = false;
 	
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
 	{
 		var obj = getObjFromPivotGizmo();
-		infProject.ui.center_obj.active = true;
+		infProject.tools.center_obj.active = true;
 		
 		if(obj) 
 		{
@@ -112,7 +112,7 @@ function changeRightMenuUI_2(cdm)
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
 		var obj = getObjFromPivotGizmo();
-		infProject.ui.group_obj.active = true;
+		infProject.tools.list_group.active = true;
 		
 		if(obj) 
 		{
@@ -171,15 +171,16 @@ $('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); });
 $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
 
-$('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 
 
 
 
 
+$('[nameId="button_active_join_element"]').mousedown(function () {  }); 
 $('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup(); });  
 $('[nameId="button_add_group"]').mousedown(function () { addGroupObj(); });  
+$('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 
 $('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	

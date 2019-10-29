@@ -180,6 +180,8 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), joint: createJoinP(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
+infProject.tools.list_group = {active: true, o1: [], el: []}; 
+infProject.tools.center_obj = {active: false, o1: [], el: []};  
 infProject.tools.add_group = {active: false, o1: [], o2: [], el: []};  
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot', group: true };
@@ -188,8 +190,6 @@ infProject.start = true;
 infProject.ui = {}
 infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
-infProject.ui.group_obj = {active: true, o: []};  
-infProject.ui.center_obj = {active: false, o: []}; 
 
 
 

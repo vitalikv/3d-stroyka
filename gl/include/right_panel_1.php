@@ -207,11 +207,14 @@ function showHideCatalogMenuUI(cdm)
 						</div>	
 						
 						<div>
-							<div class="button1 button_gradient_1" nameId="join_element">
-								соединить	
-							</div>
+							<div class="button1 button_gradient_1" nameId="button_active_join_element">
+								выбрать	
+							</div>						
 							<div class="right_panel_1_1_list" nameId="rp_obj_align">
 								
+							</div>	
+							<div class="button1 button_gradient_1" nameId="join_element">
+								соединить	
 							</div>							
 						</div>
 					</div>

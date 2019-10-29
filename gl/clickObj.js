@@ -75,7 +75,7 @@ function clickObject3D( obj, cdm )
 	
 	// кликнули по объекту в сцене
 	if(cdm.click_obj)
-	{
+	{ 
 		// один разъем уже выделин 
 		if(infProject.tools.joint.active_1)
 		{ 
@@ -89,7 +89,7 @@ function clickObject3D( obj, cdm )
 				return;
 			}
 		}
-		else if(infProject.ui.group_obj.active)		// вкл вкладку группа
+		else if(infProject.tools.list_group.active)		// вкл вкладку группа
 		{			
 			if(infProject.tools.add_group.active && infProject.tools.add_group.o1.length)	// вкл режим выбрать объекты для объединения в группу
 			{ 
@@ -126,7 +126,7 @@ function clickObject3D( obj, cdm )
 				return;
 			}
 		}
-		else if(infProject.ui.center_obj.active)		// вкл вкладку центр 
+		else if(infProject.tools.center_obj.active)		// вкл вкладку центр 
 		{
 			var arr = getArrayJointPoint({obj: obj, group: true});
 			
@@ -223,12 +223,12 @@ function clickObject3D( obj, cdm )
 	}	
 	
 	
-	if(infProject.ui.group_obj.active)		// показаны группы
+	if(infProject.tools.list_group.active)		// показаны группы
 	{
 		if(cdm.outline) { outlineAddObj(obj); }	
 		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 					
 	}
-	else if(infProject.ui.center_obj.active)	// показаны центры
+	else if(infProject.tools.center_obj.active)	// показаны центры
 	{
 		if(obj.userData.tag == 'joinPoint')
 		{
