@@ -47,7 +47,7 @@ function loadObjServer(cdm)
 	}
 	else if(lotid == 6)
 	{
-		inf.url = infProject.path+'export/rad_al_secziy_500_.fbx'; 
+		inf.url = infProject.path+'import/rad_al_secziy_500_.fbx'; 
 		inf.name = 'радиатор алюминиевый';
 		inf.planeMath = 0.5;
 		
@@ -64,13 +64,22 @@ function loadObjServer(cdm)
 	}
 	else if(lotid == 8)
 	{
-		inf.url = infProject.path+'export/kran_sgon_3s4.fbx'; 
+		inf.url = infProject.path+'import/kran_sgon_3s4.fbx'; 
 		inf.name = 'шаровой кран';
-		inf.planeMath = 0.5;
-
-		inf.joinPoint[0] = {name: 'Box001', size: '1', joinObj: null};
-		inf.joinPoint[1] = {name: 'Box002', size: '1', joinObj: null};		
+		inf.planeMath = 0.5;		
 	}
+	else if(lotid == 9)
+	{
+		inf.url = infProject.path+'import/rad1_zagl_1_.fbx'; 
+		inf.name = 'заглушка радиаторная';
+		inf.planeMath = 0.5;		
+	}
+	else if(lotid == 10)
+	{
+		inf.url = infProject.path+'import/rad1_zagl_3s4.fbx'; 
+		inf.name = 'заглушка радиаторная 3/4';
+		inf.planeMath = 0.5;		
+	}	
 	
 	var obj = getObjFromBase({lotid: lotid});
 	
@@ -255,29 +264,29 @@ function addObjInScene(inf, cdm)
 			{ 
 				//console.log(child.name);
 				
-				for(var i = 0; i < inf.joinPoint.length; i++)
+				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
-					if(child.name == inf.joinPoint[i].name)
-					{
-						child.visible = false;						
-						
-						var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.material.default );
-						cube.position.copy(child.position);
-						cube.quaternion.copy(child.quaternion);
-						cube.visible = false;
-						//cube.rotation.y += 1;
-						var axesHelper = new THREE.AxesHelper( 0.2 );
-						cube.add( axesHelper );							
-						
-						cube.userData.tag = 'joinPoint';
-						cube.userData.id = id;  id++;
-						cube.userData.centerPoint = { join: null };						 
-						cube.userData.centerPoint.nameRus = inf.joinPoint[i].name;
-						
-						obj.add( cube );
-						
-						arr[arr.length] = cube;
-					}
+					//console.log(8888888, child.name);
+					
+					child.visible = false;						
+					
+					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.material.default );
+					cube.position.copy(child.position);
+					cube.quaternion.copy(child.quaternion);
+					cube.visible = false;
+					//cube.rotation.y += 1;
+					var axesHelper = new THREE.AxesHelper( 0.2 );
+					cube.add( axesHelper );							
+					
+					cube.userData.tag = 'joinPoint';
+					cube.userData.id = id;  id++;
+					cube.userData.centerPoint = { join: null };						 
+					cube.userData.centerPoint.nameRus = '22';
+					
+					obj.add( cube );
+					
+					arr[arr.length] = cube;
+					
 				}
 			}
 		});

@@ -16,6 +16,8 @@ function createListInCatalogUI_1()
 	arr[4] = {lotid: 5, name: 'коллектор'};
 	arr[5] = {lotid: 8, name: 'кран со сгоном'};
 	arr[6] = {lotid: 6, name: 'радиатор ал'};
+	arr[7] = {lotid: 9, name: 'заглушка радиаторная'};
+	arr[8] = {lotid: 10, name: 'заглушка радиаторная 3/4'};
 	
 	addObjInCatalogUI_1({obj: arr});
 }
