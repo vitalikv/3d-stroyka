@@ -786,6 +786,8 @@ canvas
 .button1:hover { cursor: pointer }
 
 
+
+
 .button1
 {
 	width: auto;
@@ -807,10 +809,21 @@ canvas
 {
 	display: block;	
 	height: 95%;
-	margin: 0; 
+	margin: auto; 
 	-o-object-fit: contain;
 	object-fit: contain;	
 }
+
+
+
+
+.w_2 .button1
+{
+	width: 50px;
+}
+
+ 
+
 
 
 .top_panel_2 .tp_left_1 .button1, .top_panel_2 .tp_right_1 .button1

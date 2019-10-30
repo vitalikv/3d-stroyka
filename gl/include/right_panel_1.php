@@ -209,13 +209,15 @@ function showHideCatalogMenuUI(cdm)
 						<div>
 							<div class="button1 button_gradient_1" nameId="button_active_join_element">
 								выбрать	
-							</div>						
-							<div class="right_panel_1_1_list" nameId="rp_obj_align">
-								
-							</div>	
-							<div class="button1 button_gradient_1" nameId="join_element">
-								соединить	
-							</div>							
+							</div>
+							<div nameId="rp_wrap_obj_align" style="display: none;">
+								<div class="right_panel_1_1_list" nameId="rp_obj_align">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="join_element">
+									соединить	
+								</div>
+							</div>
 						</div>
 					</div>
 					
@@ -225,25 +227,37 @@ function showHideCatalogMenuUI(cdm)
 							
 						</div>
 						
-						<div class="flex_1">		
+						<div class="flex_1 w_1">
+							
 							<div class="button1 button_gradient_1" nameId="select_pivot">
-								перемещение	
+								<img src="<?=$path?>/img/move_1.png">	
 							</div>	
 							<div class="button1 button_gradient_1" nameId="select_gizmo">
-								вращение	
-							</div>								
+								<img src="<?=$path?>/img/rotate_1.png">	
+							</div>	
+							
+							
+							
+							<select name="fruit">
+							<option value ="none">Глобально</option>
+							<option value ="guava">Локально</option>
+							</select>
+							
 						</div>
 
 						<div>
 							<div class="button1 button_gradient_1" nameId="button_active_add_group">
 								выбрать	
 							</div>
-							<div class="right_panel_1_1_list" nameId="rp_add_group">
-								
+							
+							<div nameId="rp_wrap_add_group" style="display: none;">
+								<div class="right_panel_1_1_list" nameId="rp_add_group">
+									
+								</div>
+								<div class="button1 button_gradient_1" nameId="button_add_group">
+									объединить	
+								</div>	
 							</div>
-							<div class="button1 button_gradient_1" nameId="button_add_group">
-								объединить	
-							</div>							
 						</div>						
 					</div>									
 					

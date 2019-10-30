@@ -70,7 +70,7 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
+	
 	
 	
 	// кликнули по объекту в сцене
@@ -135,6 +135,8 @@ function clickObject3D( obj, cdm )
 			}
 		}
 	}
+	
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
 	
 	
 	// Position
@@ -460,10 +462,7 @@ function switchSelectAddObjGroup(cdm)
 		infProject.tools.merge_obj.active = !infProject.tools.merge_obj.active;
 	}		
 	
-	if(!infProject.tools.merge_obj.active)
-	{
-		clearListUI_2({list: infProject.tools.merge_obj.el});
-	}
+
 	 
 	var color = (infProject.tools.merge_obj.active) ? "#ff0000" : "#b3b3b3";
 	
@@ -482,6 +481,7 @@ function switchSelectAddObjGroup(cdm)
 	
 	if(infProject.tools.merge_obj.active)
 	{
+		$('[nameId="rp_wrap_add_group"]').show();
 		infProject.tools.merge_obj.o1 = [];		
 
 		if(obj)
@@ -491,6 +491,9 @@ function switchSelectAddObjGroup(cdm)
 	}
 	else
 	{
+		clearListUI_2({list: infProject.tools.merge_obj.el});
+		$('[nameId="rp_wrap_add_group"]').hide();
+		
 		infProject.tools.merge_obj.o1 = [];
 		infProject.tools.merge_obj.o2 = [];
 	}	
@@ -514,8 +517,13 @@ function switchJoinObj(cdm)
 	
 	hideJoinPoint_2();
 	
-	if(!infProject.tools.merge_obj.active)
-	{
+	if(infProject.tools.joint.active)
+	{		
+		$('[nameId="rp_wrap_obj_align"]').show();  
+	}		
+	else
+	{		
+		$('[nameId="rp_wrap_obj_align"]').hide();
 		clearListUI_2({list: infProject.tools.joint.el});
 	}	
 
