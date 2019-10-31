@@ -183,7 +183,8 @@ infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.tools.list_group = {active: true, o1: [], el: []}; 
 infProject.tools.center_obj = {active: false, o1: [], el: []};  
 infProject.tools.merge_obj = {active: false, o1: [], o2: [], el: []}; 
-infProject.tools.joint = createJoinP();   
+infProject.tools.joint = createJoinP(); 
+infProject.catalog = infoListObj();  
 infProject.listColor = resetPop.listColor(); 
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.start = true; 
@@ -271,6 +272,9 @@ if(1==1)
 	}	
 }
 
+
+
+addObjInCatalogUI_1();	// каталог UI
 
 
 //----------- start
@@ -1698,6 +1702,7 @@ document.body.addEventListener("keydown", function (e)
 
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
+	if(clickO.keys[18] && e.keyCode == 83) { saveGroupObj(); }		// alt + s
 	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
 	if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
 	if(clickO.keys[18] && e.keyCode == 84) { saveFile({json: true}); }			// alt + t

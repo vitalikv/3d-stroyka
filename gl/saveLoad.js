@@ -1162,7 +1162,43 @@ function loadStartForm(cdm)
 
 
  
-
+function saveGroupObj(cdm) 
+{
+	var obj = getObjFromPivotGizmo();
+	
+	if(!obj) return;	
+	if(!obj.userData.obj3D.group) return;
+	
+	var arr = getObjsFromGroup_1( obj );	
+	var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
+	
+	var pos = new THREE.Vector3( -centerObj.position.x, -centerObj.position.y, -centerObj.position.z );
+	centerObj.position.add(pos);
+	
+	for(var i = 0; i < arr.length; i++)
+	{ 
+		arr[i].position.add(pos);
+	}	
+	
+	
+	var arr2 = [];
+	
+	for(var i = 0; i < arr.length; i++)
+	{ 
+		console.log(arr[i].userData.obj3D.lotid);
+		console.log(arr[i].userData.obj3D.nameRus);
+		var pos = new THREE.Vector3().subVectors( arr[i].position, centerObj.position );
+		
+		arr2[i] = {pos: pos, rot: arr[i].rotation.clone()};
+	}
+	
+	
+	for(var i = 0; i < arr.length; i++)
+	{ 
+		//arr[i].position.copy(arr2[i].pos);
+	}
+	
+}
 
 
 

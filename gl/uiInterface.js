@@ -1,39 +1,21 @@
 
 
-createListInCatalogUI_1();
-
-// создаем объекты и добавляем их в каталог UI
-function createListInCatalogUI_1()
-{
-	var obj = [];
-	
-	var arr = [];
-	
-	arr[0] = {lotid: 1, name: 'насос'};
-	arr[1] = {lotid: 2, name: 'котел'};
-	arr[2] = {lotid: 3, name: 'радиатор'};
-	arr[3] = {lotid: 4, name: 'расширительный бак'};
-	arr[4] = {lotid: 5, name: 'коллектор'};
-	arr[5] = {lotid: 8, name: 'кран со сгоном'};
-	arr[6] = {lotid: 6, name: 'радиатор ал'};
-	arr[7] = {lotid: 9, name: 'заглушка радиаторная'};
-	arr[8] = {lotid: 10, name: 'заглушка радиаторная 3/4'};
-	
-	addObjInCatalogUI_1({obj: arr});
-}
 
 
-
-// добавляем объекты в каталог UI
+// добавляем объекты в каталог UI 
 function addObjInCatalogUI_1(cdm)
 {
 	
-	for(var i = 0; i < cdm.obj.length; i++)
+	for(var i = 0; i < infProject.catalog.length; i++)
 	{
+		var o = infProject.catalog[i];
+		
+		if(o.stopUI) continue;
+		
 		var str = 
-		'<div class="right_panel_1_1_list_item" add_lotid="'+cdm.obj[i].lotid+'">\
+		'<div class="right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
 			<div class="right_panel_1_1_list_item_text">'
-			+cdm.obj[i].name+
+			+o.name+
 			'</div>\
 		</div>';
 		
