@@ -274,6 +274,7 @@ function getObjsFromGroup_1( obj )
 	return arr;	
 }
 
+
 // пролучить все объекты принадлежащие группе 
 function getObjsFromGroup( obj ) 
 {	
@@ -298,12 +299,34 @@ function getObjsFromGroup( obj )
 	
 	return arr;  
 }
+
+
+
+// получаем все разъемы объекта
+function getCenterPointFromObj_1( obj )
+{
+	var arr = [];
 	
+	if(obj.userData.obj3D)
+	{
+		for(var i = 0; i < obj.children.length; i++)
+		{
+			var child = obj.children[i];
+			if(!child.userData.centerPoint) continue;
+			
+			arr[arr.length] = child;
+		}
+	}
+	
+	return arr; 
+}	
 	
 
 // удаление объекта
 function deleteObjectPop(obj)
 { 
+	if(obj.userData.tag != 'obj') return;
+	
 	clickO = resetPop.clickO(); 
 	
 	hidePivotGizmo(obj);
@@ -317,19 +340,18 @@ function deleteObjectPop(obj)
 		 
 		for(var i = 0; i < arr.length; i++){ deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]}); }		
 		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
-
-		clearChildGroupUI();	// очищаем список дочерних объектов группы UI 
 	}
 	else
 	{
 		arr[0] = obj;
 	}
 	
-	updateListTubeUI_1({uuid: obj.uuid, type: 'delete'});
+	
 	
 	
 	for(var i = 0; i < arr.length; i++)
 	{	
+		updateListTubeUI_1({uuid: arr[i].uuid, type: 'delete'});
 		disposeNode(arr[i]);
 		scene.remove(arr[i]); 
 	}
@@ -531,6 +553,66 @@ function switchJoinObj(cdm)
 	$('[nameId="button_active_join_element"]').css({"border-color": color});
 
 		
+}
+
+
+
+ 
+function copyObj(cdm) 
+{
+	var obj = getObjFromPivotGizmo();
+	
+	if(!obj) return;	
+	
+	
+	var arr = getObjsFromGroup_1( obj );
+
+	var flag = obj.userData.obj3D.group;	// группа или одиночный объект
+	
+	// если нужно смещение
+	if(flag)
+	{
+		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;	
+		var pos = new THREE.Vector3( -centerObj.position.x, 0.5-centerObj.position.y, -centerObj.position.z );		
+	}
+	
+	
+	var arr2 = [];
+	
+	for(var i = 0; i < arr.length; i++)
+	{ 
+		if(flag) 
+		{
+			var gr = arr[i].userData.obj3D.group;
+			arr[i].userData.obj3D.group = null;			
+		}
+		
+		var clone = arr2[arr2.length] = arr[i].clone();
+
+		clone.userData.id = countId; countId++;
+		//clone.position.add(pos);		// смещение к нулю
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
+		scene.add( clone );	
+
+		updateListTubeUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
+		
+		if(flag)
+		{
+			arr[i].userData.obj3D.group = gr;		// восстанавливаем группу
+		}		
+	}	
+	 
+	
+	hidePivotGizmo(obj);
+	
+	if(flag)
+	{
+		addGroupObj({arr: arr2});
+	}
+	else
+	{
+		clickObject3D( arr2[0], {click_obj: true, menu_1: true, group: true, outline: true} );
+	}
 }
 
 

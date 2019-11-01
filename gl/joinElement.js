@@ -134,14 +134,7 @@ function showJoinPoint_2(cdm)
 	clearListUI_2({list: infProject.tools.joint.el});
 	
 	
-	if(obj.userData.obj3D.centerP)	// у объекта есть разъем
-	{
-		var arr = obj.userData.obj3D.centerP.arr;
-	}
-	else		// у объекта нет разъему
-	{
-		var arr = [];
-	}	
+	var arr = getCenterPointFromObj_1( obj );	// получаем разъемы, если есть
 	
 	
 	// показываем все точки
@@ -295,19 +288,17 @@ function getArrayJointPoint(cdm)
 		{
 			if(!child[i].userData.obj3D) continue;
 			
-			for(var i2 = 0; i2 < child[i].userData.obj3D.centerP.arr.length; i2++)
+			var arr_2 = getCenterPointFromObj_1( child[i] );
+			
+			for(var i2 = 0; i2 < arr_2.length; i2++)
 			{
-				arr[arr.length] = child[i].userData.obj3D.centerP.arr[i2];
+				arr[arr.length] = arr_2[i2];
 			}
 		}
 	}
-	else if(o.userData.obj3D.centerP)	// у объекта есть разъему
+	else // объект
 	{
-		arr = o.userData.obj3D.centerP.arr;
-	}
-	else		// у объекта нет разъему
-	{
-		
+		arr = getCenterPointFromObj_1( o );
 	}
 
 	return arr;	
@@ -317,7 +308,7 @@ function getArrayJointPoint(cdm)
 
 
 
-// соединяем элементы и создаем группу
+// соединяем (выравниваем) элементы
 function joinElement(cdm)
 { 
 	if(!cdm) cdm = {};
@@ -402,21 +393,35 @@ function joinElement(cdm)
 	}	
 	
 	
-	clickO.rayhit = null;
-	
-	hidePivotGizmo(obj);
+	//clickO.rayhit = null;	
+	//hidePivotGizmo(obj_2);
+	//clickObject3D( obj_2, {click_obj: true, menu_1: true, outline: true} );
 
-		
+	
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
+	
+	obj_2.updateMatrixWorld();
+	var pos = o2.getWorldPosition(new THREE.Vector3());
+	var q = o2.getWorldQuaternion(new THREE.Quaternion());
+	
+	
+	tools.position.copy(pos);
+	tools.quaternion.copy(q); 	
 }
 
 
-
-function addGroupObj()
+// объединяем объекты в группу
+function addGroupObj(cdm) 
 {
-	var arr = [];
+	if(!cdm) cdm = {};	
 	
+		
 	if(infProject.tools.merge_obj.o1.length > 0 && infProject.tools.merge_obj.o2.length > 0) {}
+	else if(cdm.arr) {}
 	else { return; }
+	
+	var arr = (cdm.arr)? cdm.arr: [];
 	
 	
 	for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)

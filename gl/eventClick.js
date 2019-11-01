@@ -189,6 +189,9 @@ $('[nameId="join_element"]').mousedown(function () { joinElement(); });
 $('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
 $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });	
+$('[nameId="button_copy_obj"]').mousedown(function () { copyObj(); });
+$('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
+
 
 $('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });
 $('[data-action="create_tube_1"]').mousedown(function () { clickInterface({button:'create_tube_1'}); }); 

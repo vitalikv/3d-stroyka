@@ -245,6 +245,11 @@ function showHideCatalogMenuUI(cdm)
 							
 						</div>
 
+
+						<div class="button1 button_gradient_1" nameId="button_copy_obj">
+							копировать	
+						</div>
+							
 						<div>
 							<div class="button1 button_gradient_1" nameId="button_active_add_group">
 								выбрать	
@@ -258,7 +263,12 @@ function showHideCatalogMenuUI(cdm)
 									объединить	
 								</div>	
 							</div>
-						</div>						
+						</div>	
+
+						<div class="button1 button_gradient_1" nameId="button_delete_obj">
+							удалить	
+						</div>
+						
 					</div>									
 					
 				</div> 

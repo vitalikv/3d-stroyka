@@ -320,8 +320,8 @@ function addObjInScene(inf, cdm)
 					cube.quaternion.copy(child.quaternion);
 					cube.visible = false;
 					//cube.rotation.y += 1;
-					var axesHelper = new THREE.AxesHelper( 0.2 );
-					cube.add( axesHelper );							
+					//var axesHelper = new THREE.AxesHelper( 0.2 );
+					//cube.add( axesHelper );							
 					
 					cube.userData.tag = 'joinPoint';
 					cube.userData.id = id;  id++;
@@ -335,12 +335,6 @@ function addObjInScene(inf, cdm)
 				}
 			}
 		});
-
-		if(arr.length > 0) 
-		{ 
-			obj.userData.obj3D.centerP = {visible: false, arr: arr, active: null}; 
-
-		}
 		
 
 	}
