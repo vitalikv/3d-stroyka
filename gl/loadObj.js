@@ -92,6 +92,51 @@ function infoListObj()
 		planeMath : 0.5,		
 	}	
 	
+	arr[10] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/rad1_zagl_1s2.fbx', 
+		name :'заглушка радиаторная 1/2',
+		planeMath : 0.5,		
+	}
+
+	arr[11] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/rad1_zagl_vozd.fbx', 
+		name :'радиаторный воздухоотводчик',
+		planeMath : 0.5,		
+	}
+	
+	arr[12] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/nasos_1.fbx', 
+		name :'насос',
+		planeMath : 0.5,		
+	}	
+	
+	arr[13] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/termo_kran_1s2.fbx', 
+		name :'регулеровачный кран 1/2',
+		planeMath : 0.5,		
+	}	
+
+	arr[14] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/termo_regul_1s2.fbx', 
+		name :'терморегулятор',
+		planeMath : 0.5,		
+	}
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].lotid = i+1;
+	}
+	
 	
 	return arr;
 }
@@ -106,7 +151,7 @@ function getInfoObj(cdm)
 	for(var i = 0; i < infProject.catalog.length; i++)
 	{
 		if(lotid == infProject.catalog[i].lotid)
-		{
+		{  
 			return infProject.catalog[i];
 		}
 	}
