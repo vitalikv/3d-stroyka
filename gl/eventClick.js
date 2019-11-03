@@ -108,7 +108,7 @@ function changeRightMenuUI_2(cdm)
 		
 		if(obj) 
 		{
-			clickItemCenterObjUI({item: 0}); 
+			clickItemCenterObjUI_1({item: 0}); 
 			$('[nameId="wrap_obj_center"]').show();
 		}		
 	}

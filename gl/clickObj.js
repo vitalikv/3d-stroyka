@@ -119,7 +119,7 @@ function clickObject3D( obj, cdm )
 			{ 
 				if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
 				{
-					showJoinPoint_2({obj: obj});
+					showJoinPoint_2({obj: obj});  
 					return;			
 				}
 				else		// кликаем на этот же объект (ничего не делаем)
@@ -141,7 +141,7 @@ function clickObject3D( obj, cdm )
 	
 	// Position
 	if(obj.userData.tag == 'joinPoint')		// разъем
-	{
+	{ 
 		var pos = obj.getWorldPosition(new THREE.Vector3());
 		activeJoinPoint({obj: obj});
 	}	

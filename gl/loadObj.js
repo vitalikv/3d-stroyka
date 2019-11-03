@@ -132,6 +132,30 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 	
+	arr[15] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/mp_tronik_32х20х32.fbx', 
+		name :'тройник 32х20х32 (мп)',
+		planeMath : 0.5,		
+	}
+
+	arr[16] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/mp_tronik_26х16х20.fbx', 
+		name :'тройник 26х16х20 (мп)',
+		planeMath : 0.5,		
+	}	
+	
+	arr[17] =
+	{
+		lotid : 10,
+		url : infProject.path+'import/mp_ugol_nar_16x1s2.fbx', 
+		name :'угол 16х1/2(нр) (мп)',
+		planeMath : 0.5,		
+	}	
+	
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].lotid = i+1;

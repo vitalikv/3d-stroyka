@@ -161,7 +161,7 @@ function createTextUI_1(cdm)
 		infProject.tools.center_obj.o1[n] = obj;
 		infProject.tools.center_obj.el[n] = el;
 		
-		el.on('mousedown', function(){ clickItemCenterObjUI({el: $(this)}) });
+		el.on('mousedown', function(){ clickItemCenterObjUI_1({el: $(this)}) });
 	}	
 	
 	if(nameId == "rp_add_group")
@@ -175,6 +175,8 @@ function createTextUI_1(cdm)
 		var n = infProject.tools.joint.el.length;	
 		infProject.tools.joint.el[n] = el;
 		infProject.tools.joint.p2[n] = obj;
+		
+		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });
 	}	
 }
 
@@ -350,8 +352,8 @@ function clickItemObjNameUI(cdm)
 }
 
 
-// выбираем центр объекта
-function clickItemCenterObjUI(cdm)
+// выбираем центр для основного объекта
+function clickItemCenterObjUI_1(cdm)
 {
 	var item = null;
 	var obj = null;
@@ -405,7 +407,71 @@ function clickItemCenterObjUI(cdm)
 
 
 
+// выбираем центр для объекта к которому хотим присоединиться 
+function clickItemCenterObjUI_2(cdm)
+{
+	var item = null;
+	var obj = null;
+	
+	var joint = infProject.tools.joint;
+	
+	if(joint.el.length == 0) return;	// у объекта нет разъемов
+	
+	
+	// снимаем старые выдиления в UI 
+	for(var i = 0; i < joint.el.length; i++)
+	{
+		joint.el[i].css('background-color', '#ffffff');
+	}
+	
+	
+	if(cdm.el)	// кликнули на пункт в меню
+	{
+		for(var i = 0; i < joint.el.length; i++)
+		{
+			if(joint.el[i][0] == cdm.el[0]){ obj = joint.p2[i]; break; } 
+		}
 
+		item = cdm.el;
+	}
+	else if(cdm.obj)	// кликнули на объект в сцене
+	{
+		for(var i = 0; i < joint.el.length; i++)
+		{
+			if(joint.p2[i] == cdm.obj){ item = joint.el[i]; break; } 
+		}
+
+		obj = cdm.obj;
+	}
+	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
+	{
+		item = joint.el[cdm.item];
+		obj = joint.p2[cdm.item];
+	}
+	else
+	{
+		return;
+	}
+	
+	
+	// выделяем новый пункт на который кликнули UI
+	item.css('background-color', '#00ff00');
+	var value = item.attr('uuid');
+
+
+	
+	if(joint.active_2)	// снимаем старое выделение объекта в сцене 
+	{
+		joint.active_2.material = joint.material.default;
+		joint.active_2 = null;		
+	}
+	
+	//if(!joint.visible) { joint.p1 = [obj]; }
+	
+	obj.material = joint.material.active;
+	obj.visible = true;
+	joint.active_2 = obj;
+}
 
 
 

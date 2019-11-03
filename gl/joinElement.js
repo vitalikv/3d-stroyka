@@ -149,12 +149,7 @@ function showJoinPoint_2(cdm)
 	
 	if(arr.length > 0) 
 	{
-		arr[0].material = joint.material.active;
-		
-		var el = $($('[nameId="rp_obj_align"]')[0].children[0]);
-		el.css('background-color', '#00ff00');
-
-		joint.active_2 = arr[0];
+		clickItemCenterObjUI_2({item: 0}); 
 	}	
 }
 
@@ -239,32 +234,6 @@ function activeJoinPoint(cdm)
 	obj.material = joint.material.active;
 	obj.visible = true;
 	joint.active_1 = obj;
-}
-
-
-
-
-function activeJoinPoint_2(cdm)
-{
-	var obj = null;
-	if(cdm.obj) { obj = cdm.obj; } 
-	
-	if(!obj) return;
-	
-	var joint = infProject.tools.joint;
-	
-	if(joint.active_2)	// снимаем старое выделение 
-	{
-		//if(!joint.visible) { joint.active_2.visible = false; }
-		joint.active_2.material = infProject.tools.joint.material.default;
-		joint.active_2 = null;		
-	}
-	
-	//if(!joint.visible) { joint.p1 = [obj]; }
-	
-	obj.material = joint.material.active;
-	obj.visible = true;
-	joint.active_2 = obj;
 }
 
 
