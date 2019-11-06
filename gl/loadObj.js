@@ -380,7 +380,7 @@ function addObjInScene(inf, cdm)
 				
 				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
-					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
+					console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
 					
 					//child.visible = false;						
 					
