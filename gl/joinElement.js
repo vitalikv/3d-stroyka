@@ -297,6 +297,7 @@ function joinElement(cdm)
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
 	var diff2 = new THREE.Quaternion().multiplyQuaternions(q, o2.getWorldQuaternion(new THREE.Quaternion()).inverse());	// разница между Quaternions
 	
+	diff2 = diff2.premultiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)) );
 	
 	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 	// второй объект из той же группы
 	{

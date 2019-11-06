@@ -380,17 +380,17 @@ function addObjInScene(inf, cdm)
 				
 				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
-					//console.log(8888888, child.name);
+					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
 					
-					child.visible = false;						
+					//child.visible = false;						
 					
 					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.material.default );
 					cube.position.copy(child.position);
 					cube.quaternion.copy(child.quaternion);
 					cube.visible = false;
 					//cube.rotation.y += 1;
-					//var axesHelper = new THREE.AxesHelper( 0.2 );
-					//cube.add( axesHelper );							
+					var axesHelper = new THREE.AxesHelper( 0.2 );
+					child.add( axesHelper );							
 					
 					cube.userData.tag = 'joinPoint';
 					cube.userData.id = id;  id++;
