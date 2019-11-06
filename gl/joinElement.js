@@ -292,11 +292,12 @@ function joinElement(cdm)
 
 	var obj_2 = infProject.tools.joint.active_1.parent;
 	var obj = infProject.tools.joint.active_2.parent;
+		
 
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
-	var diff = new THREE.Quaternion().multiplyQuaternions(o2.getWorldQuaternion(new THREE.Quaternion()).inverse(), q);	// разница между Quaternions
+	var diff2 = new THREE.Quaternion().multiplyQuaternions(q, o2.getWorldQuaternion(new THREE.Quaternion()).inverse());	// разница между Quaternions
 	
-	console.log(222, infProject.settings.active.group, obj_2.userData.obj3D.group);
+	
 	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 	// второй объект из той же группы
 	{
 		var arr_2 = [obj_2];  
@@ -311,19 +312,12 @@ function joinElement(cdm)
 		var arr_2 = [obj_2];
 	}
 	
-	
-	obj_2.quaternion.multiply(diff);
-	obj_2.updateMatrixWorld();
+
 	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		if(arr_2[i] == obj_2) continue;
-		
-		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол
-		
-		
-		//arr_2[i].quaternion.copy(new THREE.Quaternion().multiplyQuaternions(arr_2[i].quaternion, diff));
+		arr_2[i].quaternion.premultiply(diff2);		// diff разницу умнажаем, чтобы получить то же угол		
 		arr_2[i].updateMatrixWorld();		
 	}
 	
@@ -331,40 +325,24 @@ function joinElement(cdm)
 	var pos2 = o2.getWorldPosition(new THREE.Vector3());
 	
 
-	if(arr_2.length == 1)	// одиночный объект
+	// вращаем position объектов, относительно точки-соединителя
+	for(var i = 0; i < arr_2.length; i++)
 	{
-		var pos = new THREE.Vector3().subVectors( pos1, pos2 );
-		
-		for(var i = 0; i < arr_2.length; i++)
-		{
-			arr_2[i].position.add(pos);		
-		}	
+		arr_2[i].position.sub(pos2);
+		arr_2[i].position.applyQuaternion(diff2); 	
+		arr_2[i].position.add(pos2);
 	}
-	else	// группа
+	
+	// после вращения vector, обновляем положение точки-соединителя
+	obj_2.updateMatrixWorld();
+	var pos2 = o2.getWorldPosition(new THREE.Vector3());
+	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
+	
+	for(var i = 0; i < arr_2.length; i++)
 	{
-		// вращаем position объектов, относительно точки-соединителя
-		for(var i = 0; i < arr_2.length; i++)
-		{
-			arr_2[i].position.sub(pos2);
-			arr_2[i].position.applyQuaternion(diff); 	
-			arr_2[i].position.add(pos2);
-		}
-		
-		// после вращения vector, обновляем положение точки-соединителя
-		obj_2.updateMatrixWorld();
-		var pos2 = o2.getWorldPosition(new THREE.Vector3());
-		var pos = new THREE.Vector3().subVectors( pos1, pos2 );
-		
-		for(var i = 0; i < arr_2.length; i++)
-		{
-			arr_2[i].position.add(pos);		
-		}			
-	}	
+		arr_2[i].position.add(pos);		
+	}			
 	
-	
-	//clickO.rayhit = null;	
-	//hidePivotGizmo(obj_2);
-	//clickObject3D( obj_2, {click_obj: true, menu_1: true, outline: true} );
 
 	
 	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
