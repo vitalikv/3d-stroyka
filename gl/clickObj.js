@@ -337,8 +337,7 @@ function deleteObjectPop(obj)
 	{
 		var group = obj.userData.obj3D.group;
 		arr = group.userData.groupObj.child;
-		 
-		for(var i = 0; i < arr.length; i++){ deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]}); }		
+		
 		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
 	}
 	else
@@ -346,11 +345,11 @@ function deleteObjectPop(obj)
 		arr[0] = obj;
 	}
 	
-	
-	
+
 	
 	for(var i = 0; i < arr.length; i++)
 	{	
+		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});
 		updateListTubeUI_1({uuid: arr[i].uuid, type: 'delete'});
 		disposeNode(arr[i]);
 		scene.remove(arr[i]); 

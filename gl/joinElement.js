@@ -284,59 +284,58 @@ function joinElement(cdm)
 	
 	var joint = infProject.tools.joint;	
 	
-	var o2 = infProject.tools.joint.active_1;   
-	var o1 = infProject.tools.joint.active_2;
+	var o1 = infProject.tools.joint.active_1;   
+	var o2 = infProject.tools.joint.active_2;
 
 	if(!o1) return;
 	if(!o2) return;
 
-	var obj_2 = infProject.tools.joint.active_1.parent;
-	var obj = infProject.tools.joint.active_2.parent;
+	var obj_1 = infProject.tools.joint.active_1.parent;
+	var obj_2 = infProject.tools.joint.active_2.parent;
 		
 
-	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
-	var diff2 = new THREE.Quaternion().multiplyQuaternions(q, o2.getWorldQuaternion(new THREE.Quaternion()).inverse());	// разница между Quaternions
+	var q = o2.getWorldQuaternion(new THREE.Quaternion());	
+	var diff = new THREE.Quaternion().multiplyQuaternions(q, o1.getWorldQuaternion(new THREE.Quaternion()).inverse());	// разница между Quaternions
 	
-	//diff2 = diff2.premultiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)) );
-	
-	if(obj.userData.obj3D.group == obj_2.userData.obj3D.group) 	// второй объект из той же группы
+	if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
 	{
-		var arr_2 = [obj_2];  
+		var arr_2 = [obj_1];  
 	}
-	else if(obj_2.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
+	else if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
-		var arr_2 = getObjsFromGroup_1( obj_2 );
-		arr_2[arr_2.length] = obj_2.userData.obj3D.group.userData.groupObj.centerObj;
+		var arr_2 = getObjsFromGroup_1( obj_1 );
+		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект
 	{
-		var arr_2 = [obj_2];
+		var arr_2 = [obj_1];
 	}
 	
-
+	var diff_2 = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0));	
 	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].quaternion.premultiply(diff2);		// diff разницу умнажаем, чтобы получить то же угол		
+		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол	
+		arr_2[i].quaternion.multiply(diff_2);		// разворачиваем на 180 градусов
 		arr_2[i].updateMatrixWorld();		
 	}
 	
-	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
-	var pos2 = o2.getWorldPosition(new THREE.Vector3());
+	var pos1 = o2.getWorldPosition(new THREE.Vector3());		
+	var pos2 = o1.getWorldPosition(new THREE.Vector3());
 	
 
 	// вращаем position объектов, относительно точки-соединителя
 	for(var i = 0; i < arr_2.length; i++)
 	{
 		arr_2[i].position.sub(pos2);
-		arr_2[i].position.applyQuaternion(diff2); 	
+		arr_2[i].position.applyQuaternion(diff); 	
 		arr_2[i].position.add(pos2);
 	}
 	
 	// после вращения vector, обновляем положение точки-соединителя
-	obj_2.updateMatrixWorld();
-	var pos2 = o2.getWorldPosition(new THREE.Vector3());
+	obj_1.updateMatrixWorld();
+	var pos2 = o1.getWorldPosition(new THREE.Vector3());
 	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
 	
 	for(var i = 0; i < arr_2.length; i++)
@@ -349,9 +348,9 @@ function joinElement(cdm)
 	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
 	
-	obj_2.updateMatrixWorld();
-	var pos = o2.getWorldPosition(new THREE.Vector3());
-	var q = o2.getWorldQuaternion(new THREE.Quaternion());
+	obj_1.updateMatrixWorld();
+	var pos = o1.getWorldPosition(new THREE.Vector3());
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());
 	
 	
 	tools.position.copy(pos);
