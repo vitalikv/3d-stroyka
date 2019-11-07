@@ -294,8 +294,10 @@ function joinElement(cdm)
 	var obj_2 = infProject.tools.joint.active_2.parent;
 		
 
-	var q = o2.getWorldQuaternion(new THREE.Quaternion());	
-	var diff = new THREE.Quaternion().multiplyQuaternions(q, o1.getWorldQuaternion(new THREE.Quaternion()).inverse());	// разница между Quaternions
+	var q2 = o2.getWorldQuaternion(new THREE.Quaternion());
+	var q1 = o1.getWorldQuaternion(new THREE.Quaternion());
+	var q1 = q1.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)));	// разворачиваем на 180 градусов
+	var diff_2 = new THREE.Quaternion().multiplyQuaternions(q2, q1.inverse());					// разница между Quaternions
 	
 	if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
 	{
@@ -311,13 +313,11 @@ function joinElement(cdm)
 		var arr_2 = [obj_1];
 	}
 	
-	var diff_2 = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0));	
 	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].quaternion.premultiply(diff);		// diff разницу умнажаем, чтобы получить то же угол	
-		arr_2[i].quaternion.multiply(diff_2);		// разворачиваем на 180 градусов
+		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
 		arr_2[i].updateMatrixWorld();		
 	}
 	
@@ -329,7 +329,7 @@ function joinElement(cdm)
 	for(var i = 0; i < arr_2.length; i++)
 	{
 		arr_2[i].position.sub(pos2);
-		arr_2[i].position.applyQuaternion(diff); 	
+		arr_2[i].position.applyQuaternion(diff_2); 	
 		arr_2[i].position.add(pos2);
 	}
 	
