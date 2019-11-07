@@ -245,7 +245,16 @@ function showHideCatalogMenuUI(cdm)
 							
 						</div>
 
-
+						<div class="flex_1 input_rotate">
+							<input type="text" nameId="object_rotate_X" data-input="object_rotate_X" value="0">
+							<input type="text" nameId="object_rotate_Y" data-input="object_rotate_Y" value="0">
+							<input type="text" nameId="object_rotate_Z" data-input="object_rotate_Z" value="0">
+						</div>
+					
+						<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
+							reset	
+						</div>
+						
 						<div class="button1 button_gradient_1" nameId="button_copy_obj">
 							копировать	
 						</div>

@@ -223,6 +223,8 @@ function clickObject3D( obj, cdm )
 
 		gizmo.quaternion.copy( qt );
 		
+		upMenuRotateObjPop(obj);
+		
 		clippingGizmo360(obj); 		
 	}	
 	
@@ -556,7 +558,7 @@ function switchJoinObj(cdm)
 
 
 
- 
+// копируем объект или группу
 function copyObj(cdm) 
 {
 	var obj = getObjFromPivotGizmo();
@@ -612,6 +614,67 @@ function copyObj(cdm)
 	{
 		clickObject3D( arr2[0], {click_obj: true, menu_1: true, group: true, outline: true} );
 	}
+}
+
+
+
+// сбрасываем rotation 
+function objRotateReset(cdm)
+{
+	var obj = getObjFromPivotGizmo();
+	
+	if(!obj) return;
+
+
+	var obj_1 = obj;		
+
+
+	var diff_2 = obj_1.quaternion.clone().inverse();					// разница между Quaternions
+	
+	
+	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
+	{
+		var arr_2 = getObjsFromGroup_1( obj_1 );
+		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
+	}
+	else	// объект без группы или объект с группой, но выдилен как отдельный объект
+	{
+		var arr_2 = [obj_1];
+	}
+	
+	
+	// поворачиваем объекты в нужном направлении 
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+		arr_2[i].updateMatrixWorld();		
+	}
+	
+	
+	if(obj_1.userData.obj3D.group && infProject.settings.active.group)
+	{
+		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj.position.clone();
+	}
+	else
+	{
+		var centerObj = obj_1.position.clone();
+	}
+	
+
+	// вращаем position объектов, относительно точки-соединителя
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].position.sub(centerObj);
+		arr_2[i].position.applyQuaternion(diff_2); 	
+		arr_2[i].position.add(centerObj);
+	}
+	
+
+	
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
+	
+
 }
 
 

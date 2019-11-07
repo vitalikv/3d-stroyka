@@ -353,6 +353,7 @@ function joinElement(cdm)
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());
 	
 	
+	setScalePivotGizmo();
 	tools.position.copy(pos);
 	tools.quaternion.copy(q); 	
 }

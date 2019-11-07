@@ -147,7 +147,7 @@ function clickGizmo( intersect )
 	{
 		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());   
 	}
-	else if(obj.userData.obj3D.group)		// группа
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 	{
 		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
 	}	
@@ -337,20 +337,41 @@ function moveGizmo( event )
 			gizmo.rotation.copy( obj.rotation );
 		}		 
 	}
+	
+	
+	upMenuRotateObjPop(obj);
 }
 
 
 
 
 // обновляем в меню rotate
-function upMenuRotateObjPop(obj)
+function upMenuRotateObjPop(obj) 
 {	
-	//var rot = new THREE.Euler().setFromQuaternion(obj.getWorldQuaternion(new THREE.Quaternion()));
-	//console.log(rot);
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{ 
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
+		{
+			obj = obj.parent.userData.obj3D.group.userData.groupObj.centerObj; 
+		}
+		else		// объект 
+		{
+			obj = obj.parent;
+		}
+		
+	}			
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
+	{
+		obj = obj.userData.obj3D.group.userData.groupObj.centerObj;
+	}
+	else	// объект 
+	{
+		
+	}
 	
-	UI( 'object_rotate_X' ).val( Math.round( THREE.Math.radToDeg(obj.rotation.x) ) );
-	UI( 'object_rotate_Y' ).val( Math.round( THREE.Math.radToDeg(obj.rotation.y) ) );
-	UI( 'object_rotate_Z' ).val( Math.round( THREE.Math.radToDeg(obj.rotation.z) ) );	
+	$('[nameId="object_rotate_X"]').val( Math.round( THREE.Math.radToDeg(obj.rotation.x) ) );
+	$('[nameId="object_rotate_Y"]').val( Math.round( THREE.Math.radToDeg(obj.rotation.y) ) );
+	$('[nameId="object_rotate_Z"]').val( Math.round( THREE.Math.radToDeg(obj.rotation.z) ) );	
 }
 
 
