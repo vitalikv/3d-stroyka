@@ -168,6 +168,9 @@ var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1
 var clickO = resetPop.clickO();
 infProject.project = null;
 infProject.scene.array = resetPop.infProjectSceneArray();
+infProject.scene.substrate = { ruler: [], floor: [] };
+infProject.scene.substrate.ruler = createToolRulerSubstrate();  
+infProject.scene.substrate.floor[0] = createSubstrate();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
@@ -1743,10 +1746,14 @@ function checkNumberInput(cdm)
 	
 	value = Number(value);
 	
+	if(cdm.abs)
+	{
+		value = Math.abs(value);
+	}
 	
 	if(cdm.int)
 	{ 
-		value = Math.round(value); console.log(value);  
+		value = Math.round(value);  
 	}	
 	
 	if(cdm.unit)
@@ -1761,7 +1768,7 @@ function checkNumberInput(cdm)
 		if(cdm.limit.min > value) { value = cdm.limit.min; }
 	}
 
-	return value;	
+	return {num: value};	
 }
 
 

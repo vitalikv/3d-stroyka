@@ -773,6 +773,8 @@ function inputWF_tubeDiametr(cdm)
 		return;
 	}
 	
+	var size = size.num;
+	
 	infProject.settings.wf_tube.d = size;
 	line.userData.wf_line.diameter = size;
 	$('[nameId="size_tube_diameter_2"]').val(size * 1000);

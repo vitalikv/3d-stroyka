@@ -76,6 +76,7 @@ function updateGrid(cdm)
 		return;
 	}
 	
+	var size = size.num;
 	
 	var pos = grid.position.clone();
 	var color = grid.children[0].material.color.clone();

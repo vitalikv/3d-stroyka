@@ -305,6 +305,8 @@ function editText(input)
 function checkClickUINameID(name)
 {
 	if(name == 'wall_1' || name == 'wall_plaster_width_1' || name == 'form_1'){ hideMenuObjUI_Wall(clickO.last_obj); }
+	
+	
 }
 
 

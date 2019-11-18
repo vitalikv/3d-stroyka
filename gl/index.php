@@ -113,6 +113,7 @@
 	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>joinElement.js?<?=$vrs?>"></script>
 	
+	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    

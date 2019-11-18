@@ -428,6 +428,8 @@ function inputWidthOneWall(cdm)
 		return;
 	}		
 
+	var width = width.num; 
+	
 	var wallR = detectChangeArrWall_2(wall);
 	
 	clickMovePoint_BSP(wallR);
@@ -531,16 +533,16 @@ function changeAllHeightWall_1(cdm)
 	{
 		var v = infProject.scene.array.wall[i].geometry.vertices;
 		
-		v[1].y = height;
-		v[3].y = height;
-		v[5].y = height;
-		v[7].y = height;
-		v[9].y = height;
-		v[11].y = height;
+		v[1].y = height.num;
+		v[3].y = height.num;
+		v[5].y = height.num;
+		v[7].y = height.num;
+		v[9].y = height.num;
+		v[11].y = height.num;
 		infProject.scene.array.wall[i].geometry.verticesNeedUpdate = true;
 		infProject.scene.array.wall[i].geometry.elementsNeedUpdate = true;
 		
-		infProject.scene.array.wall[i].userData.wall.height_1 = Math.round(height * 100) / 100;
+		infProject.scene.array.wall[i].userData.wall.height_1 = Math.round(height.num * 100) / 100;
 	}
 	
 	upLabelPlan_1( infProject.scene.array.wall );
