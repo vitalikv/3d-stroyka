@@ -215,20 +215,19 @@ $('[link_form]').mousedown(function ()
 }); 
 
 
- 
-$("input").mousedown(function (e) { editText($(this)); e.stopPropagation(); }); 
-$("input").mousemove(function (e) { return false; });
 
 
 $('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 $('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 
 
-$('input').on('focus', function () {  });
+
 $('input').on('focus keyup change', function () 
 { 
 	infProject.activeInput = $(this).data('action');
 	if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
+	if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }
+	console.log(infProject.activeInput);
 });
 $('input').blur(function () { infProject.activeInput = ''; });	
 
@@ -287,27 +286,6 @@ $('[data-action="modal_window_close_1"]').mousedown(function ()
 	$('[data-action="modal_1"]').css({"display":"none"}); 
 });
 
-
-  
-  
-function editText(input) 
-{
-	infProject.activeDiv = input;
-	infProject.activeInput = input.data('action');  
-	
-	if(input.data('action') == undefined) { infProject.activeInput = input.data('input'); }
-	console.log(infProject.activeInput);
-	
-	checkClickUINameID(infProject.activeInput);
-}	
-
-
-function checkClickUINameID(name)
-{
-	if(name == 'wall_1' || name == 'wall_plaster_width_1' || name == 'form_1'){ hideMenuObjUI_Wall(clickO.last_obj); }
-	
-	
-}
 
 
 

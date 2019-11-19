@@ -1695,6 +1695,14 @@ document.body.addEventListener("keydown", function (e)
 			{
 				inputLoadProject();
 			}
+			else if(infProject.activeInput == 'input_rotate_substrate')
+			{
+				setRotateSubstrate({angle: $('[nameId="input_rotate_substrate"]').val(), set: true});
+			}
+			else if(infProject.activeInput == 'input_size_substrate')
+			{
+				assignSizeSubstrate();
+			}				
 		}		
 		 
 		return; 

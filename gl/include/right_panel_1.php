@@ -229,9 +229,6 @@ $('#load_substrate_1').change(readURL);
 $('[nameId="assign_size_substrate"]').mousedown(function () { assignSizeSubstrate(); });
 
 
-//$('[nameId="input_rotate_substrate"]').on('focus keyup change', function () { UI.activeInput = 'input_rotate_substrate'; });
-//$('[nameId="input_rotate_substrate"]').blur(function () { UI.activeInput = ''; }); 
-
 $('[nameId="input_rotate_substrate_45"]').mousedown(function () { setRotateSubstrate({angle: 45}); });
 $('[nameId="input_rotate_substrate_90"]').mousedown(function () { setRotateSubstrate({angle: 90}); });
 
@@ -239,7 +236,7 @@ $('[nameId="input_rotate_substrate_90"]').mousedown(function () { setRotateSubst
 $('[nameId="input_transparency_substrate"]').on("input", function() { setTransparencySubstrate({value: $(this).val()}); }); 
 
 
-
+// загрузка img  с компьютера
 function readURL(e) 
 {
 	if (this.files[0]) 
@@ -332,7 +329,7 @@ function readURL(e)
 						
 						
 						<div class="block_flex">
-							<input type="text" nameId="input_rotate_substrate" data-input="input_rotate_substrate" value=0>
+							<input type="text" nameId="input_rotate_substrate" value=0>
 							<div class="button_1" nameId="input_rotate_substrate_45">
 								45
 							</div>
@@ -364,7 +361,7 @@ function readURL(e)
 				<div class="rp_obj">  
 				
 					<div class="rp_obj_name">
-						<input type="text" nameId="rp_obj_name" data-input="rp_obj_name" value="Название">					
+						<input type="text" nameId="rp_obj_name" value="Название">					
 					</div>
 					
 					<div class="bottom_line_1">
@@ -444,9 +441,9 @@ function readURL(e)
 						</div>
 
 						<div class="flex_1 input_rotate">
-							<input type="text" nameId="object_rotate_X" data-input="object_rotate_X" value="0">
-							<input type="text" nameId="object_rotate_Y" data-input="object_rotate_Y" value="0">
-							<input type="text" nameId="object_rotate_Z" data-input="object_rotate_Z" value="0">
+							<input type="text" nameId="object_rotate_X" value="0">
+							<input type="text" nameId="object_rotate_Y" value="0">
+							<input type="text" nameId="object_rotate_Z" value="0">
 						</div>
 					
 						<div class="button1 button_gradient_1" nameId="obj_rotate_reset">

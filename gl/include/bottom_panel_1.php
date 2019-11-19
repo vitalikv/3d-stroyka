@@ -126,7 +126,7 @@
 			<div class="toolbar-menu">								 			
 				<div class="input-size">
 					<div class="text_1">толщина (м)</div>
-					<input type="text" nameId='size_wall_width_1' data-input='size_wall_width_1' value = 0>
+					<input type="text" nameId='size_wall_width_1' value = 0>
 				</div>
 				<div class="button1-wrap-2">
 					<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>

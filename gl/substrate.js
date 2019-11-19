@@ -637,6 +637,8 @@ function assignSizeSubstrate()
 	$('[nameId="input_size_substrate"]').val( value.num );
 	
 	setPositionPointSubstrate();
+	
+	renderCamera();
 }
 
 

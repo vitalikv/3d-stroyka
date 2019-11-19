@@ -49,7 +49,7 @@ function createGizmo360()
 		obj.rotation.set( param[i].rot.x, param[i].rot.y, param[i].rot.z );	
 		
 	
-		var obj2 = new THREE.Mesh( geometry_2, new THREE.MeshPhongMaterial({ color: param[i].color, depthTest: false, clippingPlanes : [ new THREE.Plane() ], lightMap: lightMap_1 }) );
+		var obj2 = new THREE.Mesh( geometry_2, new THREE.MeshPhongMaterial({ color: param[i].color, depthTest: false, transparent: true, clippingPlanes : [ new THREE.Plane() ], lightMap: lightMap_1 }) );
 		obj2.renderOrder = 3;
 		//obj2.visible = false;
 		obj2.material.clippingPlanes[0].copy(new THREE.Plane());
