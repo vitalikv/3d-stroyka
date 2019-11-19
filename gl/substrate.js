@@ -224,25 +224,21 @@ function setPositionPointSubstrate()
 
 
 
-// вкл/выкл меню загрузки подложки 
-function showHideSubstrateUI()
+// прячем/показываем линейки и точки подложки, также активируем или деактивируем подложку 
+function showHideSubstrate_1(cdm)
 {
-	infProject.settings.active.substrate.show = !infProject.settings.active.substrate.show;
+	if(cdm.switch)
+	{
+		var visible = !infProject.scene.substrate.active;
+	}
+	else if(cdm.visible !== undefined)
+	{
+		var visible = cdm.visible;
+	}
 	
 	var ruler = infProject.scene.substrate.ruler;
-	var point = infProject.scene.substrate.floor[0].point;
-	
-	if(infProject.settings.active.substrate.show)
-	{
-		$('[nameId="substrate"]').show();
-		var visible = true;
-	}
-	else
-	{
-		$('[nameId="substrate"]').hide();
-		var visible = false;
-	}
-	
+	var point = infProject.scene.substrate.floor[0].point;	
+		
 	
 	for (var i = 0; i < point.length; i++)
 	{
@@ -252,6 +248,7 @@ function showHideSubstrateUI()
 	ruler[0].visible = visible;
 	ruler[1].visible = visible;
 	ruler[0].userData.subtool.line.visible = visible;
+	infProject.scene.substrate.active = visible;
 	
 	renderCamera();
 }
@@ -410,7 +407,7 @@ function upUvs_4( obj )
 function clickToolRulerSubstrate2D(cdm)
 {	
 	var intersect = cdm.intersect;
-	var obj = obj_selected = cdm.intersect.object;  
+	var obj = clickO.move = cdm.intersect.object;  
 	
 	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
 	
@@ -427,7 +424,7 @@ function moveToolRulerSubstrate2D( event )
 	
 	if(intersects.length == 0) return;
 	
-	var obj = obj_selected;	
+	var obj = clickO.move;	
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
 	
@@ -448,7 +445,7 @@ function moveToolRulerSubstrate2D( event )
 function clickSubstrate2D(cdm)
 {	
 	var intersect = cdm.intersect;
-	var obj = obj_selected = cdm.intersect.object;  
+	var obj = clickO.move = cdm.intersect.object;  
 	
 	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
 	
@@ -465,7 +462,7 @@ function moveSubstrate2D( event )
 	
 	if(intersects.length == 0) return;
 	
-	var obj = obj_selected;	
+	var obj = clickO.move;	
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
 	
@@ -496,7 +493,7 @@ function moveSubstrate2D( event )
 function clickPointSubstrate2D(cdm)
 {	
 	var intersect = cdm.intersect;
-	var obj = obj_selected = cdm.intersect.object;  
+	var obj = clickO.move = cdm.intersect.object;  
 	
 	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );
 
@@ -513,7 +510,7 @@ function movePointSubstrate2D( event )
 	
 	if(intersects.length == 0) return;
 	
-	var obj = obj_selected;	
+	var obj = clickO.move;	
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
 	

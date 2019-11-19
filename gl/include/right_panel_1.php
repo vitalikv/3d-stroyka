@@ -302,7 +302,10 @@ function readURL(e)
 		<div class="flex_column_1" nameId="wrap_plan" style="display: none;">
 			<div class="right_panel_1_1_h">План</div>
 			
-			
+				<div class="right_panel_1_1_list" nameId="rp_floor">
+					
+				</div>
+						
 				<div class="substrate" nameId="substrate" style="display: block;">
 
 					<input name="file" type="file" id="load_substrate_1" class="input_load_substrate">
@@ -354,7 +357,7 @@ function readURL(e)
 		
 		
 		<div nameId="wrap_object">
-			<div class="flex_column_1" nameId="wrap_object_1" style="display: block;">
+			<div class="flex_column_1" nameId="wrap_object_1" style="display: none;">
 				<div class="right_panel_1_1_h">Объект</div>
 				
 				

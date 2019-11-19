@@ -168,7 +168,7 @@ var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1
 var clickO = resetPop.clickO();
 infProject.project = null;
 infProject.scene.array = resetPop.infProjectSceneArray();
-infProject.scene.substrate = { ruler: [], floor: [] };
+infProject.scene.substrate = { ruler: [], floor: [], active: false };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
 infProject.scene.substrate.floor[0] = createSubstrate();
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
@@ -193,8 +193,9 @@ infProject.start = true;
 infProject.ui = {}
 infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
+infProject.ui.right_menu = {active: ''};
 
-
+infProject.scene.substrate.active = true;
 
 console.log(infProject);
 
@@ -276,6 +277,7 @@ if(1==1)
 
 
 addObjInCatalogUI_1();	// каталог UI
+changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
 
 
 //----------- start

@@ -22,6 +22,8 @@ function changeCamera(cam)
 		if(infProject.settings.interface.button.mode_1) { showHideObjMode_1({active: infProject.settings.interface.button.mode_1.active}); }
 		
 		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').hide(); }
+		
+		changeRightMenuUI_1({current: true});
 	}
 	else if(camera == camera3D)
 	{	
@@ -33,6 +35,8 @@ function changeCamera(cam)
 		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
 
 		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').show(); }
+		
+		changeRightMenuUI_1({current: true});
 	}
 	else if(camera == cameraWall)
 	{  
