@@ -177,6 +177,13 @@ function createTextUI_1(cdm)
 		infProject.tools.joint.p2[n] = obj;
 		
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });
+	}
+
+	if(nameId == "rp_plane")
+	{
+		//var n = infProject.tools.list_group.o1.length;	
+		//infProject.tools.list_group.o1[n] = obj;
+		//infProject.tools.list_group.el[n] = el;
 	}	
 }
 
@@ -477,7 +484,31 @@ function clickItemCenterObjUI_2(cdm)
 
 
 
+// нажали кнопку добавить этаж
+function addPlaneListUI(cdm)
+{
+	if(!cdm) { cdm = {}; }				
+		
+	//clearListUI_2({list: infProject.tools.list_group.el});	// очищаем список дочерних объектов группы (если он есть)
 
+
+	var plane = infProject.scene.substrate.floor[0] = createSubstrate({ pos: {y: 2.0} });
+
+
+	createTextUI_1({obj: plane, nameId: "rp_plane", nameRus: "этаж", uuid: plane.uuid});
+	
+	
+	console.log(88888);
+	
+	// выделяем первый элемент  
+	if(cdm.active == 'first') 
+	{
+		var el = $($('[nameId="rp_plane"]')[0].children[0]);
+		el.css('background-color', '#00ff00');
+	}
+
+	renderCamera();
+}
 
 
 

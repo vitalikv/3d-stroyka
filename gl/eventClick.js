@@ -149,7 +149,7 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 
 
 
-
+$('[nameId="button_add_plane"]').mousedown(function () { addPlaneListUI(); }); 
 
 
 
@@ -268,7 +268,7 @@ $('[data-action="modal_window_close_1"]').mousedown(function ()
 
 
 
-// переключаем меню (каталог/список)
+// переключаем вкладки правой панели 
 function changeRightMenuUI_1(cdm)
 {
 	$('[nameId="wrap_catalog"]').hide();

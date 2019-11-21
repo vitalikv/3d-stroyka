@@ -94,8 +94,10 @@ function setPosRotLineRulerSubstrate(cdm)
 
 
 // создаем подложку
-function createSubstrate()
+function createSubstrate(cdm)
 {
+	if(!cdm) { cdm = {}; }
+	
 	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), new THREE.MeshPhongMaterial( { color : 0xcccccc, transparent: true, opacity: 1, lightMap : lightMap_1 } ) );
 	obj.position.y = 0.01;
 	obj.rotation.y = 0.0;
@@ -103,12 +105,19 @@ function createSubstrate()
 	setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'}); 
 	scene.add( obj );	
 	
+	if(cdm.pos)
+	{
+		if(cdm.pos.x) obj.position.x = cdm.pos.x;
+		if(cdm.pos.y) obj.position.y = cdm.pos.y;
+		if(cdm.pos.z) obj.position.z = cdm.pos.z;
+	}
+		
 	var p = [];
 	
-	p[0] = createPointSubstrate();
-	p[1] = createPointSubstrate();
-	p[2] = createPointSubstrate();
-	p[3] = createPointSubstrate();
+	p[0] = createPointSubstrate({plane: obj});
+	p[1] = createPointSubstrate({plane: obj});
+	p[2] = createPointSubstrate({plane: obj});
+	p[3] = createPointSubstrate({plane: obj});
 	
 	p[0].userData.subpoint = {x: p[1], z: p[3], p2: p[2], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
 	p[1].userData.subpoint = {x: p[0], z: p[2], p2: p[3], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
@@ -124,9 +133,10 @@ function createSubstrate()
 
 
 // создаем точки для подложки для изменения размера
-function createPointSubstrate()
+function createPointSubstrate(cdm)
 {	
-
+	var plane = cdm.plane;
+	
 	function createCircleSpline_1()
 	{
 		var count = 48;
@@ -171,7 +181,7 @@ function createPointSubstrate()
 	
 	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : 0x333333 } ) ); 
 	obj.userData.tag = "substrate_point";
-	obj.position.set(0,0,0);
+	obj.position.set(0, plane.position.y, 0);
 	obj.userData.subpoint = {};
 	
 	//obj.visible = false;	

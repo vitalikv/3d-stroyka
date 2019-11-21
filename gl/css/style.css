@@ -790,6 +790,7 @@ canvas
 
 .button1
 {
+	display: block;
 	width: auto;
 	height: 20px; 
 	margin:auto;

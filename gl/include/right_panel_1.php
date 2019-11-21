@@ -98,42 +98,7 @@
 		background-color:#ffffff;
 		border:1px solid #e6e4e4;		
 	}
-
-	.load_img_1, .substrate .button_1
-	{
-		display: block;
-		width: auto;
-		 
-		margin: auto;
-		text-decoration:none; 
-		text-align:center; 
-		padding:9px 0px; 
-		border:solid 1px #b3b3b3; 
-		-webkit-border-radius:4px;
-		-moz-border-radius:4px; 
-		border-radius: 4px; 
-		font:18px Arial, Helvetica, sans-serif; 
-		font-weight:bold; 
-		color:#737373; 	
-
-		background-color:#ffffff; 
-		background-image: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-		background-image: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-		background-image: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%); 
-		background-image: -ms-linear-gradient(top, #ffffff 0% ,#e3e3e3 100%); 
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e3e3e3', endColorstr='#e3e3e3',GradientType=0 ); 
-		background-image: linear-gradient(top, #ffffff 0% ,#e3e3e3 100%);   
-		-webkit-box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
-		-moz-box-shadow: 0px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
-		box-shadow:0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
-
-		cursor: pointer;
-	}
 	
-	.substrate .button_1
-	{
-		width: 30px;
-	}
 
 	.input_load_substrate
 	{
@@ -182,13 +147,8 @@
 		border-radius: 3px;
 		background-color:#fff;	
 	}
-
-	.substrate .block_flex
-	{
-		display: flex;
-	}
 	
-	.substrate .block_flex input
+	.substrate .flex_1 input
 	{
 		width: 100px;
 	}	
@@ -302,14 +262,23 @@ function readURL(e)
 		<div class="flex_column_1" nameId="wrap_plan" style="display: none;">
 			<div class="right_panel_1_1_h">План</div>
 			
-				<div class="right_panel_1_1_list" nameId="rp_floor">
+				<div class="right_panel_1_1_list" nameId="rp_plane">
 					
 				</div>
+				
+				<div style="margin-bottom: 20px;">				
+					<div class="button1 button_gradient_1" nameId="button_add_plane">
+						добавить этаж	
+					</div>
+					<div class="button1 button_gradient_1" nameId="button_delete_plane">
+						удалить этаж	
+					</div>					
+				</div>				
 						
 				<div class="substrate" nameId="substrate" style="display: block;">
 
 					<input name="file" type="file" id="load_substrate_1" class="input_load_substrate">
-					<label for="load_substrate_1" class="load_img_1" nameId="load_img_1">		
+					<label for="load_substrate_1" class="button1 button_gradient_1" nameId="load_img_1">		
 						загрузить план
 					</label>
 
@@ -331,13 +300,13 @@ function readURL(e)
 						
 						
 						
-						<div class="block_flex">
+						<div class="flex_1">
 							<input type="text" nameId="input_rotate_substrate" value=0>
-							<div class="button_1" nameId="input_rotate_substrate_45">
+							<div class="button1 button_gradient_1" nameId="input_rotate_substrate_45">
 								45
 							</div>
 
-							<div class="button_1" nameId="input_rotate_substrate_90">
+							<div class="button1 button_gradient_1" nameId="input_rotate_substrate_90">
 								90
 							</div>	
 						</div>
@@ -346,7 +315,7 @@ function readURL(e)
 					длина
 					<input type="text" nameId="input_size_substrate" value=0>	
 
-					<div class="load_img_1" nameId="assign_size_substrate">
+					<div class="button1 button_gradient_1" nameId="assign_size_substrate">
 						применить
 					</div>			
 
