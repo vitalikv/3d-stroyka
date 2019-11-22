@@ -181,9 +181,9 @@ function createTextUI_1(cdm)
 
 	if(nameId == "rp_plane")
 	{
-		//var n = infProject.tools.list_group.o1.length;	
-		//infProject.tools.list_group.o1[n] = obj;
-		//infProject.tools.list_group.el[n] = el;
+		var n = infProject.tools.plane.o1.length;	
+		infProject.tools.plane.o1[n] = obj;
+		infProject.tools.plane.el[n] = el;
 	}	
 }
 
@@ -484,29 +484,31 @@ function clickItemCenterObjUI_2(cdm)
 
 
 
-// нажали кнопку добавить этаж
+// добавляем этаж в список правой панели UI
 function addPlaneListUI(cdm)
 {
-	if(!cdm) { cdm = {}; }				
-		
-	//clearListUI_2({list: infProject.tools.list_group.el});	// очищаем список дочерних объектов группы (если он есть)
+	if(!cdm) return;				
+	if(!cdm.plane) return;	
+	
+	var plane = cdm.plane;
+	var n = infProject.scene.substrate.floor.length - 1;
 
-
-	var plane = infProject.scene.substrate.floor[0] = createSubstrate({ pos: {y: 2.0} });
-
-
-	createTextUI_1({obj: plane, nameId: "rp_plane", nameRus: "этаж", uuid: plane.uuid});
+	createTextUI_1({obj: plane, nameId: "rp_plane", nameRus: "этаж"+(n+1), uuid: plane.uuid});
 	
 	
-	console.log(88888);
-	
-	// выделяем первый элемент  
-	if(cdm.active == 'first') 
+	// снимаем старые выдиления в UI 
+	for(var i = 0; i < infProject.tools.plane.el.length; i++)
 	{
-		var el = $($('[nameId="rp_plane"]')[0].children[0]);
-		el.css('background-color', '#00ff00');
-	}
+		infProject.tools.plane.el[i].css('background-color', '#ffffff');
+		infProject.tools.plane.o1[i].userData.substrate.active = false;
+	}	
+	
+	
+	var el = $($('[nameId="rp_plane"]')[0].children[$('[nameId="rp_plane"]')[0].children.length-1]);
+	el.css('background-color', '#00ff00');
 
+	plane.userData.substrate.active = true;
+	
 	renderCamera();
 }
 

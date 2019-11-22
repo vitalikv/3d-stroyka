@@ -102,6 +102,7 @@ function createSubstrate(cdm)
 	obj.position.y = 0.01;
 	obj.rotation.y = 0.0;
 	obj.userData.tag = "substrate";
+	obj.userData.substrate = { p: [], active: false };
 	setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'}); 
 	scene.add( obj );	
 	
@@ -119,14 +120,17 @@ function createSubstrate(cdm)
 	p[2] = createPointSubstrate({plane: obj});
 	p[3] = createPointSubstrate({plane: obj});
 	
-	p[0].userData.subpoint = {x: p[1], z: p[3], p2: p[2], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
-	p[1].userData.subpoint = {x: p[0], z: p[2], p2: p[3], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
-	p[2].userData.subpoint = {x: p[3], z: p[1], p2: p[0], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
-	p[3].userData.subpoint = {x: p[2], z: p[0], p2: p[1], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
+	p[0].userData.subpoint = {plane: obj, x: p[1], z: p[3], p2: p[2], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
+	p[1].userData.subpoint = {plane: obj, x: p[0], z: p[2], p2: p[3], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
+	p[2].userData.subpoint = {plane: obj, x: p[3], z: p[1], p2: p[0], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
+	p[3].userData.subpoint = {plane: obj, x: p[2], z: p[0], p2: p[1], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
 	
-	//console.log(33333, p[0].userData.subpoint);
-		
-	return {plane: obj, point: p};
+	obj.userData.substrate.p = p;
+	
+	var n = infProject.scene.substrate.floor.length;
+	infProject.scene.substrate.floor[n] = {plane: obj, point: p};
+	
+	addPlaneListUI({plane: obj});
 }
 
 
@@ -193,10 +197,13 @@ function createPointSubstrate(cdm)
 
 
 // устанавливаем точки по краям подложки 
-function setPositionPointSubstrate()
+function setPositionPointSubstrate(cdm)
 {
-	var plane = infProject.scene.substrate.floor[0].plane;
-	var point = infProject.scene.substrate.floor[0].point;
+	var plane = cdm.plane;
+	var n = 0;
+	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ ){ if(infProject.scene.substrate.floor[i].plane == plane) { n = i; break; } }
+
+	var point = infProject.scene.substrate.floor[n].point;
 	
 	plane.geometry.computeBoundingBox();
 	var pos1 = new THREE.Vector3(plane.geometry.boundingBox.min.x, plane.geometry.boundingBox.min.y, plane.geometry.boundingBox.min.z);
@@ -237,6 +244,8 @@ function setPositionPointSubstrate()
 // прячем/показываем линейки и точки подложки, также активируем или деактивируем подложку 
 function showHideSubstrate_1(cdm)
 {
+	if(infProject.scene.substrate.floor.length == 0) return;
+	
 	if(cdm.switch)
 	{
 		var visible = !infProject.scene.substrate.active;
@@ -302,7 +311,7 @@ function setImgUrlSubstrate(cdm)
 		//var y = (Math.abs(obj.geometry.boundingBox.max.y) + Math.abs(obj.geometry.boundingBox.min.y));
 		var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));		
 		
-		setPositionPointSubstrate();
+		setPositionPointSubstrate({plane: obj});
 		
 		upUvs_4( obj );		
 		
@@ -355,7 +364,7 @@ function setImgCompSubstrate(cdm)
 		//var y = (Math.abs(obj.geometry.boundingBox.max.y) + Math.abs(obj.geometry.boundingBox.min.y));
 		var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));		
 		
-		setPositionPointSubstrate();
+		setPositionPointSubstrate({plane: obj});
 		
 		upUvs_4( obj );
 		
@@ -483,11 +492,9 @@ function moveSubstrate2D( event )
 	// перемещаем точки и линейку
 	if(1==1)
 	{
-		var point = infProject.scene.substrate.floor[0].point;
-		
-		for (var i = 0; i < point.length; i++)
+		for (var i = 0; i < obj.userData.substrate.p.length; i++)
 		{
-			point[i].position.add( pos2 );
+			obj.userData.substrate.p[i].position.add( pos2 );
 		}
 
 		infProject.scene.substrate.ruler[0].position.add( pos2 );
@@ -559,8 +566,8 @@ function movePointSubstrate2D( event )
 	// по положению точек изменяем форму плоскости 
 	if(1 == 1)
 	{
-		var plane = infProject.scene.substrate.floor[0].plane;		
-		var point = infProject.scene.substrate.floor[0].point;
+		var plane = obj.userData.subpoint.plane;		
+		var point = plane.userData.substrate.p;
 		
 		plane.updateMatrixWorld();			
 		var ps1 = plane.worldToLocal( point[0].position.clone() );
@@ -643,7 +650,7 @@ function assignSizeSubstrate()
 	
 	$('[nameId="input_size_substrate"]').val( value.num );
 	
-	setPositionPointSubstrate();
+	setPositionPointSubstrate({plane: plane});
 	
 	renderCamera();
 }
@@ -680,7 +687,7 @@ function setRotateSubstrate(cdm)
 
 	$('[nameId="input_rotate_substrate"]').val( rot );
 	
-	setPositionPointSubstrate();
+	setPositionPointSubstrate({plane: plane});
 	
 	renderCamera();
 }
@@ -703,6 +710,34 @@ function setTransparencySubstrate(cdm)
 	renderCamera();	
 }
 
+
+
+// удаляем план
+function deleteSubstrate(cdm)
+{
+	var plane = cdm.plane;
+	
+	console.log(infProject.scene.substrate.floor.length);
+	
+	var n = 0;
+	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ ){ if(infProject.scene.substrate.floor[i].plane == plane) { n = i; break; } }
+	
+	var point = infProject.scene.substrate.floor[n].point;
+	
+	deleteValueFromArrya({arr : infProject.scene.substrate.floor, o : infProject.scene.substrate.floor[n]});
+	
+	
+	disposeNode(plane);
+	scene.remove(plane);
+	
+	for ( var i = 0; i < point.length; i++ )
+	{ 
+		disposeNode(point[i]);
+		scene.remove(point[i]); 
+	}
+	
+	console.log(infProject.scene.substrate.floor.length, infProject.scene.substrate.floor);	
+}
 
 
 

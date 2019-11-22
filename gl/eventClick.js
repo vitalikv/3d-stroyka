@@ -149,7 +149,7 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 
 
 
-$('[nameId="button_add_plane"]').mousedown(function () { addPlaneListUI(); }); 
+$('[nameId="button_add_plane"]').mousedown(function () { createSubstrate(); }); 
 
 
 
