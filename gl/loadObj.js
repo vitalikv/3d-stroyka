@@ -179,6 +179,8 @@ function getInfoObj(cdm)
 			return infProject.catalog[i];
 		}
 	}
+	
+	return null;
 }
 
 
@@ -193,7 +195,9 @@ function loadObjServer(cdm)
 	
 	var lotid = cdm.lotid;
 	
-	var inf = getInfoObj({lotid: lotid});	
+	var inf = getInfoObj({lotid: lotid});
+
+	if(!inf) return;	// объект не существует в API
 	
 	var obj = getObjFromBase({lotid: lotid});
 	
@@ -269,7 +273,29 @@ function addObjInBase(cdm)
 		{  
 			return null;
 		}
-	}	
+	}
+
+	// накладываем на материал объекта lightMap
+	obj.traverse(function(child) 
+	{
+		if(child.isMesh) 
+		{ 
+			if(child.material)
+			{
+				if(Array.isArray(child.material))
+				{
+					for(var i = 0; i < child.material.length; i++)
+					{
+						child.material[i].lightMap = lightMap_1;
+					}
+				}
+				else
+				{
+					child.material.lightMap = lightMap_1;
+				}					
+			}				
+		}
+	});	
 	
 	base[base.length] = {lotid: lotid, obj: obj.clone()}; 
 }
@@ -304,27 +330,7 @@ function addObjInScene(inf, cdm)
 	obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
 	obj.material.visible = false;
 	//obj.rotation.y += 1;
-	// накладываем на материал объекта lightMap
-	obj.traverse(function(child) 
-	{
-		if(child.isMesh) 
-		{ 
-			if(child.material)
-			{
-				if(Array.isArray(child.material))
-				{
-					for(var i = 0; i < child.material.length; i++)
-					{
-						child.material[i].lightMap = lightMap_1;
-					}
-				}
-				else
-				{
-					child.material.lightMap = lightMap_1;
-				}					
-			}				
-		}
-	});		
+		
 	
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 

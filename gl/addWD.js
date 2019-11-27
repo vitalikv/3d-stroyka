@@ -97,6 +97,25 @@ function createEmptyFormWD_1(cdm)
 	obj.userData.door.topMenu = true;
 	//obj.userData.door.active = { click: true, hover: true };
 	
+	
+	//default размеры
+	if(1==1)
+	{
+		obj.geometry.computeBoundingBox();		
+		var dX = obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x;
+		var dY = obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y;			
+		form.size = new THREE.Vector3(dX, dY, 1);				
+	}
+		
+	//default координаты точек
+	if(1==1)
+	{
+		var v2 = [];
+		var v = obj.geometry.vertices;
+		for ( var i = 0; i < v.length; i++ ) { v2[i] = v[i].clone(); }
+		obj.userData.door.form.v2 = v2;		
+	}	
+	
 	scene.add( obj );
 	
 	
@@ -213,7 +232,7 @@ function addWD( cdm )
 	var pos = obj.position;
 	obj.userData.tag = obj.userData.door.type;
 	
-	pos.y -= 0.001;		// делаем чуть ниже уровня пола
+	//pos.y -= 0.001;		// делаем чуть ниже уровня пола
 	obj.position.copy( pos );
 	obj.rotation.copy( wall.rotation ); 
 	obj.material.transparent = false;
