@@ -168,7 +168,7 @@ var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1
 var clickO = resetPop.clickO();
 infProject.project = null;
 infProject.scene.array = resetPop.infProjectSceneArray();
-infProject.scene.substrate = { ruler: [], floor: [], active: false };
+infProject.scene.substrate = { ruler: [], floor: [], active: null };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
 //infProject.scene.substrate.floor[0] = createSubstrate({ pos: {y: 0} });
 infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
@@ -196,7 +196,7 @@ infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
 infProject.ui.right_menu = {active: ''};
 
-infProject.scene.substrate.active = true;
+
 
 console.log(infProject);
 

@@ -277,7 +277,7 @@ function readURL(e)
 						
 				<div class="substrate" nameId="substrate" style="display: block;">
 
-					<input name="file" type="file" id="load_substrate_1" class="input_load_substrate">
+					<input name="file" type="file" accept="image/x-png,image/jpeg" id="load_substrate_1" class="input_load_substrate">
 					<label for="load_substrate_1" class="button1 button_gradient_1" nameId="load_img_1">		
 						загрузить план
 					</label>

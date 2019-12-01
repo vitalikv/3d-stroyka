@@ -128,7 +128,7 @@ function clickObjUI(cdm)
 }
 
 
-
+// создаем текст для списка
 function createTextUI_1(cdm)
 {
 	var obj = cdm.obj;
@@ -184,6 +184,8 @@ function createTextUI_1(cdm)
 		var n = infProject.tools.plane.o1.length;	
 		infProject.tools.plane.o1[n] = obj;
 		infProject.tools.plane.el[n] = el;
+		
+		el.on('mousedown', function(){ clickItemFloorUI({el: $(this)}) });
 	}	
 }
 
@@ -500,17 +502,99 @@ function addPlaneListUI(cdm)
 	for(var i = 0; i < infProject.tools.plane.el.length; i++)
 	{
 		infProject.tools.plane.el[i].css('background-color', '#ffffff');
-		infProject.tools.plane.o1[i].userData.substrate.active = false;
 	}	
 	
 	
 	var el = $($('[nameId="rp_plane"]')[0].children[$('[nameId="rp_plane"]')[0].children.length-1]);
 	el.css('background-color', '#00ff00');
 
-	plane.userData.substrate.active = true;
+	infProject.scene.substrate.active = plane;
+	
+	$('[nameId="input_transparency_substrate"]').val(100);
+	$('[nameId="input_rotate_substrate"]').val( 0 );
+	$('#upload-img').attr('src', '');	
 	
 	renderCamera();
 }
 
+
+// выбираем этаж 
+function clickItemFloorUI(cdm)
+{
+	var item = null;
+	var plane = null;	
+	
+	infProject.scene.substrate.active = null;
+	
+	$('[nameId="input_transparency_substrate"]').val(100);
+	$('[nameId="input_rotate_substrate"]').val( 0 );
+	$('#upload-img').attr('src', '');
+	
+	// снимаем старые выдиления в UI 
+	for(var i = 0; i < infProject.tools.plane.el.length; i++)
+	{
+		infProject.tools.plane.el[i].css('background-color', '#ffffff');
+	}	
+	
+	
+	if(cdm.el)		// кликнули на пункт в меню
+	{
+		for(var i = 0; i < infProject.tools.plane.el.length; i++)
+		{
+			if(infProject.tools.plane.el[i][0] == cdm.el[0]){ plane = infProject.tools.plane.o1[i]; break; } 
+		}		
+		
+		item = cdm.el;
+	}
+	else
+	{
+		return;
+	}
+	
+	
+	var texture = plane.material.map;
+
+	if(texture)
+	{ 
+		$('#upload-img').attr('src', texture.image.src);
+	}
+	
+	
+	$('[nameId="input_transparency_substrate"]').val(plane.material.opacity*100);
+	
+	var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
+	$('[nameId="input_rotate_substrate"]').val( rot );	
+	
+	// выделяем новый пункт на который кликнули 
+	item.css('background-color', '#00ff00');
+	var value = item.attr('uuid');	
+	
+	infProject.scene.substrate.active = plane;
+	
+}
+
+
+// удаляем этаж из списка UI
+function removePlaneListUI_2(cdm)
+{
+	var plane = cdm.plane;
+		
+	
+	for(var i = 0; i < infProject.tools.plane.o1.length; i++)
+	{
+		if(infProject.tools.plane.o1[i] == plane)
+		{ 
+			var el = infProject.tools.plane.el[i]; 
+			
+			deleteValueFromArrya({arr : infProject.tools.plane.el, o : el});
+			deleteValueFromArrya({arr : infProject.tools.plane.o1, o : plane});
+			el.remove();
+			
+			break; 
+		} 
+	}	
+	
+	infProject.scene.substrate.active = null;
+}
 
 

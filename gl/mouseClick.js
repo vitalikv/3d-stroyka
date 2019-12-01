@@ -132,31 +132,27 @@ function clickRayHit(event)
 	
 	
 	// вкл подложка
-	if(infProject.scene.substrate.active && infProject.scene.substrate.floor.length > 0) 
+	if(infProject.scene.substrate.active) 
 	{  
-		var arr = infProject.scene.substrate.floor;
+		var plane = infProject.scene.substrate.active;
 		
-		for ( var i = 0; i < arr.length; i++ )
-		{
-			if(!arr[i].plane.userData.substrate.active) continue;
-			
-			var rayhit = rayIntersect( event, infProject.scene.substrate.ruler, 'arr' );
-			var rayhit = (rayhit.length > 0) ? rayhit[0] : null;
+		var rayhit = rayIntersect( event, infProject.scene.substrate.ruler, 'arr' );
+		var rayhit = (rayhit.length > 0) ? rayhit[0] : null;
 
-			if(!rayhit)
-			{
-				var rayhit = rayIntersect( event, arr[i].plane.userData.substrate.p, 'arr' );
-				var rayhit = (rayhit.length > 0) ? rayhit[0] : null;					
-			}				
-			
-			if(!rayhit)
-			{
-				var rayhit = rayIntersect( event, [arr[i].plane], 'arr' );				
-				var rayhit = (rayhit.length > 0) ? rayhit[0] : null;					
-			}
-			 
-			if(rayhit) return rayhit;			
+		if(!rayhit)
+		{
+			var rayhit = rayIntersect( event, plane.userData.substrate.p, 'arr' );
+			var rayhit = (rayhit.length > 0) ? rayhit[0] : null;					
+		}				
+		
+		if(!rayhit)
+		{
+			var rayhit = rayIntersect( event, [plane], 'arr' );				
+			var rayhit = (rayhit.length > 0) ? rayhit[0] : null;					
 		}
+		 
+		if(rayhit) return rayhit;			
+
 	}	
 	
 	

@@ -113,12 +113,7 @@ function createSubstrate(cdm)
 		if(cdm.pos.z) obj.position.z = cdm.pos.z;
 	}
 		
-	var p = [];
-	
-	p[0] = createPointSubstrate({plane: obj});
-	p[1] = createPointSubstrate({plane: obj});
-	p[2] = createPointSubstrate({plane: obj});
-	p[3] = createPointSubstrate({plane: obj});
+	var p = createPointSubstrate({plane: obj});
 	
 	p[0].userData.subpoint = {plane: obj, x: p[1], z: p[3], p2: p[2], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
 	p[1].userData.subpoint = {plane: obj, x: p[0], z: p[2], p2: p[3], dir: new THREE.Vector3(), qt: new THREE.Quaternion()};
@@ -182,16 +177,25 @@ function createPointSubstrate(cdm)
 		n++;		
 	}	
 
+	var arr = [];
+	var geometry = createGeometryCircle(v);
+	var material = new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 1, lightMap : lightMap_1 } );
 	
-	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : 0x333333 } ) ); 
-	obj.userData.tag = "substrate_point";
-	obj.position.set(0, plane.position.y, 0);
-	obj.userData.subpoint = {};
 	
-	//obj.visible = false;	
-	scene.add( obj );
+	for ( var i = 0; i < 4; i++ )
+	{
+		var obj = new THREE.Mesh( geometry, material ); 
+		obj.userData.tag = "substrate_point";
+		obj.position.set(0, plane.position.y, 0);
+		obj.userData.subpoint = {};
+		
+		//obj.visible = false;	
+		scene.add( obj );		
+		
+		arr[i] = obj;
+	}		
 	
-	return obj;
+	return arr;
 }
 
 
@@ -200,10 +204,7 @@ function createPointSubstrate(cdm)
 function setPositionPointSubstrate(cdm)
 {
 	var plane = cdm.plane;
-	var n = 0;
-	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ ){ if(infProject.scene.substrate.floor[i].plane == plane) { n = i; break; } }
-
-	var point = infProject.scene.substrate.floor[n].point;
+	var point = plane.userData.substrate.p;
 	
 	plane.geometry.computeBoundingBox();
 	var pos1 = new THREE.Vector3(plane.geometry.boundingBox.min.x, plane.geometry.boundingBox.min.y, plane.geometry.boundingBox.min.z);
@@ -241,16 +242,14 @@ function setPositionPointSubstrate(cdm)
 
 
 
+
 // прячем/показываем линейки и точки подложки, также активируем или деактивируем подложку 
 function showHideSubstrate_1(cdm)
 {
 	if(infProject.scene.substrate.floor.length == 0) return;
 	
-	if(cdm.switch)
-	{
-		var visible = !infProject.scene.substrate.active;
-	}
-	else if(cdm.visible !== undefined)
+
+	if(cdm.visible !== undefined)
 	{
 		var visible = cdm.visible;
 	}
@@ -267,7 +266,6 @@ function showHideSubstrate_1(cdm)
 	ruler[0].visible = visible;
 	ruler[1].visible = visible;
 	ruler[0].userData.subtool.line.visible = visible;
-	infProject.scene.substrate.active = visible;
 	
 	renderCamera();
 }
@@ -341,8 +339,8 @@ function setImgCompSubstrate(cdm)
 	var image = new Image();
 	image.src = cdm.image;
 	
-	var obj = infProject.scene.substrate.floor[0].plane;
-
+	var obj = infProject.scene.substrate.active;	
+	if(!obj) return;
 
 	image.onload = function() 
 	{
@@ -379,7 +377,7 @@ function setImgCompSubstrate(cdm)
 		material.map = texture; 
 		material.lightMap = lightMap_1;
 		material.needsUpdate = true; 					
-		
+		console.log(image);
 		setTransparencySubstrate({value: 100});
 		
 		renderCamera();
@@ -627,14 +625,17 @@ function assignSizeSubstrate()
 		return;
 	}	
 	
+	var plane = infProject.scene.substrate.active;	
+	if(!plane) return;
+
+	var point = plane.userData.substrate.p;	
+	
 	var ruler_1 = infProject.scene.substrate.ruler[0];
 	var ruler_2 = infProject.scene.substrate.ruler[1];
 	
 	var dist = ruler_1.position.distanceTo( ruler_2.position );
 	var ratio = value.num/dist;
 
-	var plane = infProject.scene.substrate.floor[0].plane;
-	var point = infProject.scene.substrate.floor[0].point;
 	var offset = new THREE.Vector3().subVectors( ruler_1.position, plane.position );
 	
 	plane.geometry.computeBoundingBox();	
@@ -662,8 +663,10 @@ function setRotateSubstrate(cdm)
 {
 	if(!cdm) return;
 
+	var plane = infProject.scene.substrate.active;	
+	if(!plane) return;
+	
 	var value = checkNumberInput({ value: cdm.angle, unit: 1 });
-	var plane = infProject.scene.substrate.floor[0].plane;
 	 
 	if(!value) 
 	{
@@ -700,10 +703,11 @@ function setTransparencySubstrate(cdm)
 {
 	var value = cdm.value;
 	
-	var obj = infProject.scene.substrate.floor[0].plane;
+	var plane = infProject.scene.substrate.active;	
+	if(!plane) return;
 	
-	obj.material.opacity = value/100;
-	obj.material.needsUpdate = true; 					
+	plane.material.opacity = value/100;
+	plane.material.needsUpdate = true; 					
 	
 	$('[nameId="input_transparency_substrate"]').val(value);
 	
@@ -715,17 +719,29 @@ function setTransparencySubstrate(cdm)
 // удаляем план
 function deleteSubstrate(cdm)
 {
-	var plane = cdm.plane;
+	if(!cdm) cdm = {}; 
+	//var plane = cdm.plane;
 	
-	console.log(infProject.scene.substrate.floor.length);
+	var plane = infProject.scene.substrate.active;	
+	if(!plane) return;
+
+	var point = plane.userData.substrate.p;		
 	
-	var n = 0;
-	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ ){ if(infProject.scene.substrate.floor[i].plane == plane) { n = i; break; } }
 	
-	var point = infProject.scene.substrate.floor[n].point;
 	
-	deleteValueFromArrya({arr : infProject.scene.substrate.floor, o : infProject.scene.substrate.floor[n]});
+	var num = -1;
+	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ )
+	{ 
+		if(infProject.scene.substrate.floor[i].plane == plane) 
+		{
+			num = i;
+			break;
+		}
+	}	
 	
+	removePlaneListUI_2({plane: plane});
+	
+	deleteValueFromArrya({arr : infProject.scene.substrate.floor, o : infProject.scene.substrate.floor[num]});	
 	
 	disposeNode(plane);
 	scene.remove(plane);
@@ -736,7 +752,7 @@ function deleteSubstrate(cdm)
 		scene.remove(point[i]); 
 	}
 	
-	console.log(infProject.scene.substrate.floor.length, infProject.scene.substrate.floor);	
+	infProject.scene.substrate.active = null;
 }
 
 
