@@ -1705,7 +1705,11 @@ document.body.addEventListener("keydown", function (e)
 			else if(infProject.activeInput == 'input_size_substrate')
 			{
 				assignSizeSubstrate();
-			}				
+			}
+			else if(infProject.activeInput == 'rp_height_plane')
+			{
+				setPlanePositionY({value: $('[nameId="rp_height_plane"]').val()});
+			}			
 		}		
 		 
 		return; 

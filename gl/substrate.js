@@ -41,6 +41,7 @@ function createToolRulerSubstrate()
 	ruler[0].userData.subtool = {};
 	ruler[0].userData.subtool.num = 1;
 	ruler[0].userData.subtool.line = null;
+	ruler[0].visible = false;
 	scene.add( ruler[0] );
 	ruler[0].position.y = 0.01;	
 
@@ -50,6 +51,7 @@ function createToolRulerSubstrate()
 	ruler[1].userData.subtool = {};
 	ruler[1].userData.subtool.num = 2;
 	ruler[1].userData.subtool.line = null;
+	ruler[1].visible = false;
 	scene.add( ruler[1] );
 	ruler[1].position.y = 0.01;
 	ruler[1].position.z = 1;	
@@ -57,6 +59,7 @@ function createToolRulerSubstrate()
 
 	
 	var line = new THREE.Mesh( createGeometryCube(1, 0.01, k/2), new THREE.MeshPhongMaterial( { color : 0xff0000, lightMap : lightMap_1 } ) );
+	line.visible = false;
 	scene.add( line );	
 	
 	ruler[0].userData.subtool.line = line;
@@ -85,11 +88,25 @@ function setPosRotLineRulerSubstrate(cdm)
 	line.geometry.computeBoundingSphere();	
 	
 	line.position.copy(ruler[0].position);
-	line.position.y = 0.005;
+	line.position.y += 0.005;
 	
 	var dir = new THREE.Vector3().subVectors( ruler[0].position, ruler[1].position ).normalize();
 	var angleDeg = Math.atan2(dir.x, dir.z);
 	line.rotation.set(0, angleDeg + Math.PI / 2, 0);	
+}
+
+
+// устанавливаем рулетку по центру выбранного плана 
+function setStartPositionRulerSubstrate()
+{
+	var plane = infProject.scene.substrate.active;
+	if(!plane) return;
+	
+	var ruler = infProject.scene.substrate.ruler;
+	ruler[0].position.set(plane.position.x, plane.position.y + 0.01, plane.position.z + 1);
+	ruler[1].position.set(plane.position.x, plane.position.y + 0.01, plane.position.z - 1);
+
+	setPosRotLineRulerSubstrate({ruler: ruler});	
 }
 
 
@@ -246,17 +263,17 @@ function setPositionPointSubstrate(cdm)
 // прячем/показываем линейки и точки подложки, также активируем или деактивируем подложку 
 function showHideSubstrate_1(cdm)
 {
-	if(infProject.scene.substrate.floor.length == 0) return;
-	
+	if(!infProject.scene.substrate.active) return;
+	 
+	var ruler = infProject.scene.substrate.ruler;
+	var plane = infProject.scene.substrate.active;
+	var point = plane.userData.substrate.p;	
+
 
 	if(cdm.visible !== undefined)
 	{
 		var visible = cdm.visible;
-	}
-	
-	var ruler = infProject.scene.substrate.ruler;
-	var point = infProject.scene.substrate.floor[0].point;	
-		
+	}			
 	
 	for (var i = 0; i < point.length; i++)
 	{
@@ -269,6 +286,40 @@ function showHideSubstrate_1(cdm)
 	
 	renderCamera();
 }
+
+
+
+// устанавливаем высоту плана
+function setPlanePositionY(cdm)
+{
+	if(!cdm) return;
+
+	var plane = infProject.scene.substrate.active;	
+	if(!plane) return;
+	
+	var value = checkNumberInput({ value: cdm.value, unit: 1 });
+	 
+	if(!value) 
+	{
+		$('[nameId="rp_height_plane"]').val( plane.position.y );
+		
+		return;
+	}	
+	
+	plane.position.y = value.num;	
+
+	$('[nameId="rp_height_plane"]').val( value.num );
+	
+	var ruler = infProject.scene.substrate.ruler;
+	ruler[0].position.y = plane.position.y + 0.01;
+	ruler[1].position.y = plane.position.y + 0.01;
+
+	setPosRotLineRulerSubstrate({ruler: ruler});
+	setPositionPointSubstrate({plane: plane});
+	
+	renderCamera();	
+}
+
 
 
 // устанавливаем текстуру по ссылке
