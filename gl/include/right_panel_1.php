@@ -217,6 +217,8 @@ function readURL(e)
 }	 
 //  substrate
 
+
+$('[nameId="rp_plane"]').mousedown(function (e) { clickItemFloorUI(); });
 	
 });	 
 </script>
@@ -273,7 +275,11 @@ function readURL(e)
 					<div class="button1 button_gradient_1" nameId="button_delete_plane">
 						удалить этаж	
 					</div>					
-				</div>				
+				</div>	
+
+				<div style="margin:20px auto;">
+					<input type="text" nameId="rp_height_plane" value=0> 
+				</div>	
 						
 				<div class="substrate" nameId="substrate" style="display: block;">
 

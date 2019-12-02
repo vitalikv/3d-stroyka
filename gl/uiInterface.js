@@ -185,7 +185,7 @@ function createTextUI_1(cdm)
 		infProject.tools.plane.o1[n] = obj;
 		infProject.tools.plane.el[n] = el;
 		
-		el.on('mousedown', function(){ clickItemFloorUI({el: $(this)}) });
+		el.on('mousedown', function(e){ e.stopPropagation(); clickItemFloorUI({el: $(this)}) });
 	}	
 }
 
@@ -497,6 +497,7 @@ function addPlaneListUI(cdm)
 
 	createTextUI_1({obj: plane, nameId: "rp_plane", nameRus: "этаж"+(n+1), uuid: plane.uuid});
 	
+	showHideSubstrate_1({visible: false});
 	
 	// снимаем старые выдиления в UI 
 	for(var i = 0; i < infProject.tools.plane.el.length; i++)
@@ -507,12 +508,16 @@ function addPlaneListUI(cdm)
 	
 	var el = $($('[nameId="rp_plane"]')[0].children[$('[nameId="rp_plane"]')[0].children.length-1]);
 	el.css('background-color', '#00ff00');
-
-	infProject.scene.substrate.active = plane;
+	
 	
 	$('[nameId="input_transparency_substrate"]').val(100);
 	$('[nameId="input_rotate_substrate"]').val( 0 );
-	$('#upload-img').attr('src', '');	
+	$('#upload-img').attr('src', '');
+	$('[nameId="rp_height_plane"]').val( 0 );
+	
+	infProject.scene.substrate.active = plane;
+	setStartPositionRulerSubstrate();
+	showHideSubstrate_1({visible: true});
 	
 	renderCamera();
 }
@@ -521,21 +526,24 @@ function addPlaneListUI(cdm)
 // выбираем этаж 
 function clickItemFloorUI(cdm)
 {
+	if(!cdm) cdm = {};
+	
 	var item = null;
 	var plane = null;	
 	
+	showHideSubstrate_1({visible: false});
 	infProject.scene.substrate.active = null;
 	
 	$('[nameId="input_transparency_substrate"]').val(100);
 	$('[nameId="input_rotate_substrate"]').val( 0 );
 	$('#upload-img').attr('src', '');
+	$('[nameId="rp_height_plane"]').val( 0 );
 	
 	// снимаем старые выдиления в UI 
 	for(var i = 0; i < infProject.tools.plane.el.length; i++)
 	{
 		infProject.tools.plane.el[i].css('background-color', '#ffffff');
 	}	
-	
 	
 	if(cdm.el)		// кликнули на пункт в меню
 	{
@@ -557,20 +565,22 @@ function clickItemFloorUI(cdm)
 	if(texture)
 	{ 
 		$('#upload-img').attr('src', texture.image.src);
-	}
-	
+	}	
 	
 	$('[nameId="input_transparency_substrate"]').val(plane.material.opacity*100);
 	
 	var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
-	$('[nameId="input_rotate_substrate"]').val( rot );	
+	$('[nameId="input_rotate_substrate"]').val( rot );
+
+	$('[nameId="rp_height_plane"]').val( plane.position.y );
 	
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
 	var value = item.attr('uuid');	
 	
 	infProject.scene.substrate.active = plane;
-	
+	setStartPositionRulerSubstrate();
+	showHideSubstrate_1({visible: true});
 }
 
 
