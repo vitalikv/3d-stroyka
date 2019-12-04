@@ -218,7 +218,7 @@ function readURL(e)
 //  substrate
 
 
-$('[nameId="rp_plane"]').mousedown(function (e) { clickItemFloorUI(); });
+$('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 	
 });	 
 </script>
@@ -264,8 +264,11 @@ $('[nameId="rp_plane"]').mousedown(function (e) { clickItemFloorUI(); });
 		<div class="flex_column_1" nameId="wrap_plan" style="display: none;">
 			<div class="right_panel_1_1_h">План</div>
 			
-				<div class="right_panel_1_1_list" nameId="rp_plane">
-					
+				<div class="right_panel_1_1_list rp_height_150px" nameId="rp_plane_1">
+					<div nameId="rp_plane_2">
+					</div>
+					<div nameId="rp_plane_3">
+					</div>					
 				</div>
 				
 				<div style="margin-bottom: 20px;">				

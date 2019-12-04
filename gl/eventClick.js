@@ -149,7 +149,7 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 
 
 
-$('[nameId="button_add_plane"]').mousedown(function () { createSubstrate(); }); 
+$('[nameId="button_add_plane"]').mousedown(function (e) { createSubstrate(); e.stopPropagation(); }); 
 $('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }); 
 
 
@@ -276,7 +276,7 @@ function changeRightMenuUI_1(cdm)
 	$('[nameId="wrap_object"]').hide();
 	$('[nameId="wrap_plan"]').hide();
 	
-	showHideSubstrate_1({visible: false});
+	clickItemFloorUI();		// диактивируем выбранный этаж
 	
 	var name = '';
 	//var name_2 = infProject.ui.right_menu.active;
@@ -304,8 +304,6 @@ function changeRightMenuUI_1(cdm)
 		if(camera == cameraTop) 
 		{ 
 			deActiveSelected();
-			
-			showHideSubstrate_1({visible: true}); 
 		}
 	}
 

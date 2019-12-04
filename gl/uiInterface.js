@@ -179,7 +179,7 @@ function createTextUI_1(cdm)
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });
 	}
 
-	if(nameId == "rp_plane")
+	if(nameId == "rp_plane_2")
 	{
 		var n = infProject.tools.plane.o1.length;	
 		infProject.tools.plane.o1[n] = obj;
@@ -187,6 +187,22 @@ function createTextUI_1(cdm)
 		
 		el.on('mousedown', function(e){ e.stopPropagation(); clickItemFloorUI({el: $(this)}) });
 	}	
+}
+
+
+
+function createTextUI_2(cdm)
+{
+	var nameId = "rp_plane_3";
+	
+	// добавляем в список 	
+	var str = 
+	'<div class="right_panel_1_1_list_item" nameId="button_add_plane">\
+	<div class="right_panel_1_1_list_item_text"> + </div>\
+	</div>';	
+	
+	$('[nameId="'+nameId+'"]').append(str); 
+	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);	
 }
 
 
@@ -495,7 +511,7 @@ function addPlaneListUI(cdm)
 	var plane = cdm.plane;
 	var n = infProject.scene.substrate.floor.length - 1;
 
-	createTextUI_1({obj: plane, nameId: "rp_plane", nameRus: "этаж"+(n+1), uuid: plane.uuid});
+	createTextUI_1({obj: plane, nameId: "rp_plane_2", nameRus: "этаж"+(n+1), uuid: plane.uuid});
 	
 	showHideSubstrate_1({visible: false});
 	
@@ -506,7 +522,7 @@ function addPlaneListUI(cdm)
 	}	
 	
 	
-	var el = $($('[nameId="rp_plane"]')[0].children[$('[nameId="rp_plane"]')[0].children.length-1]);
+	var el = $($('[nameId="rp_plane_2"]')[0].children[$('[nameId="rp_plane_2"]')[0].children.length-1]);
 	el.css('background-color', '#00ff00');
 	
 	
@@ -523,7 +539,7 @@ function addPlaneListUI(cdm)
 }
 
 
-// выбираем этаж 
+// выбираем этаж или диактивируем выбранный этаж
 function clickItemFloorUI(cdm)
 {
 	if(!cdm) cdm = {};

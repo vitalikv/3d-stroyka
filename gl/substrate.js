@@ -778,7 +778,7 @@ function deleteSubstrate(cdm)
 
 	var point = plane.userData.substrate.p;		
 	
-	
+	showHideSubstrate_1({visible: false});
 	
 	var num = -1;
 	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ )
@@ -803,7 +803,7 @@ function deleteSubstrate(cdm)
 		scene.remove(point[i]); 
 	}
 	
-	infProject.scene.substrate.active = null;
+	infProject.scene.substrate.active = null;	// деактивируем активный этаж
 }
 
 
