@@ -181,7 +181,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
-infProject.tools.list_group = {active: true, o1: [], el: []}; 
+infProject.tools.list_group = {active: false, o1: [], el: []}; 
 infProject.tools.center_obj = {active: false, o1: [], el: []};  
 infProject.tools.merge_obj = {active: false, o1: [], o2: [], el: []}; 
 infProject.tools.joint = createJoinP(); 
@@ -280,6 +280,8 @@ if(1==1)
 addObjInCatalogUI_1();	// каталог UI
 changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
 createTextUI_2({});		// добавляем в список +, для добавления этажа
+
+infProject.tools.center_obj.active = true;
 
 //----------- start
 

@@ -70,8 +70,7 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-	
-	
+
 	
 	// кликнули по объекту в сцене
 	if(cdm.click_obj)
@@ -129,14 +128,18 @@ function clickObject3D( obj, cdm )
 			}
 			else
 			{
-				var arr = getArrayJointPoint({obj: obj, group: true});
+				// вкл вкладку центр и выбирается первый объект из группы
+				//var arr = getArrayJointPoint({obj: obj, group: true});
 				
-				if(arr.length > 0) { obj = arr[0]; }				
+				//if(arr.length > 0) { obj = arr[0]; }				
 			}
 		}
 	}
 	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
+	
+	
+	
 	
 	
 	// Position
@@ -172,7 +175,8 @@ function clickObject3D( obj, cdm )
 		}	
 		else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 		{
-			var qt = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());  
+			//var qt = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());
+			var qt = obj.quaternion.clone();
 		}
 		else			// объект
 		{
@@ -238,7 +242,7 @@ function clickObject3D( obj, cdm )
 		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 					
 	}
 	else if(infProject.tools.center_obj.active)	// показаны центры
-	{
+	{  console.log(11111111, obj.userData.tag);
 		if(obj.userData.tag == 'joinPoint')
 		{
 			if(cdm.outline) { outlineAddObj(obj.parent); }	

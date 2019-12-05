@@ -344,20 +344,20 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					
 					<div class="bottom_line_1">
 						<div class="flex_1 relative_1">		
-							<div class="right_panel_1_item_block" nameId="button_wrap_obj_child">
-								<div class="right_panel_1_item_block_text">
-									Группа
-								</div>	
-							</div>	
 							<div class="right_panel_1_item_block" nameId="button_wrap_obj_center">
 								<div class="right_panel_1_item_block_text">
 									Центр
+								</div>	
+							</div>	
+							<div class="right_panel_1_item_block" nameId="button_wrap_obj_child">
+								<div class="right_panel_1_item_block_text">
+									Группа
 								</div>	
 							</div>								
 						</div>
 					</div>
 					
-					<div nameId="wrap_obj_center" style="display: none;">
+					<div nameId="wrap_obj_center">
 						<div class="right_panel_1_1_h">Центр</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_center">
 							
@@ -394,7 +394,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						</div>
 					</div>
 					
-					<div nameId="wrap_obj_child">
+					<div nameId="wrap_obj_child" style="display: none;">
 						<div class="right_panel_1_1_h">Группа</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							

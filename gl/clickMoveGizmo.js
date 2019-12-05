@@ -98,7 +98,8 @@ function clippingGizmo360( objPop )
 		}
 		else if(objPop.userData.obj3D.group && infProject.settings.active.group)	// группа
 		{
-			group.position.copy(objPop.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));  
+			//group.position.copy(objPop.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3())); 
+			group.position.copy(objPop.position);
 		}		
 		else	// объект
 		{
@@ -149,7 +150,10 @@ function clickGizmo( intersect )
 	}
 	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 	{
-		gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
+		//gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
+		
+		obj.updateMatrixWorld();
+		gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
 	}	
 	else								// объект
 	{
@@ -188,7 +192,8 @@ function clickGizmo( intersect )
 		}		
 		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
 		{			
-			setPlaneQ(obj.userData.obj3D.group.userData.groupObj.centerObj, dr, rotY, false);
+			//setPlaneQ(obj.userData.obj3D.group.userData.groupObj.centerObj, dr, rotY, false);
+			setPlaneQ(obj, dr, rotY, false);
 		}
 		else	// объект
 		{
@@ -285,7 +290,8 @@ function moveGizmo( event )
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;
 			var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
 			
-			rotateO({obj: arr, dr: dr, rotY: rotY, centerO: centerObj});
+			//rotateO({obj: arr, dr: dr, rotY: rotY, centerO: centerObj});
+			rotateO({obj: arr, dr: dr, rotY: rotY, centerO: obj});
 		}
 		else	// объект 
 		{

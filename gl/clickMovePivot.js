@@ -307,7 +307,8 @@ function setScalePivotGizmo()
 		}			
 		else if(obj.userData.obj3D.group && infProject.settings.active.group)
 		{
-			var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));
+			//var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));
+			var dist = camera.position.distanceTo(obj.position);
 		}
 		else
 		{

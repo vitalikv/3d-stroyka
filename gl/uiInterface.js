@@ -115,9 +115,7 @@ function clickObjUI(cdm)
 	var obj = cdm.obj;
 	var inf = null;
 	
-	
-	if(obj.userData.obj3D.group) { inf = obj.userData.obj3D.group.userData.groupObj; }
-	else if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
+	if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
 	else { return; }
 	
 	$('[nameId="rp_obj_name"]').val(inf.nameRus);
@@ -255,8 +253,8 @@ function showCenterObjUI(cdm)
 
 	clearListUI_2({list: infProject.tools.center_obj.el});	// очищаем список дочерних объектов группы (если он есть)
 	
-
-	var arr = getArrayJointPoint(cdm);
+console.log(888, obj);
+	var arr = getCenterPointFromObj_1(obj);
 	
 	if(arr.length == 0) return; 	// у объекта нет разъемов
 	

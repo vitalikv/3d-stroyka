@@ -195,7 +195,7 @@ function resetScene()
 		infProject.tools.list_group.el[i].remove();
 	}	
 	
-	infProject.tools.list_group = {active: true, o1: [], el: []}; 
+	infProject.tools.list_group = {active: false, o1: [], el: []}; 
 	
 	
 	// удаляем список центров объекта UI
