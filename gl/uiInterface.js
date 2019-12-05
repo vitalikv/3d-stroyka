@@ -13,7 +13,7 @@ function addObjInCatalogUI_1(cdm)
 		if(o.stopUI) continue;
 		
 		var str = 
-		'<div class="right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
+		'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
 			<div class="right_panel_1_1_list_item_text">'
 			+o.name+
 			'</div>\
@@ -37,7 +37,7 @@ function updateListTubeUI_1(cdm)
 		if(tag == 'wf_line')
 		{
 			var str = 
-			'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
+			'<div class="flex_1 right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
 			<div class="right_panel_1_1_list_item_color"></div>\
 			<div class="right_panel_1_1_list_item_text">труба</div>\
 			<div class="right_panel_1_1_list_item_text"></div>\
@@ -46,7 +46,7 @@ function updateListTubeUI_1(cdm)
 		else if(tag == 'obj')
 		{   
 			var str = 
-			'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
+			'<div class="flex_1 right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
 			<div class="right_panel_1_1_list_item_text">'+obj.userData.obj3D.nameRus+'</div>\
 			</div>';			
 		}
@@ -133,14 +133,29 @@ function createTextUI_1(cdm)
 {
 	var obj = cdm.obj;
 	var nameId = cdm.nameId;
-	var uuid = cdm.uuid;
+	var uuid = obj.uuid;
 	var nameRus = cdm.nameRus;
 	
-	// добавляем в список группу	
-	var str = 
-	'<div class="right_panel_1_1_list_item" uuid="'+uuid+'" group_item_obj="">\
-	<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
-	</div>';	
+	// добавляем в список 	
+	if(nameId == "rp_plane_2")
+	{
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+uuid+'">\
+			<div class="flex_1">\
+				<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
+				<div class="right_panel_1_1_list_item_text">img</div>\
+				<div class="right_panel_1_1_list_item_text">удал</div>\
+			</div>\
+		</div>';			
+	}
+	else
+	{
+		var str = 
+		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+uuid+'" group_item_obj="">\
+		<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
+		</div>';		
+	}
+	
 	
 	$('[nameId="'+nameId+'"]').append(str); 
 	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);
@@ -185,7 +200,13 @@ function createTextUI_1(cdm)
 		infProject.tools.plane.o1[n] = obj;
 		infProject.tools.plane.el[n] = el;
 		
-		el.on('mousedown', function(e){ e.stopPropagation(); clickItemFloorUI({el: $(this)}) });
+		el.on('mousedown', function(e){ clickItemFloorUI({el: $(this)}); e.stopPropagation(); });
+		
+		var el_2 = $(el[0].children[0].children[1]);		 
+		el_2.on('mousedown', function(e){ clickItemParamsPlaneUI({el: $(this), nameId: "substrate"}); e.stopPropagation(); });
+
+		var el_2 = $(el[0].children[0].children[2]);		 
+		el_2.on('mousedown', function(e){ clickItemParamsPlaneUI({el: $(this), nameId: "button_delete_plane"}); e.stopPropagation(); });		
 	}	
 }
 
@@ -197,7 +218,7 @@ function createTextUI_2(cdm)
 	
 	// добавляем в список 	
 	var str = 
-	'<div class="right_panel_1_1_list_item" nameId="button_add_plane">\
+	'<div class="flex_1 right_panel_1_1_list_item" nameId="button_add_plane">\
 	<div class="right_panel_1_1_list_item_text"> + </div>\
 	</div>';	
 	
@@ -205,6 +226,23 @@ function createTextUI_2(cdm)
 	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);	
 }
 
+
+
+
+function clickItemParamsPlaneUI(cdm)
+{
+	console.log(5555, cdm.el);
+	
+	var nameId = cdm.nameId;
+	
+	$('[nameId="substrate"]').hide();
+	$('[nameId="rp_height_plane"]').hide();
+	$('[nameId="button_delete_plane"]').hide();
+	
+	
+	$('[nameId="'+nameId+'"]').show();	
+	
+}
 
 
 // кликнули объект, показываем центры объекта (правом меню UI)

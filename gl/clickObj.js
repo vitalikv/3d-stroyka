@@ -147,7 +147,10 @@ function clickObject3D( obj, cdm )
 	}	
 	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
 	{
-		var pos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());  
+		//var pos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()); 
+
+		obj.updateMatrixWorld();
+		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
 	}
 	else			// объект
 	{

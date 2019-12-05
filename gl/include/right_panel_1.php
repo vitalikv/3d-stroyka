@@ -272,10 +272,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 				</div>
 				
 				<div style="margin-bottom: 20px;">				
-					<div class="button1 button_gradient_1" nameId="button_add_plane">
-						добавить этаж	
-					</div>
-					<div class="button1 button_gradient_1" nameId="button_delete_plane">
+					<div class="button1 button_gradient_1" nameId="button_delete_plane" style="display: none;">
 						удалить этаж	
 					</div>					
 				</div>	
@@ -284,7 +281,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					<input type="text" nameId="rp_height_plane" value=0> 
 				</div>	
 						
-				<div class="substrate" nameId="substrate" style="display: block;">
+				<div class="substrate" nameId="substrate" style="display: none;">
 
 					<input name="file" type="file" accept="image/x-png,image/jpeg" id="load_substrate_1" class="input_load_substrate">
 					<label for="load_substrate_1" class="button1 button_gradient_1" nameId="load_img_1">		
@@ -467,7 +464,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 			<div class="right_panel_1_1_list" list_ui="wf">
 				
 				<?if(1 == 2){?>
-				<div class="right_panel_1_1_list_item">
+				<div class="flex_1 right_panel_1_1_list_item">
 					<div class="right_panel_1_1_list_item_color"></div>
 					<div class="right_panel_1_1_list_item_text">
 						труба 20
