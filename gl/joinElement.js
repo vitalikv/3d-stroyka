@@ -95,7 +95,7 @@ function showJoinPoint(cdm)
 	if(infProject.settings.active.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
 	
-	var arr = getArrayJointPoint({obj: obj, group: infProject.settings.active.group});	
+	var arr = getCenterPointFromObj_1( obj );
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
@@ -554,46 +554,9 @@ function createGroupObj_1(cdm)
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 	}	
 	
-	//getGroupFreeNearlyJP({obj: arr2[0]});
-	
 	return group;
 }
 
-
-
-// получаем не соединенные точки-соединители, которые находятся близко друг к другу -> и соединяем их
-function getGroupFreeNearlyJP(cdm)
-{
-	var arr = getArrayJointPoint({obj: cdm.obj});
-	
-	//cdm.obj.updateMatrixWorld();
-	
-	var arr2 = [];
-	
-	// получаем все не соединенные точки из группы
-	for(var i = 0; i < arr.length; i++)
-	{
-		if(arr[i].userData.centerPoint.join) continue;
-		
-		arr2[arr2.length] = {o: arr[i], pos: arr[i].getWorldPosition(new THREE.Vector3())};
-		
-	}	
-	
-	// получаем точки расположенные близко друг к другу
-	for(var i = 0; i < arr2.length; i++)
-	{
-		for(var i2 = 0; i2 < arr2.length; i2++)
-		{
-			if(arr2[i].o == arr2[i2].o) continue;
-			
-			if(comparePos(arr2[i].pos, arr2[i2].pos)) 
-			{				
-				arr2[i].o.userData.centerPoint.join = arr2[i2].o;
-				arr2[i2].o.userData.centerPoint.join = arr2[i].o;				
-			}
-		}
-	}
-}
 
 
 

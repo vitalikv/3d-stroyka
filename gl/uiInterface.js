@@ -253,8 +253,17 @@ function showCenterObjUI(cdm)
 
 	clearListUI_2({list: infProject.tools.center_obj.el});	// очищаем список дочерних объектов группы (если он есть)
 	
-console.log(888, obj);
+
 	var arr = getCenterPointFromObj_1(obj);
+	
+	createTextUI_1({obj: obj, nameId: "rp_obj_center", nameRus: obj.userData.obj3D.nameRus, uuid:  obj.uuid});
+	
+	// выделяем первый элемент  
+	if(cdm.active == 'first') 
+	{ 
+		var el = $($('[nameId="rp_obj_center"]')[0].children[0]);
+		el.css('background-color', '#00ff00');
+	}	
 	
 	if(arr.length == 0) return; 	// у объекта нет разъемов
 	
@@ -264,14 +273,7 @@ console.log(888, obj);
 		if(!child.userData.centerPoint) continue;
 		
 		createTextUI_1({obj: child, nameId: "rp_obj_center", nameRus: child.userData.centerPoint.nameRus, uuid: child.uuid});	
-	}
-	
-	// выделяем первый элемент  
-	if(cdm.active == 'first') 
-	{ 
-		var el = $($('[nameId="rp_obj_center"]')[0].children[0]);
-		el.css('background-color', '#00ff00');
-	}
+	}	
 }
 
 

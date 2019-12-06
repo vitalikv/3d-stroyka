@@ -115,7 +115,7 @@ function clickObject3D( obj, cdm )
 		else if(infProject.tools.center_obj.active)		// вкл вкладку центр 
 		{			
 			if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин 
-			{ 
+			{ 	
 				if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
 				{
 					showJoinPoint_2({obj: obj});  
@@ -125,13 +125,6 @@ function clickObject3D( obj, cdm )
 				{
 					return;
 				}
-			}
-			else
-			{
-				// вкл вкладку центр и выбирается первый объект из группы
-				//var arr = getArrayJointPoint({obj: obj, group: true});
-				
-				//if(arr.length > 0) { obj = arr[0]; }				
 			}
 		}
 	}
@@ -236,24 +229,11 @@ function clickObject3D( obj, cdm )
 	}	
 	
 	
-	if(infProject.tools.list_group.active)		// показаны группы
-	{
-		if(cdm.outline) { outlineAddObj(obj); }	
-		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 					
-	}
-	else if(infProject.tools.center_obj.active)	// показаны центры
-	{  console.log(11111111, obj.userData.tag);
-		if(obj.userData.tag == 'joinPoint')
-		{
-			if(cdm.outline) { outlineAddObj(obj.parent); }	
-			if(cdm.menu_1) { clickObjUI({obj: obj.parent}); }		// обновляем правое меню 			
-		}
-		else
-		{
-			if(cdm.outline) { outlineAddObj(obj); }	
-			if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 								
-		}
-	}	
+	if(obj.userData.tag == 'joinPoint'){ var obj = obj.parent; }
+	
+	if(cdm.outline) { outlineAddObj(obj); }	
+	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 								
+
 	
 	setScalePivotGizmo();
 }
