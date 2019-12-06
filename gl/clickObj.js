@@ -112,20 +112,18 @@ function clickObject3D( obj, cdm )
 				return;
 			}
 		}
-		else if(infProject.tools.center_obj.active)		// вкл вкладку центр 
+		else if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин  
 		{			
-			if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин 
-			{ 	
-				if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
-				{
-					showJoinPoint_2({obj: obj});  
-					return;			
-				}
-				else		// кликаем на этот же объект (ничего не делаем)
-				{
-					return;
-				}
+			if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
+			{
+				showJoinPoint_2({obj: obj});  
+				return;			
 			}
+			else		// кликаем на этот же объект (ничего не делаем)
+			{
+				return;
+			}
+
 		}
 	}
 	

@@ -204,7 +204,7 @@ function resetScene()
 		infProject.tools.center_obj.el[i].remove();
 	}	
 	
-	infProject.tools.center_obj = {active: false, o1: [], el: []};	
+	infProject.tools.center_obj = {o1: [], el: []};	
 	
 	//disposeHierchy(scene, disposeNode);
 	
