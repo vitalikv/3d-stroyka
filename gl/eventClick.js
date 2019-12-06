@@ -67,8 +67,6 @@ function changeRightMenuUI_2(cdm)
 {
 	$('[nameId="wrap_obj_center"]').hide();
 	$('[nameId="wrap_obj_child"]').hide();
-
-	infProject.tools.list_group.active = false;
 	
 	switchSelectAddObjGroup({active: false});
 	switchJoinObj({active: false});	
@@ -86,7 +84,6 @@ function changeRightMenuUI_2(cdm)
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
 		var obj = getObjFromPivotGizmo();
-		infProject.tools.list_group.active = true;
 		
 		if(obj) 
 		{

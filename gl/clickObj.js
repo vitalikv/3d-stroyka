@@ -75,44 +75,42 @@ function clickObject3D( obj, cdm )
 	// кликнули по объекту в сцене
 	if(cdm.click_obj)
 	{   
-		if(infProject.tools.list_group.active)		// вкл вкладку группа
-		{			
-			if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length)	// вкл режим выбрать объекты для объединения в группу
-			{ 
-				var arr_1 = getObjsFromGroup_1( obj );
-				
-				for(var i = 0; i < arr_1.length; i++)
+		if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length)	// вкл режим выбрать объекты для объединения в группу
+		{ 
+			var arr_1 = getObjsFromGroup_1({obj: obj});
+			
+			for(var i = 0; i < arr_1.length; i++)
+			{
+				if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o2}))
 				{
-					if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o2}))
+					if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o1}))
 					{
-						if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o1}))
-						{
-							infProject.tools.merge_obj.o2[infProject.tools.merge_obj.o2.length] = arr_1[i];
-						}						
-					}					
-				}
-				
-				
-				var arr = [];
-				
-				for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
-				{
-					arr[arr.length] = infProject.tools.merge_obj.o1[i];
-				}
-				
-				for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
-				{
-					arr[arr.length] = infProject.tools.merge_obj.o2[i];
-				}				
-				
-				showListSelectedObjGroupUI();
-				
-				outlineAddObj(obj, {arrO: arr});
-				
-				return;
+						infProject.tools.merge_obj.o2[infProject.tools.merge_obj.o2.length] = arr_1[i];
+					}						
+				}					
 			}
+			
+			
+			var arr = [];
+			
+			for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
+			{
+				arr[arr.length] = infProject.tools.merge_obj.o1[i];
+			}
+			
+			for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
+			{
+				arr[arr.length] = infProject.tools.merge_obj.o2[i];
+			}				
+			
+			showListSelectedObjGroupUI();
+			
+			outlineAddObj(obj, {arrO: arr});
+			
+			return;
 		}
-		else if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин  
+		
+		if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин  
 		{			
 			if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
 			{
@@ -127,11 +125,6 @@ function clickObject3D( obj, cdm )
 		}
 	}
 	
-	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; } 
-	
-	
-	
-	
 	
 	// Position
 	if(obj.userData.tag == 'joinPoint')		// разъем
@@ -139,14 +132,7 @@ function clickObject3D( obj, cdm )
 		var pos = obj.getWorldPosition(new THREE.Vector3());
 		activeJoinPoint({obj: obj});
 	}	
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
-	{
-		//var pos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()); 
-
-		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
-	}
-	else			// объект
+	else			// группа или объект
 	{
 		obj.updateMatrixWorld();
 		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
@@ -164,12 +150,7 @@ function clickObject3D( obj, cdm )
 		{
 			var qt = obj.getWorldQuaternion(new THREE.Quaternion()); 
 		}	
-		else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
-		{
-			//var qt = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldQuaternion(new THREE.Quaternion());
-			var qt = obj.quaternion.clone();
-		}
-		else			// объект
+		else			// группа или объект
 		{
 			var qt = obj.quaternion.clone();		
 		}	 		
@@ -227,33 +208,47 @@ function clickObject3D( obj, cdm )
 	}	
 	
 	
-	if(obj.userData.tag == 'joinPoint'){ var obj = obj.parent; }
-	
-	if(cdm.outline) { outlineAddObj(obj); }	
-	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 								
+	if(obj.userData.tag == 'joinPoint')
+	{ 
+		if(cdm.menu_1) { clickItemCenterObjUI_1({obj: obj}); }
+	}
+	else
+	{
+		if(cdm.outline) { outlineAddObj(obj); }	
+		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
+	}
 
 	
 	setScalePivotGizmo();
 }
 
 
-// пролучить все объекты принадлежащие группе (минус центральный куб)
-function getObjsFromGroup_1( obj )
+// пролучить все объекты принадлежащие группе 
+function getObjsFromGroup_1( cdm )
 {
+	var obj = cdm.obj;
+	var type = (cdm.type) ? cdm.type : '';
 	var arr = [ obj ];
 	
 	if(obj.userData.obj3D)
 	{
 		if(obj.userData.obj3D.group)
 		{
+			var arr = [];						
 			var objs = obj.userData.obj3D.group.userData.groupObj.child;
-			var arr = [];
 			
-			for(var i = 0; i < objs.length; i++)
+			if(type == 'full')	
 			{
-				if(!objs[i].userData.obj3D) continue;
-				
-				arr[arr.length] = objs[i];
+				arr = objs;
+			}
+			else		// минус центральный куб
+			{
+				for(var i = 0; i < objs.length; i++)
+				{
+					if(!objs[i].userData.obj3D) continue;
+					
+					arr[arr.length] = objs[i];
+				}				
 			}
 		}
 	}
@@ -261,31 +256,6 @@ function getObjsFromGroup_1( obj )
 	return arr;	
 }
 
-
-// пролучить все объекты принадлежащие группе 
-function getObjsFromGroup( obj ) 
-{	
-	var arr = [ obj ];
-	
-	if(obj.userData.obj3D)
-	{
-		if(obj.userData.obj3D.group)
-		{
-			var objs = infProject.scene.array.obj;
-			var arr = [];
-			
-			for(var i = 0; i < objs.length; i++)
-			{
-				if(!objs[i].userData.obj3D.group) continue;
-				if(obj.userData.obj3D.group != objs[i].userData.obj3D.group) continue;
-				
-				arr[arr.length] = objs[i];
-			}
-		}
-	}
-	
-	return arr;  
-}
 
 
 
@@ -494,7 +464,7 @@ function switchSelectAddObjGroup(cdm)
 
 		if(obj)
 		{
-			infProject.tools.merge_obj.o1 = getObjsFromGroup_1( obj );
+			infProject.tools.merge_obj.o1 = getObjsFromGroup_1({obj: obj});
 		}
 	}
 	else
@@ -551,7 +521,7 @@ function copyObj(cdm)
 	if(!obj) return;	
 	
 	
-	var arr = getObjsFromGroup_1( obj );
+	var arr = getObjsFromGroup_1({obj: obj});
 
 	var flag = obj.userData.obj3D.group;	// группа или одиночный объект
 	
@@ -597,7 +567,7 @@ function copyObj(cdm)
 	}
 	else
 	{
-		clickObject3D( arr2[0], {click_obj: true, menu_1: true, group: true, outline: true} );
+		clickObject3D( arr2[0], {click_obj: true, menu_1: true, outline: true} );
 	}
 }
 
@@ -619,7 +589,7 @@ function objRotateReset(cdm)
 	
 	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
-		var arr_2 = getObjsFromGroup_1( obj_1 );
+		var arr_2 = getObjsFromGroup_1({obj: obj_1});
 		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект

@@ -95,13 +95,8 @@ function clippingGizmo360( objPop )
 		if(objPop.userData.tag == 'joinPoint')	// разъем
 		{
 			group.position.copy(objPop.getWorldPosition(new THREE.Vector3()));   
-		}
-		else if(objPop.userData.obj3D.group && infProject.settings.active.group)	// группа
-		{
-			//group.position.copy(objPop.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3())); 
-			group.position.copy(objPop.position);
 		}		
-		else	// объект
+		else	//  группа или объект
 		{
 			group.position.copy(objPop.position);
 		}
@@ -148,14 +143,7 @@ function clickGizmo( intersect )
 	{
 		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());   
 	}
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// группа
-	{
-		//gizmo.userData.gizmo.active.startPos = obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3());
-		
-		obj.updateMatrixWorld();
-		gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
-	}	
-	else								// объект
+	else								//  группа или объект
 	{
 		obj.updateMatrixWorld();
 		gizmo.userData.gizmo.active.startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
@@ -190,12 +178,7 @@ function clickGizmo( intersect )
 		{
 			setPlaneQ(obj, dr, rotY, false);   
 		}		
-		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
-		{			
-			//setPlaneQ(obj.userData.obj3D.group.userData.groupObj.centerObj, dr, rotY, false);
-			setPlaneQ(obj, dr, rotY, false);
-		}
-		else	// объект
+		else	// группа или объект
 		{
 			setPlaneQ(obj, dr, rotY, false);
 		}

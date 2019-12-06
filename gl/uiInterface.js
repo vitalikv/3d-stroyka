@@ -131,7 +131,7 @@ function createTextUI_1(cdm)
 {
 	var obj = cdm.obj;
 	var nameId = cdm.nameId;
-	var uuid = obj.uuid;
+	var uuid = cdm.uuid;
 	var nameRus = cdm.nameRus;
 	
 	// добавляем в список 	
@@ -400,14 +400,14 @@ function clickItemObjNameUI(cdm)
 	if(value == 'group_item')
 	{   
 		obj = infProject.tools.list_group.o1[0];
-		clickObject3D(obj, {group: true, outline: true}); 
+		clickObject3D(obj, {outline: true}); 
 		showCenterObjUI({obj: obj, group: true, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
 	}
 	else
 	{
-		clickObject3D(obj, {group: false, outline: true}); 
+		clickObject3D(obj, {outline: true}); 
 		showCenterObjUI({obj: obj, group: false, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
@@ -439,6 +439,7 @@ function clickItemCenterObjUI_1(cdm)
 		}
 
 		item = cdm.el;
+		clickObject3D(obj);
 	}
 	else if(cdm.obj)	// кликнули на объект в сцене
 	{
@@ -453,6 +454,7 @@ function clickItemCenterObjUI_1(cdm)
 	{
 		item = infProject.tools.center_obj.el[cdm.item];
 		obj = infProject.tools.center_obj.o1[cdm.item];
+		clickObject3D(obj);
 	}
 	else
 	{
@@ -465,7 +467,7 @@ function clickItemCenterObjUI_1(cdm)
 	var value = item.attr('uuid');	 
 	
 	// выделяем объект в сцене
-	clickObject3D(obj);		 
+	//clickObject3D(obj);		 
 }
 
 

@@ -301,16 +301,11 @@ function setScalePivotGizmo()
 	}
 	else
 	{
-		if(obj.userData.tag == 'joinPoint')
+		if(obj.userData.tag == 'joinPoint')		// разъем
 		{
 			var dist = camera.position.distanceTo(obj.getWorldPosition(new THREE.Vector3())); 
 		}			
-		else if(obj.userData.obj3D.group && infProject.settings.active.group)
-		{
-			//var dist = camera.position.distanceTo(obj.userData.obj3D.group.userData.groupObj.centerObj.getWorldPosition(new THREE.Vector3()));
-			var dist = camera.position.distanceTo(obj.position);
-		}
-		else
+		else			// группа или объект
 		{
 			var dist = camera.position.distanceTo(obj.position); 
 		}			

@@ -305,7 +305,7 @@ function joinElement(cdm)
 	}
 	else if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
-		var arr_2 = getObjsFromGroup_1( obj_1 );
+		var arr_2 = getObjsFromGroup_1({obj: obj_1});
 		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект
@@ -428,7 +428,7 @@ function addGroupObj(cdm)
 
 	switchSelectAddObjGroup({active: false});
 	
-	clickObject3D( arr[0], {click_obj: true, menu_1: true, group: true, outline: true} );
+	clickObject3D( arr[0], {click_obj: true, menu_1: true, outline: true} );
 
 }
 

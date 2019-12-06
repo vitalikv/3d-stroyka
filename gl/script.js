@@ -181,7 +181,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
-infProject.tools.list_group = {active: false, o1: [], el: []}; 
+infProject.tools.list_group = { o1: [], el: []}; 
 infProject.tools.center_obj = { o1: [], el: []};  
 infProject.tools.merge_obj = {active: false, o1: [], o2: [], el: []}; 
 infProject.tools.joint = createJoinP(); 
@@ -264,7 +264,7 @@ if(1==1)
 		
 		var arr = [obj];
 		if(cdm.arrO) { var arr = cdm.arrO; }
-		else if(infProject.settings.active.group) { var arr = getObjsFromGroup( obj ); }		
+		else if(infProject.settings.active.group) { var arr = getObjsFromGroup_1({obj: obj, type: 'full'}); }		
 		
 		outlinePass.selectedObjects = arr;  
 	}
