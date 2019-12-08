@@ -170,14 +170,6 @@ function resetScene()
 	{ 
 		disposeNode(obj[i]);
 		scene.remove(obj[i]);
-	}
-
-	for ( var i = 0; i < group.length; i++ )
-	{ 
-		var centerObj = group[i].userData.groupObj.centerObj;
-		
-		disposeNode(centerObj);
-		scene.remove(centerObj); 
 	}	
 	
 	
@@ -615,11 +607,6 @@ function getJsonGeometry()
 	
 	for ( var i = 0; i < infProject.scene.array.group.length; i++ )
 	{
-		var obj = infProject.scene.array.group[i].userData.groupObj.centerObj;
-		
-		var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
-		var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
-
 		var arrO = [];
 		var child = infProject.scene.array.group[i].userData.groupObj.child;
 		
@@ -633,9 +620,6 @@ function getJsonGeometry()
 		
 		var m = group.length;
 		group[m] = {};
-		group[m].id = Number(obj.userData.id);
-		group[m].pos = pos;
-		group[m].rot = rot;
 		group[m].obj = arrO;
 	}
 	
@@ -938,10 +922,7 @@ function loadObjFromBase(cdm)
 				var group = infProject.project.file.group;
 				
 				for ( var i2 = 0; i2 < group.length; i2++ )
-				{					
-					group[i2].pos = new THREE.Vector3( group[i2].pos.x, group[i2].pos.y, -group[i2].pos.z );
-					group[i2].rot = new THREE.Vector3( THREE.Math.degToRad(group[i2].rot.x), THREE.Math.degToRad(group[i2].rot.y), THREE.Math.degToRad(group[i2].rot.z) );
-					
+				{										
 					var arrId = []; 
 					for ( var i3 = 0; i3 < group[i2].obj.length; i3++ )
 					{
@@ -951,8 +932,6 @@ function loadObjFromBase(cdm)
 					
 					createGroupObj_1(group[i2]);
 				}
-				
-				
 				
 				readyProject();
 			}

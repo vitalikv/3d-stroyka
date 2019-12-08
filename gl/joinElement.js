@@ -306,7 +306,6 @@ function joinElement(cdm)
 	else if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
 		var arr_2 = getObjsFromGroup_1({obj: obj_1});
-		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект
 	{
@@ -396,16 +395,11 @@ function addGroupObj(cdm)
 		if(!obj.userData.obj3D.group) return;
 		
 		var group = obj.userData.obj3D.group;
-		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;
 		
 		obj.userData.obj3D.group = null;
 		
 		// удаляем группу
-		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});	
-		
-		// удаляем центральный куб
-		disposeNode(centerObj);
-		scene.remove(centerObj);							
+		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});								
 	}
 
 	
@@ -500,34 +494,16 @@ function formGroupObj(cdm)
 
 function createGroupObj_1(cdm)
 {
-	if(!cdm.id) { cdm.id = countId; countId++; }
-	if(!cdm.pos) { cdm.pos = new THREE.Vector3(); }
-	if(!cdm.rot) { cdm.rot = new THREE.Vector3(); }
 	if(!cdm.nameRus) { cdm.nameRus = 'группа'; }
 	
 	var group = {};
 	group.userData = {};
 	group.userData.tag = 'group';
-	group.userData.id = cdm.id;
 	group.userData.groupObj = {};	
 	group.userData.groupObj.nameRus = cdm.nameRus;
-	group.userData.groupObj.centerObj = null;
 	group.userData.groupObj.child = [];
 	
 	infProject.scene.array.group[infProject.scene.array.group.length] = group;
-
-
-	var material = new THREE.MeshLambertMaterial( { color : 0xcccccc, transparent: true, opacity: 1, depthTest: false } ); 
-	//material.visible = false;	
-	var cube = new THREE.Mesh( createGeometryCube(0.03, 0.03, 0.03), material );
-	cube.userData.tag = 'group_center'; 
-	cube.position.copy(cdm.pos);
-	cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);
-	scene.add(cube);
-	
-	group.userData.groupObj.centerObj = cube; 
-	group.userData.groupObj.child[0] = cube;
-
 	
 	var arr2 = [];
 	 

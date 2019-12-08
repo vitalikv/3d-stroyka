@@ -264,7 +264,7 @@ if(1==1)
 		
 		var arr = [obj];
 		if(cdm.arrO) { var arr = cdm.arrO; }
-		else if(infProject.settings.active.group) { var arr = getObjsFromGroup_1({obj: obj, type: 'full'}); }		
+		else if(infProject.settings.active.group) { var arr = getObjsFromGroup_1({obj: obj}); }		
 		
 		outlinePass.selectedObjects = arr;  
 	}

@@ -144,7 +144,7 @@ function clickObject3D( obj, cdm )
 	{
 		var qt = new THREE.Quaternion();
 	}
-	else		// локальный gizmo, относительно centerObj
+	else		// локальный gizmo
 	{					
 		if(obj.userData.tag == 'joinPoint')		// разъем
 		{
@@ -227,29 +227,13 @@ function clickObject3D( obj, cdm )
 function getObjsFromGroup_1( cdm )
 {
 	var obj = cdm.obj;
-	var type = (cdm.type) ? cdm.type : '';
 	var arr = [ obj ];
 	
 	if(obj.userData.obj3D)
 	{
 		if(obj.userData.obj3D.group)
-		{
-			var arr = [];						
-			var objs = obj.userData.obj3D.group.userData.groupObj.child;
-			
-			if(type == 'full')	
-			{
-				arr = objs;
-			}
-			else		// минус центральный куб
-			{
-				for(var i = 0; i < objs.length; i++)
-				{
-					if(!objs[i].userData.obj3D) continue;
-					
-					arr[arr.length] = objs[i];
-				}				
-			}
+		{						
+			var arr = obj.userData.obj3D.group.userData.groupObj.child;			
 		}
 	}
 	
@@ -523,15 +507,7 @@ function copyObj(cdm)
 	
 	var arr = getObjsFromGroup_1({obj: obj});
 
-	var flag = obj.userData.obj3D.group;	// группа или одиночный объект
-	
-	// если нужно смещение
-	if(flag)
-	{
-		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj;	
-		var pos = new THREE.Vector3( -centerObj.position.x, 0.5-centerObj.position.y, -centerObj.position.z );		
-	}
-	
+	var flag = obj.userData.obj3D.group;	// группа или одиночный объект		
 	
 	var arr2 = [];
 	
@@ -546,7 +522,7 @@ function copyObj(cdm)
 		var clone = arr2[arr2.length] = arr[i].clone();
 
 		clone.userData.id = countId; countId++;
-		//clone.position.add(pos);		// смещение к нулю
+
 		infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
 		scene.add( clone );	
 
@@ -582,15 +558,12 @@ function objRotateReset(cdm)
 
 
 	var obj_1 = obj;		
-
-
 	var diff_2 = obj_1.quaternion.clone().inverse();					// разница между Quaternions
 	
 	
 	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
 	{
-		var arr_2 = getObjsFromGroup_1({obj: obj_1});
-		arr_2[arr_2.length] = obj_1.userData.obj3D.group.userData.groupObj.centerObj;
+		var arr_2 = obj_1.userData.obj3D.group.userData.groupObj.child;
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект
 	{
@@ -606,22 +579,22 @@ function objRotateReset(cdm)
 	}
 	
 	
-	if(obj_1.userData.obj3D.group && infProject.settings.active.group)
+	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
-		var centerObj = obj.userData.obj3D.group.userData.groupObj.centerObj.position.clone();
+		var pos = obj.getWorldPosition(new THREE.Vector3());   
 	}
-	else
+	else								//  группа или объект
 	{
-		var centerObj = obj_1.position.clone();
-	}
+		var pos = obj.position.clone();		
+	}		
 	
 
 	// вращаем position объектов, относительно точки-соединителя
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].position.sub(centerObj);
+		arr_2[i].position.sub(pos);
 		arr_2[i].position.applyQuaternion(diff_2); 	
-		arr_2[i].position.add(centerObj);
+		arr_2[i].position.add(pos);
 	}
 	
 
@@ -630,6 +603,16 @@ function objRotateReset(cdm)
 	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
 	
 
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		tools.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+	}
+	else
+	{
+		tools.rotation.copy( obj.rotation );
+	}
+	
+	upMenuRotateObjPop(obj);
 }
 
 

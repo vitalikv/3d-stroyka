@@ -398,35 +398,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						<div class="right_panel_1_1_h">Группа</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
-						</div>
-						
-						<div class="flex_1 w_1">
-							
-							<div class="button1 button_gradient_1" nameId="select_pivot">
-								<img src="<?=$path?>/img/move_1.png">	
-							</div>	
-							<div class="button1 button_gradient_1" nameId="select_gizmo">
-								<img src="<?=$path?>/img/rotate_1.png">	
-							</div>	
-							
-							
-							
-							<select name="fruit">
-							<option value ="none">Глобально</option>
-							<option value ="guava">Локально</option>
-							</select>
-							
-						</div>
-
-						<div class="flex_1 input_rotate">
-							<input type="text" nameId="object_rotate_X" value="0">
-							<input type="text" nameId="object_rotate_Y" value="0">
-							<input type="text" nameId="object_rotate_Z" value="0">
-						</div>
-					
-						<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
-							reset	
-						</div>
+						</div>						
 						
 						<div class="button1 button_gradient_1" nameId="button_copy_obj">
 							копировать	
@@ -451,7 +423,36 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 							удалить	
 						</div>
 						
-					</div>									
+					</div>	
+
+
+					<div class="flex_1 w_1">
+						
+						<div class="button1 button_gradient_1" nameId="select_pivot">
+							<img src="<?=$path?>/img/move_1.png">	
+						</div>	
+						<div class="button1 button_gradient_1" nameId="select_gizmo">
+							<img src="<?=$path?>/img/rotate_1.png">	
+						</div>	
+						
+						
+						
+						<select name="fruit">
+						<option value ="none">Глобально</option>
+						<option value ="guava">Локально</option>
+						</select>
+						
+					</div>
+
+					<div class="flex_1 input_rotate">
+						<input type="text" nameId="object_rotate_X" value="0">
+						<input type="text" nameId="object_rotate_Y" value="0">
+						<input type="text" nameId="object_rotate_Z" value="0">
+					</div>
+				
+					<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
+						reset	
+					</div>					
 					
 				</div> 
 			</div>	
