@@ -361,16 +361,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						<div class="right_panel_1_1_h">Центр</div>
 						<div class="right_panel_1_1_list" nameId="rp_obj_center">
 							
-						</div>
-						
-						<div class="flex_1">		
-							<div class="button1 button_gradient_1" nameId="select_pivot">
-								перемещение	
-							</div>	
-							<div class="button1 button_gradient_1" nameId="select_gizmo">
-								вращение	
-							</div>								
-						</div>	
+						</div>						
 
 						<div class="flex_1 align_items block_rp_1">
 							<div class="checkbox_1" nameId="show_hide_join_point">
