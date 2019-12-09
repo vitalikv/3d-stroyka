@@ -678,16 +678,10 @@ function assignSizeSubstrate()
 	
 	var plane = infProject.scene.substrate.active;	
 	if(!plane) return;
-
-	var point = plane.userData.substrate.p;	
 	
-	var ruler_1 = infProject.scene.substrate.ruler[0];
-	var ruler_2 = infProject.scene.substrate.ruler[1];
-	
-	var dist = ruler_1.position.distanceTo( ruler_2.position );
+	var ruler = infProject.scene.substrate.ruler;	
+	var dist = ruler[0].position.distanceTo( ruler[1].position );
 	var ratio = value.num/dist;
-
-	var offset = new THREE.Vector3().subVectors( ruler_1.position, plane.position );
 	
 	plane.geometry.computeBoundingBox();	
 	var x = (Math.abs(plane.geometry.boundingBox.max.x) + Math.abs(plane.geometry.boundingBox.min.x));
@@ -698,7 +692,25 @@ function assignSizeSubstrate()
 	
 	updateSizeSubstrate({obj: plane, size: {x: x*ratio, z: z*ratio}});
 		
-	//plane.position.add(offset);
+	// устанавливаем линейку со смещенем в соотвестии с изменившимся размером подложки 
+	if(1==1)
+	{	
+		var v1 = plane.worldToLocal( ruler[0].position.clone() );
+		var v2 = plane.worldToLocal( ruler[1].position.clone() );		
+		
+		var v1 = new THREE.Vector3().addScaledVector( v1, ratio );
+		var v2 = new THREE.Vector3().addScaledVector( v2, ratio );
+		
+		var v1 = plane.localToWorld( v1.clone() ); 
+		var v2 = plane.localToWorld( v2.clone() ); 
+		
+		ruler[0].position.x = v1.x;
+		ruler[0].position.z = v1.z; 	
+		ruler[1].position.x = v2.x;
+		ruler[1].position.z = v2.z;	
+
+		setPosRotLineRulerSubstrate({ruler: ruler});
+	}
 	
 	$('[nameId="input_size_substrate"]').val( value.num );
 	
