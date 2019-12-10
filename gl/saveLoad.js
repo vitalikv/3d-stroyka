@@ -1132,10 +1132,6 @@ function loadStartForm(cdm)
 		getFormWallR_1(); 	// получаем параметры стены из input 
 		createFormWallR(); 
 	}  
-	if(form == 'wall_plaster') 
-	{ 
-		createWallPlaster();
-	} 
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	

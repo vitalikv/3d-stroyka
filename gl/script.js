@@ -180,7 +180,7 @@ infProject.geometry = { circle : createCircleSpline() }
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.geometry.wf_point = createGeometryCube(0.1, 0.1, 0.1, {});
-infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: [createLineAxis(), createLineAxis()] }
+infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: createLineAxis() }
 infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.tools.list_group = { o1: [], el: []}; 
 infProject.tools.center_obj = { o1: [], el: []};  
@@ -645,27 +645,26 @@ function createGeometryWall(x, y, z, pr_offsetZ)
 
 function createLineAxis() 
 {
-	var geometry = createGeometryCube(0.5, 0.01, 0.01);
+	var axis = [];
 	
-	var p1 = new THREE.Vector3(0,0,0);
-	var p2 = new THREE.Vector3(1,0,0);
+	var geometry = createGeometryCube(0.5, 0.02, 0.02);		
+	var v = geometry.vertices;	
+	v[3].x = v[2].x = v[5].x = v[4].x = 500;
+	v[0].x = v[1].x = v[6].x = v[7].x = -500;	
 	
-	var d = p1.distanceTo( p2 );	
-	var v = geometry.vertices;
+	var material = new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, depthTest: false, lightMap : lightMap_1 } );
 	
-	v[3].x = v[2].x = v[5].x = v[4].x = d;
-	v[0].x = v[1].x = v[6].x = v[7].x = 0;
-	
-	
-	var axis = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color : 0xff0000, transparent: true, depthTest: false } ) );
-	axis.position.copy( p1 );
-	axis.renderOrder = 2;
-	scene.add( axis );		
-	
-	axis.visible = false;
+	for(var i = 0; i < 2; i++)
+	{
+		axis[i] = new THREE.Mesh( geometry, material );
+		axis[i].renderOrder = 2;
+		axis[i].visible = false;
+		scene.add( axis[i] );				
+	}		
 	
 	return axis;
 }
+
 
 // vertex для Gizmo
 function createGeometryCircle( vertices )
@@ -847,7 +846,6 @@ function createOneWall3( point1, point2, width, cdm )
 	{
 		for( var i = 0; i < cdm.color.length; i++ )
 		{
-			console.log(cdm.color[i]);
 			for( var i2 = 0; i2 < materials.length; i2++ )
 			{
 				if(cdm.color[i].index == i2) { materials[i2].color = new THREE.Color( cdm.color[i].o ); break; }
@@ -902,7 +900,6 @@ function createOneWall3( point1, point2, width, cdm )
 	//wall.userData.wall.active = { click: true, hover: true };
 	
 	wall.userData.wall.brick = { arr : [] };
-	wall.userData.wall.plaster = { o : null };
 	wall.userData.wall.room = { side : 0, side2 : [null,null,null] };
 	
 	var v = wall.geometry.vertices;
@@ -948,63 +945,7 @@ function createOneWall3( point1, point2, width, cdm )
 	point2.p[n] = point1;
 	point2.start[n] = 1;
 		
-	
-	// штукатурная стена
-	if(cdm.plaster)
-	{
-		var index = 1;
-		
-		wall.updateMatrixWorld();
-		
-		var v = wall.userData.wall.v;		
-		
-		if(index == 1) { var x = v[v.length - 6].x - v[0].x; }
-		else if(index == 2) { var x = v[v.length - 2].x - v[4].x; }	
 
-		var width = cdm.plaster.width;
-		
-		var geometry = createGeometryCube(1, height, 1, {material:true});
-		var v = geometry.vertices;
-		v[0].x = v[1].x = v[6].x = v[7].x = 0;
-		v[2].x = v[3].x = v[4].x = v[5].x = x;
-		v[0].z = v[1].z = v[2].z = v[3].z = width;	// index 1
-		v[4].z = v[5].z = v[6].z = v[7].z = 0;			
-		
-		
-		var color = [0x7d7d7d, 0x696969]; 		
-		var material = new THREE.MeshLambertMaterial({ color : 0xc4c4c4, lightMap : lightMap_1 });
-		var material_1 = new THREE.MeshLambertMaterial({ color : color[0], lightMap : lightMap_1 });
-		
-		var materials = [ material.clone(), material_1.clone(), material_1.clone(), new THREE.MeshLambertMaterial( { color: 0xa1a1a1, lightMap : lightMap_1 } ) ];
-	
-		var wall_2 = new THREE.Mesh( geometry, materials );
-		
-		
-		var num = (index == 1) ? 0 : 4;
-
-		var pos = wall.localToWorld( wall.userData.wall.v[ num ].clone() );
-		
-		wall_2.position.copy(pos);
-		wall_2.rotation.copy(wall.rotation);
-		
-		upUvs_1( wall_2 );
-		
-		var texture = [{index:1, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}, {index:2, img:infProject.load.img[1], repeat:{x:0.6, y:0.6}}];
-		
-		for ( var i = 0; i < texture.length; i++ )
-		{
-			setTexture({obj:wall_2, material:texture[i]});
-		}
-
-		wall_2.userData.wall_2 = {};		
-		wall_2.userData.wall_2.height_1 = Math.round(height * 100) / 100;
-		wall_2.userData.wall_2.width = Math.round(width * 1000) / 1000;
-		
-		scene.add( wall_2 );
-		
-		wall.userData.wall.plaster.o = wall_2;
-	}
-	
 	
 	scene.add( wall );
 		
@@ -1067,102 +1008,6 @@ function setTexture(cdm)
 }
 
 
-
-
-// изменение высоты стен
-function changeHeightWall()
-{  
-	if(infProject.activeInput == 'input-height')
-	{
-		var h2 = $('input[data-action="input-height"]').val();
-		h2 /= 100;   
-	}	
-	else if(infProject.activeInput == 'size-wall-height')
-	{
-		var h2 = $('input[data-action="size-wall-height"]').val();
-	}	
-	
-	if(!isNumeric(h2)) return;	
-	h2 = Number(h2);
-	
-	
-	if(h2 < 0.01) { h2 = 0.01; }
-	if(h2 > 3) { h2 = 3; }
-		
-	height_wall = h2;	
-	if(infProject.settings.floor.changeY) { infProject.settings.floor.height = infProject.settings.floor.posY = h2; }		
-	
-	clickMovePoint_BSP( obj_line );
-	
-	for ( var i = 0; i < obj_line.length; i++ )
-	{
-		var v = obj_line[i].geometry.vertices;
-		
-		v[1].y = h2;
-		v[3].y = h2;
-		v[5].y = h2;
-		v[7].y = h2;
-		v[9].y = h2;
-		v[11].y = h2;
-		obj_line[i].geometry.verticesNeedUpdate = true;
-		obj_line[i].geometry.elementsNeedUpdate = true;
-		
-		obj_line[i].userData.wall.height_1 = Math.round(h2 * 100) / 100;
-	}
-	
-	upLabelPlan_1( obj_line );
-	clickPointUP_BSP( obj_line );
-	
-	var n = 0;
-	var circle = infProject.geometry.circle;
-	var v = infProject.tools.point.geometry.vertices;	
-	
-	for ( var i = 0; i < circle.length; i++ )
-	{		
-		v[ n ] = new THREE.Vector3().addScaledVector( circle[ i ].clone().normalize(), 0.1 / camera.zoom );
-		v[ n ].y = 0;
-		n++;
-
-		v[ n ] = new THREE.Vector3();
-		v[ n ].y = 0;
-		n++;
-		
-		v[ n ] = v[ n - 2 ].clone();
-		v[ n ].y = h2 + 0.01;
-		n++;
-
-		v[ n ] = new THREE.Vector3();
-		v[ n ].y = h2 + 0.01;
-		n++; 		
-	}	
-	infProject.tools.point.geometry.verticesNeedUpdate = true;
-	infProject.tools.point.geometry.elementsNeedUpdate = true;
-	
-	
-	
-	//h2 = Math.round(h2 * 10) / 100;
-	console.log(h2);
-	
-	if(infProject.activeInput == 'input-height')
-	{
-		$('input[data-action="input-height"]').val(h2*100);
-	}	
-	else if(infProject.activeInput == 'size-wall-height')
-	{
-		$('input[data-action="size-wall-height"]').val(h2);
-	}	
-	
-	updateShapeFloor(room);
-	calculationAreaFundament_2();
-	
-	if(infProject.scene.array.wall.length > 0) { showRuleCameraWall(); }	// обновляем размеры стены
-	
-	renderCamera();
-}
-	
-	
-
-	
 
 
 
@@ -1663,16 +1508,10 @@ document.body.addEventListener("keydown", function (e)
 		if(e.keyCode == 13)
 		{ 
 			console.log(infProject.activeInput);
-			
-			if(infProject.activeInput == 'input-height') { changeHeightWall(); }
-			//if(infProject.activeInput == 'input-width') { inputWidthOneWall({wall:obj_line[0], width:{value:7, unit:'cm'}, offset:'wallRedBlueArrow'}) } 
+			 
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
 			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
 			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }
-			if(infProject.activeInput == 'wall_plaster_width_1') 
-			{ 		
-				inputWidthOneWallPlaster({wall:obj_line[0], width:{value:$('[nameid="wall_plaster_width_1"]').val(), unit:'cm'}, index:1}) 
-			}
 			if(infProject.activeInput == 'size-grid-tube-xy-1')
 			{
 				updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});

@@ -79,14 +79,6 @@ if($url == '/calculator/ploshchad_uchastka')
 	$interface['estimate'] = 0;	
 	$interface['click_wall_2D'] = 1;
 }
-if($url == '/calculator/shtukaturka_na_stene')	
-{ 
-	$title = 'Расчет штукатурки на стене 3D'; 
-	$nameId = 'штукатурка на стене'; 
-	$interface['wall_1'] = 0;
-	$interface['wall_plaster_width_1'] = 1;
-	$interface['wd_1'] = 1;
-}
 if($url == '/calculator/raschet_kirpicha')	
 { 
 	$title = 'Расчет кирпича для стены 3D'; 
@@ -230,20 +222,6 @@ else if($url == '/calculator/obyem_pomeshcheniya')
 	$infProject['settings']['floor']['o'] = true;
 	$infProject['settings']['floor']['areaPoint'] = 'inside';
 }	
-else if($url == '/calculator/shtukaturka_na_stene') 
-{ 
-	$infProject['scene']['load'] = 'wall_kirpich';
-	$infProject['load']['img'] = ['img/load/kirpich.jpg', 'img/load/beton.jpg'];
-	$infProject['settings']['project'] = 'wall_plaster';
-	$infProject['settings']['camera']['type'] = 'front';
-	$infProject['settings']['interface']['button']['cam2d'] = 'front';
-	$infProject['settings']['wall']['material'][0] = ['index' => 1, 'img' => $infProject['load']['img'][0], 'repeat' => ['x' => 0.6, 'y' => 0.6]];
-	$infProject['settings']['wall']['material'][1] = ['index' => 2, 'img' => $infProject['load']['img'][0], 'repeat' => ['x' => 0.6, 'y' => 0.6]];
-	$infProject['settings']['wall']['length'] = 6;
-	$infProject['settings']['wall']['width'] = 0.3;
-	$infProject['settings']['wall']['height'] = 2.5;
-	$infProject['settings']['wall']['plaster'] = ['width' => 0.03];
-}
 else if($url == '/calculator/raschet_kirpicha') 
 { 
 	$infProject['scene']['load'] = 'wall_kirpich';

@@ -54,56 +54,6 @@ function clickMoveWD_BSP( wd, wall )
 			else if(wall.geometry.faces[i].normal.y == 1) { wall.geometry.faces[i].materialIndex = 3; }
 			else if(wall.geometry.faces[i].normal.y == -1) { wall.geometry.faces[i].materialIndex = 3; }
 		}		
-	}
-	
-	if(wall.userData.wall.plaster.o)
-	{
-		var wall_2 = wall.userData.wall.plaster.o;
-		
-		var geometry = createGeometryCube(1, wall_2.userData.wall_2.height_1, 1, {material:true});	// обновляем стену до простой стены
-		var v = geometry.vertices;
-		v[0].x = v[1].x = v[6].x = v[7].x = 0;
-		v[2].x = v[3].x = v[4].x = v[5].x = d;
-		v[0].z = v[1].z = v[2].z = v[3].z = wall_2.userData.wall_2.width;	// index 1
-		v[4].z = v[5].z = v[6].z = v[7].z = 0;				
-		
-		wall_2.geometry = geometry;
-		wall_2.geometry.verticesNeedUpdate = true; 
-		wall_2.geometry.elementsNeedUpdate = true;	
-		wall_2.geometry.computeBoundingSphere();
-		wall_2.geometry.computeBoundingBox();
-		wall_2.geometry.computeFaceNormals();			
-		upUvs_1( wall_2 );
-			
-
-		// вырезаем отверстия для окон/дверей
-		var arrO = wall.userData.wall.arrO;
-		
-		for ( var n = 0; n < arrO.length; n++ )
-		{
-			if(arrO[n] == wd) continue;
-			
-			var objClone = createCloneWD_BSP( arrO[n] ); 
-
-			var wdBSP = new ThreeBSP( objClone );    
-			var wallBSP = new ThreeBSP( wall_2 ); 			// копируем выбранную стену	
-			var newBSP = wallBSP.subtract( wdBSP );		// вычитаем из стены объект нужной формы		
-			wall_2.geometry = newBSP.toGeometry();	
-		}
-		
-		if(arrO.length > 1 || wd == null)
-		{
-			wall_2.geometry.computeFaceNormals();
-
-			for ( var i = 0; i < wall_2.geometry.faces.length; i++ )
-			{
-				wall_2.geometry.faces[i].normal.normalize();
-				if(wall_2.geometry.faces[i].normal.z == 1) { wall_2.geometry.faces[i].materialIndex = 1; }
-				else if(wall_2.geometry.faces[i].normal.z == -1) { wall_2.geometry.faces[i].materialIndex = 2; }
-				else if(wall_2.geometry.faces[i].normal.y == 1) { wall_2.geometry.faces[i].materialIndex = 3; }
-				else if(wall_2.geometry.faces[i].normal.y == -1) { wall_2.geometry.faces[i].materialIndex = 3; }
-			}				
-		}			
 	}		
 	
 	return wall; 
@@ -163,32 +113,6 @@ function MeshBSP( wd, objsBSP, wall )
 		else if(wall.geometry.faces[i].normal.y == 1) { wall.geometry.faces[i].materialIndex = 3; }
 		else if(wall.geometry.faces[i].normal.y == -1) { wall.geometry.faces[i].materialIndex = 3; }
 	}
-
-	//wall.updateMatrixWorld();
-	
-	//upUvs_1( wall );
-
-	if(wall.userData.wall.plaster.o)
-	{	
-		var wall_2 = wall.userData.wall.plaster.o;
-		
-		var wdBSP = new ThreeBSP( wdClone );    
-		var wallBSP = new ThreeBSP( wall_2 ); 			// копируем выбранную стену	
-		var newBSP = wallBSP.subtract( wdBSP );				// вычитаем из стены объект нужной формы		
-		wall_2.geometry = newBSP.toGeometry();	
-		
-		wall_2.geometry.computeFaceNormals();
-
-		for ( var i = 0; i < wall_2.geometry.faces.length; i++ )
-		{
-			wall_2.geometry.faces[i].normal.normalize();
-			if(wall_2.geometry.faces[i].normal.z == 1) { wall_2.geometry.faces[i].materialIndex = 1; }
-			else if(wall_2.geometry.faces[i].normal.z == -1) { wall_2.geometry.faces[i].materialIndex = 2; }
-			else if(wall_2.geometry.faces[i].normal.y == 1) { wall_2.geometry.faces[i].materialIndex = 3; }
-			else if(wall_2.geometry.faces[i].normal.y == -1) { wall_2.geometry.faces[i].materialIndex = 3; }
-		}	
-	}
-
 	
 }
 

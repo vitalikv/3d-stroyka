@@ -419,6 +419,10 @@ function cameraZoomTop( delta )
 		camera.updateProjectionMatrix();		
 	}
 
+
+	infProject.tools.axis[0].scale.set(1,1/delta,1/delta); 
+	infProject.tools.axis[1].scale.set(1,1/delta,1/delta); 
+
 	var k = 0.085 / delta;
 
 	var n = 0;

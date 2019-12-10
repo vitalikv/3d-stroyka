@@ -51,28 +51,7 @@
 		</div>	
 	</div>		
 	<?}?>
-	
-	
-	<?if($interface['wall_plaster_width_1'] == 1){?>
-	<div class="left-input-block">
-		<div class="left-input-block-header">стена</div>
-		<div class="input-height">
-			<div class="text_1">длина (м)</div>
-			<input type="text" nameId='size-wall-length' data-input='wall_1' value = 6>
-		</div> 
 		
-		<div class="input-height">
-			<div class="text_1">высота (м)</div>
-			<input type="text" nameId='size-wall-height' data-input='wall_1' value = 2>
-		</div>	
-		
-		<div class="left-input-block-header">штукатурка</div>
-		<div class="input-height">
-			<div class="text_1">толщина (см)</div>
-			<input type="text" nameId='wall_plaster_width_1' data-input='wall_plaster_width_1' value = 3>
-		</div>
-	</div>
-	<?}?>	
 
 
 	<?if($interface['raschet_kirpicha'] == 1 || $interface['raschet_blokov'] == 1){?>

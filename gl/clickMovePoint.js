@@ -198,7 +198,8 @@ function dragToolPoint( event, obj )
 	  
 	if(point) 
 	{
-		
+		infProject.tools.axis[0].visible = false;
+		infProject.tools.axis[1].visible = false;		
 	} 
 	else if(dw)
 	{
@@ -219,7 +220,9 @@ function dragToolPoint( event, obj )
 		obj.userData.point.cross = wall; 
 		
 		infProject.tools.axis[0].visible = false;
-		infProject.tools.axis[1].visible = false; 
+		infProject.tools.axis[1].visible = false;
+
+		showLineAxis( obj );
 	}
 }
 
@@ -283,16 +286,10 @@ function showLineAxis( point )
 // устанвливаем и показываем красные линии
 function dopFunct1(point, pos2, lineAxis, axis)
 {
-	//point.position.y = 0;
 	if(axis == 'x') { point.position.x = pos2.x; }
 	if(axis == 'z') { point.position.z = pos2.z; } 
 	
 	var pos2 = new THREE.Vector3(pos2.x, point.position.y, pos2.z);
-	var d = point.position.distanceTo( pos2 );	
-	
-	var v = lineAxis.geometry.vertices;		
-	v[3].x = v[2].x = v[5].x = v[4].x = d;		
-	lineAxis.geometry.verticesNeedUpdate = true;
 
 	var dir = new THREE.Vector3().subVectors( point.position, pos2 ).normalize();
 	var angleDeg = Math.atan2(dir.x, dir.z);

@@ -90,7 +90,6 @@
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     
 	<script src="<?=$path?>block/createWallBlock.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>block/createWallPlaster.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>block/createGrid.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
