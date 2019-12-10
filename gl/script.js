@@ -167,6 +167,7 @@ var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1
 
 var clickO = resetPop.clickO();
 infProject.project = null;
+infProject.camera = { d3: { theta: 0, phi: 75, targetPos: new THREE.Vector3() } };
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.substrate = { ruler: [], floor: [], active: null };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
@@ -229,14 +230,6 @@ if(infProject.settings.calc.fundament == 'svai')
 }
 
 
-camera3D.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
-camera3D.position.y = radious * Math.sin( phi * Math.PI / 360 );
-camera3D.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
-	
-camera3D.position.add(centerCam);	
-camera3D.lookAt(centerCam);
-
-
 
 
 // outline render
@@ -277,6 +270,7 @@ if(1==1)
 
 
 
+startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 addObjInCatalogUI_1();	// каталог UI
 changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
 createTextUI_2({});		// добавляем в список +, для добавления этажа
