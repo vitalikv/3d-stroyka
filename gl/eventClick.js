@@ -79,18 +79,20 @@ function changeRightMenuUI_2(cdm)
 		
 		if(obj) 
 		{
-			clickItemCenterObjUI_1({item: 0}); 
+			clickItemCenterObjUI_1({obj: obj}); 
 			$('[nameId="wrap_obj_center"]').show();
 		}		
 	}
 	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
 	{
-		var obj = getObjFromPivotGizmo();
+		var obj = getObjFromPivotGizmo();		
 		
 		if(obj) 
 		{
+			if(obj.userData.tag == "joinPoint"){ obj = obj.parent; }
+			
 			hideJoinPoint({visible: 'full'});
-			clickItemObjNameUI({item: 0});  
+			clickItemObjNameUI({obj: obj});  
 			$('[nameId="wrap_obj_child"]').show();
 		}				
 	}

@@ -278,7 +278,7 @@ function showCenterObjUI(cdm)
 
 
 
-// кликнули объект, показываем список дочерних объектов (правом меню UI)
+// кликнули объект, создаем/показываем список группы (дочерних объектов) (правом меню UI)
 function showGroupObjUI(cdm)
 {
 	if(!cdm) { cdm = {}; }	
@@ -295,7 +295,7 @@ function showGroupObjUI(cdm)
 		var group = obj.userData.obj3D.group;
 		var arr = group.userData.groupObj.child; 
 
-		createTextUI_1({obj: obj, nameId: "rp_obj_group", nameRus: group.userData.groupObj.nameRus, uuid: "group_item"});
+		createTextUI_1({obj: null, nameId: "rp_obj_group", nameRus: group.userData.groupObj.nameRus, uuid: "group_item"});
 		
 		// добавляем новый список объектов из группы
 		for(var i = 0; i < arr.length; i++)
@@ -311,12 +311,8 @@ function showGroupObjUI(cdm)
 	}
 	
 	
-	// выделяем первый элемент  
-	if(cdm.active == 'first') 
-	{
-		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
-		el.css('background-color', '#00ff00');
-	}			
+	// выделяем в меню
+	clickItemObjNameUI({obj: obj});		
 }
 
 
@@ -380,6 +376,15 @@ function clickItemObjNameUI(cdm)
 		
 		item = cdm.el;
 	}
+	else if(cdm.obj)	// кликнули на объект в сцене
+	{ 
+		for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+		{
+			if(infProject.tools.list_group.o1[i] == cdm.obj){ item = infProject.tools.list_group.el[i]; break; } 
+		}
+		
+		obj = cdm.obj;
+	}	
 	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
 	{
 		item = infProject.tools.list_group.el[cdm.item];
@@ -392,26 +397,47 @@ function clickItemObjNameUI(cdm)
 	
 	
 	
-	// выделяем новый пункт на который кликнули 
+	// выделяем выбранный пункт  
 	item.css('background-color', '#00ff00');
 	var value = item.attr('uuid');	
 	
 	
-	if(value == 'group_item')
+	if(cdm.obj)	// кликнули на объект в сцене
+	{
+		clickObject3D(obj, {outline: true});
+	}
+	else if(value == 'group_item')
 	{   
-		obj = infProject.tools.list_group.o1[0];
+		infProject.settings.active.group = !infProject.settings.active.group;
+		obj = getObjFromPivotGizmo(); 
 		clickObject3D(obj, {outline: true}); 
 		showCenterObjUI({obj: obj, group: true, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
 	}
 	else
-	{
+	{ 	
 		clickObject3D(obj, {outline: true}); 
 		showCenterObjUI({obj: obj, group: false, active: 'first'});
 		
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
-	}	
+	}
+
+	
+	// выделяем/снимаем группу   
+	{
+		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
+		
+		if(infProject.settings.active.group) { el.css('background-color', '#00ff00'); }
+		else { el.css('background-color', '#ffffff'); }	
+
+		for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+		{
+			if(infProject.tools.list_group.o1[i] == obj){ item = infProject.tools.list_group.el[i]; break; } 
+		}	
+		
+		item.css('background-color', '#00ff00');		
+	}		
 }
 
 
