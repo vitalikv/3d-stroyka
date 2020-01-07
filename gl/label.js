@@ -9,13 +9,9 @@ function createRulerWin(cdm)
 	if(cdm.material == 'standart') { var mat = { color: cdm.color }; }
 	else { var mat = { color: cdm.color, transparent: true, depthTest : false }; }
 	
-	var material = new THREE.MeshBasicMaterial();
-material.color.set( 0x0000ff );	
-material.transparent = true;
-	
 	for ( var i = 0; i < cdm.count; i++ )
 	{
-		arr[i] = new THREE.Mesh( createGeometryCube(1, 0.025, 0.025), material );
+		arr[i] = new THREE.Mesh( createGeometryCube(1, 0.025, 0.025), new THREE.LineBasicMaterial( mat ) );
 		var v = arr[i].geometry.vertices; 
 		v[0].x = v[1].x = v[6].x = v[7].x = 0;
 		
@@ -24,7 +20,7 @@ material.transparent = true;
 		
 		arr[i].geometry.verticesNeedUpdate = true;			
 		arr[i].visible = false;	 
-		arr[i].renderOrder = 3;
+		arr[i].renderOrder = 1;
 		scene.add( arr[i] );
 	}
 	
@@ -65,7 +61,7 @@ function createLabelCameraWall(cdm)
 		if(cdm.ratio) { canvs.width = cdm.ratio.x; canvs.height = cdm.ratio.y; }
 		
 		ctx.font = cdm.size + 'pt Arial';
-		if(cdm.border == 'border line2')
+		if(cdm.border == 'border line')
 		{
 			ctx.fillStyle = 'rgba(0,0,0,1)';
 			ctx.fillRect(0, 0, canvs.width, canvs.height);
@@ -99,18 +95,7 @@ function createLabelCameraWall(cdm)
 		label.visible = false;
 		label.renderOrder = 1.1;
 		arr[i] = label;
-		scene.add( label );	
-
-
-	var material = new THREE.MeshBasicMaterial();
-	
-	mesh = new THREE.Mesh( cdm.geometry, material.clone() );
-	mesh.material.color.set( 0x0000ff );
-	mesh.material.colorWrite = false; // <================= new
-	mesh.renderOrder = 2;
-	mesh.position.z = 1.1;
-	label.add( mesh );
-	
+		scene.add( label );			
 	}
 	
 	return arr;
@@ -136,7 +121,7 @@ function createRulerCutoff()
 		v[4].z = v[5].z = v[6].z = v[7].z = 0.0025;		
 		arr[i].geometry.verticesNeedUpdate = true;			
 		
-		arr[i].renderOrder = 3;
+		arr[i].renderOrder = 1;
 		arr[i].visible = false;
 		
 		scene.add( arr[i] );
@@ -158,7 +143,7 @@ function upLabelCameraWall(cdm)
 	ctx.clearRect(0, 0, canvs.width, canvs.height);
 	ctx.font = (cdm.sizeText) ? cdm.sizeText+'pt Arial' : '50pt Arial';
 	
-	if(cdm.border == 'border line2')
+	if(cdm.border == 'border line')
 	{
 		ctx.fillStyle = 'rgba(0,0,0,1)';
 		ctx.fillRect(0, 0, canvs.width, canvs.height);
