@@ -35,6 +35,7 @@ loadObj.js
 uiInterface.js
 joinElement.js
 substrate.js
+groupObj.js
 ';
 
 

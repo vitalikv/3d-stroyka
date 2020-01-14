@@ -394,6 +394,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						<div class="button1 button_gradient_1" nameId="button_copy_obj">
 							копировать	
 						</div>
+						
+						<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
+							отделить	
+						</div>						
 							
 						<div>
 							<div class="button1 button_gradient_1" nameId="button_active_add_group">

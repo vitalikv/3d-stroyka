@@ -189,7 +189,7 @@ infProject.tools.joint = createJoinP();
 infProject.tools.plane = {o1: [], el: []};
 infProject.catalog = infoListObj();  
 infProject.listColor = resetPop.listColor(); 
-infProject.settings.active = { pg: 'pivot', group: false };
+infProject.settings.active = { pg: 'pivot', group: true };
 infProject.start = true; 
 
 infProject.ui = {}

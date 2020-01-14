@@ -274,7 +274,7 @@ function deleteObjectPop(obj)
 	
 	var arr = [];
 	
-	if(obj.userData.obj3D.group)
+	if(obj.userData.obj3D.group && infProject.settings.active.group)
 	{
 		var group = obj.userData.obj3D.group;
 		arr = group.userData.groupObj.child;
@@ -284,6 +284,8 @@ function deleteObjectPop(obj)
 	else
 	{
 		arr[0] = obj;
+		
+		detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
 	}
 	
 
@@ -539,7 +541,7 @@ function copyObj(cdm)
 	
 	if(flag)
 	{
-		addGroupObj({arr: arr2});
+		addObjToGroup({arr: arr2});
 	}
 	else
 	{

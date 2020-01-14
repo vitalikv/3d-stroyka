@@ -127,7 +127,7 @@ $('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }
 
 $('[nameId="button_active_join_element"]').mousedown(function () { switchJoinObj(); }); 
 $('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup(); });  
-$('[nameId="button_add_group"]').mousedown(function () { addGroupObj(); });  
+$('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
 $('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 
@@ -137,6 +137,7 @@ $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'giz
 
 $('[nameId="obj_rotate_reset"]').mousedown(function () { objRotateReset(); });	
 $('[nameId="button_copy_obj"]').mousedown(function () { copyObj(); });
+$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 $('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
 
 
