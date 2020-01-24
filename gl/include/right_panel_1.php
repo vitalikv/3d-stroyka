@@ -386,7 +386,14 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					</div>
 					
 					<div nameId="wrap_obj_child" style="display: none;">
-						<div class="right_panel_1_1_h">Группа</div>
+						
+						<div class="flex_1 align_items block_rp_1">
+							<div class="checkbox_1" nameId="box_input_group">
+								<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
+							</div>
+							<div class="block_rp_text">Группа</div>						
+						</div>
+						
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
 						</div>						

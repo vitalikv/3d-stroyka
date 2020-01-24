@@ -292,10 +292,7 @@ function showGroupObjUI(cdm)
 
 	if(obj.userData.obj3D.group) 	// группа
 	{
-		var group = obj.userData.obj3D.group;
-		var arr = group.userData.groupObj.child; 
-
-		createTextUI_1({obj: null, nameId: "rp_obj_group", nameRus: group.userData.groupObj.nameRus, uuid: "group_item"});
+		var arr = obj.userData.obj3D.group.userData.groupObj.child; 
 		
 		// добавляем новый список объектов из группы
 		for(var i = 0; i < arr.length; i++)
@@ -303,11 +300,26 @@ function showGroupObjUI(cdm)
 			var child = arr[i];			
 			if(!child.userData.obj3D) continue;			
 			createTextUI_1({obj: child, nameId: "rp_obj_group", nameRus: child.userData.obj3D.nameRus, uuid: child.uuid}); 
+			
+			if(1==2)
+			{
+				
+				var o = getCenterPointFromObj_1(child);
+				
+				if(o.length == 0) continue; 	// у объекта нет разъемов
+				console.log(o.length);
+				for(var i2 = 0; i2 < o.length; i2++)
+				{				
+					if(!o[i2].userData.centerPoint) continue;
+					
+					createTextUI_1({obj: o[i2], nameId: "rp_obj_center", nameRus: o[i2].userData.centerPoint.nameRus, uuid: o[i2].uuid});	
+				}
+			}			
 		} 
 	}
 	else	// у объекта нет группы
 	{
-		createTextUI_1({obj: obj, nameId: "rp_obj_group", nameRus: "объект без группы", uuid: obj.uuid});
+		createTextUI_1({obj: obj, nameId: "rp_obj_group", nameRus: obj.userData.obj3D.nameRus, uuid: obj.uuid}); 
 	}
 	
 	
@@ -351,6 +363,48 @@ function clearListUI_2(cdm)
 	if(infProject.tools.joint.el == list) { infProject.tools.joint.p2 = []; infProject.tools.joint.el = []; }
 }
 
+
+// кликнули на Checkbox группа (выбираем все объекты или снимаем выделения, кроме объекта, на котором стоит pivot)
+function clickCheckboxgroup_1(cdm)
+{
+	infProject.settings.active.group = !infProject.settings.active.group;
+	
+	if(infProject.settings.active.group)
+	{
+		$('[nameId="box_input_checked_group"]').show();
+	}
+	else
+	{
+		$('[nameId="box_input_checked_group"]').hide();
+	}
+
+	var obj = getObjFromPivotGizmo(); 
+	clickObject3D(obj, {outline: true}); 	
+	
+	// снимаем старые выдиления  
+	for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+	{
+		infProject.tools.list_group.el[i].css('background-color', '#ffffff');
+	}
+
+	 
+	
+	if(infProject.settings.active.group) 
+	{ 
+		for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+		{
+			infProject.tools.list_group.el[i].css('background-color', '#00ff00'); 
+		}
+	}
+	
+	for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+	{
+		if(infProject.tools.list_group.o1[i] == obj){ item = infProject.tools.list_group.el[i]; break; } 
+	}	
+	
+	item.css('background-color', 'rgb(7, 248, 248)');					
+	 
+}
 
 // выбираем группу или объект
 function clickItemObjNameUI(cdm)
@@ -406,15 +460,6 @@ function clickItemObjNameUI(cdm)
 	{
 		clickObject3D(obj, {outline: true});
 	}
-	else if(value == 'group_item')
-	{   
-		infProject.settings.active.group = !infProject.settings.active.group;
-		obj = getObjFromPivotGizmo(); 
-		clickObject3D(obj, {outline: true}); 
-		showCenterObjUI({obj: obj, group: true, active: 'first'});
-		
-		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.group.userData.groupObj.nameRus);
-	}
 	else
 	{ 	
 		clickObject3D(obj, {outline: true}); 
@@ -425,18 +470,26 @@ function clickItemObjNameUI(cdm)
 
 	
 	// выделяем/снимаем группу   
-	{
-		var el = $($('[nameId="rp_obj_group"]')[0].children[0]);
-		
-		if(infProject.settings.active.group) { el.css('background-color', '#00ff00'); }
-		else { el.css('background-color', '#ffffff'); }	
+	{	
+		if(infProject.settings.active.group) 
+		{ 
+			for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+			{
+				infProject.tools.list_group.el[i].css('background-color', '#00ff00'); 
+			}
 
-		for(var i = 0; i < infProject.tools.list_group.el.length; i++)
-		{
-			if(infProject.tools.list_group.o1[i] == obj){ item = infProject.tools.list_group.el[i]; break; } 
+			item.css('background-color', 'rgb(7, 248, 248)');
+		}
+		else 
+		{ 			
+			for(var i = 0; i < infProject.tools.list_group.el.length; i++)
+			{
+				if(infProject.tools.list_group.o1[i] == obj){ item = infProject.tools.list_group.el[i]; break; } 
+			}	
+			
+			item.css('background-color', 'rgb(7, 248, 248)');					
 		}	
-		
-		item.css('background-color', '#00ff00');		
+
 	}		
 }
 
