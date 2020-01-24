@@ -60,47 +60,6 @@ $('[nameId="button_wrap_plan"]').mousedown(function () { changeRightMenuUI_1({el
 
 
 
-$('[nameId="button_wrap_obj_center"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
-$('[nameId="button_wrap_obj_child"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
-
-
-// переключаем меню (центр/группа)
-function changeRightMenuUI_2(cdm)
-{
-	$('[nameId="wrap_obj_center"]').hide();
-	$('[nameId="wrap_obj_child"]').hide();
-	
-	switchSelectAddObjGroup({active: false});
-	switchJoinObj({active: false});	
-	
-	if(cdm.el.attributes.nameId.value == "button_wrap_obj_center") 
-	{
-		var obj = getObjFromPivotGizmo();
-		
-		if(obj) 
-		{
-			clickItemCenterObjUI_1({obj: obj}); 
-			$('[nameId="wrap_obj_center"]').show();
-		}		
-	}
-	if(cdm.el.attributes.nameId.value == "button_wrap_obj_child") 
-	{
-		var obj = getObjFromPivotGizmo();		
-		
-		if(obj) 
-		{
-			if(obj.userData.tag == "joinPoint"){ obj = obj.parent; }
-			
-			hideJoinPoint({visible: 'full'});
-			clickItemObjNameUI({obj: obj});  
-			$('[nameId="wrap_obj_child"]').show();
-		}				
-	}
-		
-}
-
-
- 
  
 
 $('[nameId="color_tube_1_default"]').on('mousedown', function(e) 
