@@ -727,7 +727,7 @@ canvas
 .right_panel_1_1_list_item
 {	
 	padding: 3px;
-	margin: 10px 0;
+	margin: 3px 0;
 	border: 1px solid #ccc;
 	
 	cursor: pointer;
@@ -737,11 +737,12 @@ canvas
 .right_panel_1_1_list_item_text
 {
 	margin: auto;
+	margin-left: 20px;
 	font-family: arial,sans-serif;
 	font-size: 15px;
 	color: #666;
 	text-decoration: none;
-	text-align: center;		
+	/* text-align: center;	*/	
 }
 
 
@@ -793,6 +794,12 @@ canvas
 	margin: 0;
 }
 
+.rb_obj_butt .button1
+{
+	padding:4px 11px;
+	font:15px Arial, Helvetica, sans-serif;
+	font-weight:normal;
+}
 
 
 .button1-wrap-1 

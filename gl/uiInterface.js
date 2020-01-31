@@ -258,8 +258,13 @@ function showGroupObjUI(cdm)
 	for(var i = 0; i < arrO.length; i++)
 	{
 		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item">\
+		'<div class="flex_1 right_panel_1_1_list_item relative_1">\
 		<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
+			<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+				<svg height="100%" width="100%" viewBox="0 0 100 100">\
+				<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+				</svg>\
+			</div>\
 		</div>';				
 		
 		var el = $(str).appendTo('[nameId="rp_obj_group"]');
@@ -425,7 +430,7 @@ function clickItemObjNameUI(cdm)
 
 			var str = 
 			'<div class="flex_1 right_panel_1_1_list_item">\
-			<div class="right_panel_1_1_list_item_text">'+o[i2].userData.centerPoint.nameRus+'</div>\
+			<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
 			</div>';
 
 			var el2 = $(str).insertAfter(item);
@@ -489,7 +494,7 @@ function clickItemCenterObjUI_1(cdm)
 	
 	
 	// выделяем новый пункт на который кликнули UI
-	item.css('background-color', '#00ff00');	 
+	item.css('background-color', 'rgb(7, 248, 248)');	 
 	
 	// выделяем объект в сцене
 	//clickObject3D(obj);		 

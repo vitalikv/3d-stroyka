@@ -67,14 +67,14 @@
 .block_rp_1
 {
 	width: 200px;
-	height: 60px;
+	height: 40px;
 }
 
 .block_rp_text
 {
-	margin-left: 15px;
+	margin-left: 5px;
 	font-family: arial,sans-serif;
-	font-size: 17px;
+	font-size: 14px;
 	color: #666;
 	text-decoration: none;
 
@@ -345,63 +345,68 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					
 					<div nameId="wrap_obj_child">
 						
-						<div class="flex_1 align_items block_rp_1">
-							<div class="checkbox_1" nameId="box_input_group">
-								<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
+						<div class="flex_1">
+							<div class="flex_1 align_items block_rp_1">
+								<div class="checkbox_1" nameId="box_input_group">
+									<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
+								</div>
+								<div class="block_rp_text">Группа</div>						
 							</div>
-							<div class="block_rp_text">Группа</div>						
+							
+							<div class="flex_1 align_items block_rp_1">
+								<div class="checkbox_1" nameId="show_hide_join_point">
+									<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
+								</div>
+								<div class="block_rp_text">Показать точки</div>						
+							</div>						
 						</div>
 						
 						<div class="right_panel_1_1_list" nameId="rp_obj_group">
 							
-						</div>	
-
-						<div class="flex_1 align_items block_rp_1">
-							<div class="checkbox_1" nameId="show_hide_join_point">
-								<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: none;"></div>						
-							</div>
-							<div class="block_rp_text">Показать точки</div>						
-						</div>	
+						</div>		
 						
-						<div>
-							<div class="button1 button_gradient_1" nameId="button_active_join_element">
-								выбрать	
-							</div>
-							<div nameId="rp_wrap_obj_align" style="display: none;">
-								<div class="right_panel_1_1_list" nameId="rp_obj_align">
-									
-								</div>	
-								<div class="button1 button_gradient_1" nameId="join_element">
-									соединить	
+						
+						<div class="rb_obj_butt">
+							<div>
+								<div class="button1 button_gradient_1" nameId="button_active_join_element">
+									выровнить	
 								</div>
-							</div>
-						</div>						
-						
-						<div class="button1 button_gradient_1" nameId="button_copy_obj">
-							копировать	
-						</div>
-						
-						<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
-							отделить	
-						</div>						
+								<div nameId="rp_wrap_obj_align" style="display: none;">
+									<div class="right_panel_1_1_list" nameId="rp_obj_align">
+										
+									</div>	
+									<div class="button1 button_gradient_1" nameId="join_element">
+										выровнить	
+									</div>
+								</div>
+							</div>						
 							
-						<div>
-							<div class="button1 button_gradient_1" nameId="button_active_add_group">
-								выбрать	
+							<div class="button1 button_gradient_1" nameId="button_copy_obj">
+								копировать	
 							</div>
 							
-							<div nameId="rp_wrap_add_group" style="display: none;">
-								<div class="right_panel_1_1_list" nameId="rp_add_group">
-									
-								</div>
-								<div class="button1 button_gradient_1" nameId="button_add_group">
+							<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
+								отделить	
+							</div>						
+								
+							<div>
+								<div class="button1 button_gradient_1" nameId="button_active_add_group">
 									объединить	
-								</div>	
-							</div>
-						</div>	
+								</div>
+								
+								<div nameId="rp_wrap_add_group" style="display: none;">
+									<div class="right_panel_1_1_list" nameId="rp_add_group">
+										
+									</div>
+									<div class="button1 button_gradient_1" nameId="button_add_group">
+										объединить	
+									</div>	
+								</div>
+							</div>	
 
-						<div class="button1 button_gradient_1" nameId="button_delete_obj">
-							удалить	
+							<div class="button1 button_gradient_1" nameId="button_delete_obj">
+								удалить	
+							</div>
 						</div>
 						
 					</div>	
