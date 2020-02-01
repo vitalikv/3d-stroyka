@@ -417,7 +417,7 @@ function clickItemObjNameUI(cdm)
 	clickObject3D(obj, {outline: true});
 	$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
 
-		
+	showHideJP();	
 
 	{
 		clearListUI_2({list: infProject.tools.center_obj.el});	// очищаем список центров объекта 

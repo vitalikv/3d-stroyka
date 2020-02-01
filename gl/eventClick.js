@@ -91,7 +91,7 @@ $('[nameId="join_element"]').mousedown(function () { joinElement(); });
 
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
-$('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP(); }); 	
+$('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP({switch: true}); }); 	
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
 $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });
 

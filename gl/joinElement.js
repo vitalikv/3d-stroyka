@@ -59,22 +59,26 @@ function clickRayJoinPoint()
 
 
 
-function showHideJP()
+function showHideJP(cdm)
 {
-	var joint = infProject.tools.joint;			
+	if(!cdm) { cdm = {} }
+	
+	if(cdm.switch) { infProject.settings.active.joinP = !infProject.settings.active.joinP; }
+	
+	var active = infProject.settings.active.joinP;			
+
+	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
+	if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
 
 	
-	if(joint.visible) 
+	if(!active) 
 	{
 		hideJoinPoint();
+		if(cdm.switch) { clickItemObjNameUI({obj: obj}); }
 	}
 	else 
-	{
-		if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
-		if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
-
-		if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
-		
+	{		
 		showJoinPoint({obj: obj});			
 	}
 }
@@ -90,7 +94,7 @@ function showJoinPoint(cdm)
 	var joint = infProject.tools.joint;
 	
 	var active = null;	
-	if(joint.active_1) { active = joint.active_1; }	
+	//if(joint.active_1) { active = joint.active_1; }	
 	
 	if(infProject.settings.active.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
@@ -161,7 +165,8 @@ function hideJoinPoint(cdm)
 	if(!cdm) cdm = {};
 	
 	var joint = infProject.tools.joint;	
-	
+	console.log(55555, cdm);
+	console.trace();
 	var active = null;  
 	if(cdm.visible == 'full') {}
 	else if(joint.active_1) { active = joint.active_1; }
@@ -189,7 +194,7 @@ function hideJoinPoint(cdm)
 	joint.visible = false;
 	$('[nameId="show_join_point_checked"]').hide();
 	
-	if(active) { activeJoinPoint({obj: active}); }
+	//if(active) { activeJoinPoint({obj: active}); }
 }
 
 
