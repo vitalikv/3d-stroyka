@@ -260,10 +260,12 @@ function showGroupObjUI(cdm)
 		var str = 
 		'<div class="flex_1 right_panel_1_1_list_item relative_1">\
 		<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
-			<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
-				<svg height="100%" width="100%" viewBox="0 0 100 100">\
-				<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-				</svg>\
+			<div nameId="shCp_1" style="width: 40px; height: 20px;">\
+				<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+					<svg height="100%" width="100%" viewBox="0 0 100 100">\
+					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					</svg>\
+				</div>\
 			</div>\
 		</div>';				
 		
@@ -274,6 +276,10 @@ function showGroupObjUI(cdm)
 		infProject.tools.list_group.el[n] = el;
 		
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+		
+		//console.log(222222, );
+		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
+		el_2.on('mousedown', function(e){ showHideJP({switch: true}); e.stopPropagation(); });	
 	}
 	
 	// выделяем в меню
