@@ -280,6 +280,31 @@ function showGroupObjUI(cdm)
 		//console.log(222222, );
 		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
 		el_2.on('mousedown', function(e){ showHideJP({switch: true}); e.stopPropagation(); });	
+		
+		
+		
+		{			
+			var o = getCenterPointFromObj_1(arrO[i]);	// разъемы объекта	
+			
+			for(var i2 = 0; i2 < o.length; i2++)
+			{				
+				if(!o[i2].userData.centerPoint) continue;			
+
+				var str = 
+				'<div class="flex_1 right_panel_1_1_list_item">\
+				<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
+				</div>';
+
+				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');
+				
+				var n = infProject.tools.center_obj.o1.length;	
+				infProject.tools.center_obj.o1[n] = o[i2];
+				infProject.tools.center_obj.el[n] = el2;
+				
+				el2.on('mousedown', function(){ clickItemCenterObjUI_1({el: $(this)}) });			
+			}		
+		}		
+		
 	}
 	
 	// выделяем в меню
@@ -425,6 +450,7 @@ function clickItemObjNameUI(cdm)
 
 	showHideJP();	
 
+	if(1==2)
 	{
 		clearListUI_2({list: infProject.tools.center_obj.el});	// очищаем список центров объекта 
 		
