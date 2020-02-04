@@ -106,22 +106,6 @@ function updateListTubeUI_1(cdm)
 
 
 
-// при выделении объекта меняем боковое меню
-function clickObjUI(cdm)
-{
-	if(!cdm) { cdm = {}; }	
-	if(!cdm.obj) return;
-	
-	var obj = cdm.obj;
-	var inf = null;
-	
-	if(obj.userData.obj3D) { inf = obj.userData.obj3D; }
-	else { return; }
-	
-	$('[nameId="rp_obj_name"]').val(inf.nameRus);	
-	
-	showGroupObjUI({obj: obj, active: 'first'}); 
-}
 
 
 // создаем текст для списка
@@ -225,12 +209,21 @@ function clickItemParamsPlaneUI(cdm)
 
 
 // кликнули объект, создаем/показываем список группы (дочерних объектов) (правом меню UI)
-function showGroupObjUI(cdm)
+function clickObjUI(cdm)
 {
 	if(!cdm) { cdm = {}; }	
 	if(!cdm.obj) return;
 	
-	var obj = cdm.obj;			
+	var obj = cdm.obj;
+	var inf = null;
+	
+	if(obj.userData.obj3D) { var obj = cdm.obj; }
+	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
+	else { return; }
+	
+	
+	
+				
 	
 	// очищаем список объектов UI
 	clearItemSelectedObjUI();
@@ -293,22 +286,18 @@ function showGroupObjUI(cdm)
 				<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
 				</div>';
 
-				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');
-				
-				var n = infProject.tools.center_obj.o1.length;	
-				infProject.tools.center_obj.o1[n] = o[i2];
-				infProject.tools.center_obj.el[n] = el2;
+				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
 				
 				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
 				
-				el2.on('mousedown', function(){ clickItemCenterObjUI_1({el: $(this)}) });			
+				el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
 			}		
 		}		
 		
 	}
 	
 	// выделяем в меню
-	clickItemObjNameUI({obj: obj});		
+	clickItemObjNameUI({obj: cdm.obj});		
 }
 
 
@@ -410,7 +399,7 @@ function clickItemObjNameUI(cdm)
 	if(cdm.button)
 	{
 		var obj = getObjFromPivotGizmo();
-		if(obj) cdm.obj = obj;
+		if(obj) cdm.obj = obj; console.log(77777, obj);
 	}	
 	
 	if(cdm.el)		// кликнули на пункт в меню
@@ -418,6 +407,11 @@ function clickItemObjNameUI(cdm)
 		for(var i = 0; i < list.length; i++)
 		{
 			if(list[i].el[0] == cdm.el[0]){ obj = list[i].o; break; } 
+			
+			for(var i2 = 0; i2 < list[i].p.length; i2++)
+			{
+				if(list[i].p[i2].el[0] == cdm.el[0]){ obj = list[i].p[i2].o; break; }
+			}			
 		}		
 		
 		item = cdm.el;
@@ -427,6 +421,11 @@ function clickItemObjNameUI(cdm)
 		for(var i = 0; i < list.length; i++)
 		{
 			if(list[i].o == cdm.obj){ item = list[i].el; break; } 
+			
+			for(var i2 = 0; i2 < list[i].p.length; i2++)
+			{
+				if(list[i].p[i2].o == cdm.obj){ item = list[i].p[i2].el; break; }
+			}			
 		}
 		
 		obj = cdm.obj;
@@ -453,66 +452,25 @@ function clickItemObjNameUI(cdm)
 	}
 
 	item.css('background-color', 'rgb(7, 248, 248)');
-	clickObject3D(obj, {outline: true});
-	$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
+	
+	
 
-	showHideJP();		
+	if(obj.userData.obj3D) 
+	{ 
+		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
+		clickObject3D(obj, {outline: true});
+		showHideJP(); 
+	}
+	else if(obj.userData.centerPoint)
+	{
+		showHideJP();
+		$('[nameId="rp_obj_name"]').val(obj.userData.centerPoint.nameRus);
+		clickObject3D(obj);
+	}
 }
 
 
-// выбираем центр для основного объекта
-function clickItemCenterObjUI_1(cdm)
-{
-	var item = null;
-	var obj = null;
-	
-	if(infProject.tools.center_obj.el.length == 0) return;	// у объекта нет разъемов
-	
-	
-	// снимаем старые выдиления в UI 
-	for(var i = 0; i < infProject.tools.center_obj.el.length; i++)
-	{
-		infProject.tools.center_obj.el[i].css('background-color', '#ffffff');
-	}
-	
-	
-	if(cdm.el)	// кликнули на пункт в меню
-	{
-		for(var i = 0; i < infProject.tools.center_obj.el.length; i++)
-		{
-			if(infProject.tools.center_obj.el[i][0] == cdm.el[0]){ obj = infProject.tools.center_obj.o1[i]; console.log(2222, obj); break; } 
-		}
 
-		item = cdm.el;
-		clickObject3D(obj);
-	}
-	else if(cdm.obj)	// кликнули на объект в сцене
-	{
-		for(var i = 0; i < infProject.tools.center_obj.el.length; i++)
-		{
-			if(infProject.tools.center_obj.o1[i] == cdm.obj){ item = infProject.tools.center_obj.el[i]; break; } 
-		}
-
-		obj = cdm.obj;
-	}
-	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
-	{
-		item = infProject.tools.center_obj.el[cdm.item];
-		obj = infProject.tools.center_obj.o1[cdm.item];
-		clickObject3D(obj);
-	}
-	else
-	{
-		return;
-	}
-	
-	
-	// выделяем новый пункт на который кликнули UI
-	item.css('background-color', 'rgb(7, 248, 248)');	 
-	
-	// выделяем объект в сцене
-	//clickObject3D(obj);		 
-}
 
 
 

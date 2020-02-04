@@ -208,15 +208,8 @@ function clickObject3D( obj, cdm )
 	}	
 	
 	
-	if(obj.userData.tag == 'joinPoint')
-	{ 
-		if(cdm.menu_1) { clickItemCenterObjUI_1({obj: obj}); }
-	}
-	else
-	{
-		if(cdm.outline) { outlineAddObj(obj); }	
-		if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
-	}
+	if(cdm.outline) { outlineAddObj(obj); }	
+	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
 
 	
 	setScalePivotGizmo();
