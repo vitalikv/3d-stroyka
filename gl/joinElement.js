@@ -69,7 +69,7 @@ function showHideJP(cdm)
 
 	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
-	if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
+	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = obj.parent; }
 
 	
 	if(!active) 
@@ -79,7 +79,7 @@ function showHideJP(cdm)
 	}
 	else 
 	{		
-		showJoinPoint({obj: obj});			
+		showJoinPoint({obj: obj, o2: o2});			
 	}
 }
 
@@ -89,16 +89,12 @@ function showHideJP(cdm)
 function showJoinPoint(cdm)
 {
 	if(!cdm.obj) return;
-	var obj = cdm.obj;
-	
-	var joint = infProject.tools.joint;
-	
-	var active = null;	
-	//if(joint.active_1) { active = joint.active_1; }	
+	var obj = cdm.obj;	
 	
 	if(infProject.settings.active.group) { hideJoinPoint(); }
 	else { hideJoinPoint({clear: 2}); }
 	
+	var joint = infProject.tools.joint;	
 	var arr = getCenterPointFromObj_1( obj );
 	
 	for(var i = 0; i < arr.length; i++)
@@ -114,7 +110,7 @@ function showJoinPoint(cdm)
 	joint.visible = true; 
 	$('[nameId="show_join_point_checked"]').show(); 
 	
-	if(active) { activeJoinPoint({obj: active}); }
+	if(cdm.o2) { activeJoinPoint({obj: cdm.o2}); }
 }
 
 
@@ -165,7 +161,7 @@ function hideJoinPoint(cdm)
 	if(!cdm) cdm = {};
 	
 	var joint = infProject.tools.joint;	
-	console.log(55555, cdm);
+	
 	console.trace();
 	var active = null;  
 	if(cdm.visible == 'full') {}

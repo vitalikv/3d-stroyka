@@ -458,15 +458,15 @@ function clickItemObjNameUI(cdm)
 	if(obj.userData.obj3D) 
 	{ 
 		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
-		clickObject3D(obj, {outline: true});
-		showHideJP(); 
 	}
 	else if(obj.userData.centerPoint)
-	{
-		showHideJP();
+	{		
 		$('[nameId="rp_obj_name"]').val(obj.userData.centerPoint.nameRus);
-		clickObject3D(obj);
 	}
+	
+	clickObject3D(obj, {outline: true});
+	showHideJP();
+	
 }
 
 

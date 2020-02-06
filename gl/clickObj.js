@@ -208,7 +208,11 @@ function clickObject3D( obj, cdm )
 	}	
 	
 	
-	if(cdm.outline) { outlineAddObj(obj); }	
+	if(cdm.outline) 
+	{ 
+		if(obj.userData.centerPoint) { outlineAddObj(obj.parent); }
+		else { outlineAddObj(obj); } 
+	}	
 	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
 
 	
