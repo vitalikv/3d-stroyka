@@ -220,9 +220,6 @@ function clickObjUI(cdm)
 	if(obj.userData.obj3D) { var obj = cdm.obj; }
 	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
 	else { return; }
-	
-	
-	
 				
 	
 	// очищаем список объектов UI
@@ -250,49 +247,61 @@ function clickObjUI(cdm)
 	
 	for(var i = 0; i < arrO.length; i++)
 	{
-		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-		<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
-			<div nameId="shCp_1" style="width: 40px; height: 20px;">\
+		var num = infProject.list.rp_ui.arr.length;
+		infProject.list.rp_ui.arr[num] = { o: arrO[i], el: el, p: [], p_vis: false };
+		
+		// получаем разъемы объекта
+		var o = getCenterPointFromObj_1(arrO[i]);
+
+		var str_button = '';
+		
+		if(o.length > 0)
+		{
+			str_button = 
+			'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
 				<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
 					<svg height="100%" width="100%" viewBox="0 0 100 100">\
 					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
 					</svg>\
 				</div>\
-			</div>\
+			</div>';			
+		}
+		
+		var str = 
+		'<div class="flex_1 right_panel_1_1_list_item relative_1">\
+		<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
+			'+str_button+'\
 		</div>';				
 		
-		var el = $(str).appendTo('[nameId="rp_obj_group"]');
-		
+		var el = $(str).appendTo('[nameId="rp_obj_group"]');		
 		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
 		
-		// создаем кнопку
+		
+		// назначаем кнопки треугольник событие
 		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
-		el_2.on('mousedown', function(e){ showHideJP({switch: true}); e.stopPropagation(); });	
+		(function(num) 
+		{
+			el_2.on('mousedown', function(e){ clickRtekUI({id: num}); e.stopPropagation(); });	
+		}(num));	
+				
+		infProject.list.rp_ui.arr[num].el = el;
 		
 		
-		var num = infProject.list.rp_ui.arr.length;
-		infProject.list.rp_ui.arr[num] = { o: arrO[i], el: el, p: [] };
-		
-		{			
-			var o = getCenterPointFromObj_1(arrO[i]);	// разъемы объекта	
+		for(var i2 = 0; i2 < o.length; i2++)
+		{				
+			if(!o[i2].userData.centerPoint) continue;			
+
+			var str = 
+			'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
+			<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
+			</div>';
+
+			var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
 			
-			for(var i2 = 0; i2 < o.length; i2++)
-			{				
-				if(!o[i2].userData.centerPoint) continue;			
-
-				var str = 
-				'<div class="flex_1 right_panel_1_1_list_item">\
-				<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
-				</div>';
-
-				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
-				
-				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
-				
-				el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
-			}		
-		}		
+			infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
+			
+			el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
+		}				
 		
 	}
 	
@@ -300,6 +309,24 @@ function clickObjUI(cdm)
 	clickItemObjNameUI({obj: cdm.obj});		
 }
 
+
+function clickRtekUI(cdm)
+{
+	console.log(cdm);
+	
+	infProject.list.rp_ui.arr[cdm.id].p_vis = !infProject.list.rp_ui.arr[cdm.id].p_vis;
+	
+	var arr = infProject.list.rp_ui.arr[cdm.id].p;
+	
+	var display = (infProject.list.rp_ui.arr[cdm.id].p_vis) ? 'block' : 'none';
+	
+	
+	for(var i = 0; i < arr.length; i++)
+	{							
+		arr[i].el.css('display', display);		
+	}				
+	
+}
 
 
 // показываем список объектов которые будут объединены в новую группу
@@ -368,21 +395,6 @@ function clearItemSelectedObjUI()
 
 
 
-// снимаем старые выдиления
-function resetItemSelectedObjUI()
-{
-	var list = infProject.list.rp_ui.arr;
-	
-	for(var i = 0; i < list.length; i++)
-	{
-		list[i].el.css('background-color', '#ffffff');
-		
-		for(var i2 = 0; i2 < list[i].p.length; i2++)
-		{
-			list[i].p[i2].el.css('background-color', '#ffffff');
-		}
-	}
-}	
 
 
 
@@ -394,12 +406,24 @@ function clickItemObjNameUI(cdm)
 	var list = infProject.list.rp_ui.arr;
 	
 	// снимаем старые выдиления
-	resetItemSelectedObjUI();	
+	{
+		var list = infProject.list.rp_ui.arr;
+		
+		for(var i = 0; i < list.length; i++)
+		{
+			list[i].el.css('background-color', '#ffffff');
+			
+			for(var i2 = 0; i2 < list[i].p.length; i2++)
+			{
+				list[i].p[i2].el.css('background-color', '#ffffff');
+			}
+		}
+	}		
 	
 	if(cdm.button)
 	{
 		var obj = getObjFromPivotGizmo();
-		if(obj) cdm.obj = obj; console.log(77777, obj);
+		if(obj) cdm.obj = obj; 
 	}	
 	
 	if(cdm.el)		// кликнули на пункт в меню
@@ -462,6 +486,13 @@ function clickItemObjNameUI(cdm)
 	else if(obj.userData.centerPoint)
 	{		
 		$('[nameId="rp_obj_name"]').val(obj.userData.centerPoint.nameRus);
+		
+		var parent = obj.parent;
+		
+		for(var i = 0; i < list.length; i++)
+		{
+			if(list[i].o == parent){ list[i].el.css('background-color', '#00ff00'); break; } 					
+		}		
 	}
 	
 	clickObject3D(obj, {outline: true});
