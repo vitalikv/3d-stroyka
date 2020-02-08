@@ -208,7 +208,7 @@ function clickItemParamsPlaneUI(cdm)
 
 
 
-// кликнули объект, создаем/показываем список группы (дочерних объектов) (правом меню UI)
+// кликнули объект в сцене, создаем/показываем список группы (дочерних объектов) (правом меню UI)
 function clickObjUI(cdm)
 {
 	if(!cdm) { cdm = {}; }	
@@ -222,8 +222,7 @@ function clickObjUI(cdm)
 	else { return; }
 				
 	
-	// очищаем список объектов UI
-	clearItemSelectedObjUI();
+
 
 
 	if(obj.userData.obj3D.group) 	// группа
@@ -245,63 +244,90 @@ function clickObjUI(cdm)
 	}
 	
 	
-	for(var i = 0; i < arrO.length; i++)
+	var flag = true;	// если другая группа или объект, тогда очищаем список и создаем новый
+	
+	if(infProject.list.rp_ui.arr.length == arrO.length)
 	{
-		var num = infProject.list.rp_ui.arr.length;
-		infProject.list.rp_ui.arr[num] = { o: arrO[i], el: el, p: [], p_vis: false };
+		var arrO_2 = infProject.list.rp_ui.arr;
+		var num = 0;
 		
-		// получаем разъемы объекта
-		var o = getCenterPointFromObj_1(arrO[i]);
-
-		var str_button = '';
-		
-		if(o.length > 0)
+		for(var i = 0; i < arrO.length; i++)
 		{
-			str_button = 
-			'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
-				<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
-					<svg height="100%" width="100%" viewBox="0 0 100 100">\
-					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-					</svg>\
-				</div>\
-			</div>';			
+			for(var i2 = 0; i2 < arrO_2.length; i2++)
+			{
+				if(arrO[i] == arrO_2[i2].o) { num++; break; }
+			}			
 		}
 		
-		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-		<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
-			'+str_button+'\
-		</div>';				
+		if(arrO.length == num) { flag = false; }
+	}
+	
+	
+	if(flag)
+	{
+		// очищаем список объектов UI
+		clearItemSelectedObjUI();	
 		
-		var el = $(str).appendTo('[nameId="rp_obj_group"]');		
-		el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
 		
-		
-		// назначаем кнопки треугольник событие
-		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
-		(function(num) 
+		for(var i = 0; i < arrO.length; i++)
 		{
-			el_2.on('mousedown', function(e){ clickRtekUI({id: num}); e.stopPropagation(); });	
-		}(num));	
-				
-		infProject.list.rp_ui.arr[num].el = el;
-		
-		
-		for(var i2 = 0; i2 < o.length; i2++)
-		{				
-			if(!o[i2].userData.centerPoint) continue;			
+			var num = infProject.list.rp_ui.arr.length;
+			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: el, p: [], p_vis: false };
+			
+			// получаем разъемы объекта
+			var o = getCenterPointFromObj_1(arrO[i]);
 
+			var str_button = '';
+			
+			if(o.length > 0)
+			{
+				str_button = 
+				'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
+					<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+						<svg height="100%" width="100%" viewBox="0 0 100 100">\
+						<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+						</svg>\
+					</div>\
+				</div>';			
+			}
+			
 			var str = 
-			'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
-			<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
-			</div>';
+			'<div class="flex_1 right_panel_1_1_list_item relative_1">\
+			<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
+				'+str_button+'\
+			</div>';				
+			
+			var el = $(str).appendTo('[nameId="rp_obj_group"]');		
+			el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+			
+			
+			// назначаем кнопки треугольник событие
+			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
+			(function(num) 
+			{
+				el_2.on('mousedown', function(e){ clickRtekUI({id: num}); e.stopPropagation(); });	
+			}(num));	
+					
+			infProject.list.rp_ui.arr[num].el = el;
+			
+			
+			for(var i2 = 0; i2 < o.length; i2++)
+			{				
+				if(!o[i2].userData.centerPoint) continue;			
 
-			var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
+				var str = 
+				'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
+				<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
+				</div>';
+
+				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
+				
+				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
+				
+				el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
+			}				
 			
-			infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
-			
-			el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
-		}				
+		}
 		
 	}
 	
@@ -310,6 +336,7 @@ function clickObjUI(cdm)
 }
 
 
+// кликнули на треугольник в меню объекты (показываем/скрываем разъемы этого объекта)
 function clickRtekUI(cdm)
 {
 	console.log(cdm);
