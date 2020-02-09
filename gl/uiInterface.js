@@ -117,18 +117,6 @@ function createTextUI_1(cdm)
 	var nameRus = cdm.nameRus;
 	
 	// добавляем в список 	
-	if(nameId == "rp_plane_2")
-	{
-		var str = 
-		'<div class="right_panel_1_1_list_item" uuid="'+uuid+'">\
-			<div class="flex_1">\
-				<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
-				<div class="right_panel_1_1_list_item_text">img</div>\
-				<div class="right_panel_1_1_list_item_text">удал</div>\
-			</div>\
-		</div>';			
-	}
-	else
 	{
 		var str = 
 		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+uuid+'">\
@@ -154,21 +142,7 @@ function createTextUI_1(cdm)
 		
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });
 	}
-
-	if(nameId == "rp_plane_2")
-	{
-		var n = infProject.tools.plane.o1.length;	
-		infProject.tools.plane.o1[n] = obj;
-		infProject.tools.plane.el[n] = el;
-		
-		el.on('mousedown', function(e){ clickItemFloorUI({el: $(this)}); e.stopPropagation(); });
-		
-		var el_2 = $(el[0].children[0].children[1]);		 
-		el_2.on('mousedown', function(e){ clickItemParamsPlaneUI({el: $(this), nameId: "substrate"}); e.stopPropagation(); });
-
-		var el_2 = $(el[0].children[0].children[2]);		 
-		el_2.on('mousedown', function(e){ clickItemParamsPlaneUI({el: $(this), nameId: "button_delete_plane"}); e.stopPropagation(); });		
-	}	
+	
 }
 
 
@@ -190,24 +164,6 @@ function createTextUI_2(cdm)
 
 
 
-function clickItemParamsPlaneUI(cdm)
-{
-	console.log(5555, cdm.el);
-	
-	var nameId = cdm.nameId;
-	
-	$('[nameId="substrate"]').hide();
-	$('[nameId="rp_height_plane"]').hide();
-	$('[nameId="button_delete_plane"]').hide();
-	
-	
-	$('[nameId="'+nameId+'"]').show();	
-	
-}
-
-
-
-
 // кликнули объект в сцене, создаем/показываем список группы (дочерних объектов) (правом меню UI)
 function clickObjUI(cdm)
 {
@@ -220,9 +176,6 @@ function clickObjUI(cdm)
 	if(obj.userData.obj3D) { var obj = cdm.obj; }
 	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
 	else { return; }
-				
-	
-
 
 
 	if(obj.userData.obj3D.group) 	// группа
@@ -610,30 +563,33 @@ function addPlaneListUI(cdm)
 	
 	var plane = cdm.plane;
 	var n = infProject.scene.substrate.floor.length - 1;
-
-	createTextUI_1({obj: plane, nameId: "rp_plane_2", nameRus: "этаж"+(n+1), uuid: plane.uuid});
 	
-	showHideSubstrate_1({visible: false});
-	
-	// снимаем старые выдиления в UI 
-	for(var i = 0; i < infProject.tools.plane.el.length; i++)
 	{
-		infProject.tools.plane.el[i].css('background-color', '#ffffff');
+		var str = 
+		'<div class="right_panel_1_1_list_item" uuid="'+plane.uuid+'">\
+			<div class="flex_1">\
+				<div class="right_panel_1_1_list_item_text">'+plane.userData.substrate.nameRus+'</div>\
+				<div class="image_wrap" nameId="butt_img_substrate_1" style="position: absolute; width: 35px; height: 20px; right: 30px;">\
+					<img src="'+infProject.path+'img/f4.png">\
+				</div>\
+			</div>\
+		</div>';		
+		
+		var el = $(str).appendTo('[nameId="rp_plane_2"]');
+		
+		var n = infProject.tools.plane.o1.length;	
+		infProject.tools.plane.o1[n] = plane;
+		infProject.tools.plane.el[n] = el;
+		
+		el.on('mousedown', function(e){ clickItemFloorUI({el: $(this), type: "general"}); e.stopPropagation(); });
+		
+		//var el_2 = $(el[0].children[0].children[1]);
+		var el_2 = $(el[0].querySelector('[nameId="butt_img_substrate_1"]'));
+		el_2.on('mousedown', function(e){ clickItemFloorUI({el: el, type: "img"}); e.stopPropagation(); });		
 	}	
 	
 	
-	var el = $($('[nameId="rp_plane_2"]')[0].children[$('[nameId="rp_plane_2"]')[0].children.length-1]);
-	el.css('background-color', '#00ff00');
-	
-	
-	$('[nameId="input_transparency_substrate"]').val(100);
-	$('[nameId="input_rotate_substrate"]').val( 0 );
-	$('#upload-img').attr('src', '');
-	$('[nameId="rp_height_plane"]').val( 0 );
-	
-	infProject.scene.substrate.active = plane;
-	setStartPositionRulerSubstrate();
-	showHideSubstrate_1({visible: true});
+	clickItemFloorUI({el: el, type: "general"});
 	
 	renderCamera();
 }
@@ -647,13 +603,18 @@ function clickItemFloorUI(cdm)
 	var item = null;
 	var plane = null;	
 	
-	showHideSubstrate_1({visible: false});
+	showHideSubstrate_1({point: false, ruler: false});
 	infProject.scene.substrate.active = null;
+	
+	$('[nameId="block_substrate_wrap"]').hide();
+	$('[nameId="block_substrate_1"]').hide();
+	$('[nameId="block_substrate_2"]').hide();
 	
 	$('[nameId="input_transparency_substrate"]').val(100);
 	$('[nameId="input_rotate_substrate"]').val( 0 );
-	$('#upload-img').attr('src', '');
+	$('#upload-img').attr('src', infProject.path+'img/f0.png');
 	$('[nameId="rp_height_plane"]').val( 0 );
+	$('[nameId="rp_floor_name"]').val('Название');	
 	
 	// снимаем старые выдиления в UI 
 	for(var i = 0; i < infProject.tools.plane.el.length; i++)
@@ -688,16 +649,24 @@ function clickItemFloorUI(cdm)
 	var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
 	$('[nameId="input_rotate_substrate"]').val( rot );
 
-	$('[nameId="rp_height_plane"]').val( plane.position.y );
+	$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y*100)/100 );  
 	
 	// выделяем новый пункт на который кликнули 
 	item.css('background-color', '#00ff00');
 	var value = item.attr('uuid');	
 	
+	$('[nameId="rp_floor_name"]').val(plane.userData.substrate.nameRus);
+	
 	infProject.scene.substrate.active = plane;
 	setStartPositionRulerSubstrate();
-	showHideSubstrate_1({visible: true});
+	
+	
+	if(cdm.type == "general") { $('[nameId="block_substrate_1"]').show(); showHideSubstrate_1({point: true, ruler: false}); }
+	if(cdm.type == "img") { $('[nameId="block_substrate_2"]').show(); showHideSubstrate_1({point: true, ruler: true}); }
+	$('[nameId="block_substrate_wrap"]').show();
 }
+
+
 
 
 // удаляем этаж из списка UI
@@ -721,6 +690,8 @@ function removePlaneListUI_2(cdm)
 	}	
 	
 	infProject.scene.substrate.active = null;
+	
+	clickItemFloorUI();
 }
 
 

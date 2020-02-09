@@ -155,7 +155,7 @@ $infProject['settings']['calc'] = [ 'fundament' => '' ];
 $infProject['settings']['land'] = [ 'o' => false ];
 $infProject['settings']['unit'] = [ 'wall' => 1, 'floor' => 1 ];
 $infProject['settings']['camera'] = [ 'type' => '2d', 'zoom' => 1, 'limitZoom' => 1 ];
-$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5, 'pos' => [ 'y' => -0.1 ] ];
+$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5, 'pos' => [ 'y' => 0.0 ] ];
 $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 
 $infProject['scene'] = [ 'tool' => [] ];
@@ -265,7 +265,7 @@ else if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 	$infProject['settings']['wall']['color']['front'] = 0xada186;
 	$infProject['settings']['grid']['size'] = 0.2;
 	$infProject['settings']['grid']['count'] = null;
-	$infProject['settings']['grid']['pos'] = [ 'y' => 0.19 ];
+	$infProject['settings']['grid']['pos'] = [ 'y' => 0.0 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;
 	$infProject['settings']['interface']['button']['mode_1'] = ['mode' => ['План', 'Монтаж'], 'active' => 'План'];
 	$infProject['settings']['interface']['button']['showHideWall_1'] = ['active' => 'Спрятать стены'];

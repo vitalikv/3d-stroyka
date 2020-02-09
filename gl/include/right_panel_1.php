@@ -159,7 +159,17 @@
 		border-top: 1px solid #ccc;
 		border-bottom: 1px solid #ccc;
 	}
-
+	
+	.pr_plane_text_1
+	{
+		width: 100%;
+		padding-top: 10px;
+		border-top: 1px solid #b3b3b3;
+		font-family: arial,sans-serif;
+		font-size: 15px;
+		text-align: center;
+		color: #666;	
+	}
 </style>
 
 
@@ -271,62 +281,95 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					</div>					
 				</div>
 				
-				<div style="margin-bottom: 20px;">				
-					<div class="button1 button_gradient_1" nameId="button_delete_plane" style="display: none;">
-						удалить этаж	
-					</div>					
-				</div>	
+				<div nameId="block_substrate_wrap" style="display: none;">  
 
-				<div style="margin:20px auto;">
-					<input type="text" nameId="rp_height_plane" value=0> 
-				</div>	
+
+					<div nameId="block_substrate_1" style="display: none;">
+					
+						<div class="rp_obj_name" style="margin:20px auto;">
+							<input type="text" nameId="rp_floor_name" value="Название">	 				
+						</div>
+							
+
+						<div class="flex_1">
+							<div class="flex_1 align_items">
+								<div class="rp_label_plane">
+									высота
+								</div>
+							</div>
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" nameId="rp_height_plane" style="width: 90%; margin:5px 5px;" value=0>
+							</div>
+						</div>				
 						
-				<div class="substrate" nameId="substrate" style="display: none;">
-
-					<input name="file" type="file" accept="image/x-png,image/jpeg" id="load_substrate_1" class="input_load_substrate">
-					<label for="load_substrate_1" class="button1 button_gradient_1" nameId="load_img_1">		
-						загрузить план
-					</label>
-
-					<div class="prew_substrate">
-						<img src="#" id="upload-img" alt=""/>
+						<div style="margin-top: 20px;">				
+							<div class="button1 button_gradient_1" nameId="button_delete_plane">
+								удалить этаж	
+							</div>					
+						</div>					
+					
+					
 					</div>
 					
-					<div >
-						<div class="substrate_block">
-							прозрачность
-						</div>	
-						<input type="range" nameId="input_transparency_substrate" min="1" max="100" value="100">
-					</div>	
-					
-					<div class="block_1">
-						<div class="substrate_block">
-							вращение
-						</div>
-						
-						
-						
-						<div class="flex_1">
-							<input type="text" nameId="input_rotate_substrate" value=0>
-							<div class="button1 button_gradient_1" nameId="input_rotate_substrate_45">
-								45
+					<div nameId="block_substrate_2" style="display: none;">
+
+						<div class="substrate" nameId="substrate" style="display: block;">
+
+							<input name="file" type="file" accept="image/x-png,image/jpeg" id="load_substrate_1" class="input_load_substrate">
+							<label for="load_substrate_1" class="button1 button_gradient_1" nameId="load_img_1">		
+								загрузить план
+							</label>
+
+							<div class="prew_substrate" style="margin: auto;">
+								<img src="#" id="upload-img" alt=""/>
 							</div>
-
-							<div class="button1 button_gradient_1" nameId="input_rotate_substrate_90">
-								90
+							
+							<div>
+								<div class="pr_plane_text_1">
+									прозрачность
+								</div>	
+								<input type="range" nameId="input_transparency_substrate" min="1" max="100" value="100">
 							</div>	
-						</div>
-					</div>	
+							
+							<div class="block_1" style="display: none;">
+								<div class="pr_plane_text_1">
+									вращение
+								</div>
+								
+								<div class="flex_1">
+									<input type="text" nameId="input_rotate_substrate" value=0>
+									<div class="button1 button_gradient_1" nameId="input_rotate_substrate_45">
+										45
+									</div>
+
+									<div class="button1 button_gradient_1" nameId="input_rotate_substrate_90">
+										90
+									</div>	
+								</div>
+							</div>	
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										реальная длина
+									</div>
+								</div>
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="input_size_substrate" style="width: 90%; margin:5px 5px;" value=0>
+								</div>
+							</div>
+							
+							<div class="button1 button_gradient_1" nameId="assign_size_substrate">
+								применить
+							</div>			
+											
+						</div>			
+
+					</div>
 					
-					длина
-					<input type="text" nameId="input_size_substrate" value=0>	
-
-					<div class="button1 button_gradient_1" nameId="assign_size_substrate">
-						применить
-					</div>			
-
-									
-				</div>			
+				
+				</div>
+				
 
 		</div>
 		

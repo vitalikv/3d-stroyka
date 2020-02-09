@@ -762,7 +762,14 @@ canvas
 }
 
 
-
+.rp_label_plane 
+{
+	width: 175px; 
+	font-family: arial,sans-serif; 
+	font-size: 20px; 
+	color: #666; 
+	text-align:center;	
+}
 
 .right_panel_1 input
 {
@@ -849,6 +856,14 @@ canvas
 }
 
 
+.image_wrap img 
+{
+	display: block;	
+	height: 95%;
+	margin: auto; 
+	-o-object-fit: contain;
+	object-fit: contain;	
+}
 
 
 .w_2 .button1

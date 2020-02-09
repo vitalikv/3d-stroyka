@@ -116,10 +116,11 @@ function createSubstrate(cdm)
 	if(!cdm) { cdm = {}; }
 	
 	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), new THREE.MeshPhongMaterial( { color : 0xcccccc, transparent: true, opacity: 1, lightMap : lightMap_1 } ) );
-	obj.position.y = 0.01;
+	obj.position.y = 0.0;
 	obj.rotation.y = 0.0;
 	obj.userData.tag = "substrate";
 	obj.userData.substrate = { p: [], active: false };
+	obj.userData.substrate.nameRus = 'этаж';
 	setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'}); 
 	scene.add( obj );	
 	
@@ -129,6 +130,16 @@ function createSubstrate(cdm)
 		if(cdm.pos.y) obj.position.y = cdm.pos.y;
 		if(cdm.pos.z) obj.position.z = cdm.pos.z;
 	}
+	
+	if(cdm.q)
+	{
+		obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w);
+	}
+
+	if(cdm.opacity)
+	{
+		obj.material.opacity = cdm.opacity;
+	}	
 		
 	var p = createPointSubstrate({plane: obj});
 	
@@ -270,19 +281,24 @@ function showHideSubstrate_1(cdm)
 	var point = plane.userData.substrate.p;	
 
 
-	if(cdm.visible !== undefined)
+	if(cdm.point !== undefined)
 	{
-		var visible = cdm.visible;
+		var visible = cdm.point;
+		
+		for (var i = 0; i < point.length; i++)
+		{
+			point[i].visible = visible;
+		}		
 	}			
 	
-	for (var i = 0; i < point.length; i++)
+	if(cdm.ruler !== undefined)
 	{
-		point[i].visible = visible;
-	}
-	
-	ruler[0].visible = visible;
-	ruler[1].visible = visible;
-	ruler[0].userData.subtool.line.visible = visible;
+		var visible = cdm.ruler;
+		
+		ruler[0].visible = visible;
+		ruler[1].visible = visible;
+		ruler[0].userData.subtool.line.visible = visible;	
+	}	
 	
 	renderCamera();
 }
@@ -301,14 +317,14 @@ function setPlanePositionY(cdm)
 	 
 	if(!value) 
 	{
-		$('[nameId="rp_height_plane"]').val( plane.position.y );
+		$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y/100)*100 );
 		
 		return;
 	}	
 	
-	plane.position.y = value.num;	
+	plane.position.y = Math.round(value.num*100)/100;	
 
-	$('[nameId="rp_height_plane"]').val( value.num );
+	$('[nameId="rp_height_plane"]').val( plane.position.y );
 	
 	var ruler = infProject.scene.substrate.ruler;
 	ruler[0].position.y = plane.position.y + 0.01;
@@ -369,7 +385,6 @@ function setImgUrlSubstrate(cdm)
 		
 		texture.offset.x += 0.5;
 		texture.offset.y += 0.5;
-
 		
 		texture.needsUpdate = true;
 		
@@ -790,7 +805,7 @@ function deleteSubstrate(cdm)
 
 	var point = plane.userData.substrate.p;		
 	
-	showHideSubstrate_1({visible: false});
+	showHideSubstrate_1({point: false, ruler: false});
 	
 	var num = -1;
 	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ )

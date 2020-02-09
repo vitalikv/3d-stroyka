@@ -304,127 +304,6 @@ function disposeNode(node)
 
 
 
-// сохраняем окна/двери
-function saveWindows(wall)
-{
-	var windows = [], doors = [];
-	
-	var arrO = wall.userData.wall.arrO;
-
-	var o = [[], []];
-
-	for ( var i2 = 0; i2 < arrO.length; i2++ ) 
-	{
-		if(arrO[i2].userData.tag == 'window') { o[0][o[0].length] = arrO[i2]; }
-		else if(arrO[i2].userData.tag == 'door') { o[1][o[1].length] = arrO[i2]; }		
-	}
-
-	var p = wall.userData.wall.p;
-
-	for ( var i = 0; i < o.length; i++ )
-	{
-		for ( var i2 = 0; i2 < o[i].length; i2++ )
-		{ 
-			var wd = o[i][i2];
-			var v = wd.geometry.vertices;
-		
-			wd.updateMatrixWorld();
-			wd.geometry.computeBoundingBox();
-			wd.geometry.computeBoundingSphere();
-			var dX = wd.geometry.boundingBox.max.x - wd.geometry.boundingBox.min.x;
-			var dY = wd.geometry.boundingBox.max.y - wd.geometry.boundingBox.min.y;
-			var center = wd.geometry.boundingSphere.center;
-		
-		
-			var v7 = wd.localToWorld( center.clone() );			
-			var qt1 = quaternionDirection( new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize() );
-			var x = localTransformPoint(new THREE.Vector3().subVectors( v7, p[0].position ), qt1).z; 
-			
-			x = x / p[1].position.distanceTo( p[0].position );		// процентное соотношение от начала стены
-			
-			var y = wall.worldToLocal( wd.localToWorld(new THREE.Vector3(0, wd.geometry.boundingBox.min.y, 0)) ).y;
-			
-			
-			var arr = {};
-			
-			arr.id = wd.userData.id;						// id
-			arr.lotid  = wd.userData.door.lotid;					// lotid  
-			arr.width = dX;									// width
-			arr.height = dY;								// height		
-			arr.startPointDist = x;							// pos_start
-			arr.over_floor = y;								// over_floor		
-			//arr.options = '';
-			
-			if(wd.userData.tag == 'window') { windows[windows.length] = arr; }
-			else if(wd.userData.tag == 'door') { doors[doors.length] = arr; }			
-		}		
-	}
-
-	return { windows : windows, doors : doors };
-}
-
-
-function saveFile(cdm) 
-{ 
-	
-	var json = JSON.stringify( getJsonGeometry() );
-	
-	if(cdm.json)
-	{
-		// сохраняем в папку
-		$.ajax
-		({
-			url: infProject.path+'saveJson.php',
-			type: 'POST',
-			data: {myarray: json},
-			dataType: 'json',
-			success: function(json)
-			{ 			
-				console.log(json); 
-			},
-			error: function(json){ console.log(json);  }
-		});			
-	}
-	
-	
-	if(cdm.id)
-	{
-		//var preview = saveAsImagePreview();
-		var preview = null;
-		
-		// сохраняем в бд
-		$.ajax
-		({
-			url: infProject.path+'components/saveSql.php',
-			type: 'POST',
-			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
-			dataType: 'json',
-			success: function(json)
-			{ 			
-				console.log(json);
-				
-				if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
-			},
-			error: function(json){ console.log(json); }
-		});			
-	}
-	
-	
-	if(1==2)
-	{
-		var csv = JSON.stringify( txt );	
-		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
-		
-		var link = document.createElement('a');
-		document.body.appendChild(link);
-		link.href = csvData;
-		link.target = '_blank';
-		link.download = 'filename.json';
-		link.click();			
-	}
-}
-
-
 
 
 function getJsonGeometry()
@@ -449,7 +328,7 @@ function getJsonGeometry()
 	var furn = [];
 	var group = [];
 	var pipe = [];
-	
+	var subs = [];
 	
 	var wall = infProject.scene.array.wall;
 	//var point = infProject.scene.array.point;
@@ -629,6 +508,24 @@ function getJsonGeometry()
 			pipe[m].point[i2].pos = tube.point[i2].position.clone();
 		}
 	}
+
+
+	for ( var i = 0; i < infProject.scene.substrate.floor.length; i++ )
+	{
+		var plane = infProject.scene.substrate.floor[i].plane;
+		
+		subs[i] = {};
+		subs[i].pos = plane.position;
+		subs[i].q = {x: plane.quaternion.x, y: plane.quaternion.y, z: plane.quaternion.z, w: plane.quaternion.w};
+		
+		plane.geometry.computeBoundingBox();		
+		subs[i].scale = (Math.abs(plane.geometry.boundingBox.max.z) + Math.abs(plane.geometry.boundingBox.min.z));
+		
+		subs[i].opacity = plane.material.opacity;
+		
+		subs[i].nameRus = plane.userData.substrate.nameRus;
+	}
+
 	
 	json.floors[0].points = points;
 	json.floors[0].walls = walls;
@@ -636,10 +533,135 @@ function getJsonGeometry()
 	json.furn = furn;
 	json.group = group;
 	json.pipe = pipe;
+	json.subs = subs;
+	
 	
 	return json;
 }
 
+
+
+
+
+// сохраняем окна/двери
+function saveWindows(wall)
+{
+	var windows = [], doors = [];
+	
+	var arrO = wall.userData.wall.arrO;
+
+	var o = [[], []];
+
+	for ( var i2 = 0; i2 < arrO.length; i2++ ) 
+	{
+		if(arrO[i2].userData.tag == 'window') { o[0][o[0].length] = arrO[i2]; }
+		else if(arrO[i2].userData.tag == 'door') { o[1][o[1].length] = arrO[i2]; }		
+	}
+
+	var p = wall.userData.wall.p;
+
+	for ( var i = 0; i < o.length; i++ )
+	{
+		for ( var i2 = 0; i2 < o[i].length; i2++ )
+		{ 
+			var wd = o[i][i2];
+			var v = wd.geometry.vertices;
+		
+			wd.updateMatrixWorld();
+			wd.geometry.computeBoundingBox();
+			wd.geometry.computeBoundingSphere();
+			var dX = wd.geometry.boundingBox.max.x - wd.geometry.boundingBox.min.x;
+			var dY = wd.geometry.boundingBox.max.y - wd.geometry.boundingBox.min.y;
+			var center = wd.geometry.boundingSphere.center;
+		
+		
+			var v7 = wd.localToWorld( center.clone() );			
+			var qt1 = quaternionDirection( new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize() );
+			var x = localTransformPoint(new THREE.Vector3().subVectors( v7, p[0].position ), qt1).z; 
+			
+			x = x / p[1].position.distanceTo( p[0].position );		// процентное соотношение от начала стены
+			
+			var y = wall.worldToLocal( wd.localToWorld(new THREE.Vector3(0, wd.geometry.boundingBox.min.y, 0)) ).y;
+			
+			
+			var arr = {};
+			
+			arr.id = wd.userData.id;						// id
+			arr.lotid  = wd.userData.door.lotid;					// lotid  
+			arr.width = dX;									// width
+			arr.height = dY;								// height		
+			arr.startPointDist = x;							// pos_start
+			arr.over_floor = y;								// over_floor		
+			//arr.options = '';
+			
+			if(wd.userData.tag == 'window') { windows[windows.length] = arr; }
+			else if(wd.userData.tag == 'door') { doors[doors.length] = arr; }			
+		}		
+	}
+
+	return { windows : windows, doors : doors };
+}
+
+
+function saveFile(cdm) 
+{ 
+	
+	var json = JSON.stringify( getJsonGeometry() );
+	
+	if(cdm.json)
+	{
+		// сохраняем в папку
+		$.ajax
+		({
+			url: infProject.path+'saveJson.php',
+			type: 'POST',
+			data: {myarray: json},
+			dataType: 'json',
+			success: function(json)
+			{ 			
+				console.log(json); 
+			},
+			error: function(json){ console.log(json);  }
+		});			
+	}
+	
+	
+	if(cdm.id)
+	{
+		//var preview = saveAsImagePreview();
+		var preview = null;
+		
+		// сохраняем в бд
+		$.ajax
+		({
+			url: infProject.path+'components/saveSql.php',
+			type: 'POST',
+			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
+			dataType: 'json',
+			success: function(json)
+			{ 			
+				console.log(json);
+				
+				if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
+			},
+			error: function(json){ console.log(json); }
+		});			
+	}
+	
+	
+	if(1==2)
+	{
+		var csv = JSON.stringify( txt );	
+		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
+		
+		var link = document.createElement('a');
+		document.body.appendChild(link);
+		link.href = csvData;
+		link.target = '_blank';
+		link.download = 'filename.json';
+		link.click();			
+	}
+}
 
 
 
@@ -701,6 +723,7 @@ function loadFilePL(arr)
 	var rooms = arr.floors[0].rooms;
 	var furn = (arr.furn) ? arr.furn : [];
 	var pipe = (arr.pipe) ? arr.pipe : [];
+	var subs = (arr.subs) ? arr.subs : [];
 			
 	var wall = [];
 	
@@ -748,37 +771,7 @@ function loadFilePL(arr)
 
 	//-------------
 	 
-	// удаляем стены, которые пересекаются с друг другом (стена в стене)
-	for ( var i = wall.length - 1; i >= 0; i-- )
-	{
-		for ( var i2 = 0; i2 < wall.length; i2++ )
-		{
-			if(wall[i] == wall[i2]) continue;			
-			
-			var count = 0;
-			var pos1 = [];
-			var pos2 = [];
-			if(wall[i].points[0].id == wall[i2].points[0].id) { count++; pos1 = [wall[i].points[0].pos, wall[i].points[1].pos]; pos2 = [wall[i2].points[0].pos, wall[i2].points[1].pos]; }
-			if(wall[i].points[0].id == wall[i2].points[1].id) { count++; pos1 = [wall[i].points[0].pos, wall[i].points[1].pos]; pos2 = [wall[i2].points[1].pos, wall[i2].points[0].pos]; }
-			if(wall[i].points[1].id == wall[i2].points[0].id) { count++; pos1 = [wall[i].points[1].pos, wall[i].points[0].pos]; pos2 = [wall[i2].points[0].pos, wall[i2].points[1].pos]; }
-			if(wall[i].points[1].id == wall[i2].points[1].id) { count++; pos1 = [wall[i].points[1].pos, wall[i].points[0].pos]; pos2 = [wall[i2].points[1].pos, wall[i2].points[0].pos]; }
-			
-			if(count == 2) { wall.splice(i, 1); }
-			else if(count == 1)
-			{
-				var dir1 = new THREE.Vector3().subVectors( pos1[0], pos1[1] ).normalize();
-				var dir2 = new THREE.Vector3().subVectors( pos2[0], pos2[1] ).normalize();
-				
-				if(!comparePos(dir1, dir2)) { continue; }
-				
-				var d1 = pos1[0].distanceTo( pos1[1] );
-				var d2 = pos2[0].distanceTo( pos2[1] );
-				
-				if(d1 > d2) { wall.splice(i, 1); } 
-			}
-		}
-	}
-	
+
 	// создаем и устанавливаем все стены (без окон/дверей)
 	var arrW = [];
 	
@@ -848,6 +841,12 @@ function loadFilePL(arr)
 		geometryTubeWF({line : line, createLine : true});	
 	}
 
+
+	for ( var i = 0; i < subs.length; i++ )
+	{
+		createSubstrate(subs[i]);
+	}
+	
 
 	loadObjInBase({furn: furn});
 

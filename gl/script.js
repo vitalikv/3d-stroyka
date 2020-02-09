@@ -272,7 +272,7 @@ if(1==1)
 
 startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 addObjInCatalogUI_1();	// каталог UI
-changeRightMenuUI_1({name: 'button_wrap_object'});	// назначаем первоначальную вкладку , которая будет включена
+changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
 createTextUI_2({});		// добавляем в список +, для добавления этажа
 
 
