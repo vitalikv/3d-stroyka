@@ -263,7 +263,7 @@ else if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 	$infProject['settings']['wall']['label'] = 'double';
 	$infProject['settings']['wall']['color']['top'] = 0xded3b8;
 	$infProject['settings']['wall']['color']['front'] = 0xada186;
-	$infProject['settings']['grid']['size'] = 0.2;
+	$infProject['settings']['grid']['size'] = 1;
 	$infProject['settings']['grid']['count'] = null;
 	$infProject['settings']['grid']['pos'] = [ 'y' => 0.0 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;

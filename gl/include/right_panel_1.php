@@ -488,10 +488,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		</div>
 
 		
-		<div class="flex_column_1" nameId="wrap_list_obj" style="display: none;">
+		<div class="flex_column_1 relative_1 height100" nameId="wrap_list_obj" style="display: none;">
 			<div class="right_panel_1_1_h">Список материалов</div>
 			
-			<div class="right_panel_1_1_list" list_ui="wf">
+			<div class="right_panel_2_1_list" list_ui="wf">
 				
 				<?if(1 == 2){?>
 				<div class="flex_1 right_panel_1_1_list_item">
@@ -509,10 +509,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		</div>
 		
 		
-		<div class="flex_column_1" nameId="wrap_catalog" style="display: none;">
+		<div class="flex_column_1 relative_1 height100" nameId="wrap_catalog" style="display: none;">
 			<div class="right_panel_1_1_h">Каталог</div>
 			
-			<div class="right_panel_1_1_list" list_ui="catalog">
+			<div class="right_panel_2_1_list" list_ui="catalog">
 				
 			</div>
 		</div>

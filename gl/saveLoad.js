@@ -519,11 +519,18 @@ function getJsonGeometry()
 		subs[i].q = {x: plane.quaternion.x, y: plane.quaternion.y, z: plane.quaternion.z, w: plane.quaternion.w};
 		
 		plane.geometry.computeBoundingBox();		
-		subs[i].scale = (Math.abs(plane.geometry.boundingBox.max.z) + Math.abs(plane.geometry.boundingBox.min.z));
+		subs[i].scale = {x: 1, z: 1};
+		subs[i].scale.x = (Math.abs(plane.geometry.boundingBox.max.x) + Math.abs(plane.geometry.boundingBox.min.x));
+		subs[i].scale.z = (Math.abs(plane.geometry.boundingBox.max.z) + Math.abs(plane.geometry.boundingBox.min.z));		
 		
 		subs[i].opacity = plane.material.opacity;
 		
 		subs[i].nameRus = plane.userData.substrate.nameRus;
+		
+		if(plane.userData.substrate.img)
+		{ 
+			subs[i].img = plane.material.map.image.src;
+		}
 	}
 
 	

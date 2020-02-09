@@ -121,7 +121,8 @@ function createSubstrate(cdm)
 	obj.userData.tag = "substrate";
 	obj.userData.substrate = { p: [], active: false };
 	obj.userData.substrate.nameRus = 'этаж';
-	setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'}); 
+	obj.userData.substrate.img = null;
+	
 	scene.add( obj );	
 	
 	if(cdm.pos)
@@ -139,7 +140,7 @@ function createSubstrate(cdm)
 	if(cdm.opacity)
 	{
 		obj.material.opacity = cdm.opacity;
-	}	
+	}
 		
 	var p = createPointSubstrate({plane: obj});
 	
@@ -152,6 +153,24 @@ function createSubstrate(cdm)
 	
 	var n = infProject.scene.substrate.floor.length;
 	infProject.scene.substrate.floor[n] = {plane: obj, point: p};
+	
+	if(cdm.scale)	// размер подложки
+	{
+		updateSizeSubstrate({obj: obj, size: {x: cdm.scale.x/2, z: cdm.scale.z/2}});
+		
+		if(cdm.img)		// есть сохраненные изображения
+		{
+			setImgCompSubstrate({obj: obj, image: cdm.img, no_size: true});
+		}
+		else
+		{
+			setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg', scale: cdm.scale});
+		}		
+	}
+	else
+	{
+		setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'});
+	}
 	
 	addPlaneListUI({plane: obj});
 }
@@ -365,7 +384,7 @@ function setImgUrlSubstrate(cdm)
 		
 		if(cdm.scale)
 		{
-			updateSizeSubstrate({obj: obj, size: {x: cdm.scale/2 * ratioImg, z: cdm.scale/2}});
+			updateSizeSubstrate({obj: obj, size: {x: cdm.scale.x/2, z: cdm.scale.z/2}});
 		}
 		else
 		{
@@ -405,7 +424,7 @@ function setImgCompSubstrate(cdm)
 	var image = new Image();
 	image.src = cdm.image;
 	
-	var obj = infProject.scene.substrate.active;	
+	var obj = (cdm.obj) ? cdm.obj : infProject.scene.substrate.active;	
 	if(!obj) return;
 
 	image.onload = function() 
@@ -419,14 +438,22 @@ function setImgCompSubstrate(cdm)
 		texture.wrapS = THREE.MirroredRepeat;
 		texture.wrapT = THREE.MirroredRepeat;
 		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();		
+			
 		
-		var ratioImg = texture.image.width/texture.image.height;
-
-		updateSizeSubstrate({obj: obj, size: {x: ratioImg * 2.5, z: 2.5}});
+		if(cdm.no_size)
+		{
+			var x = (Math.abs(obj.geometry.boundingBox.max.x) + Math.abs(obj.geometry.boundingBox.min.x));
+			var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));				
+			updateSizeSubstrate({obj: obj, size: {x: x/2, z: z/2}});
+		}
+		else
+		{
+			var ratioImg = texture.image.width/texture.image.height;
+			updateSizeSubstrate({obj: obj, size: {x: ratioImg * 2.5, z: 2.5}});							
+		}
 		
 		var x = (Math.abs(obj.geometry.boundingBox.max.x) + Math.abs(obj.geometry.boundingBox.min.x));
-		//var y = (Math.abs(obj.geometry.boundingBox.max.y) + Math.abs(obj.geometry.boundingBox.min.y));
-		var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));		
+		var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));	
 		
 		setPositionPointSubstrate({plane: obj});
 		
@@ -443,8 +470,10 @@ function setImgCompSubstrate(cdm)
 		material.map = texture; 
 		material.lightMap = lightMap_1;
 		material.needsUpdate = true; 					
-		console.log(image);
-		setTransparencySubstrate({value: 100});
+		//console.log(image);		
+		//setTransparencySubstrate({value: 100});
+		
+		obj.userData.substrate.img = true; 
 		
 		renderCamera();
 	};
