@@ -89,6 +89,7 @@ function resetScene()
 	var tube = infProject.scene.array.tube;
 	var obj = infProject.scene.array.obj;
 	var group = infProject.scene.array.group;
+	var substrate = infProject.scene.substrate.floor;
 	
 	for ( var i = 0; i < wall.length; i++ )
 	{ 
@@ -173,6 +174,22 @@ function resetScene()
 	}	
 	
 	
+	for ( var i = 0; i < substrate.length; i++ )
+	{ 
+		removePlaneListUI_2({plane: substrate[i].plane}); 	// удаляем список подложек UI
+		
+		disposeNode(substrate[i].plane);
+		scene.remove(substrate[i].plane);
+
+		for ( var i2 = 0; i2 < substrate[i].point.length; i2++ )
+		{
+			disposeNode(substrate[i].point[i2]);
+			scene.remove(substrate[i].point[i2]);			
+		}
+	}
+
+	
+	
 	// удаляем список материалов UI
 	for(var i = 0; i < infProject.ui.list_wf.length; i++)
 	{
@@ -218,7 +235,11 @@ function resetScene()
 	clickO = resetPop.clickO();
 	infProject.project = null;
 	infProject.scene.array = resetPop.infProjectSceneArray();
+	infProject.scene.substrate.floor = [];
+	infProject.scene.substrate.active = null;
+	
 
+	
 	getConsoleRendererInfo();
 }
 
