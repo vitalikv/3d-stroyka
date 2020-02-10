@@ -238,7 +238,48 @@ function movePivot( event )
 	pivot.position.add( pos2 );
 	
 	
-	if(obj.userData.tag == 'joinPoint')
+	if(obj.userData.tag == 'wf_point')
+	{
+		obj.position.add( pos2 );
+		
+		
+		if(!clickO.actMove)
+		{
+			clickO.actMove = true;
+			
+			var line = obj.userData.wf_point.line.o;
+			
+			if(line) 
+			{ 
+				//line.material.color = new THREE.Color(infProject.listColor.active2D);
+				
+				if(line.userData.wf_line.tube)
+				{
+					line.userData.wf_line.tube.visible = false;
+				}			 
+			}
+		}
+		
+		// обновляем geometry линии
+		if(obj.userData.wf_point.line.o)
+		{
+			var line = obj.userData.wf_point.line.o;
+			
+			line.geometry.verticesNeedUpdate = true; 
+			line.geometry.elementsNeedUpdate = true;
+
+			// обновляем geometry трубы
+			if(line.userData.wf_line.tube)
+			{
+				//geometryTubeWF({line : line});
+			}
+		}
+		
+		showWF_point_UI(obj);
+		
+		
+	}
+	else if(obj.userData.tag == 'joinPoint')
 	{
 		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
 		{
@@ -268,6 +309,33 @@ function movePivot( event )
 		obj.position.add( pos2 ); 
 	}
 
+}
+
+
+function clickPivotUp()
+{
+	var obj = infProject.tools.pivot.userData.pivot.obj;
+	
+	if(!obj) return;
+		
+	if(obj.userData.tag == 'wf_point')
+	{
+		if(clickO.actMove)
+		{		
+			var line = obj.userData.wf_point.line.o;
+			
+			if(line) 
+			{ 
+				//line.material.color = new THREE.Color(infProject.listColor.active2D);
+				
+				if(line.userData.wf_line.tube)
+				{
+					geometryTubeWF({line : line});
+					line.userData.wf_line.tube.visible = true;
+				}			 
+			}
+		}		
+	}
 }
 
 

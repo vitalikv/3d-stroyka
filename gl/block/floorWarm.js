@@ -45,6 +45,29 @@ function clickWFPoint(intersect)
 }
 
 
+function clickWFPoint_3D(cdm)
+{
+	var intersect = cdm.intersect;
+	
+	if(clickO.move)
+	{
+		if(clickO.move.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
+	}		
+	
+	var obj = intersect.object;	
+	
+	var pos = obj.getWorldPosition(new THREE.Vector3());
+	var qt = new THREE.Quaternion();
+	
+	var pivot = infProject.tools.pivot;	
+	pivot.visible = true;	
+	pivot.userData.pivot.obj = obj;
+	pivot.position.copy(pos);
+	pivot.quaternion.copy(qt);	
+	
+}
+
+
 
 
 // перетаскиваем точку/tool, обновляем форму линии
@@ -595,8 +618,10 @@ function geometryTubeWF(cdm)
 	{
 		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: line.userData.wf_line.color.getHex(), wireframe: false, lightMap : lightMap_1 } ) );	
 		line.userData.wf_line.tube = tube;
+		tube.userData.tag = 'wf_tube';
 		tube.userData.wf_tube = {}
 		tube.userData.wf_tube.color = line.material.color.clone();
+		tube.userData.wf_tube.line = line;
 		scene.add( tube );
 	}
 	else
@@ -738,7 +763,12 @@ function showWF_point_UI(point)
 function showWF_line_UI(line)  
 {
 	$('[nameId="tube_menu_1"]').show();
-		
+	
+	if(line.userData.wf_tube)
+	{
+		line = line.userData.wf_tube.line;
+	}
+	
 	var v = line.geometry.vertices;
 	var length = 0;
 	
@@ -752,6 +782,16 @@ function showWF_line_UI(line)
 	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
 	
 	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
+	
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, true);		
 }
 
 
