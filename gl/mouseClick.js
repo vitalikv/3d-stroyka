@@ -192,8 +192,6 @@ function clickRayHit(event)
 		var tube = infProject.scene.array.tube;	
 		for ( var i = 0; i < tube.length; i++ )
 		{
-			//for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }
-
 			wf[wf.length] = tube[i].userData.wf_line.tube;
 			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }
 		}
@@ -276,9 +274,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'wall' && camera == cameraWall ) { clickWall_3D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
-		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); }
-		else if( tag == 'wf_line' ) {  }
-		else if( tag == 'wf_tube' && camera == cameraTop ) {  }
+		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); showWF_point_UI( obj ); }
+		else if( tag == 'wf_tube' && camera == cameraTop ) { showWF_line_UI( obj ); }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' ) { clickToggleChangeWin( rayhit ); }
@@ -295,9 +292,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_1') { clickObject3D(obj, {menu_1: true}); }
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_2') { clickItemCenterObjUI_2({obj: obj}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }
-		else if( tag == 'wf_line' ) {  }
-		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); }
-		else if( tag == 'wf_tube' && camera == camera3D ) {  }
+		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); showWF_point_UI( obj ); }
+		else if( tag == 'wf_tube' && camera == camera3D ) { showWF_line_UI( obj ); }
 		else { flag = false; }
 	}	
 	else 
@@ -315,9 +311,6 @@ function clickMouseActive(cdm)
 			else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); }
 			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }
 			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
-			else if(tag == 'wf_line') { showWF_line_UI( obj ); }
-			else if(tag == 'wf_tube') { showWF_line_UI( obj ); }
-			else if(tag == 'wf_point') { showWF_point_UI( obj ); }
 			else if(tag == 'boxWF') { showToggleGp(); showBoxWF_UI(); }
 			else if(tag == 'obj') { showObjUI( obj ); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
@@ -331,7 +324,6 @@ function clickMouseActive(cdm)
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
 			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; }
-			else if(tag == 'wf_tube') { showWF_line_UI( obj ); }
 		}
 		else if(camera == cameraWall)
 		{
@@ -488,8 +480,8 @@ function hideMenuObjUI_2D( o )
 			case 'point': hideMenuUI(o);  break;
 			case 'door': hideSizeWD(o); hideMenuUI(o); break;
 			case 'window': hideSizeWD(o); hideMenuUI(o); break;
-			case 'wf_line': hideMenuUI(o); break;
-			case 'wf_point': hideMenuUI(o); break;
+			case 'wf_tube': deClickTube({obj: o}); hideMenuUI(o); break;
+			case 'wf_point': deClickTube({obj: o}); hideMenuUI(o); break;
 			case 'boxWF': hideControlWF(); hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;
 			case 'joinPoint': hidePivotGizmo(o); break;
@@ -507,6 +499,8 @@ function hideMenuObjUI_3D( o )
 	{  		
 		switch ( o.userData.tag ) 
 		{
+			case 'wf_tube': deClickTube({obj: o}); hideMenuUI(o); break;
+			case 'wf_point': deClickTube({obj: o}); hidePivotGizmo(o); break;
 			case 'obj': hidePivotGizmo(o); break;
 			case 'joinPoint': hidePivotGizmo(o); break;
 		}
@@ -559,7 +553,7 @@ function hideMenuUI(obj)
 	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
-	else if(tag == 'wf_line') { $('[nameId="tube_menu_1"]').hide(); }
+	else if(tag == 'wf_tube') { $('[nameId="tube_menu_1"]').hide(); }
 	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); }
 	else if(tag == 'boxWF') { hideBoxWF_UI(); } 
 }
@@ -606,7 +600,7 @@ function consoleInfo( obj )
 	{
 		console.log( "obj : " + obj.userData.id + " | lotid : " + obj.lotid  + " | userData : ", obj.userData, obj );
 	}	
-	else if ( tag == 'wf_line' ) 
+	else if ( tag == 'wf_tube' ) 
 	{
 		console.log( tag + " id : " + obj.userData.id + " | userData : ", obj.userData, obj );
 	}	

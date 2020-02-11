@@ -42,6 +42,18 @@ function clickWFPoint(intersect)
 	clickO.offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	
+	
+	var line = obj.userData.wf_point.line.o;
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, true);	
 }
 
 
@@ -63,7 +75,18 @@ function clickWFPoint_3D(cdm)
 	pivot.visible = true;	
 	pivot.userData.pivot.obj = obj;
 	pivot.position.copy(pos);
-	pivot.quaternion.copy(qt);	
+	pivot.quaternion.copy(qt);
+
+	var line = obj.userData.wf_point.line.o;
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, true);	
 	
 }
 
@@ -801,7 +824,9 @@ function inputWF_tubeDiametr(cdm)
 	var line = cdm.line;
 	
 	if(!line) return;	
-	if(line.userData.tag != 'wf_line') return;
+	if(line.userData.tag != 'wf_tube') return;
+	
+	line = line.userData.wf_tube.line;
 	
 	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.05}, int: true });
 	
@@ -863,6 +888,33 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 
 
 
+// кликнули на другой объект, деактивируем трубу
+function deClickTube(cdm)  
+{	
+	var line = null;
+	
+	if(cdm.obj.userData.wf_tube)
+	{
+		line = cdm.obj.userData.wf_tube.line;
+	}		
+	else if(cdm.obj.userData.wf_point)
+	{
+		line = cdm.obj.userData.wf_point.line.o;
+	}		
+	else
+	{
+		return;
+	}
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, false);		
+}
 
 
 
