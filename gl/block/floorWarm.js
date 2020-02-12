@@ -5,7 +5,7 @@
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
-	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false } ) ); 
+	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.wf_point ); 
 	point.position.copy( cdm.pos );		
 	point.position.y = infProject.settings.wf_tube.pos.y;	
 	
@@ -27,7 +27,7 @@ function createPointWF(cdm)
 }
 
 
-// кликнули на точку
+// кликнули на точку 2D
 function clickWFPoint(intersect)
 {
 	if(clickO.move)
@@ -851,10 +851,10 @@ function inputWF_tubeDiametr(cdm)
 // меняем цвет трубы input
 $('[color_tube_1_change]').on('mousedown', function(e) 
 {  
-	var line = clickO.last_obj;
+	var tube = clickO.last_obj;
 	
-	if(!line) return;	
-	if(line.userData.tag != 'wf_line') return;
+	if(!tube) return;	
+	if(tube.userData.tag != 'wf_tube') return;
 	
 	
 	var color = $(this).attr('color_tube_1_change');
@@ -866,16 +866,14 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 	
 	var color = Number('0x'+color); 
 	
+	var line = tube.userData.wf_tube.line;
+	
 	line.material.color = new THREE.Color(color);
 	line.userData.wf_line.color = line.material.color.clone();
 	
-	var tube = line.userData.wf_line.tube;
-	
-	if(tube) 
-	{ 
-		tube.material.color = new THREE.Color(color); 
-		tube.userData.wf_tube.color = tube.userData.wf_line.color.clone();
-	}
+	tube.material.color = new THREE.Color(color); 
+	tube.userData.wf_tube.color = tube.material.color.clone();
+
 	
 	updateListTubeUI_1({o: line, type: 'update'});
 	

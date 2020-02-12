@@ -84,8 +84,8 @@ function activeHover2D( event )
 		else if ( tag == 'wall' ) { object.material[ 3 ].color = new THREE.Color(infProject.listColor.hover2D); }		
 		else if ( tag == 'controll_wd' ) { if(clickO.last_obj == object.obj) { activeHover2D_2(); return; } }
 		else if ( tag == 'wf_tube' ) 
-		{ console.log(object.userData.wf_tube.color.clone());
-			object.material.color = new THREE.Color(infProject.listColor.hover2D); console.log(object.userData.wf_tube.color.clone());
+		{ 
+			object.material.color = new THREE.Color(infProject.listColor.hover2D); 
 		}		
 		activeHover2D_2();
 

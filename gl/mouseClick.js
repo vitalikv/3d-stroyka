@@ -500,7 +500,7 @@ function hideMenuObjUI_3D( o )
 		switch ( o.userData.tag ) 
 		{
 			case 'wf_tube': deClickTube({obj: o}); hideMenuUI(o); break;
-			case 'wf_point': deClickTube({obj: o}); hidePivotGizmo(o); break;
+			case 'wf_point': deClickTube({obj: o}); hidePivotGizmo(o); hideMenuUI(o); break;
 			case 'obj': hidePivotGizmo(o); break;
 			case 'joinPoint': hidePivotGizmo(o); break;
 		}
