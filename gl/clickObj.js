@@ -354,18 +354,10 @@ function hidePivotGizmo(obj)
 	//clickO.obj = null;  
 	clickO.last_obj = null;
 	
-	$('[nameId="wrap_object_1"]').hide();
-	
+
+	activeObjRightPanelUI_1();
 	
 	outlineRemoveObj();
-}
-
-
-
-// при выделении объекта, показываем меню 
-function showObjUI()
-{	
-	$('[nameId="wrap_object_1"]').show();
 }
 
 

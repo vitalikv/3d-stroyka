@@ -5,7 +5,7 @@
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
-	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.wf_point ); 
+	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial({color : 0x333333, transparent: true, opacity: 0.6, depthTest: false}) ); 
 	point.position.copy( cdm.pos );		
 	point.position.y = infProject.settings.wf_tube.pos.y;	
 	
@@ -53,7 +53,9 @@ function clickWFPoint(intersect)
 		wf[wf.length] = line.userData.wf_line.point[i2]; 
 	}
 	
-	showHideArrObj(wf, true);	
+	showHideArrObj(wf, true);
+
+	activeObjRightPanelUI_1({obj: obj});
 }
 
 
@@ -88,6 +90,7 @@ function clickWFPoint_3D(cdm)
 	
 	showHideArrObj(wf, true);	
 	
+	activeObjRightPanelUI_1({obj: obj});
 }
 
 
@@ -783,14 +786,11 @@ function showWF_point_UI(point)
 
 
 // при выделении трубы, показываем меню
-function showWF_line_UI(line)  
+function showWF_line_UI(tube)  
 {
 	$('[nameId="tube_menu_1"]').show();
 	
-	if(line.userData.wf_tube)
-	{
-		line = line.userData.wf_tube.line;
-	}
+	var line = tube.userData.wf_tube.line;
 	
 	var v = line.geometry.vertices;
 	var length = 0;
@@ -814,7 +814,9 @@ function showWF_line_UI(line)
 		wf[wf.length] = line.userData.wf_line.point[i2]; 
 	}
 	
-	showHideArrObj(wf, true);		
+	showHideArrObj(wf, true);
+
+	activeObjRightPanelUI_1({obj: tube});
 }
 
 

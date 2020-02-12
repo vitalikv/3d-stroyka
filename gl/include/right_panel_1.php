@@ -385,8 +385,39 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						<input type="text" nameId="rp_obj_name" value="Название">					
 					</div>
 										
+					<div nameId="rp_bl_wf_point" style="display: none;">
+						<div class="input-size-2">
+							<div class="text_1">длина (м)</div>
+							<div class="text_input_1" nameId='size_tube_dist_3'>0</div>
+						</div>
+						
+						<div class="button1-wrap-2">
+							<div data-action ='deleteObj' nameId='delete_wf_point_1' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
+						</div>
+					</div>
 					
-					<div nameId="wrap_obj_child">
+					<div nameId="rp_bl_wf_tube" style="display: none;">
+						<div class="input-size-2">
+							<div class="text_1">диаметр (мм)</div>
+							<input type="text" nameId='size_tube_diameter_2' data-input='size_tube_diameter_2' value = 0>
+						</div>
+						
+						<div class="input-size-2">
+							<div class="text_1">цвет</div>
+							<div class="color_1_red" nameId='color_tube_1_default'></div> 
+						</div>					 
+						
+						<div class="input-size-2">
+							<div class="text_1">длина (м)</div>
+							<div class="text_input_1" nameId='size_tube_dist_2'>0</div>
+						</div>	
+
+						<div class="button1-wrap-2">
+							<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
+						</div>
+					</div>					
+					
+					<div nameId="bl_object_3d" style="display: none;">
 						
 						<div class="flex_1">
 							<div class="flex_1 align_items block_rp_1">

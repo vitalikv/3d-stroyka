@@ -312,7 +312,7 @@ function clickMouseActive(cdm)
 			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }
 			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
 			else if(tag == 'boxWF') { showToggleGp(); showBoxWF_UI(); }
-			else if(tag == 'obj') { showObjUI( obj ); }
+			else if(tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
 			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
@@ -320,7 +320,7 @@ function clickMouseActive(cdm)
 		else if(camera == camera3D)
 		{
 			if(tag == 'wall') {  }
-			else if(tag == 'obj') { showObjUI( obj ); }	
+			else if(tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }	
 			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
 			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
 			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; }
@@ -553,8 +553,8 @@ function hideMenuUI(obj)
 	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
-	else if(tag == 'wf_tube') { $('[nameId="tube_menu_1"]').hide(); }
-	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); }
+	else if(tag == 'wf_tube') { $('[nameId="tube_menu_1"]').hide(); activeObjRightPanelUI_1(); }
+	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); activeObjRightPanelUI_1(); }
 	else if(tag == 'boxWF') { hideBoxWF_UI(); } 
 }
 

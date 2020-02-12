@@ -1,6 +1,39 @@
 
 
 
+// кликнули на obj, wd (показываем нужное меню и заполняем input)
+function activeObjRightPanelUI_1(cdm) 
+{
+	$('[nameId="wrap_object_1"]').hide();	
+	
+	$('[nameId="bl_object_3d"]').hide();
+	$('[nameId="rp_bl_wf_tube"]').hide();
+	$('[nameId="rp_bl_wf_point"]').hide();
+	
+	if(!cdm) { cdm = {}; }  
+	
+	var obj = cdm.obj;
+	
+	if(!obj) return;
+	
+	if(obj.userData.tag == 'wf_point')
+	{
+		$('[nameId="rp_bl_wf_point"]').show();
+	}	
+	else if(obj.userData.tag == 'wf_tube')
+	{		    
+		$('[nameId="rp_bl_wf_tube"]').show();
+	}			
+	else if(obj.userData.tag == 'obj')
+	{		    
+		$('[nameId="bl_object_3d"]').show();
+	}
+	
+	$('[nameId="wrap_object_1"]').show(); 	
+	
+}
+
+
 
 // добавляем объекты в каталог UI 
 function addObjInCatalogUI_1(cdm)
