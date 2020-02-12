@@ -643,7 +643,7 @@ function geometryTubeWF(cdm)
 		line.userData.wf_line.tube = tube;
 		tube.userData.tag = 'wf_tube';
 		tube.userData.wf_tube = {}
-		tube.userData.wf_tube.color = line.material.color.clone();
+		tube.userData.wf_tube.color = line.userData.wf_line.color.clone();
 		tube.userData.wf_tube.line = line;
 		scene.add( tube );
 	}
@@ -874,7 +874,7 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 	if(tube) 
 	{ 
 		tube.material.color = new THREE.Color(color); 
-		tube.userData.wf_tube.color = tube.material.color.clone();
+		tube.userData.wf_tube.color = tube.userData.wf_line.color.clone();
 	}
 	
 	updateListTubeUI_1({o: line, type: 'update'});

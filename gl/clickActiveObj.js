@@ -22,9 +22,26 @@ function activeHover2D( event )
 		
 	if(!infProject.scene.block.hover.tube)
 	{
-		var ray = hoverCursorLineWF(event);	
-		if(ray) { rayhit = ray; }		
+		//var ray = hoverCursorLineWF(event);	
+		//if(ray) { rayhit = ray; }		
 	}
+	
+	if(!infProject.scene.block.click.tube)
+	{
+		//var ray = hoverCursorLineWF(event);
+
+		var wf = [];
+		var tube = infProject.scene.array.tube;	
+		for ( var i = 0; i < tube.length; i++ )
+		{
+			wf[wf.length] = tube[i].userData.wf_line.tube;
+			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }
+		}
+		
+		var ray = rayIntersect( event, wf, 'arr' );  
+		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}	
+	
 
 	if(!infProject.scene.block.hover.door)
 	{
@@ -66,12 +83,9 @@ function activeHover2D( event )
 		else if ( tag == 'wf_point' ) { object.material.color = new THREE.Color(infProject.listColor.hover2D); }
 		else if ( tag == 'wall' ) { object.material[ 3 ].color = new THREE.Color(infProject.listColor.hover2D); }		
 		else if ( tag == 'controll_wd' ) { if(clickO.last_obj == object.obj) { activeHover2D_2(); return; } }
-		else if ( tag == 'wf_line' ) 
-		{ 
-			object.material.color = new THREE.Color(infProject.listColor.hover2D); 
-			
-			var tube = object.userData.wf_line.tube;
-			if(tube) { tube.material.color = new THREE.Color(infProject.listColor.hover2D); }
+		else if ( tag == 'wf_tube' ) 
+		{ console.log(object.userData.wf_tube.color.clone());
+			object.material.color = new THREE.Color(infProject.listColor.hover2D); console.log(object.userData.wf_tube.color.clone());
 		}		
 		activeHover2D_2();
 
@@ -98,12 +112,9 @@ function activeHover2D_2()
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = object.userData.material[ 3 ].color; }
 	else if ( tag == 'wf_point' ) { object.material.color = object.userData.wf_point.color; }
 	else if ( tag == 'point' ) { object.material.color = object.userData.point.color; }
-	else if ( tag == 'wf_line' ) 
+	else if ( tag == 'wf_tube' ) 
 	{ 
-		object.material.color = object.userData.wf_line.color; 
-		
-		var tube = object.userData.wf_line.tube;
-		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
+		object.material.color = object.userData.wf_tube.color; 
 	}
 	
 	clickO.hover = null;
@@ -125,12 +136,9 @@ function objActiveColor_2D(obj)
 	else if(tag == 'wall'){ obj.material[3].color = new THREE.Color(infProject.listColor.active2D); } 	
 	else if(tag == 'door'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }	
 	else if(tag == 'wf_point'){ obj.material.color = new THREE.Color(infProject.listColor.active2D); }
-	else if(tag == 'wf_line')
+	else if(tag == 'wf_tube')
 	{ 
-		obj.material.color = new THREE.Color(infProject.listColor.active2D);
-
-		var tube = obj.userData.wf_line.tube;
-		if(tube) { tube.material.color = new THREE.Color(infProject.listColor.active2D); }		
+		obj.material.color = new THREE.Color(infProject.listColor.active2D);		
 	}
 	
 	if(clickO.hover == obj) { clickO.hover = null; }
@@ -158,12 +166,9 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(infProject.listColor.door2D); }	
 	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
 	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
-	else if(o.userData.tag == 'wf_line')
+	else if(o.userData.tag == 'wf_tube')
 	{ 
-		o.material.color = o.userData.wf_line.color; 
-		
-		var tube = o.userData.wf_line.tube;
-		if(tube) { tube.material.color = tube.userData.wf_tube.color; }
+		o.material.color = o.userData.wf_tube.color;		
 	}
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }
