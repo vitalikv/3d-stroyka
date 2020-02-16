@@ -192,6 +192,7 @@ infProject.catalog = infoListObj();
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
+infProject.list.rp_wf_point = { align: false, tube: null, o: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.start = true; 
 
@@ -275,7 +276,8 @@ if(1==1)
 
 startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 addObjInCatalogUI_1();	// каталог UI
-changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
+//changeRightMenuUI_1({name: 'button_wrap_plan'});	// назначаем первоначальную вкладку , которая будет включена
+changeRightMenuUI_1({name: 'button_wrap_object'});
 createTextUI_2({});		// добавляем в список +, для добавления этажа
 
 

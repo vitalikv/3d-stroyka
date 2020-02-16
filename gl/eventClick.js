@@ -64,7 +64,6 @@ $('[nameId="button_wrap_plan"]').mousedown(function () { changeRightMenuUI_1({el
 
 $('[nameId="color_tube_1_default"]').on('mousedown', function(e) 
 {  
-	$('[nameId="bb_menu_tube_menu_1"]').hide();
 	$('[nameId="bb_menu_tube_menu_2"]').show();
 	
 	return false; 
@@ -83,6 +82,8 @@ $('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_
 $('[nameId="button_add_plane"]').mousedown(function (e) { createSubstrate(); e.stopPropagation(); }); 
 $('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }); 
 
+
+$('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignWfPoint(); });
 
 $('[nameId="button_active_join_element"]').mousedown(function () { switchJoinObj(); }); 
 $('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup(); });  
@@ -123,7 +124,7 @@ $('[link_form]').mousedown(function ()
 
 
 
-$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
+$('[data-action="deleteObj"]').mousedown(function () { console.log(999999); detectDeleteObj(); return false; });
 $('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 
 

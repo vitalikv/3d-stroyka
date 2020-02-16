@@ -4,6 +4,8 @@
 // кликнули на obj, wd (показываем нужное меню и заполняем input)
 function activeObjRightPanelUI_1(cdm) 
 {
+	if(infProject.list.rp_wf_point.align) return;
+	
 	$('[nameId="wrap_object_1"]').hide();	
 	
 	$('[nameId="bl_object_3d"]').hide();
@@ -18,10 +20,12 @@ function activeObjRightPanelUI_1(cdm)
 	
 	if(obj.userData.tag == 'wf_point')
 	{
+		$('[nameId="rp_obj_name"]').val('точка');
 		$('[nameId="rp_bl_wf_point"]').show();
 	}	
 	else if(obj.userData.tag == 'wf_tube')
-	{		    
+	{	
+		$('[nameId="rp_obj_name"]').val('труба');
 		$('[nameId="rp_bl_wf_tube"]').show();
 	}			
 	else if(obj.userData.tag == 'obj')
@@ -701,7 +705,6 @@ function clickItemFloorUI(cdm)
 
 
 
-
 // удаляем этаж из списка UI
 function removePlaneListUI_2(cdm)
 {
@@ -725,6 +728,42 @@ function removePlaneListUI_2(cdm)
 	infProject.scene.substrate.active = null;
 	
 	clickItemFloorUI();
+}
+
+
+
+
+// вкл/выкл возможность выделение объектов для присоединения точки трубы
+function switchAlignWfPoint(cdm)
+{
+	if(!cdm) cdm = {};
+	
+	if(cdm.active !== undefined) 
+	{
+		infProject.list.rp_wf_point.align = cdm.active;
+	}	
+	else
+	{
+		infProject.list.rp_wf_point.align = !infProject.list.rp_wf_point.align;
+	}
+	
+	//hideJoinPoint_2();
+	
+	if(infProject.list.rp_wf_point.align)
+	{		
+		$('[nameId="rp_wrap_align_wf_point"]').show(); 
+		infProject.list.rp_wf_point.tube = clickO.last_obj;
+	}		
+	else
+	{		
+		$('[nameId="rp_wrap_align_wf_point"]').hide();
+		//clearListUI_2({list: infProject.tools.joint.el});
+	}	
+
+	var color = (infProject.list.rp_wf_point.align) ? "#ff0000" : "#b3b3b3";	
+	$('[nameId="button_active_align_wf_point"]').css({"border-color": color});
+
+		
 }
 
 

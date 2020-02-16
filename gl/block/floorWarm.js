@@ -725,19 +725,24 @@ function deletePointWF(obj)
 		}
 	}
 	
+	clickO = resetPop.clickO();
+	
+	hidePivotGizmo(obj);
 	disposeNode(obj);
  	scene.remove(obj);	// удаляем точку
 	
-	clickO = resetPop.clickO();
+	
 }
 
 
 
 
 // удаляем линию
-function deleteLineWF(line)
+function deleteLineWF(tube)
 {
-	hideMenuUI(line);
+	hideMenuUI(tube);
+	
+	var line = tube.userData.wf_tube.line;
 	
 	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	
 	
@@ -779,17 +784,13 @@ function showWF_point_UI(point)
 		}		
 	}
 
-	$('[nameId="size_tube_dist_3"]').text(Math.round(length * 100)/100);
-	
-	$('[nameId="wf_point_menu_1"]').show();
+	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
 }
 
 
 // при выделении трубы, показываем меню
 function showWF_line_UI(tube)  
-{
-	$('[nameId="tube_menu_1"]').show();
-	
+{	
 	var line = tube.userData.wf_tube.line;
 	
 	var v = line.geometry.vertices;
@@ -801,8 +802,7 @@ function showWF_line_UI(tube)
 	}
 	
 	$('[nameId="size_tube_diameter_2"]').val(line.userData.wf_line.diameter * 1000);
-	//$('[nameId="size-wall-height"]').val(Math.round(length * 100)/100);
-	$('[nameId="size_tube_dist_2"]').text(Math.round(length * 100)/100);
+	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
 	
 	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
 	
@@ -862,7 +862,6 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 	var color = $(this).attr('color_tube_1_change');
 	
 	$('[nameId="color_tube_1_default"]').css('background-color', '#'+color);
-	$('[nameId="bb_menu_tube_menu_1"]').show();
 	$('[nameId="bb_menu_tube_menu_2"]').hide();
 	
 	
@@ -916,6 +915,34 @@ function deClickTube(cdm)
 	showHideArrObj(wf, false);		
 }
 
+
+
+
+function showJoinPoint_3(cdm)
+{
+	if(!cdm.obj) return;
+	var obj = cdm.obj;
+	
+
+	
+	
+	var arr = getCenterPointFromObj_1( obj );	// получаем разъемы, если есть
+	
+	
+	// показываем все точки
+	for(var i = 0; i < arr.length; i++)
+	{		
+		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой		
+
+		
+		createTextUI_1({obj: arr[i], nameId: "rp_list_align_wf_point", nameRus: arr[i].userData.centerPoint.nameRus, uuid: arr[i].uuid});
+	}	
+	
+	if(arr.length > 0) 
+	{
+		//clickItemCenterObjUI_2({item: 0}); 
+	}	
+}
 
 
 

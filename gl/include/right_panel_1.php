@@ -386,34 +386,84 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					</div>
 										
 					<div nameId="rp_bl_wf_point" style="display: none;">
-						<div class="input-size-2">
-							<div class="text_1">длина (м)</div>
-							<div class="text_input_1" nameId='size_tube_dist_3'>0</div>
+						
+						<div class="flex_1">
+							<div class="flex_1 align_items">
+								<div class="rp_label_plane">
+									длина (м)
+								</div>
+							</div>
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
+							</div>
+						</div>											
+				
+						<div style="margin: 10px 0;">
+							<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">выровнить</div>
+							
+							<div nameId="rp_wrap_align_wf_point" style="display: none;">
+								<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
+									выровнить	
+								</div>
+							</div>							
 						</div>
 						
-						<div class="button1-wrap-2">
-							<div data-action ='deleteObj' nameId='delete_wf_point_1' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
+						<div style="margin: 10px 0;">
+							<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
 						</div>
 					</div>
 					
+					
 					<div nameId="rp_bl_wf_tube" style="display: none;">
-						<div class="input-size-2">
-							<div class="text_1">диаметр (мм)</div>
-							<input type="text" nameId='size_tube_diameter_2' data-input='size_tube_diameter_2' value = 0>
+						
+						<div class="flex_1">
+							<div class="flex_1 align_items">
+								<div class="rp_label_plane">
+									диаметр (мм)
+								</div>
+							</div>
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" nameId="size_tube_diameter_2" style="width: 90%; margin:5px 5px;" value=0>
+							</div>
 						</div>
-						
-						<div class="input-size-2">
-							<div class="text_1">цвет</div>
-							<div class="color_1_red" nameId='color_tube_1_default'></div> 
-						</div>					 
-						
-						<div class="input-size-2">
-							<div class="text_1">длина (м)</div>
-							<div class="text_input_1" nameId='size_tube_dist_2'>0</div>
-						</div>	
 
-						<div class="button1-wrap-2">
-							<div data-action ='deleteObj' class="button1 button_gradient_1"><img src="<?=$path?>/img/waste.png"></div>
+						<div class="flex_1">
+							<div class="flex_1 align_items">
+								<div class="rp_label_plane">
+									длина (м)
+								</div>
+							</div>
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
+							</div>
+						</div>						
+						
+						<div class="flex_1">
+							<div class="flex_1 align_items">
+								<div class="rp_label_plane">
+									цвет
+								</div>
+							</div>
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" nameId="color_tube_1_default" style="width: 90%; margin:5px 5px; background-color:#cfcfcf; cursor: pointer;" value=''>
+							</div>
+						</div>					 
+
+						<div class="toolbar-menu" nameId='bb_menu_tube_menu_2' style="display: none;">
+							<div class="color_tube_1_change" color_tube_1_change='e5e5e5' style="background-color:#e5e5e5;"></div>
+							<div class="color_tube_1_change" color_tube_1_change='0252f2' style="background-color:#0252f2;"></div>
+							<div class="color_tube_1_change" color_tube_1_change='f2b202' style="background-color:#f2b202;"></div> 
+							<div class="color_tube_1_change" color_tube_1_change='9602f2' style="background-color:#9602f2;"></div>
+							<div class="color_tube_1_change" color_tube_1_change='f202e2' style="background-color:#f202e2;"></div>
+							<div class="color_tube_1_change" color_tube_1_change='828282' style="background-color:#828282;"></div>
+							<div class="color_tube_1_change" color_tube_1_change='141414' style="background-color:#141414;"></div>
+						</div>
+		
+						<div style="margin: 10px 0;">
+							<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
 						</div>
 					</div>					
 					

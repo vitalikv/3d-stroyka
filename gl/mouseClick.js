@@ -553,8 +553,8 @@ function hideMenuUI(obj)
 	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
 	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
 	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
-	else if(tag == 'wf_tube') { $('[nameId="tube_menu_1"]').hide(); activeObjRightPanelUI_1(); }
-	else if(tag == 'wf_point') { $('[nameId="wf_point_menu_1"]').hide(); activeObjRightPanelUI_1(); }
+	else if(tag == 'wf_tube') { activeObjRightPanelUI_1(); }
+	else if(tag == 'wf_point') { activeObjRightPanelUI_1(); }
 	else if(tag == 'boxWF') { hideBoxWF_UI(); } 
 }
 
