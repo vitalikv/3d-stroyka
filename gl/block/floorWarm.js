@@ -892,6 +892,8 @@ function deClickTube(cdm)
 {	
 	var line = null;
 	
+	if(infProject.list.rp_wf_point.align) return;
+	
 	if(cdm.obj.userData.wf_tube)
 	{
 		line = cdm.obj.userData.wf_tube.line;
@@ -918,31 +920,7 @@ function deClickTube(cdm)
 
 
 
-function showJoinPoint_3(cdm)
-{
-	if(!cdm.obj) return;
-	var obj = cdm.obj;
-	
 
-	
-	
-	var arr = getCenterPointFromObj_1( obj );	// получаем разъемы, если есть
-	
-	
-	// показываем все точки
-	for(var i = 0; i < arr.length; i++)
-	{		
-		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой		
-
-		
-		createTextUI_1({obj: arr[i], nameId: "rp_list_align_wf_point", nameRus: arr[i].userData.centerPoint.nameRus, uuid: arr[i].uuid});
-	}	
-	
-	if(arr.length > 0) 
-	{
-		//clickItemCenterObjUI_2({item: 0}); 
-	}	
-}
 
 
 

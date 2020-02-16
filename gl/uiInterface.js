@@ -747,23 +747,85 @@ function switchAlignWfPoint(cdm)
 		infProject.list.rp_wf_point.align = !infProject.list.rp_wf_point.align;
 	}
 	
-	//hideJoinPoint_2();
+	// очищаем список и убираем выделения с разъемов
+	clearListWfPointUI();
 	
 	if(infProject.list.rp_wf_point.align)
 	{		
 		$('[nameId="rp_wrap_align_wf_point"]').show(); 
-		infProject.list.rp_wf_point.tube = clickO.last_obj;
+		infProject.list.rp_wf_point.tubeP = clickO.last_obj;
 	}		
 	else
 	{		
 		$('[nameId="rp_wrap_align_wf_point"]').hide();
-		//clearListUI_2({list: infProject.tools.joint.el});
+		infProject.list.rp_wf_point.tubeP = null;
 	}	
 
 	var color = (infProject.list.rp_wf_point.align) ? "#ff0000" : "#b3b3b3";	
 	$('[nameId="button_active_align_wf_point"]').css({"border-color": color});
 
 		
+}
+
+
+// очищаем список и убираем выделения с разъемов, когда была нажата кнопка выровнить у точки трубы
+function clearListWfPointUI(cdm)
+{
+	// очищаем список и убираем выделения с разъемов
+	var arr = infProject.list.rp_wf_point.arr;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].el.remove();
+		arr[i].o.visible = false;
+		arr[i].o.material.color = arr[i].o.userData.centerPoint.color;
+	}
+	
+	infProject.list.rp_wf_point.arr = [];
+}
+
+
+// кликнули на объект в сцене, когда была нажата кнопка выровнить у точки трубы
+function showJoinPoint_3(cdm)
+{
+	if(!cdm.obj) return;
+	var obj = cdm.obj;
+	
+	
+	// очищаем список и убираем выделения с разъемов
+	clearListWfPointUI();
+	
+	
+	// получаем разъемы, если есть
+	var arr = getCenterPointFromObj_1( obj );	
+	var nameId = "rp_list_align_wf_point";	
+	
+	// добваляем разъемы выделенного объекта в список UI
+	for(var i = 0; i < arr.length; i++)
+	{						
+		// добавляем в список 	
+		{
+			var str = 
+			'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
+			<div class="right_panel_1_1_list_item_text">'+arr[i].userData.centerPoint.nameRus+'</div>\
+			</div>';		
+		}			
+
+		var el = $(str).appendTo('[nameId="'+nameId+'"]');					
+		
+		var n = infProject.list.rp_wf_point.arr.length;
+		infProject.list.rp_wf_point.arr[n] = {};
+		infProject.list.rp_wf_point.arr[n].el = el;
+		infProject.list.rp_wf_point.arr[n].o = arr[i];
+		
+		arr[i].visible = true;
+		//el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
+	}	
+	
+	if(arr.length > 0) 
+	{
+		//clickItemCenterObjUI_2({item: 0}); 
+	}	
 }
 
 

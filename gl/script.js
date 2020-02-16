@@ -192,7 +192,7 @@ infProject.catalog = infoListObj();
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
-infProject.list.rp_wf_point = { align: false, tube: null, o: null }; 
+infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [] }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.start = true; 
 

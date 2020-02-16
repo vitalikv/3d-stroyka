@@ -125,7 +125,6 @@ function clickObject3D( obj, cdm )
 		
 		if(infProject.list.rp_wf_point.align)	// вкл режим соединение точки трубы к разъемам и точка трубы уже выделина
 		{
-			console.log(7777777);
 			showJoinPoint_3({obj: obj});
 			return;	
 		}
@@ -312,12 +311,12 @@ function hidePivotGizmo(obj)
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
 	//if(obj.userData.tag != 'obj') return;
-	console.log(88888888);
+	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
 				
-	
+	console.log(5555, clickO.rayhit);
 	if(clickO.rayhit)
 	{
 		if(pivot.userData.pivot.obj == clickO.rayhit.object) return;		

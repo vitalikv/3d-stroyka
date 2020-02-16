@@ -402,6 +402,7 @@ function addObjInScene(inf, cdm)
 					cube.userData.id = id;  id++;
 					cube.userData.centerPoint = { join: null };						 
 					cube.userData.centerPoint.nameRus = '22';
+					cube.userData.centerPoint.color = cube.material.color.clone();
 					
 					obj.add( cube );
 					
