@@ -9,6 +9,12 @@ function clickObject2D( obj, intersect )
 	
 	planeMath.position.copy( intersect.point );
 	planeMath.rotation.set( Math.PI/2, 0, 0 );
+	
+	if(camera == cameraTop && obj.userData.tag == 'boxWF')
+	{
+		showToggleGp(); 
+		showBoxWF_UI();
+	}		
 }
 
 
@@ -220,6 +226,8 @@ function clickObject3D( obj, cdm )
 	}	
 	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
 
+
+	if(obj.userData.tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }
 	
 	setScalePivotGizmo();
 }
@@ -340,6 +348,8 @@ function hidePivotGizmo(obj)
 		{  
 			return;
 		}
+		
+		if(infProject.list.rp_wf_point.align) return;
 	}	
 	
 	

@@ -30,7 +30,13 @@ function clickWD( intersect )
 
 	obj.userData.door.offset = new THREE.Vector3().subVectors( obj.position, pos );	
 	
-	findOnWallWD(obj);	
+	findOnWallWD(obj);
+
+	if(camera == cameraTop)
+	{
+		showRulerWD( obj ); 	// показываем линейки 
+		showTableWD( obj );		// UI
+	}	
 }
 
 

@@ -113,9 +113,6 @@ function onDocumentMouseDown( event )
 	clickO.actMove = false;	
 	clickO.rayhit = clickRayHit(event); 
 
-	if ( camera == cameraTop ) { hideMenuObjUI_2D( clickO.last_obj ); }
-	else if ( camera == camera3D ) {  }
-	else if ( camera == cameraWall ) { hideMenuObjUI_Wall(clickO.last_obj); }
 	
 	clickMouseActive({type: 'down'});
 	
@@ -255,6 +252,8 @@ function clickRayHit(event)
 
 function clickMouseActive(cdm)
 {
+	hideMenuObjUI_2D(cdm);
+	
 	if(!clickO.rayhit) return;
 
 	var obj = clickO.obj = clickO.rayhit.object;
@@ -305,34 +304,13 @@ function clickMouseActive(cdm)
 	{
 		if(camera == cameraTop)
 		{
-			objActiveColor_2D(obj);
-			
-			if(tag == 'wall') { showLengthWallUI( obj ); }
-			else if(tag == 'point') { $('[nameId="point_menu_1"]').show(); }
-			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }
-			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
-			else if(tag == 'boxWF') { showToggleGp(); showBoxWF_UI(); }
-			else if(tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }
-			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
-			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
+			objActiveColor_2D(obj);			
 		}		
-		else if(camera == camera3D)
-		{
-			if(tag == 'wall') {  }
-			else if(tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }	
-			else if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
-			else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-			else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; }
-		}
-		else if(camera == cameraWall)
-		{
-			if(tag == 'wall') { showLengthWallUI( obj ); }
-			else if(tag == 'controll_wd') { obj = obj.userData.controll_wd.obj; }
-			else if(tag == 'window') { showRulerWD( obj ); showTableWD( obj ); }
-			else if(tag == 'door') { showRulerWD( obj ); showTableWD( obj ); }						
-		}
 		
+		if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
+		else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
+		else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
+
 		
 		clickO.last_obj = obj;
 		
@@ -402,9 +380,8 @@ function onDocumentMouseMove( event )
 function onDocumentMouseUp( event )  
 {
 
-	if(!long_click && camera == camera3D) 
+	if(!long_click) 
 	{ 
-		hideMenuObjUI_3D( clickO.last_obj ); 
 		clickMouseActive({type: 'up'}); 
 	}
 	
@@ -468,76 +445,59 @@ function onDocumentMouseUp( event )
 
 
 
-function hideMenuObjUI_2D( o )
+function hideMenuObjUI_2D(cdm)
 {
-	if(o)
+	var obj = clickO.last_obj;
+	if(!cdm) { cdm = {type: ''}; }
+	
+	var flag = true;
+	
+	if(obj)
 	{ 
 		objDeActiveColor_2D(); 
-		console.log(o.userData.tag);
-		switch ( o.userData.tag ) 
-		{  
-			case 'wall': hideMenuUI(o);  break;
-			case 'point': hideMenuUI(o);  break;
-			case 'door': hideSizeWD(o); hideMenuUI(o); break;
-			case 'window': hideSizeWD(o); hideMenuUI(o); break;
-			case 'wf_tube': deClickTube({obj: o}); hideMenuUI(o); break;
-			case 'wf_point': deClickTube({obj: o}); hideMenuUI(o); break;
-			case 'boxWF': hideControlWF(); hideMenuUI(o); break;
-			case 'obj': hidePivotGizmo(o); break;
-			case 'joinPoint': hidePivotGizmo(o); break;
-		}
-	}
-	
-	clickO.last_obj = null;
-}
+		console.log(obj.userData.tag);
 
-
-
-function hideMenuObjUI_3D( o )
-{
-	if ( o )
-	{  		
-		switch ( o.userData.tag ) 
-		{
-			case 'wf_tube': deClickTube({obj: o}); hideMenuUI(o); break;
-			case 'wf_point': deClickTube({obj: o}); hidePivotGizmo(o); hideMenuUI(o); break;
-			case 'obj': hidePivotGizmo(o); break;
-			case 'joinPoint': hidePivotGizmo(o); break;
-		}
-	}
-}
-
-
-
-
-// скрываем меню (cameraWall)
-function hideMenuObjUI_Wall(o)
-{  
-	if(!o) return;
-	if(clickO.last_obj == clickO.obj) return;
-	
-	
-	if(clickO.obj)
-	{
-		if(clickO.obj.userData.tag == 'controll_wd')
-		{ 			
-			if(clickO.obj.userData.controll_wd.obj == clickO.last_obj) { return; } 
-		} 
-	}	
-	
-	if(o.userData.tag)
-	{
-		var tag = o.userData.tag;
+		var tag = obj.userData.tag;
 		
-		if(tag == 'wall') { hideMenuUI(o); }
-		else if(tag == 'window') { hideSizeWD(o); hideMenuUI(o); }
-		else if(tag == 'door') { hideSizeWD(o); hideMenuUI(o); }	
+		if(cdm.type == 'down')
+		{
+			if(tag == 'wall' && camera == cameraTop) { hideMenuUI(obj); }
+			else if(tag == 'point' && camera == cameraTop) { hideMenuUI(obj); }
+			else if(tag == 'window' && camera == cameraTop) { hideSizeWD(obj); hideMenuUI(obj); }
+			else if(tag == 'door' && camera == cameraTop) { hideSizeWD(obj); hideMenuUI(obj); }
+			else if(tag == 'obj' && camera == cameraTop) { hidePivotGizmo(obj); }
+			else if(tag == 'wf_tube' && camera == cameraTop) { deClickTube({obj: obj}); hideMenuUI(obj); }
+			else if(tag == 'wf_point' && camera == cameraTop) { deClickTube({obj: obj}); hideMenuUI(obj); }
+			else if(tag == 'boxWF' && camera == cameraTop) { hideControlWF(); hideMenuUI(obj); }
+			else if(tag == 'joinPoint' && camera == cameraTop) { hidePivotGizmo(obj); }				
+			else { flag = false; }
+		}
+		else if(cdm.type == 'up')
+		{
+			if(tag == 'obj' && camera == camera3D) { hidePivotGizmo(obj); }			
+			else if(tag == 'wf_tube' && camera == camera3D) { deClickTube({obj: obj}); hideMenuUI(obj); }
+			else if(tag == 'wf_point' && camera == camera3D) { deClickTube({obj: obj}); hidePivotGizmo(obj); hideMenuUI(obj); }
+			else if(tag == 'joinPoint' && camera == camera3D) { hidePivotGizmo(obj); }						
+			else { flag = false; }
+		}
+		else
+		{
+			if(tag == 'wall') { hideMenuUI(obj); }
+			else if(tag == 'point') { hideMenuUI(obj); }
+			else if(tag == 'window') { hideSizeWD(obj); hideMenuUI(obj); }
+			else if(tag == 'door') { hideSizeWD(obj); hideMenuUI(obj); }
+			else if(tag == 'room') { hideMenuUI(obj); }
+			else if(tag == 'obj') { hidePivotGizmo(obj); }
+			else if(tag == 'wf_tube') { deClickTube({obj: obj}); hideMenuUI(obj); }
+			else if(tag == 'wf_point') { deClickTube({obj: obj}); hideMenuUI(obj); }
+			else if(tag == 'boxWF') { hideControlWF(); hideMenuUI(obj); }
+			else if(tag == 'joinPoint') { hidePivotGizmo(obj); }			
+			else { flag = false; }
+		}
 	}
 	
-	clickO.last_obj = null;
+	if(flag) clickO.last_obj = null;
 }
-
-
 
 
 

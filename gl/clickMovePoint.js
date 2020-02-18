@@ -34,7 +34,9 @@ function clickPoint( intersect )
 				wd.userData.door.last.rot = wd.rotation.clone(); 
 			}
 		}		 			
-	}	
+	}
+
+	$('[nameId="point_menu_1"]').show();
 }
 
 

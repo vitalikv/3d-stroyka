@@ -46,9 +46,9 @@ function createPivot()
 	var x = createCone({axis: 'x', pos: new THREE.Vector3(0.6,0,0), rot: new THREE.Vector3(0,0,-Math.PI/2), color: 0xff0000});
 	var y = createCone({axis: 'y', pos: new THREE.Vector3(0,0.6,0), rot: new THREE.Vector3(0,0,0), color: 0x00ff00});
 	
+	pivot.add( z );
 	pivot.add( x );
 	pivot.add( y );
-	pivot.add( z );
 	
 	pivot.userData.pivot.axs.x = x;
 	pivot.userData.pivot.axs.y = y;
