@@ -564,7 +564,7 @@ function clickMouseUpToggleWD( controll )
 
 	cutMeshBlockBSP( wd );
 	
-	clickO.last_obj = wd;
+	setClickLastObj({obj: wd});
 }
 
 

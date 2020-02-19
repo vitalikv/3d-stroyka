@@ -898,6 +898,36 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 
 
 
+// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
+function joinTubePointTopoint()
+{
+	var joint = infProject.tools.joint;	
+	
+	var o1 = infProject.list.rp_wf_point.tubeP;   
+	var o2 = infProject.list.rp_wf_point.joinO;
+
+	if(!o1) return;
+	if(!o2) return;
+
+	o2.updateMatrixWorld();		
+	var pos1 = o2.getWorldPosition(new THREE.Vector3());
+	
+	o1.position.copy(pos1);
+	
+	var line = o1.userData.wf_point.line.o;
+	
+	if(line) 
+	{ 
+		if(line.userData.wf_line.tube)
+		{
+			geometryTubeWF({line : line});
+			line.userData.wf_line.tube.visible = true;
+		}			 
+	}
+
+	renderCamera();
+}
+
 
 
 // кликнули на другой объект, деактивируем трубу
@@ -905,15 +935,13 @@ function deClickTube(cdm)
 {	
 	
 	var obj = cdm.obj;
-	console.log(111,cdm);
-	if(cdm.moment == 'down' && camera == cameraTop)
+	
+	if(cdm.moment == 'down' && camera == cameraTop && !checkClickTube_1())
 	{
-		if(infProject.list.rp_wf_point.align) { return; }
 		deClickTube_1(cdm); 
 	}
-	else if(cdm.moment == 'up' && camera == camera3D)
+	else if(cdm.moment == 'up' && camera == camera3D && !checkClickTube_1())
 	{
-		if(infProject.list.rp_wf_point.align) { return; }
 		deClickTube_1(cdm);
 	}
 	else if(cdm.moment == '')
@@ -922,6 +950,23 @@ function deClickTube(cdm)
 	}
 	
 	
+	// если была вкл кнопка выровнить, то проверяем куда кликнули
+	function checkClickTube_1()
+	{
+		if(clickO.rayhit)
+		{
+			if(infProject.list.rp_wf_point.align) 
+			{
+				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
+			}
+		}
+
+		return false;
+	}
+	
+	// деактивируем трубу иди точку
 	function deClickTube_1(cdm)
 	{
 		var obj = cdm.obj;
@@ -955,7 +1000,7 @@ function deClickTube(cdm)
 		// скрываем UI
 		activeObjRightPanelUI_1();
 		
-		clickO.last_obj = null;		
+		resetClickLastObj({});		
 	}
 }
 

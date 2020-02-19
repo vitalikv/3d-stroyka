@@ -83,12 +83,14 @@ $('[nameId="button_add_plane"]').mousedown(function (e) { createSubstrate(); e.s
 $('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }); 
 
 
-$('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignWfPoint(); });
+
 
 $('[nameId="button_active_join_element"]').mousedown(function () { switchJoinObj(); }); 
 $('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup(); });  
 $('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
 $('[nameId="join_element"]').mousedown(function () { joinElement(); });
+$('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignWfPoint(); });
+$('[nameId="button_done_align_wf_point"]').mousedown(function () { joinTubePointTopoint(); });
 
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });

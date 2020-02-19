@@ -192,7 +192,7 @@ infProject.catalog = infoListObj();
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
-infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [] }; 
+infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [], joinO: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.start = true; 
 
@@ -1047,7 +1047,7 @@ function clickButton( event )
 		if(clickO.button == 'create_wall')
 		{
 			clickO.obj = null; 
-			clickO.last_obj = null;
+			resetClickLastObj({});
 			
 			var point = createPoint( intersects[0].point, 0 );
 			point.position.y = 0;

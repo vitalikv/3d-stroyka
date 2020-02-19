@@ -759,7 +759,7 @@ function switchAlignWfPoint(cdm)
 		$('[nameId="rp_wrap_align_wf_point"]').hide();
 		infProject.list.rp_wf_point.tubeP = null;
 	}	
-console.log(33333, cdm);   
+   
 	var color = (infProject.list.rp_wf_point.align) ? "#ff0000" : "#b3b3b3";	
 	$('[nameId="button_active_align_wf_point"]').css({"border-color": color});
 
@@ -781,6 +781,7 @@ function clearListWfPointUI(cdm)
 	}
 	
 	infProject.list.rp_wf_point.arr = [];
+	infProject.list.rp_wf_point.joinO = null;
 }
 
 
@@ -815,16 +816,86 @@ function showJoinPoint_3(cdm)
 		var n = infProject.list.rp_wf_point.arr.length;
 		infProject.list.rp_wf_point.arr[n] = {};
 		infProject.list.rp_wf_point.arr[n].el = el;
-		infProject.list.rp_wf_point.arr[n].o = arr[i];
+		infProject.list.rp_wf_point.arr[n].o = arr[i]; 
 		
 		arr[i].visible = true;
-		//el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
+		el.on('mousedown', function(){ clickItemCenterObjUI_3({el: $(this)}) });		
 	}	
 	
 	if(arr.length > 0) 
 	{
-		//clickItemCenterObjUI_2({item: 0}); 
+		clickItemCenterObjUI_3({item: 0}); 
 	}	
 }
+
+
+
+
+// выбираем центр для объекта к которому хотим присоединиться трубой 
+function clickItemCenterObjUI_3(cdm)
+{
+	var item = null;
+	var obj = null;
+	
+	var arr = infProject.list.rp_wf_point.arr;
+	
+	if(arr.length == 0) return;	// у объекта нет разъемов
+	
+	
+	// снимаем старые выдиления в UI 
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].el.css('background-color', '#ffffff');
+	}
+	
+	
+	if(cdm.el)	// кликнули на пункт в меню
+	{
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(arr[i].el[0] == cdm.el[0]){ obj = arr[i].o; break; } 
+		}
+
+		item = cdm.el;
+	}
+	else if(cdm.obj)	// кликнули на объект в сцене
+	{
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(arr[i].o == cdm.obj){ item = arr[i].el; break; } 
+		}
+
+		obj = cdm.obj;
+	}
+	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
+	{
+		item = arr[cdm.item].el;
+		obj = arr[cdm.item].o;
+	}
+	else
+	{
+		return;
+	}
+	
+	
+	// выделяем новый пункт на который кликнули UI
+	item.css('background-color', '#00ff00');
+	var value = item.attr('uuid');
+
+
+	
+	// снимаем старое выделение объекта в сцене 
+	var arr = infProject.list.rp_wf_point.arr;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].o.material.color = arr[i].o.userData.centerPoint.color;
+	}
+	
+	obj.material.color = new THREE.Color(infProject.listColor.active2D);
+	
+	infProject.list.rp_wf_point.joinO = obj;
+}
+
 
 

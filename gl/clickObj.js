@@ -128,12 +128,6 @@ function clickObject3D( obj, cdm )
 				return;
 			}
 		}
-		
-		if(infProject.list.rp_wf_point.align)	// вкл режим соединение точки трубы к разъемам и точка трубы уже выделина
-		{
-			showJoinPoint_3({obj: obj});
-			return;	
-		}
 	}
 	
 	
@@ -365,7 +359,7 @@ function hidePivotGizmo(obj)
 	hideJoinPoint({visible: 'full'});
 	
 	//clickO.obj = null;  
-	clickO.last_obj = null;
+	resetClickLastObj({});
 	
 
 	activeObjRightPanelUI_1();

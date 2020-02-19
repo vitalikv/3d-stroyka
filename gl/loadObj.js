@@ -189,7 +189,7 @@ function loadObjServer(cdm)
 { 
 	// cdm - информация, которая пришла из вне
 	// inf - статическая инфа из базы
-	console.log(cdm);
+	//console.log(cdm);
 	
 	if(!cdm.lotid) return;
 	
@@ -204,7 +204,7 @@ function loadObjServer(cdm)
 	if(obj)
 	{ 
 		inf.obj = obj.clone();
-		console.log('---------');
+		//console.log('---------');
 		if(obj) { addObjInScene(inf, cdm); }
 	}
 	else
@@ -390,7 +390,9 @@ function addObjInScene(inf, cdm)
 					
 					//child.visible = false;						
 					
-					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), infProject.tools.joint.material.default );
+					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+					
+					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 					cube.position.copy(child.position);
 					cube.quaternion.copy(child.quaternion);
 					cube.visible = false;

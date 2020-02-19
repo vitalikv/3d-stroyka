@@ -132,7 +132,7 @@ function createEmptyFormWD_1(cdm)
 	else
 	{
 		clickO.move = obj; 
-		clickO.last_obj = obj;		
+		setClickLastObj({obj: obj});
 	}
 }
 
@@ -211,7 +211,7 @@ function clickToolWD(obj)
 			clickO.obj = obj;
 			if(!obj.userData.door.wall) { return true; }
 			
-			clickO.last_obj = null;
+			resetClickLastObj({});
 			addWD({ obj : obj, wall : obj.userData.door.wall, pos : obj.position });  
 			return true; 
 		}
@@ -285,7 +285,7 @@ function addWD( cdm )
 
  	
 	clickO.obj = null;
-	clickO.last_obj = null;
+	resetClickLastObj({});
 	clickO.move = null;
 	
 	renderCamera();
