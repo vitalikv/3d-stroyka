@@ -348,8 +348,6 @@ function hidePivotGizmo(obj)
 		{  
 			return;
 		}
-		
-		if(infProject.list.rp_wf_point.align) return;
 	}	
 	
 	

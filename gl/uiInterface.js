@@ -3,9 +3,7 @@
 
 // кликнули на obj, wd (показываем нужное меню и заполняем input)
 function activeObjRightPanelUI_1(cdm) 
-{
-	if(infProject.list.rp_wf_point.align) return;
-	
+{	
 	$('[nameId="wrap_object_1"]').hide();	
 	
 	$('[nameId="bl_object_3d"]').hide();
@@ -761,7 +759,7 @@ function switchAlignWfPoint(cdm)
 		$('[nameId="rp_wrap_align_wf_point"]').hide();
 		infProject.list.rp_wf_point.tubeP = null;
 	}	
-
+console.log(33333, cdm);   
 	var color = (infProject.list.rp_wf_point.align) ? "#ff0000" : "#b3b3b3";	
 	$('[nameId="button_active_align_wf_point"]').css({"border-color": color});
 

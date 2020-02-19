@@ -903,37 +903,61 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 // кликнули на другой объект, деактивируем трубу
 function deClickTube(cdm)  
 {	
-	var line = null;
 	
-	if(infProject.list.rp_wf_point.align) { return { clear: false }; }
-	
-	if(cdm.obj.userData.wf_tube)
+	var obj = cdm.obj;
+	console.log(111,cdm);
+	if(cdm.moment == 'down' && camera == cameraTop)
 	{
-		line = cdm.obj.userData.wf_tube.line;
-	}		
-	else if(cdm.obj.userData.wf_point)
-	{
-		line = cdm.obj.userData.wf_point.line.o;
-	}		
-	else
-	{
-		return;
+		if(infProject.list.rp_wf_point.align) { return; }
+		deClickTube_1(cdm); 
 	}
-	
-	// скрываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	else if(cdm.moment == 'up' && camera == camera3D)
+	{
+		if(infProject.list.rp_wf_point.align) { return; }
+		deClickTube_1(cdm);
+	}
+	else if(cdm.moment == '')
 	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
+		deClickTube_1(cdm);
 	}
 	
-	showHideArrObj(wf, false);
-
-	return { clear: true };
+	
+	function deClickTube_1(cdm)
+	{
+		var obj = cdm.obj;
+		
+		if(obj.userData.wf_tube) { var line = cdm.obj.userData.wf_tube.line; }		
+		else if(obj.userData.wf_point) { var line = cdm.obj.userData.wf_point.line.o; }		
+		
+		// скрываем точки у трубы
+		{
+			var wf = [];
+			for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+			{ 
+				wf[wf.length] = line.userData.wf_line.point[i2]; 
+			}		
+			showHideArrObj(wf, false);
+		}
+		
+		// скрываем pivot
+		if(obj.userData.tag == 'wf_point' && camera == camera3D)
+		{
+			var pivot = infProject.tools.pivot;
+			
+			pivot.visible = false;
+			pivot.userData.pivot.obj = null; 
+			outlineRemoveObj();		
+		}
+		
+		// вкл/выкл возможность выделение объектов для присоединения точки трубы
+		switchAlignWfPoint({active: false});
+		
+		// скрываем UI
+		activeObjRightPanelUI_1();
+		
+		clickO.last_obj = null;		
+	}
 }
-
-
-
 
 
 
