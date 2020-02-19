@@ -54,7 +54,7 @@ function clickWFPoint(intersect)
 	}
 	
 	showHideArrObj(wf, true);
-
+	
 	activeObjRightPanelUI_1({obj: obj});
 }
 
@@ -78,6 +78,19 @@ function clickWFPoint_3D(cdm)
 	pivot.userData.pivot.obj = obj;
 	pivot.position.copy(pos);
 	pivot.quaternion.copy(qt);
+	
+	if(camera == cameraTop)
+	{
+		pivot.children[1].visible = false;
+		pivot.children[7].visible = false;
+	}
+	else
+	{
+		pivot.children[1].visible = true;
+		pivot.children[7].visible = true;
+	}
+
+	setScalePivotGizmo();
 
 	var line = obj.userData.wf_point.line.o;
 	
@@ -892,7 +905,7 @@ function deClickTube(cdm)
 {	
 	var line = null;
 	
-	if(infProject.list.rp_wf_point.align) return;
+	if(infProject.list.rp_wf_point.align) { return { clear: false }; }
 	
 	if(cdm.obj.userData.wf_tube)
 	{
@@ -907,14 +920,16 @@ function deClickTube(cdm)
 		return;
 	}
 	
-	// показываем точки у труб
+	// скрываем точки у труб
 	var wf = [];
 	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
 	{ 
 		wf[wf.length] = line.userData.wf_line.point[i2]; 
 	}
 	
-	showHideArrObj(wf, false);		
+	showHideArrObj(wf, false);
+
+	return { clear: true };
 }
 
 

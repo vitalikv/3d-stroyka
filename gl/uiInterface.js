@@ -20,6 +20,7 @@ function activeObjRightPanelUI_1(cdm)
 	
 	if(obj.userData.tag == 'wf_point')
 	{
+		showWF_point_UI( obj );
 		$('[nameId="rp_obj_name"]').val('точка');
 		$('[nameId="rp_bl_wf_point"]').show();
 	}	

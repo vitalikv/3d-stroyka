@@ -273,7 +273,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'wall' && camera == cameraWall ) { clickWall_3D( rayhit ); }
 		else if( tag == 'point' ) { clickPoint( rayhit ); }
-		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); showWF_point_UI( obj ); }
+		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); }
 		else if( tag == 'wf_tube' && camera == cameraTop ) { showWF_line_UI( obj ); }
 		else if( tag == 'window' ) { clickWD( rayhit ); }
 		else if( tag == 'door' ) { clickWD( rayhit ); }
@@ -291,7 +291,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_1') { clickObject3D(obj, {menu_1: true}); }
 		else if( tag == 'joinPoint' && camera == camera3D && rayhit.tag == 'act_2') { clickItemCenterObjUI_2({obj: obj}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }
-		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); showWF_point_UI( obj ); }
+		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); }
 		else if( tag == 'wf_tube' && camera == camera3D ) { showWF_line_UI( obj ); }
 		else { flag = false; }
 	}	
@@ -461,42 +461,46 @@ function hideMenuObjUI_2D(cdm)
 		
 		if(cdm.type == 'down')
 		{
-			if(tag == 'wall' && camera == cameraTop) { hideMenuUI(obj); }
-			else if(tag == 'point' && camera == cameraTop) { hideMenuUI(obj); }
-			else if(tag == 'window' && camera == cameraTop) { hideSizeWD(obj); hideMenuUI(obj); }
-			else if(tag == 'door' && camera == cameraTop) { hideSizeWD(obj); hideMenuUI(obj); }
+			if(tag == 'wall' && camera == cameraTop) {  }
+			else if(tag == 'point' && camera == cameraTop) {  }
+			else if(tag == 'window' && camera == cameraTop) { hideSizeWD(obj);  }
+			else if(tag == 'door' && camera == cameraTop) { hideSizeWD(obj); }
 			else if(tag == 'obj' && camera == cameraTop) { hidePivotGizmo(obj); }
-			else if(tag == 'wf_tube' && camera == cameraTop) { deClickTube({obj: obj}); hideMenuUI(obj); }
-			else if(tag == 'wf_point' && camera == cameraTop) { deClickTube({obj: obj}); hideMenuUI(obj); }
-			else if(tag == 'boxWF' && camera == cameraTop) { hideControlWF(); hideMenuUI(obj); }
+			else if(tag == 'wf_tube' && camera == cameraTop) { deClickTube({obj: obj}); }
+			else if(tag == 'wf_point' && camera == cameraTop) { deClickTube({obj: obj}); }
+			else if(tag == 'boxWF' && camera == cameraTop) { hideControlWF(); }
 			else if(tag == 'joinPoint' && camera == cameraTop) { hidePivotGizmo(obj); }				
 			else { flag = false; }
 		}
 		else if(cdm.type == 'up')
 		{
 			if(tag == 'obj' && camera == camera3D) { hidePivotGizmo(obj); }			
-			else if(tag == 'wf_tube' && camera == camera3D) { deClickTube({obj: obj}); hideMenuUI(obj); }
-			else if(tag == 'wf_point' && camera == camera3D) { deClickTube({obj: obj}); hidePivotGizmo(obj); hideMenuUI(obj); }
+			else if(tag == 'wf_tube' && camera == camera3D) { deClickTube({obj: obj}); }
+			else if(tag == 'wf_point' && camera == camera3D) { deClickTube({obj: obj}); hidePivotGizmo(obj); }
 			else if(tag == 'joinPoint' && camera == camera3D) { hidePivotGizmo(obj); }						
 			else { flag = false; }
 		}
 		else
 		{
-			if(tag == 'wall') { hideMenuUI(obj); }
-			else if(tag == 'point') { hideMenuUI(obj); }
-			else if(tag == 'window') { hideSizeWD(obj); hideMenuUI(obj); }
-			else if(tag == 'door') { hideSizeWD(obj); hideMenuUI(obj); }
-			else if(tag == 'room') { hideMenuUI(obj); }
+			if(tag == 'wall') {  }
+			else if(tag == 'point') {  }
+			else if(tag == 'window') { hideSizeWD(obj); }
+			else if(tag == 'door') { hideSizeWD(obj); }
+			else if(tag == 'room') {  }
 			else if(tag == 'obj') { hidePivotGizmo(obj); }
-			else if(tag == 'wf_tube') { deClickTube({obj: obj}); hideMenuUI(obj); }
-			else if(tag == 'wf_point') { deClickTube({obj: obj}); hideMenuUI(obj); }
-			else if(tag == 'boxWF') { hideControlWF(); hideMenuUI(obj); }
+			else if(tag == 'wf_tube') { deClickTube({obj: obj}); }
+			else if(tag == 'wf_point') { deClickTube({obj: obj}); }
+			else if(tag == 'boxWF') { hideControlWF(); }
 			else if(tag == 'joinPoint') { hidePivotGizmo(obj); }			
 			else { flag = false; }
 		}
 	}
 	
-	if(flag) clickO.last_obj = null;
+	if(flag) 
+	{
+		hideMenuUI(obj);
+		clickO.last_obj = null;
+	}
 }
 
 
