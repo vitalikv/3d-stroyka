@@ -522,7 +522,9 @@ function cameraZoom3D( delta, z )
 	{ 
 		infProject.camera.d3.targetPos.copy(centerCam_2);
 		camera.position.copy( pos3 ); 	
-	}	
+	}
+
+	setScaleTubePoint();
 }
 
 

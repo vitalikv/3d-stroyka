@@ -193,50 +193,75 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; }		
 	}	
 	
-	if(!infProject.scene.block.click.tube)
+	
+	if(!infProject.scene.block.click.tube && !rayhit)
 	{
-		//var ray = hoverCursorLineWF(event);
-
 		var wf = [];
 		var tube = infProject.scene.array.tube;	
 		for ( var i = 0; i < tube.length; i++ )
 		{
-			wf[wf.length] = tube[i].userData.wf_line.tube;
 			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }
 		}
 		
 		var ray = rayIntersect( event, wf, 'arr' );  
 		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}	
+	
+	if(!infProject.scene.block.click.tube)
+	{
+		//var ray = hoverCursorLineWF(event);
+
+		var arrT = [];
+		var arrP = [];
+		var tube = infProject.scene.array.tube;	
+		for ( var i = 0; i < tube.length; i++ )
+		{
+			arrT[arrT.length] = tube[i].userData.wf_line.tube;
+			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ )
+			{ 
+				if(!tube[i].userData.wf_line.point[i2].visible) continue;
+				arrP[arrP.length] = tube[i].userData.wf_line.point[i2]; 
+			}
+		}
+		
+		var ray = rayIntersect( event, arrP, 'arr' );
+		if(ray.length > 0) { rayhit = ray[0]; }	
+		
+		if(!rayhit)
+		{
+			var ray = rayIntersect( event, arrT, 'arr' );
+			if(ray.length > 0) { rayhit = ray[0]; }					
+		}
 	}
 
-	if(!infProject.scene.block.click.controll_wd)
+	if(!infProject.scene.block.click.controll_wd && !rayhit)
 	{
 		var ray = rayIntersect( event, arrSize.cube, 'arr' );
-		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		if(ray.length > 0) { rayhit = ray[0]; }	
 	}
 	
-	if(!infProject.scene.block.click.door)
+	if(!infProject.scene.block.click.door && !rayhit)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.door, 'arr' );
-		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 	
-	if(!infProject.scene.block.click.window)
+	if(!infProject.scene.block.click.window && !rayhit)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.window, 'arr' );
-		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 	
-	if(!infProject.scene.block.click.point)
+	if(!infProject.scene.block.click.point && !rayhit)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.point, 'arr' );
-		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 
-	if(!infProject.scene.block.click.wall)
+	if(!infProject.scene.block.click.wall && !rayhit)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );
-		if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 
 	
@@ -280,12 +305,12 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate' && camera == cameraTop ) { clickSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
-		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
-		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); } 
+		else if( tag == 'pivot' ) { clickPivot( rayhit ); flag = false; }
+		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); flag = false; } 
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' && camera == cameraTop ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); }
-		else if( tag == 'wf_tube' && camera == cameraTop ) { showWF_line_UI( obj ); }
+		else if( tag == 'wf_tube' && camera == cameraTop ) { showWF_line_UI( obj ); flag = false; }
 		else if( tag == 'window' && camera == cameraTop ) { clickWD( rayhit ); }
 		else if( tag == 'door' && camera == cameraTop ) { clickWD( rayhit ); }
 		else if( tag == 'controll_wd' && camera == cameraTop ) { clickToggleChangeWin( rayhit ); }
@@ -307,7 +332,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'obj' && camera == camera3D && infProject.list.rp_wf_point.align) { showJoinPoint_3({obj: obj}); flag = false; }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }
 		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); }
-		else if( tag == 'wf_tube' && camera == camera3D ) { showWF_line_UI( obj ); }
+		else if( tag == 'wf_tube' && camera == camera3D ) { showWF_line_UI( obj ); flag = false; }
 		else { flag = false; }
 	}	
 	else 
@@ -322,9 +347,8 @@ function clickMouseActive(cdm)
 			objActiveColor_2D(obj);			
 		}		
 		
-		if(tag == 'pivot') { obj = infProject.tools.pivot.userData.pivot.obj; }
-		else if(tag == 'gizmo') { obj = infProject.tools.gizmo.userData.gizmo.obj; }
-		else if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
+
+		if(tag == 'joinPoint') { obj = infProject.tools.joint.active_1; } 
 
 		setClickLastObj({obj: obj});		
 		

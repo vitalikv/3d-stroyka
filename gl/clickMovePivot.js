@@ -204,6 +204,8 @@ function clickPivot( intersect )
 	}
 	
 	planeMath.position.copy( intersect.point );
+	
+	setClickLastObj({obj: infProject.tools.pivot.userData.pivot.obj});
 } 
 
 

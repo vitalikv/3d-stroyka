@@ -119,6 +119,8 @@
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>uiInterface_wf.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>uiInterface_plane.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	

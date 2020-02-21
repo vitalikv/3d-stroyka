@@ -33,6 +33,8 @@ clickMoveGizmo.js
 scaleBox.js
 loadObj.js
 uiInterface.js
+uiInterface_wf.js
+uiInterface_plane.js
 joinElement.js
 substrate.js
 groupObj.js

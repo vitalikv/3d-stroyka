@@ -780,57 +780,7 @@ function deleteLineWF(tube)
 }
 
 
-// при выделении точки, показываем меню
-function showWF_point_UI(point)
-{
-	var line = point.userData.wf_point.line.o;
-	
-	var length = 0;
-	
-	if(line)
-	{
-		var v = line.geometry.vertices;
-		
-		for(var i = 0; i < v.length - 1; i++)
-		{
-			length += v[i].distanceTo(v[i + 1]);
-		}		
-	}
 
-	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
-}
-
-
-// при выделении трубы, показываем меню
-function showWF_line_UI(tube)  
-{	
-	var line = tube.userData.wf_tube.line;
-	
-	var v = line.geometry.vertices;
-	var length = 0;
-	
-	for(var i = 0; i < v.length - 1; i++)
-	{
-		length += v[i].distanceTo(v[i + 1]);
-	}
-	
-	$('[nameId="size_tube_diameter_2"]').val(line.userData.wf_line.diameter * 1000);
-	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
-	
-	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
-	
-	
-	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
-	
-	showHideArrObj(wf, true);
-
-	activeObjRightPanelUI_1({obj: tube});
-}
 
 
 // input меняем диаметр трубы
@@ -914,16 +864,19 @@ function joinTubePointTopoint()
 	
 	o1.position.copy(pos1);
 	
+	infProject.tools.pivot.position.copy(o1.position);
+	setScalePivotGizmo();
+	
 	var line = o1.userData.wf_point.line.o;
 	
-	if(line) 
-	{ 
-		if(line.userData.wf_line.tube)
-		{
-			geometryTubeWF({line : line});
-			line.userData.wf_line.tube.visible = true;
-		}			 
-	}
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true;
+	
+	if(line.userData.wf_line.tube)
+	{
+		geometryTubeWF({line : line});
+		line.userData.wf_line.tube.visible = true;
+	}			 
 
 	renderCamera();
 }
@@ -971,8 +924,8 @@ function deClickTube(cdm)
 	{
 		var obj = cdm.obj;
 		
-		if(obj.userData.wf_tube) { var line = cdm.obj.userData.wf_tube.line; }		
-		else if(obj.userData.wf_point) { var line = cdm.obj.userData.wf_point.line.o; }		
+		if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
+		else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }		
 		
 		// скрываем точки у трубы
 		{
@@ -1003,6 +956,53 @@ function deClickTube(cdm)
 		resetClickLastObj({});		
 	}
 }
+
+
+
+// масштаб точек трубы
+function setScaleTubePoint()
+{
+	if(camera != camera3D) return;
+	
+	var obj = clickO.last_obj; 
+	
+	if(!obj) return;
+
+	
+	if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
+	else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }
+	else { return; }
+	
+	
+	var min = 9999999;
+	var point = null;
+	
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		var dist = camera.position.distanceTo(line.userData.wf_line.point[i2].position);
+		
+		if(min > dist)
+		{
+			min = dist;							
+			point = line.userData.wf_line.point[i2];
+		}						
+	}					
+
+	if(point)
+	{
+		var value = min/150;; 
+		var v = infProject.geometry.wf_point.vertices;
+		v[0].x = v[1].x = v[6].x = v[7].x = -value;
+		v[2].x = v[3].x = v[4].x = v[5].x = value;
+		v[0].y = v[3].y = v[7].y = v[4].y = -value;
+		v[1].y = v[2].y = v[5].y = v[6].y = value;						
+		v[0].z = v[1].z = v[2].z = v[3].z = value;	
+		v[4].z = v[5].z = v[6].z = v[7].z = -value;
+		infProject.geometry.wf_point.verticesNeedUpdate = true;
+		infProject.geometry.wf_point.elementsNeedUpdate = true;	
+		
+	}
+}		
 
 
 

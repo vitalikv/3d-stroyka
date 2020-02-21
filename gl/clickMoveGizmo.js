@@ -194,7 +194,9 @@ function clickGizmo( intersect )
 	
 	planeMath.updateMatrixWorld();
 	var dir = planeMath.worldToLocal( intersect.point.clone() );	
-	gizmo.userData.gizmo.active.rotY = Math.atan2(dir.x, dir.y);	
+	gizmo.userData.gizmo.active.rotY = Math.atan2(dir.x, dir.y);
+
+	setClickLastObj({obj: infProject.tools.gizmo.userData.gizmo.obj});
 }
 
 

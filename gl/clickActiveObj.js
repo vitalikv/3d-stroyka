@@ -20,26 +20,30 @@ function activeHover2D( event )
 	var ray = rayIntersect( event, arrSize.cube, 'arr' );
 	if(!rayhit) { if(ray.length > 0) { rayhit = ray[0]; } }	
 		
-	if(!infProject.scene.block.hover.tube)
-	{
-		//var ray = hoverCursorLineWF(event);	
-		//if(ray) { rayhit = ray; }		
-	}
 	
-	if(!infProject.scene.block.click.tube)
+	if(!infProject.scene.block.click.tube) 
 	{
-		//var ray = hoverCursorLineWF(event);
-
-		var wf = [];
+		var arrT = [];
+		var arrP = [];
 		var tube = infProject.scene.array.tube;	
 		for ( var i = 0; i < tube.length; i++ )
 		{
-			wf[wf.length] = tube[i].userData.wf_line.tube;
-			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }
+			arrT[arrT.length] = tube[i].userData.wf_line.tube;
+			for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ )
+			{ 
+				if(!tube[i].userData.wf_line.point[i2].visible) continue;
+				arrP[arrP.length] = tube[i].userData.wf_line.point[i2]; 
+			}
 		}
 		
-		var ray = rayIntersect( event, wf, 'arr' );  
-		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
+		var ray = rayIntersect( event, arrP, 'arr' );
+		if(ray.length > 0) { rayhit = ray[0]; }	
+		
+		if(!rayhit)
+		{
+			var ray = rayIntersect( event, arrT, 'arr' );
+			if(ray.length > 0) { rayhit = ray[0]; }					
+		}		
 	}	
 	
 
