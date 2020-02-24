@@ -108,6 +108,40 @@ function clickWFPoint_3D(cdm)
 
 
 
+// кликнули на трубу
+function clickTubeWF(cdm)
+{
+	var ray = cdm.ray;		
+	  
+	var tube = ray.object;
+
+	var line = tube.userData.wf_tube.line;
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, true);
+
+	setClickLastObj({obj: tube});
+	
+	setScaleTubePoint();
+
+	showWF_line_UI(tube);
+	
+	
+	var pos = ray.point.projectOnVector( new THREE.Vector3().subVectors( wf[1], wf[0] ) );	
+	
+var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, opacity: 1, depthTest: false } ) );
+cube.position.copy(pos);
+scene.add( cube ); 	
+
+console.log(ray, pos);
+}
+
 
 // перетаскиваем точку/tool, обновляем форму линии
 function moveWFPoint(event, obj)
@@ -221,7 +255,7 @@ function dragToolWFPoint(cdm)
 	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
 	
 	var posMouse = obj.position;	
-	posMouse.y = infProject.settings.wf_tube.pos.y;	
+	//posMouse.y = infProject.settings.wf_tube.pos.y;	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 	
 	if(line_1 && line_1.material.color != new THREE.Color(0xff0000)) line_1.material.color = new THREE.Color(0xff0000);

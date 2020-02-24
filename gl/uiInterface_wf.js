@@ -39,22 +39,9 @@ function showWF_line_UI(tube)
 	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
 	
 	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
-	
-	
-	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
-	
-	showHideArrObj(wf, true);
+
 	 
 	activeObjRightPanelUI_1({obj: tube});
-	
-	setClickLastObj({obj: tube});
-	
-	setScaleTubePoint();
 }
 
 
