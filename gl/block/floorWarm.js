@@ -134,19 +134,37 @@ function clickTubeWF(cdm)
 	
 	
 
-	var pos = mathProjectPointOnLine({line: {point_1: wf[0].position, point_2: wf[1].position}, point: ray.point});
-	
-	
-	var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, opacity: 1, depthTest: false } ) );
-	cube.position.copy(pos);
-	scene.add( cube ); 
-
-
-	console.log(ray, pos);
-
-
+	for ( var i = 0; i < line.userData.wf_line.point.length - 1; i++ )
+	{ 
+		var p1 = line.userData.wf_line.point[i].position;
+		var p2 = line.userData.wf_line.point[i + 1].position;
+		
+		var pos = mathProjectPointOnLine({line: {point_1: p1, point_2: p2}, point: ray.point});
+		
+		if(checkPointBoundBoxLine(p1, p2, pos))
+		{
+			var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial({ color: 0xff0000 }) );
+			cube.position.copy(pos);
+			scene.add( cube ); 			
+			
+			break;
+		}
+	}
 }
 
+
+
+// попадает ли точка в граница отрезка 3D BoundBox
+function checkPointBoundBoxLine(pointA, pointB, pointToCheck) 
+{
+	if(pointToCheck.x < Math.min(pointA.x, pointB.x) || pointToCheck.x > Math.max(pointA.x, pointB.x)) { return false; }
+
+	if(pointToCheck.y < Math.min(pointA.y, pointB.y) || pointToCheck.y > Math.max(pointA.y, pointB.y)) { return false; }
+
+	if(pointToCheck.z < Math.min(pointA.z, pointB.z) || pointToCheck.z > Math.max(pointA.z, pointB.z)) { return false; } 
+
+	return true;
+}
 
 
 
