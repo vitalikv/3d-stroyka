@@ -133,14 +133,22 @@ function clickTubeWF(cdm)
 	showWF_line_UI(tube);
 	
 	
-	var pos = ray.point.projectOnVector( new THREE.Vector3().subVectors( wf[1], wf[0] ) );	
-	
-var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, opacity: 1, depthTest: false } ) );
-cube.position.copy(pos);
-scene.add( cube ); 	
 
-console.log(ray, pos);
+	var pos = mathProjectPointOnLine({line: {point_1: wf[0].position, point_2: wf[1].position}, point: ray.point});
+	
+	
+	var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, opacity: 1, depthTest: false } ) );
+	cube.position.copy(pos);
+	scene.add( cube ); 
+
+
+	console.log(ray, pos);
+
+
 }
+
+
+
 
 
 // перетаскиваем точку/tool, обновляем форму линии
@@ -255,7 +263,7 @@ function dragToolWFPoint(cdm)
 	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
 	
 	var posMouse = obj.position;	
-	//posMouse.y = infProject.settings.wf_tube.pos.y;	
+	posMouse.y = infProject.settings.wf_tube.pos.y;	
 	obj.userData.wf_point.cross = { o : null, point : [] };
 	
 	if(line_1 && line_1.material.color != new THREE.Color(0xff0000)) line_1.material.color = new THREE.Color(0xff0000);

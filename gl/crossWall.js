@@ -154,6 +154,33 @@ function spPoint(A,B,C){
 } 
 
 
+
+// проекция точки на линию (3D), получаем точку пересечения
+function mathProjectPointOnLine(cdm)
+{
+	var A = cdm.line.point_1;
+	var B = cdm.line.point_2;
+	var C = cdm.point;
+	
+	var x1 = A.x;
+	var y1 = A.y;
+	var z1 = A.z;
+	
+	var x2 = B.x;
+	var y2 = B.y;
+	var z2 = B.z;
+	
+	var x3 = C.x;
+	var y3 = C.y;
+	var z3 = C.z;	
+	
+	var alpha = ((x3-x1)*(x2-x1) + (y3-y1)*(y2-y1) + (z3-z1)*(z2-z1)) / ((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
+	var pos = new THREE.Vector3(x1+alpha*(x2-x1), y1+alpha*(y2-y1), z1+alpha*(z2-z1));
+
+	return pos;
+}
+
+
 // опредяляем, надодится точка D за пределами прямой или нет (точка D пересекает прямую АВ, идущая перпендикулярна от точки С)  
 function calScal(A,B,C)
 {	

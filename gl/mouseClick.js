@@ -175,6 +175,7 @@ function clickRayHit(event)
 	}	
 	
 	
+	// точки у трубы
 	if(!infProject.scene.block.click.tube && !rayhit)
 	{
 		var wf = [];
@@ -215,6 +216,7 @@ function clickRayHit(event)
 	}
 	
 	
+	// труба
 	if(!infProject.scene.block.click.tube)
 	{
 		//var ray = hoverCursorLineWF(event);
