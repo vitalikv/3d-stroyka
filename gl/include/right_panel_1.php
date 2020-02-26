@@ -463,6 +463,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						</div>
 		
 						<div style="margin: 10px 0;">
+							<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>
+						</div>
+						
+						<div style="margin: 10px 0;">
 							<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
 						</div>
 					</div>					

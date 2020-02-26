@@ -213,3 +213,27 @@ function clickItemCenterObjUI_3(cdm)
 
 
 
+
+
+// вкл/выкл возможность добавить точку на трубу при клике на нее
+function switchAddPointOnTube(cdm)
+{
+	if(!cdm) cdm = {};
+	
+	if(cdm.type !== undefined) 
+	{
+		infProject.settings.active.tube = cdm.type;  
+	}	
+	else
+	{
+		if(infProject.settings.active.tube != 'add_point_wf') { infProject.settings.active.tube = 'add_point_wf'; }
+		else { infProject.settings.active.tube = null; }
+	}
+	
+
+   
+	var color = (infProject.settings.active.tube == 'add_point_wf') ? "#ff0000" : "#b3b3b3";	
+	$('[nameId="butt_add_point_on_tube"]').css({"border-color": color});		
+}
+
+

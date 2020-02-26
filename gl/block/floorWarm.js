@@ -7,7 +7,7 @@ function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial({color : 0x333333, transparent: true, opacity: 0.6, depthTest: false}) ); 
 	point.position.copy( cdm.pos );		
-	point.position.y = infProject.settings.wf_tube.pos.y;	
+	//point.position.y = infProject.settings.wf_tube.pos.y;	
 	
 	point.renderOrder = 1;
 	
@@ -111,6 +111,11 @@ function clickWFPoint_3D(cdm)
 // кликнули на трубу
 function clickTubeWF(cdm)
 {
+	if(infProject.settings.active.tube == 'add_point_wf')
+	{
+		addPointOnTube(cdm);
+	}
+	
 	var ray = cdm.ray;		
 	  
 	var tube = ray.object;
@@ -131,25 +136,61 @@ function clickTubeWF(cdm)
 	setScaleTubePoint();
 
 	showWF_line_UI(tube);
-	
-	
+}
 
+
+
+// при клике добавляем на трубу точку
+function addPointOnTube(cdm)
+{
+	var ray = cdm.ray;			  
+	var tube = ray.object;
+
+	var line = tube.userData.wf_tube.line;	
+	
+	var arr = [];
+	
 	for ( var i = 0; i < line.userData.wf_line.point.length - 1; i++ )
 	{ 
-		var p1 = line.userData.wf_line.point[i].position;
-		var p2 = line.userData.wf_line.point[i + 1].position;
+		var p1 = line.userData.wf_line.point[i];
+		var p2 = line.userData.wf_line.point[i + 1];
 		
-		var pos = mathProjectPointOnLine({line: {point_1: p1, point_2: p2}, point: ray.point});
+		var pos = mathProjectPointOnLine({line: {point_1: p1.position, point_2: p2.position}, point: ray.point});
 		
-		if(checkPointBoundBoxLine(p1, p2, pos))
+		var dist = ray.point.distanceTo(pos);	
+		
+		if(checkPointBoundBoxLine(p1.position, p2.position, pos))
 		{
-			var cube = new THREE.Mesh( createGeometryCube(0.1, 0.1, 0.1), new THREE.MeshLambertMaterial({ color: 0xff0000 }) );
-			cube.position.copy(pos);
-			scene.add( cube ); 			
-			
-			break;
+			arr[arr.length] = {dist: dist, pos: pos, p1: p1, tube: tube};
 		}
 	}
+	
+	arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
+
+	var p1 = arr[0].p1;
+	var pos = arr[0].pos;	
+	
+	var arrP = line.userData.wf_line.point;  
+	
+	var newPoint = createPointWF({ pos: pos, line: line });
+	
+	for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p1) { arrP.splice(i+1, 0, newPoint); break; } }
+	
+	
+	// обновляем geometry линии
+	var geometry = new THREE.Geometry();
+	
+	for(var i = 0; i < arrP.length; i++)
+	{
+		geometry.vertices[i] = arrP[i].position;
+	}
+	
+	line.geometry = geometry;	
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true;
+	
+	console.log(newPoint.userData.id, line.userData.wf_line.point.length);
+	geometryTubeWF({line: line});	
 }
 
 
@@ -946,6 +987,19 @@ function joinTubePointTopoint()
 // кликнули на другой объект, деактивируем трубу
 function deClickTube(cdm)  
 {	
+	if(clickO.rayhit)
+	{
+		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
+		if(cdm.moment == 'down' && camera == cameraTop)
+		{
+			if(clickO.rayhit.object == cdm.obj) return;
+		}
+		
+		if(cdm.moment == 'up' && camera == camera3D)
+		{
+			if(clickO.rayhit.object == cdm.obj) return;
+		}		
+	}
 	
 	var obj = cdm.obj;
 	
@@ -955,7 +1009,7 @@ function deClickTube(cdm)
 	}
 	else if(cdm.moment == 'up' && camera == camera3D && !checkClickTube_1())
 	{
-		deClickTube_1(cdm);
+		deClickTube_1(cdm); 
 	}
 	else if(cdm.moment == '')
 	{ 
@@ -1007,11 +1061,12 @@ function deClickTube(cdm)
 			outlineRemoveObj();		
 		}
 		
-		// вкл/выкл возможность выделение объектов для присоединения точки трубы
-		switchAlignWfPoint({active: false});
 		
-		// скрываем UI
-		activeObjRightPanelUI_1();
+		switchAlignWfPoint({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
+		
+		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку		
+		
+		activeObjRightPanelUI_1();		// скрываем UI
 		
 		resetClickLastObj({});		
 	}

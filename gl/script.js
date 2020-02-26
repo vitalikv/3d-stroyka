@@ -194,6 +194,7 @@ infProject.list = {};	// список разных параметров/объе
 infProject.list.rp_ui = { arr: [] };
 infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [], joinO: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
+infProject.settings.active.tube = null;
 infProject.start = true; 
 
 infProject.ui = {}

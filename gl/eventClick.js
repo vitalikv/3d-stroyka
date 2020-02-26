@@ -92,6 +92,8 @@ $('[nameId="join_element"]').mousedown(function () { joinElement(); });
 $('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignWfPoint(); });
 $('[nameId="button_done_align_wf_point"]').mousedown(function () { joinTubePointTopoint(); });
 
+$('[nameId="butt_add_point_on_tube"]').mousedown(function () { switchAddPointOnTube(); });
+
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
 $('[nameId="show_hide_join_point"]').mousedown(function () { showHideJP({switch: true}); }); 	
