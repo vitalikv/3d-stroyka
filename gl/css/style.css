@@ -802,7 +802,7 @@ canvas
 	margin-bottom: 10px;
 	width: 99%;
 		
-	font-size: 18px;
+	font-size: 14px;
 	text-align: center;
 	color: #666;
 	
@@ -825,7 +825,7 @@ canvas
 	margin: 0;
 }
 
-.rb_obj_butt .button1
+.right_panel_1 .button1
 {
 	padding:4px 11px;
 	font:15px Arial, Helvetica, sans-serif;

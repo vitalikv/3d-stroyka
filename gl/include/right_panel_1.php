@@ -563,6 +563,12 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						<input type="text" nameId="object_rotate_Y" value="0">
 						<input type="text" nameId="object_rotate_Z" value="0">
 					</div>
+					
+					<div class="flex_1 input_rotate">
+						<input type="text" nameId="object_pos_X" value="0">
+						<input type="text" nameId="object_pos_Y" value="0">
+						<input type="text" nameId="object_pos_Z" value="0">
+					</div>					
 				
 					<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
 						reset	

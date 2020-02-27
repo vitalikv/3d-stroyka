@@ -313,6 +313,7 @@ function movePivot( event )
 		obj.position.add( pos2 ); 
 	}
 
+	upMenuPosObjPop(obj);
 }
 
 
@@ -340,6 +341,25 @@ function clickPivotUp()
 			}
 		}		
 	}
+}
+
+
+
+// обновляем pos UI
+function upMenuPosObjPop(obj) 
+{	
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		var pos = obj.getWorldPosition(new THREE.Vector3());
+	}
+	else
+	{
+		var pos = obj.position;
+	}
+	
+	$('[nameId="object_pos_X"]').val( Math.round( THREE.Math.radToDeg(pos.x) ) );
+	$('[nameId="object_pos_Y"]').val( Math.round( THREE.Math.radToDeg(pos.y) ) );
+	$('[nameId="object_pos_Z"]').val( Math.round( THREE.Math.radToDeg(pos.z) ) );	
 }
 
 

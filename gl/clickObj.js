@@ -181,6 +181,8 @@ function clickObject3D( obj, cdm )
 			pivot.children[1].visible = true;
 			pivot.children[7].visible = true;
 		}
+		
+		upMenuPosObjPop(obj);
 	}
 	
 	if(infProject.settings.active.pg == 'gizmo')
@@ -206,7 +208,7 @@ function clickObject3D( obj, cdm )
 		}
 
 		gizmo.quaternion.copy( qt );
-		
+				
 		upMenuRotateObjPop(obj);
 		
 		clippingGizmo360(obj); 		
