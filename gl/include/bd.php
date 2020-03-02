@@ -14,7 +14,6 @@ $description = '';
 $interface['wall_1'] = 0;
 $interface['wall_2'] = ['top'=>[], 'left'=>[], 'right'=>[], 'bottom'=>[]];
 $interface['tube_1'] = 0;
-$interface['mode_1'] = 0;
 $interface['estimate'] = 0;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
@@ -101,7 +100,6 @@ if($url == '/calculator/warm_floor')
 	$h1 = 'Расчет теплого пола 3D';
 	$description = 'Программа теплый пол позволяет быстро спроектировать и подсчитать количество труб. Она рассчитана на людей, которые хотят самостоятельно сделать теплый пол на даче, в загородном доме или в квартире. В программе есть 3D режим который наглядно покажет, то что вы спроектировали.';
 	$nameId = 'теплый пол';
-	$interface['mode_1'] = 1;
 	$interface['wall_1'] = 1;
 	$interface['tube_1'] = 1;
 	$interface['wd_1'] = 1;	
@@ -120,7 +118,6 @@ if($url == '/calculator/radiator')
 	$h1 = '----';
 	$description = '';
 	$nameId = '';
-	$interface['mode_1'] = 1;
 	$interface['wall_1'] = 1;
 	$interface['tube_1'] = 1;
 	$interface['wd_1'] = 1;	
@@ -267,7 +264,6 @@ else if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 	$infProject['settings']['grid']['count'] = null;
 	$infProject['settings']['grid']['pos'] = [ 'y' => 0.0 ];
 	$infProject['settings']['grid']['color'] = 0x009dff;
-	$infProject['settings']['interface']['button']['mode_1'] = ['mode' => ['План', 'Монтаж'], 'active' => 'План'];
 	$infProject['settings']['interface']['button']['showHideWall_1'] = ['active' => 'Спрятать стены'];
 }
 

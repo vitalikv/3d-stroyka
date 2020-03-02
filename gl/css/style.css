@@ -536,14 +536,6 @@ canvas
 }
 
 
-.top_panel_2 .tp_left_1
-{
-	width: auto;	
-	text-decoration: none;
-	margin-left: 15px;
-}
-
-
 .top_panel_2 .tp_right_1
 {
 	width: auto;		
@@ -664,6 +656,18 @@ canvas
 	height: 30px;
 	width: 70px;
 	margin: 0px;
+	border: 1px solid #ccc;
+	border-bottom: none;
+	background-color:#fff;
+	cursor: pointer;
+}
+
+
+.right_panel_1_item_2_block
+{
+	height: 30px;
+	margin: 0px;
+	padding: 0 15px;
 	border: 1px solid #ccc;
 	border-bottom: none;
 	background-color:#fff;

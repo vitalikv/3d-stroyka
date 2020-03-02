@@ -57,7 +57,8 @@ $('[nameId="button_wrap_list_obj"]').mousedown(function () { changeRightMenuUI_1
 $('[nameId="button_wrap_object"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 $('[nameId="button_wrap_plan"]').mousedown(function () { changeRightMenuUI_1({el: this}); });
 
-
+$('[nameId="button_obj_tool_pivot"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
+$('[nameId="button_obj_properties"]').mousedown(function () { changeRightMenuUI_2({el: this}); });
 
 
  
@@ -72,10 +73,8 @@ $('[nameId="color_tube_1_default"]').on('mousedown', function(e)
 
   
  
-	
-$('[inf_type="mode_1"]').on('mousedown', function(e) { showHideObjMode_1(); });
-$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
+$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
 
 
 
@@ -234,7 +233,7 @@ function changeRightMenuUI_1(cdm)
 	}
 	if(name == "button_wrap_object") 
 	{
-		$('[nameId="wrap_object"]').show();
+		$('[nameId="wrap_object"]').show(); 
 	}
 	if(name == "button_wrap_plan") 
 	{
@@ -251,7 +250,28 @@ function changeRightMenuUI_1(cdm)
 
 
 
-
+// переключаем вкладку для объекта перемещение/параметры 
+function changeRightMenuUI_2(cdm)
+{
+	$('[nameId="rp_bl_obj_tool_pivot"]').hide();
+	$('[nameId="rp_bl_obj_properties"]').hide();
+	
+	var name = '';
+	
+	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
+	else if(cdm.name) { name = cdm.name; }
+	else if(cdm.current) { name = infProject.ui.right_menu.active; }
+	
+	
+	if(name == "button_obj_tool_pivot") 
+	{
+		$('[nameId="rp_bl_obj_tool_pivot"]').show();
+	}
+	if(name == "button_obj_properties") 
+	{
+		$('[nameId="rp_bl_obj_properties"]').show();
+	}
+}
 
 
 

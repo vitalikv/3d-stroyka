@@ -13,29 +13,12 @@ function changeCamera(cam)
 	outlinePass.renderCamera = cam;
 
 
-	if(camera == camera3D)
-	{
-		$('[nameId="top_menu_b1"]').hide();
-		$('[nameId="top_menu_b2"]').hide();
-		$('[inf_type="mode_1"]').hide();
-	}
-	else
-	{
-		if($('[nameId="top_menu_b1"]').attr('inf-visible') == 'true') { $('[nameId="top_menu_b1"]').show(); }
-		if($('[nameId="top_menu_b2"]').attr('inf-visible') == 'true') { $('[nameId="top_menu_b2"]').show();	}
-		$('[inf_type="mode_1"]').show();
-	}
-
 	
 	if(camera == cameraTop)
 	{					
 		changeDepthColor();			
 		cameraZoomTop( camera.zoom );
 		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
-		
-		if(infProject.settings.interface.button.mode_1) { showHideObjMode_1({active: infProject.settings.interface.button.mode_1.active}); }
-		
-		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').hide(); }
 		
 		changeRightMenuUI_1({current: true});
 	}
@@ -47,8 +30,6 @@ function changeCamera(cam)
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
 		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
-
-		if(infProject.settings.interface.button.showHideWall_1) { $('[nameId="showHideWall_1"]').show(); }
 		
 		changeRightMenuUI_1({current: true});
 	}
@@ -162,7 +143,7 @@ function changeDepthColor()
 		}		
 	}
 	
-	showHideArrObj(wf, visible_2);
+	showHideArrObj(wf, false);
 	showHideArrObj(window, visible_2);
 	showHideArrObj(door, visible_2);
 	
@@ -209,57 +190,6 @@ function detectZoomScreenWall()
 
 
 
-// прячем/показываем объекты в режиме план/монтаж + блокировка действий 
-function showHideObjMode_1(cdm)
-{ 
-	if(!cdm) cdm = {};
-	
-	if(cdm.active)
-	{
-		var txtButton = (infProject.settings.interface.button.mode_1.active == 'Монтаж')?'План':'Монтаж';
-	}
-	else
-	{
-		var txtButton = infProject.settings.interface.button.mode_1.active;	
-		infProject.settings.interface.button.mode_1.active = (txtButton == 'Монтаж')?'План':'Монтаж';		
-	}
-	
-	$('[inf_type="mode_1"]').text(txtButton);
-	
-	if(txtButton == 'Монтаж')
-	{
-		$('[nameId="top_menu_b1"]').hide(); $('[nameId="top_menu_b1"]').attr('inf-visible', 'false');
-		$('[nameId="top_menu_b2"]').show();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'true');
-	}
-	else
-	{
-		$('[nameId="top_menu_b2"]').hide();	$('[nameId="top_menu_b2"]').attr('inf-visible', 'false');
-		$('[nameId="top_menu_b1"]').show();	$('[nameId="top_menu_b1"]').attr('inf-visible', 'true');
-	}
-
-	
-	var visible_1 = (infProject.settings.interface.button.mode_1.active == 'Монтаж') ? true : false;
-	var visible_2 = (infProject.settings.interface.button.mode_1.active == 'Монтаж') ? false : true;	//для стен, wd
-	
-	//----------
-		
-
-
-	var wf = [];
-	var tube = infProject.scene.array.tube;	
-	for ( var i = 0; i < tube.length; i++ )
-	{
-		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ ){ wf[wf.length] = tube[i].userData.wf_line.point[i2]; }	
-	}
-	
-	showHideArrObj(wf, visible_1);	// прячем/показываем точки у труб
-	showHideArrObj(infProject.scene.array.point, visible_2);	// прячем/показываем точки у стен
-	
-
-	blockActiveObj({visible_1: visible_1, visible_2: visible_2});
-
-	deActiveSelected();	
-}
 
 
 

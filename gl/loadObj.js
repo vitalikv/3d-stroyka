@@ -6,7 +6,7 @@ function infoListObj()
 	var arr = [];
 	
 	
-	arr[0] =
+	arr[arr.length] =
 	{	
 		lotid : 1,
 		url : infProject.path+'import/nasos_z.fbx', 
@@ -14,7 +14,7 @@ function infoListObj()
 		planeMath : 0.5,
 	}
 	
-	arr[1] =
+	arr[arr.length] =
 	{
 		lotid : 2,
 		url : infProject.path+'import/kotel_1.fbx', 
@@ -22,7 +22,7 @@ function infoListObj()
 		planeMath : 1.5,
 	}
 	
-	arr[2] =
+	arr[arr.length] =
 	{
 		lotid : 3,
 		url : infProject.path+'import/budres_900.fbx', 
@@ -30,7 +30,7 @@ function infoListObj()
 		planeMath : 0.8,
 	}
 	
-	arr[3] =
+	arr[arr.length] =
 	{
 		lotid : 4,
 		url : infProject.path+'import/bak_1.fbx', 
@@ -38,7 +38,7 @@ function infoListObj()
 		planeMath : 0.5,
 	}	
 	
-	arr[4] =
+	arr[arr.length] =
 	{
 		lotid : 5,
 		url : infProject.path+'import/kollector_1.fbx', 
@@ -46,7 +46,7 @@ function infoListObj()
 		planeMath : 0.5,
 	}
 	
-	arr[5] =
+	arr[arr.length] =
 	{
 		lotid : 6,
 		url : infProject.path+'import/rad_al_secziy_500_.fbx', 
@@ -59,7 +59,7 @@ function infoListObj()
 		//inf.joinPoint[3] = {name: 'size_2_R_', size: '1', joinObj: null};		
 	}
 	
-	arr[6] =
+	arr[arr.length] =
 	{
 		lotid : 7,
 		url : infProject.path+'export/soedin_al_rad_1.fbx', 
@@ -68,7 +68,7 @@ function infoListObj()
 		stopUI: true,
 	}
 	
-	arr[7] =
+	arr[arr.length] =
 	{
 		lotid : 8,
 		url : infProject.path+'import/kran_sgon_3s4.fbx',
@@ -76,7 +76,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 	
-	arr[8] =
+	arr[arr.length] =
 	{
 		lotid : 9,
 		url : infProject.path+'import/rad1_zagl_1_.fbx', 
@@ -84,7 +84,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 	
-	arr[9] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_3s4.fbx', 
@@ -92,7 +92,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}	
 	
-	arr[10] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_1s2.fbx', 
@@ -100,7 +100,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 
-	arr[11] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_vozd.fbx', 
@@ -108,7 +108,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 	
-	arr[12] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/nasos_1.fbx', 
@@ -116,7 +116,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}	
 	
-	arr[13] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/termo_kran_1s2.fbx', 
@@ -124,7 +124,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}	
 
-	arr[14] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/termo_regul_1s2.fbx', 
@@ -132,7 +132,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 	
-	arr[15] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/mp_tronik_32х20х32.fbx', 
@@ -140,7 +140,7 @@ function infoListObj()
 		planeMath : 0.5,		
 	}
 
-	arr[16] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/mp_tronik_26х16х20.fbx', 
@@ -148,18 +148,28 @@ function infoListObj()
 		planeMath : 0.5,		
 	}	
 	
-	arr[17] =
+	arr[arr.length] =
 	{
 		lotid : 10,
 		url : infProject.path+'import/mp_ugol_nar_16x1s2.fbx', 
 		name :'угол 16х1/2(нр) (мп)',
 		planeMath : 0.5,		
-	}	
-	
+	}
+
+
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].lotid = i+1;
 	}
+
+	arr[arr.length] =
+	{	
+		lotid : 'tube',
+		name : 'труба',
+		planeMath : 0.1,
+	}	
+	
+
 	
 	
 	return arr;

@@ -384,195 +384,221 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					<div class="rp_obj_name">
 						<input type="text" nameId="rp_obj_name" value="Название">					
 					</div>
-										
-					<div nameId="rp_bl_wf_point" style="display: none;">
-						
-						<div class="flex_1">
-							<div class="flex_1 align_items">
-								<div class="rp_label_plane">
-									длина (м)
-								</div>
-							</div>
-							<div class="flex_1 align_items" style="width: auto;">
-								<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
-							</div>
-						</div>											
-				
-						<div style="margin: 10px 0;">
-							<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">выровнить</div>
 							
-							<div nameId="rp_wrap_align_wf_point" style="display: none;">
-								<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point">
-									
+
+					<div class="flex_1 bottom_line_1">
+						<div class="flex_1 relative_1">			
+							<div class="right_panel_1_item_2_block" nameId="button_obj_tool_pivot">
+								<div class="right_panel_1_item_block_text">
+									перемещение
 								</div>	
-								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
-									выровнить	
-								</div>
+							</div>
+							<div class="right_panel_1_item_2_block" nameId="button_obj_properties">
+								<div class="right_panel_1_item_block_text">
+									параметры
+								</div>	
 							</div>							
 						</div>
-						
-						<div style="margin: 10px 0;">
-							<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
+					</div>
+
+
+
+					<div nameId="rp_bl_obj_tool_pivot">
+					
+						<div class="flex_1 w_1">
+							
+							<div class="button1 button_gradient_1" nameId="select_pivot">
+								<img src="<?=$path?>/img/move_1.png">	
+							</div>	
+							<div class="button1 button_gradient_1" nameId="select_gizmo">
+								<img src="<?=$path?>/img/rotate_1.png">	
+							</div>	
+							
+							
+							
+							<select name="fruit">
+							<option value ="none">Глобально</option>
+							<option value ="guava">Локально</option>
+							</select>
+							
 						</div>
+
+						<div class="flex_1 input_rotate">
+							<input type="text" nameId="object_rotate_X" value="0">
+							<input type="text" nameId="object_rotate_Y" value="0">
+							<input type="text" nameId="object_rotate_Z" value="0">
+						</div>
+						
+						<div class="flex_1 input_rotate">
+							<input type="text" nameId="object_pos_X" value="0">
+							<input type="text" nameId="object_pos_Y" value="0">
+							<input type="text" nameId="object_pos_Z" value="0">
+						</div>					
+					
+						<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
+							reset	
+						</div>					
+					
 					</div>
 					
 					
-					<div nameId="rp_bl_wf_tube" style="display: none;">
-						
-						<div class="flex_1">
-							<div class="flex_1 align_items">
-								<div class="rp_label_plane">
-									диаметр (мм)
-								</div>
-							</div>
-							<div class="flex_1 align_items" style="width: auto;">
-								<input type="text" nameId="size_tube_diameter_2" style="width: 90%; margin:5px 5px;" value=0>
-							</div>
-						</div>
-
-						<div class="flex_1">
-							<div class="flex_1 align_items">
-								<div class="rp_label_plane">
-									длина (м)
-								</div>
-							</div>
-							<div class="flex_1 align_items" style="width: auto;">
-								<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
-							</div>
-						</div>						
-						
-						<div class="flex_1">
-							<div class="flex_1 align_items">
-								<div class="rp_label_plane">
-									цвет
-								</div>
-							</div>
-							<div class="flex_1 align_items" style="width: auto;">
-								<input type="text" nameId="color_tube_1_default" style="width: 90%; margin:5px 5px; background-color:#cfcfcf; cursor: pointer;" value=''>
-							</div>
-						</div>					 
-
-						<div class="toolbar-menu" nameId='bb_menu_tube_menu_2' style="display: none;">
-							<div class="color_tube_1_change" color_tube_1_change='e5e5e5' style="background-color:#e5e5e5;"></div>
-							<div class="color_tube_1_change" color_tube_1_change='0252f2' style="background-color:#0252f2;"></div>
-							<div class="color_tube_1_change" color_tube_1_change='f2b202' style="background-color:#f2b202;"></div> 
-							<div class="color_tube_1_change" color_tube_1_change='9602f2' style="background-color:#9602f2;"></div>
-							<div class="color_tube_1_change" color_tube_1_change='f202e2' style="background-color:#f202e2;"></div>
-							<div class="color_tube_1_change" color_tube_1_change='828282' style="background-color:#828282;"></div>
-							<div class="color_tube_1_change" color_tube_1_change='141414' style="background-color:#141414;"></div>
-						</div>
-		
-						<div style="margin: 10px 0;">
-							<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>
-						</div>
-						
-						<div style="margin: 10px 0;">
-							<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
-						</div>
-					</div>					
+					<div nameId="rp_bl_obj_properties">	
 					
-					<div nameId="bl_object_3d" style="display: none;">
-						
-						<div class="flex_1">
-							<div class="flex_1 align_items block_rp_1">
-								<div class="checkbox_1" nameId="box_input_group">
-									<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
-								</div>
-								<div class="block_rp_text">Группа</div>						
-							</div>
+						<div nameId="rp_bl_wf_point" style="display: none;">
 							
-							<div class="flex_1 align_items block_rp_1">
-								<div class="checkbox_1" nameId="show_hide_join_point">
-									<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: block;"></div>						
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										длина (м)
+									</div>
 								</div>
-								<div class="block_rp_text">Показать точки</div>						
-							</div>						
-						</div>
-						
-						<div class="right_panel_1_1_list" nameId="rp_obj_group">
-							
-						</div>		
-						
-						
-						<div class="rb_obj_butt">
-							<div>
-								<div class="button1 button_gradient_1" nameId="button_active_join_element">
-									выровнить	
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
 								</div>
-								<div nameId="rp_wrap_obj_align" style="display: none;">
-									<div class="right_panel_1_1_list" nameId="rp_obj_align">
+							</div>											
+					
+							<div style="margin: 10px 0;">
+								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">выровнить</div>
+								
+								<div nameId="rp_wrap_align_wf_point" style="display: none;">
+									<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point">
 										
 									</div>	
-									<div class="button1 button_gradient_1" nameId="join_element">
+									<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
 										выровнить	
 									</div>
-								</div>
-							</div>						
-							
-							<div class="button1 button_gradient_1" nameId="button_copy_obj">
-								копировать	
+								</div>							
 							</div>
 							
-							<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
-								отделить	
-							</div>						
-								
-							<div>
-								<div class="button1 button_gradient_1" nameId="button_active_add_group">
-									объединить	
-								</div>
-								
-								<div nameId="rp_wrap_add_group" style="display: none;">
-									<div class="right_panel_1_1_list" nameId="rp_add_group">
-										
-									</div>
-									<div class="button1 button_gradient_1" nameId="button_add_group">
-										объединить	
-									</div>	
-								</div>
-							</div>	
-
-							<div class="button1 button_gradient_1" nameId="button_delete_obj">
-								удалить	
+							<div style="margin: 10px 0;">
+								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
 							</div>
 						</div>
 						
-					</div>	
-
-
-					<div class="flex_1 w_1">
 						
-						<div class="button1 button_gradient_1" nameId="select_pivot">
-							<img src="<?=$path?>/img/move_1.png">	
+						<div nameId="rp_bl_wf_tube" style="display: none;">
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										диаметр (мм)
+									</div>
+								</div>
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="size_tube_diameter_2" style="width: 90%; margin:5px 5px;" value=0>
+								</div>
+							</div>
+
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										длина (м)
+									</div>
+								</div>
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
+								</div>
+							</div>						
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										цвет
+									</div>
+								</div>
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="color_tube_1_default" style="width: 90%; margin:5px 5px; background-color:#cfcfcf; cursor: pointer;" value=''>
+								</div>
+							</div>					 
+
+							<div class="toolbar-menu" nameId='bb_menu_tube_menu_2' style="display: none;">
+								<div class="color_tube_1_change" color_tube_1_change='e5e5e5' style="background-color:#e5e5e5;"></div>
+								<div class="color_tube_1_change" color_tube_1_change='0252f2' style="background-color:#0252f2;"></div>
+								<div class="color_tube_1_change" color_tube_1_change='f2b202' style="background-color:#f2b202;"></div> 
+								<div class="color_tube_1_change" color_tube_1_change='9602f2' style="background-color:#9602f2;"></div>
+								<div class="color_tube_1_change" color_tube_1_change='f202e2' style="background-color:#f202e2;"></div>
+								<div class="color_tube_1_change" color_tube_1_change='828282' style="background-color:#828282;"></div>
+								<div class="color_tube_1_change" color_tube_1_change='141414' style="background-color:#141414;"></div>
+							</div>
+			
+							<div style="margin: 10px 0;">
+								<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>
+							</div>
+							
+							<div style="margin: 10px 0;">
+								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
+							</div>
+						</div>					
+						
+						<div nameId="bl_object_3d" style="display: none;">
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items block_rp_1">
+									<div class="checkbox_1" nameId="box_input_group">
+										<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
+									</div>
+									<div class="block_rp_text">Группа</div>						
+								</div>
+								
+								<div class="flex_1 align_items block_rp_1">
+									<div class="checkbox_1" nameId="show_hide_join_point">
+										<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: block;"></div>						
+									</div>
+									<div class="block_rp_text">Показать точки</div>						
+								</div>						
+							</div>
+							
+							<div class="right_panel_1_1_list" nameId="rp_obj_group">
+								
+							</div>		
+							
+							
+							<div class="rb_obj_butt">
+								<div>
+									<div class="button1 button_gradient_1" nameId="button_active_join_element">
+										выровнить	
+									</div>
+									<div nameId="rp_wrap_obj_align" style="display: none;">
+										<div class="right_panel_1_1_list" nameId="rp_obj_align">
+											
+										</div>	
+										<div class="button1 button_gradient_1" nameId="join_element">
+											выровнить	
+										</div>
+									</div>
+								</div>						
+								
+								<div class="button1 button_gradient_1" nameId="button_copy_obj">
+									копировать	
+								</div>
+								
+								<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
+									отделить	
+								</div>						
+									
+								<div>
+									<div class="button1 button_gradient_1" nameId="button_active_add_group">
+										объединить	
+									</div>
+									
+									<div nameId="rp_wrap_add_group" style="display: none;">
+										<div class="right_panel_1_1_list" nameId="rp_add_group">
+											
+										</div>
+										<div class="button1 button_gradient_1" nameId="button_add_group">
+											объединить	
+										</div>	
+									</div>
+								</div>	
+
+								<div class="button1 button_gradient_1" nameId="button_delete_obj">
+									удалить	
+								</div>
+							</div>
+							
 						</div>	
-						<div class="button1 button_gradient_1" nameId="select_gizmo">
-							<img src="<?=$path?>/img/rotate_1.png">	
-						</div>	
-						
-						
-						
-						<select name="fruit">
-						<option value ="none">Глобально</option>
-						<option value ="guava">Локально</option>
-						</select>
-						
-					</div>
 
-					<div class="flex_1 input_rotate">
-						<input type="text" nameId="object_rotate_X" value="0">
-						<input type="text" nameId="object_rotate_Y" value="0">
-						<input type="text" nameId="object_rotate_Z" value="0">
 					</div>
-					
-					<div class="flex_1 input_rotate">
-						<input type="text" nameId="object_pos_X" value="0">
-						<input type="text" nameId="object_pos_Y" value="0">
-						<input type="text" nameId="object_pos_Z" value="0">
-					</div>					
-				
-					<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
-						reset	
-					</div>					
 					
 				</div> 
 			</div>	
