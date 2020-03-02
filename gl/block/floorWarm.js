@@ -750,13 +750,13 @@ function geometryTubeWF(cdm)
 	
 	var params = { extrusionSegments: Math.round(length * 30), radiusSegments: 12, closed: false };
 	
-	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, line.userData.wf_line.diameter, params.radiusSegments, params.closed );	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, line.userData.wf_line.diameter/2, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();			
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: line.userData.wf_line.color.getHex(), wireframe: false, lightMap : lightMap_1 } ) );	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({ color: line.userData.wf_line.color.getHex(), side: THREE.DoubleSide, lightMap: lightMap_1 }));	
 		line.userData.wf_line.tube = tube;
 		tube.userData.tag = 'wf_tube';
 		tube.userData.wf_tube = {}
@@ -845,7 +845,10 @@ function deletePointWF(obj)
 	disposeNode(obj);
  	scene.remove(obj);	// удаляем точку
 	
-	
+	if(line)
+	{  
+		clickTubeWF({ray: {object: line.userData.wf_line.tube}});
+	}
 }
 
 

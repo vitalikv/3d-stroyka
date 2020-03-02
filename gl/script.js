@@ -279,9 +279,11 @@ startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое по
 addObjInCatalogUI_1();										// каталог UI
 //changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена
 changeRightMenuUI_1({name: 'button_wrap_object'});
-changeRightMenuUI_2({name: 'button_obj_tool_pivot'});		// переключаем вкладку для объекта перемещение/параметры
+changeRightMenuUI_2({name: 'button_obj_properties'});
+//changeRightMenuUI_2({name: 'button_obj_tool_pivot'});		// переключаем вкладку для объекта перемещение/параметры
 createTextUI_2({});											// добавляем в список +, для добавления этажа
 
+switchJoinObj({active: false});		// скрываем список "выровнить" во вкладке свойства объектов
 
 
 //----------- start

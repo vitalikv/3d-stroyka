@@ -532,41 +532,70 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						
 						<div nameId="bl_object_3d" style="display: none;">
 							
-							<div class="flex_1">
-								<div class="flex_1 align_items block_rp_1">
-									<div class="checkbox_1" nameId="box_input_group">
-										<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
-									</div>
-									<div class="block_rp_text">Группа</div>						
+							
+							<div nameId="rp_wrap_obj_align" style="display: none;">
+							
+								<div class="button1 button_gradient_1" nameId="button_deactive_join_element" style="border-color: #ff0000">
+									закрыть	
+								</div>
+							
+								<div class="right_panel_1_1_list" nameId="rp_obj_align">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="join_element">
+									выровнить	
 								</div>
 								
-								<div class="flex_1 align_items block_rp_1">
-									<div class="checkbox_1" nameId="show_hide_join_point">
-										<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: block;"></div>						
-									</div>
-									<div class="block_rp_text">Показать точки</div>						
-								</div>						
 							</div>
 							
-							<div class="right_panel_1_1_list" nameId="rp_obj_group">
-								
-							</div>		
+							
+							<div nameId="rp_wrap_add_group" style="display: none;">
+								<div class="button1 button_gradient_1" nameId="button_deactive_add_group" style="border-color: #ff0000">
+									закрыть	
+								</div>							
+								<div class="right_panel_1_1_list" nameId="rp_add_group">
+									
+								</div>
+								<div class="button1 button_gradient_1" nameId="button_add_group">
+									объединить	
+								</div>	
+							</div>
 							
 							
-							<div class="rb_obj_butt">
-								<div>
-									<div class="button1 button_gradient_1" nameId="button_active_join_element">
-										выровнить	
-									</div>
-									<div nameId="rp_wrap_obj_align" style="display: none;">
-										<div class="right_panel_1_1_list" nameId="rp_obj_align">
-											
-										</div>	
-										<div class="button1 button_gradient_1" nameId="join_element">
-											выровнить	
+							<div nameId="bl_rp_obj_group"> 
+							
+								<div class="flex_1">
+									<div class="flex_1 align_items block_rp_1">
+										<div class="checkbox_1" nameId="box_input_group">
+											<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
 										</div>
+										<div class="block_rp_text">Группа</div>						
 									</div>
-								</div>						
+									
+									<div class="flex_1 align_items block_rp_1">
+										<div class="checkbox_1" nameId="show_hide_join_point">
+											<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: block;"></div>						
+										</div>
+										<div class="block_rp_text">Показать точки</div>						
+									</div>						
+								</div>
+								
+								<div class="right_panel_1_1_list" nameId="rp_obj_group">
+									
+								</div>									
+							
+							</div>
+							
+														
+							
+							<div nameId="pr_list_button_for_obj"> 
+								<div class="button1 button_gradient_1" nameId="button_active_join_element">
+									выровнить	
+								</div>
+								
+								<div class="button1 button_gradient_1" nameId="button_active_add_group">
+									объединить	
+								</div>
 								
 								<div class="button1 button_gradient_1" nameId="button_copy_obj">
 									копировать	
@@ -574,22 +603,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 								
 								<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
 									отделить	
-								</div>						
-									
-								<div>
-									<div class="button1 button_gradient_1" nameId="button_active_add_group">
-										объединить	
-									</div>
-									
-									<div nameId="rp_wrap_add_group" style="display: none;">
-										<div class="right_panel_1_1_list" nameId="rp_add_group">
-											
-										</div>
-										<div class="button1 button_gradient_1" nameId="button_add_group">
-											объединить	
-										</div>	
-									</div>
-								</div>	
+								</div>							
 
 								<div class="button1 button_gradient_1" nameId="button_delete_obj">
 									удалить	

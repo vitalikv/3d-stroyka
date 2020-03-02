@@ -306,7 +306,7 @@ function clickObjUI(cdm)
 
 				var str = 
 				'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
-				<div class="right_panel_1_1_list_item_text"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
+				<div class="right_panel_1_1_list_item_text"  style="margin-left: 30px;"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
 				</div>';
 
 				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				

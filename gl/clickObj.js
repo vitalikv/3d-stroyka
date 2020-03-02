@@ -320,7 +320,7 @@ function hidePivotGizmo(obj)
 	var gizmo = infProject.tools.gizmo;
 	var joint = infProject.tools.joint;
 				
-	console.log(5555, clickO.rayhit);
+	
 	if(clickO.rayhit)
 	{
 		if(pivot.userData.pivot.obj == clickO.rayhit.object) return;		
@@ -424,37 +424,33 @@ function switchSelectAddObjGroup(cdm)
 		infProject.tools.merge_obj.active = !infProject.tools.merge_obj.active;
 	}		
 	
-
-	 
-	var color = (infProject.tools.merge_obj.active) ? "#ff0000" : "#b3b3b3";
-	
-	$('[nameId="button_active_add_group"]').css({"border-color": color});
 	
 	var obj = getObjFromPivotGizmo();
 	
-	if(obj)
-	{
-		outlineAddObj(obj);
-	}
-	else
-	{
-		outlineRemoveObj();
-	}
+	if(obj) { outlineAddObj(obj); }
+	else { outlineRemoveObj(); }
 	
-	if(infProject.tools.merge_obj.active)
+	
+	if(infProject.tools.merge_obj.active)	// вкл
 	{
 		$('[nameId="rp_wrap_add_group"]').show();
-		infProject.tools.merge_obj.o1 = [];		
+		infProject.tools.merge_obj.o1 = [];	
 
 		if(obj)
 		{
 			infProject.tools.merge_obj.o1 = getObjsFromGroup_1({obj: obj});
 		}
+		
+		$('[nameId="bl_rp_obj_group"]').hide();
+		$('[nameId="pr_list_button_for_obj"]').hide();		
 	}
-	else
+	else		// выкл
 	{
 		clearListUI_2({list: infProject.tools.merge_obj.el});
 		$('[nameId="rp_wrap_add_group"]').hide();
+		
+		$('[nameId="bl_rp_obj_group"]').show();
+		$('[nameId="pr_list_button_for_obj"]').show();		
 		
 		infProject.tools.merge_obj.o1 = [];
 		infProject.tools.merge_obj.o2 = [];
@@ -479,18 +475,20 @@ function switchJoinObj(cdm)
 	
 	hideJoinPoint_2();
 	
-	if(infProject.tools.joint.active)
+	if(infProject.tools.joint.active)	// вкл
 	{		
-		$('[nameId="rp_wrap_obj_align"]').show();  
+		$('[nameId="rp_wrap_obj_align"]').show();
+		$('[nameId="bl_rp_obj_group"]').hide();
+		$('[nameId="pr_list_button_for_obj"]').hide();
 	}		
-	else
-	{		
+	else		// выкл
+	{				
 		$('[nameId="rp_wrap_obj_align"]').hide();
 		clearListUI_2({list: infProject.tools.joint.el});
+		
+		$('[nameId="bl_rp_obj_group"]').show();
+		$('[nameId="pr_list_button_for_obj"]').show();
 	}	
-
-	var color = (infProject.tools.joint.active) ? "#ff0000" : "#b3b3b3";	
-	$('[nameId="button_active_join_element"]').css({"border-color": color});
 
 		
 }

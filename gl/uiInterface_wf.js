@@ -63,20 +63,22 @@ function switchAlignWfPoint(cdm)
 	// очищаем список и убираем выделения с разъемов
 	clearListWfPointUI();
 	
-	if(infProject.list.rp_wf_point.align)
+	if(infProject.list.rp_wf_point.align)	// вкл
 	{		
 		$('[nameId="rp_wrap_align_wf_point"]').show(); 
 		infProject.list.rp_wf_point.tubeP = clickO.last_obj;
+		
+		$('[nameId="button_active_align_wf_point"]').text('закрыть');
+		$('[nameId="button_active_align_wf_point"]').css({"border-color": "#ff0000"});
 	}		
-	else
+	else	// выкл
 	{		
 		$('[nameId="rp_wrap_align_wf_point"]').hide();
 		infProject.list.rp_wf_point.tubeP = null;
+		
+		$('[nameId="button_active_align_wf_point"]').text('выровнить');
+		$('[nameId="button_active_align_wf_point"]').css({"border-color": "#b3b3b3"});
 	}	
-   
-	var color = (infProject.list.rp_wf_point.align) ? "#ff0000" : "#b3b3b3";	
-	$('[nameId="button_active_align_wf_point"]').css({"border-color": color});
-
 		
 }
 
