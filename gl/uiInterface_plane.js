@@ -1,6 +1,19 @@
 
 
-
+// добавляем при старте в список планов +
+function startPlanElemPlus(cdm)
+{
+	var nameId = "rp_plane_3";
+	
+	// добавляем в список 	
+	var str = 
+	'<div class="flex_1 right_panel_1_1_list_item" nameId="button_add_plane">\
+	<div class="right_panel_1_1_list_item_text"> + </div>\
+	</div>';	
+	
+	$('[nameId="'+nameId+'"]').append(str); 
+	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);	
+}
 
 
 // добавляем этаж в список правой панели UI
@@ -140,4 +153,9 @@ function removePlaneListUI_2(cdm)
 	
 	clickItemFloorUI();
 }
+
+
+
+
+
 

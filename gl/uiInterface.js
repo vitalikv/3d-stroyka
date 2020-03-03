@@ -52,12 +52,12 @@ function addObjInCatalogUI_1(cdm)
 		{
 			var str = 
 			'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
-				<div class="right_panel_1_1_list_item_text">'
-				+o.name+
-				'</div>\
+				<div class="right_panel_1_1_list_item_text" style="margin-left: 30px;">\
+					&rarr; ' +o.name+ '\
+				</div>\
 			</div>';
 			
-			$('[nameId="catalog_group_item"]').append(str);
+			$('[nameId="'+o.groupIU+'"]').append(str);
 			
 		}
 		else
@@ -76,19 +76,78 @@ function addObjInCatalogUI_1(cdm)
 }
 
 
-function addObjInCatalogUI_2()
-{
-	var str = 
-	'<div>\
-		<div class="flex_1 right_panel_1_1_list_item">\
-			<div class="right_panel_1_1_list_item_text">группа</div>\
-		</div>\
-		<div nameId="catalog_group_item">\
-		</div>\
-	</div>';
+
+// добавляем группы в каталог
+function addGroupInCatalogUI_1()
+{	
+	var groupItem = [];
 	
-	$('[list_ui="catalog"]').append(str);	
+	groupItem[0] = {nameId: 'catalog_group_item_sh_kran', nameRus: 'шаровые краны'};
+	groupItem[1] = {nameId: 'catalog_group_item_radiator', nameRus: 'радиаторы'};
+	groupItem[2] = {nameId: 'catalog_group_item_collector', nameRus: 'коллектора'};
+	
+	for(var i = 0; i < groupItem.length; i++)
+	{
+
+		var str_button = 
+		'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
+			<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+				<svg height="100%" width="100%" viewBox="0 0 100 100">\
+					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+				</svg>\
+			</div>\
+		</div>';				
+		
+		
+		var str = 
+		'<div>\
+			<div class="flex_1 right_panel_1_1_list_item relative_1">\
+				<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
+				'+str_button+'\
+			</div>\
+			<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
+			</div>\
+		</div>';
+
+
+
+		var el = $(str).appendTo('[list_ui="catalog"]');		
+		//el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+		
+		var num = infProject.list.group_catalog_ui.arr.length;
+		
+		// назначаем кнопки треугольник событие
+		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
+		var el_3 = el[0].querySelector('[nameId="'+groupItem[i].nameId+'"]');
+		(function(num) 
+		{
+			el_2.on('mousedown', function(e){ clickRtekUI_2({id: num}); e.stopPropagation(); });	
+		}(num));
+
+
+		infProject.list.group_catalog_ui.arr[num] = { el: $(el_3), showlist: false };
+	}
+	
+		
 }
+
+
+
+// кликнули на треугольник в меню  группы объекты (показываем/скрываем разъемы этого объекта)
+function clickRtekUI_2(cdm)
+{
+	var inf = infProject.list.group_catalog_ui.arr[cdm.id];
+	
+	inf.showlist = !inf.showlist;
+	
+	var display = (inf.showlist) ? 'block' : 'none';
+	
+	inf.el.css('display', display);				
+	
+	//console.log(cdm, display, inf);
+}
+
+
 
 
 // добавляем/обновляем/удаляем в список материалов новый объект, который добавляем в сцену UI
@@ -213,20 +272,6 @@ function createTextUI_1(cdm)
 
 
 
-function createTextUI_2(cdm)
-{
-	var nameId = "rp_plane_3";
-	
-	// добавляем в список 	
-	var str = 
-	'<div class="flex_1 right_panel_1_1_list_item" nameId="button_add_plane">\
-	<div class="right_panel_1_1_list_item_text"> + </div>\
-	</div>';	
-	
-	$('[nameId="'+nameId+'"]').append(str); 
-	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);	
-}
-
 
 
 
@@ -304,7 +349,7 @@ function clickObjUI(cdm)
 				'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
 					<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
 						<svg height="100%" width="100%" viewBox="0 0 100 100">\
-						<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+							<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
 						</svg>\
 					</div>\
 				</div>';			
@@ -324,7 +369,7 @@ function clickObjUI(cdm)
 			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
 			(function(num) 
 			{
-				el_2.on('mousedown', function(e){ clickRtekUI({id: num}); e.stopPropagation(); });	
+				el_2.on('mousedown', function(e){ clickRtekUI_1({id: num}); e.stopPropagation(); });	
 			}(num));	
 					
 			infProject.list.rp_ui.arr[num].el = el;
@@ -336,7 +381,7 @@ function clickObjUI(cdm)
 
 				var str = 
 				'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
-				<div class="right_panel_1_1_list_item_text"  style="margin-left: 30px;"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
+				<div class="right_panel_1_1_list_item_text" style="margin-left: 30px;"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
 				</div>';
 
 				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
@@ -356,7 +401,7 @@ function clickObjUI(cdm)
 
 
 // кликнули на треугольник в меню объекты (показываем/скрываем разъемы этого объекта)
-function clickRtekUI(cdm)
+function clickRtekUI_1(cdm)
 {
 	console.log(cdm);
 	

@@ -27,6 +27,7 @@ function infoListObj()
 		lotid : 3,
 		url : infProject.path+'import/budres_900.fbx', 
 		name : 'радиатор',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.8,
 	}
 	
@@ -51,6 +52,7 @@ function infoListObj()
 		lotid : 6,
 		url : infProject.path+'import/rad_al_secziy_500_.fbx', 
 		name : 'радиатор алюминиевый',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,
 		
 		//inf.joinPoint[0] = {name: 'size_1_L_', size: '1', joinObj: null};
@@ -64,8 +66,8 @@ function infoListObj()
 		lotid : 7,
 		url : infProject.path+'export/soedin_al_rad_1.fbx', 
 		name : 'соединение алюминиевого радиатора',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,
-		stopUI: true,
 	}
 	
 	arr[arr.length] =
@@ -74,14 +76,15 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_sgon_3s4.fbx',
 		name : 'шаровой кран 3/4 (со сгоном)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}
 	
 	arr[arr.length] =
 	{
 		lotid : 9,
 		url : infProject.path+'import/rad1_zagl_1_.fbx', 
-		name : 'заглушка радиаторная',
+		name : 'заглушка радиаторная 1',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,		
 	}
 	
@@ -90,6 +93,7 @@ function infoListObj()
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_3s4.fbx', 
 		name :'заглушка радиаторная 3/4',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,		
 	}	
 	
@@ -98,6 +102,7 @@ function infoListObj()
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_1s2.fbx', 
 		name :'заглушка радиаторная 1/2',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,		
 	}
 
@@ -106,6 +111,7 @@ function infoListObj()
 		lotid : 10,
 		url : infProject.path+'import/rad1_zagl_vozd.fbx', 
 		name :'радиаторный воздухоотводчик',
+		groupIU: 'catalog_group_item_radiator',
 		planeMath : 0.5,		
 	}
 	
@@ -163,7 +169,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_sgon_1s2.fbx',
 		name : 'шаровой кран 1/2 (со сгоном)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}
 	
 	arr[arr.length] =
@@ -172,7 +178,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_sgon_1.fbx',
 		name : 'шаровой кран 1 (со сгоном)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -181,7 +187,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_nr_1s2.fbx',
 		name : 'шаровой кран 1/2 (нр-нр)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -190,7 +196,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_nr_3s4.fbx',
 		name : 'шаровой кран 3/4 (нр-нр)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -199,7 +205,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_nr_1.fbx',
 		name : 'шаровой кран 1 (нр-нр)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -208,7 +214,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_vn_1s2.fbx',
 		name : 'шаровой кран 1/2 (нр-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -217,7 +223,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_vn_3s4.fbx',
 		name : 'шаровой кран 3/4 (нр-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -226,7 +232,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_nr_vn_1.fbx',
 		name : 'шаровой кран 1 (нр-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -235,7 +241,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_vn_vn_1s2.fbx',
 		name : 'шаровой кран 1/2 (вн-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -244,7 +250,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_vn_vn_3s4.fbx',
 		name : 'шаровой кран 3/4 (вн-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -253,7 +259,7 @@ function infoListObj()
 		url : infProject.path+'import/sh_kran/kran_vn_vn_1.fbx',
 		name : 'шаровой кран 1 (вн-вн)',
 		planeMath : 0.5,
-		groupIU: 'sh_kran',		
+		groupIU: 'catalog_group_item_sh_kran',		
 	}		
 	
 	for(var i = 0; i < arr.length; i++)

@@ -192,6 +192,7 @@ infProject.catalog = infoListObj();
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
+infProject.list.group_catalog_ui = { arr: [] };
 infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [], joinO: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.settings.active.tube = null;
@@ -276,13 +277,13 @@ if(1==1)
 
 
 startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
-addObjInCatalogUI_2();
+addGroupInCatalogUI_1();									// создаем список групп для каталога
 addObjInCatalogUI_1();										// каталог UI
 //changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена
 changeRightMenuUI_1({name: 'button_wrap_object'});
 changeRightMenuUI_2({name: 'button_obj_properties'});
 //changeRightMenuUI_2({name: 'button_obj_tool_pivot'});		// переключаем вкладку для объекта перемещение/параметры
-createTextUI_2({});											// добавляем в список +, для добавления этажа
+startPlanElemPlus({});										// добавляем в список +, для добавления этажа
 
 switchJoinObj({active: false});		// скрываем список "выровнить" во вкладке свойства объектов
 
