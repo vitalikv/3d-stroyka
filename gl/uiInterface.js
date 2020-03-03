@@ -48,16 +48,46 @@ function addObjInCatalogUI_1(cdm)
 		
 		if(o.stopUI) continue;
 		
-		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
-			<div class="right_panel_1_1_list_item_text">'
-			+o.name+
-			'</div>\
-		</div>';
-		
-		$('[list_ui="catalog"]').append(str);
+		if(o.groupIU)
+		{
+			var str = 
+			'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
+				<div class="right_panel_1_1_list_item_text">'
+				+o.name+
+				'</div>\
+			</div>';
+			
+			$('[nameId="catalog_group_item"]').append(str);
+			
+		}
+		else
+		{
+			var str = 
+			'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
+				<div class="right_panel_1_1_list_item_text">'
+				+o.name+
+				'</div>\
+			</div>';
+			
+			$('[list_ui="catalog"]').append(str);			
+		}
 	}
 	
+}
+
+
+function addObjInCatalogUI_2()
+{
+	var str = 
+	'<div>\
+		<div class="flex_1 right_panel_1_1_list_item">\
+			<div class="right_panel_1_1_list_item_text">группа</div>\
+		</div>\
+		<div nameId="catalog_group_item">\
+		</div>\
+	</div>';
+	
+	$('[list_ui="catalog"]').append(str);	
 }
 
 

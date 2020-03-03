@@ -73,7 +73,8 @@ function infoListObj()
 		lotid : 8,
 		url : infProject.path+'import/sh_kran/kran_sgon_3s4.fbx',
 		name : 'шаровой кран 3/4 (со сгоном)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}
 	
 	arr[arr.length] =
@@ -161,7 +162,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_sgon_1s2.fbx',
 		name : 'шаровой кран 1/2 (со сгоном)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}
 	
 	arr[arr.length] =
@@ -169,7 +171,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_sgon_1.fbx',
 		name : 'шаровой кран 1 (со сгоном)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -177,7 +180,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_nr_1s2.fbx',
 		name : 'шаровой кран 1/2 (нр-нр)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -185,7 +189,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_nr_3s4.fbx',
 		name : 'шаровой кран 3/4 (нр-нр)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -193,7 +198,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_nr_1.fbx',
 		name : 'шаровой кран 1 (нр-нр)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -201,7 +207,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_vn_1s2.fbx',
 		name : 'шаровой кран 1/2 (нр-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -209,7 +216,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_vn_3s4.fbx',
 		name : 'шаровой кран 3/4 (нр-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -217,7 +225,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_nr_vn_1.fbx',
 		name : 'шаровой кран 1 (нр-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}
 
 	arr[arr.length] =
@@ -225,7 +234,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_vn_vn_1s2.fbx',
 		name : 'шаровой кран 1/2 (вн-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -233,7 +243,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_vn_vn_3s4.fbx',
 		name : 'шаровой кран 3/4 (вн-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}	
 
 	arr[arr.length] =
@@ -241,7 +252,8 @@ function infoListObj()
 		lotid : 0,
 		url : infProject.path+'import/sh_kran/kran_vn_vn_1.fbx',
 		name : 'шаровой кран 1 (вн-вн)',
-		planeMath : 0.5,		
+		planeMath : 0.5,
+		groupIU: 'sh_kran',		
 	}		
 	
 	for(var i = 0; i < arr.length; i++)
