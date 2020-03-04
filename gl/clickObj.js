@@ -76,7 +76,6 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }
 	
-
 	
 	// кликнули по объекту в сцене
 	if(cdm.click_obj)
@@ -296,14 +295,23 @@ function deleteObjectPop(obj)
 	
 
 	
+	
+	console.log(renderer.info.memory);
 	for(var i = 0; i < arr.length; i++)
 	{	
 		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});
-		updateListTubeUI_1({uuid: arr[i].uuid, type: 'delete'});
-		disposeNode(arr[i]);
-		scene.remove(arr[i]); 
+		updateListTubeUI_1({uuid: arr[i].uuid, type: 'delete'});		
+		
+		scene.remove(arr[i]);
+		
+		var arrO = getAllChildObect({obj: obj});
+		for(var i2 = 0; i2 < arrO.length; i2++)
+		{
+			disposeNode(arrO[i2]);
+		}
+		
 	}
-	
+	console.log(renderer.info.memory);
 	outlineRemoveObj();
 }
 

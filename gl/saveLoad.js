@@ -81,6 +81,7 @@ function resetScene()
 {	
 	hideMenuUI(clickO.last_obj);
 	
+	console.log(renderer.info.memory);
 	
 	var wall = infProject.scene.array.wall;
 	var point = infProject.scene.array.point;
@@ -93,10 +94,6 @@ function resetScene()
 	
 	for ( var i = 0; i < wall.length; i++ )
 	{ 
-		disposeNode(wall[i]);
-		disposeNode(wall[i].label[0]);
-		disposeNode(wall[i].label[1]);
-		
 		scene.remove(wall[i].label[0]); 
 		scene.remove(wall[i].label[1]);
 		if(wall[i].userData.wall.outline) { scene.remove(wall[i].userData.wall.outline); }
@@ -114,7 +111,11 @@ function resetScene()
 		wall[i].userData.wall.zone = null;
 		wall[i].userData.wall.brick.arr = [];
 		
-		scene.remove(wall[i]); 
+		scene.remove(wall[i]);
+
+		disposeNode(wall[i]);
+		disposeNode(wall[i].label[0]);
+		disposeNode(wall[i].label[1]);		
 	}
 	
 	for ( var i = 0; i < point.length; i++ )
@@ -168,9 +169,10 @@ function resetScene()
 	}
 	
 	for ( var i = 0; i < obj.length; i++ )
-	{ 
-		disposeNode(obj[i]);
+	{ 		
 		scene.remove(obj[i]);
+		
+		disposeNode(obj[i]);
 	}	
 	
 	
@@ -200,8 +202,6 @@ function resetScene()
 	
 	// удаляем список объектов UI
 	clearItemSelectedObjUI();			
-	
-	//disposeHierchy(scene, disposeNode);
 	
 	
 	obj_point = [];
@@ -240,7 +240,7 @@ function resetScene()
 	
 
 	
-	getConsoleRendererInfo();
+	console.log(renderer.info.memory);
 }
 
 
@@ -249,78 +249,60 @@ function getConsoleRendererInfo()
 {	
 	console.log(renderer.info.programs);
 	console.log(renderer.info.render);
-	console.log(renderer.info.memory, scene);	
+	console.log(renderer.info.memory);	
 }
 
 
 
-
-
-
-// удалем из GPU объекты
-function disposeHierchy(node, callback) 
+// получаем массив дочерних объектов
+function getAllChildObect(cdm)
 {
-	for (var i = node.children.length - 1; i >= 0; i--) 
+	var arr = [];
+	
+	var obj = cdm.obj;
+	
+	obj.traverse(function(child) 
 	{
-		if(node.children[i].userData.tag)
-		{
-			var tag = node.children[i].userData.tag;
-			
-			if(tag == 'point' || tag == 'wall' || tag == 'window' || tag == 'door' || tag == 'room' || tag == 'ceiling' || tag == 'obj')
-			{
-				var child = node.children[i];
+		if(child.isMesh) 
+		{ 
+			arr[arr.length] = child;				
+		}
+	});
 
-				disposeHierchy(child, callback);
-				callback(child);			
-			}			
-		}			
-	}
+	
+	return arr;
 }
 
 
+// очищаем объект из памяти
 function disposeNode(node) 
 {
-        if (node instanceof THREE.Mesh || node instanceof THREE.Line) 
+	if (node instanceof THREE.Mesh) 
+	{
+		if (node.geometry) { node.geometry.dispose(); }
+		
+		if (node.material) 
 		{
-            if (node.geometry) { node.geometry.dispose(); }
+			var materialArray = [];
 			
-            if (node.material) 
+			if(node.material instanceof Array) { materialArray = node.material; }
+			else { materialArray = [node.material]; }
+			
+			if(materialArray) 
 			{
-                var materialArray;
-                if (node.material instanceof THREE.MeshFaceMaterial || node.material instanceof THREE.MultiMaterial) 
+				materialArray.forEach(function (mtrl, idx) 
 				{
-                    materialArray = node.material.materials;
-                }
-                else if(node.material instanceof Array) 
-				{
-                    materialArray = node.material;
-                }
-                
-				if(materialArray) 
-				{
-                    materialArray.forEach(function (mtrl, idx) 
-					{
-                        if (mtrl.map) mtrl.map.dispose();
-                        if (mtrl.lightMap) mtrl.lightMap.dispose();
-                        if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-                        if (mtrl.normalMap) mtrl.normalMap.dispose();
-                        if (mtrl.specularMap) mtrl.specularMap.dispose();
-                        if (mtrl.envMap) mtrl.envMap.dispose();
-                        mtrl.dispose();
-                    });
-                }
-                else 
-				{
-                    if (node.material.map) node.material.map.dispose();
-                    if (node.material.lightMap) node.material.lightMap.dispose();
-                    if (node.material.bumpMap) node.material.bumpMap.dispose();
-                    if (node.material.normalMap) node.material.normalMap.dispose();
-                    if (node.material.specularMap) node.material.specularMap.dispose();
-                    if (node.material.envMap) node.material.envMap.dispose();
-                    node.material.dispose();
-                }
-            }
-        }
+					if (mtrl.map) mtrl.map.dispose();
+					if (mtrl.lightMap) mtrl.lightMap.dispose();
+					if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+					if (mtrl.normalMap) mtrl.normalMap.dispose();
+					if (mtrl.specularMap) mtrl.specularMap.dispose();
+					if (mtrl.envMap) mtrl.envMap.dispose();
+					mtrl.dispose();
+				});
+			}
+		}
+	}
 }
 
 
