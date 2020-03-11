@@ -71,8 +71,7 @@ function addObjInCatalogUI_1(cdm)
 			
 			$('[list_ui="catalog"]').append(str);			
 		}
-	}
-	
+	}	
 }
 
 
@@ -85,6 +84,9 @@ function addGroupInCatalogUI_1()
 	groupItem[0] = {nameId: 'catalog_group_item_sh_kran', nameRus: 'шаровые краны'};
 	groupItem[1] = {nameId: 'catalog_group_item_radiator', nameRus: 'радиаторы'};
 	groupItem[2] = {nameId: 'catalog_group_item_collector', nameRus: 'коллектора'};
+	groupItem[3] = {nameId: 'catalog_group_item_mt_plas', nameRus: 'металлопластик'};
+	groupItem[4] = {nameId: 'catalog_group_item_pliprop', nameRus: 'полипропилен'};
+	groupItem[5] = {nameId: 'catalog_group_item_metall', nameRus: 'металл'};
 	
 	for(var i = 0; i < groupItem.length; i++)
 	{
@@ -126,9 +128,59 @@ function addGroupInCatalogUI_1()
 
 
 		infProject.list.group_catalog_ui.arr[num] = { el: $(el_3), showlist: false };
-	}
+	}	
+}
+
+
+
+function addGroupInCatalogUI_2()
+{	
+	var groupItem = [];
 	
+	groupItem[0] = {nameId: 'catalog_group_item_collector_1', nameRus: 'коллектора'};
+	
+	
+	for(var i = 0; i < groupItem.length; i++)
+	{
+
+		var str_button = 
+		'<div nameId="shCp_1" style="width: 40px; height: 20px;">\
+			<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+				<svg height="100%" width="100%" viewBox="0 0 100 100">\
+					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+				</svg>\
+			</div>\
+		</div>';				
 		
+		
+		var str = 
+		'<div>\
+			<div class="flex_1 right_panel_1_1_list_item relative_1">\
+				<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
+				'+str_button+'\
+			</div>\
+			<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
+			</div>\
+		</div>';
+
+
+
+		var el = $(str).appendTo('[nameId="catalog_group_item_collector"]');		
+		//el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+		
+		var num = infProject.list.group_catalog_ui.arr.length;
+		
+		// назначаем кнопки треугольник событие
+		var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
+		var el_3 = el[0].querySelector('[nameId="'+groupItem[i].nameId+'"]');
+		(function(num) 
+		{
+			el_2.on('mousedown', function(e){ clickRtekUI_2({id: num}); e.stopPropagation(); });	
+		}(num));
+
+
+		infProject.list.group_catalog_ui.arr[num] = { el: $(el_3), showlist: false };
+	}	
 }
 
 
