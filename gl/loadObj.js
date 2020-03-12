@@ -260,7 +260,61 @@ function infoListObj()
 		name : 'шаровой кран 1 (вн-вн)',
 		planeMath : 0.5,
 		groupIU: 'catalog_group_item_sh_kran',		
-	}		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/20x1s2-vn-x20.fbx',
+		name : 'тройник 20х1/2(вн)х20',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/26x1s2-vn-x26.fbx',
+		name : 'тройник 26х1/2(вн)х26',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/32x1s2-vn-x32.fbx',
+		name : 'тройник 32х1/2(вн)х32',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/32x1-vn-x32.fbx',
+		name : 'тройник 32х1(вн)х32',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/32x26x26.fbx',
+		name : 'тройник 32х26х26',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}
+
+	arr[arr.length] =
+	{
+		lotid : 0,
+		url : infProject.path+'import/mp/troynik/32x26x32.fbx',
+		name : 'тройник 32х26х32',
+		planeMath : 0.5,
+		//groupIU: 'catalog_group_item_sh_kran',		
+	}	
 	
 	for(var i = 0; i < arr.length; i++)
 	{
@@ -503,7 +557,7 @@ function addObjInScene(inf, cdm)
 				{
 					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
 					
-					//child.visible = false;						
+					child.visible = false;						
 					
 					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 					
@@ -512,8 +566,8 @@ function addObjInScene(inf, cdm)
 					cube.quaternion.copy(child.quaternion);
 					cube.visible = false;
 					//cube.rotation.y += 1;
-					var axesHelper = new THREE.AxesHelper( 0.2 );
-					child.add( axesHelper );							
+					//var axesHelper = new THREE.AxesHelper( 0.2 );
+					//child.add( axesHelper );							
 					
 					cube.userData.tag = 'joinPoint';
 					cube.userData.id = id;  id++;
