@@ -11,10 +11,10 @@ function createJoinP()
 	joint.el = [];
 	joint.active = false;
 	joint.active_1 = null;
-	joint.active_2 = null;	
+	joint.active_2 = null;
+	//joint.geometry_1 = createGeometryWD(0.03, 0.03, 0.03);
 	joint.material = {};
 	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	joint.material.default = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 	joint.visible = false;
 	
 
@@ -102,9 +102,10 @@ function showJoinPoint(cdm)
 		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
 		
 		arr[i].visible = true;
-		arr[i].material = joint.material.default;	
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone();	
 	}	
 	
+	setScaleJoinPoint({arr: arr});
 		
 	joint.p1 = arr;
 	joint.visible = true; 
@@ -128,7 +129,7 @@ function showJoinPoint_2(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].visible = false;
-		arr[i].material = joint.material.default;					
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}	
 	
 	clearListUI_2({list: infProject.tools.joint.el});
@@ -142,7 +143,7 @@ function showJoinPoint_2(cdm)
 	{		
 		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой		
 		arr[i].visible = true;
-		arr[i].material = joint.material.default;
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone(); 
 		
 		createTextUI_1({obj: arr[i], nameId: "rp_obj_align", nameRus: arr[i].userData.centerPoint.nameRus, uuid: arr[i].uuid});
 	}	
@@ -172,7 +173,7 @@ function hideJoinPoint(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].visible = false;
-		arr[i].material = joint.material.default;					
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}
 	
 	var arr = joint.p2;
@@ -180,7 +181,7 @@ function hideJoinPoint(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].visible = false;
-		arr[i].material = joint.material.default;					
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}
 	
 	joint.p1 = [];
@@ -205,7 +206,7 @@ function hideJoinPoint_2(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].visible = false;
-		arr[i].material = joint.material.default;					
+		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}
 	
 	joint.p2 = [];
@@ -226,13 +227,13 @@ function activeJoinPoint(cdm)
 	if(joint.active_1)	// снимаем старое выделение 
 	{
 		if(!joint.visible) { joint.active_1.visible = false; }
-		joint.active_1.material = infProject.tools.joint.material.default;
+		joint.active_1.material.color = joint.active_1.userData.centerPoint.color.clone();
 		joint.active_1 = null;		
 	}
 	
 	if(!joint.visible) { joint.p1 = [obj]; }
 	 
-	obj.material = joint.material.active;
+	obj.material.color = joint.material.active.color.clone();
 	obj.visible = true;
 	joint.active_1 = obj;
 }
@@ -240,39 +241,6 @@ function activeJoinPoint(cdm)
 
 
 
-
-// получаем все точки-соединители (у группы или отдельного объекта)
-function getArrayJointPoint(cdm)
-{
-	var o = cdm.obj;
-	var arr = [];
-	
-	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
-	
-	if(o.userData.obj3D.group && infProject.settings.active.group) 	// группа
-	{		
-		var group = o.userData.obj3D.group;
-		var child = group.userData.groupObj.child;
-		
-		for(var i = 0; i < child.length; i++)
-		{
-			if(!child[i].userData.obj3D) continue;
-			
-			var arr_2 = getCenterPointFromObj_1( child[i] );
-			
-			for(var i2 = 0; i2 < arr_2.length; i2++)
-			{
-				arr[arr.length] = arr_2[i2];
-			}
-		}
-	}
-	else // объект
-	{
-		arr = getCenterPointFromObj_1( o );
-	}
-
-	return arr;	
-}
 
 
 
@@ -361,7 +329,48 @@ function joinElement(cdm)
 
 
 
-
+// масштаб соединительных точек у объектов
+function setScaleJoinPoint(cdm) 
+{ 
+	if(!cdm) { cdm = {}; }
+	
+	var active = infProject.settings.active.joinP;	
+	if(!active) return;
+	
+	var arr = null;
+	
+	if(cdm.arr) { arr = cdm.arr; }
+	else 
+	{
+		var obj = clickO.last_obj; 	
+		if(!obj) return;
+		
+		if(obj.userData.obj3D) { arr = getCenterPointFromObj_1(obj); }		
+		else if(obj.userData.centerPoint) { arr = getCenterPointFromObj_1(obj.parent); }		
+	}
+	
+	if(!arr) return;	
+	
+	
+	if(camera == cameraTop)
+	{		
+		var scale = 1/camera.zoom+0.5;	
+		console.log('2D', scale);
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			arr[i].scale.set( scale,scale,scale );			
+		}	
+	}	
+	else if(camera == camera3D)
+	{
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			var scale = camera.position.distanceTo(arr[i].getWorldPosition(new THREE.Vector3()))/2;		
+		if(i==0) console.log('3d', scale);	
+			arr[i].scale.set( scale,scale,scale );			
+		}							
+	}
+}
 
 
 

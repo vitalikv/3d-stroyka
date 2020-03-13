@@ -93,7 +93,7 @@ function clearListWfPointUI(cdm)
 	{
 		arr[i].el.remove();
 		arr[i].o.visible = false;
-		arr[i].o.material.color = arr[i].o.userData.centerPoint.color;
+		arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
 	}
 	
 	infProject.list.rp_wf_point.arr = [];
@@ -205,7 +205,7 @@ function clickItemCenterObjUI_3(cdm)
 	
 	for(var i = 0; i < arr.length; i++)
 	{
-		arr[i].o.material.color = arr[i].o.userData.centerPoint.color;
+		arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
 	}
 	
 	obj.material.color = new THREE.Color(infProject.listColor.active2D);

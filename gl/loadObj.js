@@ -559,12 +559,13 @@ function addObjInScene(inf, cdm)
 					
 					child.visible = false;						
 					
-					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
+					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
 					
 					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
 					cube.position.copy(child.position);
 					cube.quaternion.copy(child.quaternion);
 					cube.visible = false;
+					cube.renderOrder = 1;
 					//cube.rotation.y += 1;
 					//var axesHelper = new THREE.AxesHelper( 0.2 );
 					//child.add( axesHelper );							

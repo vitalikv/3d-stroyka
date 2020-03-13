@@ -343,41 +343,11 @@ function mousewheel( e )
 	else if(camera == camera3D) 
 	{ 
 		cameraZoom3D( delta, 1 ); 
-	}
-	else if(camera == cameraWall)
-	{
-		camera.zoom = camera.zoom - ( delta * 0.1 * ( camera.zoom / 2 ) );
-		camera.updateProjectionMatrix();
-		
-		var k = 1 / camera.zoom;
-		if ( k < 1 ) cameraZoomWall();				
-	}
-	
-	setScalePivotGizmo();
+	}	
 	
 	renderCamera();
 }
 
-
-
-// label zoom
-function cameraZoomWall()
-{				 
-	var k = 1 / camera.zoom;
-	if ( k > 1 ) k = 1;
-
-	k *= kof_rd;		
-
-	var n1 = 0.25 * k *2;
-	var n2 = 0.125 * k *2;	
-	var v1 = labelGeometry_1.vertices;
-	v1[ 0 ].x = v1[ 1 ].x = -n1;
-	v1[ 2 ].x = v1[ 3 ].x = n1;
-	v1[ 1 ].y = v1[ 2 ].y = n2;
-	v1[ 0 ].y = v1[ 3 ].y = -n2;
-	labelGeometry_1.verticesNeedUpdate = true;
-	labelGeometry_1.elementsNeedUpdate = true;
-}
 
 
 
@@ -489,6 +459,9 @@ function cameraZoomTop( delta )
 		infProject.geometry.labelFloor.verticesNeedUpdate = true;
 		infProject.geometry.labelFloor.elementsNeedUpdate = true;
 	}
+	
+	setScaleJoinPoint();
+	setScalePivotGizmo();
 }
 
 
@@ -525,6 +498,8 @@ function cameraZoom3D( delta, z )
 	}
 
 	setScaleTubePoint();
+	setScaleJoinPoint();
+	setScalePivotGizmo();
 }
 
 

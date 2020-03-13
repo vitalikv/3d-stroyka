@@ -427,6 +427,7 @@ function clickObjUI(cdm)
 			infProject.list.rp_ui.arr[num].el = el;
 			
 			
+			// есть разъемы
 			for(var i2 = 0; i2 < o.length; i2++)
 			{				
 				if(!o[i2].userData.centerPoint) continue;			
@@ -703,13 +704,13 @@ function clickItemCenterObjUI_2(cdm)
 	
 	if(joint.active_2)	// снимаем старое выделение объекта в сцене 
 	{
-		joint.active_2.material = joint.material.default;
+		joint.active_2.material.color = joint.active_2.userData.centerPoint.color.clone();
 		joint.active_2 = null;		
 	}
 	
 	//if(!joint.visible) { joint.p1 = [obj]; }
 	
-	obj.material = joint.material.active;
+	obj.material.color = joint.material.active.color.clone();
 	obj.visible = true;
 	joint.active_2 = obj;
 }
