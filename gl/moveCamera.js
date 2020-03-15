@@ -595,14 +595,96 @@ function moveCameraToNewPosition()
 }
 
 
-// изменение высоты (через ползунок) камеры в режиме от первого лица 
-function changeHeightCameraFirst(value)
+// приближаемся к выбранному объекту
+function fitCameraToObject()
 {
-	if(camera3D.userData.camera.type != 'first') return;
+	var obj = clickO.last_obj; 
 	
-	$('.range-slider2').attr("value", value);
+	if(!obj) return;
+
+
+	if(camera == camera3D)
+	{
+		obj.geometry.computeBoundingBox();
+		
+		var boxFrmScene = new THREE.Box3().setFromObject(obj);
+		var height = Math.max(boxFrmScene.size().y, boxFrmScene.size().x);
+		var fov = camera.fov * (Math.PI / 180);
+		var dist = Math.abs(height / Math.sin(fov / 2));
+
+
+		camera3D.updateMatrixWorld();
+		var dir = camera3D.getWorldDirection(new THREE.Vector3());
+		var pos = new THREE.Vector3().addScaledVector(dir, dist);
+		
+console.log(dist, camera); 
+
+		camera.lookAt(obj.position);
+		camera.position.copy(obj.position);
+		
+		
+		
+		camera.position.sub(pos);
+	}
 	
-	camera3D.position.y = (value / 100) * 2 + 0.2;  
+	
+	if(camera == cameraTop)
+	{
+		var v = [];
+		
+		obj.updateMatrixWorld();
+		obj.geometry.computeBoundingBox();	
+		
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );	
+
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );			
+
+		
+		var bound = { min : { x : 999999, z : 999999 }, max : { x : -999999, z : -999999 } };
+		
+		for(var i = 0; i < v.length; i++)
+		{
+			if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+		}			
+
+
+		var aspect = window.innerWidth/window.innerHeight;		
+		
+		if( aspect > 1.0 )	// определяем что больше ширина или высота окна canvas
+		{
+			// if view is wider than it is tall, zoom to fit height
+			// если окно по ширине больше
+			camera.zoom = camera.right / (( bound.max.x - bound.min.x )/0.5);
+		}
+		else
+		{
+			// if view is taller than it is wide, zoom to fit width
+			// если окно больше по высоте
+			camera.zoom = camera.top / (( bound.max.z - bound.min.z )/0.5);
+		}
+		
+		camera.updateProjectionMatrix();
+
+		var pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);
+		
+		camera.position.x = pos.x;
+		camera.position.z = pos.z;	
+	}
+	
+	setScaleTubePoint();
+	setScaleJoinPoint();
+	setScalePivotGizmo();	
+	
+	renderCamera();
 }
 
 

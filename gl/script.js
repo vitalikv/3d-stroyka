@@ -33,7 +33,7 @@ cameraTop.updateMatrixWorld();
 cameraTop.updateProjectionMatrix();
 //----------- cameraTop
 
-
+ 
 //----------- camera3D
 var camera3D = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.2, 1000 );  
 camera3D.rotation.order = 'YZX';		//'ZYX'
@@ -1568,6 +1568,8 @@ document.body.addEventListener("keydown", function (e)
 	}
 
 
+	if(e.keyCode == 90) { fitCameraToObject(); }	// z
+		
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
 	if(clickO.keys[18] && e.keyCode == 83) {  }		// alt + s
