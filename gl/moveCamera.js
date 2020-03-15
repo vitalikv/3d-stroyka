@@ -605,26 +605,24 @@ function fitCameraToObject()
 
 	if(camera == camera3D)
 	{
-		obj.geometry.computeBoundingBox();
-		
-		var boxFrmScene = new THREE.Box3().setFromObject(obj);
-		var height = Math.max(boxFrmScene.size().y, boxFrmScene.size().x);
-		var fov = camera.fov * (Math.PI / 180);
-		var dist = Math.abs(height / Math.sin(fov / 2));
+	var object = obj;	
+object.updateMatrixWorld();
+const box = new THREE.Box3().setFromObject(object);
+const size = box.getSize(new THREE.Vector3()).length();
+const center = box.getCenter(new THREE.Vector3());
 
+object.position.x += (object.position.x - center.x);
+object.position.y += (object.position.y - center.y);
+object.position.z += (object.position.z - center.z);
+camera.position.copy(center);
+camera.position.x += size / 2.0;
+camera.position.y += size / 5.0;
+camera.position.z += size / 2.0;
 
-		camera3D.updateMatrixWorld();
-		var dir = camera3D.getWorldDirection(new THREE.Vector3());
-		var pos = new THREE.Vector3().addScaledVector(dir, dist);
-		
-console.log(dist, camera); 
+camera.updateProjectionMatrix();
+camera.lookAt(center);		
+infProject.camera.d3.targetPos.copy( center );		
 
-		camera.lookAt(obj.position);
-		camera.position.copy(obj.position);
-		
-		
-		
-		camera.position.sub(pos);
 	}
 	
 	
