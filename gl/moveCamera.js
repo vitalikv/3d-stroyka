@@ -605,24 +605,96 @@ function fitCameraToObject()
 
 	if(camera == camera3D)
 	{
-	var object = obj;	
-object.updateMatrixWorld();
-const box = new THREE.Box3().setFromObject(object);
-const size = box.getSize(new THREE.Vector3()).length();
-const center = box.getCenter(new THREE.Vector3());
+		var v = [];
+		
+		obj.updateMatrixWorld();
+		obj.geometry.computeBoundingBox();	
+		
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );	
 
-object.position.x += (object.position.x - center.x);
-object.position.y += (object.position.y - center.y);
-object.position.z += (object.position.z - center.z);
-camera.position.copy(center);
-camera.position.x += size / 2.0;
-camera.position.y += size / 5.0;
-camera.position.z += size / 2.0;
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );
+		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );			
 
-camera.updateProjectionMatrix();
-camera.lookAt(center);		
-infProject.camera.d3.targetPos.copy( center );		
+		
+		var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
+		
+		for(var i = 0; i < v.length; i++)
+		{
+			if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+			if(v[i].y < bound.min.y) { bound.min.y = v[i].y; }
+			if(v[i].y > bound.max.y) { bound.max.y = v[i].y; }			
+			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+		}		
+		
+		
+		var center = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, (bound.max.y - bound.min.y)/2 + bound.min.y, (bound.max.z - bound.min.z)/2 + bound.min.z);
+		
+		// визуализируем 
+		if(1==2)
+		{
+			var g = createGeometryCube(0.01, 0.01, 0.01);
+			var material = new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } );
 
+			var cube = [];
+			for(var i = 0; i < 6; i++)
+			{
+				cube[i] = new THREE.Mesh( g, material );
+				scene.add( cube[i] );	
+			}
+			cube[0].position.set(bound.min.x, center.y, center.z); 
+			cube[1].position.set(bound.max.x, center.y, center.z); 
+			cube[2].position.set(center.x, bound.min.y, center.z); 
+			cube[3].position.set(center.x, bound.max.y, center.z); 
+			cube[4].position.set(center.x, center.y, bound.min.z); 
+			cube[5].position.set(center.x, center.y, bound.max.z);		
+		}
+		
+		var fitOffset = 5.1;
+		var maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y, bound.max.z - bound.min.z );  
+		//var fitHeightDistance = maxSize / ( 2 * Math.atan( Math.PI * camera.fov / 360 ) );		
+		//var fitWidthDistance = fitHeightDistance / camera.aspect;		
+		//var distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );		
+		
+		camera.lookAt(center);		
+		var dir = center.clone().sub( camera.position ).normalize().multiplyScalar( maxSize + 0.5 );	
+		camera.position.copy(center).sub(dir);	
+		infProject.camera.d3.targetPos.copy( center );
+		
+		camera.updateProjectionMatrix();
+		
+		if(1==2)
+		{
+			var fitOffset = 1.1;
+			var box = new THREE.Box3().setFromObject(obj.clone());
+			var size = box.getSize( new THREE.Vector3() );
+			var center = box.getCenter( new THREE.Vector3() );
+
+			var helper = new THREE.Box3Helper( box, 0xffff00 );
+			scene.add( helper );		
+
+			console.log('box', box);
+
+			var maxSize = Math.max( size.x, size.y, size.z );  console.log('maxSize', maxSize);
+			var fitHeightDistance = maxSize / ( 2 * Math.atan( Math.PI * camera.fov / 360 ) );		
+			var fitWidthDistance = fitHeightDistance / camera.aspect;		console.log('fitWidthDistance', fitHeightDistance);
+			var distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );		
+			
+			var direction = obj.position.clone().sub( camera.position ).normalize().multiplyScalar( distance );	
+
+			camera.position.copy(center);
+			camera.position.sub(direction);
+
+			camera.updateProjectionMatrix();
+			camera.lookAt(center);		
+			infProject.camera.d3.targetPos.copy( center );		
+		}
 	}
 	
 	
@@ -672,8 +744,8 @@ infProject.camera.d3.targetPos.copy( center );
 		
 		camera.updateProjectionMatrix();
 
-		var pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);
-		
+		// центр нужно считать, так как у трубы центр всегда в нулях
+		var pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);		
 		camera.position.x = pos.x;
 		camera.position.z = pos.z;	
 	}
