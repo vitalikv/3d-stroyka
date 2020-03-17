@@ -42,16 +42,21 @@ function mouseDownRight()
 			}
 		}
 		else if (obj.userData.tag == 'wf_point' ) 
-		{
+		{  
 			if(obj.userData.wf_point.type == 'tool') { deletePointWF(obj); return; }			
 		}
 		else if(obj.userData.tag == 'obj')
 		{
-			deleteObjectPop(obj); console.log(infProject.scene.array.obj);
+			deleteObjectPop(obj); 
 		}		
 
 		clickO = resetPop.clickO();
-	}	
+	}
+
+	if(infProject.settings.active.tube) 
+	{ 
+		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку	 
+	}
 	
 	clickO.move = null;	
 }

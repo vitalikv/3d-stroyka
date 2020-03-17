@@ -83,7 +83,8 @@ scene.add( light );
 var cube = new THREE.Mesh( createGeometryCube(0.07, 0.07, 0.07), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
 //scene.add( cube ); 
 
-
+var cube = new THREE.Mesh( createGeometryCube(100.0, 100.0, 100.0), new THREE.MeshLambertMaterial( {color: 0x0000ff, transparent: true, opacity: 0.5, side: THREE.BackSide}) );
+scene.add( cube ); 
 
 
 //----------- render

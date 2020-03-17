@@ -163,7 +163,6 @@ function hideJoinPoint(cdm)
 	
 	var joint = infProject.tools.joint;	
 	
-	console.trace();
 	var active = null;  
 	if(cdm.visible == 'full') {}
 	else if(joint.active_1) { active = joint.active_1; }
