@@ -83,8 +83,8 @@ scene.add( light );
 var cube = new THREE.Mesh( createGeometryCube(0.07, 0.07, 0.07), new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } ) );
 //scene.add( cube ); 
 
-var cube = new THREE.Mesh( createGeometryCube(100.0, 100.0, 100.0), new THREE.MeshLambertMaterial( {color: 0x0000ff, transparent: true, opacity: 0.5, side: THREE.BackSide}) );
-scene.add( cube ); 
+var cubeZoom = new THREE.Mesh( createGeometryCube(100.0, 100.0, 100.0), new THREE.MeshLambertMaterial( {color: 0x0000ff, transparent: true, opacity: 0.5, side: THREE.BackSide}) );
+scene.add( cubeZoom ); 
 
 
 //----------- render
@@ -1514,8 +1514,8 @@ document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
 document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );
 document.body.addEventListener( 'touchend', onDocumentMouseUp, false );
 
-document.addEventListener('DOMMouseScroll', mousewheel, false);
-document.addEventListener('mousewheel', mousewheel, false);	
+document.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
+document.addEventListener('mousewheel', onDocumentMouseWheel, false);	
 
 
 document.body.addEventListener("keydown", function (e) 

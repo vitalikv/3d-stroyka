@@ -329,16 +329,18 @@ function moveCameraWall2D( event )
 
 
 // cameraZoom
-function mousewheel( e )
+function onDocumentMouseWheel( event )
 {
 	
-	var delta = e.wheelDelta ? e.wheelDelta / 120 : e.detail ? e.detail / 3 : 0;
+	var delta = event.wheelDelta ? event.wheelDelta / 120 : event.detail ? event.detail / 3 : 0;
 
 	if ( type_browser == 'Chrome' || type_browser == 'Opera' ) { delta = -delta; }
 
 	if(camera == cameraTop) 
 	{ 
-		cameraZoomTop( camera.zoom - ( delta * 0.1 * ( camera.zoom / 2 ) ) ); 
+		var zoomOld = camera.zoom;
+		cameraZoomTop( camera.zoom - ( delta * 0.1 * ( camera.zoom / 2 ) ) );		
+		onDocumentMouseWheel_2({event: event, zoomOld: zoomOld})
 	}
 	else if(camera == camera3D) 
 	{ 
@@ -346,6 +348,40 @@ function mousewheel( e )
 	}	
 	
 	renderCamera();
+}
+
+
+
+function onDocumentMouseWheel_2(cdm)
+{
+	var event = cdm.event;
+	var zoomOld = cdm.zoomOld;
+	
+	var intersects = rayIntersect( event, cubeZoom, 'one' );
+	
+	if(intersects.length == 0) return;
+	
+	var pos = intersects[0].point;
+	pos.y = 0;
+	console.log(camera.zoom);
+
+
+	//camera.position.x += (pos.x - camera.position.x)/2;
+	//camera.position.z += (pos.z - camera.position.z)/2;
+	
+	var dir = pos.clone().sub(camera.position);
+	
+
+	
+	
+	var xNew = dir.x + (((camera.position.x - dir.x) * camera.zoom) /zoomOld);
+	var yNew = dir.z + (((camera.position.z - dir.z) * camera.zoom) /zoomOld);
+	var diffX = camera.position.x - xNew;
+	var diffY = camera.position.z - yNew;
+	camera.position.x += diffX;
+	camera.position.z += diffY;	
+	
+	camera.updateProjectionMatrix();
 }
 
 
