@@ -339,7 +339,7 @@ function onDocumentMouseWheel( event )
 	if(camera == cameraTop) 
 	{ 
 		var zoomOld = camera.zoom;
-		cameraZoomTop( camera.zoom - ( delta * 0.1 * ( camera.zoom / 2 ) ) );		
+		cameraZoomTop( camera.zoom - ( delta * 0.5 * ( camera.zoom / 2 ) ) );		
 		onDocumentMouseWheel_2({event: event, zoomOld: zoomOld})
 	}
 	else if(camera == camera3D) 
@@ -362,24 +362,14 @@ function onDocumentMouseWheel_2(cdm)
 	if(intersects.length == 0) return;
 	
 	var pos = intersects[0].point;
-	pos.y = 0;
-	console.log(camera.zoom);
+	
+	var kof = 1.5;
 
+	var xNew = pos.x + (((camera.position.x - pos.x) * camera.zoom) /zoomOld);
+	var yNew = pos.z + (((camera.position.z - pos.z) * camera.zoom) /zoomOld);
 
-	//camera.position.x += (pos.x - camera.position.x)/2;
-	//camera.position.z += (pos.z - camera.position.z)/2;
-	
-	var dir = pos.clone().sub(camera.position);
-	
-
-	
-	
-	var xNew = dir.x + (((camera.position.x - dir.x) * camera.zoom) /zoomOld);
-	var yNew = dir.z + (((camera.position.z - dir.z) * camera.zoom) /zoomOld);
-	var diffX = camera.position.x - xNew;
-	var diffY = camera.position.z - yNew;
-	camera.position.x += diffX;
-	camera.position.z += diffY;	
+	camera.position.x += camera.position.x - xNew;
+	camera.position.z += camera.position.z - yNew;	
 	
 	camera.updateProjectionMatrix();
 }
