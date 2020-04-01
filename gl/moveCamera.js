@@ -340,19 +340,20 @@ function onDocumentMouseWheel( event )
 	{ 
 		var zoomOld = camera.zoom;
 		cameraZoomTop( camera.zoom - ( delta * 0.5 * ( camera.zoom / 2 ) ) );		
-		onDocumentMouseWheel_2({event: event, zoomOld: zoomOld})
+		zoomCameraTop_2({event: event, zoomOld: zoomOld});
 	}
 	else if(camera == camera3D) 
 	{ 
-		cameraZoom3D( delta, 1 ); 
+		//cameraZoom3D( delta, 1 ); 
+		zoomCamera3D_2({event: event, delta: delta});
 	}	
 	
 	renderCamera();
 }
 
 
-
-function onDocumentMouseWheel_2(cdm)
+// зумирование на конкретный объект/точку в простаранстве 
+function zoomCameraTop_2(cdm)
 {
 	var event = cdm.event;
 	var zoomOld = cdm.zoomOld;
@@ -362,14 +363,72 @@ function onDocumentMouseWheel_2(cdm)
 	if(intersects.length == 0) return;
 	
 	var pos = intersects[0].point;
-	
-	var kof = 1.5;
 
 	var xNew = pos.x + (((camera.position.x - pos.x) * camera.zoom) /zoomOld);
 	var yNew = pos.z + (((camera.position.z - pos.z) * camera.zoom) /zoomOld);
 
 	camera.position.x += camera.position.x - xNew;
 	camera.position.z += camera.position.z - yNew;	
+	
+	camera.updateProjectionMatrix();
+}
+
+
+
+function zoomCamera3D_2(cdm)
+{
+	if( camera != camera3D ) return;
+	
+	var event = cdm.event;
+	var delta = cdm.delta;
+	
+	var rayhit = clickRayHit(event);	
+	
+	if(!rayhit)
+	{
+		var rayhit = rayIntersect( event, cubeZoom, 'one' );	
+		if(rayhit.length == 0) return;
+		var rayhit = rayhit[0];
+		var pos = rayhit.point;
+	}
+	else
+	{
+		console.log(555);
+		var pos = rayhit.point;
+	}	
+	
+	
+	infProject.camera.d3.targetPos.copy( pos );
+	
+	var vect = ( delta < 0 ) ? 1 : -1;
+
+	var dir = new THREE.Vector3().subVectors( pos, camera.position ).normalize();
+	dir = new THREE.Vector3().addScaledVector( dir, vect );
+	dir.addScalar( 0.001 );
+	var pos3 = new THREE.Vector3().addVectors( camera.position, dir );
+	
+	camera.position.copy( pos3 );
+	
+	
+	if(vect == -1) return;
+	
+	var raycaster = new THREE.Raycaster();
+	raycaster.set(camera.position, camera.getWorldDirection(new THREE.Vector3()) );
+	//raycaster.layers.set( 1 );
+		
+	//raycaster.layers.set( 1 );
+	//scene.add(new THREE.ArrowHelper( camera.getWorldDirection(new THREE.Vector3()), camera.position, 10, 0xff0000 ));
+	
+	//var intersects = raycaster.intersectObjects( scene.children );
+	var intersects = raycaster.intersectObject( cubeZoom );
+	//console.log(intersects);
+	//infProject.camera.d3.targetPos.copy( pos2 );
+	//infProject.camera.d3.targetPos.y = pos.y;
+	if(intersects[0])
+	{
+		console.log(intersects[0].object);
+		//infProject.camera.d3.targetPos.copy( intersects[0].point );	
+	}
 	
 	camera.updateProjectionMatrix();
 }
