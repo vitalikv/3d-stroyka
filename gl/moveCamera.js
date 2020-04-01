@@ -169,7 +169,7 @@ function cameraMove3D( event )
 			camera.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 
 			camera.position.add( infProject.camera.d3.targetPos );  
-			camera.lookAt( infProject.camera.d3.targetPos );
+			camera.lookAt( infProject.camera.d3.targetPos );			
 			
 			var gizmo = infProject.tools.gizmo;
 			
@@ -358,7 +358,11 @@ function zoomCameraTop_2(cdm)
 	var event = cdm.event;
 	var zoomOld = cdm.zoomOld;
 	
-	var intersects = rayIntersect( event, cubeZoom, 'one' );
+	planeMath.position.set(camera.position.x,0,camera.position.z);
+	planeMath.rotation.set(-Math.PI/2,0,0);  
+	planeMath.updateMatrixWorld();
+		
+	var intersects = rayIntersect( event, planeMath, 'one' );
 	
 	if(intersects.length == 0) return;
 	
@@ -384,24 +388,34 @@ function zoomCamera3D_2(cdm)
 	
 	var rayhit = clickRayHit(event);	
 	
-	if(!rayhit)
+	if(rayhit)
 	{
-		var rayhit = rayIntersect( event, cubeZoom, 'one' );	
-		if(rayhit.length == 0) return;
-		var rayhit = rayhit[0];
 		var pos = rayhit.point;
 	}
 	else
 	{
-		console.log(555);
-		var pos = rayhit.point;
+		var rayhit = rayIntersect( event, planeMath, 'one' );	
+		
+		if(rayhit.length == 0) 
+		{
+			var dir = camera.getWorldDirection(new THREE.Vector3());
+			dir = new THREE.Vector3().addScaledVector(dir, 10);
+			planeMath.position.copy(camera.position);  
+			planeMath.position.add(dir);  
+			planeMath.rotation.copy( camera.rotation ); 
+			planeMath.updateMatrixWorld();
+
+			var rayhit = rayIntersect( event, planeMath, 'one' );
+		}
+		
+		var rayhit = rayhit[0];
+		var pos = rayhit.point;		
 	}	
 	
-	
+	//console.log(1111, rayhit.object);
 	infProject.camera.d3.targetPos.copy( pos );
 	
 	var vect = ( delta < 0 ) ? 1 : -1;
-
 	var dir = new THREE.Vector3().subVectors( pos, camera.position ).normalize();
 	dir = new THREE.Vector3().addScaledVector( dir, vect );
 	dir.addScalar( 0.001 );
@@ -409,28 +423,26 @@ function zoomCamera3D_2(cdm)
 	
 	camera.position.copy( pos3 );
 	
-	
-	if(vect == -1) return;
+
+	// находим пересечения цетра камеры с плоскостью
+	planeMath.position.copy(infProject.camera.d3.targetPos);   
+	planeMath.rotation.copy( camera.rotation ); 
+	planeMath.updateMatrixWorld();		
 	
 	var raycaster = new THREE.Raycaster();
 	raycaster.set(camera.position, camera.getWorldDirection(new THREE.Vector3()) );
-	//raycaster.layers.set( 1 );
-		
-	//raycaster.layers.set( 1 );
-	//scene.add(new THREE.ArrowHelper( camera.getWorldDirection(new THREE.Vector3()), camera.position, 10, 0xff0000 ));
+	var intersects = raycaster.intersectObject( planeMath );	
 	
-	//var intersects = raycaster.intersectObjects( scene.children );
-	var intersects = raycaster.intersectObject( cubeZoom );
-	//console.log(intersects);
-	//infProject.camera.d3.targetPos.copy( pos2 );
-	//infProject.camera.d3.targetPos.y = pos.y;
 	if(intersects[0])
-	{
-		console.log(intersects[0].object);
-		//infProject.camera.d3.targetPos.copy( intersects[0].point );	
+	{		
+		infProject.camera.d3.targetPos.copy( intersects[0].point );	
 	}
 	
 	camera.updateProjectionMatrix();
+	
+	setScaleTubePoint();
+	setScaleJoinPoint();
+	setScalePivotGizmo();	
 }
 
 
