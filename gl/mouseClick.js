@@ -321,7 +321,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'pivot' ) { clickPivot( rayhit ); flag = false; }
-		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); flag = false; } 
+		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); flag = false; }  		
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' && camera == cameraTop ) { clickPoint( rayhit ); }
 		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); }
@@ -347,7 +347,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'obj' && camera == camera3D && infProject.list.rp_wf_point.align) { showJoinPoint_3({obj: obj}); flag = false; }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }
 		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); }
-		else if( tag == 'wf_tube' && camera == camera3D ) { clickTubeWF({ray: rayhit}); flag = false; }
+		else if( tag == 'wf_tube' && camera == camera3D ) { clickTubeWF({ray: rayhit}); flag = false; } 		
 		else { flag = false; }
 	}	
 	else 
@@ -477,6 +477,8 @@ function onDocumentMouseUp( event )
 		}		
 		else { clickO.move = null; }		
 	}
+	
+	
 
 	if(infProject.scene.grid.active) { clickUpGrid(); }		// вкл режим перемещения grid
 	
@@ -524,7 +526,6 @@ function hideMenuObjUI_2D(cdm)
 	if(obj)
 	{ 
 		objDeActiveColor_2D(); 
-		console.log(obj.userData.tag);
 
 		var tag = obj.userData.tag;
 		

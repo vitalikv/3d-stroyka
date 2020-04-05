@@ -341,6 +341,8 @@ function clickPivotUp()
 			}
 		}		
 	}
+	
+	setClickLastObj({obj: infProject.tools.pivot.userData.pivot.obj});
 }
 
 
