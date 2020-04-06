@@ -37,6 +37,8 @@ function clickWD( intersect )
 		showRulerWD( obj ); 	// показываем линейки 
 		showTableWD( obj );		// UI
 	}	
+	
+	setClickLastObj({obj: obj});
 }
 
 

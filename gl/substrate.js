@@ -525,6 +525,8 @@ function clickToolRulerSubstrate2D(cdm)
 	
 	planeMath.position.copy( intersect.point );  
 	planeMath.rotation.set( Math.PI/2, 0, 0 );
+	
+	setClickLastObj({obj: obj});
 }
 
 
@@ -563,6 +565,8 @@ function clickSubstrate2D(cdm)
 	
 	planeMath.position.copy( intersect.point );  
 	planeMath.rotation.set( Math.PI/2, 0, 0 );
+	
+	setClickLastObj({obj: obj});
 }
 
 
@@ -609,6 +613,8 @@ function clickPointSubstrate2D(cdm)
 
 	planeMath.position.copy( intersect.point );  
 	planeMath.rotation.set( Math.PI/2, 0, 0 );
+	
+	setClickLastObj({obj: obj});
 }
 
 

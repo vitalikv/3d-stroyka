@@ -228,7 +228,7 @@ function clickToggleGp( intersect )
 		planeMath.rotation.y = angle ;
 	}		
 
-	
+	setClickLastObj({obj: obj});
 }
 
 

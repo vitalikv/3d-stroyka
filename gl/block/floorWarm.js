@@ -56,6 +56,8 @@ function clickWFPoint(intersect)
 	showHideArrObj(wf, true);
 	
 	activeObjRightPanelUI_1({obj: obj});
+	
+	setClickLastObj({obj: obj});
 }
 
 
@@ -104,6 +106,8 @@ function clickWFPoint_3D(cdm)
 	showHideArrObj(wf, true);	
 	
 	activeObjRightPanelUI_1({obj: obj});
+	
+	setClickLastObj({obj: obj});
 }
 
 

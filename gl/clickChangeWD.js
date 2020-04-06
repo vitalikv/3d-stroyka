@@ -399,6 +399,8 @@ function clickToggleChangeWin( intersect, cdm )
 	wall.updateMatrixWorld();
 	
 	param_win.click = true;
+	
+	setClickLastObj({obj: controll});
 }
 
  

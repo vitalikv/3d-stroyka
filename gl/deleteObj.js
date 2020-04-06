@@ -13,10 +13,6 @@ function detectDeleteObj()
 	{
 		if ( tag == 'wall' ) return;
 	}
-	else if(camera == cameraWall)
-	{
-		if ( tag == 'wall' ) return;
-	}	
 		
 	if ( tag == 'wall' ) { deleteWall_1( obj ).room; }
 	else if ( tag == 'point' ) { if(obj.p.length == 2) { deletePoint( obj ); } }

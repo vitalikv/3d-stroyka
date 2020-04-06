@@ -40,6 +40,8 @@ function clickWall_2D( intersect )
 	getInfoUndoWall(obj);
 	
 	showLengthWallUI( obj );
+	
+	setClickLastObj({obj: obj});
 }
 
 

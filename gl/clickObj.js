@@ -14,7 +14,9 @@ function clickObject2D( obj, intersect )
 	{
 		showToggleGp(); 
 		showBoxWF_UI();
-	}		
+	}
+
+	setClickLastObj({obj: obj});
 }
 
 

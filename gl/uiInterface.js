@@ -713,6 +713,8 @@ function clickItemCenterObjUI_2(cdm)
 	obj.material.color = joint.material.active.color.clone();
 	obj.visible = true;
 	joint.active_2 = obj;
+	
+	setClickLastObj({obj: infProject.tools.joint.active_1});
 }
 
 

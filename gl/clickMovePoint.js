@@ -37,6 +37,8 @@ function clickPoint( intersect )
 	}
 
 	$('[nameId="point_menu_1"]').show();
+	
+	setClickLastObj({obj: obj});
 }
 
 

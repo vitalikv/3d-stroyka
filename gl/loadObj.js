@@ -553,25 +553,28 @@ function addObjInScene(inf, cdm)
 			}
 		});
 		
-		if(cdm.centerPoint.length > 0)
+		if(cdm.centerPoint)
 		{
-			// получаем разъемы объекта
-			var o = getCenterPointFromObj_1(obj);
+			if(cdm.centerPoint.length > 0)
+			{
+				// получаем разъемы объекта
+				var o = getCenterPointFromObj_1(obj);
 
-			// есть разъемы
-			for(var i2 = 0; i2 < o.length; i2++)
-			{				
-				if(!o[i2].userData.centerPoint) continue;			
-			
-				for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
-				{
-					if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
-					
-					o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
-					
-					break;
+				// есть разъемы
+				for(var i2 = 0; i2 < o.length; i2++)
+				{				
+					if(!o[i2].userData.centerPoint) continue;			
+				
+					for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
+					{
+						if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
+						
+						o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
+						
+						break;
+					}
 				}
-			}
+			}			
 		}
 	}
 
