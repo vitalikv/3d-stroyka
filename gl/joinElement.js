@@ -354,7 +354,7 @@ function setScaleJoinPoint(cdm)
 	if(camera == cameraTop)
 	{		
 		var scale = 1/camera.zoom+0.5;	
-		console.log('2D', scale);
+		
 		for ( var i = 0; i < arr.length; i++ )
 		{ 
 			arr[i].scale.set( scale,scale,scale );			

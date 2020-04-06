@@ -457,6 +457,7 @@ function onDocumentMouseUp( event )
 		else if(tag == 'boxWF' || tag == 'obj') { clickMouseUpObject(obj); }
 		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
 		else if(tag == 'pivot') { clickPivotUp(); }
+		else if(tag == 'gizmo') { clickGizmoUp(); }
 		
 		if(tag == 'free_dw') {  }
 		else if (tag == 'point') 
@@ -501,7 +502,7 @@ function onDocumentMouseUp( event )
 function setClickLastObj(cdm)
 {
 	//console.log(2, 'setClick', { tag: cdm.obj.userData.tag, id: cdm.obj.userData.id } );
-	//console.trace();
+	console.trace();
 	clickO.last_obj = cdm.obj;
 }
 

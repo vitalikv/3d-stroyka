@@ -312,6 +312,15 @@ function moveGizmo( event )
 
 
 
+function clickGizmoUp()
+{
+	var obj = infProject.tools.gizmo.userData.gizmo.obj;
+	
+	if(!obj) return;
+	
+	setClickLastObj({obj: infProject.tools.gizmo.userData.gizmo.obj});
+}
+
 
 // обновляем в меню rotate
 function upMenuRotateObjPop(obj) 

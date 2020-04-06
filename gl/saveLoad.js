@@ -469,7 +469,24 @@ function getJsonGeometry()
 		furn[m].lotid = Number(obj.userData.obj3D.lotid);
 		furn[m].pos = pos;
 		furn[m].rot = rot;
+		furn[m].nameRus = obj.userData.obj3D.nameRus;
+		furn[m].centerPoint = [];
 		if(gr) { furn[m].group = gr; }
+		
+		// получаем разъемы объекта
+		var o = getCenterPointFromObj_1(obj);
+
+		// есть разъемы
+		for(var i2 = 0; i2 < o.length; i2++)
+		{				
+			if(!o[i2].userData.centerPoint) continue;			
+		
+			var num = furn[m].centerPoint.length;
+			
+			furn[m].centerPoint[num] = {};
+			furn[m].centerPoint[num].id = o[i2].userData.id;
+			furn[m].centerPoint[num].nameRus = o[i2].userData.centerPoint.nameRus;
+		}			
 	}
 	
 	

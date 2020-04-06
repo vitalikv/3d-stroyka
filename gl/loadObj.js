@@ -499,7 +499,9 @@ function addObjInScene(inf, cdm)
 	obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
 	obj.material.visible = false;
 	//obj.rotation.y += 1;
-		
+	
+	
+	if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
 	
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 
@@ -512,39 +514,9 @@ function addObjInScene(inf, cdm)
 	renderCamera();
 	
 	
-	if(cdm.lotid == 111223)
-	{
-		//obj.position.set(0,1,0);
-		
-		obj.updateMatrixWorld();
-		
-		var obj1 = obj.children[1];
-		var obj2 = obj.children[2];
-		
-		var pos1 = obj1.getWorldPosition(new THREE.Vector3());
-		var q1 = obj1.getWorldQuaternion(new THREE.Quaternion());
-		
-		var pos2 = obj2.getWorldPosition(new THREE.Vector3());
-		var q2 = obj2.getWorldQuaternion(new THREE.Quaternion());		
-		
-		scene.add( obj1 );
-		scene.add( obj2 );
-		
-		obj1.position.copy(pos1);
-		obj1.quaternion.copy(q1);
-		
-		obj2.position.copy(pos2);
-		obj2.quaternion.copy(q2);
-
-		
-		console.log(obj1.position)
-		obj1.position.z += 1;
-		obj2.position.z += 1;
-	}
 	
 	if(1 == 1)
 	{
-		var arr = [];
 		var id = 0;
 		
 		obj.traverse( function ( child ) 
@@ -576,15 +548,31 @@ function addObjInScene(inf, cdm)
 					cube.userData.centerPoint.nameRus = '22';
 					cube.userData.centerPoint.color = cube.material.color.clone();
 					
-					obj.add( cube );
-					
-					arr[arr.length] = cube;
-					
+					obj.add( cube );				
 				}
 			}
 		});
 		
+		if(cdm.centerPoint.length > 0)
+		{
+			// получаем разъемы объекта
+			var o = getCenterPointFromObj_1(obj);
 
+			// есть разъемы
+			for(var i2 = 0; i2 < o.length; i2++)
+			{				
+				if(!o[i2].userData.centerPoint) continue;			
+			
+				for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
+				{
+					if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
+					
+					o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
+					
+					break;
+				}
+			}
+		}
 	}
 
 

@@ -624,3 +624,28 @@ function objRotateReset(cdm)
 
 
 
+function renameObject(cdm)
+{
+	var obj = cdm.obj;
+	var name = cdm.name;
+	
+	if(!obj) return;
+	
+	name = name.trim();
+	
+	if(obj.userData.obj3D) 
+	{ 
+		obj.userData.obj3D.nameRus = name;
+		
+		console.log('obj3D.nameRus');
+	}
+	else if(obj.userData.centerPoint)
+	{		
+		obj.userData.centerPoint.nameRus = name;
+
+		console.log('centerPoint.nameRus');
+	}
+}
+
+
+
