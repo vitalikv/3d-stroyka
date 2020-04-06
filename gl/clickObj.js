@@ -225,6 +225,7 @@ function clickObject3D( obj, cdm )
 	if(obj.userData.tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }
 	
 	setScalePivotGizmo();
+	setClickLastObj({obj: obj});
 }
 
 
