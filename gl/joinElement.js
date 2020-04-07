@@ -364,8 +364,10 @@ function setScaleJoinPoint(cdm)
 	{
 		for ( var i = 0; i < arr.length; i++ )
 		{ 
-			var scale = camera.position.distanceTo(arr[i].getWorldPosition(new THREE.Vector3()))/2;		
-		if(i==0) console.log('3d', scale);	
+			var scale = camera.position.distanceTo(arr[i].getWorldPosition(new THREE.Vector3()))/2;	
+
+			if(scale > 1.2) scale = 1.2;
+			
 			arr[i].scale.set( scale,scale,scale );			
 		}							
 	}

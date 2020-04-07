@@ -763,6 +763,7 @@ canvas
 	padding: 3px;
 	margin: 3px 0;
 	border: 1px solid #ccc;
+	background: #ffffff;
 	
 	cursor: pointer;
 }

@@ -81,7 +81,7 @@ function addGroupInCatalogUI_1()
 {	
 	var groupItem = [];
 	
-	groupItem[0] = {nameId: 'catalog_group_item_sh_kran', nameRus: 'шаровые краны'};
+	groupItem[0] = {nameId: 'catalog_group_item_kran_1', nameRus: 'краны'};
 	groupItem[1] = {nameId: 'catalog_group_item_radiator', nameRus: 'радиаторы'};
 	groupItem[2] = {nameId: 'catalog_group_item_collector', nameRus: 'коллектора'};
 	groupItem[3] = {nameId: 'catalog_group_item_mt_plas', nameRus: 'металлопластик'};
@@ -103,11 +103,13 @@ function addGroupInCatalogUI_1()
 		
 		var str = 
 		'<div>\
-			<div class="flex_1 right_panel_1_1_list_item relative_1">\
-				<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
-				'+str_button+'\
+			<div class="right_panel_1_1_list_item">\
+				<div class="flex_1 relative_1">\
+					<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
+					'+str_button+'\
+				</div>\
+				<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
 			</div>\
-			<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
 			</div>\
 		</div>';
 
@@ -137,7 +139,13 @@ function addGroupInCatalogUI_2()
 {	
 	var groupItem = [];
 	
-	groupItem[0] = {nameId: 'catalog_group_item_collector_1', nameRus: 'коллектора'};
+	groupItem[0] = {parentName: 'catalog_group_item_collector', nameId: 'catalog_group_item_collector_1', nameRus: 'коллектора'};
+	groupItem[1] = {parentName: 'catalog_group_item_mt_plas', nameId: 'catalog_group_item_mp_troinik_press_1', nameRus: 'тройники (пресс)'};
+	groupItem[2] = {parentName: 'catalog_group_item_mt_plas', nameId: 'catalog_group_item_mp_ugol_press_1', nameRus: 'угол (пресс)'};
+	groupItem[3] = {parentName: 'catalog_group_item_radiator', nameId: 'catalog_group_item_radiator_al_1', nameRus: 'алюминиевые'};
+	groupItem[4] = {parentName: 'catalog_group_item_radiator', nameId: 'catalog_group_item_radiator_st_1', nameRus: 'стальные'};
+	groupItem[5] = {parentName: 'catalog_group_item_kran_1', nameId: 'catalog_group_item_kran_sharov_1', nameRus: 'шаровые'};
+	groupItem[6] = {parentName: 'catalog_group_item_kran_1', nameId: 'catalog_group_item_kran_regul_1', nameRus: 'регулеровачные'};
 	
 	
 	for(var i = 0; i < groupItem.length; i++)
@@ -155,17 +163,19 @@ function addGroupInCatalogUI_2()
 		
 		var str = 
 		'<div>\
-			<div class="flex_1 right_panel_1_1_list_item relative_1">\
-				<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
-				'+str_button+'\
+			<div class="right_panel_1_1_list_item">\
+				<div class="flex_1 relative_1">\
+					<div class="right_panel_1_1_list_item_text">'+groupItem[i].nameRus+'</div>\
+					'+str_button+'\
+				</div>\
+				<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
 			</div>\
-			<div nameId="'+groupItem[i].nameId+'" style="display: none;">\
 			</div>\
 		</div>';
 
 
 
-		var el = $(str).appendTo('[nameId="catalog_group_item_collector"]');		
+		var el = $(str).appendTo('[nameId="'+groupItem[i].parentName+'"]');		
 		//el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
 		
 		var num = infProject.list.group_catalog_ui.arr.length;
@@ -194,9 +204,12 @@ function clickRtekUI_2(cdm)
 	
 	var display = (inf.showlist) ? 'block' : 'none';
 	
-	inf.el.css('display', display);				
-	
-	//console.log(cdm, display, inf);
+	inf.el.css('display', display);
+
+
+	var parentEl = $(inf.el[0].parentElement);	
+	if(display == 'block') { parentEl.css('background', '#ebebeb'); }
+	else { parentEl.css('background', '#ffffff'); }
 }
 
 
