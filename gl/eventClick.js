@@ -107,6 +107,8 @@ $('[nameId="obj_rotate_reset"]').mousedown(function () { objRotateReset(); });
 $('[nameId="button_copy_obj"]').mousedown(function () { copyObj(); });
 $('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 $('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
+$('[nameId="button_save_obj"]').mousedown(function () { getBoundObject({obj: clickO.last_obj}); });
+
 
 
 $('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });

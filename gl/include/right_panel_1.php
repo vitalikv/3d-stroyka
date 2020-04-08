@@ -375,7 +375,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		
 		
 		<div nameId="wrap_object">
-			<div class="flex_column_1" nameId="wrap_object_1" style="display: none;">
+			<div class="flex_column_1" nameId="wrap_object_1" style="display: none; overflow: auto;">
 				<div class="right_panel_1_1_h">Объект</div>
 				
 				
@@ -608,6 +608,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 								<div class="button1 button_gradient_1" nameId="button_delete_obj">
 									удалить	
 								</div>
+								
+								<div class="button1 button_gradient_1" nameId="button_save_obj" style="margin-top: 40px;">
+									сохранить	
+								</div>								
 							</div>
 							
 						</div>	
