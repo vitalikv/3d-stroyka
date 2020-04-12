@@ -696,7 +696,7 @@ function clickPointToolsWF(obj)
 				}					
 			}
 			
-			updateListTubeUI_1({uuid: line_1.uuid, type: 'delete'});
+			updateListTubeUI_1({type: 'delete', o: line_1});
 			
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
 			scene.remove(line_1);
@@ -795,6 +795,7 @@ function deletePointWF(obj)
 		// если у линии 2 точки, то удаляем точки и линию
 		if(line.userData.wf_line.point.length == 2)
 		{		
+			updateListTubeUI_1({type: 'delete', o: line});
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
 			
 			disposeNode(line.userData.wf_line.point[0]);
@@ -808,9 +809,7 @@ function deletePointWF(obj)
 				disposeNode(line.userData.wf_line.tube);
 				scene.remove(line.userData.wf_line.tube); 
 			}
-			
-			updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
-			
+
 			disposeNode(line);
 			scene.remove(line);	
 			line = null;			
@@ -865,6 +864,7 @@ function deleteLineWF(tube)
 	
 	var line = tube.userData.wf_tube.line;
 	
+	updateListTubeUI_1({type: 'delete', o: line});
 	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	
 	
 	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
@@ -878,8 +878,6 @@ function deleteLineWF(tube)
 		disposeNode(line.userData.wf_line.tube);
 		scene.remove(line.userData.wf_line.tube); 
 	}
-
-	updateListTubeUI_1({uuid: line.uuid, type: 'delete'});
 	
 	disposeNode(line);
 	scene.remove(line);

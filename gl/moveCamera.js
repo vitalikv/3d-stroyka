@@ -693,9 +693,9 @@ function moveCameraToNewPosition()
 
 
 // приближаемся к выбранному объекту
-function fitCameraToObject()
+function fitCameraToObject(cdm)
 {
-	var obj = clickO.last_obj; 
+	var obj = cdm.obj; 
 	
 	if(!obj) return;
 

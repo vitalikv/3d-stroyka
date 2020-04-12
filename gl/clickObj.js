@@ -302,17 +302,16 @@ function deleteObjectPop(obj)
 	console.log(renderer.info.memory);
 	for(var i = 0; i < arr.length; i++)
 	{	
-		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});
-		updateListTubeUI_1({uuid: arr[i].uuid, type: 'delete'});		
-		
-		scene.remove(arr[i]);
-		
+		updateListTubeUI_1({type: 'delete', o: arr[i]});
+		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});				
+
 		var arrO = getAllChildObect({obj: obj});
 		for(var i2 = 0; i2 < arrO.length; i2++)
 		{
 			disposeNode(arrO[i2]);
 		}
 		
+		scene.remove(arr[i]);
 	}
 	console.log(renderer.info.memory);
 	outlineRemoveObj();

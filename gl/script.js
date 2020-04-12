@@ -192,13 +192,13 @@ infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
 infProject.list.group_catalog_ui = { arr: [] };
+infProject.list.obj_scene_ui = [];
 infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [], joinO: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.settings.active.tube = null;
 infProject.start = true; 
 
 infProject.ui = {}
-infProject.ui.list_wf = [];
 infProject.ui.main_menu = [];
 infProject.ui.right_menu = {active: ''};
 
@@ -1571,7 +1571,7 @@ document.body.addEventListener("keydown", function (e)
 	}
 
 
-	if(e.keyCode == 90) { fitCameraToObject(); }	// z
+	if(e.keyCode == 90) { fitCameraToObject({obj: clickO.last_obj}); }	// z
 		
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	

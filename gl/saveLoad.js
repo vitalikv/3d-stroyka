@@ -191,14 +191,14 @@ function resetScene()
 	}
 
 	
-	
 	// удаляем список материалов UI
-	for(var i = 0; i < infProject.ui.list_wf.length; i++)
+	for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
 	{
-		infProject.ui.list_wf[i].remove();
-	}		
+		infProject.list.obj_scene_ui[i].el.remove();
+	}
 	
-	infProject.ui.list_wf = [];
+	infProject.list.obj_scene_ui = [];
+		 
 	
 	// удаляем список объектов UI
 	clearItemSelectedObjUI();			

@@ -52,24 +52,28 @@ function updateListTubeUI_1(cdm)
 			return;
 		}
 		
-		$('[list_ui="wf"]').prepend(str);
 		
-		var q = $('[list_ui="wf"]')[0].children[0];
+		var q = $(str).prependTo('[list_ui="wf"]')[0];
 		q.uuid = obj.uuid;
 		
 		
-		if(tag == 'wf_line') { $(q.querySelector('[item="color"]')).css('background-color', '#'+obj.userData.wf_line.color.clone().getHexString()); }
+		if(tag == 'wf_line') { $(q.querySelector('[item="color"]')).css('background-color', '#'+obj.userData.wf_line.color.clone().getHexString()); }	
 		
-		infProject.ui.list_wf[infProject.ui.list_wf.length] = q;	
+		var n = infProject.list.obj_scene_ui.length;
+		infProject.list.obj_scene_ui[n] = { el: q, o: obj };
 	}
 	
 	if(cdm.type == 'delete')
 	{
-		for(var i = 0; i < infProject.ui.list_wf.length; i++)
+		for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
 		{
-			if(infProject.ui.list_wf[i].uuid == cdm.uuid) { infProject.ui.list_wf[i].remove(); break; }
-		}		
-		
+			if(infProject.list.obj_scene_ui[i].o == cdm.o) 
+			{
+				infProject.list.obj_scene_ui[i].el.remove();
+				deleteValueFromArrya({arr: infProject.list.obj_scene_ui, o: infProject.list.obj_scene_ui[i]});
+				break;
+			}
+		}
 	}
 	
 	if(cdm.type == 'update')
@@ -79,10 +83,14 @@ function updateListTubeUI_1(cdm)
 		
 		console.log('update', line.userData);
 		
-		for(var i = 0; i < infProject.ui.list_wf.length; i++)
+		for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
 		{
-			if(infProject.ui.list_wf[i].uuid == line.uuid) { q = infProject.ui.list_wf[i]; break; }
-		}
+			if(infProject.list.obj_scene_ui[i].o == cdm.o) 
+			{
+				q = infProject.list.obj_scene_ui[i].el;
+				break;
+			}
+		}		
 
 		if(q)
 		{
