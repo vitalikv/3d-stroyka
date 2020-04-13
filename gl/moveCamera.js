@@ -352,131 +352,6 @@ function onDocumentMouseWheel( event )
 }
 
 
-// зумирование на конкретный объект/точку в простаранстве 
-function zoomCameraTop_2(cdm)
-{
-	var event = cdm.event;
-	var zoomOld = cdm.zoomOld;
-	
-	planeMath.position.set(camera.position.x,0,camera.position.z);
-	planeMath.rotation.set(-Math.PI/2,0,0);  
-	planeMath.updateMatrixWorld();
-		
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	if(intersects.length == 0) return;
-	
-	var pos = intersects[0].point;
-
-	var xNew = pos.x + (((camera.position.x - pos.x) * camera.zoom) /zoomOld);
-	var yNew = pos.z + (((camera.position.z - pos.z) * camera.zoom) /zoomOld);
-
-	camera.position.x += camera.position.x - xNew;
-	camera.position.z += camera.position.z - yNew;	
-	
-	camera.updateProjectionMatrix();
-}
-
-
-
-function zoomCamera3D_2(cdm)
-{
-	if( camera != camera3D ) return;
-	
-	var event = cdm.event;
-	var delta = cdm.delta;
-	
-	var rayhit = clickRayHit(event);	
-	
-	if(rayhit)
-	{
-		var pos = rayhit.point;
-	}
-	else
-	{
-		var rayhit = rayIntersect( event, planeMath, 'one' );	
-		
-		if(rayhit.length == 0) 
-		{
-			var dir = camera.getWorldDirection(new THREE.Vector3());
-			dir = new THREE.Vector3().addScaledVector(dir, 10);
-			planeMath.position.copy(camera.position);  
-			planeMath.position.add(dir);  
-			planeMath.rotation.copy( camera.rotation ); 
-			planeMath.updateMatrixWorld();
-
-			var rayhit = rayIntersect( event, planeMath, 'one' );
-		}
-		
-		var rayhit = rayhit[0];
-		var pos = rayhit.point;		
-	}	
-	
-	//console.log(1111, rayhit.object);
-	infProject.camera.d3.targetPos.copy( pos );
-	
-	var vect = ( delta < 0 ) ? 1 : -1;
-	var dir = new THREE.Vector3().subVectors( pos, camera.position ).normalize();
-	dir = new THREE.Vector3().addScaledVector( dir, vect );
-	dir.addScalar( 0.001 );
-	var pos3 = new THREE.Vector3().addVectors( camera.position, dir );
-	
-	camera.position.copy( pos3 );
-	
-
-	// находим пересечения цетра камеры с плоскостью
-	planeMath.position.copy(infProject.camera.d3.targetPos);   
-	planeMath.rotation.copy( camera.rotation ); 
-	planeMath.updateMatrixWorld();		
-	
-	var raycaster = new THREE.Raycaster();
-	raycaster.set(camera.position, camera.getWorldDirection(new THREE.Vector3()) );
-	var intersects = raycaster.intersectObject( planeMath );	
-	
-	if(intersects[0])
-	{		
-		infProject.camera.d3.targetPos.copy( intersects[0].point );	
-	}
-	
-	camera.updateProjectionMatrix();
-	
-	setScaleTubePoint();
-	setScaleJoinPoint();
-	setScalePivotGizmo();	
-}
-
-
-
-
-var zoomLoop = '';
-function cameraZoomTopLoop() 
-{
-	var flag = false;
-	
-	if ( camera == cameraTop )
-	{
-		if ( zoomLoop == 'zoomOut' ) { cameraZoomTop( camera.zoom - ( 0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { cameraZoomTop( camera.zoom - ( -0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
-	}
-	else if ( camera == camera3D )
-	{
-		if ( zoomLoop == 'zoomOut' ) { cameraZoom3D( 0.3, 0.3 ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { cameraZoom3D( -0.3, 0.3 ); flag = true; }
-	}
-	else if ( camera == cameraWall )
-	{
-		if ( zoomLoop == 'zoomOut' ) { camera.zoom = camera.zoom - ( 0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { camera.zoom = camera.zoom - ( -0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
-		camera.updateProjectionMatrix();
-	}
-	
-	if(flag) { renderCamera(); }
-}
-
-
-
-
-
 
 function cameraZoomTop( delta )
 {
@@ -563,6 +438,34 @@ function cameraZoomTop( delta )
 
 
 
+// зумирование на конкретный объект/точку в простаранстве 
+function zoomCameraTop_2(cdm)
+{
+	var event = cdm.event;
+	var zoomOld = cdm.zoomOld;
+	
+	planeMath.position.set(camera.position.x,0,camera.position.z);
+	planeMath.rotation.set(-Math.PI/2,0,0);  
+	planeMath.updateMatrixWorld();
+		
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	if(intersects.length == 0) return;
+	
+	var pos = intersects[0].point;
+
+	var xNew = pos.x + (((camera.position.x - pos.x) * camera.zoom) /zoomOld);
+	var yNew = pos.z + (((camera.position.z - pos.z) * camera.zoom) /zoomOld);
+
+	camera.position.x += camera.position.x - xNew;
+	camera.position.z += camera.position.z - yNew;	
+	
+	camera.updateProjectionMatrix();
+}
+
+
+
+
 function cameraZoom3D( delta, z )
 {
 	if ( camera != camera3D ) return;
@@ -597,6 +500,127 @@ function cameraZoom3D( delta, z )
 	setScaleTubePoint();
 	setScaleJoinPoint();
 	setScalePivotGizmo();
+}
+
+
+
+function zoomCamera3D_2(cdm)
+{
+	if( camera != camera3D ) return;
+	
+	var event = cdm.event;
+	var delta = cdm.delta;
+	
+	var rayhit = clickRayHit(event);	
+	
+	if(!rayhit)
+	{
+		var arr = [];
+		var subs = infProject.scene.substrate.floor;	
+
+		for(var i = 0; i < subs.length; i++)
+		{
+			arr[arr.length] = subs[i].plane;
+		}
+		
+		var rayhit = rayIntersect( event, arr, 'arr' );				
+		var rayhit = (rayhit.length > 0) ? rayhit[0] : null;							
+	}
+	
+	if(!rayhit)
+	{
+		var rayhit = rayIntersect( event, planeMath, 'one' );	
+		
+		if(rayhit.length == 0) 
+		{
+			var dir = camera.getWorldDirection(new THREE.Vector3());
+			dir = new THREE.Vector3().addScaledVector(dir, 10);
+			planeMath.position.copy(camera.position);  
+			planeMath.position.add(dir);  
+			planeMath.rotation.copy( camera.rotation ); 
+			planeMath.updateMatrixWorld();
+
+			var rayhit = rayIntersect( event, planeMath, 'one' );
+		}
+		
+		var rayhit = rayhit[0];				
+	}
+
+	var pos = rayhit.point;	
+	infProject.camera.d3.targetPos.copy( pos );
+	
+	var vect = ( delta < 0 ) ? 1 : -1;
+	
+
+	
+	var dir = new THREE.Vector3().subVectors( pos, camera.position ).normalize();
+	var dir2 = new THREE.Vector3().addScaledVector( dir, vect );
+	var pos3 = new THREE.Vector3().addVectors( camera.position, dir2 );
+	
+	var dist = pos.distanceTo(pos3);
+	
+	if(dist < 5)
+	{	
+		//if(dist < 0.1) dist = 0.1;
+		dist = dist/5;
+		if(dist < 0.05) dist = 0.05;
+		
+		vect *= dist; 
+		
+		var dir2 = new THREE.Vector3().addScaledVector( dir, vect );
+		var pos3 = new THREE.Vector3().addVectors( camera.position, dir2 );			
+	}	
+	
+	camera.position.copy( pos3 );
+	
+
+	// находим пересечения цетра камеры с плоскостью
+	planeMath.position.copy(infProject.camera.d3.targetPos);   
+	planeMath.rotation.copy( camera.rotation ); 
+	planeMath.updateMatrixWorld();		
+	
+	var raycaster = new THREE.Raycaster();
+	raycaster.set(camera.position, camera.getWorldDirection(new THREE.Vector3()) );
+	var intersects = raycaster.intersectObject( planeMath );	
+	
+	if(intersects[0])
+	{		
+		infProject.camera.d3.targetPos.copy( intersects[0].point );	
+	}
+	
+	camera.updateProjectionMatrix();
+	
+	setScaleTubePoint();
+	setScaleJoinPoint();
+	setScalePivotGizmo();	
+}
+
+
+
+
+var zoomLoop = '';
+function cameraZoomTopLoop() 
+{
+	var flag = false;
+	
+	if ( camera == cameraTop )
+	{
+		if ( zoomLoop == 'zoomOut' ) { cameraZoomTop( camera.zoom - ( 0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
+		if ( zoomLoop == 'zoomIn' ) { cameraZoomTop( camera.zoom - ( -0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
+	}
+	else if ( camera == camera3D )
+	{
+		if ( zoomLoop == 'zoomOut' ) { cameraZoom3D( 0.3, 0.3 ); flag = true; }
+		if ( zoomLoop == 'zoomIn' ) { cameraZoom3D( -0.3, 0.3 ); flag = true; }
+	}
+	else if ( camera == cameraWall )
+	{
+		if ( zoomLoop == 'zoomOut' ) { camera.zoom = camera.zoom - ( 0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
+		if ( zoomLoop == 'zoomIn' ) { camera.zoom = camera.zoom - ( -0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
+		camera.updateProjectionMatrix();
+	}
+	
+	if(flag) { renderCamera(); }
 }
 
 

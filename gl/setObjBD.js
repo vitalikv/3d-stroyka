@@ -15,7 +15,8 @@ function getBoundObject(cdm)
 	var bound = obj.geometry.boundingBox;
 	
 	var material = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.5 });
-	var geometry = createGeometryCube(bound.max.x-bound.min.x, bound.max.y-bound.min.y, bound.max.z-bound.min.z);
+	var size = {x: bound.max.x-bound.min.x, y: bound.max.y-bound.min.y, z: bound.max.z-bound.min.z};
+	var geometry = createGeometryCube(size.x, size.y, size.z);
 	
 	var v = geometry.vertices;
 	//v[0].y = v[3].y = v[4].y = v[7].y = bound.min.y;
@@ -40,5 +41,53 @@ function getBoundObject(cdm)
 	console.log(pos1);
 	//box.position.copy(obj.position);
 	box.position.add(pos1.clone().sub(pos2));   
-		
+	
+	saveObjSql({id: 0, name: 'объект 1', size: size, json: obj});	
 }
+
+
+
+
+
+// получаем с сервера список проектов принадлежащих пользователю
+function saveObjSql(cdm)
+{  
+	var name = JSON.stringify( cdm.name );
+	var size = JSON.stringify( cdm.size );
+	var json = JSON.stringify( cdm.json );
+	
+	$.ajax
+	({
+		type: "POST",					
+		url: infProject.path+'components_2/saveObjSql.php',
+		data: { id: cdm.id, name: name, size: size, json: json },
+		dataType: 'json',
+		success: function(data)
+		{  
+			console.log(data);			
+		}
+	});	
+}
+
+
+
+function getObjSql(cdm)
+{  
+	
+	$.ajax
+	({
+		type: "POST",					
+		url: infProject.path+'components_2/getObjSql.php',
+		data: { id: cdm.id },
+		dataType: 'json',
+		success: function(data)
+		{  
+			console.log(JSON.parse(data.id), JSON.parse(data.name), JSON.parse(data.size), JSON.parse(data.json));			
+		}
+	});	
+}
+
+
+
+
+
