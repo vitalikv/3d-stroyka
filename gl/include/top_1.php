@@ -43,7 +43,16 @@
 
 		<div class="button1-wrap-1">
 			<div data-action ='screenshot' class="button1 button_gradient_1"><img src="<?=$path?>/img/screenshot.png"></div>
-		</div>				
+		</div>	
+
+
+		<div class="button1-wrap-1" nameId='butt_main_load_obj'>
+			<div class="button1 button_gradient_1"> 
+				<img src="<?=$path?>/img/download_1.png">
+			</div>	
+		</div>			
+
+		
 	</div> 
 	
 	<div class="tp_right_1">
