@@ -4,7 +4,8 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 $id = trim($_POST['id']);
 $name = trim($_POST['name']);
-$size = $_POST['size']; 
+$size = $_POST['size'];
+$planeMath = trim($_POST['planeMath']); 
 $json = $_POST['json']; 
 //$date = date("Y-m-d-G-i");
 
@@ -13,11 +14,12 @@ $json = $_POST['json'];
 
 if($id == 0)
 {
-	$sql = "INSERT INTO list_obj (name, size, json) VALUES (:name, :size, :json)";
+	$sql = "INSERT INTO list_obj (name, size, planeMath, json) VALUES (:name, :size, :planeMath, :json)";
 
 	$r = $db->prepare($sql);
 	$r->bindValue(':name', $name);
 	$r->bindValue(':size', $size);
+	$r->bindValue(':planeMath', $planeMath);
 	$r->bindValue(':json', $json);
 	$r->execute();
 

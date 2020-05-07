@@ -67,7 +67,7 @@ function loadUrlFile()
 
 
 
-
+// добавляем объект в сцену
 function setParamObj(cdm)
 {	
 	var obj = cdm.obj;
@@ -145,9 +145,15 @@ function getBoundObject(cdm)
 	console.log(pos2);
 	console.log(pos1);
 	//box.position.copy(obj.position);
-	box.position.add(pos1.clone().sub(pos2));   
+	box.position.add(pos1.clone().sub(pos2));  
+
+	var name = $('[nameId="rp_obj_name"]').val();
+	name = name.trim();
+	if(name == '') { name = null; }	
 	
-	saveObjSql({id: 0, name: 'объект 1', size: size, json: obj});	
+	var planeMath = 0.5;
+	
+	saveObjSql({id: 0, name: name, size: size, json: obj, planeMath: planeMath});	
 }
 
 
@@ -157,15 +163,16 @@ function getBoundObject(cdm)
 // получаем с сервера список проектов принадлежащих пользователю
 function saveObjSql(cdm)
 {  
-	var name = JSON.stringify( cdm.name );
-	var size = JSON.stringify( cdm.size );
-	var json = JSON.stringify( cdm.json );
+	var name = (cdm.name) ? JSON.stringify( cdm.name ) : null;
+	var size = (cdm.size) ? JSON.stringify( cdm.size ) : null;
+	var planeMath = (cdm.planeMath) ? cdm.planeMath : 0;
+	var json = (cdm.json) ? JSON.stringify( cdm.json ) : null;
 	
 	$.ajax
 	({
 		type: "POST",					
 		url: infProject.path+'admin/import/saveObjSql.php',
-		data: { id: cdm.id, name: name, size: size, json: json },
+		data: { id: cdm.id, name: name, size: size, planeMath: planeMath, json: json },
 		dataType: 'json',
 		success: function(data)
 		{  
@@ -187,7 +194,7 @@ function getObjSql(cdm)
 		dataType: 'json',
 		success: function(data)
 		{  
-			console.log(JSON.parse(data.id), JSON.parse(data.name), JSON.parse(data.size), JSON.parse(data.json));			
+			console.log(data);			
 		}
 	});	
 }

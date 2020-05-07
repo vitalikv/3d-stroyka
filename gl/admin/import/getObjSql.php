@@ -20,5 +20,35 @@ $res = $r->fetch(PDO::FETCH_ASSOC);
 
 $count = $r->rowCount();
 
+$data = [];
+$data['error'] = true;
 
-echo json_encode( $res );
+if($res) 
+{
+	$data = [];
+	$data['id'] = json_decode($res['id']);
+	
+	if($res['name'])
+	{
+		$data['name'] = json_decode($res['name']);	
+	}
+
+	if($res['planeMath'])
+	{
+		$data['planeMath'] = json_decode($res['planeMath']);	
+	}
+	
+	if($res['size'])
+	{
+		$data['size'] = json_decode($res['size']);	
+	}
+	
+	if($res['json'])
+	{
+		$data['json'] = json_decode($res['json']);	
+	}
+}
+
+
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode( $data );

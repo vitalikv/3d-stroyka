@@ -36,6 +36,7 @@ uiInterface.js
 uiInterface_wf.js
 uiInterface_plane.js
 uiInterface_list_obj.js
+uiInterface_catalog.js
 joinElement.js
 substrate.js
 groupObj.js
