@@ -249,7 +249,8 @@ else if($url == '/calculator/raschet_blokov')
 }
 else if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 {
-	//$infProject['scene']['load'] = 'shape3';	
+	//$infProject['scene']['load'] = 'shape3';
+	$infProject['settings']['api']['list'] = $path.'components_2/getListObjSql.php';	
 	$infProject['settings']['project'] = 'warm_floor';
 	$infProject['settings']['floor']['o'] = true;
 	$infProject['settings']['floor']['areaPoint'] = 'inside';

@@ -41,6 +41,8 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/admin_menu.php"); } ?>
+	
 	<div class="frame">
 			
 		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
@@ -127,7 +129,8 @@
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	
 	<script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> 
-		
+	
+	<script src="<?=$path?>admin/panel_menu.js?<?=$vrs?>"></script>
 
 </body>
 
