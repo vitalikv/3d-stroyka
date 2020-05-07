@@ -55,7 +55,7 @@ $(document).ready(function()
 // получаем объекты из BD добавляем в список объектов UI 
 async function addItemAdminPanel_1(cdm) 
 {
-	var url = infProject.settings.api.list;
+	var url = infProject.path+'components/getListObjSql.php';
 	
 	var arr = [];
 	
@@ -794,7 +794,7 @@ function saveJsonAdminPanel()
 	
 	$.ajax
 	({
-		url: infProject.path+'admin/savePanelJson.php',
+		url: infProject.path+'admin/catalog/savePanelJson.php',
 		type: 'POST',
 		data: {json: json},
 		dataType: 'json',

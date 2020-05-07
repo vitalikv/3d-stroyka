@@ -59,7 +59,7 @@ function saveObjSql(cdm)
 	$.ajax
 	({
 		type: "POST",					
-		url: infProject.path+'components_2/saveObjSql.php',
+		url: infProject.path+'admin/import/saveObjSql.php',
 		data: { id: cdm.id, name: name, size: size, json: json },
 		dataType: 'json',
 		success: function(data)
@@ -77,7 +77,7 @@ function getObjSql(cdm)
 	$.ajax
 	({
 		type: "POST",					
-		url: infProject.path+'components_2/getObjSql.php',
+		url: infProject.path+'admin/import/getObjSql.php',
 		data: { id: cdm.id },
 		dataType: 'json',
 		success: function(data)

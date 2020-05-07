@@ -41,7 +41,7 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
-	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/admin_menu.php"); } ?>
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/catalog/admin_catalog.php"); } ?>
 	
 	<div class="frame">
 			
@@ -125,12 +125,16 @@
 	<script src="<?=$path?>uiInterface_plane.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_list_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>setObjBD.js?<?=$vrs?>"></script> 
+	 
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	
 	<script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> 
 	
-	<script src="<?=$path?>admin/panel_menu.js?<?=$vrs?>"></script>
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') 
+	{?> 
+	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
+	<script src="<?=$path?>admin/import/setObjBD.js?<?=$vrs?>"></script>
+	<?}?>
 
 </body>
 

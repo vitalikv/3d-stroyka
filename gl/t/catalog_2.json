@@ -1,1 +1,1 @@
-[{"id":"group","name":"группа 2","child":[{"id":"1","name":"234"},{"id":"2","name":"фитинг"}]},{"id":"group","name":"группа","child":[]}]
+[{"id":"group","name":"новая группа","child":[{"id":"3","name":"объект 1"}]},{"id":"group","name":"группа 2","child":[{"id":"1","name":"234"},{"id":"2","name":"фитинг"}]},{"id":"group","name":"группа","child":[]}]
