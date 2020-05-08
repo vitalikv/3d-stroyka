@@ -73,9 +73,9 @@ function setParamObj(cdm)
 	var obj = cdm.obj;
 	
 	var obj = obj.children[0];		
-	obj.position.y = 0;	
+	obj.position.set(0, 1, 0); 	
 
-	planeMath.position.y = 0; 
+	planeMath.position.y = 1; 
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.updateMatrixWorld(); 	
  
@@ -96,7 +96,7 @@ function setParamObj(cdm)
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 
 	scene.add( obj );	
-	
+	console.log(obj);
 	//clickO.move = obj;
 	
 	renderCamera();	

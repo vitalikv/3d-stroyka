@@ -737,8 +737,10 @@ function loadFile(cdm)
 
 
 
-function loadFilePL(arr) 
-{                 		
+async function loadFilePL(arr) 
+{    
+	await infoListObj();
+	
 	if(!arr) return;
 	
 	//console.log(arr);

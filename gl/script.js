@@ -187,7 +187,7 @@ infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };
 infProject.tools.merge_obj = {active: false, o1: [], o2: [], el: []}; 
 infProject.tools.joint = createJoinP(); 
 infProject.tools.plane = {o1: [], el: []};
-infProject.catalog = infoListObj();  
+   
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
 infProject.list.rp_ui = { arr: [] };
@@ -203,6 +203,7 @@ infProject.ui.main_menu = [];
 infProject.ui.right_menu = {active: ''};
 
 
+ 
 
 console.log(infProject);
 

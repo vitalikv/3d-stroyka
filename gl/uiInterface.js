@@ -38,45 +38,6 @@ function activeObjRightPanelUI_1(cdm)
 
 
 
-// добавляем объекты в каталог UI 
-function addObjInCatalogUI_x1(cdm) 
-{
-	
-	for(var i = 0; i < infProject.catalog.length; i++)
-	{
-		var o = infProject.catalog[i];
-		
-		if(o.stopUI) continue;
-		
-		if(o.groupIU)
-		{
-			var str = 
-			'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
-				<div class="right_panel_1_1_list_item_text" style="margin-left: 30px;">\
-					' +o.name+ '\
-				</div>\
-			</div>';
-			
-			$('[nameId="'+o.groupIU+'"]').append(str);
-			
-		}
-		else
-		{
-			var str = 
-			'<div class="flex_1 right_panel_1_1_list_item" add_lotid="'+o.lotid+'">\
-				<div class="right_panel_1_1_list_item_text">'
-				+o.name+
-				'</div>\
-			</div>';
-			
-			$('[list_ui="catalog"]').append(str);			
-		}
-	}	
-}
-
-
-
-
 
 
 // создаем текст для списка
