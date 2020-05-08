@@ -140,7 +140,7 @@
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') 
 	{?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
-	<script src="<?=$path?>admin/import/setObjBD.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>admin/import/importFbxObj.js?<?=$vrs?>"></script>
 	<?}?>
 
 </body>

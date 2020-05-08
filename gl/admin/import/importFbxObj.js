@@ -92,7 +92,48 @@ function setParamObj(cdm)
 	obj.userData.obj3D.ur.pos = new THREE.Vector3();
 	obj.userData.obj3D.ur.q = new THREE.Quaternion();	
 			
-
+	if(1==1)
+	{
+		var id = 0;
+		
+		obj.traverse( function ( child ) 
+		{
+			if ( child.isMesh ) 
+			{ 
+				//console.log(child.name);
+				
+				if(new RegExp( '_est_' ,'i').test( child.name ))
+				{
+					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
+					
+					child.visible = false;						
+					
+					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
+					
+					var geometry = createGeometryWD(0.03, 0.03, 0.03);
+					var geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+					
+					var cube = new THREE.Mesh( geometry, material );
+					cube.position.copy(child.position);
+					cube.quaternion.copy(child.quaternion);
+					cube.visible = false;
+					cube.renderOrder = 1;
+					//cube.rotation.y += 1;
+					//var axesHelper = new THREE.AxesHelper( 0.2 );
+					//child.add( axesHelper );							
+					
+					cube.userData.tag = 'joinPoint';
+					cube.userData.id = id;  id++;
+					cube.userData.centerPoint = { join: null };						 
+					cube.userData.centerPoint.nameRus = child.name;
+					cube.userData.centerPoint.color = cube.material.color.clone();
+					
+					obj.add( cube );				
+				}
+			}
+		});		
+	}
+	
 	//obj.material.visible = false;		
 	
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;

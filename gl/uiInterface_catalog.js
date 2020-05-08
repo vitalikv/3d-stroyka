@@ -5,6 +5,7 @@
 async function addObjInCatalogUI_1(cdm) 
 {
 	var url = infProject.path+'t/catalog_2.json';
+	var url = infProject.path+'components/getListObjSql.php';
 	
 	var arr = [];
 	

@@ -538,7 +538,12 @@ function addObjInScene(inf, cdm)
 			{ 
 				//console.log(child.name);
 				
-				if(new RegExp( '_est_' ,'i').test( child.name ))
+				if(child.userData.centerPoint)
+				{
+					child.userData.centerPoint.color = child.material.color.clone();
+				}
+					
+				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)
 				{
 					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
 					
