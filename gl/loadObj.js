@@ -397,7 +397,7 @@ function loadObjServer(cdm)
 		{ 
 			//object.scale.set(0.1, 0.1, 0.1);
 			
-			var obj = object.children[0];
+			var obj = object;
 			
 			addObjInBase({lotid: lotid, obj: obj});
 			

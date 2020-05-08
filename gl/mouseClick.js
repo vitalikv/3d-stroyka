@@ -284,6 +284,8 @@ function clickRayHit(event)
 	{
 		var ray = rayIntersect( event, infProject.scene.array.obj, 'arr' );
 		
+		console.log(111111, ray);
+		
 		if(ray.length > 0)
 		{   
 			if(rayhit)
@@ -294,12 +296,71 @@ function clickRayHit(event)
 			{
 				rayhit = ray[0];
 			}
+			
+			rayhit.object = getParentObj({obj: rayhit.object});
 		}			
 	}
 	
 	
 	return rayhit;
 }
+
+
+
+
+// находим родитель у дочернего объекта
+function getParentObj(cdm)
+{
+	var obj = cdm.obj;	
+	var next = true;
+	
+	while(next) 
+	{
+		if(obj.userData)
+		{
+			if(obj.userData.tag)
+			{
+				if(obj.userData.tag == 'obj')
+				{
+					next = false;
+					return obj;					
+				}
+				else
+				{
+					if(obj.parent)
+					{
+						obj = obj.parent;
+					}
+					else
+					{
+						next = false;
+						return null;
+					}
+				}
+			}
+			else if(obj.parent)
+			{ 
+				obj = obj.parent;
+			}
+			else
+			{
+				next = false;
+				return null;
+			}
+			
+		}
+		else if(obj.parent)
+		{ 
+			obj = obj.parent;
+		}
+		else
+		{
+			next = false;
+			return null;
+		}
+	}
+}
+
 
 
 function clickMouseActive(cdm)
