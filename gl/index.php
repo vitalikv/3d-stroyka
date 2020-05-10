@@ -126,7 +126,7 @@
     <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	
 	<script src="<?=$path?>clickActiveObj.js?<?=$vrs?>"></script>    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>uiInterface.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>uiInterface_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_wf.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_plane.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_list_obj.js?<?=$vrs?>"></script>

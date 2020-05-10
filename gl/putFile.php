@@ -32,7 +32,7 @@ clickObj.js
 clickMoveGizmo.js
 scaleBox.js
 loadObj.js
-uiInterface.js
+uiInterface_obj.js
 uiInterface_wf.js
 uiInterface_plane.js
 uiInterface_list_obj.js

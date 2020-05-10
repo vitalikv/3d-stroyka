@@ -647,6 +647,33 @@ function renameObject(cdm)
 
 		console.log('centerPoint.nameRus');
 	}
+	
+	
+	var arr1 = infProject.list.rp_ui.arr;
+	var arr2 = [];
+	
+	for(var i = 0; i < arr1.length; i++)
+	{
+		arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
+		
+		for(var i2 = 0; i2 < arr1[i].p.length; i2++)
+		{
+			arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
+		}
+	}
+	
+	
+	for(var i = 0; i < arr2.length; i++)
+	{
+		if(arr2[i].o == obj)
+		{
+			var nameItem = arr2[i].el[0].querySelector('[nameId="nameItem"]');
+			nameItem.innerText = name;  
+			break;
+		}
+	}
+	
+	
 }
 
 

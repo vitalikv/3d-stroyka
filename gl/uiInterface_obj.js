@@ -164,39 +164,51 @@ function clickObjUI(cdm)
 			
 			var str = 
 			'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-			<div class="right_panel_1_1_list_item_text">'+arrO[i].userData.obj3D.nameRus+'</div>\
+			<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
 				'+str_button+'\
-			</div>';				
+			</div>';
+
+			var str = 
+			'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
+				<div class="flex_1 relative_1" style="margin: auto;">\
+					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
+					'+str_button+'\
+				</div>\
+				<div nameId="groupItem" style="display: none;">\
+				</div>\
+			</div>';			
 			
 			var el = $(str).appendTo('[nameId="rp_obj_group"]');		
-			el.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });
+			el.on('mousedown', function(e){ clickItemObjNameUI({el: $(this)}); e.stopPropagation(); });
 			
 			
 			// назначаем кнопки треугольник событие
 			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
+			var container = el[0].querySelector('[nameid="groupItem"]');
 			(function(num) 
 			{
-				el_2.on('mousedown', function(e){ clickRtekUI_1({id: num}); e.stopPropagation(); });	
+				el_2.on('mousedown', function(e){ clickRtekUI_1({elem_2: container}); e.stopPropagation(); });	
 			}(num));	
 					
 			infProject.list.rp_ui.arr[num].el = el;
+			
 			
 			
 			// есть разъемы
 			for(var i2 = 0; i2 < o.length; i2++)
 			{				
 				if(!o[i2].userData.centerPoint) continue;			
-
+				
 				var str = 
-				'<div class="flex_1 right_panel_1_1_list_item" style="display: none;">\
-				<div class="right_panel_1_1_list_item_text" style="margin-left: 30px;"> &rarr; '+o[i2].userData.centerPoint.nameRus+'</div>\
-				</div>';
+				'<div class="flex_1 right_panel_1_1_list_item relative_1">\
+				<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+o[i2].userData.centerPoint.nameRus+'</div>\
+				</div>';				
 
-				var el2 = $(str).appendTo('[nameId="rp_obj_group"]');				
+				var el2 = $(str).appendTo(container);				
 				
 				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
 				
-				el2.on('mousedown', function(){ clickItemObjNameUI({el: $(this)}) });			
+				el2.on('mousedown', function(e){ clickItemObjNameUI({el: $(this)}); e.stopPropagation(); });			
 			}				
 			
 		}
@@ -211,20 +223,18 @@ function clickObjUI(cdm)
 // кликнули на треугольник в меню объекты (показываем/скрываем разъемы этого объекта)
 function clickRtekUI_1(cdm)
 {
-	console.log(cdm);
+	console.log(cdm, cdm.elem_2.style.display);
 	
-	infProject.list.rp_ui.arr[cdm.id].p_vis = !infProject.list.rp_ui.arr[cdm.id].p_vis;
+	var display = cdm.elem_2.style.display;
 	
-	var arr = infProject.list.rp_ui.arr[cdm.id].p;
+	var display = (display == 'none') ? 'block' : 'none';
 	
-	var display = (infProject.list.rp_ui.arr[cdm.id].p_vis) ? 'block' : 'none';
+	cdm.elem_2.style.display = display;
 	
-	
-	for(var i = 0; i < arr.length; i++)
-	{							
-		arr[i].el.css('display', display);		
-	}				
-	
+	var parentEl = cdm.elem_2.parentElement;	
+
+	if(display == 'block') { parentEl.style.backgroundColor = '#ebebeb'; }
+	else { parentEl.style.backgroundColor = '#ffffff'; }	
 }
 
 
