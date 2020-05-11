@@ -608,10 +608,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 								<div class="button1 button_gradient_1" nameId="button_delete_obj">
 									удалить	
 								</div>
-								
-								<div class="button1 button_gradient_1" nameId="button_save_obj" style="margin-top: 40px;">
-									сохранить	
-								</div>								
+		
+								<div nameId="sp_block_drt">
+
+								</div>		
 							</div>
 							
 						</div>	

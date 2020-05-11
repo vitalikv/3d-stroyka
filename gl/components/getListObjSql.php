@@ -4,7 +4,8 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 
 
-$sql = "SELECT id, name, size, planeMath, json FROM list_obj";
+//$sql = "SELECT id, name, size, json FROM list_obj";
+$sql = "SELECT * FROM list_obj";
 $r = $db->prepare($sql);
 $r->execute();
 $res = $r->fetchAll(PDO::FETCH_ASSOC);
@@ -25,11 +26,6 @@ foreach ($res as $text)
 	if($text['type'])
 	{
 		$data[$i]['type'] = json_decode($text['type']);	
-	}
-
-	if($text['planeMath'])
-	{
-		$data[$i]['planeMath'] = json_decode($text['planeMath']);	
 	}	
 
 	if($text['size'])
@@ -45,6 +41,11 @@ foreach ($res as $text)
 	if($text['properties'])
 	{
 		$data[$i]['properties'] = json_decode($text['properties']);	
+	}
+
+	if($text['preview'])
+	{
+		$data[$i]['preview'] = json_decode($text['preview']);	
 	}	
 	
 	$i++;

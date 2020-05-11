@@ -1649,7 +1649,13 @@ function checkNumberInput(cdm)
 
 
 
-
+// проверяем существует ли функция
+function isCheckExsistFunction(functionToCheck)  
+{
+    var getType = {};
+	
+    return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]' || functionToCheck && getType.toString.call(functionToCheck) === '[object AsyncFunction]';
+}
 
 
 var docReady = false;

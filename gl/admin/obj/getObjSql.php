@@ -3,8 +3,8 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 
 
-
-$id = trim($_POST['id']);
+if($_GET['id']) $id = trim($_GET['id']);
+if($_POST['id']) $id = trim($_POST['id']);
 $id = addslashes($id);
 if(!preg_match("/^[0-9]+$/i", $id)) { exit; }
 
@@ -32,10 +32,10 @@ if($res)
 	{
 		$data['name'] = json_decode($res['name']);	
 	}
-
-	if($res['planeMath'])
+	
+	if($res['type'])
 	{
-		$data['planeMath'] = json_decode($res['planeMath']);	
+		$data['type'] = json_decode($res['type']);	
 	}
 	
 	if($res['size'])
@@ -47,6 +47,16 @@ if($res)
 	{
 		$data['json'] = json_decode($res['json']);	
 	}
+	
+	if($res['properties'])
+	{
+		$data['properties'] = json_decode($res['properties']);	
+	}
+
+	if($res['preview'])
+	{
+		$data['preview'] = json_decode($res['preview']);	
+	}	
 }
 
 

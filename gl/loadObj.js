@@ -332,7 +332,7 @@ async function infoListObj()
 	
 	for(var i = 0; i < json.length; i++)
 	{			
-		arr[i] = { lotid: json[i].id, name: json[i].name, planeMath: json[i].planeMath, model: json[i].json };
+		arr[i] = { lotid: json[i].id, name: json[i].name, model: json[i].json };
 	}
 	
 
@@ -495,6 +495,13 @@ function addObjInScene(inf, cdm)
 	{ 
 		obj.position.y = inf.planeMath;
 		planeMath.position.y = inf.planeMath; 
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld(); 
+	}
+	else
+	{ 
+		obj.position.y = 1;
+		planeMath.position.y = 1; 
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 		planeMath.updateMatrixWorld(); 
 	}

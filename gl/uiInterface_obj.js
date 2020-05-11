@@ -30,6 +30,8 @@ function activeObjRightPanelUI_1(cdm)
 	else if(obj.userData.tag == 'obj')
 	{		    
 		$('[nameId="bl_object_3d"]').show();
+		
+		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	
 	$('[nameId="wrap_object_1"]').show(); 	
@@ -185,10 +187,10 @@ function clickObjUI(cdm)
 			// назначаем кнопки треугольник событие
 			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
 			var container = el[0].querySelector('[nameid="groupItem"]');
-			(function(num) 
+			(function(container) 
 			{
 				el_2.on('mousedown', function(e){ clickRtekUI_1({elem_2: container}); e.stopPropagation(); });	
-			}(num));	
+			}(container));	
 					
 			infProject.list.rp_ui.arr[num].el = el;
 			

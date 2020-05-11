@@ -68,7 +68,7 @@
 	
 				<noindex>		
 
-				<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/import/menu_fbx.php"); } ?>
+				<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/obj/menu_fbx.php"); } ?>
 				
 				<? require_once("include/left_panel_1.php"); ?>	
 				
@@ -140,7 +140,8 @@
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') 
 	{?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
-	<script src="<?=$path?>admin/import/importFbxObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>admin/obj/adminLoadObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>admin/obj/adminClickObj.js?<?=$vrs?>"></script>
 	<?}?>
 
 </body>
