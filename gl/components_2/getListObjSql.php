@@ -3,8 +3,21 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 
 
+if($_GET['select_list']) 
+{
+	$select_list = $_GET['select_list'];
+}
 
-$sql = "SELECT id, name, type, size, model, properties FROM list_obj";
+if($_POST['select_list']) 
+{
+	$select_list = $_POST['select_list'];
+}
+
+
+if(!isset($select_list)) { $select_list = '*'; }
+
+
+$sql = "SELECT {$select_list} FROM list_obj";
 $r = $db->prepare($sql);
 $r->execute();
 $res = $r->fetchAll(PDO::FETCH_ASSOC);
