@@ -3,15 +3,25 @@ require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
 
 
 
+
 if($_GET['id']) $id = trim($_GET['id']);
-if($_POST['id']) $id = trim($_POST['id']);
+if($_POST['id']) 
+{
+	$id = trim($_POST['id']);
+	
+	if($_POST['select_list'])
+	{
+		$select_list = $_POST['select_list'];
+	}
+}
+
 $id = addslashes($id);
 if(!preg_match("/^[0-9]+$/i", $id)) { exit; }
 
-
+if(!isset($select_list)) { $select_list = '*'; }
 
 // находим e-mail, Имя, codepro
-$sql = "SELECT * FROM list_obj WHERE id = :id";
+$sql = "SELECT {$select_list} FROM list_obj WHERE id = :id";
 $r = $db->prepare($sql);
 $r->bindValue(':id', $id, PDO::PARAM_STR);
 $r->execute();
@@ -32,7 +42,7 @@ if($res)
 	{
 		$data['name'] = json_decode($res['name']);	
 	}
-	
+
 	if($res['type'])
 	{
 		$data['type'] = json_decode($res['type']);	
@@ -47,18 +57,17 @@ if($res)
 	{
 		$data['model'] = json_decode($res['model']);	
 	}
-	
+
 	if($res['properties'])
 	{
 		$data['properties'] = json_decode($res['properties']);	
-	}
-
-	if($res['preview'])
-	{
-		$data['preview'] = json_decode($res['preview']);	
 	}	
 }
 
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode( $data );
+
+
+
+

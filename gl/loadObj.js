@@ -323,7 +323,7 @@ async function infoListObj()
 		
 	}
 	
-	var url = infProject.path+'components/getListObjSql.php';
+	var url = infProject.path+'components_2/getListObjSql.php';
 	
 	var arr = [];
 	

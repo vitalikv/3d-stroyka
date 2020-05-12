@@ -1577,7 +1577,7 @@ document.body.addEventListener("keydown", function (e)
 		
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
-	if(clickO.keys[18] && e.keyCode == 83) { getObjSql({id: 3}); }		// alt + s
+	if(clickO.keys[18] && e.keyCode == 83) {  }		// alt + s
 	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
 	if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
 	if(clickO.keys[18] && e.keyCode == 84) { saveFile({json: true}); }			// alt + t
