@@ -332,7 +332,7 @@ async function infoListObj()
 	
 	for(var i = 0; i < json.length; i++)
 	{			
-		arr[i] = { lotid: json[i].id, name: json[i].name, model: json[i].json };
+		arr[i] = { lotid: json[i].id, name: json[i].name, model: json[i].model };
 	}
 	
 

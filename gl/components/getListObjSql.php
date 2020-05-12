@@ -33,9 +33,9 @@ foreach ($res as $text)
 		$data[$i]['size'] = json_decode($text['size']);	
 	}
 	
-	if($text['json'])
+	if($text['model'])
 	{
-		$data[$i]['json'] = json_decode($text['json']);	
+		$data[$i]['model'] = json_decode($text['model']);	
 	}
 
 	if($text['properties'])

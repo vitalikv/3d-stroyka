@@ -282,7 +282,7 @@ function saveObjSql(cdm)
 	var name = (name) ? JSON.stringify( name ) : null;
 	var type = (type) ? JSON.stringify( type ) : null;
 	var size = (size) ? JSON.stringify( size ) : null;	
-	var json = JSON.stringify( obj ); 
+	var model = JSON.stringify( obj ); 
 	var properties = (properties) ? JSON.stringify( properties ) : null;
 	var preview = null;
 	
@@ -290,7 +290,7 @@ function saveObjSql(cdm)
 	({
 		type: "POST",					
 		url: infProject.path+'admin/obj/saveObjSql.php',
-		data: { id: lotid, name: name, type: type, size: size, json: json, properties: properties, preview: preview },
+		data: { id: lotid, name: name, type: type, size: size, model: model, properties: properties, preview: preview },
 		dataType: 'json',
 		success: function(data)
 		{  
