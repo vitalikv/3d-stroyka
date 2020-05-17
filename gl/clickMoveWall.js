@@ -541,8 +541,6 @@ function clickWallMouseUp(wall)
 		
 	
 	clickPointUP_BSP(param_wall.wallR);
-	
-	calculationAreaFundament_2(wall);
 }
 
 

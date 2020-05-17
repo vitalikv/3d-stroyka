@@ -147,15 +147,7 @@ $('input').on('focus keyup change', function ()
 $('input').blur(function () { infProject.activeInput = ''; });	
 
 
-$('[data-action="estimate"]').mousedown(function () 
-{ 
-	createEstimateJson();
-	$('.modal').css({"display":"block"});
-	$('[modal_body="estimate"]').css({"display":"block"}); 
-	$('[modal_body="form"]').css({"display":"none"});
-	$('[modal_title="estimate"]').css({"display":"block"});
-	$('[modal_title="form"]').css({"display":"none"});			
-}); 
+ 
 
 $('[data-action="form_1"]').mousedown(function () 
 { 

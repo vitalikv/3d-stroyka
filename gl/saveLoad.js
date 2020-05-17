@@ -878,9 +878,22 @@ async function loadFilePL(arr)
 
 	await loadObjInBase({furn: furn});
 
+
+	var group = infProject.project.file.group;	
+	for ( var i2 = 0; i2 < group.length; i2++ )
+	{										
+		var arrId = []; 
+		for ( var i3 = 0; i3 < group[i2].obj.length; i3++ )
+		{
+			arrId[arrId.length] = group[i2].obj[i3].id;
+		}
+		group[i2].obj = { id: arrId };
+		
+		createGroupObj_1(group[i2]);
+	}
 	
 	readyProject();
-	calculationAreaFundament_2();
+	
 	cameraZoomTop( camera.zoom );
 	
 
@@ -948,48 +961,6 @@ async function loadObjInBase(cdm)
 	}
 }
 
-
-// получаем объект из базы (копируем копию объекта и добавляем в сцену)
-function loadObjFromBase(cdm)
-{ 
-	var furn = cdm.furn;
-	
-	for ( var i = 0; i < furn.length; i++ )
-	{
-		if(Number(cdm.lotid) == Number(furn[i].lotid))
-		{
-			furn[i].pos.z *= -1;
-			
-			if(furn[i].rot)			
-			{
-				furn[i].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
-			}
-			
-			loadObjServer(furn[i]);
-
-			infProject.project.load.furn[infProject.project.load.furn.length] = furn[i].id;
-			
-			if(infProject.project.load.furn.length == infProject.project.file.furn.length)
-			{
-				var group = infProject.project.file.group;
-				
-				for ( var i2 = 0; i2 < group.length; i2++ )
-				{										
-					var arrId = []; 
-					for ( var i3 = 0; i3 < group[i2].obj.length; i3++ )
-					{
-						arrId[arrId.length] = group[i2].obj[i3].id;
-					}
-					group[i2].obj = { id: arrId };
-					
-					createGroupObj_1(group[i2]);
-				}
-				
-				readyProject();
-			}
-		}
-	}	
-}
 
 
 

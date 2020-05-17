@@ -673,7 +673,7 @@ function createWallZone(wall)
 		zone.walls[i].userData.wall.zone = zone;
 	}
 	
-	calculationAreaFundament_2(wall); 
+	 
 	wall.userData.wall.zone.label.visible = true; 
 }
 
