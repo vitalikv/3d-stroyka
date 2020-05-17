@@ -739,7 +739,6 @@ function loadFile(cdm)
 
 async function loadFilePL(arr) 
 {    
-	await infoListObj();
 	
 	if(!arr) return;
 	
@@ -877,7 +876,7 @@ async function loadFilePL(arr)
 	}
 	
 
-	loadObjInBase({furn: furn});
+	await loadObjInBase({furn: furn});
 
 	
 	readyProject();
@@ -892,22 +891,61 @@ async function loadFilePL(arr)
 
 
 // сохранение объектов в базу (создаем уникальную копию)
-function loadObjInBase(cdm)
+async function loadObjInBase(cdm)
 {
 	var furn = cdm.furn;
 	var lotid = [];
 	
 	for ( var i = 0; i < furn.length; i++ )
 	{
-		lotid[lotid.length] = Number(furn[i].lotid); 
+		lotid[lotid.length] = Number(furn[i].lotid);
+
+		//createSpotObj(inf, furn[i]);
 	}
 	
 	lotid = [...new Set(lotid)];  
 	
+	var strId = '';
+	
 	for ( var i = 0; i < lotid.length; i++ )
 	{
-		loadObjServer({lotid: lotid[i], loadFromFile: true, furn: furn});
-	}	
+		strId += '&id['+i+']='+lotid[i];
+	}
+
+	var url = infProject.path+'components_2/getListObjSql.php';		
+	var response = await fetch(url, 
+	{
+		method: 'POST',
+		body: 'select_list=id, name, size'+strId ,
+		headers: 
+		{
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},		
+		
+	});
+	var json = await response.json();
+
+	
+	for ( var i = 0; i < json.length; i++ )
+	{		
+		for ( var i2 = 0; i2 < furn.length; i2++ )
+		{
+			if(furn[i2].lotid == json[i].id) 
+			{ 
+		
+				furn[i2].pos.z *= -1;
+				
+				if(furn[i2].rot)			
+				{
+					furn[i2].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
+				}
+			
+				await loadObjServer(furn[i2]);
+
+				infProject.project.load.furn[infProject.project.load.furn.length] = furn[i2].lotid;				
+			}
+		}
+	}
 }
 
 

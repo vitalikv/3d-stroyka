@@ -19,6 +19,12 @@ async function addObjInCatalogUI_1(cdm)
 	});
 	var json = await response.json();
 	
+	json[json.length] =
+	{	
+		id : 'tube',
+		name : 'труба',
+		planeMath : 0.1,
+	}
 	
 	for(var i = 0; i < json.length; i++)
 	{
