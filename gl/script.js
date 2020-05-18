@@ -1279,34 +1279,7 @@ function saveAsImage()
 }
 
 
-// screenshot сохраняем в bd
-function saveAsImagePreview() 
-{ 
-	try 
-	{		
-		var rd = 400/w_w;
-		var flag = infProject.scene.grid.obj.visible;
-		
-		if(flag) { infProject.scene.grid.obj.visible = false; }
-		renderer.setSize( 400, w_h*rd );
-		renderer.antialias = true;
-		renderer.render( scene, camera );
-		
-		var imgData = renderer.domElement.toDataURL("image/jpeg", 0.7);	
 
-		if(flag) { infProject.scene.grid.obj.visible = true; }
-		renderer.setSize( w_w, w_h );
-		renderer.antialias = false;
-		renderer.render( scene, camera );
-		
-		return imgData;
-	} 
-	catch (e) 
-	{
-		console.log(e);
-		return null;
-	}
-}
 
 
 // открыть или сохранить screenshot

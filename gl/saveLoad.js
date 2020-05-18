@@ -655,15 +655,12 @@ function saveFile(cdm)
 	
 	if(cdm.id)
 	{
-		//var preview = saveAsImagePreview();
-		var preview = null;
-		
 		// сохраняем в бд
 		$.ajax
 		({
 			url: infProject.path+'components/saveSql.php',
 			type: 'POST',
-			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: preview},
+			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: null},
 			dataType: 'json',
 			success: function(json)
 			{ 			
