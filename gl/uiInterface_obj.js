@@ -406,7 +406,7 @@ function clickItemObjNameUI(cdm)
 		}		
 	}
 	
-	clickObject3D(obj, {outline: true});
+	if(!cdm.obj) clickObject3D(obj, {outline: true});
 	showHideJP();
 	
 }

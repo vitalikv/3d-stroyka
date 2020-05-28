@@ -33,6 +33,8 @@ $interface['grid_tube_1'] = 0;
 $interface['tube_b1'] = 0;
 $interface['box_wf_b1'] = 0;
 $interface['obj_b1'] = 0;
+
+$interface['admin'] = 1;
 	
 
 

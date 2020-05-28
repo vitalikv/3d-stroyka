@@ -41,9 +41,10 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
-	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') 
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['admin']) 
 	{ 
-		require_once("admin/catalog/admin_catalog.php"); 
+		require_once("admin/catalog/admin_catalog.php");
+		require_once("admin/obj/menu_fbx.php");
 	} ?>
 	
 	<div class="frame">
@@ -67,8 +68,6 @@
 				<? //require_once("include/modal_window_2.php"); ?>				
 	
 				<noindex>		
-
-				<? if($_SERVER['SERVER_NAME']=='3d-stroyka') { require_once("admin/obj/menu_fbx.php"); } ?>
 				
 				<? require_once("include/left_panel_1.php"); ?>	
 				
@@ -137,7 +136,7 @@
 	
 	<script src="<?=$path?>block/floorWarm.js?<?=$vrs?>"></script> 
 	
-	<? if($_SERVER['SERVER_NAME']=='3d-stroyka') 
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['admin']) 
 	{?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
 	<script src="<?=$path?>admin/obj/adminLoadObj.js?<?=$vrs?>"></script>
