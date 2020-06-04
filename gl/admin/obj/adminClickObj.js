@@ -128,9 +128,19 @@ function saveObjSql(cdm)
 	var name = (name) ? JSON.stringify( name ) : null;
 	var type = (type) ? JSON.stringify( type ) : null;
 	var size = (size) ? JSON.stringify( size ) : null;	
-	var model = JSON.stringify( obj ); 
 	var properties = (properties) ? JSON.stringify( properties ) : null;
 	var preview = saveAsImagePreview();
+	
+	{
+		var pos = obj.position.clone();
+		var rot = obj.rotation.clone();
+		
+		obj.position.set(0, 0, 0);
+		obj.rotation.set(0, 0, 0);
+		obj.updateMatrixWorld();
+		
+		var model = JSON.stringify( obj );  		
+	}
 	
 	$.ajax
 	({
@@ -140,7 +150,10 @@ function saveObjSql(cdm)
 		dataType: 'json',
 		success: function(data)
 		{  
-			console.log(data);			
+			console.log(data);
+
+			obj.position.copy(pos);
+			obj.rotation.copy(rot);				
 		}
 	});	
 }
