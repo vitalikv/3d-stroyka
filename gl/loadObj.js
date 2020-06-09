@@ -161,7 +161,11 @@ function addObjInScene(inf, cdm)
 				
 				if(child.userData.centerPoint)
 				{
+					child.material.color = new THREE.Color(0x00ff00);
+					child.material = child.material.clone();
 					child.userData.centerPoint.color = child.material.color.clone();
+					
+					console.log(child.material);
 				}
 					
 				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)

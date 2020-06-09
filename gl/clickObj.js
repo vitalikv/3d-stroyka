@@ -532,7 +532,21 @@ function copyObj(cdm)
 		clone.userData.id = countId; countId++;
 
 		infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
-		scene.add( clone );	
+		scene.add( clone );
+
+		// клонируем материал
+		clone.traverse( function ( child ) 
+		{
+			if ( child.isMesh ) 
+			{ 
+				if(child.userData.centerPoint)
+				{
+					child.material.color = new THREE.Color(0x00ff00);
+					child.material = child.material.clone();
+					child.userData.centerPoint.color = child.material.color.clone();
+				}
+			}
+		});
 
 		updateListTubeUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
 		

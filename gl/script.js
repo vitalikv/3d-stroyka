@@ -969,7 +969,7 @@ function createOneWall3( point1, point2, width, cdm )
 
  
 
-function rayIntersect( event, obj, t ) 
+function rayIntersect( event, obj, t, recursive ) 
 {
 	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
@@ -977,7 +977,7 @@ function rayIntersect( event, obj, t )
 	
 	var intersects = null;
 	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); } 
-	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj ); }
+	else if(t == 'arr'){ intersects = raycaster.intersectObjects( obj, recursive ); }
 	
 	return intersects;
 }
