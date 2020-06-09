@@ -109,7 +109,7 @@ function saveObjSql(cdm)
 	lotid = lotid.trim();
 	if(lotid == '') { lotid = 0; }	
 	
-	var name = $('[nameId="rp_obj_name"]').val();
+	var name = obj.userData.obj3D.nameRus;
 	name = name.trim();
 	if(name == '') { name = null; }
 	

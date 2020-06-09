@@ -19,7 +19,8 @@ $('[nameId="button_contact"]').mousedown(function () { changeMainMenuUI({value: 
 //$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
 
 
-$('[nameId="camera_button"]').change(function() { clickInterface({button: $( this ).val()}); });
+$('[nameId="butt_camera_2D"]').mousedown(function() { changeCamera(cameraTop); $(this).hide(); $('[nameId="butt_camera_3D"]').show(); });
+$('[nameId="butt_camera_3D"]').mousedown(function() { changeCamera(camera3D); $(this).hide(); $('[nameId="butt_camera_2D"]').show(); });
 
 
 getSlotMainMenuUI();	
@@ -132,7 +133,7 @@ $('[link_form]').mousedown(function ()
 
 
 
-$('[data-action="deleteObj"]').mousedown(function () { console.log(999999); detectDeleteObj(); return false; });
+$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
 $('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 
 

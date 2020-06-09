@@ -1123,15 +1123,7 @@ function clickInterface(cdm)
 	{		
 		deActiveSelected();	
 		
-		if(cdm.button == '2D')
-		{  			
-			changeCamera(cameraTop); 
-		}
-		else if(cdm.button == '3D')
-		{
-			changeCamera(camera3D);
-		}	
-		else if(cdm.button == 'point_1')
+		if(cdm.button == 'point_1')
 		{
 			clickO.button = 'create_wall';
 		}
