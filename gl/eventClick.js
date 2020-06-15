@@ -144,8 +144,13 @@ $('input').on('focus keyup change', function ()
 	if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
 	if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }
 	console.log(infProject.activeInput);
+	blockKeyCode({block: true});
 });
-$('input').blur(function () { infProject.activeInput = ''; });	
+$('input').blur(function () 
+{ 
+	infProject.activeInput = ''; 
+	blockKeyCode({block: false});
+});	
 
 
  

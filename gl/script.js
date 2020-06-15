@@ -196,6 +196,7 @@ infProject.list.obj_scene_ui = [];
 infProject.list.rp_wf_point = { align: false, tubeP: null, arr: [], joinO: null }; 
 infProject.settings.active = { pg: 'pivot', group: true, joinP: true };
 infProject.settings.active.tube = null;
+infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры
 infProject.start = true; 
 
 infProject.ui = {}
@@ -1496,7 +1497,16 @@ function checkNumberInput(cdm)
 }
 
 
-
+// блокировка клавиатуры
+function blockKeyCode(cdm) 
+{	 
+	if(!cdm) { cdm = {}; } 
+	 
+	if(cdm.block !== undefined) 
+	{ 
+		infProject.settings.blockKeyCode = cdm.block; 
+	}	 
+} 
 
 
 // проверяем существует ли функция
