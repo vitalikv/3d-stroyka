@@ -124,7 +124,7 @@ function saveObjSql(cdm)
 	
 
 
-	var lotid = obj.userData.obj3D.lotid;
+	//var lotid = obj.userData.obj3D.lotid;
 	var name = (name) ? JSON.stringify( name ) : null;
 	var type = (type) ? JSON.stringify( type ) : null;
 	var size = (size) ? JSON.stringify( size ) : null;	
