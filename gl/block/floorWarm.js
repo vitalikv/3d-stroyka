@@ -777,6 +777,8 @@ function geometryTubeWF(cdm)
 	updateListTubeUI_1({o: line, type: 'update'});	// обновляем список материалов 
 	
 	renderCamera();
+	
+	return tube;
 }
 
 

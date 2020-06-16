@@ -48,17 +48,40 @@ async function loadObjServer(cdm)
 	var inf = await getObjFromBase({lotid: lotid});
 	if(!inf) return;		// объект не существует в API/каталоге
 	
+	var type = '';
+	
 	if(inf.obj)		// объект есть в кэше
 	{ 
 		console.log('---------');
+		type = 'obj';
 	}
 	else if(inf.model)		// объекта нет в кэше, сохраняем/добавляем в кэш
 	{	
 		var obj = new THREE.ObjectLoader().parse( inf.model );			
-		addObjInBase(inf, obj);		
+		addObjInBase(inf, obj);	
+		type = 'obj';
 	}	
 	
-	addObjInScene(inf, cdm);
+	if(type == 'obj') { addObjInScene(inf, cdm); }
+	else if(inf.type == 'tube') 
+	{ 
+		console.log(444); 
+		
+		var p = [];
+		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0)});
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0)});
+		
+		var line = createLineWF({point: p, diameter: 0.05}); 
+		
+		var tube = geometryTubeWF({line : line, createLine : true});		
+		
+		//tube.position.y = 1;
+		planeMath.position.y = 1; 
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld(); 	
+
+		clickO.move = tube;
+	}
 }
 
 

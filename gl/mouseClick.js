@@ -464,6 +464,7 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'free_dw' ) { dragWD_2( event, obj ); }
 		else if ( tag == 'boxWF' && camera == cameraTop ) { moveObjectPop( event ); }
 		else if ( tag == 'obj' ) { moveObjectPop( event ); }
+		else if ( tag == 'wf_tube' ) { moveFullTube( event ); }
 	}
 	else 
 	{

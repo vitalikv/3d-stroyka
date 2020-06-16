@@ -40,6 +40,7 @@ uiInterface_catalog.js
 joinElement.js
 substrate.js
 groupObj.js
+clickMoveTube.js
 ';
 
 
