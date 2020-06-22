@@ -97,8 +97,6 @@ function updateListTubeUI_1(cdm)
 		var q = null;
 		var line = cdm.o;
 		
-		console.log('update', line.userData);
-		
 		for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
 		{
 			if(infProject.list.obj_scene_ui[i].o == cdm.o) 
@@ -110,8 +108,6 @@ function updateListTubeUI_1(cdm)
 
 		if(q)
 		{
-			console.log(cdm, q.querySelector('[item="color"]'));
-			//var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
 			
 			$(q.querySelector('[item="color"]')).css('background-color', '#'+line.userData.wf_line.color.clone().getHexString());
 			

@@ -44,6 +44,8 @@ function loadInputFile(cdm)
 	setParamObj({obj: obj});			
 
 	$('[nameId="window_main_load_obj"]').css({"display":"none"});
+	
+	blockKeyCode({block: false});
 }
 
 
