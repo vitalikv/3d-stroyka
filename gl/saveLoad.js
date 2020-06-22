@@ -1146,12 +1146,7 @@ function loadStartForm(cdm)
 	if(wall.length > 0) createWallZone(wall[0])
 	
 	//width_wall = 0.3;
-	
-	if(form == 'wall_kirpich' || form == 'wall_block') 
-	{ 
-		getFormWallR_1(); 	// получаем параметры стены из input 
-		createFormWallR(); 
-	}  
+	  
 	
 	if(infProject.settings.camera.zoom != 1) { cameraZoomTop( infProject.settings.camera.zoom ); }
 	

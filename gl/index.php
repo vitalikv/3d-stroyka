@@ -72,7 +72,6 @@
 				<? require_once("include/left_panel_1.php"); ?>	
 				
 				<? require_once("include/bottom_panel_1.php"); ?>	
-				<? require_once("include/modal_window_1.php"); ?>
 				<? require_once("include/modal_window_3.php"); ?>
 					
 				
@@ -96,7 +95,6 @@
 	<script src="<?=$path?>meshBSP.js"></script> 	
     <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
     
-	<script src="<?=$path?>block/createWallBlock.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>block/createGrid.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>

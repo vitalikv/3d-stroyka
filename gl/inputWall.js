@@ -84,9 +84,7 @@ function inputChangeWall_1(cdm)
 	inputLengthWall_1(cdm);	// меняем только длину стены 
 	
 	showRuleCameraWall();	// обновляем размеры стены
-	
-	resetSideBlockWall({wall:wall});	// обновляем кирпичи
-	cutSideBlockWall({wall:wall});		// обрезаем кирпичи по бокам стены	
+		
 	for(var i = 0; i < wall.userData.wall.arrO.length; i++) { cutMeshBlockBSP( wall.userData.wall.arrO[i] ); }	// вырезаем wd в кирпичах 
 	
 	renderCamera();

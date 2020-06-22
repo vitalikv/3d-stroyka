@@ -155,36 +155,9 @@ $('input').blur(function ()
 
  
 
-$('[data-action="form_1"]').mousedown(function () 
-{ 
-	console.log('form_1');
-	getFormWallR_1();
-	checkClickUINameID('form_1');
-	clickInterface();
-	$('.modal').css({"display":"block"});
-	$('[modal_body="estimate"]').css({"display":"none"});
-	$('[modal_body="form"]').css({"display":"block"});
-	$('[modal_title="estimate"]').css({"display":"none"});
-	$('[modal_title="form"]').css({"display":"block"});
-});
-
 
 $('[data-action="modal_window"]').mousedown(function (e) { e.stopPropagation(); });		
 
-
-$('[data-action="modal"]').mousedown(function () 
-{	
-	checkChangeFormWallR();			
-	clickInterface(); 
-	$('[data-action="modal"]').css({"display":"none"}); 
-});
-
-			
-$('[data-action="modal_window_close"]').mousedown(function () 
-{  
-	checkChangeFormWallR();
-	$('[data-action="modal"]').css({"display":"none"}); 
-});
 
 
 
