@@ -39,6 +39,8 @@ function clickWFPoint(intersect)
 	clickO.move = obj;	
 	clickO.actMove = false;
 	
+	outlineAddObj(obj);
+	
 	clickO.offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
 	planeMath.position.set( 0, intersect.point.y, 0 );
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -71,6 +73,8 @@ function clickWFPoint_3D(cdm)
 	}		
 	
 	var obj = intersect.object;	
+	
+	outlineAddObj(obj);
 	
 	var pos = obj.getWorldPosition(new THREE.Vector3());
 	var qt = new THREE.Quaternion();
@@ -140,6 +144,8 @@ function clickTubeWF(cdm)
 	setScaleTubePoint();
 
 	showWF_line_UI(tube);
+	
+	outlineAddObj(tube);
 }
 
 
@@ -1043,6 +1049,8 @@ function deClickTube(cdm)
 	// деактивируем трубу иди точку
 	function deClickTube_1(cdm)
 	{
+		outlineRemoveObj();
+		
 		var obj = cdm.obj;
 		
 		if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		

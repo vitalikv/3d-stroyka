@@ -474,7 +474,7 @@ function onDocumentMouseMove( event )
 	}
 	
 
-	activeHover2D( event );
+	//activeHover2D( event );
 
 	renderCamera();
 }
