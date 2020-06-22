@@ -224,8 +224,6 @@ function clickRayHit(event)
 	// труба
 	if(!infProject.scene.block.click.tube)
 	{
-		//var ray = hoverCursorLineWF(event);
-
 		var arrT = [];
 		var arrP = [];
 		var tube = infProject.scene.array.tube;	
@@ -389,7 +387,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }  		
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' && camera == cameraTop ) { clickPoint( rayhit ); }
-		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint( rayhit ); }
+		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint_3D({ intersect: rayhit }); }
 		else if( tag == 'wf_tube' && camera == cameraTop ) { clickTubeWF({ray: rayhit}); }
 		else if( tag == 'window' && camera == cameraTop ) { clickWD( rayhit ); }
 		else if( tag == 'door' && camera == cameraTop ) { clickWD( rayhit ); }

@@ -112,8 +112,7 @@ function setParamObj(cdm)
 					
 					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
 					
-					var geometry = createGeometryWD(0.03, 0.03, 0.03);
-					var geometry = new THREE.BufferGeometry().fromGeometry(geometry);
+					var geometry = infProject.geometry.centerPoint;
 					
 					var cube = new THREE.Mesh( geometry, material );
 					cube.position.copy(child.position);

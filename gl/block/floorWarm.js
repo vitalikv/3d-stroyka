@@ -5,7 +5,7 @@
 // создаем точку для теплого пола
 function createPointWF(cdm)
 {
-	var point = new THREE.Mesh( infProject.geometry.wf_point, new THREE.MeshLambertMaterial({color : 0x333333, transparent: true, opacity: 0.6, depthTest: false}) ); 
+	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.pointTube.default ); 
 	point.position.copy( cdm.pos );		
 	//point.position.y = infProject.settings.wf_tube.pos.y;	
 	
@@ -116,39 +116,6 @@ function clickWFPoint_3D(cdm)
 
 
 
-// кликнули на трубу
-function clickTubeWF(cdm)
-{
-	if(infProject.settings.active.tube == 'add_point_wf')
-	{
-		addPointOnTube(cdm);
-	}
-	
-	var ray = cdm.ray;		
-	  
-	var tube = ray.object;
-
-	var line = tube.userData.wf_tube.line;
-	
-	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
-	
-	showHideArrObj(wf, true);
-
-	setClickLastObj({obj: tube});
-	
-	setScaleTubePoint();
-
-	showWF_line_UI(tube);
-	
-	outlineAddObj(tube);
-}
-
-
 
 // при клике добавляем на трубу точку
 function addPointOnTube(cdm)
@@ -250,7 +217,6 @@ function moveWFPoint(event, obj)
 	
 	dragToolWFPoint({obj : clickO.move});	// проверяем соединения с другими теплыми полами
 	
-	if(!obj.userData.wf_point.cross.o) { posLinkGrid({point: obj}); } 	// привязка к сетке
 	
 	// обновляем geometry линии
 	if(obj.userData.wf_point.line.o)
@@ -270,55 +236,6 @@ function moveWFPoint(event, obj)
 	showWF_point_UI(obj);
 }
 
-
-
-// привязка мышки к сетки
-function posLinkGrid(cdm)
-{
-	if(!infProject.scene.grid.show) return;
-	if(!infProject.scene.grid.link) return;
-	
-	var point = cdm.point;
-	
-	var grid = infProject.scene.grid.obj;
-	
-	var size = grid.userData.size;
-	var count = grid.userData.count;
-	
-	
-	var arr = [];
-	
-	for(var i = 0; i <= count; i++)
-	{
-		var value = ( i * size ) - (count * size) / 2;
-		
-		var posX = value + grid.position.x;
-		var posZ = value + grid.position.z;
-		
-		arr[i] = {};
-		arr[i].x = Math.abs(posX - point.position.x);
-		arr[i].z = Math.abs(posZ - point.position.z);
-		arr[i].posX = posX;
-		arr[i].posZ = posZ;
-	}
-	
-	var min = { x: arr[0].x, z: arr[0].z, posX: arr[0].posX, posZ: arr[0].posZ };
-	
-	for(var i = 1; i < arr.length; i++)
-	{
-		if(min.x > arr[i].x) { min.x = arr[i].x; min.posX = arr[i].posX; }
-		if(min.z > arr[i].z) { min.z = arr[i].z; min.posZ = arr[i].posZ; }
-	}
-	
-			
-	
-	//if(min.x > 0.04) { min.posX = spPoint(new THREE.Vector3(-10, 0, min.posZ), new THREE.Vector3(10, 0, min.posZ), point.position).x; }
-	//if(min.z > 0.04) { min.posZ = spPoint(new THREE.Vector3(min.posX, 0, 10), new THREE.Vector3(min.posX, 0, -10), point.position).z; }
-	
-	
-	point.position.x = min.posX;
-	point.position.z = min.posZ;
-}
 
 
 
@@ -407,99 +324,6 @@ function dragToolWFPoint(cdm)
 
 
 
-
-
-
-// подсвечиваем линию или точку, когда наводим рядом мышь 
-function hoverCursorLineWF()
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	if(intersects.length == 0) return null;
-	
-	var posMouse = intersects[0].point;	
-	posMouse.y = infProject.settings.wf_tube.pos.y;
-	
-	var arr = [];	
-	var z = 0.1 / camera.zoom;
-	
-	for(var i = 0; i < infProject.scene.array.tube.length; i++)
-	{ 		
-		var line = infProject.scene.array.tube[i];
-		var v = line.geometry.vertices;
-		
-		if(v.length < 2) continue;
-
-		var flag = false;
-		
-		for(var i2 = 0; i2 < line.userData.wf_line.point.length; i2++)
-		{
-			var point = line.userData.wf_line.point[i2];
-			
-			var dist = point.position.distanceTo(posMouse);
-			
-			if(dist > z) continue;
-			
-			arr[arr.length] = {dist: dist, p1: point.position.clone(), p2: posMouse, cross: point};
-			
-			flag = true;
-		}
-		
-		if(flag) continue;
-		
-		// пускаем перпендикуляр от точки на прямую
-		for(var i2 = 0; i2 < v.length - 1; i2++)
-		{
-			if(!calScal(v[i2], v[i2 + 1], posMouse)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
-			
-			var pos = spPoint(v[i2], v[i2 + 1], posMouse);  
-			var pos = new THREE.Vector3(pos.x, posMouse.y, pos.z);	// получаем точку пересечения точки на прямую
-			
-			var dist = pos.distanceTo(posMouse);
-			
-			if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
-			
-			var point_1 = line.userData.wf_line.point[i2];
-			var point_2 = line.userData.wf_line.point[i2];
-			arr[arr.length] = {dist: dist, p1: pos, p2: posMouse, cross: line};
-		}
-	}
-		
-	var result = null;
-	
-	if(arr.length > 1) arr.sort(function (a, b) { return a.dist - b.dist; });
-	
-	if(arr.length > 0) 
-	{  
-		//getNearLineWF(arr[0]);
-		result = { object : arr[0].cross, point : posMouse, distance: camera.position.distanceTo(arr[0].p1) };
-	}
-	
-	renderCamera();
-	
-	return result;
-}
-
-
-
-
-  
-// устанвливаем и показываем красные линии
-function getNearLineWF(cdm)
-{
-	var d = cdm.dist;	
-	
-	var v = infProject.tools.axis[0].geometry.vertices;		
-	v[3].x = v[2].x = v[5].x = v[4].x = d;		
-	infProject.tools.axis[0].geometry.verticesNeedUpdate = true;
-
-	var dir = new THREE.Vector3().subVectors( cdm.p1, cdm.p2 ).normalize();
-	var angleDeg = Math.atan2(dir.x, dir.z);
-	infProject.tools.axis[0].rotation.set(0, angleDeg + Math.PI / 2, 0);		
-	infProject.tools.axis[0].position.copy( cdm.p1 );
-	
-	infProject.tools.axis[0].visible = true;	
-}
 
 
 
@@ -1006,11 +830,15 @@ function deClickTube(cdm)
 		if(cdm.moment == 'down' && camera == cameraTop)
 		{
 			if(clickO.rayhit.object == cdm.obj) return;
+			
+			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}
 		
 		if(cdm.moment == 'up' && camera == camera3D)
 		{
 			if(clickO.rayhit.object == cdm.obj) return;
+			
+			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}		
 	}
 	
@@ -1067,7 +895,7 @@ function deClickTube(cdm)
 		}
 		
 		// скрываем pivot
-		if(obj.userData.tag == 'wf_point' && camera == camera3D)
+		if(obj.userData.tag == 'wf_point')
 		{
 			var pivot = infProject.tools.pivot;
 			

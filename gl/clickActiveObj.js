@@ -169,10 +169,13 @@ function objDeActiveColor_2D()
 	else if(o.userData.tag == 'window'){ o.material.color = new THREE.Color(infProject.listColor.window2D); }
 	else if(o.userData.tag == 'door'){ o.material.color = new THREE.Color(infProject.listColor.door2D); }	
 	else if(o.userData.tag == 'room'){ scene.remove(o.userData.room.outline); o.userData.room.outline = null; } 
-	else if(o.userData.tag == 'wf_point'){ o.material.color = o.userData.wf_point.color; }
+	else if(o.userData.tag == 'wf_point')
+	{ 
+		//o.material.color = o.userData.wf_point.color; 
+	}
 	else if(o.userData.tag == 'wf_tube')
 	{ 
-		o.material.color = o.userData.wf_tube.color;		
+		//o.material.color = o.userData.wf_tube.color;		
 	}
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }

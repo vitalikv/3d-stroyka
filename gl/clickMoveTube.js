@@ -2,6 +2,43 @@
 
 
 
+
+// кликнули на трубу
+function clickTubeWF(cdm)
+{
+	if(infProject.settings.active.tube == 'add_point_wf')
+	{
+		addPointOnTube(cdm);	// добавляем точку на трубу
+	}
+	
+	var ray = cdm.ray;		
+	  
+	var tube = ray.object;
+
+	var line = tube.userData.wf_tube.line;
+	
+	// показываем точки у труб
+	var wf = [];
+	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	{ 
+		wf[wf.length] = line.userData.wf_line.point[i2]; 
+	}
+	
+	showHideArrObj(wf, true);
+
+	setClickLastObj({obj: tube});
+	
+	setScaleTubePoint();
+
+	showWF_line_UI(tube);
+	
+	outlineAddObj(tube);
+}
+
+
+
+
+
 // перемещение по 2D плоскости 
 function moveFullTube( event )
 {	
