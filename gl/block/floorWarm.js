@@ -27,42 +27,8 @@ function createPointWF(cdm)
 }
 
 
-// кликнули на точку 2D
-function clickWFPoint(intersect)
-{
-	if(clickO.move)
-	{
-		if(clickO.move.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
-	}		
-	
-	var obj = intersect.object;	
-	clickO.move = obj;	
-	clickO.actMove = false;
-	
-	outlineAddObj(obj);
-	
-	clickO.offset = new THREE.Vector3().subVectors( intersect.object.position, intersect.point );
-	planeMath.position.set( 0, intersect.point.y, 0 );
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
-	
-	
-	var line = obj.userData.wf_point.line.o;
-	
-	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
-	
-	showHideArrObj(wf, true);
-	
-	activeObjRightPanelUI_1({obj: obj});
-	
-	setClickLastObj({obj: obj});
-}
 
-
+// кликнули на точку
 function clickWFPoint_3D(cdm)
 {
 	var intersect = cdm.intersect;
@@ -186,55 +152,6 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 
 
 
-
-// перетаскиваем точку/tool, обновляем форму линии
-function moveWFPoint(event, obj)
-{
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	if(intersects.length == 0) return;	
-	
-	if(!clickO.actMove)
-	{
-		clickO.actMove = true;
-		
-		var line = obj.userData.wf_point.line.o;
-		
-		if(line) 
-		{ 
-			//line.material.color = new THREE.Color(infProject.listColor.active2D);
-			
-			if(line.userData.wf_line.tube)
-			{
-				line.userData.wf_line.tube.visible = false;
-			}			 
-		}
-	}
-	
-	var pos = new THREE.Vector3().addVectors( intersects[0].point, clickO.offset );
-	obj.position.copy(pos);	
-	obj.position.y = infProject.settings.wf_tube.pos.y;
-	
-	dragToolWFPoint({obj : clickO.move});	// проверяем соединения с другими теплыми полами
-	
-	
-	// обновляем geometry линии
-	if(obj.userData.wf_point.line.o)
-	{
-		var line = obj.userData.wf_point.line.o;
-		
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;
-
-		// обновляем geometry трубы
-		if(line.userData.wf_line.tube)
-		{
-			//geometryTubeWF({line : line});
-		}
-	}
-	
-	showWF_point_UI(obj);
-}
 
 
 
@@ -397,31 +314,6 @@ function upLineWF(point)
 	clickO.move = point_2;
 }
 
-
-
-// сняли клик, когда перетаскивали точку
-function clickWFPointUp(point)
-{
-	if(point.userData.wf_point.cross.o) { clickPointToolsWF(point); clickO.move = null; return; }
-	
-	if(clickO.actMove)
-	{		
-		var line = point.userData.wf_point.line.o;
-		
-		if(line) 
-		{ 
-			//line.material.color = new THREE.Color(infProject.listColor.active2D);
-			
-			if(line.userData.wf_line.tube)
-			{
-				geometryTubeWF({line : line});
-				line.userData.wf_line.tube.visible = true;
-			}			 
-		}
-	}
-	
-	clickO.move = null;
-}
 
 
 
@@ -906,6 +798,7 @@ function deClickTube(cdm)
 		
 		
 		switchAlignWfPoint({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
+		switchJoinWfPoint({active: false});
 		
 		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку		
 		

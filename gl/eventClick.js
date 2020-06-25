@@ -93,8 +93,15 @@ $('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAd
   
 $('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
 $('[nameId="join_element"]').mousedown(function () { joinElement(); });
+
 $('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignWfPoint(); });
+$('[nameId="button_deactive_align_wf_point"]').mousedown(function () { switchAlignWfPoint({active: false}); });
 $('[nameId="button_done_align_wf_point"]').mousedown(function () { joinTubePointTopoint(); });
+
+$('[nameId="button_active_join_wf_point"]').mousedown(function () { switchJoinWfPoint(); });
+$('[nameId="button_deactive_join_wf_point"]').mousedown(function () { switchJoinWfPoint({active: false}); });
+$('[nameId="button1 button_gradient_1"]').mousedown(function () {  }); 
+
 
 $('[nameId="butt_add_point_on_tube"]').mousedown(function () { switchAddPointOnTube(); });
 

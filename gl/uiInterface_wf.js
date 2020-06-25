@@ -19,6 +19,31 @@ function showWF_point_UI(point)
 	}
 
 	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
+	
+	
+	// если точка является началом или концом трубы, то показываем кнопку
+	{
+		var show = false;
+		
+		var line = point.userData.wf_point.line.o;
+		
+		if(line.userData.wf_line.point[0] == point){ show = true; }
+		if(line.userData.wf_line.point[line.userData.wf_line.point.length - 1] == point){ show = true; }
+		
+		var elem_1 = document.querySelector('[nameId="button_active_join_wf_point"]');
+		var elem_2 = document.querySelector('[nameId="button_active_align_wf_point"]');
+		
+		if(show)
+		{
+			elem_1.style.display = "block";
+			elem_2.style.display = "block";
+		}
+		else
+		{
+			elem_1.style.display = "none";
+			elem_2.style.display = "none";
+		}
+	}
 }
 
 
@@ -64,23 +89,61 @@ function switchAlignWfPoint(cdm)
 	clearListWfPointUI();
 	
 	if(infProject.list.rp_wf_point.align)	// вкл
-	{		
-		$('[nameId="rp_wrap_align_wf_point"]').show(); 
+	{				 
 		infProject.list.rp_wf_point.tubeP = clickO.last_obj;
 		
-		$('[nameId="button_active_align_wf_point"]').text('закрыть');
-		$('[nameId="button_active_align_wf_point"]').css({"border-color": "#ff0000"});
+		$('[nameId="pr_list_button_for_tube_point"]').hide();
+		$('[nameId="rp_wrap_align_wf_point"]').show();		
 	}		
 	else	// выкл
 	{		
-		$('[nameId="rp_wrap_align_wf_point"]').hide();
 		infProject.list.rp_wf_point.tubeP = null;
 		
-		$('[nameId="button_active_align_wf_point"]').text('выровнить');
-		$('[nameId="button_active_align_wf_point"]').css({"border-color": "#b3b3b3"});
+		$('[nameId="rp_wrap_align_wf_point"]').hide();
+		$('[nameId="pr_list_button_for_tube_point"]').show();			
+	}	
+
+		
+}
+
+
+
+// вкл/выкл возможность выделение объектов для соединения труб
+function switchJoinWfPoint(cdm)
+{
+	if(!cdm) cdm = {};
+	
+	var elemBlock = document.querySelector('[nameId="pr_list_button_for_tube_point"]');
+	var elemList = document.querySelector('[nameId="rp_wrap_join_wf_point"]');	
+	
+	var active = false;
+	
+	if(cdm.active !== undefined) 
+	{
+		active = cdm.active;
+	}	
+	else
+	{
+		if(elemList.style.display == "none"){ active = true; }
+		else { active = false; }
+	}
+	
+	// очищаем список и убираем выделения с разъемов
+	//clearListWfPointUI();		
+	
+	if(active)	// вкл
+	{	
+		elemBlock.style.display = 'none';
+		elemList.style.display = 'block';
+	}		
+	else	// выкл
+	{		
+		elemList.style.display = 'none';
+		elemBlock.style.display = 'block';	 	
 	}	
 		
 }
+
 
 
 // очищаем список и убираем выделения с разъемов, когда была нажата кнопка выровнить у точки трубы

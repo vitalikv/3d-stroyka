@@ -455,7 +455,6 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'door' ) { moveWD( event, obj ); }
 		else if ( tag == 'controll_wd' ) { moveToggleChangeWin( event, obj ); }
 		else if ( tag == 'point' ) { movePoint( event, obj ); }
-		else if ( tag == 'wf_point' ) { moveWFPoint( event, obj ); }
 		else if ( tag == 'move_control' ) { moveObjectControls( event ); }
 		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }
 		else if ( tag == 'room' ) { cameraMove3D( event ); }		
@@ -518,10 +517,6 @@ function onDocumentMouseUp( event )
 			if(obj.userData.wf_point.type == 'tool') 
 			{ 
 				upLineWF(obj);
-			}
-			else 
-			{ 
-				clickWFPointUp(obj); 
 			}			
 		}		
 		else { clickO.move = null; }		

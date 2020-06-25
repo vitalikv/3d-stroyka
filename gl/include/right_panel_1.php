@@ -455,24 +455,47 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 								<div class="flex_1 align_items" style="width: auto;">
 									<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
 								</div>
-							</div>											
+							</div>	
+
+							
 					
-							<div style="margin: 10px 0;">
+							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">
+								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="margin: 10px 0;">соединить с трубой</div>		
 								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">выровнить</div>
-								
-								<div nameId="rp_wrap_align_wf_point" style="display: none;">
-									<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point">
-										
-									</div>	
-									<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
-										выровнить	
-									</div>
-								</div>							
+								<div data-action ='deleteObj' class="button1 button_gradient_1" style="margin: 10px 0;">удалить</div>								
 							</div>
 							
-							<div style="margin: 10px 0;">
-								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
-							</div>
+							<div nameId="rp_wrap_align_wf_point" style="display: none;">
+							
+								<div class="button1 button_gradient_1" nameId="button_deactive_align_wf_point" style="border-color: #ff0000">
+									закрыть	
+								</div> 
+							
+								<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point" style="min-height: 150px; max-height: 150px;">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
+									выровнить	
+								</div>
+								
+							</div>	
+
+
+							<div nameId="rp_wrap_join_wf_point" style="display: none;">
+							
+								<div class="button1 button_gradient_1" nameId="button_deactive_join_wf_point" style="border-color: #ff0000">
+									закрыть	
+								</div>
+							
+								<div class="right_panel_1_1_list" nameId="rp_list_join_wf_point" style="min-height: 150px; max-height: 150px;">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="button_done_join_wf_point">
+									соединить	
+								</div>
+								
+							</div>								
+							
 						</div>
 						
 						
@@ -557,7 +580,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 									
 								</div>
 								<div class="button1 button_gradient_1" nameId="button_add_group">
-									объединить	
+									сгруппировать	
 								</div>	
 							</div>
 							
@@ -594,7 +617,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 								</div>
 								
 								<div class="button1 button_gradient_1" nameId="button_active_add_group">
-									объединить	
+									сгруппировать	
 								</div>
 								
 								<div class="button1 button_gradient_1" nameId="button_copy_obj">

@@ -722,7 +722,7 @@ canvas
 	overflow: auto;		
 }
 
-.right_panel_1_1_list[nameId=rp_list_align_wf_point], .right_panel_1_1_list[nameId=rp_obj_align] 
+.right_panel_1_1_list[nameId=rp_obj_align] 
 {
 	min-height: 200px;
 	max-height: 200px;	
