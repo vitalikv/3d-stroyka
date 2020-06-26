@@ -78,26 +78,26 @@ function switchAlignWfPoint(cdm)
 	
 	if(cdm.active !== undefined) 
 	{
-		infProject.list.rp_wf_point.align = cdm.active;
+		infProject.list.rp_wf_point.align.active = cdm.active;
 	}	
 	else
 	{
-		infProject.list.rp_wf_point.align = !infProject.list.rp_wf_point.align;
+		infProject.list.rp_wf_point.align.active = !infProject.list.rp_wf_point.align.active;
 	}
-	
+
 	// очищаем список и убираем выделения с разъемов
 	clearListWfPointUI();
 	
-	if(infProject.list.rp_wf_point.align)	// вкл
+	if(infProject.list.rp_wf_point.align.active)	// вкл
 	{				 
-		infProject.list.rp_wf_point.tubeP = clickO.last_obj;
+		infProject.list.rp_wf_point.align.tubeP = clickO.last_obj;
 		
 		$('[nameId="pr_list_button_for_tube_point"]').hide();
 		$('[nameId="rp_wrap_align_wf_point"]').show();		
 	}		
 	else	// выкл
 	{		
-		infProject.list.rp_wf_point.tubeP = null;
+		infProject.list.rp_wf_point.align.tubeP = null;
 		
 		$('[nameId="rp_wrap_align_wf_point"]').hide();
 		$('[nameId="pr_list_button_for_tube_point"]').show();			
@@ -150,17 +150,26 @@ function switchJoinWfPoint(cdm)
 function clearListWfPointUI(cdm)
 {
 	// очищаем список и убираем выделения с разъемов
-	var arr = infProject.list.rp_wf_point.arr;
+	var arr = infProject.list.rp_wf_point.align.arr;
 	
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].el.remove();
 		arr[i].o.visible = false;
-		arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+		
+		if(arr[i].o.userData.tag == 'joinPoint')
+		{
+			arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();		
+		}
+		
+		if(arr[i].o.userData.tag == 'wf_point')
+		{
+			arr[i].o.material = infProject.material.pointTube.default;		
+		}		
 	}
 	
-	infProject.list.rp_wf_point.arr = [];
-	infProject.list.rp_wf_point.joinO = null;
+	infProject.list.rp_wf_point.align.arr = [];
+	infProject.list.rp_wf_point.align.joinO = null;
 }
 
 
@@ -174,28 +183,42 @@ function showJoinPoint_3(cdm)
 	// очищаем список и убираем выделения с разъемов
 	clearListWfPointUI();
 	
+	var arr = [];
 	
 	// получаем разъемы, если есть
-	var arr = getCenterPointFromObj_1( obj );	
+	if(obj.userData.tag == 'wf_tube')
+	{
+		var line = obj.userData.wf_tube.line;
+		
+		arr[0] = line.userData.wf_line.point[0]
+		arr[1] = line.userData.wf_line.point[line.userData.wf_line.point.length - 1];				
+	}
+	
+	if(obj.userData.tag == 'obj')
+	{
+		arr = getCenterPointFromObj_1( obj );
+	}
+		
 	var nameId = "rp_list_align_wf_point";	
 	
 	// добваляем разъемы выделенного объекта в список UI
 	for(var i = 0; i < arr.length; i++)
-	{						
-		// добавляем в список 	
-		{
-			var str = 
-			'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
-			<div class="right_panel_1_1_list_item_text">'+arr[i].userData.centerPoint.nameRus+'</div>\
-			</div>';		
-		}			
+	{					
+		if(obj.userData.tag == 'obj') var nameRus = arr[i].userData.centerPoint.nameRus;
+		if(obj.userData.tag == 'wf_tube') var nameRus = 'точка';
+		
+		var str = 
+		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
+		<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
+		</div>';		
+			
 
 		var el = $(str).appendTo('[nameId="'+nameId+'"]');					
 		
-		var n = infProject.list.rp_wf_point.arr.length;
-		infProject.list.rp_wf_point.arr[n] = {};
-		infProject.list.rp_wf_point.arr[n].el = el;
-		infProject.list.rp_wf_point.arr[n].o = arr[i]; 
+		var n = infProject.list.rp_wf_point.align.arr.length;
+		infProject.list.rp_wf_point.align.arr[n] = {};
+		infProject.list.rp_wf_point.align.arr[n].el = el;
+		infProject.list.rp_wf_point.align.arr[n].o = arr[i]; 
 		
 		arr[i].visible = true;
 		el.on('mousedown', function(){ clickItemCenterObjUI_3({el: $(this)}) });		
@@ -216,7 +239,7 @@ function clickItemCenterObjUI_3(cdm)
 	var item = null;
 	var obj = null;
 	
-	var arr = infProject.list.rp_wf_point.arr;
+	var arr = infProject.list.rp_wf_point.align.arr;
 	
 	if(arr.length == 0) return;	// у объекта нет разъемов
 	
@@ -263,17 +286,34 @@ function clickItemCenterObjUI_3(cdm)
 
 
 	
-	// снимаем старое выделение объекта в сцене 
-	var arr = infProject.list.rp_wf_point.arr;
+	 
+	var arr = infProject.list.rp_wf_point.align.arr;
 	
-	for(var i = 0; i < arr.length; i++)
+	if(obj.userData.tag == 'joinPoint')
 	{
-		arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+		// снимаем старое выделение объекта в сцене
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+		}	
+
+		// выдиляем выбранный разъем
+		obj.material.color = new THREE.Color(infProject.listColor.active2D);		
 	}
 	
-	obj.material.color = new THREE.Color(infProject.listColor.active2D);
+	if(obj.userData.tag == 'wf_point')
+	{
+		// снимаем старое выделение объекта в сцене
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].o.material = infProject.material.pointTube.default;
+		}	
+
+		// выдиляем выбранный разъем
+		obj.material = infProject.material.pointTube.active;		
+	}	
 	
-	infProject.list.rp_wf_point.joinO = obj;
+	infProject.list.rp_wf_point.align.joinO = obj;
 }
 
 

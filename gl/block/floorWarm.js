@@ -155,95 +155,6 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 
 
 
-
-// перетаскиваем точку (определяем пересекается ли с первой/последней точки линий теплого пола)
-function dragToolWFPoint(cdm)
-{	
-	var obj = cdm.obj;
-	
-	//if(obj.userData.wf_point.line.o) return;
-	
-	var line_1 = (obj.userData.wf_point.line.o) ? obj.userData.wf_point.line.o : null;
-	
-	var posMouse = obj.position;	
-	posMouse.y = infProject.settings.wf_tube.pos.y;	
-	obj.userData.wf_point.cross = { o : null, point : [] };
-	
-	if(line_1 && line_1.material.color != new THREE.Color(0xff0000)) line_1.material.color = new THREE.Color(0xff0000);
-		
-	var arr = [];	
-	var z = 0.1 / camera.zoom;
-	
-	for(var i = 0; i < infProject.scene.array.tube.length; i++)
-	{ 		
-		var line = infProject.scene.array.tube[i];
-		
-		if(line_1 == line) continue;	// пропускаем свою трубу
-		
-		var v = line.geometry.vertices;
-		
-		if(v.length < 2) continue;
-		
-		var dist1 = v[0].distanceTo(obj.position);
-		var dist2 = v[v.length - 1].distanceTo(obj.position);
-		
-		if(dist1 < dist2)
-		{
-			var pos = v[0];
-			var dist = dist1;
-			var cross = line.userData.wf_line.point[0];
-		}
-		else
-		{
-			var pos = v[v.length - 1];
-			var dist = dist2;
-			var cross = line.userData.wf_line.point[line.userData.wf_line.point.length - 1];
-		}
-		
-		if(dist < z) 
-		{ 
-			arr[arr.length] = {dist: dist, p1: pos, p2: obj.position, cross: cross};
-			continue; 
-		}
-		
-		if(!obj.userData.wf_point.line.o)
-		{
-			// пускаем перпендикуляр от точки на прямую
-			for(var i2 = 0; i2 < v.length - 1; i2++)
-			{
-				if(!calScal(v[i2], v[i2 + 1], posMouse)) continue;	// проверяем попадает ли перпендикуляр от точки на прямую
-				
-				var pos = spPoint(v[i2], v[i2 + 1], posMouse);  
-				var pos = new THREE.Vector3(pos.x, posMouse.y, pos.z);	// получаем точку пересечения точки на прямую
-				
-				var dist = pos.distanceTo(posMouse);
-				
-				if(dist > z) continue;	// расстояние от точки пересечения до перетаскиваемой точки				
-				
-				var point_1 = line.userData.wf_line.point[i2];
-				var point_2 = line.userData.wf_line.point[i2];
-				arr[arr.length] = {dist: dist, p1: pos, p2: posMouse, cross: line, point: [point_1, point_2]};
-			}			
-		}		
-	}
-		
-		
-	if(arr.length > 1) arr.sort(function (a, b) { return a.dist - b.dist; });
-
-	if(arr.length > 0) 
-	{  
-		obj.userData.wf_point.cross = {o: arr[0].cross, point: arr[0].point};
-		obj.position.copy(arr[0].p1);  
-	}
-	
-	//renderCamera();
-}
-
-
-
-
-
-
 // создаем линию
 function createLineWF(cdm)
 {
@@ -683,8 +594,8 @@ function joinTubePointTopoint()
 {
 	var joint = infProject.tools.joint;	
 	
-	var o1 = infProject.list.rp_wf_point.tubeP;   
-	var o2 = infProject.list.rp_wf_point.joinO;
+	var o1 = infProject.list.rp_wf_point.align.tubeP;   
+	var o2 = infProject.list.rp_wf_point.align.joinO;
 
 	if(!o1) return;
 	if(!o2) return;
@@ -702,11 +613,13 @@ function joinTubePointTopoint()
 	line.geometry.verticesNeedUpdate = true; 
 	line.geometry.elementsNeedUpdate = true;
 	
-	if(line.userData.wf_line.tube)
+
 	{
 		geometryTubeWF({line : line});
 		line.userData.wf_line.tube.visible = true;
-	}			 
+	}	
+
+	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
 
 	renderCamera();
 }
@@ -717,7 +630,7 @@ function joinTubePointTopoint()
 function deClickTube(cdm)  
 {	
 	if(clickO.rayhit)
-	{
+	{  
 		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
 		if(cdm.moment == 'down' && camera == cameraTop)
 		{
@@ -745,20 +658,23 @@ function deClickTube(cdm)
 		deClickTube_1(cdm); 
 	}
 	else if(cdm.moment == '')
-	{ 
+	{  
 		deClickTube_1(cdm);
 	}
 	
 	
 	// если была вкл кнопка выровнить, то проверяем куда кликнули
 	function checkClickTube_1()
-	{
+	{ 
+	console.trace();
+	console.log(55555, infProject.list.rp_wf_point.align.active, clickO.rayhit);
 		if(clickO.rayhit)
-		{
-			if(infProject.list.rp_wf_point.align) 
+		{  
+			if(infProject.list.rp_wf_point.align.active) 
 			{
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
 			}
 		}
