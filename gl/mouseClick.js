@@ -387,6 +387,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }  		
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' && camera == cameraTop ) { clickPoint( rayhit ); }
+		else if( tag == 'wf_point' && camera == cameraTop && infProject.tools.joint.active) { clickItemCenterObjUI_2({obj: obj}); }
 		else if( tag == 'wf_point' && camera == cameraTop && infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }		
 		else if( tag == 'wf_point' && camera == cameraTop ) { clickWFPoint_3D({ intersect: rayhit }); }
 		else if( tag == 'wf_tube' && camera == cameraTop && infProject.tools.joint.active) { showJoinPoint_2({obj: obj}); }
@@ -407,6 +408,7 @@ function clickMouseActive(cdm)
 	else if(cdm.type == 'up')
 	{		
 		if( tag == 'wall' && camera == camera3D ) {  }
+		else if( tag == 'wf_point' && camera == camera3D && infProject.tools.joint.active) { clickItemCenterObjUI_2({obj: obj}); }
 		else if( tag == 'wf_point' && camera == camera3D && infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }
 		else if( tag == 'wf_point' && camera == camera3D ) { clickWFPoint_3D({ intersect: rayhit }); }		
 		else if( tag == 'joinPoint' && camera == camera3D && infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }
@@ -415,6 +417,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'obj' && camera == camera3D && infProject.tools.joint.active) { showJoinPoint_2({obj: obj}); }
 		else if( tag == 'obj' && camera == camera3D && infProject.list.rp_wf_point.align.active) { showJoinPoint_3({obj: obj}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }
+		else if( tag == 'wf_tube' && camera == camera3D && infProject.tools.joint.active) { showJoinPoint_2({obj: obj}); }
 		else if( tag == 'wf_tube' && camera == camera3D && infProject.list.rp_wf_point.align.active) { showJoinPoint_3({obj: obj}); }
 		else if( tag == 'wf_tube' && camera == camera3D ) { clickTubeWF({ray: rayhit}); } 		
 	}	

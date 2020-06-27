@@ -67,16 +67,6 @@ function createTextUI_1(cdm)
 		var n = infProject.tools.merge_obj.el.length;	
 		infProject.tools.merge_obj.el[n] = el;
 	}	
-
-	if(nameId == "rp_obj_align")
-	{
-		var n = infProject.tools.joint.el.length;	
-		infProject.tools.joint.el[n] = el;
-		infProject.tools.joint.p2[n] = obj;
-		
-		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });
-	}
-	
 }
 
 
@@ -269,7 +259,6 @@ function clearListUI_2(cdm)
 	
 
 	if(infProject.tools.merge_obj.el == list) { infProject.tools.merge_obj.el = []; }
-	if(infProject.tools.joint.el == list) { infProject.tools.joint.p2 = []; infProject.tools.joint.el = []; }
 }
 
 

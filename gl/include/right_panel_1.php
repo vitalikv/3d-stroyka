@@ -461,7 +461,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 					
 							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">
 								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="margin: 10px 0;">соединить с трубой</div>		
-								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">выровнить</div>
+								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">подключить</div>
 								<div data-action ='deleteObj' class="button1 button_gradient_1" style="margin: 10px 0;">удалить</div>								
 							</div>
 							
@@ -475,7 +475,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 									
 								</div>	
 								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
-									выровнить	
+									подключить	
 								</div>
 								
 							</div>	
@@ -566,7 +566,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 									
 								</div>	
 								<div class="button1 button_gradient_1" nameId="join_element">
-									выровнить	
+									подключить	
 								</div>
 								
 							</div>
@@ -613,7 +613,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 							
 							<div nameId="pr_list_button_for_obj"> 
 								<div class="button1 button_gradient_1" nameId="button_active_join_element">
-									выровнить	
+									подключить	
 								</div>
 								
 								<div class="button1 button_gradient_1" nameId="button_active_add_group">

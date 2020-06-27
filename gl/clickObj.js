@@ -649,7 +649,7 @@ function renameObject(cdm)
 
 
 
-// кликнули на другой объект, деактивируем трубу
+// кликнули на другой объект, деактивируем объект
 function deClickObj(cdm)  
 {	
 	var obj = cdm.obj;
@@ -692,7 +692,7 @@ function deClickObj(cdm)
 			{
 				//if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
-				//if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
 				//if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
 			}
 		}

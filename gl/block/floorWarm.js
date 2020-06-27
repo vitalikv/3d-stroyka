@@ -592,8 +592,6 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 // нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
 function joinTubePointTopoint()
 {
-	var joint = infProject.tools.joint;	
-	
 	var o1 = infProject.list.rp_wf_point.align.tubeP;   
 	var o2 = infProject.list.rp_wf_point.align.joinO;
 
