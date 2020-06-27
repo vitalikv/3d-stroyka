@@ -666,8 +666,6 @@ function deClickTube(cdm)
 	// если была вкл кнопка выровнить, то проверяем куда кликнули
 	function checkClickTube_1()
 	{ 
-	console.trace();
-	console.log(55555, infProject.list.rp_wf_point.align.active, clickO.rayhit);
 		if(clickO.rayhit)
 		{  
 			if(infProject.list.rp_wf_point.align.active) 

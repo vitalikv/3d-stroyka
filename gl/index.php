@@ -112,6 +112,7 @@
     <script src="<?=$path?>clickMoveWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>clickMoveWD.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMoveTube.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>clickJoinPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
     <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>

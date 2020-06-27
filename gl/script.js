@@ -293,7 +293,7 @@ changeRightMenuUI_2({name: 'button_obj_properties'});
 //changeRightMenuUI_2({name: 'button_obj_tool_pivot'});		// переключаем вкладку для объекта перемещение/параметры
 startPlanElemPlus({});										// добавляем в список +, для добавления этажа
 
-switchJoinObj({active: false});		// скрываем список "выровнить" во вкладке свойства объектов
+
 
 
 //----------- start

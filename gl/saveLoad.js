@@ -947,7 +947,7 @@ async function loadObjInBase(cdm)
 				
 				if(furn[i2].rot)			
 				{
-					furn[i2].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i].rot.x), THREE.Math.degToRad(furn[i].rot.y), THREE.Math.degToRad(furn[i].rot.z) );
+					furn[i2].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i2].rot.x), THREE.Math.degToRad(furn[i2].rot.y), THREE.Math.degToRad(furn[i2].rot.z) );
 				}
 			
 				await loadObjServer(furn[i2]);

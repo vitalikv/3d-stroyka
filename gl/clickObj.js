@@ -117,18 +117,6 @@ function clickObject3D( obj, cdm )
 			return;
 		}
 		
-		if(infProject.tools.joint.active)		// вкл режим соединение объектов и один разъем уже выделин  
-		{			
-			if(!compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects}))	// кликаем на другой объект, чтобы показать его разъемы	   
-			{
-				showJoinPoint_2({obj: obj});  
-				return;			
-			}
-			else		// кликаем на этот же объект (ничего не делаем)
-			{
-				return;
-			}
-		}
 	}
 	
 	
@@ -469,39 +457,7 @@ function switchSelectAddObjGroup(cdm)
 
 
 
-// вкл/выкл возможность выделение объектов для присоединения 
-function switchJoinObj(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	if(cdm.active !== undefined) 
-	{
-		infProject.tools.joint.active = cdm.active;
-	}	
-	else
-	{
-		infProject.tools.joint.active = !infProject.tools.joint.active;
-	}
-	
-	hideJoinPoint_2();
-	
-	if(infProject.tools.joint.active)	// вкл
-	{		
-		$('[nameId="rp_wrap_obj_align"]').show();
-		$('[nameId="bl_rp_obj_group"]').hide();
-		$('[nameId="pr_list_button_for_obj"]').hide();
-	}		
-	else		// выкл
-	{				
-		$('[nameId="rp_wrap_obj_align"]').hide();
-		clearListUI_2({list: infProject.tools.joint.el});
-		
-		$('[nameId="bl_rp_obj_group"]').show();
-		$('[nameId="pr_list_button_for_obj"]').show();
-	}	
 
-		
-}
 
 
 
@@ -689,6 +645,67 @@ function renameObject(cdm)
 	
 	
 }
+
+
+
+
+// кликнули на другой объект, деактивируем трубу
+function deClickObj(cdm)  
+{	
+	var obj = cdm.obj;
+
+
+	if(cdm.moment == 'down' && camera == cameraTop && !checkClickTumbler_1())
+	{
+		deClickObj_1();
+	}
+	else if(cdm.moment == 'up' && camera == camera3D && !checkClickTumbler_1())
+	{
+		deClickObj_1(); 
+	}
+	else if(cdm.moment == '')
+	{  
+		deClickObj_1();
+	}	
+	
+	
+	
+	function deClickObj_1()
+	{
+		hidePivotGizmo(obj); 
+		hideMenuUI(obj);
+		resetClickLastObj({});			
+	}
+		
+	
+	
+	// проверяем куда кликнули
+	function checkClickTumbler_1()
+	{ 
+		if(clickO.rayhit)
+		{  
+			if(clickO.rayhit.object == obj) return true;			
+			if(clickO.rayhit.object.userData.tag == 'pivot') return true;
+			if(clickO.rayhit.object.userData.tag == 'gizmo') return true;
+			
+			if(infProject.tools.joint.active) 
+			{
+				//if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
+				//if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
+				//if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
+			}
+		}
+
+		return false;
+	}
+	
+	
+
+
+}
+
+
 
 
 

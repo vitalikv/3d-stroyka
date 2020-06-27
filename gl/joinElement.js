@@ -115,44 +115,7 @@ function showJoinPoint(cdm)
 }
 
 
-// показываем точки-соединители для 2-ого выделенного объекта
-function showJoinPoint_2(cdm)
-{
-	if(!cdm.obj) return;
-	var obj = cdm.obj;
-	
-	var joint = infProject.tools.joint;
-	
-	var arr = joint.p2;
-	
-	// скрываем старые точки
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].visible = false;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
-	}	
-	
-	clearListUI_2({list: infProject.tools.joint.el});
-	
-	
-	var arr = getCenterPointFromObj_1( obj );	// получаем разъемы, если есть
-	
-	
-	// показываем все точки
-	for(var i = 0; i < arr.length; i++)
-	{		
-		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой		
-		arr[i].visible = true;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone(); 
-		
-		createTextUI_1({obj: arr[i], nameId: "rp_obj_align", nameRus: arr[i].userData.centerPoint.nameRus, uuid: arr[i].uuid});
-	}	
-	
-	if(arr.length > 0) 
-	{
-		clickItemCenterObjUI_2({item: 0}); 
-	}	
-}
+
 
 
 
@@ -193,23 +156,6 @@ function hideJoinPoint(cdm)
 	//if(active) { activeJoinPoint({obj: active}); }
 }
 
-
-function hideJoinPoint_2(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	var joint = infProject.tools.joint;		
-	
-	var arr = joint.p2;
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].visible = false;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
-	}
-	
-	joint.p2 = [];
-}
 
 
  
@@ -260,6 +206,8 @@ function joinElement(cdm)
 
 	var obj_1 = infProject.tools.joint.active_1.parent;
 	var obj_2 = infProject.tools.joint.active_2.parent;
+	
+	if(o2.userData.tag == 'wf_point') obj_2 = o2;
 		
 
 	var q2 = o2.getWorldQuaternion(new THREE.Quaternion());
@@ -267,7 +215,11 @@ function joinElement(cdm)
 	var q1 = q1.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)));	// разворачиваем на 180 градусов
 	var diff_2 = new THREE.Quaternion().multiplyQuaternions(q2, q1.inverse());					// разница между Quaternions
 	
-	if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
+	if(obj_2.userData.tag == 'wf_point')
+	{
+		var arr_2 = [obj_1];
+	}
+	else if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
 	{
 		var arr_2 = [obj_1];  
 	}
@@ -281,11 +233,19 @@ function joinElement(cdm)
 	}
 	
 	
-	// поворачиваем объекты в нужном направлении 
-	for(var i = 0; i < arr_2.length; i++)
+	if(obj_2.userData.tag == 'wf_point')
 	{
-		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
-		arr_2[i].updateMatrixWorld();		
+		
+	}
+	else
+	{
+		// поворачиваем объекты в нужном направлении 
+		for(var i = 0; i < arr_2.length; i++)
+		{
+			arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+			arr_2[i].updateMatrixWorld();		
+		}
+		
 	}
 	
 	var pos1 = o2.getWorldPosition(new THREE.Vector3());		
