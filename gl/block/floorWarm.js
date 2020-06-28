@@ -28,6 +28,55 @@ function createPointWF(cdm)
 
 
 
+
+// определяем кликнули ли на точку трубы
+function clickRayhitPointWF()
+{  
+	var rayhit = null;
+	
+	var line = null;
+	
+	if(clickO.last_obj)
+	{
+		if(clickO.last_obj.userData.tag == 'wf_tube'){ line = clickO.last_obj.userData.wf_tube.line; }
+		if(clickO.last_obj.userData.tag == 'wf_point'){ line = clickO.last_obj.userData.wf_point.line.o; }
+	}
+	
+	var wp = [];
+		
+	if(line)
+	{			
+		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+		{ 
+			if(!line.userData.wf_line.point[i2].visible) continue;
+			wp[wp.length] = line.userData.wf_line.point[i2]; 
+		}			
+	}
+	
+	var ray = rayIntersect( event, wp, 'arr' );  
+	if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }
+
+	return null;
+}
+
+
+
+
+
+// кликнули на точку, распределяем что делать
+function clickFirstWFPoint(cdm)
+{
+	var obj = cdm.obj;
+	var rayhit = cdm.rayhit;
+	
+	if(infProject.tools.joint.active) { clickItemCenterObjUI_2({obj: obj}); }
+	else if(infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }
+	else { clickWFPoint_3D({ intersect: rayhit }); }
+
+}
+
+
+
 // кликнули на точку
 function clickWFPoint_3D(cdm)
 {
@@ -632,14 +681,14 @@ function deClickTube(cdm)
 		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
 		if(cdm.moment == 'down' && camera == cameraTop)
 		{
-			if(clickO.rayhit.object == cdm.obj) return;
+			if(clickO.rayhit.object == cdm.obj && !infProject.list.rp_wf_point.align.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}
 		
 		if(cdm.moment == 'up' && camera == camera3D)
 		{
-			if(clickO.rayhit.object == cdm.obj) return;
+			if(clickO.rayhit.object == cdm.obj && !infProject.list.rp_wf_point.align.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}		
@@ -670,13 +719,30 @@ function deClickTube(cdm)
 			{
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
-				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_point') { return checkWFPoint_1({obj: clickO.rayhit.object}); }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
 			}
 		}
 
 		return false;
 	}
+	
+	
+	// кликнули на другой разъем трубы
+	function checkWFPoint_1(cdm)
+	{
+		var obj = cdm.obj;
+		var arr = infProject.list.rp_wf_point.align.arr;
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(arr[i].o == obj) return true;
+		}
+
+		return false;
+	}	
+	
+	
 	
 	// деактивируем трубу иди точку
 	function deClickTube_1(cdm)

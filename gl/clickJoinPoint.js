@@ -140,7 +140,7 @@ function clickItemCenterObjUI_3(cdm)
 		arr[i].el.css('background-color', '#ffffff');
 	}
 	
-	
+ 
 	if(cdm.el)	// кликнули на пункт в меню
 	{
 		for(var i = 0; i < arr.length; i++)
@@ -249,7 +249,7 @@ function switchJoinObj(cdm)
 function clearListObjUI()
 {
 	var arr = [];
-	var arrO = infProject.tools.joint.p2;
+	var arrO = infProject.tools.joint.arr2;
 	var arrE = infProject.tools.joint.el;
 	
 	for(var i = 0; i < arrO.length; i++)
@@ -275,7 +275,7 @@ function clearListObjUI()
 		}		
 	}	
 	
-	infProject.tools.joint.p2 = [];
+	infProject.tools.joint.arr2 = [];
 	infProject.tools.joint.el = [];
 }
 
@@ -329,7 +329,7 @@ function showJoinPoint_2(cdm)
 
 		var n = infProject.tools.joint.el.length;	
 		infProject.tools.joint.el[n] = el;
-		infProject.tools.joint.p2[n] = arr[i];		 
+		infProject.tools.joint.arr2[n] = arr[i];		 
 		
 		arr[i].visible = true;
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
@@ -358,7 +358,7 @@ function clickItemCenterObjUI_2(cdm)
 	var joint = infProject.tools.joint;
 	
 	var arr = [];
-	var arrO = infProject.tools.joint.p2;
+	var arrO = infProject.tools.joint.arr2;
 	var arrE = infProject.tools.joint.el;
 	
 	for(var i = 0; i < arrO.length; i++)
@@ -376,6 +376,9 @@ function clickItemCenterObjUI_2(cdm)
 	for(var i = 0; i < arr.length; i++)
 	{
 		arr[i].el.css('background-color', '#ffffff');
+		
+		if(arr[i].o.userData.tag == 'joinPoint') arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+		if(arr[i].o.userData.tag == 'wf_point') arr[i].o.material = infProject.material.pointTube.default;		
 	}
 	
 	
@@ -411,16 +414,7 @@ function clickItemCenterObjUI_2(cdm)
 	// выделяем новый пункт на который кликнули UI
 	item.css('background-color', '#00ff00');
 	var value = item.attr('uuid');
-
 	
-	if(joint.active_2)	// снимаем старое выделение объекта в сцене 
-	{
-		if(joint.active_2.userData.tag == 'joinPoint') joint.active_2.material.color = joint.active_2.userData.centerPoint.color.clone();
-		if(joint.active_2.userData.tag == 'wf_point') joint.active_2.material = infProject.material.pointTube.default;
-		joint.active_2 = null;		
-	}
-	
-	//if(!joint.visible) { joint.p1 = [obj]; }
 	
 	if(obj.userData.tag == 'joinPoint') obj.material.color = joint.material.active.color.clone();
 	if(obj.userData.tag == 'wf_point')	obj.material = infProject.material.pointTube.active;

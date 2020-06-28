@@ -6,13 +6,12 @@
 function createJoinP()
 {
 	var joint = {};
-	joint.p1 = [];
-	joint.p2 = [];
+	joint.arr1 = [];
+	joint.arr2 = [];
 	joint.el = [];
 	joint.active = false;
 	joint.active_1 = null;
 	joint.active_2 = null;
-	//joint.geometry_1 = createGeometryWD(0.03, 0.03, 0.03);
 	joint.material = {};
 	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
 	joint.visible = false;
@@ -26,7 +25,7 @@ function createJoinP()
 function clickRayJoinPoint()
 {
 	var rayhit = null;
-	var arr = infProject.tools.joint.p1;
+	var arr = infProject.tools.joint.arr1;
 	
 	if(arr.length > 0)
 	{
@@ -34,12 +33,12 @@ function clickRayJoinPoint()
 		if(ray.length > 0) 
 		{ 
 			rayhit = ray[0];
-			rayhit.tag = 'act_1';
+			infProject.tools.joint.active_1 = rayhit.object;
 			return rayhit; 
 		}
 
 
-		var arr2 = infProject.tools.joint.p2;
+		var arr2 = infProject.tools.joint.arr2;
 		
 		if(arr2)
 		{
@@ -47,7 +46,7 @@ function clickRayJoinPoint()
 			if(ray.length > 0) 
 			{ 
 				rayhit = ray[0];
-				rayhit.tag = 'act_2';
+				infProject.tools.joint.active_2 = rayhit.object;
 				return rayhit; 
 			}						
 		}				
@@ -56,6 +55,20 @@ function clickRayJoinPoint()
 	
 	return null;
 }
+
+
+
+// кликнули на разъем, распределяем что делать
+function clickFirstCenterPoint(cdm)
+{
+	var obj = cdm.obj;
+	var rayhit = cdm.rayhit;
+	
+	if(infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }	
+	else if(infProject.tools.joint.active_2) { clickItemCenterObjUI_2({obj: obj}); }
+	else { clickObject3D(obj, {menu_1: true}); }
+}
+
 
 
 
@@ -107,7 +120,7 @@ function showJoinPoint(cdm)
 	
 	setScaleJoinPoint({arr: arr});
 		
-	joint.p1 = arr;
+	joint.arr1 = arr;
 	joint.visible = true; 
 	$('[nameId="show_join_point_checked"]').show(); 
 	
@@ -130,7 +143,7 @@ function hideJoinPoint(cdm)
 	if(cdm.visible == 'full') {}
 	else if(joint.active_1) { active = joint.active_1; }
 	
-	var arr = joint.p1; 
+	var arr = joint.arr1; 
 	
 	for(var i = 0; i < arr.length; i++)
 	{
@@ -138,7 +151,7 @@ function hideJoinPoint(cdm)
 		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}
 	
-	var arr = joint.p2;
+	var arr = joint.arr2;
 	
 	for(var i = 0; i < arr.length; i++)
 	{
@@ -146,8 +159,8 @@ function hideJoinPoint(cdm)
 		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
 	}
 	
-	joint.p1 = [];
-	joint.p2 = [];
+	joint.arr1 = [];
+	joint.arr2 = [];
 	joint.active_1 = null;
 	joint.active_2 = null;	
 	joint.visible = false;
@@ -176,7 +189,7 @@ function activeJoinPoint(cdm)
 		joint.active_1 = null;		
 	}
 	
-	if(!joint.visible) { joint.p1 = [obj]; }
+	if(!joint.visible) { joint.arr1 = [obj]; }
 	 
 	obj.material.color = joint.material.active.color.clone();
 	obj.visible = true;
