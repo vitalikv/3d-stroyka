@@ -212,7 +212,7 @@ function clickObject3D( obj, cdm )
 	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
 
 
-	if(obj.userData.tag == 'obj') { activeObjRightPanelUI_1({obj: obj}); }
+	activeObjRightPanelUI_1({obj: obj});
 	
 	setScalePivotGizmo();
 	setClickLastObj({obj: obj});
@@ -320,24 +320,7 @@ function hidePivotGizmo(obj)
 				
 	
 	if(clickO.rayhit)
-	{
-		if(pivot.userData.pivot.obj == clickO.rayhit.object) return;		
-		if(clickO.rayhit.object.userData.tag == 'pivot') return;
-		
-		if(gizmo.userData.gizmo.obj == clickO.rayhit.object) return;		
-		if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-  
-		//if(joint.obj_1 == clickO.rayhit.object) { return; }		
-		if(clickO.rayhit.object.userData.tag == 'joinPoint') { return; }
-		 
-		if(1==1)
-		{
-			if(joint.active_1 && clickO.rayhit.object.userData.tag == 'obj')
-			{
-				return;			
-			}			
-		}
-		
+	{		
 		if(infProject.tools.merge_obj.active && clickO.rayhit.object.userData.tag == 'obj')
 		{  
 			return;
@@ -653,10 +636,29 @@ function renameObject(cdm)
 function deClickObj(cdm)  
 {	
 	var obj = cdm.obj;
+	
+
+	if(clickO.rayhit)
+	{  
+		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
+		if(cdm.moment == 'down' && camera == cameraTop)
+		{ 
+			if(clickO.rayhit.object == obj && !infProject.tools.joint.active) return;
+			
+			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+		}
+		
+		if(cdm.moment == 'up' && camera == camera3D)
+		{
+			if(clickO.rayhit.object == obj && !infProject.tools.joint.active) return;
+			
+			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+		}		
+	}	
 
 
 	if(cdm.moment == 'down' && camera == cameraTop && !checkClickTumbler_1())
-	{
+	{ 
 		deClickObj_1();
 	}
 	else if(cdm.moment == 'up' && camera == camera3D && !checkClickTumbler_1())
@@ -671,7 +673,7 @@ function deClickObj(cdm)
 	
 	
 	function deClickObj_1()
-	{
+	{ 
 		hidePivotGizmo(obj); 
 		hideMenuUI(obj);
 		resetClickLastObj({});			
@@ -681,19 +683,15 @@ function deClickObj(cdm)
 	
 	// проверяем куда кликнули
 	function checkClickTumbler_1()
-	{ 
+	{  
 		if(clickO.rayhit)
-		{  
-			if(clickO.rayhit.object == obj) return true;			
-			if(clickO.rayhit.object.userData.tag == 'pivot') return true;
-			if(clickO.rayhit.object.userData.tag == 'gizmo') return true;
-			
+		{  			
 			if(infProject.tools.joint.active) 
 			{
-				//if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
-				//if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return checkObjPoint_1({obj: clickO.rayhit.object}); }
 			}
 		}
 
@@ -701,7 +699,19 @@ function deClickObj(cdm)
 	}
 	
 	
+	// кликнули на другой разъем 
+	function checkObjPoint_1(cdm)
+	{
+		var obj = cdm.obj;
+		var arr = infProject.tools.joint.arr2;
+		
+		for(var i = 0; i < arr.length; i++)
+		{ 
+			if(arr[i] == obj) return true;
+		}
 
+		return false;
+	}
 
 }
 

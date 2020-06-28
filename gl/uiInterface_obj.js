@@ -33,6 +33,10 @@ function activeObjRightPanelUI_1(cdm)
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
+	else if(obj.userData.tag == 'joinPoint')
+	{
+		$('[nameId="bl_object_3d"]').show();
+	}
 	
 	$('[nameId="wrap_object_1"]').show(); 	
 	
