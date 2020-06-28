@@ -22,37 +22,32 @@ function createJoinP()
 
 
 
+
+
+
+// пускаем луч, определяем кликнули ли на разъем активированного объекта
 function clickRayJoinPoint()
-{
+{  
 	var rayhit = null;
-	var arr = infProject.tools.joint.arr1;
 	
-	if(arr.length > 0)
+	var obj = null;
+	
+	if(clickO.last_obj)
 	{
-		var ray = rayIntersect( event, arr, 'arr' ); 
-		if(ray.length > 0) 
-		{ 
-			rayhit = ray[0];
-			infProject.tools.joint.active_1 = rayhit.object;
-			return rayhit; 
-		}
-
-
-		var arr2 = infProject.tools.joint.arr2;
-		
-		if(arr2)
-		{
-			var ray = rayIntersect( event, arr2, 'arr' ); 
-			if(ray.length > 0) 
-			{ 
-				rayhit = ray[0];
-				infProject.tools.joint.active_2 = rayhit.object;
-				return rayhit; 
-			}						
-		}				
+		if(clickO.last_obj.userData.tag == 'obj'){ obj = clickO.last_obj; }
+		if(clickO.last_obj.userData.tag == 'joinPoint'){ obj = getParentObj({obj: clickO.last_obj}); }
 	}
 	
-	
+	var arr = [];
+		
+	if(obj)
+	{			
+		arr = getCenterPointFromObj_1( obj );			
+	}
+	 
+	var ray = rayIntersect( event, arr, 'arr' );  
+	if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }
+
 	return null;
 }
 

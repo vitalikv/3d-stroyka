@@ -179,7 +179,7 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; }		
 	}
 
-
+	// точки у трубы, при вкл кнопке присоединить 
 	if(infProject.list.rp_wf_point.align.arr.length > 0 && !rayhit)
 	{
 		var arr2 = [];
@@ -201,13 +201,24 @@ function clickRayHit(event)
 		if(rayhit) { return rayhit; }		
 	}
 
-	
-	
-	if(infProject.tools.joint.arr1.length > 0 && !rayhit)
+
+	// разъем у объекта, при вкл кнопке присоединить 
+	if(infProject.tools.joint.arr2.length > 0 && !rayhit)
 	{
-		var ray = clickRayJoinPoint();
-		if(ray) { return ray; }
+		var arr2 = infProject.tools.joint.arr2;	
+		
+		var ray = rayIntersect( event, arr2, 'arr' );  
+		if(ray) { if(ray.length > 0) { rayhit = ray[0]; infProject.tools.joint.active_2 = rayhit.object; return rayhit; } }	
 	}
+	
+	
+	// разъем у объекта
+	if(!rayhit)
+	{
+		var rayhit = clickRayJoinPoint();
+		if(rayhit) { return rayhit; }
+	}
+	
 	
 	
 	// труба

@@ -29,7 +29,7 @@ function createPointWF(cdm)
 
 
 
-// определяем кликнули ли на точку трубы
+// пускаем луч, определяем кликнули ли на точку активированно трубы
 function clickRayhitPointWF()
 {  
 	var rayhit = null;
@@ -716,9 +716,9 @@ function deClickTube(cdm)
 		if(clickO.rayhit)
 		{  
 			if(infProject.list.rp_wf_point.align.active) 
-			{
+			{ 
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
-				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return checkWFPoint_2({obj: obj, tube: clickO.rayhit.object}); }
 				if(clickO.rayhit.object.userData.tag == 'wf_point') { return checkWFPoint_1({obj: clickO.rayhit.object}); }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
 			}
@@ -728,7 +728,7 @@ function deClickTube(cdm)
 	}
 	
 	
-	// кликнули на другой разъем трубы
+	// провереям что кликнули на другой разъем трубы
 	function checkWFPoint_1(cdm)
 	{
 		var obj = cdm.obj;
@@ -740,7 +740,25 @@ function deClickTube(cdm)
 		}
 
 		return false;
-	}	
+	}
+
+
+	
+	// провереям что клинули на другую трубу, а не на ту у которой активированна точка
+	function checkWFPoint_2(cdm)
+	{
+		var obj = cdm.obj;
+		var tube1 = cdm.tube;
+		
+		if(obj.userData.tag != 'wf_point') return true;		// точка была НЕ активированна (отбой) 
+		
+		var line = obj.userData.wf_point.line.o;
+		var tube2 = line.userData.wf_line.tube;
+		
+		if(tube1 == tube2) return false;
+
+		return true;	// клинули на другую трубу
+	}		
 	
 	
 	

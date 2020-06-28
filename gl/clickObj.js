@@ -688,7 +688,7 @@ function deClickObj(cdm)
 		{  			
 			if(infProject.tools.joint.active) 
 			{
-				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'obj') { return checkWFPoint_2({obj: obj, obj3D: clickO.rayhit.object}); }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return checkObjPoint_1({obj: clickO.rayhit.object}); }
@@ -712,6 +712,23 @@ function deClickObj(cdm)
 
 		return false;
 	}
+	
+	
+	// провереям что клинули на другой объект, а не на тот у которого активированна точка
+	function checkWFPoint_2(cdm)
+	{
+		var obj = cdm.obj;
+		var obj3D_1 = cdm.obj3D;
+		
+		if(obj.userData.tag != 'joinPoint') return true;		// точка была НЕ активированна (отбой) 
+		
+		var obj3D_2 = getParentObj({obj: obj});
+		
+		if(obj3D_1 == obj3D_2) return false;
+
+		return true;	// клинули на другой объект
+	}		
+	
 
 }
 

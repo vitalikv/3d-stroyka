@@ -288,8 +288,8 @@ function showJoinPoint_2(cdm)
 	if(!cdm.obj) return;
 	var obj = cdm.obj;
 	
-	if(obj.userData.tag == 'wf_tube'){}
-	else if(compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects})) return;	// кликаем на этот же объект (ничего не делаем)
+	//if(obj.userData.tag == 'wf_tube'){}
+	//else if(compareSelectedObjWithCurrent({obj: obj, arr: outlinePass.selectedObjects})) return;	// кликаем на этот же объект (ничего не делаем)
 	
 	// скрываем точки у второго объекта
 	clearListObjUI();	
