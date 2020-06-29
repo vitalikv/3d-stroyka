@@ -49,7 +49,7 @@ function clearListWfPointUI(cdm)
 		
 		if(arr[i].o.userData.tag == 'joinPoint')
 		{
-			arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();		
+			arr[i].o.material = infProject.material.pointObj.default;		
 		}
 		
 		if(arr[i].o.userData.tag == 'wf_point')
@@ -181,11 +181,11 @@ function clickItemCenterObjUI_3(cdm)
 		// снимаем старое выделение объекта в сцене
 		for(var i = 0; i < arr.length; i++)
 		{
-			arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+			arr[i].o.material = infProject.material.pointObj.default;
 		}	
 
 		// выдиляем выбранный разъем
-		obj.material.color = new THREE.Color(infProject.listColor.active2D);		
+		obj.material = infProject.material.pointObj.active;		
 	}
 	
 	if(obj.userData.tag == 'wf_point')
@@ -282,16 +282,7 @@ function switchJoinObj(cdm)
 
 function clearListObjUI()
 {
-	var arr = [];
-	var arrO = infProject.tools.joint.arr2;
-	var arrE = infProject.tools.joint.el;
-	
-	for(var i = 0; i < arrO.length; i++)
-	{
-		arr[i] = {};
-		arr[i].o = arrO[i];
-		arr[i].el = arrE[i];
-	}
+	var arr = infProject.tools.joint.arr2;	
 	
 	for(var i = 0; i < arr.length; i++)
 	{
@@ -300,7 +291,7 @@ function clearListObjUI()
 		
 		if(arr[i].o.userData.tag == 'joinPoint')
 		{
-			arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();		
+			arr[i].o.material = infProject.material.pointObj.default;	 	
 		}
 		
 		if(arr[i].o.userData.tag == 'wf_point')
@@ -309,9 +300,7 @@ function clearListObjUI()
 		}		
 	}	
 	
-	infProject.tools.joint.arr2 = [];
-	infProject.tools.joint.el = [];
-	
+	infProject.tools.joint.arr2 = [];	
 	infProject.tools.joint.active_2 = null;	
 }
 
@@ -363,9 +352,10 @@ function showJoinPoint_2(cdm)
 
 		var el = $(str).appendTo('[nameId="'+nameId+'"]');
 
-		var n = infProject.tools.joint.el.length;	
-		infProject.tools.joint.el[n] = el;
-		infProject.tools.joint.arr2[n] = arr[i];		 
+		var n = infProject.tools.joint.arr2.length;	
+		infProject.tools.joint.arr2[n] = {};
+		infProject.tools.joint.arr2[n].el = el;
+		infProject.tools.joint.arr2[n].o = arr[i]; 		
 		
 		arr[i].visible = true;
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
@@ -393,17 +383,7 @@ function clickItemCenterObjUI_2(cdm)
 	
 	var joint = infProject.tools.joint;
 	
-	var arr = [];
-	var arrO = infProject.tools.joint.arr2;
-	var arrE = infProject.tools.joint.el;
-	
-	for(var i = 0; i < arrO.length; i++)
-	{
-		arr[i] = {};
-		arr[i].o = arrO[i];
-		arr[i].el = arrE[i];
-	}	
-	
+	var arr = infProject.tools.joint.arr2;		
 	
 	if(arr.length == 0) return;	// у объекта нет разъемов
 	
@@ -413,7 +393,7 @@ function clickItemCenterObjUI_2(cdm)
 	{
 		arr[i].el.css('background-color', '#ffffff');
 		
-		if(arr[i].o.userData.tag == 'joinPoint') arr[i].o.material.color = arr[i].o.userData.centerPoint.color.clone();
+		if(arr[i].o.userData.tag == 'joinPoint') arr[i].o.material = infProject.material.pointObj.default;
 		if(arr[i].o.userData.tag == 'wf_point') arr[i].o.material = infProject.material.pointTube.default;		
 	}
 	
@@ -452,11 +432,10 @@ function clickItemCenterObjUI_2(cdm)
 	var value = item.attr('uuid');
 	
 	
-	if(obj.userData.tag == 'joinPoint') obj.material.color = joint.material.active.color.clone();
+	if(obj.userData.tag == 'joinPoint') obj.material = infProject.material.pointObj.active;
 	if(obj.userData.tag == 'wf_point')	obj.material = infProject.material.pointTube.active;
 		
-	obj.visible = true;
-	joint.active_2 = obj;
+	infProject.tools.joint.active_2 = obj;
 	
 	setClickLastObj({obj: infProject.tools.joint.active_1});
 }

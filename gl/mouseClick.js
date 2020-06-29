@@ -205,7 +205,12 @@ function clickRayHit(event)
 	// разъем у объекта, при вкл кнопке присоединить 
 	if(infProject.tools.joint.arr2.length > 0 && !rayhit)
 	{
-		var arr2 = infProject.tools.joint.arr2;	
+		var arr2 = [];
+		var arr = infProject.tools.joint.arr2;	
+		for ( var i = 0; i < arr.length; i++ )
+		{
+			arr2[arr2.length] = arr[i].o;
+		}		
 		
 		var ray = rayIntersect( event, arr2, 'arr' );  
 		if(ray) { if(ray.length > 0) { rayhit = ray[0]; infProject.tools.joint.active_2 = rayhit.object; return rayhit; } }	

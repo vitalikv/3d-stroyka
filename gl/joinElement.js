@@ -8,13 +8,9 @@ function createJoinP()
 	var joint = {};
 	
 	joint.arr2 = [];
-	joint.el = [];
 	joint.active = false;
 	joint.active_1 = null;
-	joint.active_2 = null;
-	joint.material = {};
-	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	
+	joint.active_2 = null;	
 
 	return joint;	
 }
@@ -84,8 +80,7 @@ function showHideJP(cdm)
 	
 	for(var i = 0; i < arr.length; i++)
 	{				
-		arr[i].visible = true;
-		//arr[i].material.color = arr[i].userData.centerPoint.color.clone();	
+		arr[i].visible = true;	
 	}	
 	
 	setScaleJoinPoint({arr: arr}); 
@@ -106,7 +101,7 @@ function activeJoinPoint(cdm)
 	
 	if(!obj) return;	
 	 
-	obj.material.color = infProject.tools.joint.material.active.color.clone();
+	obj.material = infProject.material.pointObj.active; 
 }
 
 

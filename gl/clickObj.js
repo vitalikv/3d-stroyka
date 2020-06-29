@@ -463,8 +463,7 @@ function copyObj(cdm)
 			{ 
 				if(child.userData.centerPoint)
 				{
-					child.material.color = new THREE.Color(0x00ff00);
-					child.material = child.material.clone();
+					child.material = infProject.material.pointObj.default;
 					child.userData.centerPoint.color = child.material.color.clone();
 				}
 			}
@@ -680,7 +679,7 @@ function deClickObj(cdm)
 			
 			for ( var i = 0; i < arr.length; i++ )
 			{ 
-				arr[i].material.color = arr[i].userData.centerPoint.color.clone();
+				arr[i].material = infProject.material.pointObj.default;
 				arr[i].visible = false;
 			}		
 		}	
@@ -720,7 +719,7 @@ function deClickObj(cdm)
 		
 		for(var i = 0; i < arr.length; i++)
 		{ 
-			if(arr[i] == obj) return true;
+			if(arr[i].o == obj) return true;
 		}
 
 		return false;

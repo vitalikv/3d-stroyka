@@ -176,10 +176,15 @@ infProject.scene.block = { key : { scroll : false } };		// блокировка 
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.geometry = {};
+
 infProject.material = {};
-infProject.material.pointTube = {}
+infProject.material.pointTube = {};
 infProject.material.pointTube.default = new THREE.MeshLambertMaterial({color: 0x333333, transparent: true, opacity: 0.6, depthTest: false});
 infProject.material.pointTube.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
+infProject.material.pointObj = {};
+infProject.material.pointObj.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
+infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
+
 infProject.geometry.circle = createCircleSpline();
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);

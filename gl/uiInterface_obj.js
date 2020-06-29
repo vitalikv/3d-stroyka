@@ -318,7 +318,7 @@ function clickItemObjNameUI(cdm)
 			for(var i2 = 0; i2 < list[i].p.length; i2++)
 			{
 				list[i].p[i2].el.css('background-color', '#ffffff');
-				list[i].p[i2].o.material.color = list[i].p[i2].o.userData.centerPoint.color.clone();
+				list[i].p[i2].o.material = infProject.material.pointObj.default;
 			}
 		}
 	}		
