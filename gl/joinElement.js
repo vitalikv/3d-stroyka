@@ -74,7 +74,7 @@ function showHideJP(cdm)
 	
 	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
-	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = obj.parent; }
+	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = getParentObj({obj: obj}); }
 
 	
 	if(!obj) return;	
@@ -88,9 +88,7 @@ function showHideJP(cdm)
 		//arr[i].material.color = arr[i].userData.centerPoint.color.clone();	
 	}	
 	
-	setScaleJoinPoint({arr: arr});
-		 
-	$('[nameId="show_join_point_checked"]').show(); 
+	setScaleJoinPoint({arr: arr}); 
 	
 	if(o2) { activeJoinPoint({obj: o2}); }
 }

@@ -310,9 +310,7 @@ function clickItemObjNameUI(cdm)
 	var list = infProject.list.rp_ui.arr;
 	
 	// снимаем старые выдиления
-	{
-		var list = infProject.list.rp_ui.arr;
-		
+	{		
 		for(var i = 0; i < list.length; i++)
 		{
 			list[i].el.css('background-color', '#ffffff');
@@ -320,6 +318,7 @@ function clickItemObjNameUI(cdm)
 			for(var i2 = 0; i2 < list[i].p.length; i2++)
 			{
 				list[i].p[i2].el.css('background-color', '#ffffff');
+				list[i].p[i2].o.material.color = list[i].p[i2].o.userData.centerPoint.color.clone();
 			}
 		}
 	}		

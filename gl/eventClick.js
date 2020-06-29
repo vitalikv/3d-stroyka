@@ -107,7 +107,7 @@ $('[nameId="butt_add_point_on_tube"]').mousedown(function () { switchAddPointOnT
 
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
-$('[nameId="show_hide_join_point"]').mousedown(function () {  }); 	
+ 	
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
 $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });
 

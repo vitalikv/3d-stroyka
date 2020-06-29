@@ -593,14 +593,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 											<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
 										</div>
 										<div class="block_rp_text">Группа</div>						
-									</div>
-									
-									<div class="flex_1 align_items block_rp_1">
-										<div class="checkbox_1" nameId="show_hide_join_point">
-											<div class="checkbox_1_checked" nameId="show_join_point_checked" style="display: block;"></div>						
-										</div>
-										<div class="block_rp_text">Показать точки</div>						
-									</div>						
+									</div>															
 								</div>
 								
 								<div class="right_panel_1_1_list" nameId="rp_obj_group">

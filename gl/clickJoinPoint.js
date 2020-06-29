@@ -313,8 +313,6 @@ function clearListObjUI()
 	infProject.tools.joint.el = [];
 	
 	infProject.tools.joint.active_2 = null;	
-	
-	//$('[nameId="show_join_point_checked"]').hide();
 }
 
 
@@ -473,7 +471,7 @@ function joinElement(cdm)
 	if(!cdm) cdm = {};
 	
 	var joint = infProject.tools.joint;	
-	console.log(23423, joint);
+	
 	var o1 = infProject.tools.joint.active_1;   
 	var o2 = infProject.tools.joint.active_2;
 
