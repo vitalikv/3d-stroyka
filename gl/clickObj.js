@@ -316,7 +316,6 @@ function hidePivotGizmo(obj)
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
-	var joint = infProject.tools.joint;
 				
 	
 	if(clickO.rayhit)
@@ -327,27 +326,11 @@ function hidePivotGizmo(obj)
 		}
 	}	
 	
-	
-	
 	pivot.visible = false;
 	gizmo.visible = false;
 	
-	 
-	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
-	
-	switchSelectAddObjGroup({active: false});
-	switchJoinObj({active: false});
-	hideJoinPoint({visible: 'full'});
-	
-	//clickO.obj = null;  
-	resetClickLastObj({});
-	
-
-	activeObjRightPanelUI_1();
-	
-	outlineRemoveObj();
 }
 
 
@@ -674,8 +657,38 @@ function deClickObj(cdm)
 	
 	function deClickObj_1()
 	{ 
-		hidePivotGizmo(obj); 
-		hideMenuUI(obj);
+		hidePivotGizmo(obj);
+
+		switchSelectAddObjGroup({active: false});
+		switchJoinObj({active: false});
+
+		// скрываем разъемы
+		{
+			var arr = [];
+			
+			if(obj.userData.tag == 'joinPoint')
+			{
+				var obj3D = getParentObj({obj: obj});
+				arr = getCenterPointFromObj_1( obj3D );
+			}
+
+			if(obj.userData.tag == 'obj')
+			{
+				arr = getCenterPointFromObj_1( obj );
+			}			
+			
+			
+			for ( var i = 0; i < arr.length; i++ )
+			{ 
+				arr[i].material.color = arr[i].userData.centerPoint.color.clone();
+				arr[i].visible = false;
+			}		
+		}	
+		
+		activeObjRightPanelUI_1();		// скрываем UI
+		
+		outlineRemoveObj();		
+		
 		resetClickLastObj({});			
 	}
 		

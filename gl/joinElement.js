@@ -6,7 +6,7 @@
 function createJoinP()
 {
 	var joint = {};
-	joint.arr1 = [];
+	
 	joint.arr2 = [];
 	joint.el = [];
 	joint.active = false;
@@ -14,7 +14,6 @@ function createJoinP()
 	joint.active_2 = null;
 	joint.material = {};
 	joint.material.active = new THREE.MeshPhongMaterial({ color: 0xff0000, transparent: true, opacity: 1.0, depthTest: false, lightMap: lightMap_1 });
-	joint.visible = false;
 	
 
 	return joint;	
@@ -67,102 +66,36 @@ function clickFirstCenterPoint(cdm)
 
 
 
-function showHideJP(cdm)
+function showHideJP(cdm) 
 {
-	if(!cdm) { cdm = {} }
-	
-	if(cdm.switch) { infProject.settings.active.joinP = !infProject.settings.active.joinP; }
-	
-	var active = infProject.settings.active.joinP;			
+	if(!cdm) { cdm = {} }			
 
+	var obj = null;
+	
 	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
 	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = obj.parent; }
 
 	
-	if(!active) 
-	{
-		hideJoinPoint();
-		if(cdm.switch) { clickItemObjNameUI({obj: obj}); }
-	}
-	else 
-	{		
-		showJoinPoint({obj: obj, o2: o2});			
-	}
-}
-
-
-
-// показываем точки-соединители
-function showJoinPoint(cdm)
-{
-	if(!cdm.obj) return;
-	var obj = cdm.obj;	
-	
-	if(infProject.settings.active.group) { hideJoinPoint(); }
-	else { hideJoinPoint({clear: 2}); }
+	if(!obj) return;	
 	
 	var joint = infProject.tools.joint;	
 	var arr = getCenterPointFromObj_1( obj );
 	
 	for(var i = 0; i < arr.length; i++)
-	{		
-		//if(arr[i].userData.centerPoint.join) continue; 	// точка уже соеденина с другой точкой
-		
+	{				
 		arr[i].visible = true;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone();	
+		//arr[i].material.color = arr[i].userData.centerPoint.color.clone();	
 	}	
 	
 	setScaleJoinPoint({arr: arr});
-		
-	joint.arr1 = arr;
-	joint.visible = true; 
+		 
 	$('[nameId="show_join_point_checked"]').show(); 
 	
-	if(cdm.o2) { activeJoinPoint({obj: cdm.o2}); }
+	if(o2) { activeJoinPoint({obj: o2}); }
 }
 
 
-
-
-
-
-// скрываем у объекта точки-соединители 
-function hideJoinPoint(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	var joint = infProject.tools.joint;	
-	
-	var active = null;  
-	if(cdm.visible == 'full') {}
-	else if(joint.active_1) { active = joint.active_1; }
-	
-	var arr = joint.arr1; 
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].visible = false;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
-	}
-	
-	var arr = joint.arr2;
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].visible = false;
-		arr[i].material.color = arr[i].userData.centerPoint.color.clone();					
-	}
-	
-	joint.arr1 = [];
-	joint.arr2 = [];
-	joint.active_1 = null;
-	joint.active_2 = null;	
-	joint.visible = false;
-	$('[nameId="show_join_point_checked"]').hide();
-	
-	//if(active) { activeJoinPoint({obj: active}); }
-}
 
 
 
@@ -173,25 +106,10 @@ function activeJoinPoint(cdm)
 	var obj = null;
 	if(cdm.obj) { obj = cdm.obj; }
 	
-	if(!obj) return;
-	
-	var joint = infProject.tools.joint;
-	
-	if(joint.active_1)	// снимаем старое выделение 
-	{
-		if(!joint.visible) { joint.active_1.visible = false; }
-		joint.active_1.material.color = joint.active_1.userData.centerPoint.color.clone();
-		joint.active_1 = null;		
-	}
-	
-	if(!joint.visible) { joint.arr1 = [obj]; }
+	if(!obj) return;	
 	 
-	obj.material.color = joint.material.active.color.clone();
-	obj.visible = true;
-	joint.active_1 = obj;
+	obj.material.color = infProject.tools.joint.material.active.color.clone();
 }
-
-
 
 
 
@@ -201,10 +119,7 @@ function activeJoinPoint(cdm)
 // масштаб соединительных точек у объектов
 function setScaleJoinPoint(cdm) 
 { 
-	if(!cdm) { cdm = {}; }
-	
-	var active = infProject.settings.active.joinP;	
-	if(!active) return;
+	if(!cdm) { cdm = {}; }	
 	
 	var arr = null;
 	

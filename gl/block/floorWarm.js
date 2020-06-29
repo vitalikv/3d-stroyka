@@ -638,38 +638,7 @@ $('[color_tube_1_change]').on('mousedown', function(e)
 
 
 
-// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
-function joinTubePointTopoint()
-{
-	var o1 = infProject.list.rp_wf_point.align.tubeP;   
-	var o2 = infProject.list.rp_wf_point.align.joinO;
 
-	if(!o1) return;
-	if(!o2) return;
-
-	o2.updateMatrixWorld();		
-	var pos1 = o2.getWorldPosition(new THREE.Vector3());
-	
-	o1.position.copy(pos1);
-	
-	infProject.tools.pivot.position.copy(o1.position);
-	setScalePivotGizmo();
-	
-	var line = o1.userData.wf_point.line.o;
-	
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;
-	
-
-	{
-		geometryTubeWF({line : line});
-		line.userData.wf_line.tube.visible = true;
-	}	
-
-	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
-
-	renderCamera();
-}
 
 
 
@@ -788,8 +757,7 @@ function deClickTube(cdm)
 			var pivot = infProject.tools.pivot;
 			
 			pivot.visible = false;
-			pivot.userData.pivot.obj = null; 
-			outlineRemoveObj();		
+			pivot.userData.pivot.obj = null; 		
 		}
 		
 		

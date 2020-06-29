@@ -205,6 +205,39 @@ function clickItemCenterObjUI_3(cdm)
 
 
 
+// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
+function joinTubePointTopoint()
+{
+	var o1 = infProject.list.rp_wf_point.align.tubeP;   
+	var o2 = infProject.list.rp_wf_point.align.joinO;
+
+	if(!o1) return;
+	if(!o2) return;
+
+	o2.updateMatrixWorld();		
+	var pos1 = o2.getWorldPosition(new THREE.Vector3());
+	
+	o1.position.copy(pos1);
+	
+	infProject.tools.pivot.position.copy(o1.position);
+	setScalePivotGizmo();
+	
+	var line = o1.userData.wf_point.line.o;
+	
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true;
+	
+
+	{
+		geometryTubeWF({line : line});
+		line.userData.wf_line.tube.visible = true;
+	}	
+
+	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
+
+	renderCamera();
+}
+
 
 // ----------------------------
 
@@ -226,19 +259,20 @@ function switchJoinObj(cdm)
 	
 	// скрываем точки у второго объекта
 	clearListObjUI();		
-
 	
 	if(infProject.tools.joint.active)	// вкл
-	{		
+	{
+		infProject.tools.joint.active_1 = clickO.last_obj;
+		
 		$('[nameId="rp_wrap_obj_align"]').show();
 		$('[nameId="bl_rp_obj_group"]').hide();
 		$('[nameId="pr_list_button_for_obj"]').hide();
 	}		
 	else		// выкл
-	{				
-		$('[nameId="rp_wrap_obj_align"]').hide();
-		clearListObjUI();
+	{
+		infProject.tools.joint.active_1 = null;
 		
+		$('[nameId="rp_wrap_obj_align"]').hide();
 		$('[nameId="bl_rp_obj_group"]').show();
 		$('[nameId="pr_list_button_for_obj"]').show();
 	}		
@@ -271,12 +305,16 @@ function clearListObjUI()
 		
 		if(arr[i].o.userData.tag == 'wf_point')
 		{
-			arr[i].o.material = infProject.material.pointTube.default;		
+			arr[i].o.material = infProject.material.pointTube.default;	 	
 		}		
 	}	
 	
 	infProject.tools.joint.arr2 = [];
 	infProject.tools.joint.el = [];
+	
+	infProject.tools.joint.active_2 = null;	
+	
+	//$('[nameId="show_join_point_checked"]').hide();
 }
 
 
@@ -429,17 +467,13 @@ function clickItemCenterObjUI_2(cdm)
 
 
 
-
-
-
-
 // соединяем (выравниваем) элементы
 function joinElement(cdm)
 { 
 	if(!cdm) cdm = {};
 	
 	var joint = infProject.tools.joint;	
-	
+	console.log(23423, joint);
 	var o1 = infProject.tools.joint.active_1;   
 	var o2 = infProject.tools.joint.active_2;
 
@@ -526,6 +560,10 @@ function joinElement(cdm)
 	tools.position.copy(pos);
 	tools.quaternion.copy(q); 	
 }
+
+
+
+
 
 
 
