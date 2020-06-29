@@ -69,7 +69,7 @@ function clickFirstWFPoint(cdm)
 	var obj = cdm.obj;
 	var rayhit = cdm.rayhit;
 	
-	if(infProject.tools.joint.active) { clickItemCenterObjUI_2({obj: obj}); }
+	if(infProject.list.alignP.active) { clickItemCenterObjUI_2({obj: obj}); }
 	else { clickWFPoint_3D({ intersect: rayhit }); }
 
 }
@@ -649,14 +649,14 @@ function deClickTube(cdm)
 		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
 		if(cdm.moment == 'down' && camera == cameraTop)
 		{
-			if(clickO.rayhit.object == cdm.obj && !infProject.tools.joint.active) return;
+			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}
 		
 		if(cdm.moment == 'up' && camera == camera3D)
 		{
-			if(clickO.rayhit.object == cdm.obj && !infProject.tools.joint.active) return;
+			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}		
@@ -683,7 +683,7 @@ function deClickTube(cdm)
 	{ 
 		if(clickO.rayhit)
 		{  
-			if(infProject.tools.joint.active) 
+			if(infProject.list.alignP.active) 
 			{ 
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return checkWFPoint_2({obj: obj, tube: clickO.rayhit.object}); }
@@ -700,7 +700,7 @@ function deClickTube(cdm)
 	function checkWFPoint_1(cdm)
 	{
 		var obj = cdm.obj;
-		var arr = infProject.tools.joint.arr2;
+		var arr = infProject.list.alignP.arr2;
 		
 		for(var i = 0; i < arr.length; i++)
 		{

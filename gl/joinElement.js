@@ -41,7 +41,7 @@ function clickFirstCenterPoint(cdm)
 	var obj = cdm.obj;
 	var rayhit = cdm.rayhit;
 		
-	if(infProject.tools.joint.p2) { clickItemCenterObjUI_2({obj: obj}); }
+	if(infProject.list.alignP.p2) { clickItemCenterObjUI_2({obj: obj}); }
 	else { clickObject3D(obj, {menu_1: true}); }
 }
 
@@ -61,7 +61,7 @@ function showHideJP(cdm)
 	
 	if(!obj) return;	
 	
-	var joint = infProject.tools.joint;	
+	var joint = infProject.list.alignP;	
 	var arr = getCenterPointFromObj_1( obj );
 	
 	for(var i = 0; i < arr.length; i++)

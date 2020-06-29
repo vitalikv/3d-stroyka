@@ -10,28 +10,28 @@ function switchAlignPoint_1(cdm)
 	
 	if(cdm.active !== undefined) 
 	{
-		infProject.tools.joint.active = cdm.active;
+		infProject.list.alignP.active = cdm.active;
 	}	
 	else
 	{
-		infProject.tools.joint.active = !infProject.tools.joint.active;
+		infProject.list.alignP.active = !infProject.list.alignP.active;
 	}
 	
 	// скрываем точки у второго объекта
 	clearListObjUI();		
 	
-	if(infProject.tools.joint.active)	// вкл
+	if(infProject.list.alignP.active)	// вкл
 	{
-		infProject.tools.joint.p1 = clickO.last_obj;
+		infProject.list.alignP.p1 = clickO.last_obj;
 		
-		if(infProject.tools.joint.p1.userData.tag == 'joinPoint')
+		if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 		{
 			$('[nameId="rp_wrap_obj_align"]').show();
 			$('[nameId="bl_rp_obj_group"]').hide();
 			$('[nameId="pr_list_button_for_obj"]').hide();			
 		}
 		
-		if(infProject.tools.joint.p1.userData.tag == 'wf_point')
+		if(infProject.list.alignP.p1.userData.tag == 'wf_point')
 		{
 			$('[nameId="pr_list_button_for_tube_point"]').hide();
 			$('[nameId="rp_wrap_align_wf_point"]').show();					
@@ -39,23 +39,23 @@ function switchAlignPoint_1(cdm)
 	}		
 	else		// выкл
 	{
-		if(infProject.tools.joint.p1)
+		if(infProject.list.alignP.p1)
 		{
-			if(infProject.tools.joint.p1.userData.tag == 'joinPoint')
+			if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 			{
 				$('[nameId="rp_wrap_obj_align"]').hide();
 				$('[nameId="bl_rp_obj_group"]').show();
 				$('[nameId="pr_list_button_for_obj"]').show();			
 			}
 			
-			if(infProject.tools.joint.p1.userData.tag == 'wf_point')
+			if(infProject.list.alignP.p1.userData.tag == 'wf_point')
 			{
 				$('[nameId="rp_wrap_align_wf_point"]').hide();
 				$('[nameId="pr_list_button_for_tube_point"]').show();						
 			}			
 		}
 		
-		infProject.tools.joint.p1 = null;		
+		infProject.list.alignP.p1 = null;		
 	}	
 }
 
@@ -63,7 +63,7 @@ function switchAlignPoint_1(cdm)
 // очищаем список и возращаем default материал разъемам
 function clearListObjUI()
 {
-	var arr = infProject.tools.joint.arr2;	
+	var arr = infProject.list.alignP.arr2;	
 	
 	for(var i = 0; i < arr.length; i++)
 	{
@@ -81,8 +81,8 @@ function clearListObjUI()
 		}		
 	}	
 	
-	infProject.tools.joint.arr2 = [];	
-	infProject.tools.joint.p2 = null;	
+	infProject.list.alignP.arr2 = [];	
+	infProject.list.alignP.p2 = null;	
 }
 
 
@@ -116,8 +116,8 @@ function showJoinPoint_2(cdm)
 	}	
 	
 	
-	if(infProject.tools.joint.p1.userData.tag == 'wf_point') { var nameId = "rp_list_align_wf_point"; }
-	if(infProject.tools.joint.p1.userData.tag == 'joinPoint') { var nameId = "rp_obj_align"; }
+	if(infProject.list.alignP.p1.userData.tag == 'wf_point') { var nameId = "rp_list_align_wf_point"; }
+	if(infProject.list.alignP.p1.userData.tag == 'joinPoint') { var nameId = "rp_obj_align"; }
 	
 	
 	// добваляем разъемы выделенного объекта в список UI
@@ -134,10 +134,10 @@ function showJoinPoint_2(cdm)
 
 		var el = $(str).appendTo('[nameId="'+nameId+'"]');
 
-		var n = infProject.tools.joint.arr2.length;	
-		infProject.tools.joint.arr2[n] = {};
-		infProject.tools.joint.arr2[n].el = el;
-		infProject.tools.joint.arr2[n].o = arr[i]; 		
+		var n = infProject.list.alignP.arr2.length;	
+		infProject.list.alignP.arr2[n] = {};
+		infProject.list.alignP.arr2[n].el = el;
+		infProject.list.alignP.arr2[n].o = arr[i]; 		
 		
 		arr[i].visible = true;
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
@@ -163,9 +163,9 @@ function clickItemCenterObjUI_2(cdm)
 	var item = null;
 	var obj = null;
 	
-	var joint = infProject.tools.joint;
+	var joint = infProject.list.alignP;
 	
-	var arr = infProject.tools.joint.arr2;		
+	var arr = infProject.list.alignP.arr2;		
 	
 	if(arr.length == 0) return;	// у объекта нет разъемов
 	
@@ -217,9 +217,9 @@ function clickItemCenterObjUI_2(cdm)
 	if(obj.userData.tag == 'joinPoint') obj.material = infProject.material.pointObj.active;
 	if(obj.userData.tag == 'wf_point')	obj.material = infProject.material.pointTube.active;
 		
-	infProject.tools.joint.p2 = obj;
+	infProject.list.alignP.p2 = obj;
 	
-	setClickLastObj({obj: infProject.tools.joint.p1});
+	setClickLastObj({obj: infProject.list.alignP.p1});
 }
 
 
@@ -229,8 +229,8 @@ function clickItemCenterObjUI_2(cdm)
 // нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
 function joinTubePointTopoint()
 {
-	var o1 = infProject.tools.joint.p1;   
-	var o2 = infProject.tools.joint.p2;
+	var o1 = infProject.list.alignP.p1;   
+	var o2 = infProject.list.alignP.p2;
 
 	if(!o1) return;
 	if(!o2) return;
@@ -267,16 +267,16 @@ function joinElement(cdm)
 { 
 	if(!cdm) cdm = {};
 	
-	var joint = infProject.tools.joint;	
+	var joint = infProject.list.alignP;	
 	
-	var o1 = infProject.tools.joint.p1;   
-	var o2 = infProject.tools.joint.p2;
+	var o1 = infProject.list.alignP.p1;   
+	var o2 = infProject.list.alignP.p2;
 
 	if(!o1) return;
 	if(!o2) return;
 
-	var obj_1 = infProject.tools.joint.p1.parent;
-	var obj_2 = infProject.tools.joint.p2.parent;
+	var obj_1 = infProject.list.alignP.p1.parent;
+	var obj_2 = infProject.list.alignP.p2.parent;
 	
 	if(o2.userData.tag == 'wf_point') obj_2 = o2;
 		
