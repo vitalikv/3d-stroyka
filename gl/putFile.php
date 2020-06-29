@@ -40,7 +40,7 @@ joinElement.js
 substrate.js
 groupObj.js
 clickMoveTube.js
-clickJoinPoint.js
+alignPoint.js
 ';
 
 

@@ -659,7 +659,7 @@ function deClickObj(cdm)
 		hidePivotGizmo(obj);
 
 		switchSelectAddObjGroup({active: false});
-		switchJoinObj({active: false});
+		switchAlignPoint_1({active: false});
 
 		// скрываем разъемы
 		{

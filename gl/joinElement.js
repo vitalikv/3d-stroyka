@@ -2,19 +2,6 @@
 
 
 
-// создаем инструмент 
-function createJoinP()
-{
-	var joint = {};
-	
-	joint.arr2 = [];
-	joint.active = false;
-	joint.active_1 = null;
-	joint.active_2 = null;	
-
-	return joint;	
-}
-
 
 
 
@@ -53,9 +40,8 @@ function clickFirstCenterPoint(cdm)
 {
 	var obj = cdm.obj;
 	var rayhit = cdm.rayhit;
-	
-	if(infProject.list.rp_wf_point.align.active) { clickItemCenterObjUI_3({obj: obj}); }	
-	else if(infProject.tools.joint.active_2) { clickItemCenterObjUI_2({obj: obj}); }
+		
+	if(infProject.tools.joint.p2) { clickItemCenterObjUI_2({obj: obj}); }
 	else { clickObject3D(obj, {menu_1: true}); }
 }
 
