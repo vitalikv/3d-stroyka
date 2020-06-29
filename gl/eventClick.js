@@ -92,11 +92,11 @@ $('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddO
 $('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: false}); }); 
   
 $('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
-$('[nameId="join_element"]').mousedown(function () { joinElement(); });
+$('[nameId="join_element"]').mousedown(function () { alignPointToPoint_1(); });
 
 $('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignPoint_1(); }); 
 $('[nameId="button_deactive_align_wf_point"]').mousedown(function () { switchAlignPoint_1({active: false}); });
-$('[nameId="button_done_align_wf_point"]').mousedown(function () { joinTubePointTopoint(); });
+$('[nameId="button_done_align_wf_point"]').mousedown(function () { alignPointToPoint_1(); });
 
 $('[nameId="button_active_join_wf_point"]').mousedown(function () { switchJoinWfPoint(); });
 $('[nameId="button_deactive_join_wf_point"]').mousedown(function () { switchJoinWfPoint({active: false}); });

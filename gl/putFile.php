@@ -36,7 +36,7 @@ uiInterface_wf.js
 uiInterface_plane.js
 uiInterface_list_obj.js
 uiInterface_catalog.js
-joinElement.js
+objCenterPoint.js
 substrate.js
 groupObj.js
 clickMoveTube.js

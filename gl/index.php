@@ -117,7 +117,7 @@
     <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>joinElement.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>

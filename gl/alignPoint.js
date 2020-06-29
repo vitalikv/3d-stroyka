@@ -225,15 +225,28 @@ function clickItemCenterObjUI_2(cdm)
 
 
 
-
-// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему
-function joinTubePointTopoint()
+// нажали кнопку выровнить, определяем дальнейшие действия 
+function alignPointToPoint_1()
 {
+	var joint = infProject.list.alignP;	
+	
 	var o1 = infProject.list.alignP.p1;   
 	var o2 = infProject.list.alignP.p2;
 
 	if(!o1) return;
 	if(!o2) return;
+
+	if(o1.userData.tag == 'wf_point'){ alignTubePointToPoint(); }
+	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'wf_point'){ alignObjPointToTubePoint(); }
+	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'joinPoint'){ alignObjPointToObjPoint(); }
+}
+
+
+// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему трубы/объекту
+function alignTubePointToPoint()
+{
+	var o1 = infProject.list.alignP.p1;		// двигаем и присоединяем   
+	var o2 = infProject.list.alignP.p2;		// объект не трогаем, остается на месте
 
 	o2.updateMatrixWorld();		
 	var pos1 = o2.getWorldPosition(new THREE.Vector3());
@@ -262,41 +275,75 @@ function joinTubePointTopoint()
 
 
 
-// соединяем (выравниваем) элементы
-function joinElement(cdm)
-{ 
-	if(!cdm) cdm = {};
-	
+// нажали кнопку выровнить, подтягиваем разъем с объектом/группой к выбранному разъему 
+function alignObjPointToTubePoint()
+{ 	
 	var joint = infProject.list.alignP;	
 	
-	var o1 = infProject.list.alignP.p1;   
-	var o2 = infProject.list.alignP.p2;
-
-	if(!o1) return;
-	if(!o2) return;
-
-	var obj_1 = infProject.list.alignP.p1.parent;
-	var obj_2 = infProject.list.alignP.p2.parent;
+	var o1 = infProject.list.alignP.p1;		// двигаем и присоединяем   
+	var o2 = infProject.list.alignP.p2;		// объект не трогаем, остается на месте
 	
-	if(o2.userData.tag == 'wf_point') obj_2 = o2;
-		
+	
+	var obj_1 = getParentObj({obj: o1});
+	
+	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилин как группа	
+	{
+		var arr_2 = getObjsFromGroup_1({obj: obj_1});  
+	}
+	else	// объект без группы или объект с группой, но выдилен как отдельный объект
+	{
+		var arr_2 = [obj_1];
+	}
+
+	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
+	var pos2 = o2.getWorldPosition(new THREE.Vector3());
+
+	var pos = new THREE.Vector3().subVectors( pos2, pos1 );
+	
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].position.add(pos);		
+	}		
+	
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
+	
+	obj_1.updateMatrixWorld();
+	var pos = o1.getWorldPosition(new THREE.Vector3());
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());
+	
+	
+	setScalePivotGizmo();
+	tools.position.copy(pos);
+	tools.quaternion.copy(q); 	
+}
+
+
+// нажали кнопку выровнить, подтягиваем разъем с объектом/группой к выбранному разъему 
+function alignObjPointToObjPoint(cdm)
+{ 	
+	var joint = infProject.list.alignP;	
+	
+	var o1 = infProject.list.alignP.p1;		// двигаем и присоединяем   
+	var o2 = infProject.list.alignP.p2;		// объект не трогаем, остается на месте
+
+	var obj_1 = getParentObj({obj: o1});	
+	var obj_2 = getParentObj({obj: o2});
+	
 
 	var q2 = o2.getWorldQuaternion(new THREE.Quaternion());
 	var q1 = o1.getWorldQuaternion(new THREE.Quaternion());
 	var q1 = q1.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)));	// разворачиваем на 180 градусов
 	var diff_2 = new THREE.Quaternion().multiplyQuaternions(q2, q1.inverse());					// разница между Quaternions
 	
-	if(obj_2.userData.tag == 'wf_point')
-	{
-		var arr_2 = [obj_1];
-	}
-	else if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
+
+	if(obj_2.userData.obj3D.group == obj_1.userData.obj3D.group) 	// второй объект из той же группы
 	{
 		var arr_2 = [obj_1];  
 	}
-	else if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
+	else if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилин как группа	
 	{
-		var arr_2 = getObjsFromGroup_1({obj: obj_1});
+		var arr_2 = getObjsFromGroup_1({obj: obj_1});  
 	}
 	else	// объект без группы или объект с группой, но выдилен как отдельный объект
 	{
@@ -304,20 +351,13 @@ function joinElement(cdm)
 	}
 	
 	
-	if(obj_2.userData.tag == 'wf_point')
+	// поворачиваем объекты в нужном направлении 
+	for(var i = 0; i < arr_2.length; i++)
 	{
-		
+		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+		arr_2[i].updateMatrixWorld();		
 	}
-	else
-	{
-		// поворачиваем объекты в нужном направлении 
-		for(var i = 0; i < arr_2.length; i++)
-		{
-			arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
-			arr_2[i].updateMatrixWorld();		
-		}
-		
-	}
+
 	
 	var pos1 = o2.getWorldPosition(new THREE.Vector3());		
 	var pos2 = o1.getWorldPosition(new THREE.Vector3());
