@@ -30,12 +30,16 @@ function activeObjRightPanelUI_1(cdm)
 	else if(obj.userData.tag == 'obj')
 	{		    
 		$('[nameId="bl_object_3d"]').show();
+		$('[nameId="pr_list_button_center_point"]').hide();
+		$('[nameId="pr_list_button_for_obj"]').show();
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
 	{
 		$('[nameId="bl_object_3d"]').show();
+		$('[nameId="pr_list_button_for_obj"]').hide();
+		$('[nameId="pr_list_button_center_point"]').show();
 	}
 	
 	$('[nameId="wrap_object_1"]').show(); 	

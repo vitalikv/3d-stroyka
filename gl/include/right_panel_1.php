@@ -604,11 +604,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 							
 														
 							
-							<div nameId="pr_list_button_for_obj"> 
-								<div class="button1 button_gradient_1" nameId="button_active_join_element">
-									подключить	
-								</div>
-								
+							<div nameId="pr_list_button_for_obj" style="display: none;"> 
 								<div class="button1 button_gradient_1" nameId="button_active_add_group">
 									сгруппировать	
 								</div>
@@ -629,6 +625,13 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 
 								</div>		
 							</div>
+							
+							
+							<div nameId="pr_list_button_center_point" style="display: none;"> 
+								<div class="button1 button_gradient_1" nameId="button_active_join_element">
+									подключить	
+								</div>		 										
+							</div>							
 							
 						</div>	
 

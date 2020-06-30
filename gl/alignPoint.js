@@ -28,7 +28,8 @@ function switchAlignPoint_1(cdm)
 		{
 			$('[nameId="rp_wrap_obj_align"]').show();
 			$('[nameId="bl_rp_obj_group"]').hide();
-			$('[nameId="pr_list_button_for_obj"]').hide();			
+			$('[nameId="pr_list_button_for_obj"]').hide();
+			$('[nameId="pr_list_button_center_point"]').hide();
 		}
 		
 		if(infProject.list.alignP.p1.userData.tag == 'wf_point')
@@ -45,7 +46,8 @@ function switchAlignPoint_1(cdm)
 			{
 				$('[nameId="rp_wrap_obj_align"]').hide();
 				$('[nameId="bl_rp_obj_group"]').show();
-				$('[nameId="pr_list_button_for_obj"]').show();			
+				$('[nameId="pr_list_button_for_obj"]').hide();
+				$('[nameId="pr_list_button_center_point"]').show();				
 			}
 			
 			if(infProject.list.alignP.p1.userData.tag == 'wf_point')
