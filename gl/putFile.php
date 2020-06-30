@@ -41,6 +41,7 @@ substrate.js
 groupObj.js
 clickMoveTube.js
 alignPoint.js
+mergeObjToGroup.js
 ';
 
 

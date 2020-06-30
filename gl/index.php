@@ -118,6 +118,7 @@
     <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>mergeObjToGroup.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>

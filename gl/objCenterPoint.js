@@ -57,11 +57,10 @@ function showHideJP(cdm)
 	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
 	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = getParentObj({obj: obj}); }
-
 	
 	if(!obj) return;	
 	
-	var joint = infProject.list.alignP;	
+	
 	var arr = getCenterPointFromObj_1( obj );
 	
 	for(var i = 0; i < arr.length; i++)

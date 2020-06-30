@@ -253,10 +253,7 @@ function alignTubePointToPoint()
 	o2.updateMatrixWorld();		
 	var pos1 = o2.getWorldPosition(new THREE.Vector3());
 	
-	o1.position.copy(pos1);
-	
-	infProject.tools.pivot.position.copy(o1.position);
-	setScalePivotGizmo();
+	o1.position.copy(pos1);	
 	
 	var line = o1.userData.wf_point.line.o;
 	
@@ -270,6 +267,9 @@ function alignTubePointToPoint()
 	}	
 
 	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
+	
+	infProject.tools.pivot.position.copy(o1.position);
+	setScalePivotGizmo();	
 
 	renderCamera();
 }
@@ -307,17 +307,17 @@ function alignObjPointToTubePoint()
 		arr_2[i].position.add(pos);		
 	}		
 	
+	obj_1.updateMatrixWorld();
+	var pos = o1.getWorldPosition(new THREE.Vector3());
+	var q = o1.getWorldQuaternion(new THREE.Quaternion());	
+	
 	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
 	
-	obj_1.updateMatrixWorld();
-	var pos = o1.getWorldPosition(new THREE.Vector3());
-	var q = o1.getWorldQuaternion(new THREE.Quaternion());
-	
-	
-	setScalePivotGizmo();
 	tools.position.copy(pos);
-	tools.quaternion.copy(q); 	
+	tools.quaternion.copy(q);
+
+ 	setScalePivotGizmo();
 }
 
 
@@ -383,19 +383,18 @@ function alignObjPointToObjPoint(cdm)
 		arr_2[i].position.add(pos);		
 	}			
 	
-
-	
-	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
-	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
 	
 	obj_1.updateMatrixWorld();
 	var pos = o1.getWorldPosition(new THREE.Vector3());
 	var q = o1.getWorldQuaternion(new THREE.Quaternion());
 	
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
 	
-	setScalePivotGizmo();
 	tools.position.copy(pos);
-	tools.quaternion.copy(q); 	
+	tools.quaternion.copy(q); 
+
+	setScalePivotGizmo();
 }
 
 

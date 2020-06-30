@@ -73,52 +73,23 @@ function compareSelectedObjWithCurrent( cdm )
 }
 
 
+// кликнули на объект, распределяем что делать
+function clickFirstObj3D(cdm)
+{
+	var obj = cdm.obj;	
+	
+	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	
+	else if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
+	else { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }	 	
+}
+
+
+
+
 // активируем 3D объект или разъем, ставим pivot/gizmo
 function clickObject3D( obj, cdm )
 {
-	if(!cdm) { cdm = {}; }
-	
-	
-	// кликнули по объекту в сцене
-	if(cdm.click_obj)
-	{   
-		if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length)	// вкл режим выбрать объекты для объединения в группу
-		{ 
-			var arr_1 = getObjsFromGroup_1({obj: obj});
-			
-			for(var i = 0; i < arr_1.length; i++)
-			{
-				if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o2}))
-				{
-					if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o1}))
-					{
-						infProject.tools.merge_obj.o2[infProject.tools.merge_obj.o2.length] = arr_1[i];
-					}						
-				}					
-			}
-			
-			
-			var arr = [];
-			
-			for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
-			{
-				arr[arr.length] = infProject.tools.merge_obj.o1[i];
-			}
-			
-			for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
-			{
-				arr[arr.length] = infProject.tools.merge_obj.o2[i];
-			}				
-			
-			showListSelectedObjGroupUI();
-			
-			outlineAddObj(obj, {arrO: arr});
-			
-			return;
-		}
-		
-	}
-	
+	if(!cdm) { cdm = {}; }		
 	
 	// Position
 	if(obj.userData.tag == 'joinPoint')		// разъем
@@ -312,19 +283,9 @@ function hidePivotGizmo(obj)
 {
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
-	//if(obj.userData.tag != 'obj') return;
 	
 	var pivot = infProject.tools.pivot;
 	var gizmo = infProject.tools.gizmo;
-				
-	
-	if(clickO.rayhit)
-	{		
-		if(infProject.tools.merge_obj.active && clickO.rayhit.object.userData.tag == 'obj')
-		{  
-			return;
-		}
-	}	
 	
 	pivot.visible = false;
 	gizmo.visible = false;
@@ -371,55 +332,6 @@ function getObjFromPivotGizmo(cdm)
 	return obj;	
 }
 
-
-
-
-// вкл/выкл возможность выделение объектов для объединения в группу (merge)
-function switchSelectAddObjGroup(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	if(cdm.active !== undefined) 
-	{
-		infProject.tools.merge_obj.active = cdm.active;
-	}
-	else
-	{
-		infProject.tools.merge_obj.active = !infProject.tools.merge_obj.active;
-	}		
-	
-	
-	var obj = getObjFromPivotGizmo();
-	
-	if(obj) { outlineAddObj(obj); }
-	else { outlineRemoveObj(); }
-	
-	
-	if(infProject.tools.merge_obj.active)	// вкл
-	{
-		$('[nameId="rp_wrap_add_group"]').show();
-		infProject.tools.merge_obj.o1 = [];	
-
-		if(obj)
-		{
-			infProject.tools.merge_obj.o1 = getObjsFromGroup_1({obj: obj});
-		}
-		
-		$('[nameId="bl_rp_obj_group"]').hide();
-		$('[nameId="pr_list_button_for_obj"]').hide();		
-	}
-	else		// выкл
-	{
-		clearListUI_2({list: infProject.tools.merge_obj.el});
-		$('[nameId="rp_wrap_add_group"]').hide();
-		
-		$('[nameId="bl_rp_obj_group"]').show();
-		$('[nameId="pr_list_button_for_obj"]').show();		
-		
-		infProject.tools.merge_obj.o1 = [];
-		infProject.tools.merge_obj.o2 = [];
-	}	
-}
 
 
 
@@ -704,6 +616,11 @@ function deClickObj(cdm)
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'wf_point') { return true; }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return checkObjPoint_1({obj: clickO.rayhit.object}); }
+			}
+			
+			if(infProject.tools.merge_obj.active)
+			{
+				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 			}
 		}
 

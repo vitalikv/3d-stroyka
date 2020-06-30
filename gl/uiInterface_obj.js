@@ -50,32 +50,7 @@ function activeObjRightPanelUI_1(cdm)
 
 
 
-// создаем текст для списка
-function createTextUI_1(cdm)
-{
-	var obj = cdm.obj;
-	var nameId = cdm.nameId;
-	var uuid = cdm.uuid;
-	var nameRus = cdm.nameRus;
-	
-	// добавляем в список 	
-	{
-		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+uuid+'">\
-		<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
-		</div>';		
-	}
-		
 
-	var el = $(str).appendTo('[nameId="'+nameId+'"]');
-				
-	
-	if(nameId == "rp_add_group")
-	{
-		var n = infProject.tools.merge_obj.el.length;	
-		infProject.tools.merge_obj.el[n] = el;
-	}	
-}
 
 
 
@@ -238,36 +213,10 @@ function clickRtekUI_1(cdm)
 }
 
 
-// показываем список объектов которые будут объединены в новую группу
-function showListSelectedObjGroupUI(cdm) 
-{
-	if(infProject.tools.merge_obj.o2.length == 0) return;	
-	
-	clearListUI_2({list: infProject.tools.merge_obj.el});	
-	
-	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
-	{
-		var child = infProject.tools.merge_obj.o2[i];		
-		if(!child.userData.obj3D) continue;		
-		createTextUI_1({obj: child, nameId: "rp_add_group", nameRus: child.userData.obj3D.nameRus, uuid: child.uuid});  		
-	}	
-}
 
 
 
-// очищаем список UI
-function clearListUI_2(cdm)
-{
-	var list = cdm.list;
-	
-	for(var i = 0; i < list.length; i++)
-	{
-		list[i].remove();
-	}	
-	
 
-	if(infProject.tools.merge_obj.el == list) { infProject.tools.merge_obj.el = []; }
-}
 
 
 // кликнули на Checkbox группа (выбираем все объекты или снимаем выделения, кроме объекта, на котором стоит pivot)
