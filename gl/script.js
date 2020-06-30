@@ -191,8 +191,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryWD(0.1, 0.1, 0.1, {});
 infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: createLineAxis() }
-infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };   
-infProject.tools.merge_obj = {active: false, o1: [], o2: [], el: []};  
+infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };     
 infProject.tools.plane = {o1: [], el: []};
    
 infProject.listColor = resetPop.listColor();
@@ -201,6 +200,7 @@ infProject.list.rp_ui = { arr: [] };
 infProject.list.group_catalog_ui = { arr: [] };
 infProject.list.obj_scene_ui = [];
 infProject.list.alignP =  { active: false, p1: null, p2: null, arr2: [] };	// режим соединения деталей/труб
+infProject.list.mergeO = {active: false, o1: [], o2: [], el: []};	// режим группировки объектов
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.settings.active.tube = null;
 infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры

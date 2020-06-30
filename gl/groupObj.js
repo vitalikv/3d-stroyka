@@ -53,21 +53,21 @@ function addObjToGroup(cdm)
 	if(!cdm) cdm = {};	
 	
 		
-	if(infProject.tools.merge_obj.o1.length > 0 && infProject.tools.merge_obj.o2.length > 0) {}
+	if(infProject.list.mergeO.o1.length > 0 && infProject.list.mergeO.o2.length > 0) {}
 	else if(cdm.arr) {}
 	else { return; }
 	
 	var arr = (cdm.arr)? cdm.arr: [];
 	
 	
-	for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
+	for(var i = 0; i < infProject.list.mergeO.o1.length; i++)
 	{
-		arr[arr.length] = infProject.tools.merge_obj.o1[i];
+		arr[arr.length] = infProject.list.mergeO.o1[i];
 	}
 
-	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
+	for(var i = 0; i < infProject.list.mergeO.o2.length; i++)
 	{
-		arr[arr.length] = infProject.tools.merge_obj.o2[i];
+		arr[arr.length] = infProject.list.mergeO.o2[i];
 	}		
 	
 	

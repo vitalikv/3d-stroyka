@@ -79,7 +79,7 @@ function clickFirstObj3D(cdm)
 	var obj = cdm.obj;	
 	
 	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	
-	else if(infProject.tools.merge_obj.active && infProject.tools.merge_obj.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
+	else if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
 	else { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }	 	
 }
 
@@ -618,7 +618,7 @@ function deClickObj(cdm)
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return checkObjPoint_1({obj: clickO.rayhit.object}); }
 			}
 			
-			if(infProject.tools.merge_obj.active)
+			if(infProject.list.mergeO.active)
 			{
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
 			}

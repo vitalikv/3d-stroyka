@@ -10,11 +10,11 @@ function switchSelectAddObjGroup(cdm)
 	
 	if(cdm.active !== undefined) 
 	{
-		infProject.tools.merge_obj.active = cdm.active;
+		infProject.list.mergeO.active = cdm.active;
 	}
 	else
 	{
-		infProject.tools.merge_obj.active = !infProject.tools.merge_obj.active;
+		infProject.list.mergeO.active = !infProject.list.mergeO.active;
 	}		
 	
 	
@@ -24,14 +24,14 @@ function switchSelectAddObjGroup(cdm)
 	else { outlineRemoveObj(); }
 	
 	
-	if(infProject.tools.merge_obj.active)	// вкл
+	if(infProject.list.mergeO.active)	// вкл
 	{
 		$('[nameId="rp_wrap_add_group"]').show();
-		infProject.tools.merge_obj.o1 = [];	
+		infProject.list.mergeO.o1 = [];	
 
 		if(obj)
 		{
-			infProject.tools.merge_obj.o1 = getObjsFromGroup_1({obj: obj});
+			infProject.list.mergeO.o1 = getObjsFromGroup_1({obj: obj});
 		}
 		
 		$('[nameId="bl_rp_obj_group"]').hide();
@@ -39,14 +39,14 @@ function switchSelectAddObjGroup(cdm)
 	}
 	else		// выкл
 	{
-		clearListUI_2({list: infProject.tools.merge_obj.el});
+		clearListUI_2({list: infProject.list.mergeO.el});
 		$('[nameId="rp_wrap_add_group"]').hide();
 		
 		$('[nameId="bl_rp_obj_group"]').show();
 		$('[nameId="pr_list_button_for_obj"]').show();		
 		
-		infProject.tools.merge_obj.o1 = [];
-		infProject.tools.merge_obj.o2 = [];
+		infProject.list.mergeO.o1 = [];
+		infProject.list.mergeO.o2 = [];
 	}	
 }
 
@@ -61,11 +61,11 @@ function selectObjForMergeToGroup(cdm)
 	
 	for(var i = 0; i < arr_1.length; i++)
 	{
-		if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o2}))
+		if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.list.mergeO.o2}))
 		{
-			if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.tools.merge_obj.o1}))
+			if(!compareSelectedObjWithCurrent({obj: arr_1[i], arr: infProject.list.mergeO.o1}))
 			{
-				infProject.tools.merge_obj.o2[infProject.tools.merge_obj.o2.length] = arr_1[i];
+				infProject.list.mergeO.o2[infProject.list.mergeO.o2.length] = arr_1[i];
 			}						
 		}					
 	}
@@ -73,14 +73,14 @@ function selectObjForMergeToGroup(cdm)
 	
 	var arr = [];
 	
-	for(var i = 0; i < infProject.tools.merge_obj.o1.length; i++)
+	for(var i = 0; i < infProject.list.mergeO.o1.length; i++)
 	{
-		arr[arr.length] = infProject.tools.merge_obj.o1[i];
+		arr[arr.length] = infProject.list.mergeO.o1[i];
 	}
 	
-	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
+	for(var i = 0; i < infProject.list.mergeO.o2.length; i++)
 	{
-		arr[arr.length] = infProject.tools.merge_obj.o2[i];
+		arr[arr.length] = infProject.list.mergeO.o2[i];
 	}				
 	
 	showListSelectedObjGroupUI();
@@ -94,13 +94,13 @@ function selectObjForMergeToGroup(cdm)
 // показываем список объектов которые будут объединены в новую группу
 function showListSelectedObjGroupUI(cdm) 
 {
-	if(infProject.tools.merge_obj.o2.length == 0) return;	
+	if(infProject.list.mergeO.o2.length == 0) return;	
 	
-	clearListUI_2({list: infProject.tools.merge_obj.el});	
+	clearListUI_2({list: infProject.list.mergeO.el});	
 	
-	for(var i = 0; i < infProject.tools.merge_obj.o2.length; i++)
+	for(var i = 0; i < infProject.list.mergeO.o2.length; i++)
 	{
-		var child = infProject.tools.merge_obj.o2[i];
+		var child = infProject.list.mergeO.o2[i];
 		
 		if(!child.userData.obj3D) continue;	
 
@@ -111,8 +111,8 @@ function showListSelectedObjGroupUI(cdm)
 
 		var el = $(str).appendTo('[nameId="rp_add_group"]');
 		
-		var n = infProject.tools.merge_obj.el.length;	
-		infProject.tools.merge_obj.el[n] = el;
+		var n = infProject.list.mergeO.el.length;	
+		infProject.list.mergeO.el[n] = el;
 		
 	}	
 }
@@ -131,7 +131,7 @@ function clearListUI_2(cdm)
 		list[i].remove();
 	}		
 
-	infProject.tools.merge_obj.el = [];
+	infProject.list.mergeO.el = [];
 }
 
 
