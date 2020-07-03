@@ -242,10 +242,13 @@ function movePivot( event )
 	pivot.position.add( pos2 );
 	
 	
-	if(obj.userData.tag == 'wf_point')
+	if(obj.userData.tag == 'wf_tube')
 	{
-		obj.position.add( pos2 );
-		
+		moveFullTube_2({obj: obj, offset: pos2});
+	}
+	else if(obj.userData.tag == 'wf_point')
+	{
+		obj.position.add( pos2 );		
 		
 		if(!clickO.actMove)
 		{
@@ -341,8 +344,12 @@ function clickPivotUp()
 			}
 		}		
 	}
+	else if(obj.userData.tag == 'wf_tube') 
+	{ 
+		clickMouseUpTube(obj); 
+	}
 	
-	setClickLastObj({obj: infProject.tools.pivot.userData.pivot.obj});
+	setClickLastObj({obj: obj});
 }
 
 
