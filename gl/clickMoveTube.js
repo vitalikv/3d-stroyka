@@ -1,6 +1,39 @@
 
 
 
+// создаем трубу из каталога 
+function createTubeWF_1(cdm)
+{
+	console.log(444, cdm); 
+	
+	var p = [];
+	
+	if(cdm.type == 'horizontal')
+	{
+		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0)});
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0)});		
+	}
+	else if(cdm.type == 'vertical')
+	{
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0,-0.5,0)});
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0,0.5,0)});		
+	}
+	else
+	{
+		return;
+	}
+	
+	var line = createLineWF({point: p, diameter: 0.05}); 
+	
+	var tube = geometryTubeWF({line: line, createLine: true});		
+	
+	//tube.position.y = 1;
+	planeMath.position.y = 1; 
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.updateMatrixWorld(); 	
+
+	clickO.move = tube;	
+}
 
 
 // кликнули на трубу
@@ -16,6 +49,12 @@ function clickTubeWF(cdm)
 	var tube = ray.object;
 
 	var line = tube.userData.wf_tube.line;
+	
+
+	var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
+	var p1 = result.p1;
+	var pos = result.pos;
+	
 	
 	// показываем точки у труб
 	var wf = [];
@@ -35,7 +74,7 @@ function clickTubeWF(cdm)
 	outlineAddObj(tube);
 	
 	
-	var pos = tube.position.clone();
+	//var pos = tube.position.clone();
 	var qt = new THREE.Quaternion();
 	
 	var pivot = infProject.tools.pivot;	
@@ -59,6 +98,37 @@ function clickTubeWF(cdm)
 }
 
 
+// определяем в какое место трубы кликнули
+function detectPosTubeWF(cdm)
+{
+	var ray = cdm.ray;			  
+	var tube = ray.object;
+	var line = tube.userData.wf_tube.line;
+	
+	var arr = [];
+	
+	for ( var i = 0; i < line.userData.wf_line.point.length - 1; i++ )
+	{ 
+		var p1 = line.userData.wf_line.point[i];
+		var p2 = line.userData.wf_line.point[i + 1];
+		
+		var pos = mathProjectPointOnLine({line: {point_1: p1.position, point_2: p2.position}, point: ray.point});
+		
+		var dist = ray.point.distanceTo(pos);	
+		
+		if(checkPointBoundBoxLine(p1.position, p2.position, pos))
+		{
+			arr[arr.length] = {dist: dist, pos: pos, p1: p1, tube: tube};
+		}
+	} 
+
+	arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
+
+	var p1 = arr[0].p1;
+	var pos = arr[0].pos;
+
+	return {p1: p1, pos: pos};
+}
 
 
 
@@ -120,10 +190,7 @@ function moveFullTube_2(cdm)
 	
 	var line = tube.userData.wf_tube.line;
 	var point = line.userData.wf_line.point;
-
-	//tube.position.add( pos2 );
-	//line.position.add( pos2 );	
-
+	
 	
 	for(var i = 0; i < point.length; i++)
 	{
@@ -143,8 +210,7 @@ function clickMouseUpTube(obj)
 	
 	if(1==2)
 	{
-		var tube = obj;
-		
+		var tube = obj;		
 		var line = tube.userData.wf_tube.line;
 			
 		line.geometry.verticesNeedUpdate = true; 
@@ -154,12 +220,7 @@ function clickMouseUpTube(obj)
 		
 		tube.position.set( 0,0,0 );
 		line.position.set( 0,0,0 );				
-	}
-
-	console.log(777777);
-	console.log(renderer.info.programs);
-	console.log(renderer.info.render);
-	console.log(renderer.info.memory);	
+	}	
 }
 
 

@@ -65,22 +65,7 @@ async function loadObjServer(cdm)
 	if(type == 'obj') { addObjInScene(inf, cdm); }
 	else if(inf.type == 'tube') 
 	{ 
-		console.log(444); 
-		
-		var p = [];
-		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0)});
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0)});
-		
-		var line = createLineWF({point: p, diameter: 0.05}); 
-		
-		var tube = geometryTubeWF({line : line, createLine : true});		
-		
-		//tube.position.y = 1;
-		planeMath.position.y = 1; 
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-		planeMath.updateMatrixWorld(); 	
-
-		clickO.move = tube;
+		createTubeWF_1({type: inf.properties.type});
 	}
 }
 
@@ -186,6 +171,8 @@ function addObjInScene(inf, cdm)
 				{
 					child.material = infProject.material.pointObj.default
 					child.userData.centerPoint.color = child.material.color.clone();
+					//child.scale.set(1,1,1);
+					//child.visible = false;
 				}
 					
 				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)

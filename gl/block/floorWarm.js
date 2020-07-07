@@ -139,27 +139,10 @@ function addPointOnTube(cdm)
 
 	var line = tube.userData.wf_tube.line;	
 	
-	var arr = [];
 	
-	for ( var i = 0; i < line.userData.wf_line.point.length - 1; i++ )
-	{ 
-		var p1 = line.userData.wf_line.point[i];
-		var p2 = line.userData.wf_line.point[i + 1];
-		
-		var pos = mathProjectPointOnLine({line: {point_1: p1.position, point_2: p2.position}, point: ray.point});
-		
-		var dist = ray.point.distanceTo(pos);	
-		
-		if(checkPointBoundBoxLine(p1.position, p2.position, pos))
-		{
-			arr[arr.length] = {dist: dist, pos: pos, p1: p1, tube: tube};
-		}
-	}
-	
-	arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
-
-	var p1 = arr[0].p1;
-	var pos = arr[0].pos;	
+	var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
+	var p1 = result.p1;
+	var pos = result.pos;	
 	
 	var arrP = line.userData.wf_line.point;  
 	
@@ -751,7 +734,7 @@ function deClickTube(cdm)
 		}
 		
 		// скрываем pivot
-		if(obj.userData.tag == 'wf_point')
+		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube')
 		{
 			var pivot = infProject.tools.pivot;
 			

@@ -405,6 +405,10 @@ function setScalePivotGizmo()
 		if(obj.userData.tag == 'joinPoint')		// разъем
 		{
 			var dist = camera.position.distanceTo(obj.getWorldPosition(new THREE.Vector3())); 
+		}
+		else if(obj.userData.tag == 'wf_tube')		// труба
+		{
+			var dist = camera.position.distanceTo(pivot.position); 
 		}			
 		else			// группа или объект
 		{
