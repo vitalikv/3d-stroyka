@@ -240,7 +240,6 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 
 <div class="right_panel_1" data-action ='right_panel_1' ui_1="" style="z-index: 1;">
 
-	<?if($interface['grid_tube_1'] == 1){?>
 	<div class="flex_column_1 right_panel_1_1" nameId="panel_catalog_1">
 		<div class="flex_1 bottom_line_1">
 			<div class="flex_1 relative_1 right_panel_1_item">
@@ -678,7 +677,5 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		<div class="button_show_panel_catalog_1">		
 		</div>	
 	</div>
-	<?}?>
-
 	
 </div>

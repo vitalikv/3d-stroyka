@@ -171,7 +171,6 @@ infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.substrate = { ruler: [], floor: [], active: null };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
 //infProject.scene.substrate.floor[0] = createSubstrate({ pos: {y: 0} });
-infProject.scene.grid = { obj: createGrid(infProject.settings.grid), active: false, link: false, show: true };
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
@@ -1389,10 +1388,6 @@ document.body.addEventListener("keydown", function (e)
 			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
 			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
 			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }
-			if(infProject.activeInput == 'size-grid-tube-xy-1')
-			{
-				updateGrid({size : $('[nameid="size-grid-tube-xy-1"]').val()});
-			}
 			if(infProject.activeInput == 'size_wall_width_1') 
 			{ 
 				var width = $('[nameid="size_wall_width_1"]').val();

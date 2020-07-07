@@ -13,28 +13,20 @@ $h1 = '';
 $description = '';
 $interface['wall_1'] = 0;
 $interface['wall_2'] = ['top'=>[], 'left'=>[], 'right'=>[], 'bottom'=>[]];
-$interface['tube_1'] = 0;
-$interface['estimate'] = 0;
 $interface['click_wall_2D'] = 0;
 $interface['wd_1'] = 0;
-$interface['wd_2'] = 0;
-$interface['wd_3'] = 0;
-$interface['form_1'] = 0;
-$interface['wall_plaster_width_1'] = 0;
-$interface['monolit_fundament'] = 0;
-$interface['lentochnii_fundament'] = 0;
-$interface['svaynyy_fundament'] = 0;
-$interface['ploshchad_uchastka'] = 0;
-$interface['obyem_pomeshcheniya'] = 0;
-$interface['raschet_kirpicha'] = 0;
-$interface['raschet_blokov'] = 0;
-$interface['wall_b1'] = 0;
-$interface['grid_tube_1'] = 0;
-$interface['tube_b1'] = 0;
-$interface['box_wf_b1'] = 0;
-$interface['obj_b1'] = 0;
 
-$interface['admin'] = 1;
+$interface['wall_b1'] = 0;
+
+$interface['wall_1'] = 1;
+$interface['wd_1'] = 1;		
+$interface['tube_b1'] = 1;
+$interface['box_wf_b1'] = 1;
+$interface['wall_2']['bottom'] = ['width_1' => 1];
+$interface['wall_2']['top'] = ['showHideWall_1' => 1];
+$interface['obj_b1'] = 1;
+
+$interface['admin'] = 0;
 	
 
 
@@ -44,35 +36,14 @@ if($url == '/calculator/warm_floor')
 	$h1 = 'Расчет теплого пола 3D';
 	$description = 'Программа теплый пол позволяет быстро спроектировать и подсчитать количество труб. Она рассчитана на людей, которые хотят самостоятельно сделать теплый пол на даче, в загородном доме или в квартире. В программе есть 3D режим который наглядно покажет, то что вы спроектировали.';
 	$nameId = 'теплый пол';
-	$interface['wall_1'] = 1;
-	$interface['tube_1'] = 1;
-	$interface['wd_1'] = 1;	
-	$interface['wd_2'] = 1;
-	$interface['wd_3'] = 1;
-	$interface['grid_tube_1'] = 1;	
-	$interface['tube_b1'] = 1;
-	$interface['box_wf_b1'] = 1;
-	$interface['wall_2']['bottom'] = ['width_1' => 1];
-	$interface['wall_2']['top'] = ['showHideWall_1' => 1];
-	$interface['obj_b1'] = 1;
 }
-if($url == '/calculator/radiator')	
+
+	
 { 
 	$title = 'Test';
 	$h1 = '----';
 	$description = '';
 	$nameId = '';
-	$interface['wall_1'] = 1;
-	$interface['tube_1'] = 1;
-	$interface['wd_1'] = 1;	
-	$interface['wd_2'] = 1;
-	$interface['wd_3'] = 1;
-	$interface['grid_tube_1'] = 1;	
-	$interface['tube_b1'] = 1;
-	$interface['box_wf_b1'] = 1;
-	$interface['wall_2']['bottom'] = ['width_1' => 1];
-	$interface['wall_2']['top'] = ['showHideWall_1' => 1];
-	$interface['obj_b1'] = 1;
 }
 
 
@@ -96,7 +67,6 @@ $infProject['settings']['calc'] = [ 'fundament' => '' ];
 $infProject['settings']['land'] = [ 'o' => false ];
 $infProject['settings']['unit'] = [ 'wall' => 1, 'floor' => 1 ];
 $infProject['settings']['camera'] = [ 'type' => '2d', 'zoom' => 1, 'limitZoom' => 1 ];
-$infProject['settings']['grid'] = [ 'count' => 30, 'size' => 0.5, 'pos' => [ 'y' => 0.0 ] ];
 $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 
 $infProject['scene'] = [ 'tool' => [] ];
@@ -105,7 +75,7 @@ $infProject['scene']['load'] = '';
 
 
 
-if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
+if($url == '/calculator/radiator' || $url == '/gl/')
 {
 	//$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';
@@ -118,10 +88,6 @@ if($url == '/calculator/warm_floor' || $url == '/calculator/radiator')
 	$infProject['settings']['wall']['label'] = 'double';
 	$infProject['settings']['wall']['color']['top'] = 0xded3b8;
 	$infProject['settings']['wall']['color']['front'] = 0xada186;
-	$infProject['settings']['grid']['size'] = 1;
-	$infProject['settings']['grid']['count'] = null;
-	$infProject['settings']['grid']['pos'] = [ 'y' => 0.0 ];
-	$infProject['settings']['grid']['color'] = 0x009dff;
 	$infProject['settings']['interface']['button']['showHideWall_1'] = ['active' => 'Спрятать стены'];
 }
 

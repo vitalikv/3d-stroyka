@@ -5,7 +5,6 @@
 
 $list = 'meshBSP.js 	
 calculationArea.js
-block/createGrid.js
 crossWall.js
 addPoint.js
 addWD.js
@@ -24,7 +23,7 @@ label.js
 clickActiveObj.js    
 saveLoad.js
 script.js
-block/floorWarm.js
+floorWarm.js
 eventClick.js
 clickMovePivot.js
 clickObj.js

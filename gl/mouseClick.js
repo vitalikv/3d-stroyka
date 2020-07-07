@@ -67,7 +67,7 @@ function onDocumentMouseDown( event )
 {
 	//event.preventDefault();
 
-	if (window.location.hostname == '3d-stroyka' || window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai'){} 
+	if (window.location.hostname == '3d-stroyka' || window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai' || window.location.hostname == 'test'){} 
 	else { return; }
  
 	long_click = false;
@@ -97,9 +97,6 @@ function onDocumentMouseDown( event )
 
 
 	if ( vk_click == 'right' ) { mouseDownRight( event ); return; } 
-
-	// вкл режим перемещения grid
-	if(infProject.scene.grid.active) { clickDownGrid(event); return; }
 
 
 	if(clickO.move)
@@ -408,13 +405,7 @@ function onDocumentMouseMove( event )
 	}
 
 	clickButton( event );
-	
-	if(infProject.scene.grid.active)	// вкл режим перемещения grid
-	{
-		if(moveGrid(event)) renderCamera();
 		
-		return;
-	}	
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
 
@@ -502,9 +493,6 @@ function onDocumentMouseUp( event )
 		else { clickO.move = null; }		
 	}
 	
-	
-
-	if(infProject.scene.grid.active) { clickUpGrid(); }		// вкл режим перемещения grid
 	
 	param_win.click = false;
 	isMouseDown1 = false;

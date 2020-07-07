@@ -18,7 +18,6 @@ function changeCamera(cam)
 	{					
 		changeDepthColor();			
 		cameraZoomTop( camera.zoom );
-		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
 		
 		changeRightMenuUI_1({current: true});
 	}
@@ -29,7 +28,6 @@ function changeCamera(cam)
 		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
-		if(infProject.scene.grid.show) infProject.scene.grid.obj.visible = true;
 		
 		changeRightMenuUI_1({current: true});
 	}
@@ -67,9 +65,6 @@ function changeCamera(cam)
 			cameraWall.zoom = 1.5;
 		}
 		
-
-		
-		infProject.scene.grid.obj.visible = false;
 		changeDepthColor();
 	}
 	
