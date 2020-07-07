@@ -1,5 +1,6 @@
 <?php
-require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
+//require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
+require_once ("../../include/bd_1.php");
 
 
 $id = trim($_POST['id']);

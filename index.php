@@ -124,7 +124,7 @@ $(document).on('click', '[fon]', function () { $('[fon]').css({"display":"none"}
 				<div class="offset_top_30"></div>
 				
 				<div class="modal_body_content_grid">
-					<a class="ind_bl_1" href="calculator/radiator">
+					<a class="ind_bl_1" href="redactor/heating">
 						<div class="block_form_1_image_wrap"><img src="/img/screenshot_1.jpg"></div>					
 						<div class="ind_text_3">
 							радиаторы

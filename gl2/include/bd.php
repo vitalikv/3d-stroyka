@@ -1,12 +1,12 @@
 <? 
-require_once ($_SERVER['DOCUMENT_ROOT']."/gl/include/bd_1.php");
+require_once ("bd_1.php");
 
 
 
 
 $url = $_SERVER['REQUEST_URI'];
 
-$path = "/gl/";
+$path = "/gl2/";
 
 $title = '';
 $h1 = '';
@@ -75,7 +75,7 @@ $infProject['scene']['load'] = '';
 
 
 
-if($url == '/calculator/radiator' || $url == '/gl/')
+if($url == '/calculator/radiator' || $url == '/redactor/heating')
 {
 	//$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';
