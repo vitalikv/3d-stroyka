@@ -26,7 +26,7 @@ $interface['wall_2']['bottom'] = ['width_1' => 1];
 $interface['wall_2']['top'] = ['showHideWall_1' => 1];
 $interface['obj_b1'] = 1;
 
-$interface['admin'] = 0;
+$interface['admin'] = 1;
 	
 
 
@@ -38,7 +38,7 @@ if($url == '/calculator/warm_floor')
 	$nameId = 'теплый пол';
 }
 
-	
+if($url == '/redactor/heating')	
 { 
 	$title = 'Test';
 	$h1 = '----';
@@ -75,7 +75,7 @@ $infProject['scene']['load'] = '';
 
 
 
-if($url == '/calculator/radiator' || $url == '/redactor/heating')
+if($url == '/redactor/heating')
 {
 	//$infProject['scene']['load'] = 'shape3';	
 	$infProject['settings']['project'] = 'warm_floor';
