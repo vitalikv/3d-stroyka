@@ -224,4 +224,31 @@ function clickMouseUpTube(obj)
 
 
 
+// удаляем линию
+function deleteLineWF(tube)
+{
+	hideMenuUI(tube);
+	
+	var line = tube.userData.wf_tube.line;
+	
+	updateListTubeUI_1({type: 'delete', o: line});
+	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
+
+	deClickTube({obj: tube, moment: ''});
+	
+	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
+	{
+		disposeNode(line.userData.wf_line.point[i]);
+		scene.remove(line.userData.wf_line.point[i]);		
+	}
+	
+	disposeNode(tube);
+	scene.remove(tube); 
+	
+	disposeNode(line);
+	scene.remove(line);
+}
+
+
+
 

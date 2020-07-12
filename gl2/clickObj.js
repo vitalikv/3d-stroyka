@@ -521,6 +521,7 @@ function deClickObj(cdm)
 			if(clickO.rayhit.object == obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
 		}
 		
 		if(cdm.moment == 'up' && camera == camera3D)
@@ -528,6 +529,7 @@ function deClickObj(cdm)
 			if(clickO.rayhit.object == obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
 		}		
 	}	
 

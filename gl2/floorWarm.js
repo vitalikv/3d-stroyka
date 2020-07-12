@@ -523,37 +523,6 @@ function deletePointWF(obj)
 
 
 
-// удаляем линию
-function deleteLineWF(tube)
-{
-	hideMenuUI(tube);
-	
-	var line = tube.userData.wf_tube.line;
-	
-	updateListTubeUI_1({type: 'delete', o: line});
-	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});	
-	
-	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
-	{
-		disposeNode(line.userData.wf_line.point[i]);
-		scene.remove(line.userData.wf_line.point[i]);		
-	}
-	
-	if(line.userData.wf_line.tube) 
-	{ 
-		disposeNode(line.userData.wf_line.tube);
-		scene.remove(line.userData.wf_line.tube); 
-	}
-	
-	disposeNode(line);
-	scene.remove(line);
-	
-	clickO = resetPop.clickO();
-}
-
-
-
-
 
 // input меняем диаметр трубы
 function inputWF_tubeDiametr(cdm)
