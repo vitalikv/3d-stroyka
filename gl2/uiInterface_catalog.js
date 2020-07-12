@@ -4,8 +4,16 @@
 // добавляем структурированный каталог Json 
 async function addObjInCatalogUI_1(cdm) 
 {
-	var url = infProject.path+'t/catalog_2.json';
-	var url = infProject.path+'components_2/getListObjSql.php';	
+	var flag = false;	// true = только объекты без групп
+	
+	if(flag)
+	{		
+		var url = infProject.path+'components_2/getListObjSql.php';
+	}
+	else
+	{
+		var url = infProject.path+'t/catalog_2.json';
+	}
 	
 	var response = await fetch(url, 
 	{
@@ -19,18 +27,24 @@ async function addObjInCatalogUI_1(cdm)
 	});
 	var json = await response.json();
 	
-	json[json.length] =
-	{	
-		id : 'tube',
-		name : 'труба',
-		planeMath : 0.1,
-	}
 	
-	for(var i = 0; i < json.length; i++)
+	if(flag)
 	{
-		json[i] = getItemChilds({json: json[i]});		
-		
-		json[i].elem.appendTo('[list_ui="catalog"]');
+		for(var i = json.length - 1; i > -1; i--)
+		{
+			json[i] = getItemChilds({json: json[i]});		
+			
+			json[i].elem.appendTo('[list_ui="catalog"]');
+		}		
+	}
+	else
+	{
+		for(var i = 0; i < json.length; i++)
+		{
+			json[i] = getItemChilds({json: json[i]});		
+			
+			json[i].elem.appendTo('[list_ui="catalog"]');
+		}		
 	}
 	
 	console.log(json);
