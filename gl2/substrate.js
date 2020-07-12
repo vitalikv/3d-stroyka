@@ -336,7 +336,7 @@ function setPlanePositionY(cdm)
 	 
 	if(!value) 
 	{
-		$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y/100)*100 );
+		$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y*100)/100 );
 		
 		return;
 	}	

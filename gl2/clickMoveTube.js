@@ -4,8 +4,6 @@
 // создаем трубу из каталога 
 function createTubeWF_1(cdm)
 {
-	console.log(444, cdm); 
-	
 	var p = [];
 	
 	if(cdm.type == 'horizontal')
@@ -27,8 +25,8 @@ function createTubeWF_1(cdm)
 	
 	var tube = geometryTubeWF({line: line, createLine: true});		
 	
-	//tube.position.y = 1;
-	planeMath.position.y = 1; 
+	
+	planeMath.position.y = cdm.posY;  
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.updateMatrixWorld(); 	
 

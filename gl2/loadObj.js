@@ -65,7 +65,7 @@ async function loadObjServer(cdm)
 	if(type == 'obj') { addObjInScene(inf, cdm); }
 	else if(inf.type == 'tube') 
 	{ 
-		createTubeWF_1({type: inf.properties.type});
+		createTubeWF_1({type: inf.properties.type, posY: infProject.tools.heightPl.position.y});
 	}
 }
 
@@ -122,8 +122,8 @@ function addObjInScene(inf, cdm)
 	}
 	else
 	{ 
-		obj.position.y = 1;
-		planeMath.position.y = 1; 
+		obj.position.y = infProject.tools.heightPl.position.y;
+		planeMath.position.y = infProject.tools.heightPl.position.y; 
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 		planeMath.updateMatrixWorld(); 
 	}

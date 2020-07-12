@@ -193,6 +193,7 @@ function showHideCatalogMenuUI(cdm)
 	else { block.hide(); button.show(); }
 }
 
+$('[nameId="rp_show_hide_planeHeight"]').mousedown(function () { showHidePlaneHeight(); });
 
 //  substrate
 $('#load_substrate_1').change(readURL);	
@@ -644,7 +645,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		<div class="flex_column_1 relative_1 height100" nameId="wrap_list_obj" style="display: none;">
 			<div class="right_panel_1_1_h">Список материалов</div>
 			
-			<div class="right_panel_2_1_list" list_ui="wf">
+			<div class="right_panel_3_1_list" list_ui="wf">
 				
 				<?if(1 == 2){?>
 				<div class="flex_1 right_panel_1_1_list_item">
@@ -668,6 +669,23 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 			<div class="right_panel_2_1_list" list_ui="catalog">
 				
 			</div>
+			
+			<div class="right_panel_2_2_list">
+				<div class="flex_1">
+					<div class="flex_1 align_items">
+						<div class="rp_label_plane">
+							высота
+						</div>
+					</div>
+					<div class="flex_1 align_items" style="width: auto;">
+						<input type="text" nameId="rp_planeHeight_posY" style="width: 90%; margin:5px 5px;" value=0>
+					</div>
+					
+					<div class="button1 button_gradient_1" nameId="rp_show_hide_planeHeight">
+						пок	
+					</div>								
+				</div>
+			</div>			
 		</div>
 		
 	</div>
