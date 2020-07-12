@@ -118,9 +118,7 @@ $('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO
 
 
 
-$('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });
-$('[data-action="create_tube_1"]').mousedown(function () { clickInterface({button:'create_tube_1'}); }); 
-$('[data-action="create_tube_box_1"]').mousedown(function () { clickInterface({button:'create_tube_box_1'}); }); 
+$('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });  
 $('[data-action="create_wd_2"]').mousedown(function () { clickInterface({button:'create_wd_2'}); });
 $('[data-action="create_wd_3"]').mousedown(function () { clickInterface({button:'create_wd_3'}); });
 $('[data-action="grid_show_1"]').mousedown(function () { clickInterface({button:'grid_show_1'}); });

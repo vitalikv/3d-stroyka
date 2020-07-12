@@ -1,28 +1,11 @@
 
 
-// кликнули на 3D объект в 2D режиме, подготавляем к перемещению
-function clickObject2D( obj, intersect )
-{	
-	var obj = clickO.move = intersect.object;  
-	
-	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
-	
-	planeMath.position.copy( intersect.point );
-	planeMath.rotation.set( Math.PI/2, 0, 0 );
-	
-	if(camera == cameraTop && obj.userData.tag == 'boxWF')
-	{
-		showToggleGp(); 
-		showBoxWF_UI();
-	}
-
-	setClickLastObj({obj: obj});
-}
 
 
 
-// перемещение по 2D плоскости 
-function moveObjectPop( event )
+
+// перемещение объекта после того как загрузили из каталога 
+function moveObjFromCatalog( event )
 {	
 	var intersects = rayIntersect( event, planeMath, 'one' ); 
 	
@@ -33,10 +16,7 @@ function moveObjectPop( event )
 	if(!clickO.actMove)
 	{
 		clickO.actMove = true;
-		
-		if(obj.userData.tag == 'boxWF') { hideControlWF(); }
-	}	
-	
+	}		
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
 	
@@ -44,16 +24,6 @@ function moveObjectPop( event )
 	obj.position.add( pos2 );	
 }
 
-
-
-
-function clickMouseUpObject(obj)
-{
-	if(clickO.actMove)
-	{		
-		if(obj.userData.tag == 'boxWF') { showToggleGp(); }
-	}	
-}
 
 
 
@@ -229,6 +199,17 @@ function getCenterPointFromObj_1( obj )
 	return arr; 
 }	
 	
+
+
+
+function clickMouseUpObject(obj)
+{
+	if(clickO.actMove)
+	{		
+		
+	}	
+}
+
 
 // удаление объекта
 function deleteObjectPop(obj)

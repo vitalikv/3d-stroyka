@@ -12,7 +12,8 @@ function createPlaneHeight()
 	var plane = new THREE.Mesh( geometry, material );
 	plane.rotation.set(-Math.PI/2, 0, 0);
 	plane.position.y = 0;
-	plane.userData.tag = 'planeHeight';	
+	plane.userData.tag = 'planeHeight';
+	plane.visible = false; 
 	scene.add( plane );	
 	
 	return plane;

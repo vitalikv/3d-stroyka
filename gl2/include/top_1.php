@@ -7,18 +7,7 @@
 	
 	<div class="toolbar" data-action ='top_panel_1'>
 		
-		<? if(1 == 2){ ?>
-		<div class="button1-wrap-2" nameId='top_menu_b1'>		
-			
-			<div class="button1-wrap-1">
-				<div data-action ='create_tube_1' class="button1 button_gradient_1">Труба</div>
-			</div>
-			<!--<div class="button1-wrap-1">
-				<div data-action ='create_tube_box_1' class="button1 button_gradient_1">Контур</div>
-			</div>-->			
-					
-		</div>
-		
+		<? if(1 == 2){ ?>		
 		<div class="button1-wrap-2" nameId='top_menu_b2'>
 
 			<div class="button1-wrap-1">

@@ -3,18 +3,6 @@
 
 
 
-
-function createTubeBox()
-{
-	var cube = new THREE.Mesh( createGeometryCube(1.0, 0.02, 1.0), new THREE.MeshLambertMaterial( { color : 0xcccccc } ) );
-	scene.add( cube ); 	
-	cube.userData.tag = 'obj';
-	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = cube;
-	
-	return cube;
-}
-
  
 
 
@@ -30,7 +18,7 @@ function createPlaneWF()
 	box.userData.boxPop.popObj = null;
 	box.userData.line = [];
 	box.renderOrder = 1;
-	box.visible = false;
+	box.visible = true;
 	scene.add( box );
 
 	box.position.y = 0.2;
@@ -84,6 +72,61 @@ function createControlBoxPop3D()
 
 
 
+// кликнули на 3D объект в 2D режиме, подготавляем к перемещению
+function clickBoxWF_2D( obj, intersect )
+{	
+	var obj = clickO.move = intersect.object;  
+	
+	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
+	
+	planeMath.position.copy( intersect.point );
+	planeMath.rotation.set( Math.PI/2, 0, 0 );
+	
+	showToggleGp(); 
+	showBoxWF_UI();
+
+
+	setClickLastObj({obj: obj});
+}
+
+
+
+// перемещение по 2D плоскости 
+function moveBoxWF_2D( event )
+{	
+	var intersects = rayIntersect( event, planeMath, 'one' ); 
+	
+	if(intersects.length == 0) return;
+	
+	var obj = clickO.move;
+	
+	if(!clickO.actMove)
+	{
+		clickO.actMove = true;
+		
+		hideControlWF();
+	}	
+	
+	
+	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
+	
+	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+	obj.position.add( pos2 );	
+}
+
+
+
+
+function clickMouseUpBoxWF(obj)
+{
+	if(clickO.actMove)
+	{		
+		showToggleGp();
+	}	
+}
+
+
+
 // устанавливаем контроллеры
 function showToggleGp()
 {
@@ -133,9 +176,13 @@ function showToggleGp()
 	
 	arrGp[4].rotation.set( boxPop.rotation.x, boxPop.rotation.y, boxPop.rotation.z + Math.PI );
 
-	for ( var i = 0; i < 4; i++ )
+	var count = 4;
+	
+	if(camera == camera3D) { count = 6; }
+	
+	for ( var i = 0; i < count; i++ )
 	{
-		arrGp[i].visible = true;
+		arrGp[i].visible = true;  
 	}	
 
 }
@@ -227,7 +274,7 @@ function clickToggleGp( intersect )
 		planeMath.rotation.set( 0, 0, Math.PI / 2 );
 		planeMath.rotation.y = angle ;
 	}		
-
+ 
 	setClickLastObj({obj: obj});
 }
 

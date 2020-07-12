@@ -170,10 +170,23 @@ function clickRayHit(event)
 		if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
 	}
 
-	if(infProject.tools.wf.cube[0].visible)
+	// scaleBox
+	if(1==2)
 	{
-		var ray = rayIntersect( event, infProject.tools.wf.cube, 'arr' );  
-		if(ray.length > 0) { rayhit = ray[0]; }		
+		if(infProject.tools.wf.cube)
+		{
+			if(infProject.tools.wf.cube[0].visible)
+			{
+				var ray = rayIntersect( event, infProject.tools.wf.cube, 'arr' );  
+				if(ray.length > 0) { rayhit = ray[0]; return rayhit; }		
+			}		
+		}
+		
+		if(infProject.tools.wf.plane)
+		{
+			var ray = rayIntersect( event, infProject.tools.wf.plane, 'one' );  
+			if(ray.length > 0) { rayhit = ray[0]; }		
+		}			
 	}
 
 	// точки у трубы, при вкл кнопке присоединить 
@@ -280,7 +293,7 @@ function clickRayHit(event)
 			
 			if(!object) { rayhit = null; }
 			else { rayhit.object = object; }
-		}			
+		}	
 	}
 	
 	
@@ -372,11 +385,12 @@ function clickMouseActive(cdm)
 		else if( tag == 'wf_tube' && camera == cameraTop ) { clickTubeWF({ray: rayhit}); }
 		else if( tag == 'window' && camera == cameraTop ) { clickWD( rayhit ); }
 		else if( tag == 'door' && camera == cameraTop ) { clickWD( rayhit ); }
-		else if( tag == 'controll_wd' && camera == cameraTop ) { clickToggleChangeWin( rayhit ); }
-		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
+		else if( tag == 'controll_wd' && camera == cameraTop ) { clickToggleChangeWin( rayhit ); }		
 		else if( tag == 'joinPoint' && camera == cameraTop) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickFirstObj3D({obj: obj}); }
-		else if( tag == 'boxWF' && camera == cameraTop ) { clickObject2D( obj, rayhit ); }
+		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
+		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
+		else if( tag == 'scaleBox_control' && camera == camera3D ) { clickToggleGp( rayhit ); }
 	}
 	else if(cdm.type == 'up')
 	{		
@@ -385,7 +399,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'joinPoint' && camera == camera3D) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'wf_tube' && camera == camera3D && infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }
-		else if( tag == 'wf_tube' && camera == camera3D ) { clickTubeWF({ray: rayhit}); } 		
+		else if( tag == 'wf_tube' && camera == camera3D ) { clickTubeWF({ray: rayhit}); }
+		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }		
 	}	
 	
 	if(camera == cameraTop)
@@ -429,8 +444,8 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }
 		else if ( tag == 'room' ) { cameraMove3D( event ); }		
 		else if ( tag == 'free_dw' ) { dragWD_2( event, obj ); }
-		else if ( tag == 'boxWF' && camera == cameraTop ) { moveObjectPop( event ); }
-		else if ( tag == 'obj' ) { moveObjectPop( event ); }
+		else if ( tag == 'boxWF' && camera == cameraTop ) { moveBoxWF_2D( event ); }
+		else if ( tag == 'obj' ) { moveObjFromCatalog( event ); }
 		else if ( tag == 'wf_tube' ) { moveFullTube( event ); }
 	}
 	else 
@@ -471,7 +486,8 @@ function onDocumentMouseUp( event )
 		else if(tag == 'wall') { clickWallMouseUp(obj); }
 		else if(tag == 'window' || obj.userData.tag == 'door') { clickWDMouseUp(obj); }	
 		else if(tag == 'controll_wd') { clickMouseUpToggleWD(obj); } 
-		else if(tag == 'boxWF' || tag == 'obj') { clickMouseUpObject(obj); }
+		else if(tag == 'obj') { clickMouseUpObject(obj); }
+		else if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
 		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
 		else if(tag == 'pivot') { clickPivotUp(); }
 		else if(tag == 'gizmo') { clickGizmoUp(); }

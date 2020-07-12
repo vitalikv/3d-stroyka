@@ -190,7 +190,7 @@ infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd)
 infProject.geometry.wf_point = createGeometryWD(0.1, 0.1, 0.1, {});
 infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: createLineAxis() }
-infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };     
+//infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   
 infProject.tools.plane = {o1: [], el: []};
 infProject.tools.heightPl = createPlaneHeight();		// плоскость высоты
    
@@ -1081,16 +1081,6 @@ function clickButton( event )
 		{
 			createEmptyFormWD_1({type:'window'});
 		}			
-		else if(clickO.button == 'create_tube_1')
-		{
-			var point = createPointWF({ pos : intersects[0].point, type : 'tool' });
-			clickO.move = point;				
-		}
-		else if(clickO.button == 'create_tube_box_1')
-		{
-			clickO.move = infProject.tools.wf.plane;
-			infProject.tools.wf.plane.visible = true;
-		}
 		else if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
@@ -1143,26 +1133,10 @@ function clickInterface(cdm)
 		{
 			clickO.button = 'create_wd_3';
 		}		
-		else if(cdm.button == 'create_tube_1')
-		{
-			clickO.button = 'create_tube_1';
-		}
-		else if(cdm.button == 'create_tube_box_1')
-		{
-			clickO.button = 'create_tube_box_1';
-			infProject.tools.wf.plane.visible = false;
-		}
 		else if(cdm.button == 'add_lotid')
 		{
-			if(cdm.value == 'tube')
-			{
-				clickO.button = 'create_tube_1';
-			}
-			else
-			{
-				clickO.button = 'add_lotid';
-				clickO.options = cdm.value;				
-			}
+			clickO.button = 'add_lotid';
+			clickO.options = cdm.value;				
 		}			
 		else if(cdm.button == 'grid_show_1')
 		{
@@ -1537,7 +1511,7 @@ $(document).ready(function ()
 	if(infProject.settings.camera.type == '3d') { changeCamera(camera3D); }
 	if(infProject.settings.camera.type == 'front') { changeCamera(cameraWall); }
 		 
-	 
+	  
 	loadFile({json: true}); 
 	//loadObjServer({lotid: 6, pos: new THREE.Vector3(1, 1, 0)});
 	//loadObjServer({lotid: 6, pos: new THREE.Vector3(0, 1, 0)});
