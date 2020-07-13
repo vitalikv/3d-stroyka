@@ -35,12 +35,12 @@ function showWF_point_UI(point)
 		
 		if(show)
 		{
-			elem_1.style.display = "block";
+			//elem_1.style.display = "block";
 			elem_2.style.display = "block";
 		}
 		else
 		{
-			elem_1.style.display = "none";
+			//elem_1.style.display = "none";
 			elem_2.style.display = "none";
 		}
 	}
@@ -126,13 +126,29 @@ function switchAddPointOnTube(cdm)
 	}	
 	else
 	{
-		if(infProject.settings.active.tube != 'add_point_wf') { infProject.settings.active.tube = 'add_point_wf'; }
-		else { infProject.settings.active.tube = null; }
+		if(infProject.settings.active.tube != 'add_point_wf') 
+		{ 
+			infProject.settings.active.tube = 'add_point_wf';
+			infProject.tools.pivot.visible = false;
+		}
+		else 
+		{ 
+			infProject.settings.active.tube = null;
+			infProject.tools.pivot.visible = true;
+		}
 	}
 	
 
-   
-	var color = (infProject.settings.active.tube == 'add_point_wf') ? "#ff0000" : "#b3b3b3";	
+	if(infProject.settings.active.tube == 'add_point_wf')	// вкл режим добавления точки на трубу
+	{
+		var color = "#ff0000";		
+	}
+	else
+	{
+		var color = "#b3b3b3";		
+	}
+	
+	
 	$('[nameId="butt_add_point_on_tube"]').css({"border-color": color});		
 }
 

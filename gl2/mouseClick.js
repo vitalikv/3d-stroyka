@@ -55,7 +55,7 @@ function mouseDownRight()
 
 	if(infProject.settings.active.tube) 
 	{ 
-		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку	 
+		switchAddPointOnTube();		// выкл возможность добавлять на трубу точку	 
 	}
 	
 	clickO.move = null;	

@@ -72,27 +72,31 @@ function clickTubeWF(cdm)
 	outlineAddObj(tube);
 	
 	
-	//var pos = tube.position.clone();
-	var qt = new THREE.Quaternion();
-	
-	var pivot = infProject.tools.pivot;	
-	pivot.visible = true;	
-	pivot.userData.pivot.obj = tube;
-	pivot.position.copy(pos);
-	pivot.quaternion.copy(qt); 
-	
-	if(camera == cameraTop)
+	// режим "добавить точку на трубу" выкл	
+	if(!infProject.settings.active.tube)
 	{
-		pivot.children[1].visible = false;
-		pivot.children[7].visible = false;
-	}
-	else
-	{
-		pivot.children[1].visible = true;
-		pivot.children[7].visible = true;
-	}
+		//var pos = tube.position.clone();
+		var qt = new THREE.Quaternion();
+		
+		var pivot = infProject.tools.pivot;	
+		pivot.visible = true;	
+		pivot.userData.pivot.obj = tube;
+		pivot.position.copy(pos);
+		pivot.quaternion.copy(qt); 
+		
+		if(camera == cameraTop)
+		{
+			pivot.children[1].visible = false;
+			pivot.children[7].visible = false;
+		}
+		else
+		{
+			pivot.children[1].visible = true;
+			pivot.children[7].visible = true;
+		}
 
-	setScalePivotGizmo();	
+		setScalePivotGizmo();			
+	}
 }
 
 

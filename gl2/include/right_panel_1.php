@@ -476,8 +476,8 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 
 							
 					
-							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">
-								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="margin: 10px 0;">соединить с трубой</div>		
+							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">								
+								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="display: none; margin: 10px 0;">соединить с трубой</div>	
 								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">подключить</div>
 								<div data-action ='deleteObj' class="button1 button_gradient_1" style="margin: 10px 0;">удалить</div>								
 							</div>

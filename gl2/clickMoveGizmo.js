@@ -342,6 +342,10 @@ function setRotationGizmo(cdm)
 	var obj = getObjFromPivotGizmo();		
 	if(!obj) return;
 	
+	if(obj.userData.tag == 'obj'){}
+	else if(obj.userData.tag == 'joinPoint'){}
+	else { return; }	
+	
 	var axis = cdm.axis;
 	var rotY = THREE.Math.degToRad( cdm.angle );
 	
@@ -447,6 +451,10 @@ function objRotateReset(cdm)
 	var obj = getObjFromPivotGizmo();
 	
 	if(!obj) return;
+	
+	if(obj.userData.tag == 'obj'){}
+	else if(obj.userData.tag == 'joinPoint'){}
+	else { return; }
 
 
 	var obj_1 = obj;		

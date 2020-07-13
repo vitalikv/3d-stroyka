@@ -122,7 +122,11 @@ function switchPivotGizmo(cdm)
 {
 	var obj = getObjFromPivotGizmo();
 	
-	if(!obj) return;		
+	if(!obj) return;
+
+	if(obj.userData.tag == 'obj'){}
+	else if(obj.userData.tag == 'joinPoint'){}
+	else { return; }	
 	
 	infProject.settings.active.pg = cdm.mode;	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
