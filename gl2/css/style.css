@@ -822,7 +822,7 @@ canvas
 .rp_obj
 {
 	margin: auto 10px;
-	border:solid 1px #b3b3b3; 
+	/*border:solid 1px #b3b3b3;*/ 
 }
 
 

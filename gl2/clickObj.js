@@ -61,89 +61,7 @@ function clickObject3D( obj, cdm )
 {
 	if(!cdm) { cdm = {}; }		
 	
-	// Position
-	if(obj.userData.tag == 'joinPoint')		// разъем
-	{ 
-		var pos = obj.getWorldPosition(new THREE.Vector3());
-		activeJoinPoint({obj: obj});
-	}	
-	else			// группа или объект
-	{
-		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
-	}	 
-	
-	
-	// Quaternion
-	if(camera == cameraTop)	// глобальный gizmo
-	{
-		var qt = new THREE.Quaternion();
-	}
-	else		// локальный gizmo
-	{					
-		if(obj.userData.tag == 'joinPoint')		// разъем
-		{
-			var qt = obj.getWorldQuaternion(new THREE.Quaternion()); 
-		}	
-		else			// группа или объект
-		{
-			var qt = obj.quaternion.clone();		
-		}	 		
-	}		
-	
-	
-	
-	if(infProject.settings.active.pg == 'pivot')
-	{
-		var pivot = infProject.tools.pivot;	
-		pivot.visible = true;	
-		pivot.userData.pivot.obj = obj;
-		pivot.position.copy(pos);
-		pivot.quaternion.copy(qt);
-		
-		if(camera == cameraTop)
-		{
-			pivot.children[1].visible = false;
-			pivot.children[7].visible = false;
-		}
-		else
-		{
-			pivot.children[1].visible = true;
-			pivot.children[7].visible = true;
-		}
-		
-		upMenuPosObjPop(obj);
-	}
-	
-	if(infProject.settings.active.pg == 'gizmo')
-	{
-		var gizmo = infProject.tools.gizmo;
-					
-		gizmo.position.copy( pos );
-		
-		gizmo.visible = true;
-		gizmo.userData.gizmo.obj = obj;
-		
-		if(camera == cameraTop)
-		{
-			gizmo.children[1].visible = false;
-			gizmo.children[2].visible = false;
-			
-			//gizmo.rotation.set(0,0,0);
-		}
-		else
-		{
-			gizmo.children[1].visible = true;
-			gizmo.children[2].visible = true;			
-		}
-
-		gizmo.quaternion.copy( qt );
-				
-		upMenuRotateObjPop(obj);
-		
-		clippingGizmo360(obj); 		
-	}	
-	
+	setPivotGizmo({obj: obj});	// ставим pivot/gizmo		
 	
 	if(cdm.outline) 
 	{ 
@@ -155,7 +73,6 @@ function clickObject3D( obj, cdm )
 
 	activeObjRightPanelUI_1({obj: obj});
 	
-	setScalePivotGizmo();
 	setClickLastObj({obj: obj});
 }
 

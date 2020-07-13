@@ -222,53 +222,36 @@ function moveGizmo( event )
 	var dir = planeMath.worldToLocal( intersects[ 0 ].point.clone() );	
 	var rotY = Math.atan2(dir.x, dir.y);
 	
+
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{ 
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
+		{
+			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+		}
+		else
+		{
+			var arr = [obj.parent];
+		}			
+	}			
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
+	{
+		var arr = obj.userData.obj3D.group.userData.groupObj.child;
+	}
+	else	// объект 
+	{
+		var arr = [obj];
+	}
+
 	
 	
 	if(camera == cameraTop) 
 	{ 
-		if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа объектов
-		{
-			var arr = obj.userData.obj3D.group.userData.groupObj.child;
-			
-			// глобальный gizmo
-			for(var i = 0; i < arr.length; i++)
-			{
-				arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
-				arr[i].position.applyAxisAngle(dr, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
-				arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
-				
-				arr[i].rotateOnWorldAxis(dr, rotY - gizmo.userData.gizmo.active.rotY);				
-			}
-		}
-		else
-		{
-			obj.rotateOnWorldAxis(new THREE.Vector3(0,1,0), rotY - gizmo.userData.gizmo.active.rotY);
-		}		 
+		rotateO({obj: arr, dr: dr, rotY: rotY, centerO: obj, type: 'global'});		 
 	}
 	else 
 	{ 
-		
-		if(obj.userData.tag == 'joinPoint')		// разъем
-		{ 
-			if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
-			{
-				var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
-			}
-			else
-			{
-				var arr = [obj.parent];
-			}			
-		}			
-		else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
-		{
-			var arr = obj.userData.obj3D.group.userData.groupObj.child;
-		}
-		else	// объект 
-		{
-			var arr = [obj];
-		}
-
-		rotateO({obj: arr, dr: dr, rotY: rotY, centerO: obj});
+		rotateO({obj: arr, dr: dr, rotY: rotY, centerO: obj, type: 'local'});
 	}		
 	
 	// вращение объекта или объектов 
@@ -279,11 +262,22 @@ function moveGizmo( event )
 		var dr = cdm.dr;
 		var rotY = cdm.rotY;		
 		
-		centerO.updateMatrixWorld();		
-		var v1 = centerO.localToWorld( dr.clone() );
-		var v2 = centerO.getWorldPosition(new THREE.Vector3());
-		var dir = new THREE.Vector3().subVectors(v1, v2).normalize();	// локальный dir , глобальный -> dr new THREE.Vector3( 0, 1, 0 )								
-
+		
+		// локальный dir , глобальный -> dr new THREE.Vector3( 0, 1, 0 )
+		if(cdm.type == 'local')
+		{
+			centerO.updateMatrixWorld();		
+			var v1 = centerO.localToWorld( dr.clone() );
+			var v2 = centerO.getWorldPosition(new THREE.Vector3());
+			
+			var dir = new THREE.Vector3().subVectors(v1, v2).normalize();	
+		}
+		else
+		{
+			var dir = new THREE.Vector3( 0, 1, 0 );
+		}
+		
+		
 		for(var i = 0; i < arr.length; i++)
 		{
 			arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
