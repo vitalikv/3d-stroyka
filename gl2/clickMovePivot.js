@@ -366,9 +366,9 @@ function upMenuPosObjPop(obj)
 		var pos = obj.position;
 	}
 	
-	$('[nameId="object_pos_X"]').val( Math.round( THREE.Math.radToDeg(pos.x) ) );
-	$('[nameId="object_pos_Y"]').val( Math.round( THREE.Math.radToDeg(pos.y) ) );
-	$('[nameId="object_pos_Z"]').val( Math.round( THREE.Math.radToDeg(pos.z) ) );	
+	$('[nameId="object_pos_X"]').val( Math.round(pos.x*100)/100 );
+	$('[nameId="object_pos_Y"]').val( Math.round(pos.y*100)/100 );
+	$('[nameId="object_pos_Z"]').val( Math.round(pos.z*100)/100 );	
 }
 
 
