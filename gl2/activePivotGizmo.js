@@ -99,6 +99,62 @@ function setPivotGizmo(cdm)
 
 
 
+// скрываем Pivot/Gizmo
+function hidePivotGizmo(obj)
+{
+	if(!obj) return;
+	if(!obj.userData.tag) return;	
+	
+	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;
+	
+	pivot.visible = false;
+	gizmo.visible = false;
+	
+	pivot.userData.pivot.obj = null;
+	gizmo.userData.gizmo.obj = null;
+}
+
+
+
+// переключаем Pivot/Gizmo/joint
+function switchPivotGizmo(cdm)
+{
+	var obj = getObjFromPivotGizmo();
+	
+	if(!obj) return;		
+	
+	infProject.settings.active.pg = cdm.mode;	
+	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
+	
+	infProject.tools.pivot.visible = false;
+	infProject.tools.gizmo.visible = false;
+	
+	if(infProject.settings.active.pg == 'pivot'){ infProject.tools.pivot.visible = true; }	
+	if(infProject.settings.active.pg == 'gizmo'){ infProject.tools.gizmo.visible = true; }		
+
+	infProject.tools.pivot.userData.pivot.obj = null;
+	infProject.tools.gizmo.userData.gizmo.obj = null;
+
+	clickObject3D( obj ); 
+}
+
+
+// получаем активный объект
+function getObjFromPivotGizmo(cdm)
+{
+	var obj = null;
+	var pivot = infProject.tools.pivot;
+	var gizmo = infProject.tools.gizmo;	
+	
+	if(infProject.settings.active.pg == 'pivot'){ obj = pivot.userData.pivot.obj; }	
+	if(infProject.settings.active.pg == 'gizmo'){ obj = gizmo.userData.gizmo.obj; }
+	
+	return obj;	
+}
+
+
+
 
 
 

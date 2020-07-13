@@ -339,8 +339,8 @@ function upMenuRotateObjPop(obj)
 // вращаем объект по кнопки на заданный угол
 function setRotationGizmo(cdm)
 {	
-	var gizmo = infProject.tools.gizmo;	
-	var obj = gizmo.userData.gizmo.obj;  
+	var obj = getObjFromPivotGizmo();		
+	if(!obj) return;
 	
 	var axis = cdm.axis;
 	var rotY = THREE.Math.degToRad( cdm.angle );
@@ -348,11 +348,11 @@ function setRotationGizmo(cdm)
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
-		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());   
+		var startPos = obj.getWorldPosition(new THREE.Vector3());   
 	}
 	else								//  группа или объект
 	{
-		gizmo.userData.gizmo.active.startPos = obj.position.clone();		
+		var startPos = obj.position.clone();		
 	}		
 	
 
@@ -412,31 +412,103 @@ function setRotationGizmo(cdm)
 		
 		for(var i = 0; i < arr.length; i++)
 		{
-			arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+			arr[i].position.sub(startPos);
 			arr[i].position.applyAxisAngle(dir, rotY); // rotate the POSITION
-			arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+			arr[i].position.add(startPos);				
 			
 			arr[i].rotateOnWorldAxis(dir, rotY);								
 		}		
 	}
 	
-			
+	var tools = null;
+	if(infProject.settings.active.pg == 'pivot'){ tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ tools = infProject.tools.gizmo; }			
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
 		var objParent = getParentObj({obj: obj});
 		objParent.updateMatrixWorld();
-		gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+		tools.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
 	}
 	else
 	{
-		gizmo.rotation.copy( obj.rotation );
-	}
-	
-	 
+		tools.rotation.copy( obj.rotation );
+	}	 
 	
 	upMenuRotateObjPop(obj);
 }
+
+
+
+
+// сбрасываем rotation 
+function objRotateReset(cdm)
+{
+	var obj = getObjFromPivotGizmo();
+	
+	if(!obj) return;
+
+
+	var obj_1 = obj;		
+	var diff_2 = obj_1.quaternion.clone().inverse();					// разница между Quaternions
+	
+	
+	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
+	{
+		var arr_2 = obj_1.userData.obj3D.group.userData.groupObj.child;
+	}
+	else	// объект без группы или объект с группой, но выдилен как отдельный объект
+	{
+		var arr_2 = [obj_1];
+	}
+	
+	
+	// поворачиваем объекты в нужном направлении 
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+		arr_2[i].updateMatrixWorld();		
+	}
+	
+	
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		var pos = obj.getWorldPosition(new THREE.Vector3());   
+	}
+	else								//  группа или объект
+	{
+		var pos = obj.position.clone();		
+	}		
+	
+
+	// вращаем position объектов, относительно точки-соединителя
+	for(var i = 0; i < arr_2.length; i++)
+	{
+		arr_2[i].position.sub(pos);
+		arr_2[i].position.applyQuaternion(diff_2); 	
+		arr_2[i].position.add(pos);
+	}
+	
+
+	
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
+	
+
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		tools.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+	}
+	else
+	{
+		tools.rotation.copy( obj.rotation );
+	}
+	
+	upMenuRotateObjPop(obj);
+}
+
+
+
 
 
 
