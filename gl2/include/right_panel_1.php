@@ -442,8 +442,13 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 						</div>
 						
 						<div class="flex_1" style="margin: 0px 0 20px 0;">
+							<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m">-90</div>
 							<div class="button1 button_gradient_1" nameId="obj_rotate_X_90">90</div>
+							
+							<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m">-90</div>
 							<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90">90</div>
+							
+							<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m">-90</div>
 							<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90">90</div>
 						</div>						
 					

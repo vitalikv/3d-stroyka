@@ -334,3 +334,109 @@ function upMenuRotateObjPop(obj)
 }
 
 
+
+
+// вращаем объект по кнопки на заданный угол
+function setRotationGizmo(cdm)
+{	
+	var gizmo = infProject.tools.gizmo;	
+	var obj = gizmo.userData.gizmo.obj;  
+	
+	var axis = cdm.axis;
+	var rotY = THREE.Math.degToRad( cdm.angle );
+	
+	
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		gizmo.userData.gizmo.active.startPos = obj.getWorldPosition(new THREE.Vector3());   
+	}
+	else								//  группа или объект
+	{
+		gizmo.userData.gizmo.active.startPos = obj.position.clone();		
+	}		
+	
+
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{ 
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
+		{
+			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+		}
+		else
+		{
+			var arr = [obj.parent];
+		}			
+	}			
+	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
+	{
+		var arr = obj.userData.obj3D.group.userData.groupObj.child;
+	}
+	else	// объект 
+	{
+		var arr = [obj];
+	}
+
+	
+	
+	if(camera == cameraTop) 
+	{ 
+		var type = 'global';		 
+	}
+	else 
+	{ 
+		var type = 'local';
+	}		
+	
+	// вращение объекта или объектов 
+	{
+		// локальный dir , глобальный -> dr new THREE.Vector3( 0, 1, 0 )
+		if(type == 'local')
+		{	
+			var centerO = obj;
+			
+			if(axis == 'x'){ var dr = new THREE.Vector3( 1, 0, 0 ); }
+			if(axis == 'y'){ var dr = new THREE.Vector3( 0, 1, 0 ); }
+			if(axis == 'z'){ var dr = new THREE.Vector3( 0, 0, 1 ); }	
+			
+			centerO.updateMatrixWorld();		
+			var v1 = centerO.localToWorld( dr.clone() );
+			var v2 = centerO.getWorldPosition(new THREE.Vector3());
+			
+			var dir = new THREE.Vector3().subVectors(v1, v2).normalize();	
+		}
+		else
+		{
+			var dir = new THREE.Vector3( 0, 1, 0 );
+		}
+		
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
+			arr[i].position.applyAxisAngle(dir, rotY); // rotate the POSITION
+			arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
+			
+			arr[i].rotateOnWorldAxis(dir, rotY);								
+		}		
+	}
+	
+			
+	
+	if(obj.userData.tag == 'joinPoint')		// разъем
+	{
+		var objParent = getParentObj({obj: obj});
+		objParent.updateMatrixWorld();
+		gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+	}
+	else
+	{
+		gizmo.rotation.copy( obj.rotation );
+	}
+	
+	 
+	
+	upMenuRotateObjPop(obj);
+}
+
+
+

@@ -117,6 +117,14 @@ $('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({
 $('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
 
 
+$('[nameId="obj_rotate_X_90"]').mousedown(function () { setRotationGizmo({axis: 'x', angle: 90}); });
+$('[nameId="obj_rotate_X_90m"]').mousedown(function () { setRotationGizmo({axis: 'x', angle: -90}); });
+$('[nameId="obj_rotate_Y_90"]').mousedown(function () { setRotationGizmo({axis: 'y', angle: 90}); });
+$('[nameId="obj_rotate_Y_90m"]').mousedown(function () { setRotationGizmo({axis: 'y', angle: -90}); });
+$('[nameId="obj_rotate_Z_90"]').mousedown(function () { setRotationGizmo({axis: 'z', angle: 90}); });
+$('[nameId="obj_rotate_Z_90m"]').mousedown(function () { setRotationGizmo({axis: 'z', angle: -90}); });
+
+ 
 
 $('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });  
 $('[data-action="create_wd_2"]').mousedown(function () { clickInterface({button:'create_wd_2'}); });
