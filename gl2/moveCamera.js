@@ -393,16 +393,7 @@ function cameraZoomTop( delta )
 	
 	infProject.tools.point.geometry.verticesNeedUpdate = true;
 	infProject.tools.point.geometry.elementsNeedUpdate = true;
-	
-	
-	var value = 0.05 / camera.zoom; 
-	var v = infProject.geometry.wf_point.vertices;
-	v[0].x = v[1].x = v[6].x = v[7].x = -value;
-	v[2].x = v[3].x = v[4].x = v[5].x = value;
-	v[0].z = v[1].z = v[2].z = v[3].z = value;	
-	v[4].z = v[5].z = v[6].z = v[7].z = -value;
-	infProject.geometry.wf_point.verticesNeedUpdate = true;
-	infProject.geometry.wf_point.elementsNeedUpdate = true;
+		
 
 	// zoom label
 	var k = 1 / delta;
@@ -433,6 +424,7 @@ function cameraZoomTop( delta )
 		infProject.geometry.labelFloor.elementsNeedUpdate = true;
 	}
 	
+	setScaleTubePoint();
 	setScaleJoinPoint();
 	setScalePivotGizmo();
 }

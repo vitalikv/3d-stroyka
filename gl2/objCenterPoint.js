@@ -116,7 +116,10 @@ function setScaleJoinPoint(cdm)
 	
 	if(camera == cameraTop)
 	{		
-		var scale = 1/camera.zoom+0.5;	
+		var scale = 3.5/camera.zoom;	
+		
+		if(scale > 1.4) { scale = 1.4; }
+		else if(scale < 0.1) { scale = 0.1; }	
 		
 		for ( var i = 0; i < arr.length; i++ )
 		{ 

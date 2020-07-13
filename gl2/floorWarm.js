@@ -725,11 +725,13 @@ function deClickTube(cdm)
 
 
 
+
+
 // масштаб точек трубы
-function setScaleTubePoint()
-{
-	if(camera != camera3D) return;
-	
+function setScaleTubePoint(cdm) 
+{ 
+	if(!cdm) { cdm = {}; }
+
 	var obj = clickO.last_obj; 
 	
 	if(!obj) return;
@@ -739,34 +741,38 @@ function setScaleTubePoint()
 	else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }
 	else { return; }
 	
-	
-	var min = 9999999;
-	var point = null;
+
+	var arr = [];
 	
 	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
 	{ 
-		var dist = camera.position.distanceTo(line.userData.wf_line.point[i2].position);
+		arr[arr.length] = line.userData.wf_line.point[i2];						
+	}
+	
+	if(arr.length == 0) return;			
+	
+	if(camera == cameraTop)
+	{		
+		var scale = 3.5/camera.zoom;	
 		
-		if(min > dist)
-		{
-			min = dist;							
-			point = line.userData.wf_line.point[i2];
-		}						
-	}					
-
-	if(point)
+		if(scale > 1.4) { scale = 1.4; }
+		else if(scale < 0.5) { scale = 0.5; }
+		
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			arr[i].scale.set( scale,scale,scale );			
+		}	
+	}	
+	else if(camera == camera3D)
 	{
-		var value = min/150;; 
-		var v = infProject.geometry.wf_point.vertices;
-		v[0].x = v[1].x = v[6].x = v[7].x = -value;
-		v[2].x = v[3].x = v[4].x = v[5].x = value;
-		v[0].y = v[3].y = v[7].y = v[4].y = -value;
-		v[1].y = v[2].y = v[5].y = v[6].y = value;						
-		v[0].z = v[1].z = v[2].z = v[3].z = value;	
-		v[4].z = v[5].z = v[6].z = v[7].z = -value;
-		infProject.geometry.wf_point.verticesNeedUpdate = true;
-		infProject.geometry.wf_point.elementsNeedUpdate = true;	
-		
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			var scale = camera.position.distanceTo(arr[i].position)/2;	
+
+			if(scale > 1.2) scale = 1.2;
+			
+			arr[i].scale.set( scale,scale,scale );			
+		}							
 	}
 }		
 
