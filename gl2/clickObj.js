@@ -75,7 +75,7 @@ function clickObject3D( obj, cdm )
 	
 	
 	// Quaternion
-	if(1==2)	// глобальный gizmo
+	if(camera == cameraTop)	// глобальный gizmo
 	{
 		var qt = new THREE.Quaternion();
 	}

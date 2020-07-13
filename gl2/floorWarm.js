@@ -516,7 +516,7 @@ function deletePointWF(obj)
 	
 	if(line)
 	{  
-		clickTubeWF({ray: {object: line.userData.wf_line.tube}});
+		//clickTubeWF({ray: {object: line.userData.wf_line.tube}});
 	}
 }
 

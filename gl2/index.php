@@ -96,6 +96,7 @@
 	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMoveGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMovePivot.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>activePivotGizmo.js?<?=$vrs?>"></script>
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addWD.js?<?=$vrs?>"></script>

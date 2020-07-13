@@ -28,6 +28,7 @@ eventClick.js
 clickMovePivot.js
 clickObj.js
 clickMoveGizmo.js
+activePivotGizmo.js
 scaleBox.js
 loadObj.js
 uiInterface_obj.js
