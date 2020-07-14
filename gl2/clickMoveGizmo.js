@@ -289,14 +289,16 @@ function moveGizmo( event )
 	}
 	
 			
-	
-	if(obj.userData.tag == 'joinPoint')		// разъем
+	if(camera == camera3D)
 	{
-		gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
-	}
-	else
-	{
-		gizmo.rotation.copy( obj.rotation );
+		if(obj.userData.tag == 'joinPoint')		// разъем
+		{
+			gizmo.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+		}
+		else
+		{
+			gizmo.rotation.copy( obj.rotation );
+		}		
 	}
 	
 	gizmo.userData.gizmo.active.rotY = rotY; 
@@ -424,20 +426,24 @@ function setRotationGizmo(cdm)
 		}		
 	}
 	
-	var tools = null;
-	if(infProject.settings.active.pg == 'pivot'){ tools = infProject.tools.pivot; }	
-	if(infProject.settings.active.pg == 'gizmo'){ tools = infProject.tools.gizmo; }			
 	
-	if(obj.userData.tag == 'joinPoint')		// разъем
+	if(camera == camera3D)
 	{
-		var objParent = getParentObj({obj: obj});
-		objParent.updateMatrixWorld();
-		tools.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+		var tools = null;
+		if(infProject.settings.active.pg == 'pivot'){ tools = infProject.tools.pivot; }	
+		if(infProject.settings.active.pg == 'gizmo'){ tools = infProject.tools.gizmo; }			
+		
+		if(obj.userData.tag == 'joinPoint')		// разъем
+		{
+			var objParent = getParentObj({obj: obj});
+			objParent.updateMatrixWorld();
+			tools.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+		}
+		else
+		{
+			tools.rotation.copy( obj.rotation );
+		}	 		
 	}
-	else
-	{
-		tools.rotation.copy( obj.rotation );
-	}	 
 	
 	upMenuRotateObjPop(obj);
 }
