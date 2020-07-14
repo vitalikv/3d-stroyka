@@ -732,24 +732,56 @@ function setScaleTubePoint(cdm)
 { 
 	if(!cdm) { cdm = {}; }
 
-	var obj = clickO.last_obj; 
-	
-	if(!obj) return;
-
-	
-	if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
-	else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }
-	else { return; }
-	
-
 	var arr = [];
 	
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+	if(cdm.arr) 
 	{ 
-		arr[arr.length] = line.userData.wf_line.point[i2];						
+		arr = cdm.arr; 
+	}
+	else 
+	{
+		var obj = clickO.last_obj; 	
+		if(!obj) return;
+		
+		if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
+		else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }
+		else { return; }
+		
+		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+		{ 
+			arr[arr.length] = line.userData.wf_line.point[i2];						
+		}	
 	}
 	
-	if(arr.length == 0) return;			
+	if(arr.length == 0) return;	
+
+
+	// вкл режим выровнить (нажата кнопка выровнить) и показаны точки 2-ого объекта
+	if(infProject.list.alignP.active && infProject.list.alignP.p2 && !cdm.stopAlign)	 
+	{		
+		if(infProject.list.alignP.p2.userData.tag == 'joinPoint') 
+		{
+			var arr2 = infProject.list.alignP.arr2;
+			var arr3 = [];
+			
+			for ( var i2 = 0; i2 < arr2.length; i2++ )
+			{ 
+				arr3[arr3.length] = arr2[i2].o;						
+			}			
+			setScaleJoinPoint({arr: arr3, stopAlign: true}); 
+		}
+		
+		if(infProject.list.alignP.p2.userData.tag == 'wf_point')
+		{
+			var arr2 = infProject.list.alignP.arr2;
+
+			for ( var i2 = 0; i2 < arr2.length; i2++ )
+			{ 
+				arr[arr.length] = arr2[i2].o;						
+			}			
+		}
+	}	 
+		
 	
 	if(camera == cameraTop)
 	{		

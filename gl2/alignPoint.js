@@ -89,7 +89,7 @@ function clearListObjUI()
 
 
 
-// кликнули на объект в сцене, когда была нажата кнопка выровнить у точки трубы
+// кликнули на объект в сцене (труба/объект), когда была нажата кнопка выровнить
 // показываем точки-соединители для 2-ого выделенного объекта
 function showJoinPoint_2(cdm)
 { 
@@ -117,7 +117,7 @@ function showJoinPoint_2(cdm)
 		arr = getCenterPointFromObj_1( obj );
 	}	
 	
-	
+	 
 	if(infProject.list.alignP.p1.userData.tag == 'wf_point') { var nameId = "rp_list_align_wf_point"; }
 	if(infProject.list.alignP.p1.userData.tag == 'joinPoint') { var nameId = "rp_obj_align"; }
 	
@@ -131,20 +131,28 @@ function showJoinPoint_2(cdm)
 		var str = 
 		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
 		<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
-		</div>';		
-			
+		</div>';					
 
 		var el = $(str).appendTo('[nameId="'+nameId+'"]');
 
 		var n = infProject.list.alignP.arr2.length;	
 		infProject.list.alignP.arr2[n] = {};
 		infProject.list.alignP.arr2[n].el = el;
-		infProject.list.alignP.arr2[n].o = arr[i]; 		
+		infProject.list.alignP.arr2[n].o = arr[i]; 				
 		
-		arr[i].visible = true;
 		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
 	}	
 	
+	
+	// масштаб точек
+	if(obj.userData.tag == 'wf_tube') { setScaleTubePoint({arr: arr}); }
+	else if(obj.userData.tag == 'obj') { setScaleJoinPoint({arr: arr}); }
+
+	// показываем точки
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].visible = true;
+	}
 	
 	if(arr.length > 0) 
 	{
@@ -159,7 +167,7 @@ function showJoinPoint_2(cdm)
 
 
 
-// выбираем центр для объекта к которому хотим присоединиться 
+// выбираем точку к которой хотим присоединиться 
 function clickItemCenterObjUI_2(cdm)
 {
 	var item = null;
