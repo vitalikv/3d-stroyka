@@ -137,6 +137,8 @@ function deleteObjectPop(obj)
 	
 	hidePivotGizmo(obj);
 	
+	deClickObj({obj: obj, moment: ''});
+	
 	var arr = [];
 	
 	if(obj.userData.obj3D.group && infProject.settings.active.group)
@@ -154,9 +156,6 @@ function deleteObjectPop(obj)
 	}
 	
 
-	
-	
-	console.log(renderer.info.memory);
 	for(var i = 0; i < arr.length; i++)
 	{	
 		updateListTubeUI_1({type: 'delete', o: arr[i]});
@@ -170,7 +169,7 @@ function deleteObjectPop(obj)
 		
 		scene.remove(arr[i]);
 	}
-	console.log(renderer.info.memory);
+	
 	outlineRemoveObj();
 }
 

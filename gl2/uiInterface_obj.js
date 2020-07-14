@@ -1,7 +1,7 @@
 
 
 
-// кликнули на obj, wd (показываем нужное меню и заполняем input)
+// кликнули на obj, wd (показываем нужное меню и заполняем input или скрываем меню)
 function activeObjRightPanelUI_1(cdm) 
 {	
 	$('[nameId="wrap_object_1"]').hide();	
