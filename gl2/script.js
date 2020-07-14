@@ -178,7 +178,7 @@ infProject.geometry = {};
 
 infProject.material = {};
 infProject.material.pointTube = {};
-infProject.material.pointTube.default = new THREE.MeshLambertMaterial({color: 0x333333, transparent: true, opacity: 0.6, depthTest: false});
+infProject.material.pointTube.default = new THREE.MeshLambertMaterial({color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
 infProject.material.pointTube.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
 infProject.material.pointObj = {};
 infProject.material.pointObj.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
@@ -187,7 +187,7 @@ infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff
 infProject.geometry.circle = createCircleSpline();
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
-infProject.geometry.wf_point = createGeometryWD(0.03, 0.03, 0.03);
+infProject.geometry.wf_point = new THREE.SphereGeometry( 0.015, 16, 16 );
 infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
 infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: createLineAxis() }
 //infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   

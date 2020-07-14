@@ -48,7 +48,7 @@ function clickFirstObj3D(cdm)
 {
 	var obj = cdm.obj;	
 	
-	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	
+	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }		// вкл кнопка подключить/выронить	
 	else if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
 	else { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }	 	
 }

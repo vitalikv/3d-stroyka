@@ -34,6 +34,17 @@ function createTubeWF_1(cdm)
 }
 
 
+// кликнули на трубу, распределяем что делать
+function clickFirstTubeWF(cdm)
+{
+	var obj = cdm.obj;
+	var rayhit = cdm.rayhit;	
+	
+	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	// вкл кнопка подключить/выронить
+	else { clickTubeWF({ray: rayhit}); }	
+}
+
+
 // кликнули на трубу
 function clickTubeWF(cdm)
 {

@@ -69,9 +69,8 @@ function clickFirstWFPoint(cdm)
 	var obj = cdm.obj;
 	var rayhit = cdm.rayhit;
 	
-	if(infProject.list.alignP.active) { clickItemCenterObjUI_2({obj: obj}); }
+	if(infProject.list.alignP.active) { clickItemCenterObjUI_2({obj: obj}); }	// вкл кнопка подключить/выронить
 	else { clickWFPoint_3D({ intersect: rayhit }); }
-
 }
 
 

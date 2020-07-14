@@ -169,10 +169,33 @@ function addObjInScene(inf, cdm)
 				
 				if(child.userData.centerPoint)
 				{
+					
+					if (child.material) 
+					{
+						var materialArray = [];
+						
+						if(child.material instanceof Array) { materialArray = child.material; }
+						else { materialArray = [child.material]; }
+						
+						if(materialArray) 
+						{
+							materialArray.forEach(function (mtrl, idx) 
+							{
+								if (mtrl.map) mtrl.map.dispose();
+								if (mtrl.lightMap) mtrl.lightMap.dispose();
+								if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+								if (mtrl.normalMap) mtrl.normalMap.dispose();
+								if (mtrl.specularMap) mtrl.specularMap.dispose();
+								if (mtrl.envMap) mtrl.envMap.dispose();
+								mtrl.dispose();
+							});
+						}
+					}
+		
 					child.material = infProject.material.pointObj.default
 					child.userData.centerPoint.color = child.material.color.clone();
-					//child.scale.set(1,1,1);
-					//child.visible = false;
+					child.scale.set(1,1,1);
+					child.visible = false;
 				}
 					
 				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)
