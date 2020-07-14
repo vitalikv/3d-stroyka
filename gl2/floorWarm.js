@@ -753,34 +753,7 @@ function setScaleTubePoint(cdm)
 		}	
 	}
 	
-	if(arr.length == 0) return;	
-
-
-	// вкл режим выровнить (нажата кнопка выровнить) и показаны точки 2-ого объекта
-	if(infProject.list.alignP.active && infProject.list.alignP.p2 && !cdm.stopAlign)	 
-	{		
-		if(infProject.list.alignP.p2.userData.tag == 'joinPoint') 
-		{
-			var arr2 = infProject.list.alignP.arr2;
-			var arr3 = [];
-			
-			for ( var i2 = 0; i2 < arr2.length; i2++ )
-			{ 
-				arr3[arr3.length] = arr2[i2].o;						
-			}			
-			setScaleJoinPoint({arr: arr3, stopAlign: true}); 
-		}
-		
-		if(infProject.list.alignP.p2.userData.tag == 'wf_point')
-		{
-			var arr2 = infProject.list.alignP.arr2;
-
-			for ( var i2 = 0; i2 < arr2.length; i2++ )
-			{ 
-				arr[arr.length] = arr2[i2].o;						
-			}			
-		}
-	}	 
+	if(arr.length == 0) return;		 
 		
 	
 	if(camera == cameraTop)

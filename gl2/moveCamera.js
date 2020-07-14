@@ -424,9 +424,7 @@ function cameraZoomTop( delta )
 		infProject.geometry.labelFloor.elementsNeedUpdate = true;
 	}
 	
-	setScaleTubePoint();
-	setScaleJoinPoint();
-	setScalePivotGizmo();
+	scaleToolsMoveCamera();
 }
 
 
@@ -490,9 +488,7 @@ function cameraZoom3D( delta, z )
 		camera.position.copy( pos3 ); 	
 	}
 
-	setScaleTubePoint();
-	setScaleJoinPoint();
-	setScalePivotGizmo();
+	scaleToolsMoveCamera();
 }
 
 
@@ -583,9 +579,7 @@ function zoomCamera3D_2(cdm)
 	
 	camera.updateProjectionMatrix();
 	
-	setScaleTubePoint();
-	setScaleJoinPoint();
-	setScalePivotGizmo();	
+	scaleToolsMoveCamera();	
 }
 
 
@@ -864,12 +858,45 @@ function fitCameraToObject(cdm)
 		camera.position.z = pos.z;	
 	}
 	
-	setScaleTubePoint();
-	setScaleJoinPoint();
-	setScalePivotGizmo();	
+	
+	scaleToolsMoveCamera();
 	
 	renderCamera();
 }
+
+
+// масштаб pivot/gizmo и разъемов труб/объектов
+function scaleToolsMoveCamera()
+{
+	setScaleTubePoint(); 
+	setScaleJoinPoint();
+	setScalePivotGizmo();
+
+
+	// вкл режим выровнить (нажата кнопка выровнить) и показаны точки 2-ого объекта
+	if(infProject.list.alignP.active && infProject.list.alignP.p2)	 
+	{	
+		var arr = [];
+		var arr2 = infProject.list.alignP.arr2;		
+		
+		for ( var i2 = 0; i2 < arr2.length; i2++ )
+		{ 
+			arr[arr.length] = arr2[i2].o;						
+		}			
+
+		if(infProject.list.alignP.p2.userData.tag == 'wf_point') 
+		{
+			setScaleTubePoint({arr: arr}); 
+		}
+		
+		if(infProject.list.alignP.p2.userData.tag == 'joinPoint') 
+		{			
+			setScaleJoinPoint({arr: arr}); 
+		}
+	}	
+}
+
+
 
 
 function detectBrowser()
