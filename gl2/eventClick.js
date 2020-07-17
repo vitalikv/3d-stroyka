@@ -260,6 +260,9 @@ function changeRightMenuUI_2(cdm)
 	{
 		$('[nameId="rp_bl_obj_properties"]').show();
 	}
+	
+	switchAlignPoint_1({active: false});
+	activeObjRightPanelUI_1({obj: clickO.last_obj});
 }
 
 

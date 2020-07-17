@@ -9,6 +9,7 @@ function activeObjRightPanelUI_1(cdm)
 	$('[nameId="bl_object_3d"]').hide();
 	$('[nameId="rp_bl_wf_tube"]').hide();
 	$('[nameId="rp_bl_wf_point"]').hide();
+	$('[nameId="block_gizmo"]').hide();
 	
 	if(!cdm) { cdm = {}; }  
 	
@@ -26,20 +27,27 @@ function activeObjRightPanelUI_1(cdm)
 	{	
 		$('[nameId="rp_obj_name"]').val('труба');
 		$('[nameId="rp_bl_wf_tube"]').show();
+		
 	}			
 	else if(obj.userData.tag == 'obj')
-	{		    
+	{		     
 		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="pr_list_button_center_point"]').hide();
 		$('[nameId="pr_list_button_for_obj"]').show();
+		$('[nameId="block_gizmo"]').show();
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
-	{
+	{ 
 		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="pr_list_button_for_obj"]').hide();
 		$('[nameId="pr_list_button_center_point"]').show();
+		$('[nameId="block_gizmo"]').show();
+	}
+	else
+	{
+		return;
 	}
 	
 	$('[nameId="wrap_object_1"]').show(); 	

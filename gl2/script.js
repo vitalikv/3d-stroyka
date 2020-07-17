@@ -1135,8 +1135,12 @@ function clickInterface(cdm)
 		}		
 		else if(cdm.button == 'add_lotid')
 		{
-			clickO.button = 'add_lotid';
-			clickO.options = cdm.value;				
+			if(cdm.value == 'group'){}
+			else
+			{
+				clickO.button = 'add_lotid';
+				clickO.options = cdm.value;					
+			}
 		}			
 		else if(cdm.button == 'grid_show_1')
 		{

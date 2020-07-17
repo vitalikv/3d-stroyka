@@ -424,37 +424,40 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 							<input type="text" nameId="object_pos_Z" value="0">
 						</div>	
 
+						
+						<div nameId="block_gizmo">
+							<div class="button1 button_gradient_1" nameId="select_gizmo" style="margin: 40px 0 10px 0;">
+								вращение	
+							</div>	
 
-						<div class="button1 button_gradient_1" nameId="select_gizmo" style="margin: 40px 0 10px 0;">
-							вращение	
-						</div>	
+							<div class="flex_1 input_rotate">
+								<input type="text" nameId="object_rotate_X" value="0">
+								<input type="text" nameId="object_rotate_Y" value="0">
+								<input type="text" nameId="object_rotate_Z" value="0">
+							</div>	
 
-						<div class="flex_1 input_rotate">
-							<input type="text" nameId="object_rotate_X" value="0">
-							<input type="text" nameId="object_rotate_Y" value="0">
-							<input type="text" nameId="object_rotate_Z" value="0">
-						</div>	
-
-						<div class="flex_1" style="margin: 0px 0 20px 0;">
-							<div style="width: 100%; height: 2px; background: rgb(247, 72, 72);"></div>
-							<div style="width: 100%; height: 2px; background: rgb(17, 255, 0);"></div>
-							<div style="width: 100%; height: 2px; background: rgb(72, 116, 247);"></div>
+							<div class="flex_1" style="margin: 0px 0 20px 0;">
+								<div style="width: 100%; height: 2px; background: rgb(247, 72, 72);"></div>
+								<div style="width: 100%; height: 2px; background: rgb(17, 255, 0);"></div>
+								<div style="width: 100%; height: 2px; background: rgb(72, 116, 247);"></div>
+							</div>
+							
+							<div class="flex_1" style="margin: 0px 0 20px 0;">
+								<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m">-90</div>
+								<div class="button1 button_gradient_1" nameId="obj_rotate_X_90">90</div>
+								
+								<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m">-90</div>
+								<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90">90</div>
+								
+								<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m">-90</div>
+								<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90">90</div>
+							</div>						
+						
+							<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
+								сбросить	
+							</div>											
 						</div>
 						
-						<div class="flex_1" style="margin: 0px 0 20px 0;">
-							<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m">-90</div>
-							<div class="button1 button_gradient_1" nameId="obj_rotate_X_90">90</div>
-							
-							<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m">-90</div>
-							<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90">90</div>
-							
-							<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m">-90</div>
-							<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90">90</div>
-						</div>						
-					
-						<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
-							reset	
-						</div>					
 					
 					</div>
 					
