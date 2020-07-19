@@ -252,19 +252,28 @@ function addObjInScene(inf, cdm)
 	}
 
 
-	if(obj.userData.obj3D.lotid == 3 && 1==2)
+	if(obj.userData.obj3D.lotid == 3 && 1==1)
 	{
 		var x = (obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/1;
+		
+		var arr = [];
+		arr[arr.length] = obj;
 		
 		for ( var i = 0; i < 6; i++ )
 		{
 			var obj2 = inf.obj.clone();
-			
+			console.log(77777, inf.obj.userData.id);
 			obj2.position.copy(obj.position);
 			obj2.position.x += x * (i+1);
 			
-			scene.add( obj2 );			
+			scene.add( obj2 );
+
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj2;
+			
+			arr[arr.length] = obj2;
 		}
+		
+		createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
 	}
 
 }

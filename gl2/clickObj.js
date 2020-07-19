@@ -20,8 +20,22 @@ function moveObjFromCatalog( event )
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
 	
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
-	obj.position.add( pos2 );	
+	var pos2 = new THREE.Vector3().subVectors( pos, obj.position ); 
+
+
+	if(obj.userData.obj3D.group)	// группа
+	{
+		var arr = obj.userData.obj3D.group.userData.groupObj.child;
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].position.add( pos2 );
+		}
+	}
+	else 	// объект
+	{ 
+		obj.position.add( pos2 );  
+	}	
 }
 
 
