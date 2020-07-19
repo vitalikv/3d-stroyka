@@ -128,7 +128,7 @@ function addObjInScene(inf, cdm)
 		planeMath.updateMatrixWorld(); 
 	}
 	
-	if(cdm.rot){ obj.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z); }					
+	if(cdm.q){ obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w); }					
 	
 	
 	if(cdm.id){ obj.userData.id = cdm.id; }
@@ -251,6 +251,21 @@ function addObjInScene(inf, cdm)
 		}
 	}
 
+
+	if(obj.userData.obj3D.lotid == 3 && 1==2)
+	{
+		var x = (obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/1;
+		
+		for ( var i = 0; i < 6; i++ )
+		{
+			var obj2 = inf.obj.clone();
+			
+			obj2.position.copy(obj.position);
+			obj2.position.x += x * (i+1);
+			
+			scene.add( obj2 );			
+		}
+	}
 
 }
 

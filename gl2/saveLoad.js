@@ -457,18 +457,14 @@ function getJsonGeometry()
 		if(obj.userData.obj3D.group)	// если объект приналежит группе
 		{
 			gr = { name: 'group', id: obj.userData.obj3D.group.userData.id }; 
-		}
-		
-		var pos = new THREE.Vector3(obj.position.x, obj.position.y, -obj.position.z);
-		var rot = new THREE.Vector3( THREE.Math.radToDeg(obj.rotation.x), THREE.Math.radToDeg(obj.rotation.y), THREE.Math.radToDeg(obj.rotation.z) );
-		
+		}		
 			
 		var m = furn.length;
 		furn[m] = {};
 		furn[m].id = Number(obj.userData.id);
 		furn[m].lotid = Number(obj.userData.obj3D.lotid);
-		furn[m].pos = pos;
-		furn[m].rot = rot;
+		furn[m].pos = obj.position;
+		furn[m].q = {x: obj.quaternion.x, y: obj.quaternion.y, z: obj.quaternion.z, w: obj.quaternion.w};
 		furn[m].nameRus = obj.userData.obj3D.nameRus;
 		furn[m].centerPoint = [];
 		if(gr) { furn[m].group = gr; }
@@ -525,7 +521,7 @@ function getJsonGeometry()
 		{
 			pipe[m].point[i2] = {};
 			pipe[m].point[i2].id = tube.point[i2].userData.id;
-			pipe[m].point[i2].pos = tube.point[i2].position.clone();
+			pipe[m].point[i2].pos = tube.point[i2].position;
 		}
 	}
 
@@ -941,18 +937,14 @@ async function loadObjInBase(cdm)
 		for ( var i2 = 0; i2 < furn.length; i2++ )
 		{
 			if(furn[i2].lotid == json[i].id) 
-			{ 
-		
-				furn[i2].pos.z *= -1;
-				
-				if(furn[i2].rot)			
-				{
-					furn[i2].rot = new THREE.Vector3( THREE.Math.degToRad(furn[i2].rot.x), THREE.Math.degToRad(furn[i2].rot.y), THREE.Math.degToRad(furn[i2].rot.z) );
-				}
-			
+			{ 				
 				await loadObjServer(furn[i2]);
 
-				infProject.project.load.furn[infProject.project.load.furn.length] = furn[i2].lotid;				
+				infProject.project.load.furn[infProject.project.load.furn.length] = furn[i2].lotid;	
+
+				var rat = (Math.round((infProject.project.load.furn.length/infProject.project.file.furn.length)*100)) + '%';
+				
+				$('[nameId="txt_loader_slider_UI"]').text(rat);
 			}
 		}
 	}
@@ -977,6 +969,8 @@ function readyProject(cdm)
 	// восстанавливаем countId	
 	
 	console.log('READY', countId);
+	
+	$('[nameId="menu_loader_slider_UI"]').hide();
 	
 	changeCamera(cameraTop);
 	centerCamera2D();	
