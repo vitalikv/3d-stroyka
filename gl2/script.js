@@ -193,6 +193,7 @@ infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [],
 //infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   
 infProject.tools.plane = {o1: [], el: []};
 infProject.tools.heightPl = createPlaneHeight();		// плоскость высоты
+infProject.tools.helpVertex = [];
    
 infProject.listColor = resetPop.listColor();
 infProject.list = {};	// список разных параметров/объектов
@@ -298,7 +299,7 @@ startPlanElemPlus({});										// добавляем в список +, для 
 
 setPlaneHeightPositionY();
 
-
+ 
 //----------- start
 
 

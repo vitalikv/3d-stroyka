@@ -116,6 +116,10 @@
 	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>mergeObjToGroup.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st_radiator.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/al_radiator.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>

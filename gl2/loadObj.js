@@ -139,7 +139,7 @@ function addObjInScene(inf, cdm)
 	obj.userData.obj3D.lotid = cdm.lotid;
 	obj.userData.obj3D.nameRus = inf.name;  
 	//obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
-	obj.material.visible = false;
+	//obj.material.visible = false;
 	//obj.rotation.y += 1;
 	
 	
@@ -197,7 +197,12 @@ function addObjInScene(inf, cdm)
 					child.scale.set(1,1,1);
 					child.visible = false;
 				}
-					
+				
+if(new RegExp( '_est_' ,'i').test( child.name ))
+{
+	child.visible = true;
+}
+	
 				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)
 				{
 					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
@@ -252,30 +257,15 @@ function addObjInScene(inf, cdm)
 	}
 
 
-	if(obj.userData.obj3D.lotid == 3 && 1==1)
-	{
-		var x = (obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/1;
-		
-		var arr = [];
-		arr[arr.length] = obj;
-		
-		for ( var i = 0; i < 6; i++ )
-		{
-			var obj2 = inf.obj.clone();
-			console.log(77777, inf.obj.userData.id);
-			obj2.position.copy(obj.position);
-			obj2.position.x += x * (i+1);
-			
-			scene.add( obj2 );
+	if(obj.userData.obj3D.lotid == 3 && cdm.pos)
+	{ 
+		al_radiator_1({obj: obj, count: 1}); 		
+	}	
 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj2;
-			
-			arr[arr.length] = obj2;
-		}
-		
-		createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
+	if(obj.userData.obj3D.lotid == 118)
+	{ 
+		st_radiator_1({ obj: obj, size:{x: 1.5, y: 0.6, z: 0.07} });	
 	}
-
 }
 
 

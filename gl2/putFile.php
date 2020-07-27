@@ -43,6 +43,10 @@ clickMoveTube.js
 alignPoint.js
 mergeObjToGroup.js
 planeHeight.js
+createObj/st_radiator.js
+createObj/al_radiator.js
+createObj/helpT.js
+createObj/calculation_1.js
 ';
 
 
