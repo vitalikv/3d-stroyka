@@ -65,7 +65,7 @@ if($res)
 
 	if($res['preview'])
 	{
-		$data['preview'] = $res['preview'];	
+		//$data['preview'] = $res['preview'];	
 	}		
 }
 

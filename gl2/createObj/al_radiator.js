@@ -7,12 +7,16 @@ function al_radiator_1(cdm)
 {
 	var obj = cdm.obj;
 	
-	var o = null;
-	var op1 = null;
-	var op2 = null;
-	var op3 = null;
 	
-	var chpv = [];
+	var o = null;	// радиатор	
+	var op = [];	// зеленые разъемы	
+	var chpv = [];	// технические(из модели) разъемы, которые скрываются и к которым крепятся зеленые разъемы 
+	
+	// op[0] вверхний левый
+	// op[1] вверхний правый
+	// op[2] нижний левый
+	// op[3] нижний правый	
+
 	
 	obj.traverse( function ( child ) 
 	{
@@ -22,69 +26,108 @@ function al_radiator_1(cdm)
 			
 			if(child.userData.centerPoint)
 			{ 
-				if(child.userData.id == 0){ op1 = child; }
-				if(child.userData.id == 2){ op2 = child; }
-				if(child.userData.id == 3){ op3 = child; }
+				op[op.length] = child;
 			}
 			
-			if(child.name == 'size_2_L_est_001') { chpv[chpv.length] = child; }
-			if(child.name == 'size_2_R_est_') { chpv[chpv.length] = child; }
+			if(new RegExp( '_est_' ,'i').test( child.name ))
+			{
+				chpv[chpv.length] = child;
+			}
 		}
-	});			
+	});
+
 	
-	var dist = op1.position.distanceTo(op2.position);
+	var dist = op[0].position.distanceTo(op[2].position);
+	var dist2 = op[1].position.distanceTo(op[3].position);
 	
-	console.log('distanceTo', dist);
+	console.log('distanceTo', dist, dist2);
 	var offset = 0.3;
 	
-	op2.position.y += offset;
-	op3.position.y += offset;
-	
-	chpv[0].position.y += offset;
-	chpv[1].position.y += offset;
-	
-	var positions = o.geometry.attributes["position"].array;
-	var ptCout = positions.length / 3;
-	
-	for (var i = 0; i < ptCout; i++)
+
+	// меняем размер секции
 	{
-		var p = new THREE.Vector3(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+		chpv[2].position.y += offset;
+		chpv[3].position.y += offset;
 		
-		if(p.y < 0) { p.y += offset; o.geometry.attributes.position.array[i * 3 + 1] += offset; }			
+		var positions = o.geometry.attributes["position"].array;
+		var ptCout = positions.length / 3;
+		
+		for (var i = 0; i < ptCout; i++)
+		{
+			var p = new THREE.Vector3(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+			
+			if(p.y < 0) { p.y += offset; o.geometry.attributes.position.array[i * 3 + 1] += offset; }			
+		}	
+		
+		o.geometry.attributes.position.needsUpdate = true;
+		
+	}
+	
+	
+	
+	// добавляем секции
+	if(cdm.count > 1)
+	{
+		var parent = o.parent;
+		o.geometry.computeBoundingBox();		
+		var x = (o.geometry.boundingBox.max.x - o.geometry.boundingBox.min.x)/1;
+		
+		for ( var i = 0; i < cdm.count-1; i++ )
+		{
+			var o2 = o.clone();
+			
+			o2.position.copy(o.position);
+			o2.position.x += x * (i+1);
+			
+			parent.add( o2 );
+		}
+
+		chpv[1].position.x += x * (cdm.count - 1);
+		chpv[3].position.x += x * (cdm.count - 1);		
 	}	
-	
-	o.geometry.attributes.position.needsUpdate = true;
-	
 	
 	//createHelperVertex({obj: o});	// показываем Vertex
 
 	getBoundObject_2({obj: obj});	// обновляем геомтерию box 
 
-
-	if(cdm.count > 1)
+	
+	// устанавливаем разъемы(centerPoint) на свои места	
+	var num = 0;
+	var parent = o.parent;
+	
+	obj.traverse( function ( child ) 
 	{
-		var x = (obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/1;
-		
-		var arr = [];
-		arr[arr.length] = obj;
-		
-		for ( var i = 0; i < cdm.count+1; i++ )
-		{
-			var obj2 = obj.clone();
-			
-			obj2.position.copy(obj.position);
-			obj2.position.x += x * (i+1);
-			
-			scene.add( obj2 );
+		if ( child.isMesh ) 
+		{ 
+			if(new RegExp( '_est_' ,'i').test( child.name ))
+			{
+				if(num < op.length)
+				{
+					
+					op[num].position.copy(child.position);
+					op[num].quaternion.copy(child.quaternion);
 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj2;
-			
-			arr[arr.length] = obj2;
+					num++;
+				}
+			}
 		}
-		
-		createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
-	} 
+	});
+
+
+	var dist = op[0].position.distanceTo(op[2].position);
+	var dist2 = op[1].position.distanceTo(op[3].position);
+	
+	console.log('distanceTo', dist, dist2);	
 	
 }
+
+
+
+
+
+
+
+
+
 
 

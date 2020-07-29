@@ -48,11 +48,27 @@ async function loadObjServer(cdm)
 	var inf = await getObjFromBase({lotid: lotid});
 	if(!inf) return;		// объект не существует в API/каталоге
 	
+	if(!inf.model)
+	{
+		if(inf.properties)
+		{
+			if(inf.properties.parameters)
+			{
+				if(inf.properties.parameters.obj)
+				{
+					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});
+					
+					if(inf_2.model) inf.model = inf_2.model;
+				}				
+			}
+		}		
+	}
+	
 	var type = '';
 	
 	if(inf.obj)		// объект есть в кэше
 	{ 
-		console.log('---------');
+		console.log('---------', 55555);
 		type = 'obj';
 	}
 	else if(inf.model)		// объекта нет в кэше, сохраняем/добавляем в кэш
@@ -259,9 +275,15 @@ if(new RegExp( '_est_' ,'i').test( child.name ))
 
 	if(obj.userData.obj3D.lotid == 3 && cdm.pos)
 	{ 
-		al_radiator_1({obj: obj, count: 1}); 		
+		al_radiator_1({obj: obj, count: 3}); 		
 	}	
+	if(obj.userData.obj3D.lotid == 119)
+	{ 
+		console.log(inf); 
 
+if( isCheckExsistFunction(window['getInfObjFromBD']) ) {  };		
+	}
+	
 	if(obj.userData.obj3D.lotid == 118)
 	{ 
 		st_radiator_1({ obj: obj, size:{x: 1.5, y: 0.6, z: 0.07} });	

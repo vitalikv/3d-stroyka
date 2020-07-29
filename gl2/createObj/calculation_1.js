@@ -86,7 +86,7 @@ function offsetSizeVertexObj(cdm)
 
 		
 
-// получаем габариты объекта и строим box-форму
+// обновляем geometry box-формы
 function getBoundObject_2(cdm)
 {
 	var obj = cdm.obj;

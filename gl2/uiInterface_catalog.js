@@ -96,12 +96,14 @@ async function addObjInCatalogUI_1(cdm)
 			json.elem = $(json.html); 
 
 			// кликаем по названию объекта
-			var n = json.id;
-			(function(n) 
+			if(1==2)
 			{
-				json.elem.on('mousedown', function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); }); 	
-			}(n));
-
+				var n = json.id;
+				(function(n) 
+				{
+					json.elem.on('mousedown', function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); }); 	
+				}(n));				
+			}
 			
 			// назначаем кнопки треугольник событие
 			var el_2 = $(json.elem[0].querySelector('[nameId="shCp_1"]'));
