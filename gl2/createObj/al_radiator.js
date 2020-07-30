@@ -36,18 +36,28 @@ function al_radiator_1(cdm)
 		}
 	});
 
+
+	var y = op[0].position.distanceTo(op[2].position);		// высота между разъемами 
+	var y2 = op[1].position.distanceTo(op[3].position);
 	
-	var dist = op[0].position.distanceTo(op[2].position);
-	var dist2 = op[1].position.distanceTo(op[3].position);
+	console.log('distanceTo', y, y2);
 	
-	console.log('distanceTo', dist, dist2);
-	var offset = 0.3;
+	var offsetY = 0;
+	
+	if(cdm.size)
+	{
+		if(cdm.size.y) { offsetY = cdm.size.y - y; }
+	}
+	
+	
+
+	
 	
 
 	// меняем размер секции
 	{
-		chpv[2].position.y += offset;
-		chpv[3].position.y += offset;
+		chpv[0].position.y += offsetY;
+		chpv[1].position.y += offsetY;
 		
 		var positions = o.geometry.attributes["position"].array;
 		var ptCout = positions.length / 3;
@@ -56,7 +66,7 @@ function al_radiator_1(cdm)
 		{
 			var p = new THREE.Vector3(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
 			
-			if(p.y < 0) { p.y += offset; o.geometry.attributes.position.array[i * 3 + 1] += offset; }			
+			if(p.y > 0) { positions[i * 3 + 1] += offsetY; }			
 		}	
 		
 		o.geometry.attributes.position.needsUpdate = true;
@@ -113,12 +123,15 @@ function al_radiator_1(cdm)
 		}
 	});
 
+	
 
 	var dist = op[0].position.distanceTo(op[2].position);
 	var dist2 = op[1].position.distanceTo(op[3].position);
 	
 	console.log('distanceTo', dist, dist2);	
+	console.log('position', obj.geometry.boundingBox);
 	
+
 }
 
 

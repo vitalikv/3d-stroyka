@@ -28,13 +28,47 @@ async function getObjFromBase(cdm)
 	if(!json.error)
 	{
 		var inf = json;
-		inf.planeMath = 0.0;
 		
 		return inf;
 	}	
 	
 	return null;
 }
+
+
+// если объект составной или параметрический, то собираем его
+async function getInfPoperties(cdm)
+{
+	var inf = cdm.inf;
+	
+	if(inf.obj){ }
+	else if(inf.properties)
+	{
+		if(inf.properties.fc)
+		{
+			if(inf.properties.fc.name == 'al_radiator_1')
+			{
+				if(inf.properties.parameters)
+				{
+					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});								
+					inf.model = inf_2.model;
+					
+					var obj = new THREE.ObjectLoader().parse( inf_2.model );
+					inf.obj = obj;
+					
+					al_radiator_1({obj: obj, count: inf.properties.parameters.obj.count, size: inf.properties.parameters.obj.size});
+					
+					addObjInBase(inf, obj);
+					
+					return inf;
+				}			
+			}
+		}
+	}
+
+	return null;
+}
+
 
 
 // cdm - информация, которая пришла из вне
@@ -48,21 +82,10 @@ async function loadObjServer(cdm)
 	var inf = await getObjFromBase({lotid: lotid});
 	if(!inf) return;		// объект не существует в API/каталоге
 	
-	if(!inf.model)
-	{
-		if(inf.properties)
-		{
-			if(inf.properties.parameters)
-			{
-				if(inf.properties.parameters.obj)
-				{
-					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});
-					
-					if(inf_2.model) inf.model = inf_2.model;
-				}				
-			}
-		}		
-	}
+	
+	var inf_2 = await getInfPoperties({inf: inf});	// если объект составной или параметрический, то собираем его
+	if(inf_2) { inf = inf_2; }
+	console.log(inf);
 	
 	var type = '';
 	
@@ -96,7 +119,8 @@ function addObjInBase(inf, obj)
 	obj.traverse(function(child) 
 	{
 		if(child.isMesh) 
-		{ 
+		{ 	
+			// устанавливаем lightMap
 			if(child.material)
 			{
 				if(Array.isArray(child.material))
@@ -110,7 +134,39 @@ function addObjInBase(inf, obj)
 				{
 					child.material.lightMap = lightMap_1;
 				}					
-			}				
+			}
+
+			// устанавливаем общий материал для centerPoint
+			if(child.userData.centerPoint)
+			{
+				
+				if (child.material) 
+				{
+					var materialArray = [];
+					
+					if(child.material instanceof Array) { materialArray = child.material; }
+					else { materialArray = [child.material]; }
+					
+					if(materialArray) 
+					{
+						materialArray.forEach(function (mtrl, idx) 
+						{
+							if (mtrl.map) mtrl.map.dispose();
+							if (mtrl.lightMap) mtrl.lightMap.dispose();
+							if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+							if (mtrl.normalMap) mtrl.normalMap.dispose();
+							if (mtrl.specularMap) mtrl.specularMap.dispose();
+							if (mtrl.envMap) mtrl.envMap.dispose();
+							mtrl.dispose();
+						});
+					}
+				}
+	
+				child.material = infProject.material.pointObj.default
+				child.userData.centerPoint.color = child.material.color.clone();
+				child.scale.set(1,1,1);
+				child.visible = false;
+			}			
 		}
 	});	
 
@@ -128,13 +184,9 @@ function addObjInScene(inf, cdm)
 {
 	var obj = inf.obj.clone();
 	
-	if(cdm.pos){ obj.position.copy(cdm.pos); }
-	else if(inf.planeMath)
+	if(cdm.pos)
 	{ 
-		obj.position.y = inf.planeMath;
-		planeMath.position.y = inf.planeMath; 
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-		planeMath.updateMatrixWorld(); 
+		obj.position.copy(cdm.pos); 
 	}
 	else
 	{ 
@@ -167,7 +219,18 @@ function addObjInScene(inf, cdm)
 	 
 	updateListTubeUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 
 	
-	if(cdm.cursor) { clickO.move = obj; } 
+	if(cdm.cursor) 
+	{ 
+		clickO.move = obj; 
+		
+		clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
+		clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
+		clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
+
+console.log(clickO.offset.y);
+		obj.position.y = clickO.offset.y - obj.geometry.boundingBox.min.y;
+		planeMath.position.y = clickO.offset.y - obj.geometry.boundingBox.min.y; 		
+	} 
 	
 	renderCamera();
 	
@@ -181,68 +244,9 @@ function addObjInScene(inf, cdm)
 		{
 			if ( child.isMesh ) 
 			{ 
-				//console.log(child.name);
-				
-				if(child.userData.centerPoint)
+				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
-					
-					if (child.material) 
-					{
-						var materialArray = [];
-						
-						if(child.material instanceof Array) { materialArray = child.material; }
-						else { materialArray = [child.material]; }
-						
-						if(materialArray) 
-						{
-							materialArray.forEach(function (mtrl, idx) 
-							{
-								if (mtrl.map) mtrl.map.dispose();
-								if (mtrl.lightMap) mtrl.lightMap.dispose();
-								if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-								if (mtrl.normalMap) mtrl.normalMap.dispose();
-								if (mtrl.specularMap) mtrl.specularMap.dispose();
-								if (mtrl.envMap) mtrl.envMap.dispose();
-								mtrl.dispose();
-							});
-						}
-					}
-		
-					child.material = infProject.material.pointObj.default
-					child.userData.centerPoint.color = child.material.color.clone();
-					child.scale.set(1,1,1);
-					child.visible = false;
-				}
-				
-if(new RegExp( '_est_' ,'i').test( child.name ))
-{
-	child.visible = true;
-}
-	
-				if(new RegExp( '_est_' ,'i').test( child.name ) && 1==2)
-				{
-					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
-					
-					child.visible = false;						
-					
-					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
-					
-					var cube = new THREE.Mesh( createGeometryWD(0.03, 0.03, 0.03), material );
-					cube.position.copy(child.position);
-					cube.quaternion.copy(child.quaternion);
-					cube.visible = false;
-					cube.renderOrder = 1;
-					//cube.rotation.y += 1;
-					//var axesHelper = new THREE.AxesHelper( 0.2 );
-					//child.add( axesHelper );							
-					
-					cube.userData.tag = 'joinPoint';
-					cube.userData.id = id;  id++;
-					cube.userData.centerPoint = { join: null };						 
-					cube.userData.centerPoint.nameRus = child.name;
-					cube.userData.centerPoint.color = cube.material.color.clone();
-					
-					obj.add( cube );				
+					child.visible = true;
 				}
 			}
 		});
@@ -273,21 +277,14 @@ if(new RegExp( '_est_' ,'i').test( child.name ))
 	}
 
 
-	if(obj.userData.obj3D.lotid == 3 && cdm.pos)
-	{ 
-		al_radiator_1({obj: obj, count: 3}); 		
-	}	
-	if(obj.userData.obj3D.lotid == 119)
-	{ 
-		console.log(inf); 
 
-if( isCheckExsistFunction(window['getInfObjFromBD']) ) {  };		
-	}
+
 	
 	if(obj.userData.obj3D.lotid == 118)
 	{ 
 		st_radiator_1({ obj: obj, size:{x: 1.5, y: 0.6, z: 0.07} });	
-	}
+	}			
+	
 }
 
 
