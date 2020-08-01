@@ -45,24 +45,35 @@ async function getInfPoperties(cdm)
 	else if(inf.properties)
 	{
 		if(inf.properties.fc)
-		{
-			if(inf.properties.fc.name == 'al_radiator_1')
+		{ 			
+			if(inf.properties.parameters)
 			{
-				if(inf.properties.parameters)
+				if(inf.model)
+				{
+					var obj = new THREE.ObjectLoader().parse( inf.model );
+				}
+				else
 				{
 					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});								
 					inf.model = inf_2.model;
-					
 					var obj = new THREE.ObjectLoader().parse( inf_2.model );
-					inf.obj = obj;
-					
+				}					
+				
+				inf.obj = obj;
+				
+				if(inf.properties.fc.name == 'st_radiator_1')
+				{
+					st_radiator_1({ obj: obj, size: inf.properties.parameters.obj.size });
+				}
+				if(inf.properties.fc.name == 'al_radiator_1')
+				{
 					al_radiator_1({obj: obj, count: inf.properties.parameters.obj.count, size: inf.properties.parameters.obj.size});
-					
-					addObjInBase(inf, obj);
-					
-					return inf;
-				}			
-			}
+				}
+				
+				addObjInBase(inf, obj);
+			}						
+
+			return inf;
 		}
 	}
 
@@ -223,13 +234,14 @@ function addObjInScene(inf, cdm)
 	{ 
 		clickO.move = obj; 
 		
+		// устанавливаем высоту над полом
 		clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
 		clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
 		clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
 
-console.log(clickO.offset.y);
-		obj.position.y = clickO.offset.y - obj.geometry.boundingBox.min.y;
-		planeMath.position.y = clickO.offset.y - obj.geometry.boundingBox.min.y; 		
+		obj.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y;
+		planeMath.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y; 
+		planeMath.updateMatrixWorld();
 	} 
 	
 	renderCamera();
@@ -276,14 +288,7 @@ console.log(clickO.offset.y);
 		}
 	}
 
-
-
-
-	
-	if(obj.userData.obj3D.lotid == 118)
-	{ 
-		st_radiator_1({ obj: obj, size:{x: 1.5, y: 0.6, z: 0.07} });	
-	}			
+		
 	
 }
 
