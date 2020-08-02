@@ -104,6 +104,22 @@ window.ThreeBSP = (function() {
 		a.matrix = this.matrix;
 		return a;
 	};
+	ThreeBSP.prototype.subtract_2 = function( other_tree ) {
+		var a = this.tree.clone(),
+			b = other_tree.tree.clone();
+		
+		a.invert();
+		a.clipTo( b );
+		//b.clipTo( a );
+		//b.invert();
+		//b.clipTo( a );
+		//b.invert();
+		//a.build( b.allPolygons() );
+		a.invert();
+		a = new ThreeBSP( a );
+		a.matrix = this.matrix;
+		return a;
+	};	
 	ThreeBSP.prototype.union = function( other_tree ) {
 		var a = this.tree.clone(),
 			b = other_tree.tree.clone();

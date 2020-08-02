@@ -326,163 +326,116 @@ function createTestObj_2(cdm)
 
 
 
-
-
-
 function createTestObj_3(cdm) 
 {	
-	var dlina = 1;  
-	var diameter_nr = 0.2;
-	var diameter_vn = 0.1;
-	
-	var group = new THREE.Group();
-	
-	function createCircle_1(cdm)
-	{
-		var count = 48;
-		var circle = [];
-		var g = (Math.PI / 2) / count;
-		
-		for ( var i = 0; i < count; i++ )
-		{
-			var angle = g * i;
-			circle[i] = new THREE.Vector3();
-			circle[i].x = Math.sin(angle) * cdm.size;
-			circle[i].y = -Math.cos(angle) * cdm.size + cdm.size;
-			circle[i].z = 0;
-		}
+	var group1 = createSleeveObj_1({dlina: 1, diameter_nr: 0.2, diameter_vn: 0.1, capStart: true, capEnd: true, hole: true});		
+	group1.position.set(0, 1, 2);
+	scene.add( group1 );
 
-		return circle;
-	}
 	
-	// фтулка наружная
-	if(1==1)
-	{
-		var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];	
+	var group2 = createSleeveObj_1({dlina: 0.5, diameter_nr: 0.2, diameter_vn: 0.1, capStart: true, capEnd: true, hole: true});		
+	group2.position.set(0, 1, 2);
+	//group2.position.y += 0.25;
+	group2.rotation.set(0, 0, Math.PI/2);	
+	scene.add( group2 );
+	
+	
+	
+	
+	var infO = {radius: 0.2/2, length: 1, geom: {hole: false, rotateZ: -Math.PI/2, BufferG: false} };
+	infO.material = { color: 0xcccccc };
+	var obj1 = crCild_1( infO );	
+	scene.add( obj1 );
+	
+	var infO = {radius: 0.2/2, length: 0.5, geom: {hole: false, BufferG: false} };
+	infO.material = { color: 0xcccccc };
+	var obj2 = crCild_1( infO );
+	obj2.position.y += 0.25;
+	scene.add( obj2 );	
 
-		var pipeSpline = new THREE.CatmullRomCurve3(p);
-		pipeSpline.curveType = 'catmullrom';
-		pipeSpline.tension = 0;		
-		
-		var geometry = new THREE.TubeGeometry( pipeSpline, p.length, diameter_nr/2, 32, false );	
-		geometry.computeFaceNormals();
-		geometry.computeVertexNormals();
-		
-		var material = new THREE.MeshPhongMaterial({color: 0xffff00, lightMap: lightMap_1});		
-
-		var obj = new THREE.Mesh( geometry, material );
-		upUvs_4( obj );
-		
-		obj.geometry.dispose();
-		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
-		
-		scene.add( obj );
-		
-		var ooob = obj;
-	}
-	
-
-	// фтулка внутринняя 
-	if(1==1)
-	{		
-		var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];	
-
-		var pipeSpline = new THREE.CatmullRomCurve3(p);
-		pipeSpline.curveType = 'catmullrom';
-		pipeSpline.tension = 0;		
-		
-		var geometry = new THREE.TubeGeometry( pipeSpline, p.length, diameter_vn/2, 32, false );	
-		geometry.computeFaceNormals();
-		geometry.computeVertexNormals();
-
-		var material = new THREE.MeshPhongMaterial({color: 0xff00ff,side: THREE.BackSide, lightMap: lightMap_1});		
-
-		var obj = new THREE.Mesh( geometry, material );	
-		upUvs_4( obj );
-				
-		obj.geometry.dispose();
-		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
-		
-		group.add( obj );
-	}	
-	
-	//-----------------
-	
-	
-	function createCircle_2(cdm)
-	{
-		var count = 48;
-		var circle = [];
-		var g = (Math.PI * 2) / count;
-		
-		for ( var i = 0; i < count; i++ )
-		{
-			var angle = g * i;
-			circle[i] = new THREE.Vector2();
-			circle[i].x = Math.sin(angle) * cdm.size;
-			circle[i].y = Math.cos(angle) * cdm.size;
-		}
-
-		return circle;
-	}	
-	
-	
-	// круг с отверстием (начало)
-	if(1==1)
-	{
-		var circle_1 = createCircle_2({size: diameter_nr/2});
-		var circle_2 = createCircle_2({size: diameter_vn/2});
-		
-		var arcShape = new THREE.Shape( circle_1 );
-		var holePath = new THREE.Shape( circle_2 );
-		arcShape.holes.push( holePath );	
-		
-		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-		var geometry = new THREE.ShapeBufferGeometry( arcShape );
-		geometry.rotateY(-Math.PI/2);
-		
-		var obj = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
-		obj.position.copy(p[0]);
-		group.add( obj );		
-	}
-	
-	
-	// круг с отверстием (конец)
-	if(1==1)
-	{
-		var circle_1 = createCircle_2({size: diameter_nr/2});
-		var circle_2 = createCircle_2({size: diameter_vn/2});
-		
-		var arcShape = new THREE.Shape( circle_1 );
-		var holePath = new THREE.Shape( circle_2 );
-		arcShape.holes.push( holePath );	
-		
-		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-		var geometry = new THREE.ShapeBufferGeometry( arcShape );
-		geometry.rotateY(Math.PI/2);
-		
-		var obj = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
-		obj.position.copy(p[p.length - 1]); 
-		group.add( obj );		
-	}	
-	
-	
-	scene.add( group );
-
-	group.position.set(0, 1, 2);
 	
 	if(1==2)
 	{
-		var obj2 = createSleeveObj_1({dlina: 0.5, diameter_nr: diameter_nr, diameter_vn: diameter_vn});
-		obj2.position.copy(group.position);
-		obj2.position.y += obj2.userData.cdm.dlina/2;
+		var obj1 = group.children[0];
+		var obj2 = group.children[0];
+		scene.add( obj1 );
+		scene.add( obj2 );
+		
+		obj1.position.set(0, 1, 2);
+		obj2.position.set(0, 1, 2);
+		obj2.position.y += 0.25;		
 		obj2.rotation.set(0, 0, Math.PI/2);		
 	}
-	else
+	
+	if(1==2)
+	{
+		var newBSP = new ThreeBSP( obj1 ).subtract( new ThreeBSP( obj2 ) );				
+		
+		obj1.geometry.dispose();	
+		obj1.geometry = newBSP.toGeometry();		
+
+		obj1.geometry.verticesNeedUpdate = true;
+		obj1.geometry.elementsNeedUpdate = true;	
+		//obj1.geometry.computeVertexNormals();  
+		obj1.geometry.computeBoundingSphere();
+		obj1.material.shading = THREE.SmoothShading;
+		obj1.material.needsUpdate = true;
+		
+		obj2.material.wireframe = true;
+		//obj2.position.z += 1;
+	}
+	
+	if(1==1)
+	{				
+		var newBSP = new ThreeBSP( obj1 ).intersect( new ThreeBSP( obj2 ) );
+		
+		var intersectObj = newBSP.toMesh(obj1.material);
+		intersectObj.position.set(0, 1, 2);
+		//scene.add( intersectObj );
+		//obj3.position.y += 1;
+		
+		
+		var obj1 = group1.children[0];
+		var obj2 = group2.children[0];
+		scene.add( obj1 );
+		scene.add( obj2 );
+		
+		obj1.position.set(0, 1, 2);
+		obj2.position.set(0, 1, 2);
+		obj2.position.y += 0.25;		
+		obj2.rotation.set(0, 0, Math.PI/2);			
+		//obj2.material.wireframe = true;
+		//obj2.position.z += 1;
+		
+		var newBSP = new ThreeBSP( obj1 ).subtract_2( new ThreeBSP( intersectObj ) );				
+		
+		obj1.geometry.dispose();	
+		obj1.geometry = newBSP.toGeometry();		
+
+		obj1.geometry.verticesNeedUpdate = true;
+		obj1.geometry.elementsNeedUpdate = true;	
+		//obj1.geometry.computeVertexNormals();  
+		obj1.geometry.computeBoundingSphere();
+		obj1.material.shading = THREE.SmoothShading;
+		obj1.material.needsUpdate = true;
+		
+		var newBSP = new ThreeBSP( obj2 ).subtract_2( new ThreeBSP( intersectObj ) );				
+		
+		obj2.geometry.dispose();	
+		obj2.geometry = newBSP.toGeometry();		
+
+		obj2.geometry.verticesNeedUpdate = true;
+		obj2.geometry.elementsNeedUpdate = true;	
+		//obj1.geometry.computeVertexNormals();  
+		obj2.geometry.computeBoundingSphere();
+		obj2.material.shading = THREE.SmoothShading;
+		obj2.material.needsUpdate = true;		
+
+		intersectObj.position.y += 0.5;
+		obj2.position.y += 1;
+	}	
+		
+	if(1==2)
 	{
 		
 		var geometry = new THREE.CylinderGeometry( diameter_vn/2, diameter_vn/2, dlina, 32, 1, false );
@@ -539,89 +492,134 @@ function createTestObj_3(cdm)
 }
 
 
-
+// втулка
 function createSleeveObj_1(cdm) 
 {	
 	var dlina = cdm.dlina;  
-	var diameter_nr = cdm.diameter_nr;
-	var diameter_vn = cdm.diameter_vn;
+	var diameter_nr = (cdm.diameter_nr) ? cdm.diameter_nr : false;
+	var diameter_vn = (cdm.diameter_vn) ? cdm.diameter_vn : false;
+	var capStart = (cdm.capStart) ? cdm.capStart : false;
+	var capEnd = (cdm.capEnd) ? cdm.capEnd : false;
 	
 	var group = new THREE.Group();
-	group.userData.cdm = cdm;
 	
-	function createCircle_1(cdm)
-	{
-		var count = 48;
-		var circle = [];
-		var g = (Math.PI / 2) / count;
-		
-		for ( var i = 0; i < count; i++ )
-		{
-			var angle = g * i;
-			circle[i] = new THREE.Vector3();
-			circle[i].x = Math.sin(angle) * cdm.size;
-			circle[i].y = -Math.cos(angle) * cdm.size + cdm.size;
-			circle[i].z = 0;
-		}
-
-		return circle;
-	}
+	var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];
 	
 	// фтулка наружная
-	if(1==1)
+	if(diameter_nr)
 	{
-		var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];	
-
-		var pipeSpline = new THREE.CatmullRomCurve3(p);
-		pipeSpline.curveType = 'catmullrom';
-		pipeSpline.tension = 0;		
-		
-		var geometry = new THREE.TubeGeometry( pipeSpline, p.length, diameter_nr/2, 32, false );	
-		geometry.computeFaceNormals();
-		geometry.computeVertexNormals();
-		
-		var material = new THREE.MeshPhongMaterial({color: 0xffff00, lightMap: lightMap_1});		
-
-		var obj = new THREE.Mesh( geometry, material );
-		upUvs_4( obj );
-		
-		obj.geometry.dispose();
-		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
+		var infO = {radius: diameter_nr/2, length: dlina, geom: {hole: cdm.hole, rotateZ: -Math.PI/2, BufferG: false} };
+		infO.material = { color: 0xff8080 };
+		var obj = crCild_1( infO );
 		
 		group.add( obj );
 	}
 	
 
 	// фтулка внутринняя 
-	if(1==1)
+	if(diameter_vn)
 	{		
-		var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];	
-
-		var pipeSpline = new THREE.CatmullRomCurve3(p);
-		pipeSpline.curveType = 'catmullrom';
-		pipeSpline.tension = 0;		
-		
-		var geometry = new THREE.TubeGeometry( pipeSpline, p.length, diameter_vn/2, 32, false );	
-		geometry.computeFaceNormals();
-		geometry.computeVertexNormals();
-
-		var material = new THREE.MeshPhongMaterial({color: 0xff00ff,side: THREE.BackSide, lightMap: lightMap_1});		
-
-		var obj = new THREE.Mesh( geometry, material );	
-		upUvs_4( obj );
-				
-		obj.geometry.dispose();
-		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
+		var infO = {radius: diameter_vn/2, length: dlina, geom: {hole: cdm.hole, rotateZ: -Math.PI/2, BufferG: false} };
+		infO.material = { side: THREE.BackSide, map: {url: '/img/obj/rezba_1.png', repeat: {x:200, y: 1}, rotation: 2 } };
+		var obj = crCild_1( infO );
 		
 		group.add( obj );
 	}	
 	
-	//-----------------
 	
+	// круг с отверстием (начало)
+	if(capStart)
+	{
+		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, geom: {rotateY: -Math.PI/2}};
+		infO.material = { map: {url: '/img/UV_Grid_Sm.jpg' }};
+		var obj = crCircle_1(infO);
+		
+		obj.position.copy(p[0]);
+		group.add( obj );				
+	}
+	
+	
+	// круг с отверстием (конец)
+	if(capEnd)
+	{
+		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, geom: {rotateY: Math.PI/2}};
+		infO.material = { map: {url: '/img/UV_Grid_Sm.jpg' }};
+		var obj = crCircle_1(infO);
+		
+		obj.position.copy(p[p.length - 1]);
+		group.add( obj );		
+	}	
+	
+	
+	return group;	
+}
+
+
+
+// цилиндр
+function crCild_1(cdm)
+{
+	var radius = cdm.radius;
+	var length = cdm.length;
+	var geom = (cdm.geom) ? cdm.geom : {};
+	var BufferG = (geom.BufferG) ? true : false;
+	var material = (cdm.material) ? cdm.material : {};	
+	
+	//----------
+	console.log(geom);
+	var geometry = new THREE.CylinderGeometry( radius, radius, length, 32, 1, geom.hole );
+	
+	if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
+	if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
+	if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }
+	
+	var infM = {color: 0xffffff, lightMap: lightMap_1};
+
+	if(material.color){ infM.color = material.color; }
+	if(material.side){ infM.side = material.side; }
+	
+	if(material.map)
+	{
+		var texture = new THREE.TextureLoader().load(infProject.path + material.map.url);
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		
+		if(material.map.repeat)
+		{
+			if(material.map.repeat.x) texture.repeat.x = material.map.repeat.x;	
+			if(material.map.repeat.y) texture.repeat.y = material.map.repeat.y;			
+		}
+		
+		if(material.map.rotation) texture.rotation = THREE.Math.degToRad( material.map.rotation );
+			
+		infM.map = texture;			
+	}
+	
+	var material = new THREE.MeshPhongMaterial(infM);
+	
+	var obj = new THREE.Mesh( geometry, material );
+	upUvs_4( obj );
+	
+	if(BufferG)
+	{
+		obj.geometry.dispose();
+		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);			
+	}
+
+	return obj;
+}
+
+
+// круг с отверстием или без отверстия
+function crCircle_1(cdm)
+{
+	var radius_nr = cdm.radius_nr;
+	var radius_vn = (cdm.radius_vn) ? cdm.radius_vn : {};	// отверстие
+	var geom = (cdm.geom) ? cdm.geom : {};
+	var material = (cdm.material) ? cdm.material : {};
 	
 	function createCircle_2(cdm)
 	{
-		var count = 48;
+		var count = 32;
 		var circle = [];
 		var g = (Math.PI * 2) / count;
 		
@@ -634,56 +632,57 @@ function createSleeveObj_1(cdm)
 		}
 
 		return circle;
-	}	
-	
-	
-	// круг с отверстием (начало)
-	if(1==1)
-	{
-		var circle_1 = createCircle_2({size: diameter_nr/2});
-		var circle_2 = createCircle_2({size: diameter_vn/2});
-		
-		var arcShape = new THREE.Shape( circle_1 );
-		var holePath = new THREE.Shape( circle_2 );
-		arcShape.holes.push( holePath );	
-		
-		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-		var geometry = new THREE.ShapeBufferGeometry( arcShape );
-		geometry.rotateY(-Math.PI/2);
-		
-		var obj = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
-		obj.position.copy(p[0]);
-		group.add( obj );		
 	}
 	
 	
-	// круг с отверстием (конец)
-	if(1==1)
+	// geometry
 	{
-		var circle_1 = createCircle_2({size: diameter_nr/2});
-		var circle_2 = createCircle_2({size: diameter_vn/2});
+		var arcShape = new THREE.Shape( createCircle_2({size: radius_nr}) );
 		
-		var arcShape = new THREE.Shape( circle_1 );
-		var holePath = new THREE.Shape( circle_2 );
-		arcShape.holes.push( holePath );	
+		// отверстие
+		if(radius_vn)
+		{
+			var holePath = new THREE.Shape( createCircle_2({size: radius_vn}) );
+			arcShape.holes.push( holePath );				
+		}
 		
-		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
 		var geometry = new THREE.ShapeBufferGeometry( arcShape );
-		geometry.rotateY(Math.PI/2);
 		
-		var obj = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
-		obj.position.copy(p[p.length - 1]); 
-		group.add( obj );		
-	}	
-	
-	
-	scene.add( group );
+		if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
+		if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
+		if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }		
+	}
 
-	return group;	
+
+	// material
+	{
+		var infM = {color: 0xffffff, lightMap: lightMap_1};
+
+		if(material.color){ infM.color = material.color; }
+		if(material.side){ infM.side = material.side; }
+		
+		if(material.map)
+		{
+			var texture = new THREE.TextureLoader().load(infProject.path + material.map.url);
+			texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+			
+			if(material.map.repeat)
+			{
+				if(material.map.repeat.x) texture.repeat.x = material.map.repeat.x;	
+				if(material.map.repeat.y) texture.repeat.y = material.map.repeat.y;			
+			}
+			
+			if(material.map.rotation) texture.rotation = THREE.Math.degToRad( material.map.rotation );
+				
+			infM.map = texture;			
+		}
+		
+		var material = new THREE.MeshPhongMaterial(infM);			
+	}
+	
+	var obj = new THREE.Mesh( geometry, material );
+		
+	return obj;
 }
 
 

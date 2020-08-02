@@ -306,7 +306,86 @@ setPlaneHeightPositionY();
 createTestObj_3();
 
 
+// не корректно раюотает (не используется)
+function recomputeUVs( geometry ) {
 
+	var uvs = [];
+  
+  geometry.computeBoundingBox();
+  
+  var min = geometry.boundingBox.min;
+  var max = geometry.boundingBox.max;
+  
+  console.log( min, max );
+  
+  var position = geometry.getAttribute( 'position' );
+  
+  var a = new THREE.Vector3();
+  var b = new THREE.Vector3();
+  var c = new THREE.Vector3();
+  
+  var plane = new THREE.Plane();
+  
+  for ( var i = 0; i < position.count; i += 3 ) {
+  
+  	a.fromBufferAttribute( position, i );
+    b.fromBufferAttribute( position, i + 1 );
+    c.fromBufferAttribute( position, i + 2 );
+    
+    plane.setFromCoplanarPoints( a, b, c );
+    var normal = plane.normal;
+    
+    var u, v;
+    
+   var xRange = max.x - min.x;
+   var yRange = max.y - min.y;
+   var zRange = max.z - min.z;
+    
+   if ( normal.x === 1 ||  normal.x === - 1 ) {
+   
+   		uvs.push( ( a.y - min.y )  / yRange );
+      uvs.push( ( a.z - min.z )  / zRange  );
+      
+      uvs.push( ( b.y - min.y )  / yRange );
+      uvs.push( ( b.z - min.z )  / zRange );
+      
+      uvs.push( ( c.y - min.y )  / yRange );
+      uvs.push( ( c.z - min.z )  / zRange  );
+   
+   }
+   
+    if ( normal.y === 1 ||  normal.y === - 1 ) {
+
+   		uvs.push( ( a.x - min.x )  / xRange );
+      uvs.push( ( a.z - min.z )  / zRange );
+      
+      uvs.push( ( b.x - min.x )  / xRange );
+      uvs.push( ( b.z - min.z )  / zRange  );
+      
+      uvs.push( ( c.x - min.x )  / xRange );
+      uvs.push( ( c.z - min.z )  / zRange  );
+
+    }
+
+    if ( normal.z === 1 ||  normal.z === - 1 ) {
+
+   		uvs.push( ( a.x - min.x )  / xRange  );
+      uvs.push( ( a.y - min.y )  / yRange );
+      
+   		uvs.push( ( b.x - min.x )  / xRange );
+      uvs.push( ( b.y - min.y )  / yRange );
+      
+   		uvs.push( ( c.x - min.x )  / xRange );
+      uvs.push( ( c.y - min.y )  / yRange );
+
+   }
+
+  }
+  
+  geometry.setAttribute( 'uv', new THREE.Float32BufferAttribute( uvs, 2 ) );
+
+
+}
 
 
 function createPlaneMath()
