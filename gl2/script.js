@@ -241,7 +241,7 @@ var offset = new THREE.Vector3();
  
 if(infProject.settings.calc.fundament == 'svai') 
 {
-	infProject.scene.tool.pillar = createPillar();
+	
 }
 
 
@@ -303,39 +303,9 @@ setPlaneHeightPositionY();
 //----------- start
 
 
+createTestObj_3();
 
 
-function createPillar()
-{	
-	var n = 0;
-	var v = [];
-	for ( var i = 0; i < circle.length; i++ )
-	{
-		v[n] = new THREE.Vector3().addScaledVector( circle[i].clone().normalize(), 0.1 );
-		v[n].y = 0;		
-		n++;		
-		
-		v[n] = new THREE.Vector3();
-		v[n].y = 0;
-		n++;
-		
-		v[n] = v[n - 2].clone();
-		v[n].y = -1;
-		n++;	
-		
-		v[n] = new THREE.Vector3();
-		v[n].y = -1;
-		n++;		
-	}	
-
-	
-	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : 0x333333, wireframe:false } ) ); 
-	obj.userData.tag = 'pillar';
-	obj.renderOrder = 1;
-	obj.position.set(0,0,0);
-	
-	return obj;
-}
 
 
 
@@ -822,15 +792,6 @@ function createPoint( pos, id )
 	point.userData.point.last = { pos : pos.clone(), cdm : '', cross : null };
 	
 	point.visible = (camera == cameraTop) ? true : false;
-	
-	if(infProject.scene.tool.pillar)
-	{
-		var pillar = infProject.scene.tool.pillar.clone();
-		pillar.position.copy(point.position);
-		point.userData.point.pillar = pillar;
-		pillar.visible = (camera == camera3D) ? true : false;
-		scene.add( pillar );
-	}
 	
 	scene.add( point );	
 	

@@ -218,7 +218,7 @@ function addObjInScene(inf, cdm)
 	obj.userData.obj3D.lotid = cdm.lotid;
 	obj.userData.obj3D.nameRus = inf.name;  
 	//obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
-	//obj.material.visible = false;
+	obj.material.visible = false;
 	//obj.rotation.y += 1;
 	
 	

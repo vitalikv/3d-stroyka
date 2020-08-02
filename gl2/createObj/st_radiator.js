@@ -198,7 +198,142 @@ function st_radiator_1(cdm)
 
 
 
+function createCone_2(cdm) 
+{	
+	var dlina = 3;  
+	var diameter_nr = 0.2;
+	var diameter_vn = 0.1;
+				
+	
+	// фтулка наружная
+	if(1==1)
+	{
 
+		var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];	
+
+		var pipeSpline = new THREE.CatmullRomCurve3(p);
+		pipeSpline.curveType = 'catmullrom';
+		pipeSpline.tension = 0;		
+		
+		var geometry = new THREE.TubeGeometry( pipeSpline, 1, diameter_nr/2, 32, false );	
+		geometry.computeFaceNormals();
+		geometry.computeVertexNormals();
+		
+		var texture = new THREE.TextureLoader().load(infProject.path+'/img/obj/rezba_1.png');
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.x = 200;
+		texture.repeat.y = 1;
+		texture.rotation = THREE.Math.degToRad( 2 );
+		var material = new THREE.MeshPhongMaterial({color: 0xcccccc, map: texture, lightMap: lightMap_1});		
+
+		var obj = new THREE.Mesh( geometry, material );
+		obj.userData.tag = 'obj';
+		obj.position.set(0, 1, 1);	
+
+		upUvs_4( obj );
+		
+		obj.geometry.dispose();
+		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
+		
+		scene.add( obj );
+			
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+	}
+	
+
+	// фтулка внутринняя 
+	if(1==1)
+	{
+
+		var geometry = new THREE.CylinderGeometry( diameter_vn/2, diameter_vn/2, dlina, 32, 1, true );
+		geometry.rotateZ(-Math.PI/2);		
+		
+		var texture = new THREE.TextureLoader().load(infProject.path+'/img/obj/rezba_1.png');
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		texture.repeat.x = 200;
+		texture.repeat.y = 1;
+		texture.rotation = THREE.Math.degToRad( 2 );		
+		var material = new THREE.MeshPhongMaterial({color: 0xffffff, side: THREE.DoubleSide, map: texture, lightMap: lightMap_1});
+		
+		var obj = new THREE.Mesh( geometry, material );
+		upUvs_4( obj );
+		
+		obj.geometry.dispose();
+		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);
+		
+		obj.userData.tag = 'obj';
+		obj.position.set(0, 1, 1);	
+		
+		scene.add( obj );		
+	}	
+	
+	//-----------------
+	
+	
+	function createCircle_2(cdm)
+	{
+		var count = 48;
+		var circle = [];
+		var g = (Math.PI * 2) / count;
+		
+		for ( var i = 0; i < count; i++ )
+		{
+			var angle = g * i;
+			circle[i] = new THREE.Vector2();
+			circle[i].x = Math.sin(angle) * cdm.size;
+			circle[i].y = Math.cos(angle) * cdm.size;
+		}
+
+		return circle;
+	}	
+	
+	
+	// круг с отверстием (начало)
+	if(1==1)
+	{
+		var circle_1 = createCircle_2({size: diameter_nr/2});
+		var circle_2 = createCircle_2({size: diameter_vn/2});
+		
+		var arcShape = new THREE.Shape( circle_1 );
+		var holePath = new THREE.Shape( circle_2 );
+		arcShape.holes.push( holePath );	
+		
+		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+		var geometry = new THREE.ShapeBufferGeometry( arcShape );
+		geometry.rotateY(-Math.PI/2);
+		
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
+		mesh.position.set( -dlina/2, 1, 1 );
+		scene.add( mesh );		
+	}
+	
+	
+	// круг с отверстием (конец)
+	if(1==1)
+	{
+		var circle_1 = createCircle_2({size: diameter_nr/2});
+		var circle_2 = createCircle_2({size: diameter_vn/2});
+		
+		var arcShape = new THREE.Shape( circle_1 );
+		var holePath = new THREE.Shape( circle_2 );
+		arcShape.holes.push( holePath );	
+		
+		var texture = new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg');
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+		var geometry = new THREE.ShapeBufferGeometry( arcShape );
+		geometry.rotateY(Math.PI/2);
+		
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial({ map: texture, lightMap: lightMap_1 }) );
+		mesh.position.set( dlina/2, 1, 1 ); 
+		scene.add( mesh );		
+	}	
+	
+	
+	return obj;
+}
 
 
 
