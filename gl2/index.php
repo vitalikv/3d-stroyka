@@ -121,6 +121,7 @@
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/test.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/test_2.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>

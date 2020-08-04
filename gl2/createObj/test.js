@@ -418,6 +418,8 @@ function createTestObj_3(cdm)
 		obj1.geometry.computeBoundingSphere();
 		obj1.material.shading = THREE.SmoothShading;
 		obj1.material.needsUpdate = true;
+		obj1.material.flatShading = false;
+		obj1.material.needsUpdate = true;
 		
 		var newBSP = new ThreeBSP( obj2 ).subtract_2( new ThreeBSP( intersectObj ) );				
 		
@@ -429,7 +431,9 @@ function createTestObj_3(cdm)
 		//obj1.geometry.computeVertexNormals();  
 		obj2.geometry.computeBoundingSphere();
 		obj2.material.shading = THREE.SmoothShading;
-		obj2.material.needsUpdate = true;		
+		obj2.material.needsUpdate = true;
+//obj2.material.flatShading = false;
+		
 
 		intersectObj.position.y += 0.5;
 		obj2.position.y += 1;

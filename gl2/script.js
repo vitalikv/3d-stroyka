@@ -35,7 +35,7 @@ cameraTop.updateProjectionMatrix();
 
  
 //----------- camera3D
-var camera3D = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.2, 1000 );  
+var camera3D = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.05, 1000 );  
 camera3D.rotation.order = 'YZX';		//'ZYX'
 camera3D.position.set(5, 7, 5);
 camera3D.lookAt(scene.position);
@@ -164,6 +164,10 @@ var ceiling = [];
 var arrWallFront = [];
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
+infProject.texture = [];
+infProject.texture[0] = { texture: new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg'), url: '/img/UV_Grid_Sm.jpg' };
+infProject.texture[1] = { texture: new THREE.TextureLoader().load(infProject.path+'/img/obj/rezba_1.png'), url: '/img/obj/rezba_1.png' };
+
 var clickO = resetPop.clickO();
 infProject.project = null;
 infProject.camera = { d3: { theta: 0, phi: 75, targetPos: new THREE.Vector3() } };
@@ -183,6 +187,19 @@ infProject.material.pointTube.active = new THREE.MeshLambertMaterial({color: 0xf
 infProject.material.pointObj = {};
 infProject.material.pointObj.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
 infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
+
+infProject.material.metal_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.metal_1.shininess = 100;
+infProject.material.metal_1.specular.set(0xa3a3a3);
+
+infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.rezba_1.map.repeat.x = 900; 
+infProject.material.rezba_1.map.rotation = THREE.Math.degToRad( 2 );
+infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping; 
+infProject.material.rezba_1.map.wrapT = THREE.RepeatWrapping;
+infProject.material.rezba_1.shininess = 100;
+infProject.material.rezba_1.specular.set(0xa3a3a3);
+console.log(infProject.material.rezba_1); 
 
 infProject.geometry.circle = createCircleSpline();
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
@@ -303,7 +320,26 @@ setPlaneHeightPositionY();
 //----------- start
 
 
-createTestObj_3();
+ 
+
+
+
+if(1==2)
+{
+	st_troinik_v_v_v({inch: 1/2, dlina_1: 0.046, dlina_2: 0.023, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.5)});
+	st_troinik_v_v_v({inch: 3/4, dlina_1: 0.058, dlina_2: 0.027, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.4)});
+	st_troinik_v_v_v({inch: 1, dlina_1: 0.069, dlina_2: 0.035, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.3)});
+	st_troinik_v_v_v({inch: 1+1/4, dlina_1: 0.080, dlina_2: 0.040, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.2)});
+	st_troinik_v_v_v({inch: 1+1/2, dlina_1: 0.092, dlina_2: 0.046, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.1)});
+	st_troinik_v_v_v({inch: 2, dlina_1: 0.103, dlina_2: 0.052, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2)});	
+}
+
+
+st_troinik_n_n_n({inch: 1/2, dlina_1: 0.06, dlina_2: 0.03, offset: new THREE.Vector3(0, 1, 2)});
+st_troinik_n_n_n({inch: 3/4, dlina_1: 0.075, dlina_2: 0.036, offset: new THREE.Vector3(0, 1, 2+0.1)});
+st_troinik_n_n_n({inch: 1, dlina_1: 0.095, dlina_2: 0.046, offset: new THREE.Vector3(0, 1, 2+0.2)});
+
+//createTestObj_3();
 
 
 // не корректно раюотает (не используется)
