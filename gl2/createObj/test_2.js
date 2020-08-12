@@ -1,6 +1,88 @@
 
 
 
+// стальной Ниппель переходной Н-Н
+function st_nippel(cdm)   
+{	
+	// 1дюйм == 0.025метра
+	
+	var diameter_1 = cdm.inch_1 * 0.025;	// нр
+	var diameter_2 = cdm.inch_2 * 0.025;	// нр 
+	var dlina = cdm.dlina;
+	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
+	
+	// доп. расчеты
+	var diameter_vn_1 = diameter_1 - 0.005 * cdm.inch_1;
+	var diameter_vn_2 = diameter_2 - 0.005 * cdm.inch_2; 
+	var x_1 = 0.015 * cdm.inch_1;
+	var x_2 = 0.015 * cdm.inch_2;
+
+	if(x_1 < 0.008) { x_1 = 0.008; }
+	if(x_2 < 0.008) { x_2 = 0.008; }
+	
+	if(x_1 > 0.015) { x_1 = 0.015; }
+	if(x_2 > 0.015) { x_2 = 0.015; }
+	
+	var x_3L = dlina/2 - x_1;
+	var x_3R = dlina/2 - x_2;
+	
+	var x_4 = (cdm.inch_1 > cdm.inch_2) ? 0.0025 * cdm.inch_1 : 0.0025 * cdm.inch_2;
+	var x_5 = (cdm.inch_1 > cdm.inch_2) ? 0.006 * cdm.inch_1 : 0.006 * cdm.inch_2;
+	
+	var d_nr = (diameter_1 > diameter_2) ? diameter_1 : diameter_2;
+	var d_vn = (diameter_vn_1 < diameter_vn_2) ? diameter_vn_1 : diameter_vn_2; 
+	
+	
+	var group = new THREE.Group();
+	
+	// нижняя труба 
+	{
+		var inf = {dlina: x_1, diameter_nr: diameter_1, diameter_vn: diameter_vn_1, rezba_nr: true };	  
+		var obj = createSleeveObj_2(inf);		
+		obj.position.x -= x_3L + x_1/2;
+		group.add( obj );
+		
+		var inf = {dlina: x_3L, diameter_nr: diameter_1, diameter_vn: diameter_vn_1 }; 
+		var obj = createSleeveObj_2(inf);
+		obj.position.x -= x_3L/2;
+		group.add( obj );
+		
+		var inf = {dlina: x_3R, diameter_nr: diameter_2, diameter_vn: diameter_vn_2 };
+		var obj = createSleeveObj_2(inf);
+		obj.position.x += x_3R/2; 
+		group.add( obj );		
+ 
+		var inf = {dlina: x_2, diameter_nr: diameter_2, diameter_vn: diameter_vn_2, rezba_nr: true };
+		var obj = createSleeveObj_2(inf);		
+		obj.position.x += x_3R + x_2/2;
+		group.add( obj );		
+	}
+		
+		
+	// кольца
+	{		
+		var inf = {dlina: x_4, diameter_nr: d_nr + x_5, diameter_vn: d_vn, edge_nr: 6, edge_vn: 32 }; 
+		var obj = createSleeveObj_2(inf);		
+		//obj.position.x += dlina_1/2 - x_1;
+		group.add( obj );				
+	}
+
+	
+	var obj = getBoundObject_1({obj: group});
+	
+	scene.add( obj );
+	obj.position.copy(offset);
+	
+	obj.userData.tag = 'obj';
+	obj.userData.obj3D = {};
+	obj.userData.obj3D.lotid = 0;
+	obj.userData.obj3D.nameRus = 'Ниппель переходной Н-Н ('+cdm.inch_1+'х'+cdm.inch_2+')'; 
+	obj.material.visible = false;
+	
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+}
+
+
 
 
 // стальной тройник
@@ -163,157 +245,6 @@ function st_troinik_v_v_v(cdm)
 	group.position.copy(offset);
 	
 }
-
-
-// втулка
-function createSleeveObj_2(cdm) 
-{	
-	var dlina = cdm.dlina;  
-	var diameter_nr = (cdm.diameter_nr) ? cdm.diameter_nr : false;
-	var diameter_vn = (cdm.diameter_vn) ? cdm.diameter_vn : false;
-	var color = cdm.color;
-	var rezba_nr = cdm.rezba_nr;
-	var rezba_vn = cdm.rezba_vn;
-	
-	var group = new THREE.Group();
-	
-	var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];
-	
-	// фтулка наружная
-	if(diameter_nr)
-	{
-		var infO = {radius: diameter_nr/2, length: dlina, geom: {hole: true, rotateZ: -Math.PI/2, BufferG: true} };
-		infO.material = infProject.material.metal_1;
-		if(rezba_nr) infO.material = infProject.material.rezba_1;
-
-		var obj = crCild_2( infO );
-		
-		group.add( obj );
-	}
-	
-
-	// фтулка внутринняя 
-	if(diameter_vn)
-	{		
-		var infO = {radius: diameter_vn/2, length: dlina, geom: {hole: true, rotateZ: -Math.PI/2, BufferG: true} };
-		infO.material = infProject.material.metal_1;
-		if(rezba_vn) infO.material = infProject.material.rezba_1;
-		var obj = crCild_2( infO );
-		
-		group.add( obj );
-	}	
-	
-	
-	// круг с отверстием (начало)
-	{
-		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, geom: {rotateY: -Math.PI/2}};
-		infO.material = infProject.material.metal_1;
-		var obj = crCircle_2(infO);
-		
-		obj.position.copy(p[0]);
-		group.add( obj );				
-	}
-	
-	
-	// круг с отверстием (конец)
-	{
-		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, geom: {rotateY: Math.PI/2}};
-		infO.material = infProject.material.metal_1;
-		var obj = crCircle_2(infO);
-		
-		obj.position.copy(p[p.length - 1]);
-		group.add( obj );		
-	}	
-	
-	
-	return group;	
-}
-
-
-
-// цилиндр
-function crCild_2(cdm)
-{
-	var radius = cdm.radius;
-	var length = cdm.length;
-	var geom = (cdm.geom) ? cdm.geom : {};
-	var BufferG = (geom.BufferG) ? true : false;
-	var material = (cdm.material) ? cdm.material : {};	
-	
-	//----------
-	console.log(geom);
-	var geometry = new THREE.CylinderGeometry( radius, radius, length, 32, 1, geom.hole );
-	
-	if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
-	if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
-	if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }
-	
-
-	
-	var obj = new THREE.Mesh( geometry, cdm.material );
-	upUvs_4( obj );
-	
-	if(BufferG)
-	{
-		obj.geometry.dispose();
-		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);			
-	}
-
-	return obj;
-}
-
-
-// круг с отверстием или без отверстия
-function crCircle_2(cdm)
-{
-	var radius_nr = cdm.radius_nr;
-	var radius_vn = (cdm.radius_vn) ? cdm.radius_vn : {};	// отверстие
-	var geom = (cdm.geom) ? cdm.geom : {};
-	var material = (cdm.material) ? cdm.material : {};
-	
-	function createCircle_2(cdm)
-	{
-		var count = 32;
-		var circle = [];
-		var g = (Math.PI * 2) / count;
-		
-		for ( var i = 0; i < count; i++ )
-		{
-			var angle = g * i;
-			circle[i] = new THREE.Vector2();
-			circle[i].x = Math.sin(angle) * cdm.size;
-			circle[i].y = Math.cos(angle) * cdm.size;
-		}
-
-		return circle;
-	}
-	
-	
-	// geometry
-	{
-		var arcShape = new THREE.Shape( createCircle_2({size: radius_nr}) );
-		
-		// отверстие
-		if(radius_vn)
-		{
-			var holePath = new THREE.Shape( createCircle_2({size: radius_vn}) );
-			arcShape.holes.push( holePath );				
-		}
-		
-		var geometry = new THREE.ShapeBufferGeometry( arcShape );
-		
-		if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
-		if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
-		if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }		
-	}
-	
-	var obj = new THREE.Mesh( geometry, cdm.material );
-		
-	return obj;
-}
-
-
-
 
 
 

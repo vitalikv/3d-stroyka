@@ -96,6 +96,8 @@ function getBoundObject_1(cdm)
 	
 	var arr = [];
 	
+	obj.updateMatrixWorld(true);
+	
 	obj.traverse(function(child) 
 	{
 		if (child instanceof THREE.Mesh)
@@ -109,8 +111,7 @@ function getBoundObject_1(cdm)
 	var v = [];
 	
 	for ( var i = 0; i < arr.length; i++ )
-	{
-		arr[i].updateMatrixWorld();
+	{		
 		arr[i].geometry.computeBoundingBox();	
 		arr[i].geometry.computeBoundingSphere();
 
@@ -144,8 +145,8 @@ function getBoundObject_1(cdm)
 	var x = (bound.max.x - bound.min.x);
 	var y = (bound.max.y - bound.min.y);
 	var z = (bound.max.z - bound.min.z);	
-	
-	var material = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false });
+	 
+
 	var geometry = createGeometryCube(x, y, z);	
 	
 	var v = geometry.vertices;
@@ -159,7 +160,7 @@ function getBoundObject_1(cdm)
 	v[4].z = v[5].z = v[6].z = v[7].z = bound.min.z;		
 		
 	geometry = new THREE.BufferGeometry().fromGeometry(geometry);	 
-	var box = new THREE.Mesh( geometry, material ); 	
+	var box = new THREE.Mesh( geometry, infProject.material.box_1 ); 	
 	//box.position.copy(centP);	
 	
 	obj.position.set(0, 0, 0);
@@ -196,6 +197,8 @@ function getBoundObject_2(cdm)
 
 	var arr = [];
 	
+	obj.updateMatrixWorld(true);
+	
 	obj.traverse(function(child) 
 	{
 		if (child instanceof THREE.Mesh)
@@ -215,7 +218,6 @@ function getBoundObject_2(cdm)
 	
 	for ( var i = 0; i < arr.length; i++ )
 	{
-		arr[i].updateMatrixWorld();
 		arr[i].geometry.computeBoundingBox();	
 		arr[i].geometry.computeBoundingSphere();
 
@@ -250,7 +252,7 @@ function getBoundObject_2(cdm)
 
 	
 	
-	var material = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false });
+	//var material = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false });
 	var geometry = createGeometryCube(x, y, z);	
 	
 	var v = geometry.vertices;

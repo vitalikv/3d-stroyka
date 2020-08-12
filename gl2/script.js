@@ -188,9 +188,14 @@ infProject.material.pointObj = {};
 infProject.material.pointObj.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
 infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
 
+infProject.material.box_1 = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false }); 
+
 infProject.material.metal_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.metal_1.shininess = 100;
 infProject.material.metal_1.specular.set(0xa3a3a3);
+
+infProject.material.metal_1_edge = infProject.material.metal_1.clone();
+infProject.material.metal_1_edge.flatShading = true;
 
 infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_1.map.repeat.x = 900; 
@@ -324,22 +329,7 @@ setPlaneHeightPositionY();
 
 
 
-if(1==2)
-{
-	st_troinik_v_v_v({inch: 1/2, dlina_1: 0.046, dlina_2: 0.023, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.5)});
-	st_troinik_v_v_v({inch: 3/4, dlina_1: 0.058, dlina_2: 0.027, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.4)});
-	st_troinik_v_v_v({inch: 1, dlina_1: 0.069, dlina_2: 0.035, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.3)});
-	st_troinik_v_v_v({inch: 1+1/4, dlina_1: 0.080, dlina_2: 0.040, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.2)});
-	st_troinik_v_v_v({inch: 1+1/2, dlina_1: 0.092, dlina_2: 0.046, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2+0.1)});
-	st_troinik_v_v_v({inch: 2, dlina_1: 0.103, dlina_2: 0.052, color: 0x8a8a8a, offset: new THREE.Vector3(0, 1, 2)});	
-}
 
-
-st_troinik_n_n_n({inch: 1/2, dlina_1: 0.06, dlina_2: 0.03, offset: new THREE.Vector3(0, 1, 2)});
-st_troinik_n_n_n({inch: 3/4, dlina_1: 0.075, dlina_2: 0.036, offset: new THREE.Vector3(0, 1, 2+0.1)});
-st_troinik_n_n_n({inch: 1, dlina_1: 0.095, dlina_2: 0.046, offset: new THREE.Vector3(0, 1, 2+0.2)});
-
-//createTestObj_3();
 
 
 // не корректно раюотает (не используется)

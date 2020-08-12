@@ -971,6 +971,8 @@ function readyProject(cdm)
 	
 	$('[nameId="menu_loader_slider_UI"]').hide();
 	
+	cr_obj_cat();
+	
 	changeCamera(cameraTop);
 	centerCamera2D();	
 }
