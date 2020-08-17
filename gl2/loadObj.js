@@ -173,8 +173,7 @@ function addObjInBase(inf, obj)
 					}
 				}
 	
-				child.material = infProject.material.pointObj.default
-				child.userData.centerPoint.color = child.material.color.clone();
+				child.material = infProject.material.pointObj.default;
 				child.scale.set(1,1,1);
 				child.visible = false;
 			}			

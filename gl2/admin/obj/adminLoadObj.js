@@ -127,7 +127,6 @@ function setParamObj(cdm)
 					cube.userData.id = id;  id++;
 					cube.userData.centerPoint = { join: null };						 
 					cube.userData.centerPoint.nameRus = child.name;
-					cube.userData.centerPoint.color = cube.material.color.clone();
 					
 					obj.add( cube );				
 				}

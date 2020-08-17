@@ -1,5 +1,73 @@
 
 
+// конвертируем Дьюмы в размеры
+function convertInch(inch)
+{
+	var val = 0;
+	
+	if(inch == '1/4') { val = 1/4; }
+	else if(inch == '3/8') { val = 3/8; }
+	else if(inch == '1/2') { val = 1/2; }
+	else if(inch == '3/4') { val = 3/4; }
+	else if(inch == '1') { val = 1; }
+	else if(inch == '1 1/4') { val = 1+1/4; }
+	else if(inch == '1 1/2') { val = 1+1/2; }
+	else if(inch == '2') { val = 2; }
+	else if(inch == '2 1/4') { val = 2+1/4; }
+	else if(inch == '2 1/2') { val = 2+1/2; }
+
+	return val;
+}
+
+
+
+// радиус окружности (резьба)
+function sizeRezba(cdm)
+{
+	var size = cdm.size;
+	var side = cdm.side;
+	
+	// d диаметр трубы
+	// t толщина стенки
+
+	var inf = {n: 0, v: 0};
+	var d = 0;
+	var t = 0;
+	
+	if (size == "1/4") { d = 13.5; t = 2.2; }
+	else if (size == "3/8") { d = 17.0; t = 2.2; }
+	else if (size == "1/2") { d = 21.3; t = 2.7; }
+	else if (size == "3/4") { d = 26.8; t = 2.8; }
+	else if (size == "1") { d = 33.5; t = 3.2; }
+	else if (size == "1 1/4") { d = 42.3; t = 3.2; }
+	else if (size == "1 1/2") { d = 48.0; t = 3.5; }
+	else if (size == "2") { d = 60.0; t = 3.5; }
+	else if (size == "2 1/2") { d = 75.5; t = 4; }
+	else if (size == "3") { d = 88.5; t = 4; }
+	else if (size == "3 1/2") { d = 101.3; t = 4; }
+	else if (size == "4") { d = 114.0; t = 4.5; }
+	else if (size == "5") { d = 140.0; t = 4.5; }
+	else if (size == "6") { d = 165.0; t = 4.5; }
+
+
+	if (side == "n")	
+	{
+		inf.n = (d - t);		// нр. резьба (диаметр)
+		inf.v = (d - t*2);		// вн. стенка (диаметр)
+	}
+	else
+	{
+		inf.n = d;			// нр. стенка (диаметр)
+		inf.v = (d - t);	// вн. резьба (диаметр)
+	}
+
+	inf.n = Math.round(inf.n * 10) / 10000;
+	inf.v = Math.round(inf.v * 10) / 10000;
+	
+	return inf;
+}
+
+
 
 
 // втулка
@@ -202,5 +270,30 @@ function crCircle_2(cdm)
 
 
 
-
-
+// создаем разъем для объектов
+function cr_CenterPoint(cdm)
+{
+	var obj = cdm.obj;
+	var name = cdm.name;
+	var id = cdm.id;
+	
+	var geometry = infProject.geometry.centerPoint;
+	var material = infProject.material.pointObj.default;
+	
+	var cube = new THREE.Mesh( geometry, material );
+	cube.position.copy(cdm.pos);
+	cube.quaternion.copy(cdm.q);
+	cube.visible = false;
+	cube.renderOrder = 1;
+	//cube.rotation.y += 1;
+	//var axesHelper = new THREE.AxesHelper( 0.2 );
+	//axesHelper.position.copy(cube.position);
+	//scene.add( axesHelper );							
+	
+	cube.userData.tag = 'joinPoint';
+	cube.userData.id = id;  
+	cube.userData.centerPoint = { join: null };						 
+	cube.userData.centerPoint.nameRus = name;
+	
+	obj.add( cube );	
+}

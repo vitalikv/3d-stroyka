@@ -228,7 +228,6 @@ function copyObj(cdm)
 				if(child.userData.centerPoint)
 				{
 					child.material = infProject.material.pointObj.default;
-					child.userData.centerPoint.color = child.material.color.clone();
 				}
 			}
 		});
