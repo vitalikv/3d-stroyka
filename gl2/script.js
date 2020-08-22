@@ -190,14 +190,14 @@ infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff
 
 infProject.material.box_1 = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false }); 
 
-infProject.material.metal_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.metal_1 = new THREE.MeshPhongMaterial({ color: 0xb5b5b5, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.metal_1.shininess = 100;
 infProject.material.metal_1.specular.set(0xa3a3a3);
 
 infProject.material.metal_1_edge = infProject.material.metal_1.clone();
 infProject.material.metal_1_edge.flatShading = true;
 
-infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0x8a8a8a, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0xb5b5b5, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_1.map.repeat.x = 900; 
 infProject.material.rezba_1.map.rotation = THREE.Math.degToRad( 2 );
 infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping; 

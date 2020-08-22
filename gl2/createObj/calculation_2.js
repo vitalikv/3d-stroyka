@@ -1,27 +1,8 @@
 
 
-// конвертируем Дьюмы в размеры
-function convertInch(inch)
-{
-	var val = 0;
-	
-	if(inch == '1/4') { val = 1/4; }
-	else if(inch == '3/8') { val = 3/8; }
-	else if(inch == '1/2') { val = 1/2; }
-	else if(inch == '3/4') { val = 3/4; }
-	else if(inch == '1') { val = 1; }
-	else if(inch == '1 1/4') { val = 1+1/4; }
-	else if(inch == '1 1/2') { val = 1+1/2; }
-	else if(inch == '2') { val = 2; }
-	else if(inch == '2 1/4') { val = 2+1/4; }
-	else if(inch == '2 1/2') { val = 2+1/2; }
-
-	return val;
-}
 
 
-
-// радиус окружности (резьба)
+// радиус окружности из дюймов в м (резьба)
 function sizeRezba(cdm)
 {
 	var size = cdm.size;
@@ -266,6 +247,29 @@ function crCircle_2(cdm)
 	var obj = new THREE.Mesh( geometry, cdm.material );
 		
 	return obj;
+}
+
+
+
+// сфера или полусфера
+function crSphere_1(cdm)
+{
+	var radius = cdm.radius;
+	var cutRad = cdm.cutRad;
+	var material = cdm.material;	
+	
+	//----------
+	
+	var geometry = new THREE.SphereBufferGeometry( radius, 32, 32, 0, cutRad );
+	
+	if(cdm.rotateX) { geometry.rotateX(cdm.rotateX); }
+	if(cdm.rotateY) { geometry.rotateY(cdm.rotateY); }
+	if(cdm.rotateZ) { geometry.rotateZ(cdm.rotateZ); }	
+
+	
+	var obj = new THREE.Mesh( geometry, material );
+
+	return obj;	
 }
 
 
