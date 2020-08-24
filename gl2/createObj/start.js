@@ -3,14 +3,31 @@
 
 function cr_obj_cat()
 {
+	
+	st_krestovina_1({inch: '1/2', dlina: 0.046, offset: new THREE.Vector3(-1.1, 1, 2+0.3)}); 
+	st_krestovina_1({inch: '3/4', dlina: 0.053, offset: new THREE.Vector3(-1.1, 1, 2+0.2)});
+	st_krestovina_1({inch: '1', dlina: 0.069, offset: new THREE.Vector3(-1.1, 1, 2+0.1)});
+	st_krestovina_1({inch: '1 1/4', dlina: 0.083, offset: new THREE.Vector3(-1.1, 1, 2+0.0)});
+	
 	if(1==1)
 	{
-		st_troinik_v_v_v({inch: '1/2', dlina_1: 0.046, dlina_2: 0.023, offset: new THREE.Vector3(-0.75, 1, 2+0.5)});
-		st_troinik_v_v_v({inch: '3/4', dlina_1: 0.058, dlina_2: 0.027, offset: new THREE.Vector3(-0.75, 1, 2+0.4)});
-		st_troinik_v_v_v({inch: '1', dlina_1: 0.069, dlina_2: 0.035, offset: new THREE.Vector3(-0.75, 1, 2+0.3)});
-		st_troinik_v_v_v({inch: '1 1/4', dlina_1: 0.080, dlina_2: 0.040, offset: new THREE.Vector3(-0.75, 1, 2+0.2)});
-		st_troinik_v_v_v({inch: '1 1/2', dlina_1: 0.092, dlina_2: 0.046, offset: new THREE.Vector3(-0.75, 1, 2+0.1)});
-		st_troinik_v_v_v({inch: '2', dlina_1: 0.103, dlina_2: 0.052, offset: new THREE.Vector3(-0.75, 1, 2)});	
+		st_troinik_v_v_v_2({r1: {a:'3/4', s:'в'}, r2: {a:'1/2', s:'в'}, r3: {a:'3/4', s:'в'}, m1: 0.056, m2: 0.027, offset: new THREE.Vector3(-0.9, 1, 2+0.5)});
+		st_troinik_v_v_v_2({r1: {a:'1', s:'в'}, r2: {a:'1/2', s:'в'}, r3: {a:'1', s:'в'}, m1: 0.056, m2: 0.03, offset: new THREE.Vector3(-0.9, 1, 2+0.4)}); 
+		st_troinik_v_v_v_2({r1: {a:'1', s:'в'}, r2: {a:'3/4', s:'в'}, r3: {a:'1', s:'в'}, m1: 0.062, m2: 0.03, offset: new THREE.Vector3(-0.9, 1, 2+0.3)}); 
+		st_troinik_v_v_v_2({r1: {a:'1 1/4', s:'в'}, r2: {a:'1/2', s:'в'}, r3: {a:'1 1/4', s:'в'}, m1: 0.064, m2: 0.036, offset: new THREE.Vector3(-0.9, 1, 2+0.2)}); 
+		st_troinik_v_v_v_2({r1: {a:'1 1/4', s:'в'}, r2: {a:'3/4', s:'в'}, r3: {a:'1 1/4', s:'в'}, m1: 0.07, m2: 0.036, offset: new THREE.Vector3(-0.9, 1, 2+0.1)});
+		st_troinik_v_v_v_2({r1: {a:'1 1/4', s:'в'}, r2: {a:'1', s:'в'}, r3: {a:'1 1/4', s:'в'}, m1: 0.076, m2: 0.038, offset: new THREE.Vector3(-0.9, 1, 2+0.0)});		
+	}
+	
+	
+	if(1==1)
+	{
+		st_troinik_v_v_v_1({inch_1: '1/2', dlina_1: 0.046, dlina_2: 0.023, offset: new THREE.Vector3(-0.75, 1, 2+0.5)});
+		st_troinik_v_v_v_1({inch_1: '3/4', dlina_1: 0.058, dlina_2: 0.027, offset: new THREE.Vector3(-0.75, 1, 2+0.4)});
+		st_troinik_v_v_v_1({inch_1: '1', dlina_1: 0.069, dlina_2: 0.035, offset: new THREE.Vector3(-0.75, 1, 2+0.3)});
+		st_troinik_v_v_v_1({inch_1: '1 1/4', dlina_1: 0.080, dlina_2: 0.040, offset: new THREE.Vector3(-0.75, 1, 2+0.2)});
+		st_troinik_v_v_v_1({inch_1: '1 1/2', dlina_1: 0.092, dlina_2: 0.046, offset: new THREE.Vector3(-0.75, 1, 2+0.1)});
+		st_troinik_v_v_v_1({inch_1: '2', dlina_1: 0.103, dlina_2: 0.052, offset: new THREE.Vector3(-0.75, 1, 2)});	
 	}
 
 	if(1==1)
@@ -74,7 +91,7 @@ function cr_obj_cat()
 		st_ugol_45_1({ inch: '1', dlina: 0.028, offset: new THREE.Vector3(-0.1, 1, 2+0.3) });
 	}	
 	
-	//st_ugol_45_1({ inch: '2', dlina: 0.065, offset: new THREE.Vector3(-0.45, 1, 2+0.0) });
+	
 	
 	if(1==1)
 	{
@@ -188,8 +205,62 @@ function cr_obj_cat()
 	}
 	
 	
-	  
+	if(1==1)
+	{
+		pl_perehod_rezba_n_1({inch: '20', rezba: '1/2', dlina: 0.036, offset: new THREE.Vector3(0.8, 1, 2+1.3)});
+		pl_perehod_rezba_n_1({inch: '20', rezba: '3/4', dlina: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.2)});
+		pl_perehod_rezba_n_1({inch: '25', rezba: '1/2', dlina: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.1)});
+		pl_perehod_rezba_n_1({inch: '25', rezba: '3/4', dlina: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.0)});
+		pl_perehod_rezba_n_1({inch: '32', rezba: '3/4', dlina: 0.043, offset: new THREE.Vector3(0.8, 1, 2+0.9)});
+		pl_perehod_rezba_n_1({inch: '32', rezba: '1', dlina: 0.049, offset: new THREE.Vector3(0.8, 1, 2+0.8)});  		
+	}
+	
+	if(1==1)
+	{
+		pl_perehod_rezba_v_1({inch: '20', rezba: '1/2', dlina: 0.036, offset: new THREE.Vector3(0.8, 1, 2+2.0)});
+		pl_perehod_rezba_v_1({inch: '20', rezba: '3/4', dlina: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.9)});
+		pl_perehod_rezba_v_1({inch: '25', rezba: '1/2', dlina: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.8)});
+		pl_perehod_rezba_v_1({inch: '25', rezba: '3/4', dlina: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.7)});
+		pl_perehod_rezba_v_1({inch: '32', rezba: '3/4', dlina: 0.043, offset: new THREE.Vector3(0.8, 1, 2+1.6)});
+		pl_perehod_rezba_v_1({inch: '32', rezba: '1', dlina: 0.049, offset: new THREE.Vector3(0.8, 1, 2+1.5)});  		
+	}	
+	
+	
+	if(1==1)
+	{
+		pl_mufta_1({inch_1: '25', inch_2: '20', dlina: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.3)});
+		pl_mufta_1({inch_1: '32', inch_2: '20', dlina: 0.043, offset: new THREE.Vector3(1.0, 1, 2+1.2)});
+		pl_mufta_1({inch_1: '32', inch_2: '25', dlina: 0.045, offset: new THREE.Vector3(1.0, 1, 2+1.1)});
+		pl_mufta_1({inch_1: '40', inch_2: '20', dlina: 0.044, offset: new THREE.Vector3(1.0, 1, 2+1.0)});
+		pl_mufta_1({inch_1: '40', inch_2: '25', dlina: 0.045, offset: new THREE.Vector3(1.0, 1, 2+0.9)});
+		pl_mufta_1({inch_1: '40', inch_2: '32', dlina: 0.048, offset: new THREE.Vector3(1.0, 1, 2+0.8)});
+		pl_mufta_1({inch_1: '50', inch_2: '20', dlina: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.7)});
+		pl_mufta_1({inch_1: '50', inch_2: '25', dlina: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.6)});
+		pl_mufta_1({inch_1: '50', inch_2: '32', dlina: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.5)});
+		pl_mufta_1({inch_1: '50', inch_2: '40', dlina: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.4)});
+		pl_mufta_1({inch_1: '63', inch_2: '25', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.3)});
+		pl_mufta_1({inch_1: '63', inch_2: '32', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.2)});
+		pl_mufta_1({inch_1: '63', inch_2: '40', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.1)});
+		pl_mufta_1({inch_1: '63', inch_2: '50', dlina: 0.067, offset: new THREE.Vector3(1.0, 1, 2+0.0)});
+		
+		
+		pl_mufta_1({inch_1: '20', inch_2: '20', dlina: 0.032, offset: new THREE.Vector3(1.0, 1, 2+1.5)});
+		pl_mufta_1({inch_1: '25', inch_2: '25', dlina: 0.035, offset: new THREE.Vector3(1.0, 1, 2+1.6)});
+		pl_mufta_1({inch_1: '32', inch_2: '32', dlina: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.7)});
+		pl_mufta_1({inch_1: '40', inch_2: '40', dlina: 0.046, offset: new THREE.Vector3(1.0, 1, 2+1.8)});
+		pl_mufta_1({inch_1: '50', inch_2: '50', dlina: 0.052, offset: new THREE.Vector3(1.0, 1, 2+1.9)});
+		pl_mufta_1({inch_1: '63', inch_2: '63', dlina: 0.060, offset: new THREE.Vector3(1.0, 1, 2+2.0)});		
+	}
+
 	
 	//createTestObj();	
 }
+
+
+
+
+
+
+
+
 

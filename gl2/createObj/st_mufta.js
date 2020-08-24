@@ -46,10 +46,8 @@ function st_mufta_1(cdm)
 		var inf = {dlina: x_1, diameter_nr: diameter_nr_1, diameter_vn: diameter_vn_1, material: rezba_vn };	  
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x -= x_3L + x_1/2;
-		obj.rotation.y += THREE.Math.degToRad(180);
-		
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name1 };
-		
+		obj.rotation.y += THREE.Math.degToRad(180);		
+		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name1 };		
 		group.add( obj );
 		
 		var inf = {dlina: x_3L, diameter_nr: diameter_nr_1, diameter_vn: diameter_vn_1, material: metal_1 }; 
@@ -64,10 +62,8 @@ function st_mufta_1(cdm)
  
 		var inf = {dlina: x_2, diameter_nr: diameter_nr_2, diameter_vn: diameter_vn_2, material: rezba_vn };
 		var obj = createSleeveObj_2(inf);		
-		obj.position.x += x_3R + x_2/2;
-		
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name2 };
-		
+		obj.position.x += x_3R + x_2/2;		
+		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name2 };		
 		group.add( obj );		
 	}
 		

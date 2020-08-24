@@ -209,7 +209,7 @@ infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping;
 infProject.material.rezba_1.map.wrapT = THREE.RepeatWrapping;
 infProject.material.rezba_1.shininess = 100;
 infProject.material.rezba_1.specular.set(0xa3a3a3);
-console.log(infProject.material.rezba_1); 
+ 
 
 infProject.geometry.circle = createCircleSpline();
 infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
