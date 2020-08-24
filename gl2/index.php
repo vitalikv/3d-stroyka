@@ -121,6 +121,10 @@
 	<script src="<?=$path?>createObj/st_nippel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st_troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st_ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st_mufta.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl_troinik.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl_ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl_krestovina.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_2.js?<?=$vrs?>"></script>

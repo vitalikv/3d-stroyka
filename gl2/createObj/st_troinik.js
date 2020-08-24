@@ -27,9 +27,12 @@ function st_troinik_n_n_n(cdm)
 	
 	var arrP = [];
 	
+	var rezba_nr = { nr: infProject.material.rezba_1, vn: infProject.material.metal_1, cap: infProject.material.metal_1 };
+	var metal_1 = { nr: infProject.material.metal_1, vn: infProject.material.metal_1, cap: infProject.material.metal_1 };	
+	
 	// нижняя труба
 	{
-		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, rezba_nr: true };	
+		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, material: rezba_nr };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x -= (x_2 + x_1)/2;
 		obj.rotation.y += THREE.Math.degToRad(180);
@@ -38,11 +41,11 @@ function st_troinik_n_n_n(cdm)
 		
 		group.add( obj );
 		
-		var inf = {dlina: x_2, diameter_nr: diameter, diameter_vn: diameter_vn };
+		var inf = {dlina: x_2, diameter_nr: diameter, diameter_vn: diameter_vn, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		group.add( obj );
 
-		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, rezba_nr: true };
+		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, material: rezba_nr };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x += (x_2 + x_1)/2;
 		
@@ -54,13 +57,13 @@ function st_troinik_n_n_n(cdm)
 	
 	// верхняя труба 
 	{
-		var inf = {dlina: x_3, diameter_nr: diameter, diameter_vn: diameter_vn };	
+		var inf = {dlina: x_3, diameter_nr: diameter, diameter_vn: diameter_vn, material: metal_1 };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.y += x_3/2;
 		obj.rotation.set(0, 0, Math.PI/2);	
 		group.add( obj );
 		
-		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, rezba_nr: true };	
+		var inf = {dlina: x_1, diameter_nr: diameter, diameter_vn: diameter_vn, material: rezba_nr };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.y += (dlina_2 + x_3)/2;
 		obj.rotation.set(0, Math.PI, Math.PI/2);
@@ -73,17 +76,17 @@ function st_troinik_n_n_n(cdm)
 	
 	// кольца
 	{
-		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter };
+		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x += dlina_1/2 - x_1;
 		group.add( obj );
 		
-		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter };
+		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x -= dlina_1/2 - x_1;
 		group.add( obj );	
 		
-		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter };
+		var inf = {dlina: x_4, diameter_nr: diameter + x_5, diameter_vn: diameter, material: metal_1 };
 		var obj = createSleeveObj_2(inf);				
 		obj.position.y += dlina_2 - x_1;
 		obj.rotation.set(0, 0, Math.PI/2);
@@ -142,10 +145,13 @@ function st_troinik_v_v_v(cdm)
 	
 	var arrP = [];
 	
+	var rezba_vn = { nr: infProject.material.metal_1, vn: infProject.material.rezba_1, cap: infProject.material.metal_1 };
+	var metal_1 = { nr: infProject.material.metal_1, vn: infProject.material.metal_1, cap: infProject.material.metal_1 };
+
 	
 	// нижняя труба
 	{
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, rezba_vn: true };	
+		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, material: rezba_vn };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x -= (x_2 + x_1)/2;
 		obj.rotation.y += THREE.Math.degToRad(180);
@@ -154,11 +160,11 @@ function st_troinik_v_v_v(cdm)
 		
 		group.add( obj );
 		
-		var inf = {dlina: x_2, diameter_nr: diameter_nr, diameter_vn: diameter };
+		var inf = {dlina: x_2, diameter_nr: diameter_nr, diameter_vn: diameter, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		group.add( obj );
 
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, rezba_vn: true };
+		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, material: rezba_vn };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x += (x_2 + x_1)/2;
 		
@@ -170,13 +176,13 @@ function st_troinik_v_v_v(cdm)
 	
 	// верхняя труба 
 	{
-		var inf = {dlina: x_3, diameter_nr: diameter_nr, diameter_vn: diameter };	
+		var inf = {dlina: x_3, diameter_nr: diameter_nr, diameter_vn: diameter, material: metal_1 };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.y += x_3/2;
 		obj.rotation.set(0, 0, Math.PI/2);	
 		group.add( obj );
 		
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, rezba_vn: true };	
+		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter, material: rezba_vn };	
 		var obj = createSleeveObj_2(inf);		
 		obj.position.y += (dlina_2 + x_3)/2;
 		obj.rotation.set(0, Math.PI, Math.PI/2);
@@ -189,17 +195,17 @@ function st_troinik_v_v_v(cdm)
 	
 	// кольца
 	{
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr };
+		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x += dlina_1/2;
 		group.add( obj );
 		
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr };
+		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
 		var obj = createSleeveObj_2(inf);		
 		obj.position.x -= dlina_1/2;
 		group.add( obj );	
 		
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr };
+		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
 		var obj = createSleeveObj_2(inf);				
 		obj.position.y += dlina_2;
 		obj.rotation.set(0, 0, Math.PI/2);

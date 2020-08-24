@@ -51,6 +51,43 @@ function sizeRezba(cdm)
 
 
 
+// размер полипропиленовой трубы
+function sizeTubePP(cdm)
+{
+	var size = cdm.size;
+	var side = cdm.side;
+	
+	// d диаметр трубы
+	// t толщина стенки
+
+	var inf = {n: 0, v: 0};
+	var d = 0;
+	var t = 0;
+	
+	if (size == "20") { d = 20; t = 4.2; }
+	else if (size == "25") { d = 25; t = 5.4; }
+	else if (size == "32") { d = 32; t = 6.7; }
+	else if (size == "40") { d = 40; t = 8.3; }
+	else if (size == "50") { d = 50; t = 10.5; }
+	else if (size == "63") { d = 63; t = 12.5; }
+	else if (size == "75") { d = 75; t = 15.0; }
+	else if (size == "90") { d = 90; t = 18.3; }
+	else if (size == "110") { d = 110; t = 20.8; }		
+
+
+	inf.n = (d + t*1.4);		// нр. резьба (диаметр)
+	inf.v = d;		// вн. стенка (диаметр)
+
+
+	inf.n = Math.round(inf.n * 10) / 10000;
+	inf.v = Math.round(inf.v * 10) / 10000;
+	
+	return inf;
+}
+
+
+
+
 // втулка
 function createSleeveObj_2(cdm) 
 {	
@@ -61,6 +98,14 @@ function createSleeveObj_2(cdm)
 	var edge_vn = (cdm.edge_vn) ? cdm.edge_vn : 32;
 	var rezba_nr = cdm.rezba_nr;
 	var rezba_vn = cdm.rezba_vn;
+ 		
+	
+	if(cdm.material)
+	{
+		var material_nr = (cdm.material.nr) ? cdm.material.nr : null;
+		var material_vn = (cdm.material.vn) ? cdm.material.vn : null;
+		var material_cap = (cdm.material.cap) ? cdm.material.cap : null;		
+	}
 	
 	var group = new THREE.Group();
 	
@@ -71,13 +116,13 @@ function createSleeveObj_2(cdm)
 	{
 		var infO = {radius: diameter_nr/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2, BufferG: true} };
 		
-		if(rezba_nr) 
+		if(material_nr)
 		{
-			infO.material = infProject.material.rezba_1;
+			infO.material = material_nr;
 		}
-		else
+		else 
 		{
-			infO.material = (edge_nr < 20) ? infProject.material.metal_1_edge : infProject.material.metal_1;
+			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
 		}
 		
 		var obj = crCild_2( infO );
@@ -91,13 +136,13 @@ function createSleeveObj_2(cdm)
 	{		
 		var infO = {radius: diameter_vn/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2, BufferG: true} };
 		
-		if(rezba_vn) 
+		if(material_vn)
 		{
-			infO.material = infProject.material.rezba_1;
-		}
-		else
+			infO.material = material_vn;
+		}		
+		else 
 		{
-			infO.material = (edge_nr < 20) ? infProject.material.metal_1_edge : infProject.material.metal_1;
+			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
 		}
 		
 		var obj = crCild_2( infO );
@@ -109,7 +154,16 @@ function createSleeveObj_2(cdm)
 	// круг с отверстием (начало)
 	{
 		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: Math.PI/2, rotateX: Math.PI/2, BufferG: true}};
-		infO.material = infProject.material.metal_1;
+		
+		if(material_cap)
+		{
+			infO.material = material_cap;
+		}
+		else 
+		{
+			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
+		}
+		
 		var obj = crCircle_2(infO);
 		
 		obj.position.copy(p[0]);
@@ -120,7 +174,16 @@ function createSleeveObj_2(cdm)
 	// круг с отверстием (конец)
 	{
 		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};
-		infO.material = infProject.material.metal_1;
+
+		if(material_cap)
+		{
+			infO.material = material_cap;
+		}
+		else 
+		{
+			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
+		}
+		
 		var obj = crCircle_2(infO);
 		
 		obj.position.copy(p[p.length - 1]);
