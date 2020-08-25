@@ -237,7 +237,7 @@ function st_troinik_v_v_v_2(cdm)
 	var d = [];
 	d[0] = sizeRezba({size: cdm.r1.a, side: 'v'});	// левый разъем
 	d[1] = sizeRezba({size: cdm.r2.a, side: 'v'});	// верхний	
-	d[2] = sizeRezba({size: cdm.r3.a, side: 'v'});	// правый
+	d[2] = sizeRezba({size: cdm.r3.a, side: 'v'});	// правый 
 	
 	var dc = d[0];
 	if(dc.n < d[1].n) dc = d[1];
@@ -270,7 +270,7 @@ function st_troinik_v_v_v_2(cdm)
 	var metal_1 = { nr: infProject.material.metal_1, vn: infProject.material.metal_1, cap: infProject.material.metal_1 };
 
 	
-	// нижняя труба
+	// горизонтальная труба
 	{
 		// левая часть
 		var inf = {dlina: x_1, diameter_nr: d[0].n, diameter_vn: d[0].v, material: rezba_vn };	

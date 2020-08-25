@@ -4,10 +4,13 @@
 function cr_obj_cat()
 {
 	
-	st_krestovina_1({inch: '1/2', dlina: 0.046, offset: new THREE.Vector3(-1.1, 1, 2+0.3)}); 
-	st_krestovina_1({inch: '3/4', dlina: 0.053, offset: new THREE.Vector3(-1.1, 1, 2+0.2)});
-	st_krestovina_1({inch: '1', dlina: 0.069, offset: new THREE.Vector3(-1.1, 1, 2+0.1)});
-	st_krestovina_1({inch: '1 1/4', dlina: 0.083, offset: new THREE.Vector3(-1.1, 1, 2+0.0)});
+	if(1==1)
+	{
+		st_krestovina_1({inch: '1/2', dlina: 0.046, offset: new THREE.Vector3(-1.1, 1, 2+0.3)}); 
+		st_krestovina_1({inch: '3/4', dlina: 0.053, offset: new THREE.Vector3(-1.1, 1, 2+0.2)});
+		st_krestovina_1({inch: '1', dlina: 0.069, offset: new THREE.Vector3(-1.1, 1, 2+0.1)});
+		st_krestovina_1({inch: '1 1/4', dlina: 0.083, offset: new THREE.Vector3(-1.1, 1, 2+0.0)});		
+	}
 	
 	if(1==1)
 	{
@@ -252,6 +255,27 @@ function cr_obj_cat()
 		pl_mufta_1({inch_1: '63', inch_2: '63', dlina: 0.060, offset: new THREE.Vector3(1.0, 1, 2+2.0)});		
 	}
 
+	if(1==1)
+	{
+		pl_troinik_2({r1: '25', r2: '20', r3: '20', m1: 0.055, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+2.0)});	
+		pl_troinik_2({r1: '25', r2: '20', r3: '25', m1: 0.055, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.9)}); 
+		pl_troinik_2({r1: '32', r2: '20', r3: '20', m1: 0.060, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.8)});
+		pl_troinik_2({r1: '32', r2: '20', r3: '25', m1: 0.060, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.7)});
+		pl_troinik_2({r1: '32', r2: '20', r3: '32', m1: 0.060, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.6)});
+		
+		pl_troinik_2({r1: '32', r2: '25', r3: '20', m1: 0.065, m2: 0.016, offset: new THREE.Vector3(1.2, 1, 2+1.5)});
+		pl_troinik_2({r1: '32', r2: '25', r3: '25', m1: 0.065, m2: 0.016, offset: new THREE.Vector3(1.2, 1, 2+1.4)});
+		pl_troinik_2({r1: '32', r2: '25', r3: '32', m1: 0.065, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.3)});
+		
+		pl_troinik_2({r1: '40', r2: '20', r3: '40', m1: 0.075, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+1.2)});
+		pl_troinik_2({r1: '40', r2: '25', r3: '40', m1: 0.075, m2: 0.016, offset: new THREE.Vector3(1.2, 1, 2+1.1)});
+		pl_troinik_2({r1: '40', r2: '32', r3: '40', m1: 0.075, m2: 0.018, offset: new THREE.Vector3(1.2, 1, 2+1.0)});	
+		
+		pl_troinik_2({r1: '50', r2: '20', r3: '50', m1: 0.102, m2: 0.015, offset: new THREE.Vector3(1.2, 1, 2+0.9)});	
+		pl_troinik_2({r1: '50', r2: '25', r3: '50', m1: 0.102, m2: 0.016, offset: new THREE.Vector3(1.2, 1, 2+0.8)});
+		pl_troinik_2({r1: '50', r2: '32', r3: '50', m1: 0.102, m2: 0.018, offset: new THREE.Vector3(1.2, 1, 2+0.7)});
+		pl_troinik_2({r1: '50', r2: '40', r3: '50', m1: 0.102, m2: 0.021, offset: new THREE.Vector3(1.2, 1, 2+0.6)});		
+	}
 	
 	//createTestObj();	
 }

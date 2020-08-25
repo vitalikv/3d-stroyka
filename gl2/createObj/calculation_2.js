@@ -92,8 +92,10 @@ function sizeTubePP(cdm)
 function createSleeveObj_2(cdm) 
 {	
 	var dlina = cdm.dlina;  
-	var diameter_nr = (cdm.diameter_nr) ? cdm.diameter_nr : false;
-	var diameter_vn = (cdm.diameter_vn) ? cdm.diameter_vn : false;
+	var d_n1 = (cdm.diameter_nr) ? cdm.diameter_nr : false;
+	var d_v1 = (cdm.diameter_vn) ? cdm.diameter_vn : false;
+	var d_n2 = (cdm.d_n2) ? cdm.d_n2 : false;
+	var d_v2 = (cdm.d_v2) ? cdm.d_v2 : false;	
 	var edge_nr = (cdm.edge_nr) ? cdm.edge_nr : 32;
 	var edge_vn = (cdm.edge_vn) ? cdm.edge_vn : 32;
 	var rezba_nr = cdm.rezba_nr;
@@ -107,23 +109,18 @@ function createSleeveObj_2(cdm)
 		var material_cap = (cdm.material.cap) ? cdm.material.cap : null;		
 	}
 	
-	var group = new THREE.Group();
+	var mat_default = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
+	
+	var group = new THREE.Group();		
 	
 	var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];
 	
 	// фтулка наружная
-	if(diameter_nr)
+	if(d_n1)
 	{
-		var infO = {radius: diameter_nr/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2, BufferG: true} };
-		
-		if(material_nr)
-		{
-			infO.material = material_nr;
-		}
-		else 
-		{
-			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-		}
+		var infO = {r1: d_n1/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2, BufferG: true} };
+		if(d_n2) { infO.r2 = d_n2/2; }
+		infO.material = (material_nr) ? material_nr : mat_default;
 		
 		var obj = crCild_2( infO );
 		
@@ -132,18 +129,11 @@ function createSleeveObj_2(cdm)
 	
 
 	// фтулка внутринняя 
-	if(diameter_vn)
+	if(d_v1)
 	{		
-		var infO = {radius: diameter_vn/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2, BufferG: true} };
-		
-		if(material_vn)
-		{
-			infO.material = material_vn;
-		}		
-		else 
-		{
-			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-		}
+		var infO = {r1: d_v1/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2, BufferG: true} };
+		if(d_v2) { infO.r2 = d_v2/2; }
+		infO.material = (material_vn) ? material_vn : mat_default;
 		
 		var obj = crCild_2( infO );
 		
@@ -153,16 +143,9 @@ function createSleeveObj_2(cdm)
 	
 	// круг с отверстием (начало)
 	{
-		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: Math.PI/2, rotateX: Math.PI/2, BufferG: true}};
-		
-		if(material_cap)
-		{
-			infO.material = material_cap;
-		}
-		else 
-		{
-			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-		}
+		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: Math.PI/2, rotateX: Math.PI/2, BufferG: true}};
+		if(d_n2) { infO.radius_nr = d_n2/2; infO.radius_vn = d_v2/2; }
+		infO.material = (material_cap) ? material_cap : mat_default;
 		
 		var obj = crCircle_2(infO);
 		
@@ -173,16 +156,9 @@ function createSleeveObj_2(cdm)
 	
 	// круг с отверстием (конец)
 	{
-		var infO = {radius_nr: diameter_nr/2, radius_vn: diameter_vn/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};
-
-		if(material_cap)
-		{
-			infO.material = material_cap;
-		}
-		else 
-		{
-			infO.material = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-		}
+		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};
+		
+		infO.material = (material_cap) ? material_cap : mat_default;
 		
 		var obj = crCircle_2(infO);
 		
@@ -200,7 +176,8 @@ function createSleeveObj_2(cdm)
 // цилиндр
 function crCild_2(cdm)
 {
-	var radius = cdm.radius;
+	var r1 = cdm.r1;
+	var r2 = (cdm.r2) ? cdm.r2 : r1;
 	var length = cdm.length;
 	var edge = cdm.edge;
 	var geom = (cdm.geom) ? cdm.geom : {};
@@ -209,7 +186,7 @@ function crCild_2(cdm)
 	
 	//----------
 	
-	var geometry = new THREE.CylinderGeometry( radius, radius, length, edge, 1, true );
+	var geometry = new THREE.CylinderGeometry( r1, r2, length, edge, 1, true );
 	
 	if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
 	if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
