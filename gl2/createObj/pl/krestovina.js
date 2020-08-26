@@ -3,7 +3,7 @@
 
 
 
-// угол стальной 90
+// полипропиленовый угол 90
 function pl_krestovina_1(cdm)
 {
 	var size = sizeTubePP({size: cdm.inch});
@@ -51,8 +51,12 @@ function pl_krestovina_1(cdm)
 		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
 		crFormSleeve_1(inf);		
 	}		
-			
-	var group = new THREE.Mesh(geom, [infProject.material.white_1, infProject.material.white_1, infProject.material.white_1]);		
+		
+	
+	var mat = [];
+	mat[0] = infProject.material.white_1;
+	
+	var group = new THREE.Mesh(geom, mat);		
 	var obj = getBoundObject_1({obj: group});
 	
 	

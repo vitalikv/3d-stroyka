@@ -178,7 +178,9 @@ function crFormSleeve_1(cdm)
 	var edge_vn = (cdm.edge_vn) ? cdm.edge_vn : 32;
 	var rezba_nr = cdm.rezba_nr;
 	var rezba_vn = cdm.rezba_vn;
-		
+	
+	var ind = [0, 0, 0, 0];	
+	if(cdm.ind) ind = cdm.ind; 	
 
 	var arrG = [];
 	
@@ -225,10 +227,10 @@ function crFormSleeve_1(cdm)
 	}
 
 	
-	geometry.merge(arrG[0], arrG[0].matrix);
-	geometry.merge(arrG[1], arrG[1].matrix, 1);
-	geometry.merge(arrG[2], arrG[2].matrix, 2);
-	geometry.merge(arrG[3], arrG[3].matrix, 2);	
+	geometry.merge(arrG[0], arrG[0].matrix, ind[0]);
+	geometry.merge(arrG[1], arrG[1].matrix, ind[1]);
+	geometry.merge(arrG[2], arrG[2].matrix, ind[2]);
+	geometry.merge(arrG[3], arrG[3].matrix, ind[3]);	
 }
 
 
@@ -354,7 +356,7 @@ function crSphere_1(cdm)
 	
 	//----------
 	
-	var geometry = new THREE.SphereBufferGeometry( radius, 32, 32, 0, cutRad );
+	var geometry = new THREE.SphereGeometry( radius, 32, 32, 0, cutRad );
 	
 	if(cdm.rotateX) { geometry.rotateX(cdm.rotateX); }
 	if(cdm.rotateY) { geometry.rotateY(cdm.rotateY); }
@@ -364,6 +366,29 @@ function crSphere_1(cdm)
 	var obj = new THREE.Mesh( geometry, material );
 
 	return obj;	
+}
+
+
+
+
+// сфера или полусфера
+function crSphere_2(cdm)
+{
+	var geometry = cdm.g;
+	var pos = (cdm.pos) ? cdm.pos : { x: 0, y: 0, z: 0 };
+	var rot = (cdm.rot) ? cdm.rot : { x: 0, y: 0, z: 0 };
+	
+	var radius = cdm.radius;
+	var cutRad = cdm.cutRad;
+	var ind = (cdm.ind !== undefined) ? cdm.ind : 0; 
+	
+	var g1 = new THREE.SphereGeometry( radius, 32, 32, 0, cutRad );
+	
+	if(cdm.rotateX) { g1.rotateX(cdm.rotateX); }
+	if(cdm.rotateY) { g1.rotateY(cdm.rotateY); }
+	if(cdm.rotateZ) { g1.rotateZ(cdm.rotateZ); }	
+
+	geometry.merge(g1, g1.matrix, ind);	
 }
 
 
@@ -380,7 +405,7 @@ function cr_CenterPoint(cdm)
 	
 	var cube = new THREE.Mesh( geometry, material );
 	cube.position.copy(cdm.pos);
-	console.log(cdm.rot);
+	
 	if(cdm.q) { cube.quaternion.copy(cdm.q); }
 	if(cdm.rot) { cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);  }
 	

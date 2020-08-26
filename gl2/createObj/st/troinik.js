@@ -138,7 +138,7 @@ function st_troinik_v_v_v_1(cdm)
 	var x_4 = diameter_nr / 10;
 	var x_5 = diameter_nr / 10;
 	
-	var name = cdm.inch+'(в)';
+	var name = cdm.inch_1+'(в)';
 	
 	var group = new THREE.Group();	
 	var arrP = [];
