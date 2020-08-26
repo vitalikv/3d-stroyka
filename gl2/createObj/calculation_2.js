@@ -110,64 +110,125 @@ function createSleeveObj_2(cdm)
 	}
 	
 	var mat_default = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-	
-	var group = new THREE.Group();		
+		
 	
 	var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];
 	
 	// фтулка наружная
-	if(d_n1)
 	{
 		var infO = {r1: d_n1/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2, BufferG: true} };
 		if(d_n2) { infO.r2 = d_n2/2; }
-		infO.material = (material_nr) ? material_nr : mat_default;
-		
-		var obj = crCild_2( infO );
-		
-		group.add( obj );
-	}
-	
+		var geom1 = crCild_2( infO );
+	}	
 
 	// фтулка внутринняя 
-	if(d_v1)
 	{		
 		var infO = {r1: d_v1/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2, BufferG: true} };
 		if(d_v2) { infO.r2 = d_v2/2; }
-		infO.material = (material_vn) ? material_vn : mat_default;
-		
-		var obj = crCild_2( infO );
-		
-		group.add( obj );
-	}	
-	
+		var geom2 = crCild_2( infO );
+	}
 	
 	// круг с отверстием (начало)
 	{
 		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: Math.PI/2, rotateX: Math.PI/2, BufferG: true}};
 		if(d_n2) { infO.radius_nr = d_n2/2; infO.radius_vn = d_v2/2; }
-		infO.material = (material_cap) ? material_cap : mat_default;
+		var geom3 = crCircle_2(infO);
+		geom3.translate(p[0].x, p[0].y, p[0].z);				
+	}
+
+	// круг с отверстием (конец)
+	{
+		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};		
+		var geom4 = crCircle_2(infO);
+		geom4.translate(p[1].x, p[1].y, p[1].z);		
+	}
+	
+
+	var m1 = (material_nr) ? material_nr : mat_default;
+	var m2 = (material_vn) ? material_vn : mat_default;
+	var m3 = (material_cap) ? material_cap : mat_default;
+	
+	var geometry = new THREE.Geometry();
+	geometry.merge(geom1, geom1.matrix);
+	geometry.merge(geom2, geom2.matrix, 1);
+	geometry.merge(geom3, geom3.matrix, 2);
+	geometry.merge(geom4, geom4.matrix, 2);
+
+	var obj = new THREE.Mesh(geometry, [m1, m2, m3]);	 
+	
+	return obj;	
+}
+
+
+
+
+// втулка
+function crFormSleeve_1(cdm) 
+{
+	var geometry = cdm.g;
+	var pos = (cdm.pos) ? cdm.pos : { x: 0, y: 0, z: 0 };
+	var rot = (cdm.rot) ? cdm.rot : { x: 0, y: 0, z: 0 };
+	
+	var dlina = cdm.dlina;  
+	var d_n1 = (cdm.diameter_nr) ? cdm.diameter_nr : false;
+	var d_v1 = (cdm.diameter_vn) ? cdm.diameter_vn : false;
+	var d_n2 = (cdm.d_n2) ? cdm.d_n2 : false;
+	var d_v2 = (cdm.d_v2) ? cdm.d_v2 : false;	
+	var edge_nr = (cdm.edge_nr) ? cdm.edge_nr : 32;
+	var edge_vn = (cdm.edge_vn) ? cdm.edge_vn : 32;
+	var rezba_nr = cdm.rezba_nr;
+	var rezba_vn = cdm.rezba_vn;
 		
-		var obj = crCircle_2(infO);
+
+	var arrG = [];
+	
+	// фтулка наружная
+	{
+		var infO = {r1: d_n1/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2} };
+		if(d_n2) { infO.r2 = d_n2/2; }
+		arrG[0] = crCild_2( infO );
+	}	
+
+	// фтулка внутринняя 
+	{		
+		var infO = {r1: d_v1/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2} };
+		if(d_v2) { infO.r2 = d_v2/2; }
+		arrG[1] = crCild_2( infO );				
+	}
+	
+	// круг с отверстием (начало)
+	{
+		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn};
+		if(d_n2) { infO.radius_nr = d_n2/2; infO.radius_vn = d_v2/2; }
+		arrG[2] = crCircle_2(infO);
 		
-		obj.position.copy(p[0]);
-		group.add( obj );				
+		arrG[2].rotateY(Math.PI/2);
+		arrG[2].translate(-dlina/2, 0, 0);			
+	}
+
+	// круг с отверстием (конец)
+	{
+		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn};		
+		arrG[3] = crCircle_2(infO);
+		
+		arrG[3].rotateY(Math.PI/2);
+		arrG[3].translate(dlina/2, 0, 0);		 		
 	}
 	
 	
-	// круг с отверстием (конец)
+	for ( var i = 0; i < arrG.length; i++ )
 	{
-		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};
-		
-		infO.material = (material_cap) ? material_cap : mat_default;
-		
-		var obj = crCircle_2(infO);
-		
-		obj.position.copy(p[p.length - 1]);
-		group.add( obj );		
-	}	
+		arrG[i].rotateX(rot.x); 
+		arrG[i].rotateY(rot.y); 
+		arrG[i].rotateZ(rot.z);		
+		arrG[i].translate(pos.x, pos.y, pos.z);	
+	}
+
 	
-	
-	return group;	
+	geometry.merge(arrG[0], arrG[0].matrix);
+	geometry.merge(arrG[1], arrG[1].matrix, 1);
+	geometry.merge(arrG[2], arrG[2].matrix, 2);
+	geometry.merge(arrG[3], arrG[3].matrix, 2);	
 }
 
 
@@ -181,8 +242,7 @@ function crCild_2(cdm)
 	var length = cdm.length;
 	var edge = cdm.edge;
 	var geom = (cdm.geom) ? cdm.geom : {};
-	var BufferG = (geom.BufferG) ? true : false;
-	var material = cdm.material;	
+	var BufferG = (geom.BufferG) ? true : false;	
 	
 	//----------
 	
@@ -192,18 +252,15 @@ function crCild_2(cdm)
 	if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
 	if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }
 	
-
+	upUvs_5(geometry);
 	
-	var obj = new THREE.Mesh( geometry, material );
-	upUvs_4( obj );
-	
-	if(BufferG)
+	if(BufferG && 1==2)
 	{
 		obj.geometry.dispose();
 		obj.geometry = new THREE.BufferGeometry().fromGeometry(obj.geometry);			
 	}
 
-	return obj;
+	return geometry;
 }
 
 
@@ -247,7 +304,6 @@ function crCircle_2(cdm)
 	var edge_nr = cdm.edge_nr;
 	var edge_vn = cdm.edge_vn;	
 	var geom = (cdm.geom) ? cdm.geom : {};
-	var material = (cdm.material) ? cdm.material : {};
 	
 	function createCircle_2(cdm)
 	{
@@ -277,16 +333,14 @@ function crCircle_2(cdm)
 			arcShape.holes.push( holePath );				
 		}
 		
-		var geometry = new THREE.ShapeBufferGeometry( arcShape );
+		var geometry = new THREE.ShapeGeometry( arcShape );
 		
 		if(geom.rotateX) { geometry.rotateX(geom.rotateX); }
 		if(geom.rotateY) { geometry.rotateY(geom.rotateY); }
 		if(geom.rotateZ) { geometry.rotateZ(geom.rotateZ); }		
 	}
-	
-	var obj = new THREE.Mesh( geometry, cdm.material );
 		
-	return obj;
+	return geometry;
 }
 
 
@@ -326,7 +380,10 @@ function cr_CenterPoint(cdm)
 	
 	var cube = new THREE.Mesh( geometry, material );
 	cube.position.copy(cdm.pos);
-	cube.quaternion.copy(cdm.q);
+	console.log(cdm.rot);
+	if(cdm.q) { cube.quaternion.copy(cdm.q); }
+	if(cdm.rot) { cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);  }
+	
 	cube.visible = false;
 	cube.renderOrder = 1;
 	//cube.rotation.y += 1;
@@ -341,3 +398,36 @@ function cr_CenterPoint(cdm)
 	
 	obj.add( cube );	
 }
+
+
+
+
+function upUvs_5( geometry )
+{	
+    geometry.faceVertexUvs[0] = [];
+	var faces = geometry.faces;
+	
+    for (var i = 0; i < faces.length; i++) 
+	{		
+		var components = ['x', 'y', 'z'].sort(function(a, b) {			
+			return Math.abs(faces[i].normal[a]) - Math.abs(faces[i].normal[b]);
+		});	
+
+
+        var v1 = geometry.vertices[faces[i].a];
+        var v2 = geometry.vertices[faces[i].b];
+        var v3 = geometry.vertices[faces[i].c];				
+
+        geometry.faceVertexUvs[0].push([
+            new THREE.Vector2(v1[components[0]], v1[components[1]]),
+            new THREE.Vector2(v2[components[0]], v2[components[1]]),
+            new THREE.Vector2(v3[components[0]], v3[components[1]])
+        ]);
+    }
+
+    geometry.uvsNeedUpdate = true;
+	geometry.elementsNeedUpdate = true; 
+}
+
+
+

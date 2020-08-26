@@ -116,17 +116,17 @@
 	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>mergeObjToGroup.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_radiator.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/al_radiator.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_nippel.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_troinik.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_ugol.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_mufta.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/st_krestovina.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/pl_troinik.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/pl_ugol.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/pl_mufta.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>createObj/pl_krestovina.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/radiator/st_radiator.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/radiator/al_radiator.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/nippel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/troinik.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/mufta.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/krestovina.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl/troinik.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl/ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl/mufta.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/pl/krestovina.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_2.js?<?=$vrs?>"></script>
