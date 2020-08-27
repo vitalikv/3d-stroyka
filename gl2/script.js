@@ -1426,6 +1426,18 @@ document.body.addEventListener("keydown", function (e)
 { 
 	if(clickO.keys[e.keyCode]) return;
 	
+	
+	if(e.keyCode == 13 && 1==2)
+	{
+		console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
+		var arrO = getAllChildObect({obj: infProject.tools.pivot});
+		for(var i2 = 0; i2 < arrO.length; i2++)
+		{
+			disposeNode(arrO[i2]);
+		}
+		console.log(renderer.info.memory.geometries, renderer.info.memory.textures); 
+	}
+	
 	if(infProject.activeInput) 
 	{ 
 		if(e.keyCode == 13)

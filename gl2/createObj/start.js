@@ -104,10 +104,8 @@ function cr_obj_cat()
 		st_mufta_1({inch_1: '1 1/4', inch_2: '1 1/4', dlina: 0.047, offset: new THREE.Vector3(-0.0, 1, 2+0.2)});
 		st_mufta_1({inch_1: '1 1/2', inch_2: '1 1/2', dlina: 0.052, offset: new THREE.Vector3(-0.0, 1, 2+0.1)});
 		st_mufta_1({inch_1: '2', inch_2: '2', dlina: 0.06, offset: new THREE.Vector3(-0.0, 1, 2+0.0)});
-	}
-	
-	if(1==1)
-	{
+
+
 		st_mufta_1({inch_1: '1/2', inch_2: '3/8', dlina: 0.028, offset: new THREE.Vector3(0.1, 1, 2+1.0)});
 		st_mufta_1({inch_1: '3/4', inch_2: '1/2', dlina: 0.032, offset: new THREE.Vector3(0.1, 1, 2+0.9)});
 		st_mufta_1({inch_1: '1', inch_2: '1/2', dlina: 0.034, offset: new THREE.Vector3(0.1, 1, 2+0.8)});
@@ -169,19 +167,15 @@ function cr_obj_cat()
 		pl_ugol_90_rezba_1({ side: 'v', r1: '25', r2: '1/2', m1: 0.030, offset: new THREE.Vector3(0.4, 1, 2+1.8) });
 		pl_ugol_90_rezba_1({ side: 'v', r1: '25', r2: '3/4', m1: 0.031, offset: new THREE.Vector3(0.4, 1, 2+1.7) });
 		pl_ugol_90_rezba_1({ side: 'v', r1: '32', r2: '3/4', m1: 0.036, offset: new THREE.Vector3(0.4, 1, 2+1.6) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '32', r2: '1', m1: 0.039, offset: new THREE.Vector3(0.4, 1, 2+1.5) });			
+		pl_ugol_90_rezba_1({ side: 'v', r1: '32', r2: '1', m1: 0.039, offset: new THREE.Vector3(0.4, 1, 2+1.5) });
+
+		pl_ugol_45_1({ r1: '20', m1: 0.021, offset: new THREE.Vector3(0.6, 1, 2+0.5) });
+		pl_ugol_45_1({ r1: '25', m1: 0.024, offset: new THREE.Vector3(0.6, 1, 2+0.4) });
+		pl_ugol_45_1({ r1: '32', m1: 0.028, offset: new THREE.Vector3(0.6, 1, 2+0.3) });
+		pl_ugol_45_1({ r1: '40', m1: 0.035, offset: new THREE.Vector3(0.6, 1, 2+0.2) });
+		pl_ugol_45_1({ r1: '50', m1: 0.038, offset: new THREE.Vector3(0.6, 1, 2+0.1) });		
+		pl_ugol_45_1({ r1: '63', m1: 0.042, offset: new THREE.Vector3(0.6, 1, 2+0.0) });		
 	}	
-	
-	
-	if(1==1)
-	{
-		pl_ugol_45_1({ inch: '20', dlina: 0.021, offset: new THREE.Vector3(0.6, 1, 2+0.5) });
-		pl_ugol_45_1({ inch: '25', dlina: 0.024, offset: new THREE.Vector3(0.6, 1, 2+0.4) });
-		pl_ugol_45_1({ inch: '32', dlina: 0.028, offset: new THREE.Vector3(0.6, 1, 2+0.3) });
-		pl_ugol_45_1({ inch: '40', dlina: 0.035, offset: new THREE.Vector3(0.6, 1, 2+0.2) });
-		pl_ugol_45_1({ inch: '50', dlina: 0.038, offset: new THREE.Vector3(0.6, 1, 2+0.1) });
-		pl_ugol_45_1({ inch: '63', dlina: 0.042, offset: new THREE.Vector3(0.6, 1, 2+0.0) });
-	}
 	
 	
 	if(1==1)
@@ -196,49 +190,45 @@ function cr_obj_cat()
 	
 	if(1==1)
 	{
-		pl_perehod_rezba_n_1({inch: '20', rezba: '1/2', dlina: 0.036, offset: new THREE.Vector3(0.8, 1, 2+1.3)});
-		pl_perehod_rezba_n_1({inch: '20', rezba: '3/4', dlina: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.2)});
-		pl_perehod_rezba_n_1({inch: '25', rezba: '1/2', dlina: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.1)});
-		pl_perehod_rezba_n_1({inch: '25', rezba: '3/4', dlina: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.0)});
-		pl_perehod_rezba_n_1({inch: '32', rezba: '3/4', dlina: 0.043, offset: new THREE.Vector3(0.8, 1, 2+0.9)});
-		pl_perehod_rezba_n_1({inch: '32', rezba: '1', dlina: 0.049, offset: new THREE.Vector3(0.8, 1, 2+0.8)});  		
+		pl_perehod_rezba_1({ side: 'n', r1: '20', r2: '1/2', m1: 0.036, offset: new THREE.Vector3(0.8, 1, 2+1.3) });
+		pl_perehod_rezba_1({ side: 'n', r1: '20', r2: '3/4', m1: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.2) });
+		pl_perehod_rezba_1({ side: 'n', r1: '25', r2: '1/2', m1: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.1) });
+		pl_perehod_rezba_1({ side: 'n', r1: '25', r2: '3/4', m1: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.0) });
+		pl_perehod_rezba_1({ side: 'n', r1: '32', r2: '3/4', m1: 0.043, offset: new THREE.Vector3(0.8, 1, 2+0.9) });
+		pl_perehod_rezba_1({ side: 'n', r1: '32', r2: '1', m1: 0.049, offset: new THREE.Vector3(0.8, 1, 2+0.8) });
+		
+		pl_perehod_rezba_1({ side: 'v', r1: '20', r2: '1/2', m1: 0.036, offset: new THREE.Vector3(0.8, 1, 2+2.0) });
+		pl_perehod_rezba_1({ side: 'v', r1: '20', r2: '3/4', m1: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.9) });
+		pl_perehod_rezba_1({ side: 'v', r1: '25', r2: '1/2', m1: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.8) });
+		pl_perehod_rezba_1({ side: 'v', r1: '25', r2: '3/4', m1: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.7) });
+		pl_perehod_rezba_1({ side: 'v', r1: '32', r2: '3/4', m1: 0.043, offset: new THREE.Vector3(0.8, 1, 2+1.6) });
+		pl_perehod_rezba_1({ side: 'v', r1: '32', r2: '1', m1: 0.049, offset: new THREE.Vector3(0.8, 1, 2+1.5) });		 		
 	}
 	
-	if(1==1)
-	{
-		pl_perehod_rezba_v_1({inch: '20', rezba: '1/2', dlina: 0.036, offset: new THREE.Vector3(0.8, 1, 2+2.0)});
-		pl_perehod_rezba_v_1({inch: '20', rezba: '3/4', dlina: 0.038, offset: new THREE.Vector3(0.8, 1, 2+1.9)});
-		pl_perehod_rezba_v_1({inch: '25', rezba: '1/2', dlina: 0.039, offset: new THREE.Vector3(0.8, 1, 2+1.8)});
-		pl_perehod_rezba_v_1({inch: '25', rezba: '3/4', dlina: 0.041, offset: new THREE.Vector3(0.8, 1, 2+1.7)});
-		pl_perehod_rezba_v_1({inch: '32', rezba: '3/4', dlina: 0.043, offset: new THREE.Vector3(0.8, 1, 2+1.6)});
-		pl_perehod_rezba_v_1({inch: '32', rezba: '1', dlina: 0.049, offset: new THREE.Vector3(0.8, 1, 2+1.5)});  		
-	}	
-	
 	
 	if(1==1)
 	{
-		pl_mufta_1({inch_1: '25', inch_2: '20', dlina: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.3)});
-		pl_mufta_1({inch_1: '32', inch_2: '20', dlina: 0.043, offset: new THREE.Vector3(1.0, 1, 2+1.2)});
-		pl_mufta_1({inch_1: '32', inch_2: '25', dlina: 0.045, offset: new THREE.Vector3(1.0, 1, 2+1.1)});
-		pl_mufta_1({inch_1: '40', inch_2: '20', dlina: 0.044, offset: new THREE.Vector3(1.0, 1, 2+1.0)});
-		pl_mufta_1({inch_1: '40', inch_2: '25', dlina: 0.045, offset: new THREE.Vector3(1.0, 1, 2+0.9)});
-		pl_mufta_1({inch_1: '40', inch_2: '32', dlina: 0.048, offset: new THREE.Vector3(1.0, 1, 2+0.8)});
-		pl_mufta_1({inch_1: '50', inch_2: '20', dlina: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.7)});
-		pl_mufta_1({inch_1: '50', inch_2: '25', dlina: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.6)});
-		pl_mufta_1({inch_1: '50', inch_2: '32', dlina: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.5)});
-		pl_mufta_1({inch_1: '50', inch_2: '40', dlina: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.4)});
-		pl_mufta_1({inch_1: '63', inch_2: '25', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.3)});
-		pl_mufta_1({inch_1: '63', inch_2: '32', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.2)});
-		pl_mufta_1({inch_1: '63', inch_2: '40', dlina: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.1)});
-		pl_mufta_1({inch_1: '63', inch_2: '50', dlina: 0.067, offset: new THREE.Vector3(1.0, 1, 2+0.0)});
-		
-		
-		pl_mufta_1({inch_1: '20', inch_2: '20', dlina: 0.032, offset: new THREE.Vector3(1.0, 1, 2+1.5)});
-		pl_mufta_1({inch_1: '25', inch_2: '25', dlina: 0.035, offset: new THREE.Vector3(1.0, 1, 2+1.6)});
-		pl_mufta_1({inch_1: '32', inch_2: '32', dlina: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.7)});
-		pl_mufta_1({inch_1: '40', inch_2: '40', dlina: 0.046, offset: new THREE.Vector3(1.0, 1, 2+1.8)});
-		pl_mufta_1({inch_1: '50', inch_2: '50', dlina: 0.052, offset: new THREE.Vector3(1.0, 1, 2+1.9)});
-		pl_mufta_1({inch_1: '63', inch_2: '63', dlina: 0.060, offset: new THREE.Vector3(1.0, 1, 2+2.0)});		
+		pl_mufta_1({r1: '25', r2: '20', m1: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.3)});
+		pl_mufta_1({r1: '32', r2: '20', m1: 0.043, offset: new THREE.Vector3(1.0, 1, 2+1.2)});
+		pl_mufta_1({r1: '32', r2: '25', m1: 0.045, offset: new THREE.Vector3(1.0, 1, 2+1.1)});
+		pl_mufta_1({r1: '40', r2: '20', m1: 0.044, offset: new THREE.Vector3(1.0, 1, 2+1.0)});
+		pl_mufta_1({r1: '40', r2: '25', m1: 0.045, offset: new THREE.Vector3(1.0, 1, 2+0.9)});
+		pl_mufta_1({r1: '40', r2: '32', m1: 0.048, offset: new THREE.Vector3(1.0, 1, 2+0.8)});
+		pl_mufta_1({r1: '50', r2: '20', m1: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.7)});
+		pl_mufta_1({r1: '50', r2: '25', m1: 0.055, offset: new THREE.Vector3(1.0, 1, 2+0.6)});
+		pl_mufta_1({r1: '50', r2: '32', m1: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.5)});
+		pl_mufta_1({r1: '50', r2: '40', m1: 0.056, offset: new THREE.Vector3(1.0, 1, 2+0.4)});
+		pl_mufta_1({r1: '63', r2: '25', m1: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.3)});
+		pl_mufta_1({r1: '63', r2: '32', m1: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.2)});
+		pl_mufta_1({r1: '63', r2: '40', m1: 0.065, offset: new THREE.Vector3(1.0, 1, 2+0.1)});
+		pl_mufta_1({r1: '63', r2: '50', m1: 0.067, offset: new THREE.Vector3(1.0, 1, 2+0.0)});
+
+		pl_mufta_1({r1: '20', r2: '20', m1: 0.032, offset: new THREE.Vector3(1.0, 1, 2+1.5)});
+		pl_mufta_1({r1: '25', r2: '25', m1: 0.035, offset: new THREE.Vector3(1.0, 1, 2+1.6)});
+		pl_mufta_1({r1: '32', r2: '32', m1: 0.039, offset: new THREE.Vector3(1.0, 1, 2+1.7)});
+		pl_mufta_1({r1: '40', r2: '40', m1: 0.046, offset: new THREE.Vector3(1.0, 1, 2+1.8)});
+		pl_mufta_1({r1: '50', r2: '50', m1: 0.052, offset: new THREE.Vector3(1.0, 1, 2+1.9)});
+		pl_mufta_1({r1: '63', r2: '63', m1: 0.060, offset: new THREE.Vector3(1.0, 1, 2+2.0)});		
 	}
 
 	if(1==1)

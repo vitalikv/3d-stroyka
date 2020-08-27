@@ -168,7 +168,8 @@ function crFormSleeve_1(cdm)
 	var geometry = cdm.g;
 	var pos = (cdm.pos) ? cdm.pos : { x: 0, y: 0, z: 0 };
 	var rot = (cdm.rot) ? cdm.rot : { x: 0, y: 0, z: 0 };
-	
+	if(cdm.pos1) { var pos1 = cdm.pos1; }
+		
 	var dlina = cdm.dlina;  
 	var d_n1 = (cdm.diameter_nr) ? cdm.diameter_nr : false;
 	var d_v1 = (cdm.diameter_vn) ? cdm.diameter_vn : false;
@@ -189,13 +190,17 @@ function crFormSleeve_1(cdm)
 		var infO = {r1: d_n1/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2} };
 		if(d_n2) { infO.r2 = d_n2/2; }
 		arrG[0] = crCild_2( infO );
+		
+		if(pos1) arrG[0].translate(pos1.x, pos1.y, pos1.z);
 	}	
 
 	// фтулка внутринняя 
 	{		
 		var infO = {r1: d_v1/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2} };
 		if(d_v2) { infO.r2 = d_v2/2; }
-		arrG[1] = crCild_2( infO );				
+		arrG[1] = crCild_2( infO );
+
+		if(pos1) arrG[1].translate(pos1.x, pos1.y, pos1.z);
 	}
 	
 	// круг с отверстием (начало)
@@ -205,7 +210,9 @@ function crFormSleeve_1(cdm)
 		arrG[2] = crCircle_2(infO);
 		
 		arrG[2].rotateY(Math.PI/2);
-		arrG[2].translate(-dlina/2, 0, 0);			
+		arrG[2].translate(-dlina/2, 0, 0);
+
+		if(pos1) arrG[2].translate(pos1.x, pos1.y, pos1.z);
 	}
 
 	// круг с отверстием (конец)
@@ -214,7 +221,9 @@ function crFormSleeve_1(cdm)
 		arrG[3] = crCircle_2(infO);
 		
 		arrG[3].rotateY(Math.PI/2);
-		arrG[3].translate(dlina/2, 0, 0);		 		
+		arrG[3].translate(dlina/2, 0, 0);
+
+		if(pos1) arrG[3].translate(pos1.x, pos1.y, pos1.z);
 	}
 	
 	
@@ -225,12 +234,18 @@ function crFormSleeve_1(cdm)
 		arrG[i].rotateZ(rot.z);		
 		arrG[i].translate(pos.x, pos.y, pos.z);	
 	}
-
+	
+	
+	arrG[0].computeBoundingSphere();
+	var posC = arrG[0].boundingSphere.center.clone()	
+		
 	
 	geometry.merge(arrG[0], arrG[0].matrix, ind[0]);
 	geometry.merge(arrG[1], arrG[1].matrix, ind[1]);
 	geometry.merge(arrG[2], arrG[2].matrix, ind[2]);
-	geometry.merge(arrG[3], arrG[3].matrix, ind[3]);	
+	geometry.merge(arrG[3], arrG[3].matrix, ind[3]);
+
+	return { pos: posC };
 }
 
 

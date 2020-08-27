@@ -287,19 +287,16 @@ function disposeNode(node)
 			if(node.material instanceof Array) { materialArray = node.material; }
 			else { materialArray = [node.material]; }
 			
-			if(materialArray) 
+			materialArray.forEach(function (mtrl, idx) 
 			{
-				materialArray.forEach(function (mtrl, idx) 
-				{
-					if (mtrl.map) mtrl.map.dispose();
-					if (mtrl.lightMap) mtrl.lightMap.dispose();
-					if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-					if (mtrl.normalMap) mtrl.normalMap.dispose();
-					if (mtrl.specularMap) mtrl.specularMap.dispose();
-					if (mtrl.envMap) mtrl.envMap.dispose();
-					mtrl.dispose();
-				});
-			}
+				if (mtrl.map) mtrl.map.dispose();
+				if (mtrl.lightMap) mtrl.lightMap.dispose();
+				if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+				if (mtrl.normalMap) mtrl.normalMap.dispose();
+				if (mtrl.specularMap) mtrl.specularMap.dispose();
+				if (mtrl.envMap) mtrl.envMap.dispose();
+				mtrl.dispose();
+			});
 		}
 	}
 }
