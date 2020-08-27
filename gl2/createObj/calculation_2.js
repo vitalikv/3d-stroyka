@@ -75,8 +75,8 @@ function sizeTubePP(cdm)
 	else if (size == "110") { d = 110; t = 20.8; }		
 
 
-	inf.n = (d + t*1.4);		// нр. резьба (диаметр)
-	inf.v = d;		// вн. стенка (диаметр)
+	inf.n = (d + t*1.4);	// нр. (диаметр)
+	inf.v = d;				// вн. (диаметр)
 
 
 	inf.n = Math.round(inf.n * 10) / 10000;
@@ -84,6 +84,39 @@ function sizeTubePP(cdm)
 	
 	return inf;
 }
+
+
+
+// размер металлопластиковой трубы
+function sizeTubeMP(cdm)
+{
+	var size = cdm.size;
+	var side = cdm.side;
+	
+	// d диаметр трубы
+	// t толщина стенки
+
+	var inf = {n: 0, v: 0};
+	var d = 0;
+	var t = 0.5;
+	
+	if (size == "16") { d = 16; }
+	else if (size == "20") { d = 20; }
+	else if (size == "26") { d = 26; }
+	else if (size == "32") { d = 32; }
+	else if (size == "40") { d = 40; }		
+
+
+	inf.n = (d + t*1.4);	// нр. (диаметр)
+	inf.v = d;				// вн. (диаметр)
+
+
+	inf.n = Math.round(inf.n * 10) / 10000;
+	inf.v = Math.round(inf.v * 10) / 10000;
+	
+	return inf;
+}
+
 
 
 

@@ -202,6 +202,10 @@ infProject.material.metal_1.specular.set(0xa3a3a3);
 infProject.material.metal_1_edge = infProject.material.metal_1.clone();
 infProject.material.metal_1_edge.flatShading = true;
 
+infProject.material.bronz_1 = new THREE.MeshPhongMaterial({ color: 0xb87c23, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.bronz_1.shininess = 100;
+infProject.material.bronz_1.specular.set(0xa3a3a3);
+
 infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0xc1c6c9, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_1.map.repeat.x = 900; 
 infProject.material.rezba_1.map.rotation = THREE.Math.degToRad( 2 );
@@ -209,6 +213,8 @@ infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping;
 infProject.material.rezba_1.map.wrapT = THREE.RepeatWrapping;
 infProject.material.rezba_1.shininess = 100;
 infProject.material.rezba_1.specular.set(0xa3a3a3);
+
+infProject.material.red_1 = new THREE.MeshPhongMaterial({ color: 0xbf2502, lightMap: lightMap_1, side: THREE.DoubleSide });
  
 
 infProject.geometry.circle = createCircleSpline();

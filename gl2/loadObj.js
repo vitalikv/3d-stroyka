@@ -257,7 +257,7 @@ function addObjInScene(inf, cdm)
 			{ 
 				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
-					child.visible = true;
+					//child.visible = true;
 				}
 			}
 		});
