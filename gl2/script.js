@@ -206,6 +206,9 @@ infProject.material.bronz_1 = new THREE.MeshPhongMaterial({ color: 0xb87c23, lig
 infProject.material.bronz_1.shininess = 100;
 infProject.material.bronz_1.specular.set(0xa3a3a3);
 
+infProject.material.bronz_1_edge = infProject.material.bronz_1.clone();
+infProject.material.bronz_1_edge.flatShading = true;
+
 infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0xc1c6c9, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_1.map.repeat.x = 900; 
 infProject.material.rezba_1.map.rotation = THREE.Math.degToRad( 2 );
@@ -213,6 +216,14 @@ infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping;
 infProject.material.rezba_1.map.wrapT = THREE.RepeatWrapping;
 infProject.material.rezba_1.shininess = 100;
 infProject.material.rezba_1.specular.set(0xa3a3a3);
+
+infProject.material.rezba_2 = new THREE.MeshPhongMaterial({ color: 0xb87c23, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.rezba_2.map.repeat.x = 900; 
+infProject.material.rezba_2.map.rotation = THREE.Math.degToRad( 2 );
+infProject.material.rezba_2.map.wrapS = THREE.RepeatWrapping; 
+infProject.material.rezba_2.map.wrapT = THREE.RepeatWrapping;
+infProject.material.rezba_2.shininess = 100;
+infProject.material.rezba_2.specular.set(0xa3a3a3);
 
 infProject.material.red_1 = new THREE.MeshPhongMaterial({ color: 0xbf2502, lightMap: lightMap_1, side: THREE.DoubleSide });
  

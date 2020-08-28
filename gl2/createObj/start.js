@@ -144,37 +144,71 @@ function cr_obj_cat()
 		pl_troinik_rezba_1({side: 'v', r1: '32', r2: '3/4', m1: 0.08, offset: new THREE.Vector3(0.2, 1, 2+1.6)});
 		pl_troinik_rezba_1({side: 'v', r1: '32', r2: '1', m1: 0.08, offset: new THREE.Vector3(0.2, 1, 2+1.5)});		
 	}
-	
-	
-	if(1==2)
+
+
+	if(1==1)
 	{
-		pl_ugol_90_1({r1: '20', m1: 0.026, offset: new THREE.Vector3(0.4, 1, 2+0.5)});
-		pl_ugol_90_1({r1: '25', m1: 0.030, offset: new THREE.Vector3(0.4, 1, 2+0.4) });
-		pl_ugol_90_1({r1: '32', m1: 0.037, offset: new THREE.Vector3(0.4, 1, 2+0.3) });
-		pl_ugol_90_1({r1: '40', m1: 0.044, offset: new THREE.Vector3(0.4, 1, 2+0.2) });
-		pl_ugol_90_1({r1: '50', m1: 0.053, offset: new THREE.Vector3(0.4, 1, 2+0.1) });
-		pl_ugol_90_1({r1: '63', m1: 0.06, offset: new THREE.Vector3(0.4, 1, 2+0.0) });
+		var arr = [];
+		arr[arr.length] = { r1: '20', m1: 0.026 };
+		arr[arr.length] = { r1: '25', m1: 0.030 };
+		arr[arr.length] = { r1: '32', m1: 0.037 };
+		arr[arr.length] = { r1: '40', m1: 0.044 };
+		arr[arr.length] = { r1: '50', m1: 0.053 };
+		arr[arr.length] = { r1: '63', m1: 0.06 };		
+	
+		var n = 0;
+		var step = 0.1;
+		var startPos = new THREE.Vector3(0.6, 1, 2+0.0);	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * n;
+			arr[i].offset = pos;
+			pl_ugol_90_1(arr[i]);
+			n++;
+		}
+		
+		var arr = [];		
+		arr[arr.length] = { r1: '20', m1: 0.021 };
+		arr[arr.length] = { r1: '25', m1: 0.024 };
+		arr[arr.length] = { r1: '32', m1: 0.028 };
+		arr[arr.length] = { r1: '40', m1: 0.035 };
+		arr[arr.length] = { r1: '50', m1: 0.038 };
+		arr[arr.length] = { r1: '63', m1: 0.042 };	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * n;
+			arr[i].offset = pos;
+			pl_ugol_45_1(arr[i]);
+			n++;
+		}		
 
-		pl_ugol_90_rezba_1({ side: 'n', r1: '20', r2: '1/2', m1: 0.026, offset: new THREE.Vector3(0.4, 1, 2+1.3) });
-		pl_ugol_90_rezba_1({ side: 'n', r1: '20', r2: '3/4', m1: 0.031, offset: new THREE.Vector3(0.4, 1, 2+1.2) });
-		pl_ugol_90_rezba_1({ side: 'n', r1: '25', r2: '1/2', m1: 0.030, offset: new THREE.Vector3(0.4, 1, 2+1.1) });
-		pl_ugol_90_rezba_1({ side: 'n', r1: '25', r2: '3/4', m1: 0.031, offset: new THREE.Vector3(0.4, 1, 2+1.0) });
-		pl_ugol_90_rezba_1({ side: 'n', r1: '32', r2: '3/4', m1: 0.036, offset: new THREE.Vector3(0.4, 1, 2+0.9) });
-		pl_ugol_90_rezba_1({ side: 'n', r1: '32', r2: '1', m1: 0.039, offset: new THREE.Vector3(0.4, 1, 2+0.8) });
-
-		pl_ugol_90_rezba_1({ side: 'v', r1: '20', r2: '1/2', m1: 0.026, offset: new THREE.Vector3(0.4, 1, 2+2.0) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '20', r2: '3/4', m1: 0.031, offset: new THREE.Vector3(0.4, 1, 2+1.9) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '25', r2: '1/2', m1: 0.030, offset: new THREE.Vector3(0.4, 1, 2+1.8) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '25', r2: '3/4', m1: 0.031, offset: new THREE.Vector3(0.4, 1, 2+1.7) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '32', r2: '3/4', m1: 0.036, offset: new THREE.Vector3(0.4, 1, 2+1.6) });
-		pl_ugol_90_rezba_1({ side: 'v', r1: '32', r2: '1', m1: 0.039, offset: new THREE.Vector3(0.4, 1, 2+1.5) });
-
-		pl_ugol_45_1({ r1: '20', m1: 0.021, offset: new THREE.Vector3(0.6, 1, 2+0.5) });
-		pl_ugol_45_1({ r1: '25', m1: 0.024, offset: new THREE.Vector3(0.6, 1, 2+0.4) });
-		pl_ugol_45_1({ r1: '32', m1: 0.028, offset: new THREE.Vector3(0.6, 1, 2+0.3) });
-		pl_ugol_45_1({ r1: '40', m1: 0.035, offset: new THREE.Vector3(0.6, 1, 2+0.2) });
-		pl_ugol_45_1({ r1: '50', m1: 0.038, offset: new THREE.Vector3(0.6, 1, 2+0.1) });		
-		pl_ugol_45_1({ r1: '63', m1: 0.042, offset: new THREE.Vector3(0.6, 1, 2+0.0) });		
+		var arr = [];
+		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.026 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '3/4', m1: 0.031 };
+		arr[arr.length] = { side: 'n', r1: '25', r2: '1/2', m1: 0.030 };
+		arr[arr.length] = { side: 'n', r1: '25', r2: '3/4', m1: 0.031 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '3/4', m1: 0.036 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '1', m1: 0.039 };
+		
+		arr[arr.length] = { side: 'v', r1: '20', r2: '1/2', m1: 0.026 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '3/4', m1: 0.031 };
+		arr[arr.length] = { side: 'v', r1: '25', r2: '1/2', m1: 0.030 };
+		arr[arr.length] = { side: 'v', r1: '25', r2: '3/4', m1: 0.031 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '3/4', m1: 0.036 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.039 };		
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * n;
+			arr[i].offset = pos;
+			pl_ugol_90_rezba_1(arr[i]);
+			n++;
+		}		
 	}	
 	
 	
@@ -254,55 +288,206 @@ function cr_obj_cat()
 	}
 	
 	
+	
 	if(1==1)
 	{
-		mpl_troinik_1({r1: '16', r2: '20', r3: '16', m1: 0.088, m2: 0.044, offset: new THREE.Vector3(0.35, 1, 2.5+0.5)});
-		mpl_troinik_1({r1: '16', r2: '16', r3: '20', m1: 0.088, m2: 0.044, offset: new THREE.Vector3(0.35, 1, 2.5+0.6)});
-		mpl_troinik_1({r1: '20', r2: '16', r3: '20', m1: 0.088, m2: 0.044, offset: new THREE.Vector3(0.35, 1, 2.5+0.7)});
-		mpl_troinik_1({r1: '16', r2: '20', r3: '20', m1: 0.088, m2: 0.044, offset: new THREE.Vector3(0.35, 1, 2.5+0.8)});
-		mpl_troinik_1({r1: '20', r2: '26', r3: '20', m1: 0.096, m2: 0.049, offset: new THREE.Vector3(0.35, 1, 2.5+0.9)});
+		var arr = [];
+		arr[arr.length] = { side: 'n', r1: '16', r2: '1/2', m1: 0.048 };
+		arr[arr.length] = { side: 'n', r1: '16', r2: '3/4', m1: 0.049 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.048 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '3/4', m1: 0.049 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '3/4', m1: 0.050 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '1', m1: 0.052 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '1', m1: 0.052 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '1 1/4', m1: 0.057 };
+		arr[arr.length] = { side: 'n', r1: '40', r2: '1', m1: 0.060 };
+		arr[arr.length] = { side: 'n', r1: '40', r2: '1 1/4', m1: 0.060 };
 		
-		mpl_troinik_1({r1: '26', r2: '16', r3: '26', m1: 0.097, m2: 0.046, offset: new THREE.Vector3(0.35, 1, 2.5+1.1)});
-		mpl_troinik_1({r1: '26', r2: '16', r3: '20', m1: 0.096, m2: 0.047, offset: new THREE.Vector3(0.35, 1, 2.5+1.2)});
-		mpl_troinik_1({r1: '26', r2: '20', r3: '20', m1: 0.097, m2: 0.048, offset: new THREE.Vector3(0.35, 1, 2.5+1.3)});
-		mpl_troinik_1({r1: '26', r2: '26', r3: '20', m1: 0.097, m2: 0.048, offset: new THREE.Vector3(0.35, 1, 2.5+1.4)});
-		mpl_troinik_1({r1: '26', r2: '20', r3: '16', m1: 0.097, m2: 0.048, offset: new THREE.Vector3(0.35, 1, 2.5+1.5)});
-		mpl_troinik_1({r1: '26', r2: '20', r3: '26', m1: 0.097, m2: 0.048, offset: new THREE.Vector3(0.35, 1, 2.5+1.6)});
+		arr[arr.length] = { side: 'v', r1: '16', r2: '1/2', m1: 0.048 };
+		arr[arr.length] = { side: 'v', r1: '16', r2: '3/4', m1: 0.049 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '1/2', m1: 0.048 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '3/4', m1: 0.049 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '3/4', m1: 0.050 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '1', m1: 0.052 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.052 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1 1/4', m1: 0.057 };
+		arr[arr.length] = { side: 'v', r1: '40', r2: '1', m1: 0.060 };
+		arr[arr.length] = { side: 'v', r1: '40', r2: '1 1/4', m1: 0.060 };	
 		
-		mpl_troinik_1({r1: '32', r2: '16', r3: '32', m1: 0.104, m2: 0.051, offset: new THREE.Vector3(0.35, 1, 2.5+1.8)});
-		mpl_troinik_1({r1: '32', r2: '20', r3: '32', m1: 0.104, m2: 0.051, offset: new THREE.Vector3(0.35, 1, 2.5+1.9)});
-		mpl_troinik_1({r1: '32', r2: '26', r3: '26', m1: 0.104, m2: 0.052, offset: new THREE.Vector3(0.35, 1, 2.5+2.0)});
-		mpl_troinik_1({r1: '32', r2: '26', r3: '32', m1: 0.104, m2: 0.052, offset: new THREE.Vector3(0.35, 1, 2.5+2.1)});
+		var step = 0.1;
+		var startPos = new THREE.Vector3(1.4, 1, 2+0.0);	
 		
-		mpl_troinik_1({r1: '32', r2: '32', r3: '26', m1: 0.104, m2: 0.052, offset: new THREE.Vector3(0.35, 1, 2.5+2.3)});
-		mpl_troinik_1({r1: '32', r2: '32', r3: '20', m1: 0.104, m2: 0.052, offset: new THREE.Vector3(0.35, 1, 2.5+2.4)});
-		mpl_troinik_1({r1: '32', r2: '20', r3: '26', m1: 0.104, m2: 0.051, offset: new THREE.Vector3(0.35, 1, 2.5+2.5)});
-		mpl_troinik_1({r1: '26', r2: '32', r3: '26', m1: 0.104, m2: 0.052, offset: new THREE.Vector3(0.35, 1, 2.5+2.6)});
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * i;
+			arr[i].offset = pos;
+			mpl_perehod_rezba_1(arr[i]);
+		}		
+	}
+	
 
-		
-		mpl_troinik_1({r1: '16', r2: '16', r3: '16', m1: 0.083, m2: 0.083/2, offset: new THREE.Vector3(0.35, 1, 2.5+0.3)});
-		mpl_troinik_1({r1: '20', r2: '20', r3: '20', m1: 0.088, m2: 0.088/2, offset: new THREE.Vector3(0.35, 1, 2.5+0.2)});
-		mpl_troinik_1({r1: '26', r2: '26', r3: '26', m1: 0.097, m2: 0.097/2, offset: new THREE.Vector3(0.35, 1, 2.5+0.1)});
-		mpl_troinik_1({r1: '32', r2: '32', r3: '32', m1: 0.112, m2: 0.112/2, offset: new THREE.Vector3(0.35, 1, 2.5+0.0)});		
-	}
-	
 	
 	if(1==1)
 	{
-		mpl_perehod_1({r1: '16', r3: '16', m1: 0.060, offset: new THREE.Vector3(0.5, 1, 2.5+1.4)});
-		mpl_perehod_1({r1: '20', r3: '20', m1: 0.060, offset: new THREE.Vector3(0.5, 1, 2.5+1.3)});
-		mpl_perehod_1({r1: '26', r3: '26', m1: 0.062, offset: new THREE.Vector3(0.5, 1, 2.5+1.2)});
-		mpl_perehod_1({r1: '32', r3: '32', m1: 0.063, offset: new THREE.Vector3(0.5, 1, 2.5+1.1)});
-		mpl_perehod_1({r1: '40', r3: '40', m1: 0.079, offset: new THREE.Vector3(0.5, 1, 2.5+1.0)});
+		var arr = [];
+		arr[arr.length] = { r1: '16', r3: '16', m1: 0.060 };
+		arr[arr.length] = { r1: '20', r3: '20', m1: 0.060 };
+		arr[arr.length] = { r1: '26', r3: '26', m1: 0.062 };
+		arr[arr.length] = { r1: '32', r3: '32', m1: 0.063 };
+		arr[arr.length] = { r1: '40', r3: '40', m1: 0.079 };
 		
-		mpl_perehod_1({r1: '20', r3: '16', m1: 0.060, offset: new THREE.Vector3(0.5, 1, 2.5+0.8)});
-		mpl_perehod_1({r1: '26', r3: '16', m1: 0.061, offset: new THREE.Vector3(0.5, 1, 2.5+0.7)});
-		mpl_perehod_1({r1: '26', r3: '20', m1: 0.061, offset: new THREE.Vector3(0.5, 1, 2.5+0.6)});
-		mpl_perehod_1({r1: '32', r3: '16', m1: 0.062, offset: new THREE.Vector3(0.5, 1, 2.5+0.5)});
-		mpl_perehod_1({r1: '32', r3: '20', m1: 0.062, offset: new THREE.Vector3(0.5, 1, 2.5+0.4)});
-		mpl_perehod_1({r1: '32', r3: '26', m1: 0.063, offset: new THREE.Vector3(0.5, 1, 2.5+0.3)});
+		arr[arr.length] = { r1: '20', r3: '16', m1: 0.060 };
+		arr[arr.length] = { r1: '26', r3: '16', m1: 0.061 };
+		arr[arr.length] = { r1: '26', r3: '20', m1: 0.061 };
+		arr[arr.length] = { r1: '32', r3: '16', m1: 0.062 };
+		arr[arr.length] = { r1: '32', r3: '20', m1: 0.062 };
+		arr[arr.length] = { r1: '32', r3: '26', m1: 0.063 };
+
+		var step = 0.1;
+		var startPos = new THREE.Vector3(1.6, 1, 2+0.0);	
 		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * i;
+			arr[i].offset = pos;
+			mpl_perehod_1(arr[i]);
+		}		
+	}	
+	
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '16', r2: '20', r3: '16', m1: 0.088, m2: 0.044 };
+		arr[arr.length] = { r1: '16', r2: '16', r3: '20', m1: 0.088, m2: 0.044 };
+		arr[arr.length] = { r1: '20', r2: '16', r3: '20', m1: 0.088, m2: 0.044 };
+		arr[arr.length] = { r1: '16', r2: '20', r3: '20', m1: 0.088, m2: 0.044 };
+		arr[arr.length] = { r1: '20', r2: '26', r3: '20', m1: 0.096, m2: 0.049 };
+		
+		arr[arr.length] = { r1: '26', r2: '16', r3: '26', m1: 0.097, m2: 0.046 };
+		arr[arr.length] = { r1: '26', r2: '16', r3: '20', m1: 0.096, m2: 0.047 };
+		arr[arr.length] = { r1: '26', r2: '20', r3: '20', m1: 0.097, m2: 0.048 };
+		arr[arr.length] = { r1: '26', r2: '26', r3: '20', m1: 0.097, m2: 0.048 };
+		arr[arr.length] = { r1: '26', r2: '20', r3: '16', m1: 0.097, m2: 0.048 };
+		arr[arr.length] = { r1: '26', r2: '20', r3: '26', m1: 0.097, m2: 0.048 };
+		
+		arr[arr.length] = { r1: '32', r2: '16', r3: '32', m1: 0.104, m2: 0.051 };
+		arr[arr.length] = { r1: '32', r2: '20', r3: '32', m1: 0.104, m2: 0.051 };
+		arr[arr.length] = { r1: '32', r2: '26', r3: '26', m1: 0.104, m2: 0.052 };
+		arr[arr.length] = { r1: '32', r2: '26', r3: '32', m1: 0.104, m2: 0.052 };		
+		
+		arr[arr.length] = { r1: '32', r2: '32', r3: '26', m1: 0.104, m2: 0.052 };
+		arr[arr.length] = { r1: '32', r2: '32', r3: '20', m1: 0.104, m2: 0.052 };
+		arr[arr.length] = { r1: '32', r2: '20', r3: '26', m1: 0.104, m2: 0.051 };
+		arr[arr.length] = { r1: '26', r2: '32', r3: '26', m1: 0.104, m2: 0.052 };		
+
+		arr[arr.length] = { r1: '16', r2: '16', r3: '16', m1: 0.083, m2: 0.083/2 };
+		arr[arr.length] = { r1: '20', r2: '20', r3: '20', m1: 0.088, m2: 0.088/2 };
+		arr[arr.length] = { r1: '26', r2: '26', r3: '26', m1: 0.097, m2: 0.097/2 };
+		arr[arr.length] = { r1: '32', r2: '32', r3: '32', m1: 0.112, m2: 0.112/2 };				
+
+
+		var step = 0.1;
+		var startPos = new THREE.Vector3(1.8, 1, 2+0.0);	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * i;
+			arr[i].offset = pos;
+			mpl_troinik_1(arr[i]);
+		}		
 	}
+
+
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { side: 'n', r1: '16', r2: '1/2', r3: '16', m1: 0.083, m2: 0.028 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', r3: '20', m1: 0.088, m2: 0.029 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '3/4', r3: '20', m1: 0.088, m2: 0.032 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '1/2', r3: '26', m1: 0.097, m2: 0.032 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '3/4', r3: '26', m1: 0.097, m2: 0.034 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '1', r3: '26', m1: 0.097, m2: 0.037 };		
+		arr[arr.length] = { side: 'n', r1: '32', r2: '3/4', r3: '32', m1: 0.104, m2: 0.035 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '1', r3: '32', m1: 0.104, m2: 0.039 };		
+
+		arr[arr.length] = { side: 'v', r1: '16', r2: '1/2', r3: '16', m1: 0.083, m2: 0.028 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '1/2', r3: '20', m1: 0.088, m2: 0.029 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '3/4', r3: '20', m1: 0.088, m2: 0.032 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '1/2', r3: '26', m1: 0.097, m2: 0.032 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '3/4', r3: '26', m1: 0.097, m2: 0.034 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '1', r3: '26', m1: 0.097, m2: 0.037 };		
+		arr[arr.length] = { side: 'v', r1: '32', r2: '3/4', r3: '32', m1: 0.104, m2: 0.035 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1', r3: '32', m1: 0.104, m2: 0.039 };	
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1 1/4', r3: '32', m1: 0.122, m2: 0.046 };
+		arr[arr.length] = { side: 'v', r1: '40', r2: '1', r3: '40', m1: 0.124, m2: 0.046 };
+		
+		var step = 0.1;
+		var startPos = new THREE.Vector3(2.0, 1, 2+0.0);	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * i;
+			arr[i].offset = pos;
+			mpl_troinik_rezba_1(arr[i]);
+		}		
+	}
+	
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '16', m1: 0.042 };
+		arr[arr.length] = { r1: '20', m1: 0.044 };
+		arr[arr.length] = { r1: '26', m1: 0.049 };
+		arr[arr.length] = { r1: '32', m1: 0.052 };
+		arr[arr.length] = { r1: '40', m1: 0.063 };
+		
+		var n = 0;
+		var step = 0.1;
+		var startPos = new THREE.Vector3(0.4, 1, 2+0.0);	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * n;
+			arr[i].offset = pos;
+			mpl_ugol_1(arr[i]);
+			n++;
+		}
+		
+		var arr = [];
+		arr[arr.length] = { side: 'n', r1: '16', r2: '1/2', m1: 0.042, m2: 0.028 };		
+		arr[arr.length] = { side: 'n', r1: '16', r2: '3/4', m1: 0.043, m2: 0.030 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.044, m2: 0.029 };
+		arr[arr.length] = { side: 'n', r1: '20', r2: '3/4', m1: 0.044, m2: 0.032 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '3/4', m1: 0.049, m2: 0.034 };
+		arr[arr.length] = { side: 'n', r1: '26', r2: '1', m1: 0.049, m2: 0.037 };
+		arr[arr.length] = { side: 'n', r1: '32', r2: '1', m1: 0.051, m2: 0.039 };
+
+		arr[arr.length] = { side: 'v', r1: '16', r2: '1/2', m1: 0.042, m2: 0.028 };		
+		arr[arr.length] = { side: 'v', r1: '16', r2: '3/4', m1: 0.043, m2: 0.030 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '1/2', m1: 0.044, m2: 0.029 };
+		arr[arr.length] = { side: 'v', r1: '20', r2: '3/4', m1: 0.044, m2: 0.032 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '3/4', m1: 0.049, m2: 0.034 };
+		arr[arr.length] = { side: 'v', r1: '26', r2: '1', m1: 0.049, m2: 0.037 };
+		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.051, m2: 0.039 };
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			var pos = startPos.clone();
+			pos.z += step * n;
+			arr[i].offset = pos;
+			mpl_ugol_rezba_1(arr[i]);
+			n++;
+		}			
+	}
+
+	
 	
 	
 	//createTestObj();	

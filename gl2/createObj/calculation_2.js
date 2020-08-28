@@ -242,6 +242,7 @@ function crFormSleeve_1(cdm)
 		if(d_n2) { infO.radius_nr = d_n2/2; infO.radius_vn = d_v2/2; }
 		arrG[2] = crCircle_2(infO);
 		
+		arrG[2].rotateZ(Math.PI/2);
 		arrG[2].rotateY(Math.PI/2);
 		arrG[2].translate(-dlina/2, 0, 0);
 
@@ -253,6 +254,7 @@ function crFormSleeve_1(cdm)
 		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn};		
 		arrG[3] = crCircle_2(infO);
 		
+		arrG[3].rotateZ(Math.PI/2);
 		arrG[3].rotateY(Math.PI/2);
 		arrG[3].translate(dlina/2, 0, 0);
 
