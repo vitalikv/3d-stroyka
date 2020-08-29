@@ -7,109 +7,96 @@
 // стальной тройник
 function st_krestovina_1(cdm) 
 {	
-	var size = sizeRezba({size: cdm.inch, side: 'v'}); 
-	var diameter_nr = size.n;
-	var diameter_vn = size.v;
+	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
 	
-	var length_1 = cdm.dlina;
-	var d = size.n;	
-	  
-	var dlina_1 = cdm.dlina;
-	
+	var m1 = cdm.m1; 	
 	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
-	var x_2 = dlina_1 - x_1 * 2;
-	
-	var x_4 = diameter_nr / 10;
-	var x_5 = diameter_nr / 10;
-	
-	var name = cdm.inch+'(в)';
-	
-	var group = new THREE.Group();	
-	var arrP = [];
-	
-	var rezba_vn = { nr: infProject.material.metal_1, vn: infProject.material.rezba_1, cap: infProject.material.metal_1 };
-	var metal_1 = { nr: infProject.material.metal_1, vn: infProject.material.metal_1, cap: infProject.material.metal_1 };
+	var x_2 = m1 - x_1 * 2;
+	var w22 = d1.n / 10;
+	var kf = 0.0001;		
 
+	var geom = new THREE.Geometry();
 	
 	// труба горизонтальная
 	{
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: rezba_vn };	
-		var obj = createSleeveObj_2(inf);		
-		obj.position.x -= (x_2 + x_1)/2;
-		obj.rotation.y += THREE.Math.degToRad(180);		
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name };		
-		group.add( obj );
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0,1,0,0] };
+		inf.pos = { x: -(x_2 + x_1)/2, y: 0, z: 0 };
+		var poM1 = crFormSleeve_1(inf);					
 		
-		var inf = {dlina: x_2, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: metal_1 };
-		var obj = createSleeveObj_2(inf);		
-		group.add( obj );
+		var inf = { g: geom, dlina: x_2, diameter_nr: d1.n, diameter_vn: d1.v };
+		crFormSleeve_1(inf);						
 
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: rezba_vn };
-		var obj = createSleeveObj_2(inf);		
-		obj.position.x += (x_2 + x_1)/2;		
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name };		
-		group.add( obj );		
-	}
-	
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0,1,0,0] };
+		inf.pos = { x: (x_2 + x_1)/2, y: 0, z: 0 };
+		var poM2 = crFormSleeve_1(inf);							
+	}		
+
 	// труба 90 градусов
 	{	
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: rezba_vn };
-		var obj = createSleeveObj_2(inf);		
-		obj.position.y -= (x_2 + x_1)/2;
-		obj.rotation.set(Math.PI, 0, Math.PI/2);
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name };
-		group.add( obj );
-
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0,1,0,0] };
+		inf.pos = { x: 0, y: -(x_2 + x_1)/2, z: 0 };
+		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
+		var poM3 = crFormSleeve_1(inf);
 		
-		var inf = {dlina: x_2, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: metal_1 };
-		var obj = createSleeveObj_2(inf);			
-		obj.rotation.set(0, 0, Math.PI/2);	
-		group.add( obj );
+		var inf = { g: geom, dlina: x_2, diameter_nr: d1.n, diameter_vn: d1.v };
+		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
+		crFormSleeve_1(inf);		
 		
-		var inf = {dlina: x_1, diameter_nr: diameter_nr, diameter_vn: diameter_vn, material: rezba_vn }; 
-		var obj = createSleeveObj_2(inf);		
-		obj.position.y += (x_2 + x_1)/2;
-		obj.rotation.set(0, Math.PI, Math.PI/2);
-		arrP[arrP.length] = { pos: obj.position.clone(), q: obj.quaternion.clone(), name: name };		
-		group.add( obj );
-	}	
-
-	
-	// кольца
-	{
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
-		var obj = createSleeveObj_2(inf);		
-		obj.position.x += dlina_1/2;
-		group.add( obj );
-
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
-		var obj = createSleeveObj_2(inf);		
-		obj.position.x -= dlina_1/2;
-		group.add( obj );		
-		
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
-		var obj = createSleeveObj_2(inf);				
-		obj.position.y += dlina_1/2;
-		obj.rotation.set(0, 0, Math.PI/2);
-		group.add( obj );
-
-		var inf = {dlina: x_4, diameter_nr: diameter_nr + x_5, diameter_vn: diameter_nr, material: metal_1 };
-		var obj = createSleeveObj_2(inf);				
-		obj.position.y -= dlina_1/2;
-		obj.rotation.set(0, 0, Math.PI/2);
-		group.add( obj );		
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0,1,0,0] }; 
+		inf.pos = { x: 0, y: (x_2 + x_1)/2, z: 0 };
+		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
+		var poM4 = crFormSleeve_1(inf);		
 	}
 
+	// кольцо
+	{
+		var inf = { g: geom, dlina: w22, diameter_nr: d1.n + w22, diameter_vn: d1.v + kf };	
+		inf.pos = { x: -(x_2/2 + x_1 - w22/2), y: 0, z: 0 };
+		crFormSleeve_1(inf);
+
+		var inf = { g: geom, dlina: w22, diameter_nr: d1.n + w22, diameter_vn: d1.v + kf };	
+		inf.pos = { x: (x_2/2 + x_1 - w22/2), y: 0, z: 0 };
+		crFormSleeve_1(inf);
+
+		var inf = { g: geom, dlina: w22, diameter_nr: d1.n + w22, diameter_vn: d1.v + kf };	
+		inf.pos = { x: 0, y: -(x_2/2 + x_1 - w22/2), z: 0 };
+		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
+		crFormSleeve_1(inf);
+
+		var inf = { g: geom, dlina: w22, diameter_nr: d1.n + w22, diameter_vn: d1.v + kf };	
+		inf.pos = { x: 0, y: (x_2/2 + x_1 - w22/2), z: 0 };
+		inf.rot = { x: 0, y: 0, z: Math.PI/2 };
+		crFormSleeve_1(inf);		
+	}
+
+
 	
+	
+	var mat = [];
+	mat[0] = infProject.material.metal_1;
+	mat[1] = infProject.material.rezba_1;
+	
+	var group = new THREE.Mesh(geom, mat);		
 	var obj = getBoundObject_1({obj: group});
+	
+	
+	var name = cdm.r1;
+	
+	var arrP = [];
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name };
+	arrP[arrP.length] = { pos: poM3.pos, rot: new THREE.Vector3(0, Math.PI, -Math.PI/2), name: name };
+	arrP[arrP.length] = { pos: poM4.pos, rot: new THREE.Vector3(0, Math.PI, Math.PI/2), name: name };
 	
 	for ( var i = 0; i < arrP.length; i++ )
 	{
-		cr_CenterPoint({obj: obj, pos: arrP[i].pos, q: arrP[i].q, name: arrP[i].name, id: i});
-	}
+		arrP[i].obj = obj;
+		arrP[i].id = i;
+		cr_CenterPoint(arrP[i]);
+	}	
 	
 	scene.add( obj );
 	obj.position.copy(offset);	
@@ -125,7 +112,6 @@ function st_krestovina_1(cdm)
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	
 }
-
 
 
 

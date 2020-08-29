@@ -98,7 +98,7 @@ function mpl_perehod_1(cdm)
 	{
 		var inf = { g: geom, dlina: w3, diameter_nr: d3.n, diameter_vn: d3.v, ind: [2, 2, 2, 2] };
 		inf.pos = { x: (s3*2 + w3/2), y: 0, z: 0 };
-		var poM3 = crFormSleeve_1(inf);	
+		var poM2 = crFormSleeve_1(inf);	
 
 		var inf = { g: geom, dlina: w3, diameter_nr: tb3.n, diameter_vn: tb3.v };
 		inf.pos = { x: (s3*2 + w3/2), y: 0, z: 0 };
@@ -120,7 +120,7 @@ function mpl_perehod_1(cdm)
 	
 	var arrP = [];
 	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
-	arrP[arrP.length] = { pos: poM3.pos, rot: new THREE.Vector3(0, 0, 0), name: name2 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name2 };
 
 	
 	for ( var i = 0; i < arrP.length; i++ )

@@ -121,78 +121,6 @@ function sizeTubeMP(cdm)
 
 
 
-// втулка
-function createSleeveObj_2(cdm) 
-{	
-	var dlina = cdm.dlina;  
-	var d_n1 = (cdm.diameter_nr) ? cdm.diameter_nr : false;
-	var d_v1 = (cdm.diameter_vn) ? cdm.diameter_vn : false;
-	var d_n2 = (cdm.d_n2) ? cdm.d_n2 : false;
-	var d_v2 = (cdm.d_v2) ? cdm.d_v2 : false;	
-	var edge_nr = (cdm.edge_nr) ? cdm.edge_nr : 32;
-	var edge_vn = (cdm.edge_vn) ? cdm.edge_vn : 32;
-	var rezba_nr = cdm.rezba_nr;
-	var rezba_vn = cdm.rezba_vn;
- 		
-	
-	if(cdm.material)
-	{
-		var material_nr = (cdm.material.nr) ? cdm.material.nr : null;
-		var material_vn = (cdm.material.vn) ? cdm.material.vn : null;
-		var material_cap = (cdm.material.cap) ? cdm.material.cap : null;		
-	}
-	
-	var mat_default = new THREE.MeshPhongMaterial({ color: 0x0000ff, lightMap: lightMap_1, side: THREE.DoubleSide });
-		
-	
-	var p = [new THREE.Vector3(-dlina/2,0,0), new THREE.Vector3(dlina/2,0,0)];
-	
-	// фтулка наружная
-	{
-		var infO = {r1: d_n1/2, length: dlina, edge: edge_nr, geom: {rotateZ: -Math.PI/2, BufferG: true} };
-		if(d_n2) { infO.r2 = d_n2/2; }
-		var geom1 = crCild_2( infO );
-	}	
-
-	// фтулка внутринняя 
-	{		
-		var infO = {r1: d_v1/2, length: dlina, edge: edge_vn, geom: {rotateZ: -Math.PI/2, BufferG: true} };
-		if(d_v2) { infO.r2 = d_v2/2; }
-		var geom2 = crCild_2( infO );
-	}
-	
-	// круг с отверстием (начало)
-	{
-		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: Math.PI/2, rotateX: Math.PI/2, BufferG: true}};
-		if(d_n2) { infO.radius_nr = d_n2/2; infO.radius_vn = d_v2/2; }
-		var geom3 = crCircle_2(infO);
-		geom3.translate(p[0].x, p[0].y, p[0].z);				
-	}
-
-	// круг с отверстием (конец)
-	{
-		var infO = {radius_nr: d_n1/2, radius_vn: d_v1/2, edge_nr: edge_nr, edge_vn: edge_vn, geom: {rotateZ: -Math.PI/2, rotateX: -Math.PI/2, BufferG: true}};		
-		var geom4 = crCircle_2(infO);
-		geom4.translate(p[1].x, p[1].y, p[1].z);		
-	}
-	
-
-	var m1 = (material_nr) ? material_nr : mat_default;
-	var m2 = (material_vn) ? material_vn : mat_default;
-	var m3 = (material_cap) ? material_cap : mat_default;
-	
-	var geometry = new THREE.Geometry();
-	geometry.merge(geom1, geom1.matrix);
-	geometry.merge(geom2, geom2.matrix, 1);
-	geometry.merge(geom3, geom3.matrix, 2);
-	geometry.merge(geom4, geom4.matrix, 2);
-
-	var obj = new THREE.Mesh(geometry, [m1, m2, m3]);	 
-	
-	return obj;	
-}
-
-
 
 
 // втулка
@@ -393,29 +321,6 @@ function crCircle_2(cdm)
 	}
 		
 	return geometry;
-}
-
-
-
-// сфера или полусфера
-function crSphere_1(cdm)
-{
-	var radius = cdm.radius;
-	var cutRad = cdm.cutRad;
-	var material = cdm.material;	
-	
-	//----------
-	
-	var geometry = new THREE.SphereGeometry( radius, 32, 32, 0, cutRad );
-	
-	if(cdm.rotateX) { geometry.rotateX(cdm.rotateX); }
-	if(cdm.rotateY) { geometry.rotateY(cdm.rotateY); }
-	if(cdm.rotateZ) { geometry.rotateZ(cdm.rotateZ); }	
-
-	
-	var obj = new THREE.Mesh( geometry, material );
-
-	return obj;	
 }
 
 

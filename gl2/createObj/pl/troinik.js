@@ -219,7 +219,7 @@ function pl_troinik_2(cdm)
 	{
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v };
 		inf.pos = { x: -(x_2 + x_1)/2, y: 0, z: 0 };
-		crFormSleeve_1(inf);					
+		var poM1 = crFormSleeve_1(inf);					
 
 		var inf = { g: geom, dlina: x_2/2, diameter_nr: dc.n, diameter_vn: dc.v, d_n2: d1.n, d_v2: d1.v };
 		inf.pos = { x: -x_2/2/2, y: 0, z: 0 };
@@ -232,7 +232,7 @@ function pl_troinik_2(cdm)
 
 		var inf = { g: geom, dlina: x_1, diameter_nr: d3.n, diameter_vn: d3.v };
 		inf.pos = { x: (x_2 + x_1)/2, y: 0, z: 0 };
-		crFormSleeve_1(inf);							
+		var poM3 = crFormSleeve_1(inf);							
 	}
 
 	
@@ -246,7 +246,7 @@ function pl_troinik_2(cdm)
 		var inf = { g: geom, dlina: x_1, diameter_nr: d2.n, diameter_vn: d2.v };
 		inf.pos = { x: 0, y: x_1/2 + x_3, z: 0 };
 		inf.rot = { x: 0, y: Math.PI, z: Math.PI/2 };
-		crFormSleeve_1(inf);			
+		var poM2 = crFormSleeve_1(inf);			
 	}
 	
 
@@ -261,9 +261,9 @@ function pl_troinik_2(cdm)
 	var name3 = cdm.r3;	
 	
 	var arrP = [];
-	arrP[arrP.length] = { pos: new THREE.Vector3(-(x_2 + x_1)/2, 0, 0), rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
-	arrP[arrP.length] = { pos: new THREE.Vector3(0, x_1/2 + x_3, 0), rot: new THREE.Vector3(0, Math.PI, Math.PI/2), name: name2 };
-	arrP[arrP.length] = { pos: new THREE.Vector3((x_2 + x_1)/2, 0, 0), rot: new THREE.Vector3(0, 0, 0), name: name3 };
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, Math.PI, Math.PI/2), name: name2 };
+	arrP[arrP.length] = { pos: poM3.pos, rot: new THREE.Vector3(0, 0, 0), name: name3 };
 
 	
 	for ( var i = 0; i < arrP.length; i++ )
