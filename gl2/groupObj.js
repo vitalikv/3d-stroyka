@@ -33,10 +33,11 @@ function createGroupObj_1(cdm)
 		}			
 	}
 	
-	  
+	 
 	// добавляем полученные объекты в новую группу
 	for(var i = 0; i < arr2.length; i++)
 	{
+		if(!arr2[i]) continue;
 		arr2[i].userData.obj3D.group = group;
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 	}	

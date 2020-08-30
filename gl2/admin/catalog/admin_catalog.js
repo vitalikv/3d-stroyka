@@ -57,15 +57,14 @@ async function addItemAdminPanel_1(cdm)
 {
 	var url = infProject.path+'components_2/getListObjSql.php';	
 	
+	//var table = 'list_obj';
+	var table = 'list_obj_2';
+	
 	var response = await fetch(url, 
 	{
 		method: 'POST',
-		body: 'select_list=id, name' ,
-		headers: 
-		{
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},		
-		
+		body: 'table='+table+'&select_list=id, name',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
 	});
 	var json = await response.json();	
 	

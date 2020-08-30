@@ -96,10 +96,7 @@ function st_krestovina_1(cdm)
 		arrP[i].obj = obj;
 		arrP[i].id = i;
 		cr_CenterPoint(arrP[i]);
-	}	
-	
-	scene.add( obj );
-	obj.position.copy(offset);	
+	}		
 	
 	
 	obj.userData.tag = 'obj';
@@ -109,8 +106,14 @@ function st_krestovina_1(cdm)
 	obj.userData.obj3D.nameRus = name; 
 	obj.material.visible = false;
 	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-	
+	if(cdm.demo)
+	{
+		scene.add( obj );
+		obj.position.copy(offset);		
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
+	}
+
+	return obj;	
 }
 
 

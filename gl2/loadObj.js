@@ -52,6 +52,16 @@ async function getInfPoperties(cdm)
 				{
 					var obj = new THREE.ObjectLoader().parse( inf.model );
 				}
+				else if(inf.properties.parameters.obj.cdm)
+				{
+					console.log(6666, inf.properties.parameters); 
+					
+					inf.obj = window[inf.properties.fc.name](inf.properties.parameters.obj.cdm);
+
+					infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+					
+					return inf;
+				}
 				else
 				{
 					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});								

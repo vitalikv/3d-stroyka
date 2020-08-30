@@ -85,9 +85,7 @@ function st_nippel_1(cdm)
 		arrP[i].id = i;
 		cr_CenterPoint(arrP[i]);
 	}			
-	
-	scene.add( obj );
-	obj.position.copy(offset);
+
 	
 	obj.userData.tag = 'obj';
 	obj.userData.obj3D = {};
@@ -96,7 +94,14 @@ function st_nippel_1(cdm)
 	obj.userData.obj3D.nameRus = name; 
 	obj.material.visible = false;
 	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+	if(cdm.demo)
+	{
+		scene.add( obj );
+		obj.position.copy(offset);		
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
+	}
+
+	return obj;
 }
 
 

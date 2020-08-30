@@ -14,19 +14,53 @@ function fc_cr_obj(params)
 		var pos = startPos.clone();
 		pos.z += step * n;
 		arr[i].offset = pos;
-		window[funcName](arr[i]);
+		arr[i].demo = true;
+		var obj = window[funcName](arr[i]);
+		
+		//saveObjSql_2({name: obj.userData.obj3D.nameRus, params: arr[i]})
 		n++;
 	}
 
 	return n;
 }
 
+
+// сохраняем в базу
+async function saveObjSql_2(cdm)
+{
+	var lotid = 0;
+	var name = cdm.name;
+	var type = 'obj';
+	var params = cdm.params;
+	
+	delete params.demo;
+	delete params.offset;
+	
+	var name = (name) ? JSON.stringify( name ) : null;
+	var type = (type) ? JSON.stringify( type ) : null;	
+	var params = (params) ? JSON.stringify( params ) : null;	
+	
+
+	var url = infProject.path+'admin/obj/saveObjSql_2.php';	
+	
+	var response = await fetch(url, 
+	{
+		method: 'POST',
+		body: 'id='+lotid+'&name='+name+'&type='+type+'&params='+params ,
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
+	});
+	var data = await response.json();
+	
+	console.log(data);
+}
+
+
 function cr_obj_cat()
 {
 
 	cr_rash_bak_1({offset: new THREE.Vector3(0, 1, 3)});
 	
-	return;
+	
 	
 	if(1==1)
 	{
@@ -39,7 +73,7 @@ function cr_obj_cat()
 		fc_cr_obj({funcName: 'st_krestovina_1', arr: arr, startPos: new THREE.Vector3(-0.8, 1, 0+0.0)});		
 	}
 
-	
+	return;
 
 	if(1==1)
 	{
@@ -65,7 +99,7 @@ function cr_obj_cat()
 		fc_cr_obj({funcName: 'st_troinik_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 0+0.0)});		
 	}
 
-
+	
 	
 	if(1==1)
 	{
@@ -160,7 +194,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '25', m1: 0.030 };
 		arr[arr.length] = { r1: '32', m1: 0.037 };
 		arr[arr.length] = { r1: '40', m1: 0.044 };
-		arr[arr.length] = { r1: '50', m1: 0.053 };
+		arr[arr.length] = { r1: '50', m1: 0.053 }; 
 		arr[arr.length] = { r1: '63', m1: 0.06 };		
 	
 		var n = fc_cr_obj({funcName: 'pl_ugol_90_1', arr: arr, startPos: new THREE.Vector3(0.4, 1, 0+0.0), n: 0});

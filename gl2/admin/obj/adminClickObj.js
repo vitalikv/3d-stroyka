@@ -38,7 +38,7 @@ block.append(elem);
 
 
 var el_2 = block.querySelector('[nameId="button_save_obj"]');	
-el_2.onmousedown = function(e){ saveObjSql({obj: clickO.last_obj}); }; 
+el_2.onmousedown = function(e){ saveObjSql_1({obj: clickO.last_obj}); }; 
 
 
 
@@ -90,7 +90,7 @@ async function getInfObjFromBD(cdm)
 
 
 // сохраняем объект на сервере в BD
-function saveObjSql(cdm)
+function saveObjSql_1(cdm)
 {
 	var obj = cdm.obj;
 	//console.log(cdm); return;

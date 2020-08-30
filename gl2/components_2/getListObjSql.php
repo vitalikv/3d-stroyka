@@ -3,21 +3,17 @@ require_once ("../include/bd_1.php");
 
 
 
-if($_GET['select_list']) 
-{
-	$select_list = $_GET['select_list'];
-}
+if($_GET['select_list']) { $select_list = $_GET['select_list']; }
+if($_POST['select_list']) { $select_list = $_POST['select_list']; }
 
-if($_POST['select_list']) 
-{
-	$select_list = $_POST['select_list'];
-}
-
+if($_GET['table']) { $table = $_GET['table']; }
+if($_POST['table']) { $table = $_POST['table']; }
 
 if(!isset($select_list)) { $select_list = '*'; }
+if(!isset($table)) { $table = 'list_obj'; }
 
 
-$sql = "SELECT {$select_list} FROM list_obj";
+$sql = "SELECT {$select_list} FROM {$table}";
 $r = $db->prepare($sql);
 $r->execute();
 $res = $r->fetchAll(PDO::FETCH_ASSOC);

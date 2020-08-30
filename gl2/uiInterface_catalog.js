@@ -19,11 +19,7 @@ async function addObjInCatalogUI_1(cdm)
 	{
 		method: 'POST',
 		body: 'select_list=id, name' ,
-		headers: 
-		{
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},		
-		
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
 	});
 	var json = await response.json();
 	
