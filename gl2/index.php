@@ -130,6 +130,7 @@
 	<script src="<?=$path?>createObj/mpl/troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/mpl/perehod.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/mpl/ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/kotel/rash_bak.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_2.js?<?=$vrs?>"></script>

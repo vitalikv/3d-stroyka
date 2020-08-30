@@ -1,9 +1,33 @@
 
 
+function fc_cr_obj(params)
+{
+	var arr = params.arr;
+	var funcName = params.funcName;
+	var startPos = params.startPos;	
+	var n = (params.n) ? params.n : 0;
+	
+	var step = 0.1;
+
+	for(var i = 0; i < arr.length; i++)
+	{
+		var pos = startPos.clone();
+		pos.z += step * n;
+		arr[i].offset = pos;
+		window[funcName](arr[i]);
+		n++;
+	}
+
+	return n;
+}
 
 function cr_obj_cat()
 {
 
+	cr_rash_bak_1({offset: new THREE.Vector3(0, 1, 3)});
+	
+	return;
+	
 	if(1==1)
 	{
 		var arr = [];
@@ -12,17 +36,10 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '1', m1: 0.069 };
 		arr[arr.length] = { r1: '1 1/4', m1: 0.083 };		
 		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(-0.8, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			st_krestovina_1(arr[i]);
-		}		
-	}	
+		fc_cr_obj({funcName: 'st_krestovina_1', arr: arr, startPos: new THREE.Vector3(-0.8, 1, 0+0.0)});		
+	}
+
+	
 
 	if(1==1)
 	{
@@ -45,18 +62,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '1 1/4', r2: '3/4', r3: '1 1/4', m1: 0.070, m2: 0.036 };
 		arr[arr.length] = { side: 'v', r1: '1 1/4', r2: '1', r3: '1 1/4', m1: 0.076, m2: 0.038 };		
 		
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(-0.6, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			st_troinik_1(arr[i]);
-			n++;
-		}		
+		fc_cr_obj({funcName: 'st_troinik_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 0+0.0)});		
 	}
 
 
@@ -74,33 +80,18 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'n', r1: '3/4', m1: 0.034 };
 		arr[arr.length] = { side: 'n', r1: '1', m1: 0.041 };
 		
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(-0.4, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			st_ugol_90_1(arr[i]);
-			n++;
-		}
+		var n = fc_cr_obj({funcName: 'st_ugol_90_1', arr: arr, startPos: new THREE.Vector3(-0.4, 1, 0+0.0)});
 
 		var arr = [];
 		arr[arr.length] = { r1: '1/2', m1: 0.018 };
 		arr[arr.length] = { r1: '3/4', m1: 0.022 };
 		arr[arr.length] = { r1: '1', m1: 0.028 };
+		
+		fc_cr_obj({funcName: 'st_ugol_45_1', arr: arr, startPos: new THREE.Vector3(-0.4, 1, 0+0.0), n: n});		
+	}
 
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			st_ugol_45_1(arr[i]);
-			n++;
-		}		
-	}	
+
+	
 
 
 	if(1==1)
@@ -131,17 +122,9 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '2', r2: '1 1/4', m1: 0.041 };
 		arr[arr.length] = { r1: '2', r2: '1 1/2', m1: 0.043 };		
 		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(-0.2, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			st_nippel_1(arr[i]);
-		}		
+		fc_cr_obj({funcName: 'st_nippel_1', arr: arr, startPos: new THREE.Vector3(-0.2, 1, 0+0.0), n: 0});		
 	}	
+	
 	
 	
 	if(1==1)
@@ -163,23 +146,11 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '1 1/2', r2: '1 1/4', m1: 0.043 };	
 		arr[arr.length] = { r1: '2', r2: '1', m1: 0.048 };
 		arr[arr.length] = { r1: '2', r2: '1 1/4', m1: 0.048 };
-		arr[arr.length] = { r1: '2', r2: '1 1/2', m1: 0.048 };
-		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(0.0, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			st_mufta_1(arr[i]);
-		}		
+		arr[arr.length] = { r1: '2', r2: '1 1/2', m1: 0.048 };		
+
+		fc_cr_obj({funcName: 'st_mufta_1', arr: arr, startPos: new THREE.Vector3(0.0, 1, 0+0.0), n: 0});
 	}
 	
-
-	
-
 
 
 	if(1==1)
@@ -192,18 +163,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '50', m1: 0.053 };
 		arr[arr.length] = { r1: '63', m1: 0.06 };		
 	
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(0.4, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_ugol_90_1(arr[i]);
-			n++;
-		}
+		var n = fc_cr_obj({funcName: 'pl_ugol_90_1', arr: arr, startPos: new THREE.Vector3(0.4, 1, 0+0.0), n: 0});
 		
 		var arr = [];		
 		arr[arr.length] = { r1: '20', m1: 0.021 };
@@ -213,14 +173,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '50', m1: 0.038 };
 		arr[arr.length] = { r1: '63', m1: 0.042 };	
 		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_ugol_45_1(arr[i]);
-			n++;
-		}		
+		var n = fc_cr_obj({funcName: 'pl_ugol_45_1', arr: arr, startPos: new THREE.Vector3(0.4, 1, 0+0.0), n: n});		
 
 		var arr = [];
 		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.026 };
@@ -237,14 +190,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '32', r2: '3/4', m1: 0.036 };
 		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.039 };		
 		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_ugol_90_rezba_1(arr[i]);
-			n++;
-		}		
+		var n = fc_cr_obj({funcName: 'pl_ugol_90_rezba_1', arr: arr, startPos: new THREE.Vector3(0.4, 1, 0+0.0), n: n});		
 	}	
 		
 	
@@ -273,18 +219,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '50', r2: '50', m1: 0.052 };
 		arr[arr.length] = { r1: '63', r2: '63', m1: 0.060 };
 
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(0.6, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_mufta_1(arr[i]);
-			n++;
-		}
+		var n = fc_cr_obj({funcName: 'pl_mufta_1', arr: arr, startPos: new THREE.Vector3(0.6, 1, 0+0.0), n: 0});
 		
 		var arr = [];
 		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.036 };
@@ -300,14 +235,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '32', r2: '3/4', m1: 0.043 };
 		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.049 };		
 
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_perehod_rezba_1(arr[i]);
-			n++;
-		}		
+		var n = fc_cr_obj({funcName: 'pl_perehod_rezba_1', arr: arr, startPos: new THREE.Vector3(0.6, 1, 0+0.0), n: n});		
 	}
 	
 
@@ -323,20 +251,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '50', m1: 0.11 };
 		arr[arr.length] = { r1: '63', m1: 0.125 };			
 
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(0.8, 1, 0+0.0);	
-
-
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_troinik_1(arr[i]);
-			n++;
-		}
-
+		var n = fc_cr_obj({funcName: 'pl_troinik_1', arr: arr, startPos: new THREE.Vector3(0.8, 1, 0+0.0), n: 0});
 
 		var arr = [];
 		arr[arr.length] = { r1: '25', r2: '20', r3: '20', m1: 0.055, m2: 0.015 };
@@ -355,15 +270,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '50', r2: '32', r3: '50', m1: 0.102, m2: 0.018 };
 		arr[arr.length] = { r1: '50', r2: '40', r3: '50', m1: 0.102, m2: 0.021 };
 	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_troinik_2(arr[i]);
-			n++;
-		}
+		var n = fc_cr_obj({funcName: 'pl_troinik_2', arr: arr, startPos: new THREE.Vector3(0.8, 1, 0+0.0), n: n});
 
 		var arr = [];
 		arr[arr.length] = { side: 'n', r1: '20', r2: '1/2', m1: 0.07 };
@@ -379,15 +286,9 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '32', r2: '3/4', m1: 0.08 };	
 		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.08 };	
 		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			pl_troinik_rezba_1(arr[i]);
-			n++;
-		}		
+		var n = fc_cr_obj({funcName: 'pl_troinik_rezba_1', arr: arr, startPos: new THREE.Vector3(0.8, 1, 0+0.0), n: n});				
 	}
+	
 	
 	
 	if(1==1)
@@ -399,18 +300,10 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '40', m1: 0.089 };
 		arr[arr.length] = { r1: '50', m1: 0.105 }; 
 		
-		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(1.0, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			pl_krestovina_1(arr[i]);
-		}		
+		var n = fc_cr_obj({funcName: 'pl_krestovina_1', arr: arr, startPos: new THREE.Vector3(1.0, 1, 0+0.0), n: 0});	
 	}	
+	
+	
 	
 	
 	
@@ -439,16 +332,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '40', r2: '1', m1: 0.060 };
 		arr[arr.length] = { side: 'v', r1: '40', r2: '1 1/4', m1: 0.060 };	
 		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(1.4, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			mpl_perehod_rezba_1(arr[i]);
-		}		
+		var n = fc_cr_obj({funcName: 'mpl_perehod_rezba_1', arr: arr, startPos: new THREE.Vector3(1.4, 1, 0+0.0), n: 0});		
 	}
 	
 
@@ -469,16 +353,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '32', r3: '20', m1: 0.062 };
 		arr[arr.length] = { r1: '32', r3: '26', m1: 0.063 };
 
-		var step = 0.1;
-		var startPos = new THREE.Vector3(1.6, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			mpl_perehod_1(arr[i]);
-		}		
+		var n = fc_cr_obj({funcName: 'mpl_perehod_1', arr: arr, startPos: new THREE.Vector3(1.6, 1, 0+0.0), n: 0});		
 	}	
 	
 
@@ -513,17 +388,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '26', r2: '26', r3: '26', m1: 0.097, m2: 0.097/2 };
 		arr[arr.length] = { r1: '32', r2: '32', r3: '32', m1: 0.112, m2: 0.112/2 };				
 
-
-		var step = 0.1;
-		var startPos = new THREE.Vector3(1.8, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			mpl_troinik_1(arr[i]);
-		}		
+		var n = fc_cr_obj({funcName: 'mpl_troinik_1', arr: arr, startPos: new THREE.Vector3(1.8, 1, 0+0.0), n: 0});			
 	}
 
 
@@ -551,16 +416,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '32', r2: '1 1/4', r3: '32', m1: 0.122, m2: 0.046 };
 		arr[arr.length] = { side: 'v', r1: '40', r2: '1', r3: '40', m1: 0.124, m2: 0.046 };
 		
-		var step = 0.1;
-		var startPos = new THREE.Vector3(2.0, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * i;
-			arr[i].offset = pos;
-			mpl_troinik_rezba_1(arr[i]);
-		}		
+		var n = fc_cr_obj({funcName: 'mpl_troinik_rezba_1', arr: arr, startPos: new THREE.Vector3(2.0, 1, 0+0.0), n: 0});		
 	}
 	
 	if(1==1)
@@ -572,18 +428,7 @@ function cr_obj_cat()
 		arr[arr.length] = { r1: '32', m1: 0.052 };
 		arr[arr.length] = { r1: '40', m1: 0.063 };
 		
-		var n = 0;
-		var step = 0.1;
-		var startPos = new THREE.Vector3(2.2, 1, 0+0.0);	
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			mpl_ugol_1(arr[i]);
-			n++;
-		}
+		var n = fc_cr_obj({funcName: 'mpl_ugol_1', arr: arr, startPos: new THREE.Vector3(2.2, 1, 0+0.0), n: 0});
 		
 		var arr = [];
 		arr[arr.length] = { side: 'n', r1: '16', r2: '1/2', m1: 0.042, m2: 0.028 };		
@@ -602,14 +447,7 @@ function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '26', r2: '1', m1: 0.049, m2: 0.037 };
 		arr[arr.length] = { side: 'v', r1: '32', r2: '1', m1: 0.051, m2: 0.039 };
 		
-		for(var i = 0; i < arr.length; i++)
-		{
-			var pos = startPos.clone();
-			pos.z += step * n;
-			arr[i].offset = pos;
-			mpl_ugol_rezba_1(arr[i]);
-			n++;
-		}			
+		var n = fc_cr_obj({funcName: 'mpl_ugol_rezba_1', arr: arr, startPos: new THREE.Vector3(2.2, 1, 0+0.0), n: n});			
 	}
 
 	
