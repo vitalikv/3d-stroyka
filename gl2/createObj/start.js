@@ -17,7 +17,7 @@ function fc_cr_obj(params)
 		arr[i].demo = true;
 		var obj = window[funcName](arr[i]);
 		
-		//saveObjSql_2({name: obj.userData.obj3D.nameRus, params: arr[i]})
+		//saveObjSql_2({name: obj.userData.obj3D.nameRus, params: {fc: {name: funcName}, cdm: arr[i]} })
 		n++;
 	}
 
@@ -40,7 +40,7 @@ async function saveObjSql_2(cdm)
 	var type = (type) ? JSON.stringify( type ) : null;	
 	var params = (params) ? JSON.stringify( params ) : null;	
 	
-
+	//list_obj_2
 	var url = infProject.path+'admin/obj/saveObjSql_2.php';	
 	
 	var response = await fetch(url, 
@@ -60,7 +60,7 @@ function cr_obj_cat()
 
 	cr_rash_bak_1({offset: new THREE.Vector3(0, 1, 3)});
 	
-	
+	return;
 	
 	if(1==1)
 	{
@@ -73,7 +73,7 @@ function cr_obj_cat()
 		fc_cr_obj({funcName: 'st_krestovina_1', arr: arr, startPos: new THREE.Vector3(-0.8, 1, 0+0.0)});		
 	}
 
-	return;
+	
 
 	if(1==1)
 	{

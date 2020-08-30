@@ -249,6 +249,9 @@ infProject.list.mergeO = {active: false, o1: [], o2: [], el: []};	// режим 
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.settings.active.tube = null;
 infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры
+infProject.settings.BD = {};
+infProject.settings.BD.table = {};
+infProject.settings.BD.table.list_obj = 'list_obj';
 infProject.start = true; 
 
 infProject.ui = {}

@@ -56,6 +56,11 @@ foreach ($res as $text)
 		$data[$i]['preview'] = $text['preview'];	
 	}
 	
+	if($text['params'])
+	{
+		$data[$i]['params'] = json_decode($text['params']);	
+	}	
+	
 	$i++;
 }
 

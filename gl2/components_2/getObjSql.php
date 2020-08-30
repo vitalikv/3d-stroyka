@@ -9,19 +9,19 @@ if($_POST['id'])
 {
 	$id = trim($_POST['id']);
 	
-	if($_POST['select_list'])
-	{
-		$select_list = $_POST['select_list'];
-	}
+	if($_POST['select_list']){ $select_list = $_POST['select_list']; }
+	if($_POST['table']) { $table = $_POST['table']; }
 }
 
 $id = addslashes($id);
 if(!preg_match("/^[0-9]+$/i", $id)) { exit; }
 
 if(!isset($select_list)) { $select_list = '*'; }
+if(!isset($table)) { $table = 'list_obj'; }
+
 
 // находим e-mail, Имя, codepro
-$sql = "SELECT {$select_list} FROM list_obj WHERE id = :id";
+$sql = "SELECT {$select_list} FROM {$table} WHERE id = :id";
 $r = $db->prepare($sql);
 $r->bindValue(':id', $id, PDO::PARAM_STR);
 $r->execute();
@@ -66,7 +66,12 @@ if($res)
 	if($res['preview'])
 	{
 		//$data['preview'] = $res['preview'];	
-	}		
+	}
+	
+	if($res['params'])
+	{
+		$data['params'] = json_decode($res['params']);	
+	}	
 }
 
 

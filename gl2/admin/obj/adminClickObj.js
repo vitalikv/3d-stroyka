@@ -57,15 +57,15 @@ async function getInfObjFromBD(cdm)
 	if(!lotid) return;	
 	
 	//var response = await fetch(infProject.path+'components_2/getObjSql.php?id='+lotid, { method: 'GET' });
-	var response = await fetch(infProject.path+'components_2/getObjSql.php', 
+	
+	var url = infProject.path+'components_2/getListObjSql.php';
+	var table = infProject.settings.BD.table.list_obj;	
+	
+	var response = await fetch(url, 
 	{
 		method: 'POST',
-		body: 'id='+lotid+'&select_list=id, name, type, properties, preview' ,
-		headers: 
-		{
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},		
-		
+		body: 'id='+lotid+'&select_list=id, name, type, properties, preview', 
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
 	});
 	var json = await response.json();
 

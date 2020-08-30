@@ -19,10 +19,16 @@ async function getObjFromBase(cdm)
 		}
 	}
 
-	
-	var url = infProject.path+'components_2/getObjSql.php?id='+lotid;  
-	
-	var response = await fetch(url, { method: 'GET' });	
+	var url = infProject.path+'components_2/getObjSql.php';
+	var table = infProject.settings.BD.table.list_obj;	
+		
+	var response = await fetch(url, 
+	{
+		method: 'POST',
+		//body: 'id='+lotid,
+		body: 'table='+table+'&id='+lotid,
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
+	});
 	var json = await response.json();
 	
 	if(!json.error)
@@ -42,7 +48,7 @@ async function getInfPoperties(cdm)
 	var inf = cdm.inf;
 	
 	if(inf.obj){ }
-	else if(inf.properties)
+	else if(inf.properties)		// обращаемся к BD list_obj
 	{
 		if(inf.properties.fc)
 		{ 			
@@ -54,8 +60,6 @@ async function getInfPoperties(cdm)
 				}
 				else if(inf.properties.parameters.obj.cdm)
 				{
-					console.log(6666, inf.properties.parameters); 
-					
 					inf.obj = window[inf.properties.fc.name](inf.properties.parameters.obj.cdm);
 
 					infProject.scene.array.base[infProject.scene.array.base.length] = inf;
@@ -65,7 +69,8 @@ async function getInfPoperties(cdm)
 				else
 				{
 					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});								
-					inf.model = inf_2.model;
+					inf.model = inf_2.model; 
+					if(!inf.model) { return null; }
 					var obj = new THREE.ObjectLoader().parse( inf_2.model );
 				}					
 				
@@ -84,6 +89,17 @@ async function getInfPoperties(cdm)
 			}						
 
 			return inf;
+		}
+	}
+	else if(inf.params)		// обращаемся к BD list_obj_2
+	{ 
+		if(inf.params.fc)
+		{
+			inf.obj = window[inf.params.fc.name](inf.params.cdm);
+			
+			infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+			
+			return inf;			
 		}
 	}
 

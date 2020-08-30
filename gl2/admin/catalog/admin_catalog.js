@@ -58,7 +58,7 @@ async function addItemAdminPanel_1(cdm)
 	var url = infProject.path+'components_2/getListObjSql.php';	
 	
 	//var table = 'list_obj';
-	var table = 'list_obj_2';
+	var table = infProject.settings.BD.table.list_obj;
 	
 	var response = await fetch(url, 
 	{

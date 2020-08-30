@@ -4,24 +4,35 @@
 // добавляем структурированный каталог Json 
 async function addObjInCatalogUI_1(cdm) 
 {
-	var flag = false;	// true = только объекты без групп
+	var flag = true;	// true = только объекты без групп
 	
 	if(flag)
 	{		
 		var url = infProject.path+'components_2/getListObjSql.php';
+		var table = infProject.settings.BD.table.list_obj;				
+		
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'table='+table+'&select_list=id, name',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
+		});
+		var json = await response.json();		
 	}
 	else
 	{
 		var url = infProject.path+'t/catalog_2.json';
+		
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'select_list=id, name' ,
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
+		});
+		var json = await response.json();		
 	}
 	
-	var response = await fetch(url, 
-	{
-		method: 'POST',
-		body: 'select_list=id, name' ,
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
-	});
-	var json = await response.json();
+
 	
 	
 	if(flag)
