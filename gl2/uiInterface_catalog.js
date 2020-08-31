@@ -4,7 +4,7 @@
 // добавляем структурированный каталог Json 
 async function addObjInCatalogUI_1(cdm) 
 {
-	var flag = true;	// true = только объекты без групп
+	var flag = false;	// true = только объекты без групп
 	
 	if(flag)
 	{		

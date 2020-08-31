@@ -65,7 +65,7 @@
 
 <div class="background_admin_panel" nameId="background_admin_panel" ui_2="">
 	<div class="modal_wrap">
-		<div class="window_admin_panel" nameId="window_admin_panel" style="width: 1300px; height: 80%;">
+		<div class="window_admin_panel" nameId="window_admin_panel" style="width: 1300px; height: 90%;">
 			<div class="button_close_admin_panel" nameId="button_close_admin_panel">
 				+
 			</div>
@@ -78,18 +78,32 @@
 			</div>
 			<div class='modal_body'>
 				<div class='modal_body_content'>
-					<div class="flex_1">						
-						<div class="button1 button_gradient_1" nameId="button_add_group_admin_panel" style="margin: 15px 0 15px 40px; padding: 4px 11px;">Раздел</div>  
+					<div class="flex_1">
+						<div class="flex_1">
+							<div class="button1 button_gradient_1" nameId="button_add_group_admin_panel" style="margin: auto auto auto 40px; padding: 4px 11px;">Раздел</div>  
+							
+							<div class="flex_1 align_items" style="width: auto;">
+								<input type="text" class="input_add_group_admin_panel" style="width: 200px; margin:5px 0 5px 45px;" nameId="input_add_group_admin_panel" value="">
+							</div>
+						</div>
 						
-						<div class="flex_1 align_items" style="width: auto;">
-							<input type="text" class="input_add_group_admin_panel" style="width: 200px; margin:5px 0 5px 45px;" nameId="input_add_group_admin_panel" value="">
-						</div>
+						<div class="flex_column_1" style="width: auto; margin: auto 0 auto auto;">
+							<div class="flex_1">
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" class="input_add_group_admin_panel" style="width: 200px; margin:5px 0 5px 25px;" nameId="input_rename_valueId_admin_panel" value="">
+								</div>
 
-						<div class="flex_1 align_items" style="width: auto; margin: auto 0 auto auto;">
-							<input type="text" class="input_add_group_admin_panel" style="width: 200px; margin:5px 0 5px 25px;" nameId="input_rename_group_admin_panel" value="">
-						</div>
+								<div class="button1 button_gradient_1" nameId="button_rename_valueId_admin_panel" style="margin: 15px 40px 15px 40px; padding: 4px 11px;">Назначить</div>
+							</div>
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items" style="width: auto; margin: auto 0 auto auto;">
+									<input type="text" class="input_add_group_admin_panel" style="width: 200px; margin:5px 0 5px 25px;" nameId="input_rename_group_admin_panel" value="">
+								</div>
 
-						<div class="button1 button_gradient_1" nameId="button_rename_group_admin_panel" style="margin: 15px 40px 15px 40px; padding: 4px 11px;">Переименовать</div> 
+								<div class="button1 button_gradient_1" nameId="button_rename_group_admin_panel" style="margin: 15px 40px 15px 40px; padding: 4px 11px;">Переименовать</div>
+							</div>
+						</div>
 					</div>
 					
 					<div class='flex_1'>
