@@ -26,7 +26,7 @@ $interface['wall_2']['bottom'] = ['width_1' => 1];
 $interface['wall_2']['top'] = ['showHideWall_1' => 1];
 $interface['obj_b1'] = 1;
 
-$interface['admin'] = 1;
+$interface['admin'] = 0;
 	
 
 
