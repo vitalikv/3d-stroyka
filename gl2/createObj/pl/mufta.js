@@ -32,7 +32,7 @@ function pl_mufta_1(cdm)
 	{
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v };
 		inf.pos = { x: -(x_3L + x_1/2), y: 0, z: 0 };
-		crFormSleeve_1(inf);
+		var poM1 = crFormSleeve_1(inf);
 
 		var inf = { g: geom, dlina: x_3L, diameter_nr: d1.n, diameter_vn: d1.v };
 		inf.pos = { x: -x_3L/2, y: 0, z: 0 };
@@ -53,7 +53,7 @@ function pl_mufta_1(cdm)
 
 		var inf = { g: geom, dlina: x_2, diameter_nr: d2.n, diameter_vn: d2.v };
 		inf.pos = { x: x_3R + x_2/2, y: 0, z: 0 };
-		crFormSleeve_1(inf);		
+		var poM2 = crFormSleeve_1(inf);		
 	}
 
 
@@ -67,8 +67,8 @@ function pl_mufta_1(cdm)
 	var name2 = cdm.r2;
 	
 	var arrP = [];
-	arrP[arrP.length] = { pos: new THREE.Vector3(-(x_3L + x_1/2), 0, 0), rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
-	arrP[arrP.length] = { pos: new THREE.Vector3(x_3R + x_2/2, 0, 0), rot: new THREE.Vector3(0, 0, 0), name: name2 };
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name2 };
 
 	
 	for ( var i = 0; i < arrP.length; i++ )
@@ -159,7 +159,7 @@ function pl_perehod_rezba_1(cdm)
 	{
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v };
 		inf.pos = { x: -(x_3L + x_1/2), y: 0, z: 0 };
-		crFormSleeve_1(inf);
+		var poM1 = crFormSleeve_1(inf);
 
 		var inf = { g: geom, dlina: x_3L, diameter_nr: d1.n, diameter_vn: d1.v };
 		inf.pos = { x: -x_3L/2, y: 0, z: 0 };
@@ -184,7 +184,7 @@ function pl_perehod_rezba_1(cdm)
 
 		var inf = { g: geom, dlina: x_2, diameter_nr: d2.n, diameter_vn: d2.v, ind: matRezba };
 		inf.pos = { x: posX, y: 0, z: 0 };
-		crFormSleeve_1(inf);		
+		var poM2 = crFormSleeve_1(inf);		
 	}	
 	
 	
@@ -202,8 +202,8 @@ function pl_perehod_rezba_1(cdm)
 	var name2 = cdm.r2+txt;
 	
 	var arrP = [];
-	arrP[arrP.length] = { pos: new THREE.Vector3(-(x_3L + x_1/2), 0, 0), rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
-	arrP[arrP.length] = { pos: new THREE.Vector3(posX, 0, 0), rot: new THREE.Vector3(0, 0, 0), name: name2 };
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name2 };
 
 	
 	for ( var i = 0; i < arrP.length; i++ )

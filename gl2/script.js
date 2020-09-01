@@ -195,6 +195,8 @@ infProject.material.white_1 = new THREE.MeshPhongMaterial({ color: 0xf0f0f0, lig
 infProject.material.white_1_edge = infProject.material.white_1.clone();
 infProject.material.white_1_edge.flatShading = true;
 
+infProject.material.white_2 = new THREE.MeshPhongMaterial({ color: 0xd1d1d1, lightMap: lightMap_1, side: THREE.DoubleSide });
+
 infProject.material.metal_1 = new THREE.MeshPhongMaterial({ color: 0xc1c6c9, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.metal_1.shininess = 100;
 infProject.material.metal_1.specular.set(0xa3a3a3);
