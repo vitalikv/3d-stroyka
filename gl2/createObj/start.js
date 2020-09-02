@@ -61,7 +61,19 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
-	st_radiator_1({ size: {x: 0.93, y: 0.4, z: 0.07}, r1: '1/2', demo: true }); 
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.90, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.00, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.20, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.40, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.60, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.80, y: 0.5, z: 0.07}, r1: '1/2' };		
+		
+		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -3), step: 0.35, cat: 'st_radiator_1'});		
+	}	
 	
 	return;
 	

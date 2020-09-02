@@ -174,15 +174,20 @@ function st_radiator_1(cdm)
 	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3(0, 1, 0);
 	
 	// доп. расчеты 
+	var x_1 = 0.015;			// длина резьбы
 	var s1 = 0.02;				// толщина окантовки радиатора
 	var s2 = 0.02;				// толщина окантовки ребра (грани)
 	var s3 = 0.01;				// глубина ребра
+	
+	var x2 = (size.y/2 - s1 - d1.n/2) * 2;
+	size.y += size.y - x2;  
+	
 	var w1 = 0.07;				// ширина ребра
-	var w2 = w1 - s2*2;  
+	var w2 = w1 - s2*2;  		// ширина внутреннего ребра
 	var h1 = size.y - s1*2;		// высота ребра
 	var h2 = h1 - s2*2;
 	
-	var x_1 = 0.015;			// длина резьбы
+	
 	
 	var pr1 = (size.x - s1*2);	// длина проема радиатора
 	
@@ -404,24 +409,25 @@ function st_radiator_1(cdm)
 	// трубы (разъемы)
 	{
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: -(size.x/2 + x_1/2), y: size.y/2 - s1, z: 0 };
+		inf.pos = { x: -(size.x/2 + x_1/2), y: size.y/2 - s1 - d1.n/2, z: 0 };
 		var poM1 = crFormSleeve_1(inf);	
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: (size.x/2 + x_1/2), y: size.y/2 - s1, z: 0 };
+		inf.pos = { x: (size.x/2 + x_1/2), y: size.y/2 - s1 - d1.n/2, z: 0 };
 		var poM2 = crFormSleeve_1(inf);	
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: (size.x/2 + x_1/2), y: -size.y/2 + s1, z: 0 };
+		inf.pos = { x: (size.x/2 + x_1/2), y: -size.y/2 + s1 + d1.n/2, z: 0 };
 		var poM3 = crFormSleeve_1(inf);
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: -(size.x/2 + x_1/2), y: -size.y/2 + s1, z: 0 };
+		inf.pos = { x: -(size.x/2 + x_1/2), y: -size.y/2 + s1 + d1.n/2, z: 0 };
 		var poM4 = crFormSleeve_1(inf);					
 	}
 
-	geom.computeBoundingBox();
-	console.log(4444, geom.boundingBox.max.z - geom.boundingBox.min.z);
+	//geom.computeBoundingBox();
+	//console.log(4444, geom.boundingBox.max.z - geom.boundingBox.min.z);
+	//console.log('dist', poM2.pos.y - poM3.pos.y );
 	
 	var mat = [];
 	mat[0] = infProject.material.metal_1;
