@@ -118,6 +118,7 @@
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/radiator/st_radiator.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/radiator/al_radiator.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/sgon.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/nippel.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/ugol.js?<?=$vrs?>"></script>
@@ -130,7 +131,9 @@
 	<script src="<?=$path?>createObj/mpl/troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/mpl/perehod.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/mpl/ugol.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/kran/shar_kran.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/kotel/rash_bak.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/kotel/gr_bez.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_2.js?<?=$vrs?>"></script>

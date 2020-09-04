@@ -61,7 +61,17 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
+	//shar_kran_1({ r1: '1', m1: 0.0625, demo: true, offset: new THREE.Vector3(0, 1, 3) });
+	
+	gr_bez_1({ size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1', demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) });
+	
 
+
+	
+	
+	//return;
+	
+	
 	if(1==1)
 	{
 		var arr = [];
@@ -75,7 +85,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -3), step: 0.35, cat: 'st_radiator_1'});		
 	}	
 	
-	return;
+	
 	
 	
 	if(1==1)
@@ -92,6 +102,16 @@ async function cr_obj_cat()
 	}
 	
 	
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '3/4', r2: '1/2', m1: 0.040 };
+		arr[arr.length] = { r1: '1', r2: '3/4', m1: 0.045 };
+		arr[arr.length] = { r1: '1 1/4', r2: '1', m1: 0.052 };
+		
+		await fc_cr_obj({funcName: 'st_sgon_1', arr: arr, startPos: new THREE.Vector3(-1.0, 1, 0), n: 0, cat: 'st_sgon_1'});		
+	}	
 	
 	
 	if(1==1)
@@ -516,6 +536,54 @@ async function cr_obj_cat()
 		var n = await fc_cr_obj({funcName: 'mpl_ugol_rezba_1', arr: arr, startPos: new THREE.Vector3(2.2, 1, 0+0.0), n: n, cat: 'mpl_ugol_rezba'});			
 	}
 
+	//------------------
+
+	if(1==1)
+	{
+		var startPos = new THREE.Vector3(2.9, 1, 0);
+
+
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.063, t1: 0.053 };
+		arr[arr.length] = { r1: '3/4', m1: 0.070, t1: 0.053 };
+		arr[arr.length] = { r1: '1', m1: 0.076, t1: 0.060 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.085, t1: 0.064 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.096, t1: 0.070 };
+		arr[arr.length] = { r1: '2', m1: 0.111, t1: 0.070 };		
+		
+		var n = await fc_cr_obj({funcName: 'shar_kran_n_1', arr: arr, startPos: startPos, n: 0, cat: 'shar_kran_1'});
+
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.0475, t1: 0.053 };
+		arr[arr.length] = { r1: '3/4', m1: 0.0555, t1: 0.053 };
+		arr[arr.length] = { r1: '1', m1: 0.0625, t1: 0.060 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.0775, t1: 0.064 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.087, t1: 0.070 };
+		arr[arr.length] = { r1: '2', m1: 0.101, t1: 0.070 };		
+		
+		var n = await fc_cr_obj({funcName: 'shar_kran_v_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});
+
+
+
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.063, t1: 0.053 };
+		arr[arr.length] = { r1: '3/4', m1: 0.070, t1: 0.053 };
+		arr[arr.length] = { r1: '1', m1: 0.076, t1: 0.060 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.085, t1: 0.064 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.096, t1: 0.070 };
+		arr[arr.length] = { r1: '2', m1: 0.111, t1: 0.070 };		
+		
+		var n = await fc_cr_obj({funcName: 'shar_kran_v_n_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});
+
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', r2: '3/4', m1: 0.055, m2: 0.026, t1: 0.053 };
+		arr[arr.length] = { r1: '3/4', r2: '1', m1: 0.059, m2: 0.03, t1: 0.053 };
+		arr[arr.length] = { r1: '1', r2: '1 1/4', m1: 0.065, m2: 0.037, t1: 0.060 };		
+		arr[arr.length] = { r1: '1 1/4', r2: '1 1/2', m1: 0.075, m2: 0.045, t1: 0.060 };
+		
+		var n = await fc_cr_obj({funcName: 'shar_kran_sgon_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});		
+	}
+		
 	
 	
 	
