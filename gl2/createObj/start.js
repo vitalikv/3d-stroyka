@@ -63,13 +63,17 @@ async function cr_obj_cat()
 
 	//shar_kran_1({ r1: '1', m1: 0.0625, demo: true, offset: new THREE.Vector3(0, 1, 3) });
 	
-	gr_bez_1({ size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1', demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) });
-	
 
-
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1' };		
+		
+		await fc_cr_obj({funcName: 'gr_bez_1', arr: arr, startPos: new THREE.Vector3(0.5, 1, 3.5), cat: 'kotel'});		
+	}
 	
 	
-	//return;
+	return;
 	
 	
 	if(1==1)

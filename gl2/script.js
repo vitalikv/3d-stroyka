@@ -190,6 +190,11 @@ infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff
 
 infProject.material.box_1 = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false }); 
 
+infProject.material.black_1 = new THREE.MeshPhongMaterial({ color: 0x222222, lightMap: lightMap_1, side: THREE.DoubleSide });
+
+infProject.material.black_1_edge = infProject.material.black_1.clone();
+infProject.material.black_1_edge.flatShading = true;
+
 infProject.material.white_1 = new THREE.MeshPhongMaterial({ color: 0xf0f0f0, lightMap: lightMap_1, side: THREE.DoubleSide });
 
 infProject.material.white_1_edge = infProject.material.white_1.clone();
@@ -228,6 +233,10 @@ infProject.material.rezba_2.shininess = 100;
 infProject.material.rezba_2.specular.set(0xa3a3a3);
 
 infProject.material.red_1 = new THREE.MeshPhongMaterial({ color: 0xbf2502, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.red_1_edge = infProject.material.red_1.clone();
+infProject.material.red_1_edge.flatShading = true;
+
+infProject.material.manometr_1 = null;
  
 
 infProject.geometry.circle = createCircleSpline();
