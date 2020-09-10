@@ -134,6 +134,7 @@
 	<script src="<?=$path?>createObj/kran/shar_kran.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/kotel/rash_bak.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/kotel/gr_bez.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/kotel/filtr.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/helpT.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/calculation_2.js?<?=$vrs?>"></script>

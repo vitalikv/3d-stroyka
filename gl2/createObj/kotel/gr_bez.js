@@ -224,7 +224,7 @@ function gr_bez_1(cdm)
 		texture_1.offset.y = 0.5;
 		
 		var manometr = new THREE.MeshPhongMaterial({ color: 0xffffff, map: texture_1, lightMap: lightMap_1, side: THREE.DoubleSide });
-		console.log(55555555);
+		
 		infProject.material.manometr_1 = manometr;
 	}
 

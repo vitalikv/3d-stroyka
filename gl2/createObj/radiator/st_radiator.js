@@ -469,7 +469,7 @@ function st_radiator_1(cdm)
 	}
 
 
-	
+	return obj;
 }
 
 

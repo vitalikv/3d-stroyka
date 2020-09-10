@@ -60,20 +60,23 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
-
-	//shar_kran_1({ r1: '1', m1: 0.0625, demo: true, offset: new THREE.Vector3(0, 1, 3) });
-	
+	//filtr_kosoy_1({ r1: '1', m1: 0.077, demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) })  
 
 	if(1==1)
 	{
 		var arr = [];
-		arr[arr.length] = { size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1' };		
+		arr[arr.length] = { r1: '1/2', m1: 0.053 };
+		arr[arr.length] = { r1: '3/4', m1: 0.065 };
+		arr[arr.length] = { r1: '1', m1: 0.077 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.091 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.106 };
+		arr[arr.length] = { r1: '2', m1: 0.126 };		
 		
-		await fc_cr_obj({funcName: 'gr_bez_1', arr: arr, startPos: new THREE.Vector3(0.5, 1, 3.5), cat: 'kotel'});		
-	}
+		await fc_cr_obj({funcName: 'filtr_kosoy_1', arr: arr, startPos: new THREE.Vector3(0.0, 1, 3.5), cat: 'filtr_kosoy_1'});		
+	}	
 	
 	
-	return;
+
 	
 	
 	if(1==1)
@@ -89,8 +92,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -3), step: 0.35, cat: 'st_radiator_1'});		
 	}	
 	
-	
-	
+
 	
 	if(1==1)
 	{
@@ -102,9 +104,17 @@ async function cr_obj_cat()
 		arr[arr.length] = { d: 0.285, h1: 0.395, r1: '3/4', name: '18л' };
 		arr[arr.length] = { d: 0.325, h1: 0.420, r1: '3/4', name: '24л' };		
 		
-		await fc_cr_obj({funcName: 'cr_rash_bak_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -1), offsetX: true, step: 0.35, cat: 'kotel'});		
+		await fc_cr_obj({funcName: 'cr_rash_bak_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -1), offsetX: true, step: 0.35, cat: 'kotel_1'});		
 	}
 	
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1' };		
+		
+		await fc_cr_obj({funcName: 'gr_bez_1', arr: arr, startPos: new THREE.Vector3(1.5, 1, -1), cat: 'kotel_1'});		
+	}
 	
 
 	if(1==1)
@@ -241,7 +251,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_mufta_1', arr: arr, startPos: new THREE.Vector3(0.0, 1, 0+0.0), n: 0, cat: 'st_mufta'});
 	}
 	
-
+return;
 
 	if(1==1)
 	{
@@ -555,7 +565,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1 1/2', m1: 0.096, t1: 0.070 };
 		arr[arr.length] = { r1: '2', m1: 0.111, t1: 0.070 };		
 		
-		var n = await fc_cr_obj({funcName: 'shar_kran_n_1', arr: arr, startPos: startPos, n: 0, cat: 'shar_kran_1'});
+		var n = await fc_cr_obj({funcName: 'shar_kran_n_1', arr: arr, startPos: startPos, n: 0, cat: 'shar_kran_n_1'});
 
 		var arr = [];
 		arr[arr.length] = { r1: '1/2', m1: 0.0475, t1: 0.053 };
@@ -565,7 +575,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1 1/2', m1: 0.087, t1: 0.070 };
 		arr[arr.length] = { r1: '2', m1: 0.101, t1: 0.070 };		
 		
-		var n = await fc_cr_obj({funcName: 'shar_kran_v_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});
+		var n = await fc_cr_obj({funcName: 'shar_kran_v_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_v_1'});
 
 
 
@@ -577,7 +587,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1 1/2', m1: 0.096, t1: 0.070 };
 		arr[arr.length] = { r1: '2', m1: 0.111, t1: 0.070 };		
 		
-		var n = await fc_cr_obj({funcName: 'shar_kran_v_n_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});
+		var n = await fc_cr_obj({funcName: 'shar_kran_v_n_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_v_n_1'});
 
 		var arr = [];
 		arr[arr.length] = { r1: '1/2', r2: '3/4', m1: 0.055, m2: 0.026, t1: 0.053 };
@@ -585,7 +595,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1', r2: '1 1/4', m1: 0.065, m2: 0.037, t1: 0.060 };		
 		arr[arr.length] = { r1: '1 1/4', r2: '1 1/2', m1: 0.075, m2: 0.045, t1: 0.060 };
 		
-		var n = await fc_cr_obj({funcName: 'shar_kran_sgon_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_1'});		
+		var n = await fc_cr_obj({funcName: 'shar_kran_sgon_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_sgon_1'});		
 	}
 		
 	
