@@ -48,49 +48,6 @@ async function getInfPoperties(cdm)
 	var inf = cdm.inf;
 	
 	if(inf.obj){ }
-	else if(inf.properties)		// обращаемся к BD list_obj
-	{
-		if(inf.properties.fc)
-		{ 			
-			if(inf.properties.parameters)
-			{
-				if(inf.model)
-				{
-					var obj = new THREE.ObjectLoader().parse( inf.model );
-				}
-				else if(inf.properties.parameters.obj.cdm)
-				{
-					inf.obj = window[inf.properties.fc.name](inf.properties.parameters.obj.cdm);
-
-					infProject.scene.array.base[infProject.scene.array.base.length] = inf;
-					
-					return inf;
-				}
-				else
-				{
-					var inf_2 = await getObjFromBase({lotid: inf.properties.parameters.obj.lotid});								
-					inf.model = inf_2.model; 
-					if(!inf.model) { return null; }
-					var obj = new THREE.ObjectLoader().parse( inf_2.model );
-				}					
-				
-				inf.obj = obj;
-				
-				if(inf.properties.fc.name == 'st_radiator_1')
-				{
-					st_radiator_1({ obj: obj, size: inf.properties.parameters.obj.size });
-				}
-				if(inf.properties.fc.name == 'al_radiator_1')
-				{
-					al_radiator_1({obj: obj, count: inf.properties.parameters.obj.count, size: inf.properties.parameters.obj.size});
-				}
-				
-				addObjInBase(inf, obj);
-			}						
-
-			return inf;
-		}
-	}
 	else if(inf.params)		// обращаемся к BD list_obj_2
 	{ 
 		if(inf.params.fc)

@@ -60,7 +60,16 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
-	//filtr_kosoy_1({ r1: '1', m1: 0.077, demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) })  
+	//filtr_kosoy_1({ r1: '1', m1: 0.077, demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) }) 
+
+	al_radiator_1({ count: 1, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1', offset: new THREE.Vector3(0.5, 1, 3.0), demo: true });
+	
+	al_zagl_radiator_1({ r1: '1', r2: '1/2', name: 'перех.радиаторный 1/2', offset: new THREE.Vector3(0.5, 1, 3.5), demo: true }); 
+	al_zagl_radiator_1({ r1: '1', r2: '3/4', name: 'перех.радиаторный 3/4', offset: new THREE.Vector3(0.4, 1, 3.5), demo: true });
+	al_zagl_radiator_1({ r1: '1', r2: 0, name: 'заглушка радиаторная', offset: new THREE.Vector3(0.3, 1, 3.5), demo: true });  
+	al_zagl_radiator_1({ r1: '1', r2: 0, vsd: true, name: 'воздухоотв.радиаторный', offset: new THREE.Vector3(0.6, 1, 3.5), demo: true });
+	
+return;
 
 	if(1==1)
 	{
@@ -251,7 +260,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_mufta_1', arr: arr, startPos: new THREE.Vector3(0.0, 1, 0+0.0), n: 0, cat: 'st_mufta'});
 	}
 	
-return;
+
 
 	if(1==1)
 	{

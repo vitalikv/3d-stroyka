@@ -381,6 +381,35 @@ function cr_CenterPoint(cdm)
 
 
 
+// произвольная форма с выдавливание
+function arr_form_1(cdm)
+{
+	var w1 = cdm.w1;
+	var pos = (cdm.pos) ? cdm.pos : {x:0, y:0, z:0};
+	var rot = (cdm.rot) ? cdm.rot : {x:0, y:0, z:0};
+	var p = cdm.p;
+	
+	var scale = 1;
+	for ( var i = 0; i < p.length; i++ ) 
+	{  
+		p[i].x *= scale;
+		p[i].y *= scale; 
+	}		
+	
+	
+	var shape = new THREE.Shape( p );
+	var gShape = new THREE.ExtrudeGeometry( shape, { bevelEnabled: false, depth: w1 } );
+	gShape.rotateX(rot.x); 
+	gShape.rotateY(rot.y); 
+	gShape.rotateZ(rot.z);		
+	gShape.translate(pos.x, pos.y, pos.z);
+
+	for(var i = 0; i < gShape.faces.length; i++){ gShape.faces[i].materialIndex = 0; }
+
+	return gShape;
+}
+
+
 
 function upUvs_5( geometry )
 {	
