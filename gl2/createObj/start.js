@@ -19,6 +19,12 @@ async function fc_cr_obj(params)
 		arr[i].demo = true;
 		var obj = window[funcName](arr[i]);
 		
+		var arrO = getAllChildObect({obj: obj});
+		for(var i2 = 0; i2 < arrO.length; i2++)
+		{
+			disposeNode(arrO[i2]);
+		}		
+		
 		//await saveObjSql_2({name: obj.userData.obj3D.nameRus, params: {fc: {name: funcName}, cdm: arr[i], cat: params.cat} })
 		n++;
 	}
@@ -60,32 +66,35 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
-	//filtr_kosoy_1({ r1: '1', m1: 0.077, demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) }) 
+	
+	cr_kotel_1({ size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) }) 
 
-	al_radiator_1({ count: 1, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1', offset: new THREE.Vector3(0.5, 1, 3.0), demo: true });
 	
-	al_zagl_radiator_1({ r1: '1', r2: '1/2', name: 'перех.радиаторный 1/2', offset: new THREE.Vector3(0.5, 1, 3.5), demo: true }); 
-	al_zagl_radiator_1({ r1: '1', r2: '3/4', name: 'перех.радиаторный 3/4', offset: new THREE.Vector3(0.4, 1, 3.5), demo: true });
-	al_zagl_radiator_1({ r1: '1', r2: 0, name: 'заглушка радиаторная', offset: new THREE.Vector3(0.3, 1, 3.5), demo: true });  
-	al_zagl_radiator_1({ r1: '1', r2: 0, vsd: true, name: 'воздухоотв.радиаторный', offset: new THREE.Vector3(0.6, 1, 3.5), demo: true });
-	
-return;
 
 	if(1==1)
 	{
 		var arr = [];
-		arr[arr.length] = { r1: '1/2', m1: 0.053 };
-		arr[arr.length] = { r1: '3/4', m1: 0.065 };
-		arr[arr.length] = { r1: '1', m1: 0.077 };
-		arr[arr.length] = { r1: '1 1/4', m1: 0.091 };
-		arr[arr.length] = { r1: '1 1/2', m1: 0.106 };
-		arr[arr.length] = { r1: '2', m1: 0.126 };		
+		arr[arr.length] = { r1: '1', r2: '1/2', name: 'перех.радиаторный 1/2' };		
+		arr[arr.length] = { r1: '1', r2: '3/4', name: 'перех.радиаторный 3/4' };
+		arr[arr.length] = { r1: '1', r2: 0, name: 'заглушка радиаторная' };
+		arr[arr.length] = { r1: '1', r2: 0, vsd: true, name: 'воздухоотв.радиаторный' };
 		
-		await fc_cr_obj({funcName: 'filtr_kosoy_1', arr: arr, startPos: new THREE.Vector3(0.0, 1, 3.5), cat: 'filtr_kosoy_1'});		
-	}	
-	
+		await fc_cr_obj({funcName: 'al_zagl_radiator_1', arr: arr, startPos: new THREE.Vector3(-3.7, 1, -2), cat: 'al_zagl_radiator_1'});		
+	}
 	
 
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { count: 1, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };	
+		arr[arr.length] = { count: 2, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 3, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 4, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 5, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 6, size: {x: 0.08, y: 0.25, z: 0.08}, r1: '1' };
+		
+		await fc_cr_obj({funcName: 'al_radiator_1', arr: arr, startPos: new THREE.Vector3(-3.5, 1, -3), step: 0.35, cat: 'al_radiator_1'});		
+	}	
 	
 	
 	if(1==1)
@@ -133,7 +142,20 @@ return;
 		arr[arr.length] = { r1: '1', r2: '3/4', m1: 0.045 };
 		arr[arr.length] = { r1: '1 1/4', r2: '1', m1: 0.052 };
 		
-		await fc_cr_obj({funcName: 'st_sgon_1', arr: arr, startPos: new THREE.Vector3(-1.0, 1, 0), n: 0, cat: 'st_sgon_1'});		
+		await fc_cr_obj({funcName: 'st_sgon_1', arr: arr, startPos: new THREE.Vector3(-1.2, 1, 0), n: 0, cat: 'st_sgon_1'});		
+	}
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.053 };
+		arr[arr.length] = { r1: '3/4', m1: 0.065 };
+		arr[arr.length] = { r1: '1', m1: 0.077 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.091 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.106 };
+		arr[arr.length] = { r1: '2', m1: 0.126 };		
+		
+		await fc_cr_obj({funcName: 'filtr_kosoy_1', arr: arr, startPos: new THREE.Vector3(-1.0, 1, 0+0.0), cat: 'filtr_kosoy_1'});		
 	}	
 	
 	
@@ -148,7 +170,7 @@ return;
 		await fc_cr_obj({funcName: 'st_krestovina_1', arr: arr, startPos: new THREE.Vector3(-0.8, 1, 0+0.0), cat: 'st_krestovina'});		
 	}
 
-	
+//return;	
 
 	if(1==1)
 	{

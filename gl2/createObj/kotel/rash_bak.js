@@ -66,7 +66,7 @@ function cr_rash_bak_1(cdm)
 	var obj = getBoundObject_1({obj: group});
 	
 	
-	var name2 = cdm.r1;
+	var name2 = cdm.r1+'(н)';
 	
 	var arrP = [];
 	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, -Math.PI/2), name: name2 };

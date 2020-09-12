@@ -6,6 +6,7 @@ function st_radiator_1(cdm)
 {	
 	var size = cdm.size;
 	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
+	var sizeY = size.y;
 	
 	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3(0, 1, 0);
 	
@@ -293,7 +294,7 @@ function st_radiator_1(cdm)
 	obj.userData.tag = 'obj';
 	obj.userData.obj3D = {};
 	obj.userData.obj3D.lotid = 0;
-	var name = 'Ст.радиатор ';
+	var name = 'Ст.радиатор '+size.x+'x'+sizeY;
 	obj.userData.obj3D.nameRus = name; 
 	obj.material.visible = false;
 	
