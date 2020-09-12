@@ -1,5 +1,5 @@
 <? require_once("include/bd.php");  ?>
-<?php $vrs = '=9' ?>
+<?php $vrs = '='.time() ?>
 
 <!DOCTYPE html>
 <html lang="en">

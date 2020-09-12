@@ -67,8 +67,15 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 	
-	cr_kotel_1({ size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', demo: true, offset: new THREE.Vector3(0.5, 1, 3.5) }) 
+	return;
 
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4' };		
+		
+		await fc_cr_obj({funcName: 'cr_kotel_1', arr: arr, startPos: new THREE.Vector3(0.5, 1, 3.5), cat: 'kotel_2'});		
+	}
 	
 
 	if(1==1)
@@ -79,35 +86,89 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1', r2: 0, name: 'заглушка радиаторная' };
 		arr[arr.length] = { r1: '1', r2: 0, vsd: true, name: 'воздухоотв.радиаторный' };
 		
-		await fc_cr_obj({funcName: 'al_zagl_radiator_1', arr: arr, startPos: new THREE.Vector3(-3.7, 1, -2), cat: 'al_zagl_radiator_1'});		
+		await fc_cr_obj({funcName: 'al_zagl_radiator_1', arr: arr, startPos: new THREE.Vector3(-4.7, 1, -1), cat: 'al_zagl_radiator_1'});		
 	}
 	
 
 	if(1==1)
 	{
+		var startPos = new THREE.Vector3(-4.5, 1, -3);
+
+		var arr = [];
+		arr[arr.length] = { count: 1, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };	
+		arr[arr.length] = { count: 2, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 3, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 4, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 5, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 6, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 7, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 8, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 9, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 10, size: {x: 0.08, y: 0.4, z: 0.08}, r1: '1' };
+		
+		await fc_cr_obj({funcName: 'al_radiator_1', arr: arr, startPos: startPos, step: 0.35, cat: 'al_radiator_400_1'});
+
+		
 		var arr = [];
 		arr[arr.length] = { count: 1, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };	
 		arr[arr.length] = { count: 2, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
 		arr[arr.length] = { count: 3, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
 		arr[arr.length] = { count: 4, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
 		arr[arr.length] = { count: 5, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
-		arr[arr.length] = { count: 6, size: {x: 0.08, y: 0.25, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 6, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 7, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 8, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 9, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
+		arr[arr.length] = { count: 10, size: {x: 0.08, y: 0.5, z: 0.08}, r1: '1' };
 		
-		await fc_cr_obj({funcName: 'al_radiator_1', arr: arr, startPos: new THREE.Vector3(-3.5, 1, -3), step: 0.35, cat: 'al_radiator_1'});		
+		await fc_cr_obj({funcName: 'al_radiator_1', arr: arr, startPos: startPos, step: 0.35, cat: 'al_radiator_500_1'});			
 	}	
 	
 	
 	if(1==1)
 	{
-		var arr = [];
-		arr[arr.length] = { size: {x: 0.90, y: 0.5, z: 0.07}, r1: '1/2' };
-		arr[arr.length] = { size: {x: 1.00, y: 0.5, z: 0.07}, r1: '1/2' };
-		arr[arr.length] = { size: {x: 1.20, y: 0.5, z: 0.07}, r1: '1/2' };
-		arr[arr.length] = { size: {x: 1.40, y: 0.5, z: 0.07}, r1: '1/2' };
-		arr[arr.length] = { size: {x: 1.60, y: 0.5, z: 0.07}, r1: '1/2' };
-		arr[arr.length] = { size: {x: 1.80, y: 0.5, z: 0.07}, r1: '1/2' };		
+		var startPos = new THREE.Vector3(4.5, 1, -3);
 		
-		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -3), step: 0.35, cat: 'st_radiator_1'});		
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.50, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.60, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.70, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.80, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.90, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.10, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.20, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.30, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.40, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.50, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.60, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.70, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.80, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.90, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.50, y: 0.4, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 2.00, y: 0.4, z: 0.07}, r1: '1/2' };
+		
+		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: startPos, step: 0.35, cat: 'st_radiator_400_1'});
+
+		
+		var arr = [];
+		arr[arr.length] = { size: {x: 0.50, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.60, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.70, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.80, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 0.90, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.10, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.20, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.30, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.40, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.50, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.60, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.70, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.80, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.90, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 1.50, y: 0.5, z: 0.07}, r1: '1/2' };
+		arr[arr.length] = { size: {x: 2.00, y: 0.5, z: 0.07}, r1: '1/2' };
+		
+		await fc_cr_obj({funcName: 'st_radiator_1', arr: arr, startPos: startPos, step: 0.35, cat: 'st_radiator_500_1'});		
 	}	
 	
 
@@ -122,7 +183,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { d: 0.285, h1: 0.395, r1: '3/4', name: '18л' };
 		arr[arr.length] = { d: 0.325, h1: 0.420, r1: '3/4', name: '24л' };		
 		
-		await fc_cr_obj({funcName: 'cr_rash_bak_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -1), offsetX: true, step: 0.35, cat: 'kotel_1'});		
+		await fc_cr_obj({funcName: 'cr_rash_bak_1', arr: arr, startPos: new THREE.Vector3(-1, 1, -1), offsetX: true, step: 0.35, cat: 'rash_bak_1'});		
 	}
 	
 
@@ -142,7 +203,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1', r2: '3/4', m1: 0.045 };
 		arr[arr.length] = { r1: '1 1/4', r2: '1', m1: 0.052 };
 		
-		await fc_cr_obj({funcName: 'st_sgon_1', arr: arr, startPos: new THREE.Vector3(-1.2, 1, 0), n: 0, cat: 'st_sgon_1'});		
+		await fc_cr_obj({funcName: 'st_pol_sgon_1', arr: arr, startPos: new THREE.Vector3(-1.2, 1, 0), n: 0, cat: 'st_pol_sgon_1'});		
 	}
 
 	if(1==1)

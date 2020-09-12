@@ -8,7 +8,7 @@
 
 
 // стальной полусгон
-function st_sgon_1(cdm)   
+function st_pol_sgon_1(cdm)   
 {	
 	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
 	var d2 = sizeRezba({size: cdm.r2, side: 'n'});	
