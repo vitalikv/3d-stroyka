@@ -25,7 +25,12 @@ async function fc_cr_obj(params)
 			disposeNode(arrO[i2]);
 		}		
 		
-		//await saveObjSql_2({name: obj.userData.obj3D.nameRus, params: {fc: {name: funcName}, cdm: arr[i], cat: params.cat} })
+		if(1==2)
+		{
+			var name = (obj.userData.obj3D) ? obj.userData.obj3D.nameRus : obj.userData.wf_tube.nameRus;
+			await saveObjSql_2({name: name, params: {fc: {name: funcName}, cdm: arr[i], cat: params.cat} })
+		}
+		
 		n++;
 	}
 
@@ -64,10 +69,43 @@ async function saveObjSql_2(cdm)
 }
 
 
+
+
 async function cr_obj_cat()
 {
-	
 	return;
+	
+	if(1==1)
+	{
+		var startPos = new THREE.Vector3(0.5, 1, 3.5);
+		
+		var arr = [];
+		arr[arr.length] = { type: 'horizontal', r1: 0.016 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.020 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.025 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.026 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.030 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.032 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.040 };
+		arr[arr.length] = { type: 'horizontal', r1: 0.050 };
+		
+		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_horiz_1'});
+		
+		var arr = [];
+		arr[arr.length] = { type: 'vertical', r1: 0.016 };
+		arr[arr.length] = { type: 'vertical', r1: 0.020 };
+		arr[arr.length] = { type: 'vertical', r1: 0.025 };
+		arr[arr.length] = { type: 'vertical', r1: 0.026 };
+		arr[arr.length] = { type: 'vertical', r1: 0.030 };
+		arr[arr.length] = { type: 'vertical', r1: 0.032 };
+		arr[arr.length] = { type: 'vertical', r1: 0.040 };
+		arr[arr.length] = { type: 'vertical', r1: 0.050 };
+		
+		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_vert_1'});		
+	}
+	
+	
+	
 
 	if(1==1)
 	{

@@ -164,12 +164,12 @@ function createSubstrate(cdm)
 		}
 		else
 		{
-			setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg', scale: cdm.scale});
+			setImgUrlSubstrate({obj: obj, img: 'img/lightMap_1.png', scale: cdm.scale});
 		}		
 	}
 	else
 	{
-		setImgUrlSubstrate({obj: obj, img: 'img/UV_Grid_Sm.jpg'});
+		setImgUrlSubstrate({obj: obj, img: 'img/lightMap_1.png'});
 	}
 	
 	addPlaneListUI({plane: obj});

@@ -425,8 +425,9 @@ function geometryTubeWF(cdm)
 	{
 		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({ color: line.userData.wf_line.color.getHex(), side: THREE.DoubleSide, lightMap: lightMap_1 }));	
 		line.userData.wf_line.tube = tube;
-		tube.userData.tag = 'wf_tube';
-		tube.userData.wf_tube = {}
+		tube.userData.tag = 'wf_tube';		
+		tube.userData.wf_tube = {};
+		tube.userData.wf_tube.nameRus = 'труба '+ line.userData.wf_line.diameter*1000;
 		tube.userData.wf_tube.color = line.userData.wf_line.color.clone();
 		tube.userData.wf_tube.line = line;
 		scene.add( tube );

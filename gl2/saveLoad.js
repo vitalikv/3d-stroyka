@@ -892,7 +892,7 @@ async function loadFilePL(arr)
 }
 
 
-// сохранение объектов в базу (создаем уникальную копию)
+// загружаем объекты в сцену и сохраняем в кэш (создаем уникальную копию)
 async function loadObjInBase(cdm)
 {
 	var furn = cdm.furn;
@@ -914,11 +914,13 @@ async function loadObjInBase(cdm)
 		strId += '&id['+i+']='+lotid[i];
 	}
 
-	var url = infProject.path+'components_2/getListObjSql.php';		
+	var url = infProject.path+'components_2/getListObjSql.php';	
+	var table = infProject.settings.BD.table.list_obj;
+	
 	var response = await fetch(url, 
 	{
 		method: 'POST',
-		body: 'select_list=id, name, size'+strId ,
+		body: 'table='+table+'&select_list=id, name'+strId ,
 		headers: 
 		{
 			'Content-Type': 'application/x-www-form-urlencoded'

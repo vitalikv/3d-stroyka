@@ -165,8 +165,7 @@ var arrWallFront = [];
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
 infProject.texture = [];
-infProject.texture[0] = { texture: new THREE.TextureLoader().load(infProject.path+'/img/UV_Grid_Sm.jpg'), url: '/img/UV_Grid_Sm.jpg' };
-infProject.texture[1] = { texture: new THREE.TextureLoader().load(infProject.path+'/img/obj/rezba_1.png'), url: '/img/obj/rezba_1.png' };
+infProject.texture[0] = { texture: new THREE.TextureLoader().load(infProject.path+'/img/obj/rezba_1.png'), url: '/img/obj/rezba_1.png' };
 
 var clickO = resetPop.clickO();
 infProject.project = null;
@@ -216,7 +215,7 @@ infProject.material.bronz_1.specular.set(0xa3a3a3);
 infProject.material.bronz_1_edge = infProject.material.bronz_1.clone();
 infProject.material.bronz_1_edge.flatShading = true;
 
-infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0xc1c6c9, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.rezba_1 = new THREE.MeshPhongMaterial({ color: 0xc1c6c9, map: infProject.texture[0].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_1.map.repeat.x = 900; 
 infProject.material.rezba_1.map.rotation = THREE.Math.degToRad( 2 );
 infProject.material.rezba_1.map.wrapS = THREE.RepeatWrapping; 
@@ -224,7 +223,7 @@ infProject.material.rezba_1.map.wrapT = THREE.RepeatWrapping;
 infProject.material.rezba_1.shininess = 100;
 infProject.material.rezba_1.specular.set(0xa3a3a3);
 
-infProject.material.rezba_2 = new THREE.MeshPhongMaterial({ color: 0xb87c23, map: infProject.texture[1].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
+infProject.material.rezba_2 = new THREE.MeshPhongMaterial({ color: 0xb87c23, map: infProject.texture[0].texture, lightMap: lightMap_1, side: THREE.DoubleSide });
 infProject.material.rezba_2.map.repeat.x = 900; 
 infProject.material.rezba_2.map.rotation = THREE.Math.degToRad( 2 );
 infProject.material.rezba_2.map.wrapS = THREE.RepeatWrapping; 

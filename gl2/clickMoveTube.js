@@ -21,16 +21,19 @@ function createTubeWF_1(cdm)
 		return;
 	}
 	
-	var line = createLineWF({point: p, diameter: 0.05}); 
+	var r1 = (cdm.r1) ? cdm.r1 : 0.05;
+	var line = createLineWF({point: p, diameter: r1}); 
 	
 	var tube = geometryTubeWF({line: line, createLine: true});		
 	
 	
-	planeMath.position.y = cdm.posY;  
+	planeMath.position.y = infProject.tools.heightPl.position.y;  
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.updateMatrixWorld(); 	
 
 	clickO.move = tube;	
+	
+	return tube;
 }
 
 

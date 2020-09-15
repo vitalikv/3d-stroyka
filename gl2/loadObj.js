@@ -42,27 +42,6 @@ async function getObjFromBase(cdm)
 }
 
 
-// если объект составной или параметрический, то собираем его
-async function getInfPoperties(cdm)
-{
-	var inf = cdm.inf;
-	
-	if(inf.obj){ }
-	else if(inf.params)		// обращаемся к BD list_obj_2
-	{ 
-		if(inf.params.fc)
-		{
-			inf.obj = window[inf.params.fc.name](inf.params.cdm);
-			
-			infProject.scene.array.base[infProject.scene.array.base.length] = inf;
-			
-			return inf;			
-		}
-	}
-
-	return null;
-}
-
 
 
 // cdm - информация, которая пришла из вне
@@ -77,96 +56,36 @@ async function loadObjServer(cdm)
 	if(!inf) return;		// объект не существует в API/каталоге
 	
 	
-	var inf_2 = await getInfPoperties({inf: inf});	// если объект составной или параметрический, то собираем его
-	if(inf_2) { inf = inf_2; }
-	console.log(inf);
-	
-	var type = '';
-	
 	if(inf.obj)		// объект есть в кэше
 	{ 
-		console.log('---------', 55555);
-		type = 'obj';
-	}
-	else if(inf.model)		// объекта нет в кэше, сохраняем/добавляем в кэш
-	{	
-		var obj = new THREE.ObjectLoader().parse( inf.model );			
-		addObjInBase(inf, obj);	
-		type = 'obj';
-	}	
-	
-	if(type == 'obj') { addObjInScene(inf, cdm); }
-	else if(inf.type == 'tube') 
+		addObjInScene(inf, cdm); 
+	}		
+	else if(inf.params)		// обращаемся к BD list_obj_2
 	{ 
-		createTubeWF_1({type: inf.properties.type, posY: infProject.tools.heightPl.position.y});
-	}
-}
-
-
-
-// добавляем новый объект в базу/кэш (добавляются только уникальные объекты, которых нет в базе)
-function addObjInBase(inf, obj)
-{
-	obj.geometry.computeBoundingBox();	
-	
-	// накладываем на материал объекта lightMap
-	obj.traverse(function(child) 
-	{
-		if(child.isMesh) 
-		{ 	
-			// устанавливаем lightMap
-			if(child.material)
+		if(inf.params.fc)
+		{
+			var obj = window[inf.params.fc.name](inf.params.cdm);
+			
+			if(obj.userData.tag == 'wf_tube')	// если труба, то в кэш сохраняем только параметры
 			{
-				if(Array.isArray(child.material))
-				{
-					for(var i = 0; i < child.material.length; i++)
-					{
-						child.material[i].lightMap = lightMap_1;
-					}
-				}
-				else
-				{
-					child.material.lightMap = lightMap_1;
-				}					
-			}
-
-			// устанавливаем общий материал для centerPoint
-			if(child.userData.centerPoint)
-			{
-				
-				if (child.material) 
-				{
-					var materialArray = [];
-					
-					if(child.material instanceof Array) { materialArray = child.material; }
-					else { materialArray = [child.material]; }
-					
-					if(materialArray) 
-					{
-						materialArray.forEach(function (mtrl, idx) 
-						{
-							if (mtrl.map) mtrl.map.dispose();
-							if (mtrl.lightMap) mtrl.lightMap.dispose();
-							if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-							if (mtrl.normalMap) mtrl.normalMap.dispose();
-							if (mtrl.specularMap) mtrl.specularMap.dispose();
-							if (mtrl.envMap) mtrl.envMap.dispose();
-							mtrl.dispose();
-						});
-					}
-				}
-	
-				child.material = infProject.material.pointObj.default;
-				child.scale.set(1,1,1);
-				child.visible = false;
+				infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+			}		
+			else 	// если объект, то в кэш сохраняем параметры и сам объект
+			{ 
+				inf.obj = obj;
+				infProject.scene.array.base[infProject.scene.array.base.length] = inf; 
+				addObjInScene(inf, cdm);
 			}			
+			
+					
 		}
-	});	
+	}
 
-	//var inf_2 = JSON.parse( JSON.stringify( inf ) );
-	inf.obj = obj;	
 	
-	infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+	if(inf.type == 'tube') 
+	{ 
+		//createTubeWF_1({type: inf.properties.type, posY: infProject.tools.heightPl.position.y});
+	}
 }
 
 
