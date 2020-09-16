@@ -1339,7 +1339,7 @@ function saveAsImage()
 		renderer.antialias = true;
 		renderer.render( scene, camera );
 		
-		var strMime = "image/png";
+		var strMime = "image/png"; 
 		var imgData = renderer.domElement.toDataURL(strMime);	
 
 		renderer.antialias = false;
@@ -1376,6 +1376,50 @@ var openFileImage = function (strData, filename)
 		location.replace(uri);
 	}
 }   
+
+
+
+
+
+// сохраняем список материалов в txt
+function saveListTxt() 
+{ 
+	var txt = '';
+	var n = 1;
+	var list = infProject.list.obj_scene_ui;
+	
+	for(var i = list.length - 1; i >= 0; i--)
+	{
+		var o = list[i].o;
+		
+		if(o.userData.obj3D)
+		{
+			txt += n+'. '+o.userData.obj3D.nameRus+'\n';
+			n++;
+		}
+		else if(o.userData.wf_line)
+		{
+			var tube = o.userData.wf_line.tube;
+			txt += n+'. '+tube.userData.wf_tube.nameRus+' '+tube.userData.wf_tube.length+'м\n';
+			n++;
+		}		
+		
+	}
+	
+	console.log(txt);
+	
+	//if(cdm.txt)
+	{	
+		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(txt);	
+		
+		var link = document.createElement('a');
+		document.body.appendChild(link);
+		link.href = csvData;
+		link.target = '_blank';
+		link.download = '1.txt';
+		link.click();			
+	}		
+}
 
 		
 	

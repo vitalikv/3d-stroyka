@@ -428,6 +428,7 @@ function geometryTubeWF(cdm)
 		tube.userData.tag = 'wf_tube';		
 		tube.userData.wf_tube = {};
 		tube.userData.wf_tube.nameRus = 'труба '+ line.userData.wf_line.diameter*1000;
+		tube.userData.wf_tube.length = Math.round(length * 100)/100;
 		tube.userData.wf_tube.color = line.userData.wf_line.color.clone();
 		tube.userData.wf_tube.line = line;
 		scene.add( tube );
@@ -436,7 +437,12 @@ function geometryTubeWF(cdm)
 	{
 		line.userData.wf_line.tube.geometry.dispose();
 		line.userData.wf_line.tube.geometry = geometry;
+		
+		var tube = line.userData.wf_line.tube;
+		tube.userData.wf_tube.nameRus = 'труба '+ line.userData.wf_line.diameter*1000;
+		tube.userData.wf_tube.length = Math.round(length * 100)/100;
 	}
+	
 	
 	updateListTubeUI_1({o: line, type: 'update'});	// обновляем список материалов 
 	
@@ -550,6 +556,10 @@ function inputWF_tubeDiametr(cdm)
 	line.userData.wf_line.diameter = size;
 	$('[nameId="size_tube_diameter_2"]').val(size * 1000);
 	if(line.userData.wf_line.tube) geometryTubeWF({line : line});
+	
+	
+	var tube = line.userData.wf_line.tube;
+	$('[nameId="rp_obj_name"]').val(tube.userData.wf_tube.nameRus);		// обновляем название 		
 }
 
 

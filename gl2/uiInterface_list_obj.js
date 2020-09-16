@@ -118,7 +118,7 @@ function updateListTubeUI_1(cdm)
 			$(q.querySelector('[item="name"]')).text('труба '+line.userData.wf_line.diameter * 1000);
 			$(q.querySelector('[item="value"]')).text(Math.round(length * 100)/100+'м');			
 		}
-	}
+	}	
 }
 
 

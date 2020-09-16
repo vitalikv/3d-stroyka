@@ -25,7 +25,7 @@ function activeObjRightPanelUI_1(cdm)
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	
-		$('[nameId="rp_obj_name"]').val('труба');
+		$('[nameId="rp_obj_name"]').val(obj.userData.wf_tube.nameRus); 
 		$('[nameId="rp_bl_wf_tube"]').show();
 		
 	}			

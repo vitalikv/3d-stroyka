@@ -231,6 +231,7 @@ function copyObj(cdm)
 				}
 			}
 		});
+		
 
 		updateListTubeUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
 		
@@ -238,7 +239,21 @@ function copyObj(cdm)
 		{
 			arr[i].userData.obj3D.group = gr;		// восстанавливаем группу
 		}		
-	}	
+	}
+
+	// у старого объекта с которого делали копию, прячем centerPoint
+	obj.traverse( function ( child ) 
+	{
+		if ( child.isMesh ) 
+		{ 
+			if(child.userData.centerPoint)
+			{
+				child.material = infProject.material.pointObj.default;
+				child.visible = false;
+			}
+		}
+	});		
+	
 	 
 	
 	hidePivotGizmo(obj);

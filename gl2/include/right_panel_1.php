@@ -680,6 +680,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 				<?}?>
 				
 			</div>
+			
+			<div class="button1 button_gradient_1" nameId="save_list_obj" style="display: block; position: absolute; left: 0; right: 0; bottom: 80px; margin: auto 10px;">
+				сохранить список
+			</div>			
 		</div>
 		
 		

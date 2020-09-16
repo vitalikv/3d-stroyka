@@ -150,6 +150,9 @@ $('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return
 $('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
 
 
+$('[nameId="save_list_obj"]').mousedown(function () { saveListTxt(); });
+
+
 
 $('input').on('focus keyup change', function () 
 { 
