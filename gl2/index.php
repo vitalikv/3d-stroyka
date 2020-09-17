@@ -62,6 +62,9 @@
 		
 		<div class="flex_1 height100">
 			
+			<div nameId="msDiv_1" style="display: block; position: absolute; left: 50%; top: 50%; border:solid 1px #b3b3b3; background: #fff; padding: 5px 10px; font-family: arial,sans-serif; font-size: 15px; color: #666;">
+				test 1111111
+			</div>
 			<div style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>
 				<? //require_once("include/modal_window_2.php"); ?>				

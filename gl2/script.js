@@ -94,7 +94,11 @@ function animate()
 	moveCameraToNewPosition();
 	
 	updateKeyDown();
+	
+	detectMouseObj();
+
 }
+
 
 
 
@@ -267,8 +271,10 @@ infProject.start = true;
 infProject.ui = {}
 infProject.ui.main_menu = [];
 infProject.ui.right_menu = {active: ''};
+infProject.ui.div = {};
+infProject.ui.div.msDiv_1 = document.querySelector('[nameId="msDiv_1"]');
 
-
+console.log(canvas, infProject.ui.div.msDiv_1);
  
 
 console.log(infProject);
@@ -1491,6 +1497,8 @@ document.body.addEventListener( 'mouseup', onDocumentMouseUp, false );
 document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
 document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );
 document.body.addEventListener( 'touchend', onDocumentMouseUp, false );
+
+document.body.addEventListener("mouseout", function () { infProject.ui.div.msDiv_1.style.display = "none"; });	// вышли из canvas или навели на другой элемент
 
 document.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
 document.addEventListener('mousewheel', onDocumentMouseWheel, false);	

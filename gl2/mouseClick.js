@@ -11,7 +11,8 @@ var catchTime = 0.30;
 var vk_click = '';
 
 
-
+var lastMouseTime = new Date().getTime();
+var moveMouse = null;
 
 
 function mouseDownRight()
@@ -72,7 +73,7 @@ function onDocumentMouseDown( event )
  
 	long_click = false;
 	lastClickTime = new Date().getTime();
-
+	
 	
 	if(event.changedTouches)
 	{
@@ -416,6 +417,12 @@ function onDocumentMouseMove( event )
 		event.clientY = event.changedTouches[0].clientY;
 		isMouseDown2 = true;
 	}
+	
+	{
+		lastMouseTime = new Date().getTime();
+		moveMouse = event;	
+		//detectMouseObj();		
+	}
 
 	clickButton( event );
 		
@@ -612,6 +619,80 @@ function hideMenuUI(obj)
 	else if(tag == 'boxWF') { hideBoxWF_UI(); } 
 }
 
+
+
+// когда курсор останавливается, показываем название объекта, на который указывает мышь
+function detectMouseObj()
+{
+	
+	if(!moveMouse) return;
+
+	var elem1 = infProject.ui.div.msDiv_1;
+	
+	if( new Date().getTime() - lastMouseTime < 300.00 ) 
+	{
+		if(elem1.style.display != "none") { elem1.style.display = "none"; }
+		return;
+	}
+
+
+	if(1==1)
+	{	
+		var rayhit = null;
+		var arr = [];
+		
+		var floor = infProject.scene.substrate.floor;
+		var line = infProject.scene.array.tube;
+		var obj = infProject.scene.array.obj;
+		
+		for ( var i = 0; i < floor.length; i++ )
+		{
+			arr[arr.length] = floor[i].plane;
+		}
+		
+		for ( var i = 0; i < line.length; i++ )
+		{
+			arr[arr.length] = line[i].userData.wf_line.tube;
+		}	
+
+		for ( var i = 0; i < obj.length; i++ )
+		{
+			arr[arr.length] = obj[i];
+		}	
+
+		var event = moveMouse;
+		var ray = rayIntersect( event, arr, 'arr' ); 
+		if(ray.length > 0) { rayhit = ray[0]; }					
+		
+		var txt = null;
+		
+		if(rayhit)
+		{
+			var obj = rayhit.object;
+			
+			if(obj.userData.tag == 'obj') { txt = obj.userData.obj3D.nameRus; }
+			else if(obj.userData.tag == 'wf_tube') { txt = obj.userData.wf_tube.nameRus+' '+obj.userData.wf_tube.length+'м'; }
+		}
+		
+		if(txt)
+		{
+			elem1.innerText = txt;
+			
+			elem1.style.top = (event.clientY - elem1.clientHeight - 20) + 'px';
+			elem1.style.left = (event.clientX - elem1.clientWidth/2) + 'px';
+
+			if(elem1.style.display != "block") { elem1.style.display = "block"; }			
+		}
+		else
+		{
+			elem1.innerText = '';
+			elem1.style.display = "none";
+		}
+	}
+		
+	moveMouse = null;
+	
+}
 
 
 
