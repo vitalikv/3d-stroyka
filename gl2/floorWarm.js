@@ -200,7 +200,7 @@ function createLineWF(cdm)
 	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);
 	
 	
-	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 2 }) );
+	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: color, linewidth: 2 }) );
 	//line.material.color = color;
 	 
 	line.userData.tag = 'wf_line';
@@ -502,6 +502,7 @@ function deletePointWF(obj)
 			line.geometry.elementsNeedUpdate = true;
 
 			line.material.color = line.userData.wf_line.color.clone();
+			line.material.needsUpdate = true;
 			
 			if(line.userData.wf_line.tube) 
 			{ 
@@ -565,37 +566,29 @@ function inputWF_tubeDiametr(cdm)
 
 
 // меняем цвет трубы input
-$('[color_tube_1_change]').on('mousedown', function(e) 
+function changeColorTube(cdm) 
 {  
 	var tube = clickO.last_obj;
 	
 	if(!tube) return;	
-	if(tube.userData.tag != 'wf_tube') return;
-	
-	
-	var color = $(this).attr('color_tube_1_change');
-	
-	$('[nameId="color_tube_1_default"]').css('background-color', '#'+color);
-	$('[nameId="bb_menu_tube_menu_2"]').hide();
-	
-	
-	var color = Number('0x'+color); 
+	if(tube.userData.tag != 'wf_tube') return;		 
 	
 	var line = tube.userData.wf_tube.line;
 	
-	line.material.color = new THREE.Color(color);
+	line.material.color = new THREE.Color(cdm.value);
 	line.userData.wf_line.color = line.material.color.clone();
+	line.material.needsUpdate = true;
 	
-	tube.material.color = new THREE.Color(color); 
+	
+	tube.material.color = new THREE.Color(cdm.value); 
 	tube.userData.wf_tube.color = tube.material.color.clone();
+	tube.material.needsUpdate = true;	
 
 	
 	updateListTubeUI_1({o: line, type: 'update'});
 	
-	renderCamera();
-	
-	return false; 
-});
+	renderCamera(); 
+};
 
 
 

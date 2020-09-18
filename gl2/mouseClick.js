@@ -671,7 +671,7 @@ function detectMouseObj()
 			var obj = rayhit.object;
 			
 			if(obj.userData.tag == 'obj') { txt = obj.userData.obj3D.nameRus; }
-			else if(obj.userData.tag == 'wf_tube') { txt = obj.userData.wf_tube.nameRus+' '+obj.userData.wf_tube.length+'м'; }
+			else if(obj.userData.tag == 'wf_tube') { txt = obj.userData.wf_tube.nameRus+' ('+obj.userData.wf_tube.length+'м)'; }
 		}
 		
 		if(txt)

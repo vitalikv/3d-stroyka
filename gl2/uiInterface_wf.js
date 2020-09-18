@@ -63,7 +63,8 @@ function showWF_line_UI(tube)
 	$('[nameId="size_tube_diameter_2"]').val(line.userData.wf_line.diameter * 1000);
 	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
 	
-	$('[nameId="color_tube_1_default"]').css('background-color', '#'+line.userData.wf_line.color.clone().getHexString()); 
+	let colorTube = document.querySelector('[nameId="color_tube_1_default"]');
+	colorTube.value = '#'+line.userData.wf_line.color.clone().getHexString();
 
 	 
 	activeObjRightPanelUI_1({obj: tube});

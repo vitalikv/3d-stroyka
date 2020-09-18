@@ -549,20 +549,10 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 										цвет
 									</div>
 								</div>
-								<div class="flex_1 align_items" style="width: auto;">
-									<input type="text" nameId="color_tube_1_default" style="width: 90%; margin:5px 5px; background-color:#cfcfcf; cursor: pointer;" value=''>
+								<div class="flex_1 align_items" style="width: 100%;">
+									<input nameId="color_tube_1_default" type="color" style="width: 90%; margin:5px 5px; cursor: pointer;">
 								</div>
 							</div>					 
-
-							<div class="toolbar-menu" nameId='bb_menu_tube_menu_2' style="display: none;">
-								<div class="color_tube_1_change" color_tube_1_change='e5e5e5' style="background-color:#e5e5e5;"></div>
-								<div class="color_tube_1_change" color_tube_1_change='0252f2' style="background-color:#0252f2;"></div>
-								<div class="color_tube_1_change" color_tube_1_change='f2b202' style="background-color:#f2b202;"></div> 
-								<div class="color_tube_1_change" color_tube_1_change='9602f2' style="background-color:#9602f2;"></div>
-								<div class="color_tube_1_change" color_tube_1_change='f202e2' style="background-color:#f202e2;"></div>
-								<div class="color_tube_1_change" color_tube_1_change='828282' style="background-color:#828282;"></div>
-								<div class="color_tube_1_change" color_tube_1_change='141414' style="background-color:#141414;"></div>
-							</div>
 			
 							<div style="margin: 10px 0;">
 								<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>

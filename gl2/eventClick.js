@@ -63,13 +63,9 @@ $('[nameId="button_obj_properties"]').mousedown(function () { changeRightMenuUI_
 
 
  
+let colorTube = document.querySelector('[nameId="color_tube_1_default"]');
+colorTube.addEventListener('change', function() { changeColorTube({ value: this.value }); });
 
-$('[nameId="color_tube_1_default"]').on('mousedown', function(e) 
-{  
-	$('[nameId="bb_menu_tube_menu_2"]').show();
-	
-	return false; 
-});
 
 
   

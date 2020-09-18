@@ -1406,7 +1406,7 @@ function saveListTxt()
 		else if(o.userData.wf_line)
 		{
 			var tube = o.userData.wf_line.tube;
-			txt += n+'. '+tube.userData.wf_tube.nameRus+' '+tube.userData.wf_tube.length+'м\n';
+			txt += n+'. '+tube.userData.wf_tube.nameRus+' ('+tube.userData.wf_tube.length+'м)\n';
 			n++;
 		}		
 		
