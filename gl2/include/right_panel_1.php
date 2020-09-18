@@ -274,7 +274,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 		<div class="flex_column_1" nameId="wrap_plan" style="display: none;">
 			<div class="right_panel_1_1_h">План</div>
 			
-				<div class="right_panel_1_1_list rp_height_150px" nameId="rp_plane_1">
+				<div class="right_panel_1_1_list rp_height_250px" nameId="rp_plane_1">
 					<div nameId="rp_plane_2">
 					</div>
 					<div nameId="rp_plane_3">
@@ -597,7 +597,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 							
 							<div nameId="bl_rp_obj_group"> 
 							
-								<div class="flex_1">
+								<div class="flex_1" style="display: none;">
 									<div class="flex_1 align_items block_rp_1">
 										<div class="checkbox_1" nameId="box_input_group">
 											<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						

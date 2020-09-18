@@ -115,12 +115,14 @@ function createSubstrate(cdm)
 {
 	if(!cdm) { cdm = {}; }
 	
+	if(infProject.scene.substrate.floor.length > 4) return;	
+	
 	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), new THREE.MeshPhongMaterial( { color : 0xcccccc, transparent: true, opacity: 1, lightMap : lightMap_1 } ) );
 	obj.position.y = 0.0;
 	obj.rotation.y = 0.0;
 	obj.userData.tag = "substrate";
 	obj.userData.substrate = { p: [], active: false };
-	obj.userData.substrate.nameRus = 'этаж';
+	obj.userData.substrate.nameRus = (cdm.nameRus) ? cdm.nameRus : 'этаж';
 	obj.userData.substrate.img = null;
 	
 	scene.add( obj );	
@@ -322,6 +324,37 @@ function showHideSubstrate_1(cdm)
 	renderCamera();
 }
 
+
+// переименовываем этаж
+function renameFloor(cdm)
+{
+	var obj = cdm.obj;
+	
+	if(!obj) return;
+	if(obj.userData.tag != "substrate") return;
+		
+	
+	var name = document.querySelector('[nameId="rp_floor_name"]').value;
+	
+	name = name.trim();
+	
+	if(name == '') return;
+	
+	obj.userData.substrate.nameRus = name;
+	
+	for(var i = 0; i < infProject.tools.plane.o1.length; i++)
+	{
+		if(infProject.tools.plane.o1[i] == obj)
+		{ 
+			var el = infProject.tools.plane.el[i]; 
+
+			var el_2 = el[0].querySelector('[nameId="rp_floor_txt_name"]');
+			el_2.innerText = name;
+			
+			break; 
+		} 
+	}	
+}
 
 
 // устанавливаем высоту плана

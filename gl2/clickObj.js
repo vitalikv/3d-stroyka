@@ -292,7 +292,10 @@ function renameObject(cdm)
 
 		console.log('centerPoint.nameRus');
 	}
-	
+	else
+	{
+		return;
+	}
 	
 	var arr1 = infProject.list.rp_ui.arr;
 	var arr2 = [];

@@ -1557,6 +1557,10 @@ document.body.addEventListener("keydown", function (e)
 			{
 				setPlanePositionY({value: $('[nameId="rp_height_plane"]').val()});
 			}
+			else if(infProject.activeInput == 'rp_floor_name')
+			{
+				renameFloor({ obj: infProject.scene.substrate.active }); 
+			}			
 			else if(infProject.activeInput == 'rp_obj_name')
 			{
 				renameObject({ obj: clickO.last_obj, name: $('[nameId="rp_obj_name"]').val() });
