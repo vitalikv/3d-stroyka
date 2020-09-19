@@ -166,12 +166,13 @@ function clickObjUI(cdm)
 			
 			
 			// назначаем кнопки треугольник событие
+			var id = arrO[i].userData.id; console.log(id);
 			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
 			var container = el[0].querySelector('[nameid="groupItem"]');
-			(function(container) 
+			(function(container, id) 
 			{
-				el_2.on('mousedown', function(e){ clickRtekUI_1({elem_2: container}); e.stopPropagation(); });	
-			}(container));	
+				el_2.on('mousedown', function(e){ clickRtekUI_1({elem_2: container, id: id}); e.stopPropagation(); });	
+			}(container, id));	
 					
 			infProject.list.rp_ui.arr[num].el = el;
 			
@@ -206,8 +207,6 @@ function clickObjUI(cdm)
 // кликнули на треугольник в меню объекты (показываем/скрываем разъемы этого объекта)
 function clickRtekUI_1(cdm)
 {
-	console.log(cdm, cdm.elem_2.style.display);
-	
 	var display = cdm.elem_2.style.display;
 	
 	var display = (display == 'none') ? 'block' : 'none';
@@ -216,8 +215,40 @@ function clickRtekUI_1(cdm)
 	
 	var parentEl = cdm.elem_2.parentElement;	
 
-	if(display == 'block') { parentEl.style.backgroundColor = '#ebebeb'; }
-	else { parentEl.style.backgroundColor = '#ffffff'; }	
+	if(display == 'block') 
+	{ 
+		var flag = false;
+		if(clickO.last_obj)
+		{
+			if(clickO.last_obj.userData.id == cdm.id) { flag = true; }
+		}
+		
+		if(flag) 
+		{
+			parentEl.style.backgroundColor = infProject.listColor.activeItem_1;
+		}
+		else
+		{
+			parentEl.style.backgroundColor = '#ebebeb';
+		}		
+	}
+	else 
+	{ 
+		var flag = false;
+		if(clickO.last_obj)
+		{
+			if(clickO.last_obj.userData.id == cdm.id) { flag = true; }
+		}
+		
+		if(flag) 
+		{
+			parentEl.style.backgroundColor = infProject.listColor.activeItem_1;
+		}
+		else
+		{
+			parentEl.style.backgroundColor = '#ffffff';
+		}
+	}	
 }
 
 
@@ -330,16 +361,24 @@ function clickItemObjNameUI(cdm)
 
 	
 	  
-	// выделяем в меню все объекты группы 
+	// делаем цвет всех объектов группы по default и сварачиваем открытые вложения 
 	if(infProject.settings.active.group) 	
 	{ 
 		for(var i = 0; i < list.length; i++)
 		{
-			list[i].el.css('background-color', '#00ff00'); 
+			list[i].el.css('background-color', '#ffffff');
+			
+			var el_1 = list[i].el[0].querySelector('[nameId="groupItem"]');
+			
+			if(el_1)
+			{
+				el_1.style.display = 'none';
+			}
 		}
 	}
 
-	item.css('background-color', 'rgb(7, 248, 248)');
+	// меняем цвет у выделеной вкладки
+	item.css('background-color', infProject.listColor.activeItem_1);
 	
 	
 
@@ -355,7 +394,19 @@ function clickItemObjNameUI(cdm)
 		
 		for(var i = 0; i < list.length; i++)
 		{
-			if(list[i].o == parent){ list[i].el.css('background-color', '#00ff00'); break; } 					
+			if(list[i].o == parent)
+			{ 
+				list[i].el.css('background-color', '#ebebeb'); 
+				
+				var el_1 = list[i].el[0].querySelector('[nameId="groupItem"]');
+				
+				if(el_1)
+				{
+					el_1.style.display = 'block';
+				}
+				
+				break; 
+			} 					
 		}		
 	}
 	

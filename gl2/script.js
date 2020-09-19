@@ -1411,10 +1411,7 @@ function saveListTxt()
 		}		
 		
 	}
-	
-	console.log(txt);
-	
-	//if(cdm.txt)
+
 	{	
 		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(txt);	
 		

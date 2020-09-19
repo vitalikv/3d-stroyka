@@ -297,31 +297,48 @@ function renameObject(cdm)
 		return;
 	}
 	
-	var arr1 = infProject.list.rp_ui.arr;
-	var arr2 = [];
-	
-	for(var i = 0; i < arr1.length; i++)
+	// переименовываем название во вкладке "объект"
 	{
-		arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
+		var arr1 = infProject.list.rp_ui.arr;
+		var arr2 = [];
 		
-		for(var i2 = 0; i2 < arr1[i].p.length; i2++)
+		for(var i = 0; i < arr1.length; i++)
 		{
-			arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
+			arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
+			
+			for(var i2 = 0; i2 < arr1[i].p.length; i2++)
+			{
+				arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
+			}
 		}
+		
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			if(arr2[i].o == obj)
+			{
+				var nameItem = arr2[i].el[0].querySelector('[nameId="nameItem"]');
+				nameItem.innerText = name;  
+				break;
+			}
+		}		
 	}
 	
 	
-	for(var i = 0; i < arr2.length; i++)
+	// переименовываем название во вкладке "список"
 	{
-		if(arr2[i].o == obj)
-		{
-			var nameItem = arr2[i].el[0].querySelector('[nameId="nameItem"]');
-			nameItem.innerText = name;  
-			break;
-		}
+		var list = infProject.list.obj_scene_ui;
+		
+		for(var i = 0; i < list.length; i++)
+		{		
+			if(list[i].o == obj)
+			{
+				var nameItem = list[i].el.querySelector('[nameId="nameItem"]');
+				nameItem.innerText = name;
+				break;
+			}				
+		}			
 	}
-	
-	
 }
 
 

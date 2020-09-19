@@ -220,7 +220,7 @@ function clickItemCenterObjUI_2(cdm)
 	
 	
 	// выделяем новый пункт на который кликнули UI
-	item.css('background-color', '#00ff00');
+	item.css('background-color', infProject.listColor.activeItem_1);
 	var value = item.attr('uuid');
 	
 	

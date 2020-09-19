@@ -41,7 +41,7 @@ function updateListTubeUI_1(cdm)
 			'<div>\
 				<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1">\
-						<div class="right_panel_1_1_list_item_text">'+obj.userData.obj3D.nameRus+'</div>\
+						<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+obj.userData.obj3D.nameRus+'</div>\
 						'+str_button+'\
 					</div>\
 				</div>\
