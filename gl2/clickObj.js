@@ -64,7 +64,7 @@ function clickFirstObj3D(cdm)
 	
 	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }		// вкл кнопка подключить/выронить	
 	else if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
-	else { clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} ); }	 	
+	else { clickObject3D( obj, {menu_1: true, outline: true} ); }	 	
 }
 
 
@@ -78,7 +78,7 @@ function clickObject3D( obj, cdm )
 	setPivotGizmo({obj: obj});	// ставим pivot/gizmo		
 	
 	if(cdm.outline) 
-	{ 
+	{  
 		if(obj.userData.centerPoint) { outlineAddObj(obj.parent); }
 		else { outlineAddObj(obj); } 
 	}	
@@ -264,7 +264,7 @@ function copyObj(cdm)
 	}
 	else
 	{
-		clickObject3D( arr2[0], {click_obj: true, menu_1: true, outline: true} );
+		clickObject3D( arr2[0], {menu_1: true, outline: true} );
 	}
 }
 
@@ -317,7 +317,7 @@ function renameObject(cdm)
 		{
 			if(arr2[i].o == obj)
 			{
-				var nameItem = arr2[i].el[0].querySelector('[nameId="nameItem"]');
+				var nameItem = arr2[i].el.querySelector('[nameId="nameItem"]');
 				nameItem.innerText = name;  
 				break;
 			}
@@ -348,7 +348,11 @@ function renameObject(cdm)
 function deClickObj(cdm)  
 {	
 	var obj = cdm.obj;
+	if(!obj) return;
 	
+	if(obj.userData.tag == 'obj'){}
+	else if(obj.userData.tag == 'joinPoint'){}
+	else { return; }
 
 	if(clickO.rayhit)
 	{  
@@ -392,7 +396,7 @@ function deClickObj(cdm)
 
 		switchSelectAddObjGroup({active: false});
 		switchAlignPoint_1({active: false});
-
+  
 		// скрываем разъемы
 		{
 			var arr = [];

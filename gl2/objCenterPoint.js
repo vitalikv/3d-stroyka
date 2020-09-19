@@ -42,7 +42,7 @@ function clickFirstCenterPoint(cdm)
 	var rayhit = cdm.rayhit;
 		
 	if(infProject.list.alignP.p2) { clickItemCenterObjUI_2({obj: obj}); }
-	else { clickObject3D(obj, {menu_1: true}); }
+	else { clickObject3D(obj, {menu_1: true, outline: true}); }
 }
 
 
@@ -55,11 +55,11 @@ function showHideJP(cdm)
 	var obj = null;
 	
 	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
-	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 
+	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 	
+	
+	if(!obj) return;
+	
 	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = getParentObj({obj: obj}); }
-	
-	if(!obj) return;	
-	
 	
 	var arr = getCenterPointFromObj_1( obj );
 	

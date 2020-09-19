@@ -122,11 +122,12 @@ function clickObjUI(cdm)
 		// очищаем список объектов UI
 		clearItemSelectedObjUI();	
 		
+		let container = document.body.querySelector('[nameId="rp_obj_group"]');
 		
 		for(var i = 0; i < arrO.length; i++)
 		{
 			var num = infProject.list.rp_ui.arr.length;
-			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: el, p: [], p_vis: false };
+			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: null, p: [], p_vis: false };
 			
 			// получаем разъемы объекта
 			var o = getCenterPointFromObj_1(arrO[i]);
@@ -144,14 +145,8 @@ function clickObjUI(cdm)
 					</div>\
 				</div>';			
 			}
-			
-			var str = 
-			'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-			<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
-				'+str_button+'\
-			</div>';
 
-			var str = 
+			var html = 
 			'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
 					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
@@ -161,38 +156,52 @@ function clickObjUI(cdm)
 				</div>\
 			</div>';			
 			
-			var el = $(str).appendTo('[nameId="rp_obj_group"]');		
-			el.on('mousedown', function(e){ clickItemObjNameUI({el: $(this)}); e.stopPropagation(); });
+					
+			var div = document.createElement('div');
+			div.innerHTML = html;
+			let elem = div.firstChild;
+			
+			infProject.list.rp_ui.arr[num].el = elem;
+			
+			container.append(elem);
+			(function() 
+			{
+				elem.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };	
+			}());
+			
 			
 			
 			// назначаем кнопки треугольник событие
-			var id = arrO[i].userData.id; console.log(id);
-			var el_2 = $(el[0].querySelector('[nameId="shCp_1"]'));
-			var container = el[0].querySelector('[nameid="groupItem"]');
-			(function(container, id) 
 			{
-				el_2.on('mousedown', function(e){ clickRtekUI_1({elem_2: container, id: id}); e.stopPropagation(); });	
-			}(container, id));	
-					
-			infProject.list.rp_ui.arr[num].el = el;
+				let id = arrO[i].userData.id; 
+				let el_2 = elem.querySelector('[nameId="shCp_1"]');
+				var container_2 = elem.querySelector('[nameid="groupItem"]');
+
+				(function(container_2, id) 
+				{
+					el_2.onmousedown = function(e){ clickRtekUI_1({elem_2: container_2, id: id}); e.stopPropagation(); };	
+				}(container_2, id));											
+			}
 			
 			
-			
-			// есть разъемы
+			// разъемы
 			for(var i2 = 0; i2 < o.length; i2++)
 			{				
 				if(!o[i2].userData.centerPoint) continue;			
 				
-				var str = 
+				var html = 
 				'<div class="flex_1 right_panel_1_1_list_item relative_1">\
 				<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+o[i2].userData.centerPoint.nameRus+'</div>\
 				</div>';				
 
-				var el2 = $(str).appendTo(container);				
+				var div = document.createElement('div');
+				div.innerHTML = html;
+				let el_3 = div.firstChild;
+
+				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el_3 };
 				
-				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el2 };
-				
-				el2.on('mousedown', function(e){ clickItemObjNameUI({el: $(this)}); e.stopPropagation(); });			
+				container_2.append(el_3);
+				el_3.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };
 			}				
 			
 		}
@@ -296,20 +305,22 @@ function clearItemSelectedObjUI()
 
 // выбираем группу или объект
 function clickItemObjNameUI(cdm)
-{
+{	
 	var item = null;
 	var obj = null;
 	var list = infProject.list.rp_ui.arr;
+	
+	console.log(cdm);
 	
 	// снимаем старые выдиления
 	{		
 		for(var i = 0; i < list.length; i++)
 		{
-			list[i].el.css('background-color', '#ffffff');
+			list[i].el.style.backgroundColor = '#ffffff';
 			
 			for(var i2 = 0; i2 < list[i].p.length; i2++)
 			{
-				list[i].p[i2].el.css('background-color', '#ffffff');
+				list[i].p[i2].el.style.backgroundColor = '#ffffff';
 				list[i].p[i2].o.material = infProject.material.pointObj.default;
 			}
 		}
@@ -325,11 +336,11 @@ function clickItemObjNameUI(cdm)
 	{
 		for(var i = 0; i < list.length; i++)
 		{
-			if(list[i].el[0] == cdm.el[0]){ obj = list[i].o; break; } 
+			if(list[i].el == cdm.el){ obj = list[i].o; break; } 
 			
 			for(var i2 = 0; i2 < list[i].p.length; i2++)
 			{
-				if(list[i].p[i2].el[0] == cdm.el[0]){ obj = list[i].p[i2].o; break; }
+				if(list[i].p[i2].el == cdm.el){ obj = list[i].p[i2].o; break; }
 			}			
 		}		
 		
@@ -359,6 +370,12 @@ function clickItemObjNameUI(cdm)
 		return;
 	}
 
+
+	// кликнули не в сцену на объект, а на пункт в меню (скрываем разъемы старого объекта)
+	if(cdm.clickItem)
+	{
+		deClickObj({obj: clickO.last_obj, moment: ''});
+	}
 	
 	  
 	// делаем цвет всех объектов группы по default и сварачиваем открытые вложения 
@@ -366,9 +383,9 @@ function clickItemObjNameUI(cdm)
 	{ 
 		for(var i = 0; i < list.length; i++)
 		{
-			list[i].el.css('background-color', '#ffffff');
+			list[i].el.style.backgroundColor = '#ffffff';
 			
-			var el_1 = list[i].el[0].querySelector('[nameId="groupItem"]');
+			var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
 			
 			if(el_1)
 			{
@@ -378,8 +395,7 @@ function clickItemObjNameUI(cdm)
 	}
 
 	// меняем цвет у выделеной вкладки
-	item.css('background-color', infProject.listColor.activeItem_1);
-	
+	item.style.backgroundColor = infProject.listColor.activeItem_1;
 	
 
 	if(obj.userData.obj3D) 
@@ -396,9 +412,9 @@ function clickItemObjNameUI(cdm)
 		{
 			if(list[i].o == parent)
 			{ 
-				list[i].el.css('background-color', '#ebebeb'); 
+				list[i].el.style.backgroundColor = '#ebebeb';
 				
-				var el_1 = list[i].el[0].querySelector('[nameId="groupItem"]');
+				var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
 				
 				if(el_1)
 				{

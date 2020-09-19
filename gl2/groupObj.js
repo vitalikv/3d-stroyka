@@ -83,7 +83,7 @@ function addObjToGroup(cdm)
 
 	switchSelectAddObjGroup({active: false});
 	
-	clickObject3D( arr[0], {click_obj: true, menu_1: true, outline: true} );
+	clickObject3D( arr[0], {menu_1: true, outline: true} );
 
 }
 
@@ -113,7 +113,7 @@ function detachObjGroup(cdm)
 	
 	if(cdm.active)
 	{
-		clickObject3D( obj, {click_obj: true, menu_1: true, outline: true} );
+		clickObject3D( obj, {menu_1: true, outline: true} );
 	}
 }
 
