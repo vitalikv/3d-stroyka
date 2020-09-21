@@ -367,14 +367,10 @@ function upMenuPosObjPop(obj)
 		pos = infProject.tools.pivot.position;
 	}
 	
-	let x = document.querySelector('[nameId="object_pos_X"]');
-	let y = document.querySelector('[nameId="object_pos_Y"]');
-	let z = document.querySelector('[nameId="object_pos_Z"]');
 	
-	
-	x.value = ( Math.round(pos.x*100)/100 );
-	y.value = ( Math.round(pos.y*100)/100 );
-	z.value = ( Math.round(pos.z*100)/100 );	
+	document.querySelector('[nameId="object_pos_X"]').value = Math.round(pos.x*100)/100;
+	document.querySelector('[nameId="object_pos_Y"]').value = Math.round(pos.y*100)/100;
+	document.querySelector('[nameId="object_pos_Z"]').value = Math.round(pos.z*100)/100;		
 }
 
 
@@ -406,22 +402,19 @@ function inputChangePos()
 	if(!y) stop = true;
 	if(!z) stop = true;
 	
+	// не числовое значение
+	if(stop)
+	{		
+		upMenuPosObjPop(obj);
+		return;
+	}	
+	
 	let pos1 = obj.position;
 	let pivot = infProject.tools.pivot;
 	
 	if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
 	else if(obj.userData.tag == 'wf_tube'){ pos1 = pivot.position; }
-	
-	
-	// не числовое значение
-	if(stop)
-	{		
-		document.querySelector('[nameId="object_pos_X"]').value = Math.round(pos1.x*100)/100;
-		document.querySelector('[nameId="object_pos_Y"]').value = Math.round(pos1.y*100)/100;
-		document.querySelector('[nameId="object_pos_Z"]').value = Math.round(pos1.z*100)/100;
-
-		return;
-	}
+		
 	
 	x = x.num;
 	y = y.num;

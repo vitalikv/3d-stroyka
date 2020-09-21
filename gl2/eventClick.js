@@ -107,7 +107,7 @@ $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); 
 $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
 $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });
 
-$('[nameId="obj_rotate_reset"]').mousedown(function () { objRotateReset(); });	
+$('[nameId="obj_rotate_reset"]').mousedown(function () { resetRotateObj(); });	
 $('[nameId="button_copy_obj"]').mousedown(function () { copyObj(); });
 $('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 $('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
