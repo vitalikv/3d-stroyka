@@ -12,38 +12,58 @@ function setPivotGizmo(cdm)
 	
 	
 	// Position
-	if(obj.userData.tag == 'joinPoint')		// разъем
+	if(obj.userData.tag == 'obj')		// группа или объект
 	{ 
-		var pos = obj.getWorldPosition(new THREE.Vector3());
-		activeJoinPoint({obj: obj});
-	}	
-	else			// группа или объект
-	{
 		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );		
+		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+	}		
+	else if(obj.userData.tag == 'joinPoint')		// разъем
+	{ 
+		var pos = obj.getWorldPosition(new THREE.Vector3());  
+		activeJoinPoint({obj: obj});
+	}
+	else if(obj.userData.tag == 'wf_point')		// точка трубы
+	{ 
+		var pos = obj.position; 
+	}
+	else if(obj.userData.tag == 'wf_tube')		// труба
+	{ 
+		var pos = cdm.pos; 
+	}	
+	else			
+	{
+		return;		
 	}	 
 	
 	
 	// Quaternion
-	if(camera == cameraTop)	// глобальный gizmo
+	if(camera == cameraTop)		// глобальный gizmo
+	{ 
+		var qt = new THREE.Quaternion(); 
+	} 	
+	else						// локальный gizmo
 	{
-		var qt = new THREE.Quaternion();
+		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube')		// точка трубы или труба
+		{
+			var qt = new THREE.Quaternion();
+		}
+		else		// объекты
+		{
+			if(obj.userData.tag == 'joinPoint') { var qt = obj.getWorldQuaternion(new THREE.Quaternion()); }		// разъем
+			else { var qt = obj.quaternion.clone(); }			// группа или объект					
+		}		
 	}
-	else		// локальный gizmo
-	{					
-		if(obj.userData.tag == 'joinPoint')		// разъем
-		{
-			var qt = obj.getWorldQuaternion(new THREE.Quaternion()); 
-		}	
-		else			// группа или объект
-		{
-			var qt = obj.quaternion.clone();		
-		}	 		
-	}		
 	
 	
 	
-	if(infProject.settings.active.pg == 'pivot')
+	var type = 'pivot';
+	if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
+	else if(obj.userData.tag == 'wf_tube') { type = 'pivot'; }		// труба
+	else { type = infProject.settings.active.pg; }					// объекты
+	
+	
+	// показываем pivot
+	if(type == 'pivot')
 	{
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
@@ -63,7 +83,8 @@ function setPivotGizmo(cdm)
 		}
 	}
 	
-	if(infProject.settings.active.pg == 'gizmo')
+	// показываем gizmo
+	if(type == 'gizmo')
 	{
 		var gizmo = infProject.tools.gizmo;
 					
@@ -76,8 +97,6 @@ function setPivotGizmo(cdm)
 		{
 			gizmo.children[1].visible = false;
 			gizmo.children[2].visible = false;
-			
-			//gizmo.rotation.set(0,0,0);
 		}
 		else
 		{

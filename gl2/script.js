@@ -1565,6 +1565,10 @@ document.body.addEventListener("keydown", function (e)
 			else if(infProject.activeInput == 'rp_planeHeight_posY')
 			{
 				setPlaneHeightPositionY({value: $('[nameId="rp_planeHeight_posY"]').val()}); 
+			}
+			else if(infProject.activeInput == 'object_pos_X' || infProject.activeInput == 'object_pos_Y' || infProject.activeInput == 'object_pos_Z')
+			{
+				inputChangePos(); 
 			}			
 		}		
 		 

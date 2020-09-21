@@ -277,28 +277,25 @@ function getAllChildObect(cdm)
 // очищаем объект из памяти
 function disposeNode(node) 
 {
-	if (node instanceof THREE.Mesh) 
+	if (node.geometry) { node.geometry.dispose(); }
+	
+	if (node.material) 
 	{
-		if (node.geometry) { node.geometry.dispose(); }
+		var materialArray = [];
 		
-		if (node.material) 
+		if(node.material instanceof Array) { materialArray = node.material; }
+		else { materialArray = [node.material]; }
+		
+		materialArray.forEach(function (mtrl, idx) 
 		{
-			var materialArray = [];
-			
-			if(node.material instanceof Array) { materialArray = node.material; }
-			else { materialArray = [node.material]; }
-			
-			materialArray.forEach(function (mtrl, idx) 
-			{
-				if (mtrl.map) mtrl.map.dispose();
-				if (mtrl.lightMap) mtrl.lightMap.dispose();
-				if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-				if (mtrl.normalMap) mtrl.normalMap.dispose();
-				if (mtrl.specularMap) mtrl.specularMap.dispose();
-				if (mtrl.envMap) mtrl.envMap.dispose();
-				mtrl.dispose();
-			});
-		}
+			if (mtrl.map) mtrl.map.dispose();
+			if (mtrl.lightMap) mtrl.lightMap.dispose();
+			if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+			if (mtrl.normalMap) mtrl.normalMap.dispose();
+			if (mtrl.specularMap) mtrl.specularMap.dispose();
+			if (mtrl.envMap) mtrl.envMap.dispose();
+			mtrl.dispose();
+		});
 	}
 }
 

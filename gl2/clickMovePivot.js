@@ -221,6 +221,22 @@ function movePivot( event )
 	var pivot = infProject.tools.pivot;
 	var obj = pivot.userData.pivot.obj;
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );
+	
+	if(!clickO.actMove)
+	{
+		clickO.actMove = true;
+		
+		if(obj.userData.tag == 'wf_point')
+		{
+			var line = obj.userData.wf_point.line.o;
+			
+			if(line) 
+			{ 			
+				if(line.userData.wf_line.tube) { line.userData.wf_line.tube.visible = false; }			 
+			}			
+		}
+	}			
+	
 
 	if(pivot.userData.pivot.active.axis == 'xz')
 	{
@@ -234,86 +250,69 @@ function movePivot( event )
 		var v1 = new THREE.Vector3().addScaledVector( pivot.userData.pivot.active.dir, locD.z );
 		pos = new THREE.Vector3().addVectors( pivot.userData.pivot.active.startPos, v1 );			
 	}
-	
-	 
-	
+
 	
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
 	
 	
-	if(obj.userData.tag == 'wf_tube')
-	{
-		moveFullTube_2({obj: obj, offset: pos2});
-	}
-	else if(obj.userData.tag == 'wf_point')
-	{
-		obj.position.add( pos2 );		
-		
-		if(!clickO.actMove)
-		{
-			clickO.actMove = true;
-			
-			var line = obj.userData.wf_point.line.o;
-			
-			if(line) 
-			{ 
-				//line.material.color = new THREE.Color(infProject.listColor.active2D);
-				
-				if(line.userData.wf_line.tube)
-				{
-					line.userData.wf_line.tube.visible = false;
-				}			 
-			}
-		}
-		
-		// обновляем geometry линии
-		if(obj.userData.wf_point.line.o)
-		{
-			var line = obj.userData.wf_point.line.o;
-			
-			line.geometry.verticesNeedUpdate = true; 
-			line.geometry.elementsNeedUpdate = true;
+	movePivot_2({obj: obj, pos2: pos2});
+}
 
-			// обновляем geometry трубы
-			if(line.userData.wf_line.tube)
-			{
-				//geometryTubeWF({line : line});
-			}
-		}
-		
-		showWF_point_UI(obj);
-		
-		
-	}
-	else if(obj.userData.tag == 'joinPoint')
+
+function movePivot_2(cdm)
+{
+	let obj = cdm.obj;
+	let pos2 = cdm.pos2;
+	
+	
+	if(obj.userData.tag == 'wf_point')		// точка трубы
 	{
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
+		obj.position.add(pos2);
+		let line = obj.userData.wf_point.line.o;		
+		line.geometry.verticesNeedUpdate = true; 
+		line.geometry.elementsNeedUpdate = true;
+		geometryTubeWF({line : line});
+
+		showWF_point_UI(obj);
+	}
+	else if(obj.userData.tag == 'wf_tube')		// труба
+	{
+		moveFullTube_2({tube: obj, offset: pos2});
+	}
+	else if(obj.userData.tag == 'joinPoint')		// разъем
+	{ 
+		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
 		{
-			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+			let arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
 			
-			for(var i = 0; i < arr.length; i++)
+			for(let i = 0; i < arr.length; i++)
 			{
 				arr[i].position.add( pos2 );
 			}
+			obj.parent.updateMatrixWorld();
 		}
-		else
+		else	// один разъем
 		{
 			obj.parent.position.add( pos2 );
-		}		
-	}
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
+			obj.parent.updateMatrixWorld();
+		}			
+	}	
+	else if(obj.userData.tag == 'obj')		// объект
 	{
-		var arr = obj.userData.obj3D.group.userData.groupObj.child;
-		
-		for(var i = 0; i < arr.length; i++)
+		if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
 		{
-			arr[i].position.add( pos2 );
-		}
-	}
-	else 	// объект
-	{ 
-		obj.position.add( pos2 ); 
+			let arr = obj.userData.obj3D.group.userData.groupObj.child;
+			
+			for(let i = 0; i < arr.length; i++)
+			{
+				arr[i].position.add( pos2 );
+			}
+		}	
+		else 	// один объект 
+		{ 
+			obj.position.add(pos2); 
+		}		
 	}
 
 	upMenuPosObjPop(obj);
@@ -357,19 +356,89 @@ function clickPivotUp()
 // обновляем pos UI
 function upMenuPosObjPop(obj) 
 {	
+	let pos = obj.position;
+
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
-		var pos = obj.getWorldPosition(new THREE.Vector3());
+		pos = obj.getWorldPosition(new THREE.Vector3());
 	}
-	else
+	else if(obj.userData.tag == 'wf_tube')
 	{
-		var pos = obj.position;
+		pos = infProject.tools.pivot.position;
 	}
 	
-	$('[nameId="object_pos_X"]').val( Math.round(pos.x*100)/100 );
-	$('[nameId="object_pos_Y"]').val( Math.round(pos.y*100)/100 );
-	$('[nameId="object_pos_Z"]').val( Math.round(pos.z*100)/100 );	
+	let x = document.querySelector('[nameId="object_pos_X"]');
+	let y = document.querySelector('[nameId="object_pos_Y"]');
+	let z = document.querySelector('[nameId="object_pos_Z"]');
+	
+	
+	x.value = ( Math.round(pos.x*100)/100 );
+	y.value = ( Math.round(pos.y*100)/100 );
+	z.value = ( Math.round(pos.z*100)/100 );	
 }
+
+
+
+
+// меняем положение объекта через input
+function inputChangePos()
+{
+	let obj = clickO.last_obj;
+	if(!obj) return;
+
+	if(obj.userData.tag == 'obj'){}
+	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wf_tube'){}
+	else if(obj.userData.tag == 'wf_point'){}
+	else { return; }
+	
+	let x = document.querySelector('[nameId="object_pos_X"]').value;
+	let y = document.querySelector('[nameId="object_pos_Y"]').value;
+	let z = document.querySelector('[nameId="object_pos_Z"]').value;
+
+	x = checkNumberInput({ value: x, unit: 1 });
+	y = checkNumberInput({ value: y, unit: 1 });
+	z = checkNumberInput({ value: z, unit: 1 });
+
+	let stop = false;
+	
+	if(!x) stop = true;
+	if(!y) stop = true;
+	if(!z) stop = true;
+	
+	let pos1 = obj.position;
+	let pivot = infProject.tools.pivot;
+	
+	if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
+	else if(obj.userData.tag == 'wf_tube'){ pos1 = pivot.position; }
+	
+	
+	// не числовое значение
+	if(stop)
+	{		
+		document.querySelector('[nameId="object_pos_X"]').value = Math.round(pos1.x*100)/100;
+		document.querySelector('[nameId="object_pos_Y"]').value = Math.round(pos1.y*100)/100;
+		document.querySelector('[nameId="object_pos_Z"]').value = Math.round(pos1.z*100)/100;
+
+		return;
+	}
+	
+	x = x.num;
+	y = y.num;
+	z = z.num;
+		
+	let pos2 = new THREE.Vector3(x,y,z).sub(pos1);
+	
+	pivot.position.add(pos2);
+	
+	movePivot_2({obj: obj, pos2: pos2});
+
+	renderCamera();
+}
+
+
+
+
 
 
 

@@ -61,13 +61,7 @@ function clickTubeWF(cdm)
 	var tube = ray.object;
 
 	var line = tube.userData.wf_tube.line;
-	
 
-	var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
-	var p1 = result.p1;
-	var pos = result.pos;
-	
-	
 	// показываем точки у труб
 	var wf = [];
 	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
@@ -89,27 +83,11 @@ function clickTubeWF(cdm)
 	// режим "добавить точку на трубу" выкл	
 	if(!infProject.settings.active.tube)
 	{
-		//var pos = tube.position.clone();
-		var qt = new THREE.Quaternion();
+		var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
+		var p1 = result.p1;
+		var pos = result.pos;		
 		
-		var pivot = infProject.tools.pivot;	
-		pivot.visible = true;	
-		pivot.userData.pivot.obj = tube;
-		pivot.position.copy(pos);
-		pivot.quaternion.copy(qt); 
-		
-		if(camera == cameraTop)
-		{
-			pivot.children[1].visible = false;
-			pivot.children[7].visible = false;
-		}
-		else
-		{
-			pivot.children[1].visible = true;
-			pivot.children[7].visible = true;
-		}
-
-		setScalePivotGizmo();			
+		setPivotGizmo({obj: tube, pos: pos});			
 	}
 }
 
@@ -190,34 +168,24 @@ function moveFullTube(cdm)
 
 
 
+// перемещаем всю трубу
 function moveFullTube_2(cdm)
 {	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	var tube = cdm.obj;
-	var pos2 = cdm.offset;
-	
-	if(!clickO.actMove)
-	{
-		clickO.actMove = true;
-	}	
+	var tube = cdm.tube;
+	var offset = cdm.offset;
 	
 	var line = tube.userData.wf_tube.line;
-	var point = line.userData.wf_line.point;
-	
+	var point = line.userData.wf_line.point;	
 	
 	for(var i = 0; i < point.length; i++)
 	{
-		point[i].position.add( pos2 );
+		point[i].position.add( offset );
 	}
 
 	line.geometry.verticesNeedUpdate = true; 
 	line.geometry.elementsNeedUpdate = true;		
 	geometryTubeWF({line : line});	
 }
-
 
 
 function clickMouseUpTube(obj) 

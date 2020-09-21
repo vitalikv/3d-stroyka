@@ -73,6 +73,19 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
+	
+	
+	{
+		var startPos = new THREE.Vector3(0.5, 1, 3.5);
+		
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', r2: '3/4', m1: 0.055, m2: 0.02 };
+		arr[arr.length] = { r1: '3/4', r2: '1', m1: 0.059, m2: 0.022 };
+		
+		var n = await fc_cr_obj({funcName: 'reg_kran_primoy_1', arr: arr, startPos: startPos, n: n, cat: 'reg_kran_1'});	 	
+	}
+	
+	
 	return;
 	
 	if(1==1)
@@ -99,6 +112,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { type: 'vertical', r1: 0.030 };
 		arr[arr.length] = { type: 'vertical', r1: 0.032 };
 		arr[arr.length] = { type: 'vertical', r1: 0.040 };
+		arr[arr.length] = { type: 'vertical', r1: 0.050 };
 		arr[arr.length] = { type: 'vertical', r1: 0.050 };
 		
 		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_vert_1'});		
@@ -729,6 +743,7 @@ async function cr_obj_cat()
 	}
 		
 	
+
 	
 	
 	//createTestObj();	
