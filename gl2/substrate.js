@@ -117,7 +117,9 @@ function createSubstrate(cdm)
 	
 	if(infProject.scene.substrate.floor.length > 4) return;	
 	
-	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), new THREE.MeshPhongMaterial( { color : 0xcccccc, transparent: true, opacity: 1, lightMap : lightMap_1 } ) );
+	var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1, lightMap : lightMap_1 });
+	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), material );
+	
 	obj.position.y = 0.0;
 	obj.rotation.y = 0.0;
 	obj.userData.tag = "substrate";
@@ -466,7 +468,7 @@ function setImgCompSubstrate(cdm)
 		var texture = new THREE.Texture();
 		texture.image = image;
 		
-		material.color = new THREE.Color( 0xffffff );
+		material.color = new THREE.Color( 0xcccccc );
 					
 		texture.wrapS = THREE.MirroredRepeat;
 		texture.wrapT = THREE.MirroredRepeat;

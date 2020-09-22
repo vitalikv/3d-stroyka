@@ -357,8 +357,13 @@ function clickPivotUp()
 function upMenuPosObjPop(obj) 
 {	
 	let pos = obj.position;
-
-	if(obj.userData.tag == 'joinPoint')		// разъем
+	
+	if(obj.userData.tag == 'obj')		// группа или объект
+	{ 
+		obj.updateMatrixWorld();
+		pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+	}	
+	else if(obj.userData.tag == 'joinPoint')		// разъем
 	{
 		pos = obj.getWorldPosition(new THREE.Vector3());
 	}
@@ -366,7 +371,14 @@ function upMenuPosObjPop(obj)
 	{
 		pos = infProject.tools.pivot.position;
 	}
-	
+	else if(obj.userData.tag == 'wf_point')		// точка трубы
+	{ 
+		pos = obj.position; 
+	}	
+	else
+	{
+		pos = new THREE.Vector3();
+	}
 	
 	document.querySelector('[nameId="object_pos_X"]').value = Math.round(pos.x*100)/100;
 	document.querySelector('[nameId="object_pos_Y"]').value = Math.round(pos.y*100)/100;
@@ -412,9 +424,10 @@ function inputChangePos()
 	let pos1 = obj.position;
 	let pivot = infProject.tools.pivot;
 	
-	if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
+	if(obj.userData.tag == 'obj'){ pos1 = obj.localToWorld( obj.geometry.boundingSphere.center.clone() ); }		// группа или объект	
+	else if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
 	else if(obj.userData.tag == 'wf_tube'){ pos1 = pivot.position; }
-		
+	else if(obj.userData.tag == 'wf_point'){ pos1 = obj.position; }
 	
 	x = x.num;
 	y = y.num;

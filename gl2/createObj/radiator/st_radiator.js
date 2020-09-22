@@ -294,7 +294,7 @@ function st_radiator_1(cdm)
 	obj.userData.tag = 'obj';
 	obj.userData.obj3D = {};
 	obj.userData.obj3D.lotid = 0;
-	var name = 'Ст.радиатор '+size.x+'x'+sizeY;
+	var name = 'Ст.радиатор '+'h'+(sizeY*1000)+' ('+size.x+'м)';
 	obj.userData.obj3D.nameRus = name; 
 	obj.material.visible = false;
 	
