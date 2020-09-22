@@ -83,17 +83,19 @@ async function addObjInCatalogUI_1(cdm)
 			var groupItem = '';
 
 			var str_button = 
-			'<div nameId="shCp_1" style="display: block; width: 10px; height: 10px; margin: auto 0;">\
-				<svg height="100%" width="100%" viewBox="0 0 100 100">\
-					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-				</svg>\
-			</div>';
+			'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
+				<div>\
+					<svg height="100%" width="100%" viewBox="0 0 100 100">\
+						<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					</svg>\
+				</div>\
+			</div>';				
 				
 			json.html = 
 			'<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'" style="top:0px; left:0px;">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
-					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+json.name+'</div>\
 					'+str_button+'\
+					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+json.name+'</div>\
 				</div>\
 				<div nameId="groupItem" style="display: none;">\
 					'+groupItem+'\

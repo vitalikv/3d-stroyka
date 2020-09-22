@@ -24,12 +24,21 @@ function reg_kran_primoy_1(cdm)
 
 	
 	var h1 = d1.n/2 + 0.008;		// высота штекира на кором находится бабочка
-
-	var w1 = 0.02;					// высоты ручки
 	var w2 = d1.n+ 0.236 * d1.n;	// толщина гайки	
 	
 	var geom = new THREE.Geometry();	
 	
+	
+	if(cdm.termoreg)
+	{
+		var name = 'Клапан с терморегулятором ';
+		var w1 = 0.01;
+	}
+	else
+	{
+		var name = 'Кран регулировочный ';
+		var w1 = 0.02;
+	}
 	
 	// гайка
 	{		
@@ -100,17 +109,39 @@ function reg_kran_primoy_1(cdm)
 		var inf = { g: geom, dlina: h1, diameter_nr: 0.015, diameter_vn: 0.000 };
 		inf.pos = { x: 0, y: h1/2, z: 0 };
 		inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
-		crFormSleeve_1(inf);
+		crFormSleeve_1(inf);	
 		
-		var inf = { g: geom, dlina: 0.002, diameter_nr: 0.017, diameter_vn: 0.000 };
-		inf.pos = { x: 0, y: h1 + 0.002/2, z: 0 };
-		inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
-		crFormSleeve_1(inf);
+		
+		if(cdm.termoreg)	// терморегулятор
+		{
+			var inf = { g: geom, dlina: 0.006, diameter_nr: 0.02, diameter_vn: 0.000, edge_nr: 16, ind: [2, 2, 2, 2] };
+			inf.pos = { x: 0, y: h1 + 0.006/2, z: 0 };
+			inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
+			crFormSleeve_1(inf);
 
-		var inf = { g: geom, dlina: w1, diameter_nr: 0.024, diameter_vn: 0.000, edge_nr: 16, ind: [3, 3, 3, 3] };
-		inf.pos = { x: 0, y: h1 + 0.002 + w1/2, z: 0 };
-		inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
-		crFormSleeve_1(inf);		
+			var inf = { g: geom, dlina: w1, diameter_nr: 0.035, diameter_vn: 0.000, edge_nr: 16, ind: [3, 3, 3, 3] };
+			inf.pos = { x: 0, y: h1 + 0.006 + w1/2, z: 0 };
+			inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
+			crFormSleeve_1(inf);
+			
+			var inf = { g: geom, dlina: 0.035, diameter_nr: 0.032, diameter_vn: 0.000, d_n2: 0.024, d_v2: 0, edge_nr: 16, ind: [3, 3, 3, 3] };
+			inf.pos = { x: 0, y: h1 + 0.006 + w1 + 0.035/2, z: 0 };
+			inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
+			crFormSleeve_1(inf);			
+		}
+		else
+		{
+			var inf = { g: geom, dlina: 0.002, diameter_nr: 0.017, diameter_vn: 0.000 };
+			inf.pos = { x: 0, y: h1 + 0.002/2, z: 0 };
+			inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
+			crFormSleeve_1(inf);
+			
+			var inf = { g: geom, dlina: w1, diameter_nr: 0.024, diameter_vn: 0.000, edge_nr: 16, ind: [3, 3, 3, 3] };
+			inf.pos = { x: 0, y: h1 + 0.002 + w1/2, z: 0 };
+			inf.rot = { x: 0, y: 0, z: -Math.PI/2 };
+			crFormSleeve_1(inf);			
+		}
+		
 	}	
 	
 	//geom.computeBoundingBox();
@@ -146,7 +177,7 @@ function reg_kran_primoy_1(cdm)
 	obj.userData.tag = 'obj';
 	obj.userData.obj3D = {};
 	obj.userData.obj3D.lotid = 0;
-	var name = 'Кран регулировочный '+cdm.r1;
+	var name = name + cdm.r1; 
 	obj.userData.obj3D.nameRus = name; 
 	obj.material.visible = false;
 	

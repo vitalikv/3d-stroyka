@@ -82,6 +82,12 @@ async function cr_obj_cat()
 		arr[arr.length] = { r1: '1/2', r2: '3/4', m1: 0.055, m2: 0.02 };
 		arr[arr.length] = { r1: '3/4', r2: '1', m1: 0.059, m2: 0.022 };
 		
+		var n = await fc_cr_obj({funcName: 'reg_kran_primoy_1', arr: arr, startPos: startPos, n: n, cat: 'reg_kran_1'});
+
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', r2: '3/4', m1: 0.055, m2: 0.02, termoreg: true };
+		arr[arr.length] = { r1: '3/4', r2: '1', m1: 0.059, m2: 0.022, termoreg: true };
+		
 		var n = await fc_cr_obj({funcName: 'reg_kran_primoy_1', arr: arr, startPos: startPos, n: n, cat: 'reg_kran_1'});	 	
 	}
 	

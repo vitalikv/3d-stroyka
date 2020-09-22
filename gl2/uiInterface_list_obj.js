@@ -9,16 +9,16 @@ function updateListTubeUI_1(cdm)
 	{
 		var obj = cdm.o;
 		
-		var tag = obj.userData.tag; 
+		var tag = obj.userData.tag; 		
 		
 		var str_button = 
-		'<div nameId="sh_select_obj3D" style="width: 40px; height: 20px;">\
-			<div style="position: absolute; width: 15px; height: 10px; right: 20px;">\
+		'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 10px; height: 20px;">\
+			<div>\
 				<svg height="100%" width="100%" viewBox="0 0 100 100">\
-					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
 				</svg>\
 			</div>\
-		</div>';
+		</div>';		
 
 		
 		if(tag == 'wf_line')
@@ -62,6 +62,7 @@ function updateListTubeUI_1(cdm)
 		{
 			$(q).on('mousedown', function(e)
 			{   
+				hideMenuObjUI_2D();
 				clickObject3D( obj, { menu_1: true, outline: true} );
 				e.stopPropagation();
 			});	
