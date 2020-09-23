@@ -73,6 +73,8 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
+	
+	
 	return;
 	
 	
@@ -106,16 +108,6 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_vert_1'});		
 	}
 	
-	
-	
-
-	if(1==1)
-	{
-		var arr = [];
-		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4' };		
-		
-		await fc_cr_obj({funcName: 'cr_kotel_1', arr: arr, startPos: new THREE.Vector3(0.5, 1, 3.5), cat: 'kotel_2'});		
-	}
 	
 
 	if(1==1)
@@ -221,10 +213,21 @@ async function cr_obj_cat()
 	if(1==1)
 	{
 		var arr = [];
+		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', type: 'back' };		
+		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', type: 'bottom' };
+		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', type: 'top-bottom' };
+		arr[arr.length] = { size: {x: 0.4, y: 0.73, z: 0.3}, r1: '3/4', type: 'left-right' };
+		
+		await fc_cr_obj({funcName: 'cr_kotel_1', arr: arr, startPos: new THREE.Vector3(0.5, 1, 3.5), step: 0.55, cat: 'kotel_2'});		
+	}
+
+	if(1==1)
+	{
+		var arr = [];
 		arr[arr.length] = { size: {x: 0.18, y: 0.05, z: 0.05}, r1: '1' };		
 		
 		await fc_cr_obj({funcName: 'gr_bez_1', arr: arr, startPos: new THREE.Vector3(1.5, 1, -1), cat: 'kotel_1'});		
-	}
+	}	
 	
 
 	if(1==1)
@@ -262,7 +265,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_krestovina_1', arr: arr, startPos: new THREE.Vector3(-0.8, 1, 0+0.0), cat: 'st_krestovina'});		
 	}
 
-//return;	
+	
 
 	if(1==1)
 	{

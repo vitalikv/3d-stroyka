@@ -40,7 +40,7 @@
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
 	
 	
-	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['admin']) 
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) 
 	{ 
 		require_once("admin/catalog/admin_catalog.php");
 		require_once("admin/obj/menu_fbx.php");
@@ -50,14 +50,11 @@
 			
 		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
 			<div class="go_home align_items" nameId="butt_main_menu">
-				<div class="go_home_txt">
-					Меню
-				</div>
+				<a href="/" class="go_home_txt">
+					Главная
+				</a>
 			</div>
-			<div class="title_1"><h1><?=$h1?></h1></div>
-			<!--<div class="top_menu_right_1">
-				<div class="top_menu_right_1_text" nameId="save_pr_1">Сохранить</div>
-			</div>-->				
+			<div class="title_1"><h1><?=$h1?></h1></div>			
 		</div>	
 		
 		<div class="flex_1 height100">
@@ -66,14 +63,17 @@
 				
 			</div>
 			<div style="flex-grow:1; position: relative;">
-				<? require_once("include/top_1.php"); ?>
-				<? //require_once("include/modal_window_2.php"); ?>				
+				<? require_once("include/top_1.php"); ?>			
 	
 				<noindex>		
 				
-				<? require_once("include/bottom_panel_1.php"); ?>	
-				<? require_once("include/modal_window_3.php"); ?>
-					
+
+				<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) 
+				{ 
+					//require_once("include/modal_window_2.php");
+					require_once("include/bottom_panel_1.php");
+					require_once("include/modal_window_3.php");
+				} ?>					
 				
 				<div class="help">
 					<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
@@ -163,8 +163,7 @@
 	
 	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script> 
 	
-	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['admin']) 
-	{?> 
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) {?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
 	<script src="<?=$path?>admin/obj/adminLoadObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>admin/obj/adminClickObj.js?<?=$vrs?>"></script>
@@ -173,13 +172,10 @@
 </body>
 
 <? if($_SERVER['SERVER_NAME']=='xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai' && 1==2) {?>
-	<script>console.log('Start Metrika', window.location.hostname)</script>
-	<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter15088201 = new Ya.Metrika({id:15088201, enableAll: true, webvisor:true}); } catch(e) {} }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/15088201" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
+	<script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter15088201 = new Ya.Metrika({id:15088201, enableAll: true, webvisor:true}); } catch(e) {} }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/15088201" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <?}else{?>
 	<script>
-	console.log('Stop Metrika', window.location.hostname);
-	console.log("<?echo $url?>");
-	console.log("<?echo $title?>");
+	console.log('test', window.location.hostname);
 	</script> 
 <?}?>
 

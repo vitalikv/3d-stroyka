@@ -468,7 +468,7 @@ function setImgCompSubstrate(cdm)
 		var texture = new THREE.Texture();
 		texture.image = image;
 		
-		material.color = new THREE.Color( 0xcccccc );
+		material.color = new THREE.Color( 0xe3e1de );
 					
 		texture.wrapS = THREE.MirroredRepeat;
 		texture.wrapT = THREE.MirroredRepeat;
