@@ -43,10 +43,30 @@ clickMoveTube.js
 alignPoint.js
 mergeObjToGroup.js
 planeHeight.js
-createObj/st_radiator.js
-createObj/al_radiator.js
-createObj/helpT.js
+createObj/radiator/st_radiator.js
+createObj/radiator/al_radiator.js
+createObj/st/sgon.js
+createObj/st/nippel.js
+createObj/st/troinik.js
+createObj/st/ugol.js
+createObj/st/mufta.js
+createObj/st/krestovina.js
+createObj/pl/troinik.js
+createObj/pl/ugol.js
+createObj/pl/mufta.js
+createObj/pl/krestovina.js
+createObj/mpl/troinik.js
+createObj/mpl/perehod.js
+createObj/mpl/ugol.js
+createObj/kran/shar_kran.js
+createObj/kran/reg_kran.js
+createObj/kotel/rash_bak.js
+createObj/kotel/gr_bez.js
+createObj/kotel/filtr.js
+createObj/kotel/kotel_1.js
 createObj/calculation_1.js
+createObj/calculation_2.js
+createObj/start.js
 ';
 
 
@@ -84,25 +104,64 @@ for ($i = 0; $i < count($arr)-1; $i++)
 $file2 = preg_replace('#(\/\/(.*?)(\n|$|\r|(\r\n)))|(\/\*(.*?)\*\/)#i','',$file2);	// удаляем комменты
 
 
+echo "<br><br>-----------<br><br>";
 
+$nameStop = [];
+$nameStop[] = 'renderCamera';
+$nameStop[] = 'blockKeyCode';
+$nameStop[] = 'setImgCompSubstrate';
+$nameStop[] = 'createTubeWF_1';
+$nameStop[] = 'al_zagl_radiator_1';
+$nameStop[] = 'al_radiator_1';
+$nameStop[] = 'st_radiator_1';
+$nameStop[] = 'reg_kran_primoy_1';
+$nameStop[] = 'cr_rash_bak_1';
+$nameStop[] = 'cr_kotel_1';
+$nameStop[] = 'gr_bez_1';
+$nameStop[] = 'st_pol_sgon_1';
+$nameStop[] = 'filtr_kosoy_1';
+$nameStop[] = 'st_krestovina_1';
+$nameStop[] = 'st_troinik_1';
+$nameStop[] = 'st_ugol_90_1';
+$nameStop[] = 'st_ugol_45_1';
+$nameStop[] = 'st_nippel_1';
+$nameStop[] = 'st_mufta_1';
+$nameStop[] = 'pl_ugol_90_1';
+$nameStop[] = 'pl_ugol_45_1';
+$nameStop[] = 'pl_ugol_90_rezba_1';
+$nameStop[] = 'pl_mufta_1';
+$nameStop[] = 'pl_perehod_rezba_1';
+$nameStop[] = 'pl_troinik_1';
+$nameStop[] = 'pl_troinik_2';
+$nameStop[] = 'pl_troinik_rezba_1';
+$nameStop[] = 'pl_krestovina_1';
+$nameStop[] = 'mpl_perehod_rezba_1';
+$nameStop[] = 'mpl_perehod_1';
+$nameStop[] = 'mpl_troinik_1';
+$nameStop[] = 'mpl_troinik_rezba_1';
+$nameStop[] = 'mpl_ugol_1';
+$nameStop[] = 'mpl_ugol_rezba_1';
+$nameStop[] = 'shar_kran_n_1';
+$nameStop[] = 'shar_kran_v_1';
+$nameStop[] = 'shar_kran_v_n_1';
+$nameStop[] = 'shar_kran_sgon_1';
 
 for ($i = 0; $i < count($arrF); $i++)
 {	
-	if (preg_match('#\b'.$arrF[$i].'\b#Us', 'renderCamera')) 
+	$rename = true;
+	for ($i2 = 0; $i2 < count($nameStop); $i2++)
 	{
-		echo "Пропускаем <br>". $arrF[$i]."<br><br>";
+		if (preg_match('#\b'.$arrF[$i].'\b#Us', $nameStop[$i2]))
+		{
+			$rename = false;
+			echo "Пропускаем ". $arrF[$i]."<br>";
+			break;
+		}
 	}
-	else if (preg_match('#\b'.$arrF[$i].'\b#Us', 'showHideLabelSizeWall')) 
+	
+	if($rename)
 	{
-		echo "Пропускаем <br>". $arrF[$i]."<br><br>";
-	}
-	else if (preg_match('#\b'.$arrF[$i].'\b#Us', 'blockKeyCode')) 
-	{
-		echo "Пропускаем <br>". $arrF[$i]."<br><br>";
-	}		
-	else 
-	{
-		$file2 = preg_replace('#\b'.$arrF[$i].'\b#Us','fname_s_0'.($i+1),$file2);	// 	\b - границы слова	
+		$file2 = preg_replace('#\b'.$arrF[$i].'\b#Us','xdr_inf_0'.($i+1),$file2);	// 	\b - границы слова
 	}	
 }
 

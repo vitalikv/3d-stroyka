@@ -173,69 +173,6 @@
 </style>
 
 
-<script>
-$(document).ready(function(){
-
-
-$('[nameId="button_show_panel_catalog"]').mousedown(function () { showHideCatalogMenuUI({show: true}); });
-$('[nameId="button_catalog_close"]').mousedown(function () { showHideCatalogMenuUI({show: false}); });
-
-
-// скрываем/показываем правое меню UI
-function showHideCatalogMenuUI(cdm)
-{
-	var show = cdm.show;
-	
-	var block = $('[nameId="panel_catalog_1"]');
-	var button = $('[nameId="button_show_panel_catalog"]');
-	
-	if(show) { block.show(); button.hide(); }
-	else { block.hide(); button.show(); }
-}
-
-$('[nameId="rp_show_hide_planeHeight"]').mousedown(function () { showHidePlaneHeight(); });
-
-//  substrate
-$('#load_substrate_1').change(readURL);	
-$('[nameId="assign_size_substrate"]').mousedown(function () { assignSizeSubstrate(); });
-
-
-$('[nameId="input_rotate_substrate_45"]').mousedown(function () { setRotateSubstrate({angle: 45}); });
-$('[nameId="input_rotate_substrate_90"]').mousedown(function () { setRotateSubstrate({angle: 90}); });
-
-
-$('[nameId="input_transparency_substrate"]').on("input", function() { setTransparencySubstrate({value: $(this).val()}); }); 
-
-
-// загрузка img  с компьютера
-function readURL(e) 
-{
-	if (this.files[0]) 
-	{		
-		if (this.files[0].type == "image/png" || this.files[0].type == "image/jpeg")
-		{
-			var reader = new FileReader();
-			reader.onload = function (e) 
-			{
-				$('#upload-img').attr('src', e.target.result);						
-				
-				setImgCompSubstrate({image: e.target.result});					
-			}				
-
-			reader.readAsDataURL(this.files[0]);  					
-		}				
-	}
-}	 
-//  substrate
-
-
-$('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
-	
-});	 
-</script>
-
-
-
 
 
 

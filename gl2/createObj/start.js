@@ -7,6 +7,9 @@ async function fc_cr_obj(params)
 	var startPos = params.startPos;	
 	var n = (params.n) ? params.n : 0;	
 	var step = (params.step) ? params.step : 0.1;
+	
+	//console.log(funcName);	
+	//return;
 
 	for(var i = 0; i < arr.length; i++)
 	{
