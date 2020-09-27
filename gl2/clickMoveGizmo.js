@@ -351,11 +351,16 @@ function setRotationGizmo(cdm)
 	var rotY = THREE.Math.degToRad( cdm.angle );
 	
 	
-	if(obj.userData.tag == 'joinPoint')		// разъем
+	if(obj.userData.tag == 'obj')		// группа или объект
+	{ 
+		obj.updateMatrixWorld();
+		var startPos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+	}	
+	else if(obj.userData.tag == 'joinPoint')		// разъем
 	{
 		var startPos = obj.getWorldPosition(new THREE.Vector3());   
 	}
-	else								//  группа или объект
+	else								//  
 	{
 		var startPos = obj.position.clone();		
 	}		

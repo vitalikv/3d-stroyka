@@ -551,21 +551,24 @@
 							
 														
 							
-							<div nameId="pr_list_button_for_obj" style="display: none;"> 
-								<div class="button1 button_gradient_1" nameId="button_active_add_group">
-									сгруппировать	
+							<div nameId="pr_list_button_for_obj" style="display: none;">
+								
+								<div class="flex_1">
+									<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;">
+										сгруппировать	
+									</div>
+									<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;">
+										отделить	
+									</div>															
 								</div>
 								
-								<div class="button1 button_gradient_1" nameId="button_copy_obj">
-									копировать	
-								</div>
-								
-								<div class="button1 button_gradient_1" nameId="button_detach_obj_group">
-									отделить	
-								</div>							
-
-								<div class="button1 button_gradient_1" nameId="button_delete_obj">
-									удалить	
+								<div class="flex_1">
+									<div class="button1 button_gradient_1" nameId="button_copy_obj" style="width: 100%;">
+										копировать	
+									</div>
+									<div class="button1 button_gradient_1" nameId="button_delete_obj" style="width: 100%;">
+										удалить	
+									</div>								
 								</div>
 		
 								<div nameId="sp_block_drt">

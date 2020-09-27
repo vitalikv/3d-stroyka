@@ -113,7 +113,7 @@ function clickItemFloorUI(cdm)
 	$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y*100)/100 );  
 	
 	// выделяем новый пункт на который кликнули 
-	item.css('background-color', '#00ff00');
+	item.css('background-color', infProject.listColor.activeItem_1);
 	var value = item.attr('uuid');	
 	
 	$('[nameId="rp_floor_name"]').val(plane.userData.substrate.nameRus);
