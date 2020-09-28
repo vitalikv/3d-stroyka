@@ -496,6 +496,10 @@
 							</div>
 							
 							<div style="margin: 10px 0;">
+								<div nameId="copy_tube" class="button1 button_gradient_1">копировать</div>
+							</div>							
+							
+							<div style="margin: 10px 0;">
 								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
 							</div>
 						</div>					

@@ -7,7 +7,6 @@ function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.pointTube.default ); 
 	point.position.copy( cdm.pos );		
-	//point.position.y = infProject.settings.wf_tube.pos.y;	
 	
 	point.renderOrder = 1;
 	
@@ -17,10 +16,7 @@ function createPointWF(cdm)
 	point.userData.id = id;	
 	point.userData.tag = 'wf_point';
 	point.userData.wf_point = {};
-	point.userData.wf_point.color = point.material.color.clone();
-	point.userData.wf_point.type = (cdm.type) ? cdm.type : '';
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
-	point.userData.wf_point.cross = { o : null, point : [] };
 	scene.add( point );
 	
 	return point;	
@@ -78,14 +74,7 @@ function clickFirstWFPoint(cdm)
 // кликнули на точку
 function clickWFPoint_3D(cdm)
 {
-	var intersect = cdm.intersect;
-	
-	if(clickO.move)
-	{
-		if(clickO.move.userData.wf_point.type == 'tool') { return; }	// вкл режим создания линии
-	}		
-	
-	var obj = intersect.object;	
+	var obj = cdm.intersect.object;	
 	
 	outlineAddObj(obj);
 	
@@ -206,173 +195,6 @@ function createLineWF(cdm)
 
 
 
-// создаем или продолжаем прокладывать линию
-function upLineWF(point)
-{
-	if(point.userData.wf_point.cross.o) { point.userData.wf_point.cross = { o : null, point : [] }; return; }
-	
-	point.userData.wf_point.type = '';
-	
-	var line = point.userData.wf_point.line.o;
-	
-	// создаем новую линию
-	if(!line)
-	{
-		line = createLineWF({point: [point], diameter: infProject.settings.wf_tube.d});
-	}	
-	
-	var point_2 = createPointWF({ pos : point.position.clone(), type : 'tool', line : line }); 
-			
-	var geometry = new THREE.Geometry();
-	geometry.vertices = line.geometry.vertices;	
-	geometry.vertices.push(point_2.position);
-	
-	line.geometry = geometry;
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;	
-	
-	line.userData.wf_line.point.push(point_2);
-
-	clickO.move = point_2;
-}
-
-
-
-
-// добавляем точку/создаем линию/объединяем линии
-function clickPointToolsWF(obj)
-{
-	//if(obj.userData.wf_point.line.o) return;
-	
-	var cross = obj.userData.wf_point.cross.o;
-	
-	if(!cross) return;
-	
-	var tag = cross.userData.tag;	
-	
-	if(tag == 'wf_line' && !obj.userData.wf_point.line.o) 
-	{		
-		obj.userData.wf_point.type = '';
-		clickO.move = null;	
-		
-		var p = obj.userData.wf_point.cross.point;
-		var arrP = cross.userData.wf_line.point;  
-		
-		for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p[0]) { arrP.splice(i+1, 0, obj); break; } }
-		
-		obj.userData.wf_point.line.o = cross;
-		
-		// обновляем geometry линии
-		var line = cross;
-		
-		var geometry = new THREE.Geometry();
-		
-		for(var i = 0; i < arrP.length; i++)
-		{
-			geometry.vertices[i] = arrP[i].position;
-		}
-		
-		line.geometry = geometry;	
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;
-		
-		obj.userData.wf_point.cross = { o : null, point : [] };	
-
-		hideMenuUI(obj);
-		
-		clickO = resetPop.clickO();
-	}
-	if(tag == 'wf_point')
-	{		
-		var line = cross.userData.wf_point.line.o;
-		var p = line.userData.wf_line.point;
-		
-		var geometry = new THREE.Geometry();
-		
-		if(cross == p[0])	// добавляем все в обратном порядке
-		{		
-			var arrP = [];
-			
-			for(var i = p.length - 1; i > -1; i--) 
-			{ 
-				geometry.vertices[geometry.vertices.length] = p[i].position; 
-				arrP[arrP.length] = p[i];
-			}  
-			
-			line.userData.wf_line.point = arrP;
-		}
-		else if(cross == p[p.length - 1])	// добавляем все
-		{
-			geometry.vertices = line.geometry.vertices; 
-		}
-
-		var line_1 = obj.userData.wf_point.line.o;
-		
-		if(line_1)	// у точки есть линия (последнюю точку не добавляем)
-		{	
-			var p = line_1.userData.wf_line.point;
-			
-			if(obj == p[0])
-			{ 
-				for(var i = 0; i < line_1.userData.wf_line.point.length; i++)
-				{ 
-					var point = line_1.userData.wf_line.point[i];
-					
-					if(obj == point) continue;
-					
-					geometry.vertices[geometry.vertices.length] = point.position;
-					point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
-					line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
-				}				
-			}
-			
-			if(obj == p[p.length - 1])
-			{
-				for(var i = line_1.userData.wf_line.point.length - 1; i > -1; i--)
-				{
-					var point = line_1.userData.wf_line.point[i];
-					
-					if(obj == point) continue;
-					
-					geometry.vertices[geometry.vertices.length] = point.position;
-					point.userData.wf_point.line.o = line;							// задаем линию для выделенной точки
-					line.userData.wf_line.point.push(point); 						// назначаем линии выделенную точку					
-				}					
-			}
-			
-			updateListTubeUI_1({type: 'delete', o: line_1});
-			
-			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line_1});
-			scene.remove(line_1);
-			scene.remove(obj);	
-			
-			hideMenuUI(obj);
-			clickO = resetPop.clickO();
-		}
-		else	// у точки нет линии, это tool
-		{
-			geometry.vertices[geometry.vertices.length] = obj.position;
-			
-			obj.userData.wf_point.line.o = line;	// задаем линию для выделенной точки
-			line.userData.wf_line.point.push(obj); 	// назначаем линии выделенную точку	
-			
-			if(line.userData.wf_line.tube) { scene.remove(line.userData.wf_line.tube); }
-		}		
-		
-		line.geometry = geometry;	
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;
-
-	}
-	
-	// обновляем geometry трубы
-	if(line)
-	{
-		if(line.userData.wf_line.tube) { geometryTubeWF({line : line}); }
-	}	
-	
-	//obj.userData.wf_point.cross = { o : null, point : [] };
-}
 
 
 

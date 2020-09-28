@@ -11,8 +11,7 @@ function activeHover2D( event )
 		var tag = clickO.move.userData.tag;
 		
 		if (tag == 'free_dw') { return; }
-		if (tag == 'point') { if (clickO.move.userData.point.type) return; }
-		if (tag == 'wf_point') { if (clickO.move.userData.wf_point.type == 'tool') return; }		
+		if (tag == 'point') { if (clickO.move.userData.point.type) return; }	
 	}
 	
 	var rayhit = null;
@@ -114,7 +113,6 @@ function activeHover2D_2()
 	if ( tag == 'window' ) { object.material.color = object.userData.door.color; } 
 	else if ( tag == 'door' ) { object.material.color = object.userData.door.color; }	
 	else if ( tag == 'wall' ) { object.material[ 3 ].color = object.userData.material[ 3 ].color; }
-	else if ( tag == 'wf_point' ) { object.material.color = object.userData.wf_point.color; }
 	else if ( tag == 'point' ) { object.material.color = object.userData.point.color; }
 	else if ( tag == 'wf_tube' ) 
 	{ 
