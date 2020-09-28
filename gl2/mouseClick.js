@@ -42,10 +42,6 @@ function mouseDownRight()
 				if(point.userData.point.last.cdm == 'new_point_1') { deletePoint( point ).wall.userData.id = point.userData.point.last.cross.walls.old; }
 			}
 		}
-		else if (obj.userData.tag == 'wf_point' ) 
-		{  
-			if(obj.userData.wf_point.type == 'tool') { deletePointWF(obj); return; }			
-		}
 		else if(obj.userData.tag == 'obj')
 		{
 			deleteObjectPop(obj); 
@@ -105,10 +101,6 @@ function onDocumentMouseDown( event )
 		if(clickO.move.userData.tag == 'point') 
 		{			
 			if(clickO.move.userData.point.type) { clickCreateWall( clickO.move ); return; }  
-		}
-		if(clickO.move.userData.tag == 'wf_point')
-		{
-			if(clickO.move.userData.wf_point.type == 'tool') { clickPointToolsWF( clickO.move ); return; }
 		}
 	}
 	 
@@ -503,13 +495,6 @@ function onDocumentMouseUp( event )
 		{
 			if(obj.userData.point.type) {  } 
 			else { clickO.move = null; }
-		}
-		else if (tag == 'wf_point') 
-		{ 
-			if(obj.userData.wf_point.type == 'tool') 
-			{ 
-				upLineWF(obj);
-			}			
 		}		
 		else { clickO.move = null; }		
 	}

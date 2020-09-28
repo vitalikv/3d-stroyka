@@ -22,10 +22,7 @@ function createTubeWF_1(cdm)
 	}
 	
 	var r1 = (cdm.r1) ? cdm.r1 : 0.05;
-	var line = createLineWF({point: p, diameter: r1}); 
-	
-	var tube = geometryTubeWF({line: line, createLine: true});		
-	
+	var tube = createLineWF({point: p, diameter: r1}); 	 		
 	
 	planeMath.position.y = infProject.tools.heightPl.position.y;  
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -217,7 +214,7 @@ function deleteLineWF(tube)
 	
 	var line = tube.userData.wf_tube.line;
 	
-	updateListTubeUI_1({type: 'delete', o: line});
+	updateListObjUI_1({type: 'delete', o: line});
 	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
 
 	deClickTube({obj: tube, moment: ''});

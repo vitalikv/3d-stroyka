@@ -167,11 +167,9 @@ function createLineWF(cdm)
 		geometry.vertices.push(point[i].position);
 	}		
 	
-	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);
-	
+	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);	
 	
 	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: color, linewidth: 2 }) );
-	//line.material.color = color;
 	 
 	line.userData.tag = 'wf_line';
 	line.userData.wf_line = {};
@@ -186,11 +184,13 @@ function createLineWF(cdm)
 	for(var i = 0; i < point.length; i++)
 	{
 		point[i].userData.wf_point.line.o = line;
-	}			
-	
-	updateListTubeUI_1({o: line, type: 'add'}); // обновляем список материалов
+	}
 
-	return line;
+	var tube = geometryTubeWF({line: line, createLine: true});
+	
+	updateListObjUI_1({o: line, type: 'add'}); // обновляем список материалов
+
+	return tube;
 }
 
 
@@ -247,7 +247,7 @@ function geometryTubeWF(cdm)
 	}
 	
 	
-	updateListTubeUI_1({o: line, type: 'update'});	// обновляем список материалов 
+	updateListObjUI_1({o: line, type: 'update'});	// обновляем список материалов 
 	
 	renderCamera();
 	
@@ -272,7 +272,7 @@ function deletePointWF(obj)
 		// если у линии 2 точки, то удаляем точки и линию
 		if(line.userData.wf_line.point.length == 2)
 		{		
-			updateListTubeUI_1({type: 'delete', o: line});
+			updateListObjUI_1({type: 'delete', o: line});
 			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
 			
 			disposeNode(line.userData.wf_line.point[0]);
@@ -390,7 +390,7 @@ function changeColorTube(cdm)
 	tube.material.needsUpdate = true;	
 
 	
-	updateListTubeUI_1({o: line, type: 'update'});
+	updateListObjUI_1({o: line, type: 'update'});
 	
 	renderCamera(); 
 };

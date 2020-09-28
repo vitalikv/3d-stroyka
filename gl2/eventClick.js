@@ -99,7 +99,7 @@ $('[nameId="button_deactive_join_wf_point"]').mousedown(function () { switchJoin
 $('[nameId="button1 button_gradient_1"]').mousedown(function () {  }); 
 
 
-//$('[nameId="butt_add_point_on_tube"]').mousedown(function () { switchAddPointOnTube(); });
+
 
 var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
 elem.addEventListener('mousedown', function() { switchAddPointOnTube(); });

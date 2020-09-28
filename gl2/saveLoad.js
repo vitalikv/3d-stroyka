@@ -851,9 +851,7 @@ async function loadFilePL(arr)
 			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos});
 		}
 		
-		var line = createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 
-		
-		geometryTubeWF({line : line, createLine : true});	
+		createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 	 
 	}
 
 

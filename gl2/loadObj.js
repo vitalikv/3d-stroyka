@@ -129,7 +129,7 @@ function addObjInScene(inf, cdm)
 
 	scene.add( obj );
 	 
-	updateListTubeUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 
+	updateListObjUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 
 	
 	if(cdm.cursor) 
 	{ 

@@ -172,7 +172,7 @@ function deleteObjectPop(obj)
 
 	for(var i = 0; i < arr.length; i++)
 	{	
-		updateListTubeUI_1({type: 'delete', o: arr[i]});
+		updateListObjUI_1({type: 'delete', o: arr[i]});
 		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});				
 
 		var arrO = getAllChildObect({obj: obj});
@@ -233,7 +233,7 @@ function copyObj(cdm)
 		});
 		
 
-		updateListTubeUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
+		updateListObjUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
 		
 		if(flag)
 		{
@@ -297,48 +297,10 @@ function renameObject(cdm)
 		return;
 	}
 	
-	// переименовываем название во вкладке "объект"
-	{
-		var arr1 = infProject.list.rp_ui.arr;
-		var arr2 = [];
-		
-		for(var i = 0; i < arr1.length; i++)
-		{
-			arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
-			
-			for(var i2 = 0; i2 < arr1[i].p.length; i2++)
-			{
-				arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
-			}
-		}
-		
-		
-		for(var i = 0; i < arr2.length; i++)
-		{
-			if(arr2[i].o == obj)
-			{
-				var nameItem = arr2[i].el.querySelector('[nameId="nameItem"]');
-				nameItem.innerText = name;  
-				break;
-			}
-		}		
-	}
 	
-	
-	// переименовываем название во вкладке "список"
-	{
-		var list = infProject.list.obj_scene_ui;
-		
-		for(var i = 0; i < list.length; i++)
-		{		
-			if(list[i].o == obj)
-			{
-				var nameItem = list[i].el.querySelector('[nameId="nameItem"]');
-				nameItem.innerText = name;
-				break;
-			}				
-		}			
-	}
+	upItemObjNameUI({obj: obj});	// переименовываем название во вкладке "объект"	
+
+	updateListObjUI_1({o: obj, type: 'update'});	// переименовываем название во вкладке "список"
 }
 
 
