@@ -133,14 +133,17 @@ function crtGroupItemListObjUI_1(cdm)
 		}
 		else if(obj.userData.tag == 'wf_line')
 		{
-			if(o2.userData.tag == 'wf_line'){ equally = true; }
+			if(o2.userData.tag == 'wf_line')			
+			{ 
+				if(o2.userData.wf_line.diameter == obj.userData.wf_line.diameter){ equally = true; }
+			}
 		}				
 			
 		if(equally)
 		{
 			if(!infProject.list.obj_scene_ui[i].parent)
 			{
-				if(o2.userData.tag == 'wf_line'){ crtGroupItemListObjUI_2({num: i, name: 'трубы'}); }
+				if(o2.userData.tag == 'wf_line'){ crtGroupItemListObjUI_2({num: i, name: 'трубы '+obj.userData.wf_line.diameter*1000}); }
 				else { crtGroupItemListObjUI_2({num: i, name: obj.userData.obj3D.nameRus}); }					
 			}
 

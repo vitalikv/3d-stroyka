@@ -1542,7 +1542,7 @@ document.body.addEventListener("keydown", function (e)
 
 	if(infProject.settings.blockKeyCode) return;
 	
-	if(e.keyCode == 90) { fitCameraToObject({obj: clickO.last_obj}); }	// z
+	if(e.keyCode == 90) { fitCameraToObject({obj: clickO.last_obj, rot: true}); }	// z
 		
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	

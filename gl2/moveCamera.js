@@ -710,25 +710,26 @@ function fitCameraToObject(cdm)
 	
 	if(!obj) return;
 
+	var v = [];
+	
+	obj.updateMatrixWorld();
+	obj.geometry.computeBoundingBox();	
+
+	var bound = obj.geometry.boundingBox;
+	
+	v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+
+	v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
+
 
 	if(camera == camera3D)
 	{
-		var v = [];
-		
-		obj.updateMatrixWorld();
-		obj.geometry.computeBoundingBox();	
-		
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );	
-
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );			
-
-		
 		var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
 		
 		for(var i = 0; i < v.length; i++)
@@ -770,12 +771,22 @@ function fitCameraToObject(cdm)
 		//var fitWidthDistance = fitHeightDistance / camera.aspect;		
 		//var distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );		
 		
-		camera.lookAt(center);		
-		var dir = center.clone().sub( camera.position ).normalize().multiplyScalar( maxSize + 0.5 );	
-		camera.position.copy(center).sub(dir);	
-		infProject.camera.d3.targetPos.copy( center );
+		if(cdm.rot)
+		{
+			camera.lookAt(center);		
+			var dir = center.clone().sub( camera.position ).normalize().multiplyScalar( maxSize + 0.25 );	
+			camera.position.copy(center).sub(dir);	
+			infProject.camera.d3.targetPos.copy( center );			
+		}
+		else
+		{	
+			var dir = obj.getWorldDirection();
+			var dir = obj.getWorldDirection().multiplyScalar( maxSize + 0.15 );	
+			camera.position.copy(center).add(dir);
+			camera.lookAt(center);
+			infProject.camera.d3.targetPos.copy( center );			
+		}
 		
-		camera.updateProjectionMatrix();
 		
 		if(1==2)
 		{
@@ -808,22 +819,6 @@ function fitCameraToObject(cdm)
 	
 	if(camera == cameraTop)
 	{
-		var v = [];
-		
-		obj.updateMatrixWorld();
-		obj.geometry.computeBoundingBox();	
-		
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.min.y, obj.geometry.boundingBox.min.z) );	
-
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.max.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.min.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );
-		v[v.length] = obj.localToWorld( new THREE.Vector3(obj.geometry.boundingBox.max.x, obj.geometry.boundingBox.max.y, obj.geometry.boundingBox.min.z) );			
-
-		
 		var bound = { min : { x : 999999, z : 999999 }, max : { x : -999999, z : -999999 } };
 		
 		for(var i = 0; i < v.length; i++)
@@ -832,25 +827,22 @@ function fitCameraToObject(cdm)
 			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
 			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
 			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
-		}			
+		}					
 
-
-		var aspect = window.innerWidth/window.innerHeight;		
+		var aspect = ( bound.max.x - bound.min.x )/( bound.max.z - bound.min.z );		
 		
-		if( aspect > 1.0 )	// определяем что больше ширина или высота окна canvas
+		if( aspect > 1.0 )	// определяем что больше ширина или высота 
 		{
-			// if view is wider than it is tall, zoom to fit height
-			// если окно по ширине больше
-			camera.zoom = camera.right / (( bound.max.x - bound.min.x )/0.5);
+			var x = ( bound.max.x - bound.min.x < 0.1) ? 0.1 : bound.max.x - bound.min.x;
+			camera.zoom = camera.right / (x/0.5);
 		}
 		else
 		{
-			// if view is taller than it is wide, zoom to fit width
-			// если окно больше по высоте
-			camera.zoom = camera.top / (( bound.max.z - bound.min.z )/0.5);
+			var z = ( bound.max.z - bound.min.z < 0.1) ? 0.1 : bound.max.z - bound.min.z;
+			camera.zoom = camera.top / (z/0.5);
 		}
 		
-		camera.updateProjectionMatrix();
+		
 
 		// центр нужно считать, так как у трубы центр всегда в нулях
 		var pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);		
@@ -858,6 +850,7 @@ function fitCameraToObject(cdm)
 		camera.position.z = pos.z;	
 	}
 	
+	camera.updateProjectionMatrix();
 	
 	scaleToolsMoveCamera();
 	
