@@ -145,12 +145,22 @@ function clickObjUI(cdm)
 					</div>\
 				</div>';			
 			}
+			
+			var button_2 = 
+			'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 10px; height: 20px;">\
+				<div>\
+					<svg height="100%" width="100%" viewBox="0 0 100 100">\
+						<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					</svg>\
+				</div>\
+			</div>';			
 
 			var html = 
 			'<div class="right_panel_1_1_list_item">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
 					'+str_button+'\
 					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
+					'+button_2+'\
 				</div>\
 				<div nameId="groupItem" style="display: none;">\
 				</div>\
@@ -182,6 +192,18 @@ function clickObjUI(cdm)
 					el_2.onmousedown = function(e){ clickRtekUI_1({elem_2: container_2, id: id}); e.stopPropagation(); };	
 				}(container_2, id));											
 			}
+			
+			// назначаем событие при клике на кружок UI
+			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
+			var obj = arrO[i];
+			(function(obj) 
+			{
+				elem_2.onmousedown = function(e)
+				{ 			
+					fitCameraToObject({obj: obj, rot: true});
+					e.stopPropagation();
+				};	
+			}(obj));				
 			
 			
 			// разъемы
