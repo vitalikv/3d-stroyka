@@ -123,7 +123,7 @@ function addObjInScene(inf, cdm)
 	//obj.rotation.y += 1;
 	
 	
-	if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
+	//if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
 	
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 
