@@ -188,7 +188,7 @@ function createLineWF(cdm)
 
 	var tube = geometryTubeWF({line: line, createLine: true});
 	
-	updateListObjUI_1({o: line, type: 'add'}); // обновляем список материалов
+	updateListObjUI_1({o: tube, type: 'add'}); // обновляем список материалов
 
 	return tube;
 }
@@ -202,6 +202,8 @@ function createLineWF(cdm)
 function geometryTubeWF(cdm)
 {
 	var line = cdm.line;
+	
+	var diameter = line.userData.wf_line.diameter;
 	
 	var points = [];
 		
@@ -220,7 +222,7 @@ function geometryTubeWF(cdm)
 	
 	var params = { extrusionSegments: Math.round(length * 30), radiusSegments: 12, closed: false };
 	
-	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, line.userData.wf_line.diameter/2, params.radiusSegments, params.closed );	
+	var geometry = new THREE.TubeBufferGeometry( pipeSpline, params.extrusionSegments, diameter/2, params.radiusSegments, params.closed );	
 	geometry.computeFaceNormals();
 	geometry.computeVertexNormals();			
 
@@ -230,9 +232,6 @@ function geometryTubeWF(cdm)
 		line.userData.wf_line.tube = tube;
 		tube.userData.tag = 'wf_tube';		
 		tube.userData.wf_tube = {};
-		tube.userData.wf_tube.nameRus = 'труба '+ line.userData.wf_line.diameter*1000;
-		tube.userData.wf_tube.length = Math.round(length * 100)/100;
-		tube.userData.wf_tube.color = line.userData.wf_line.color.clone();
 		tube.userData.wf_tube.line = line;
 		scene.add( tube );
 	}
@@ -242,12 +241,14 @@ function geometryTubeWF(cdm)
 		line.userData.wf_line.tube.geometry = geometry;
 		
 		var tube = line.userData.wf_line.tube;
-		tube.userData.wf_tube.nameRus = 'труба '+ line.userData.wf_line.diameter*1000;
-		tube.userData.wf_tube.length = Math.round(length * 100)/100;
 	}
 	
+	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
+	tube.userData.wf_tube.length = Math.round(length * 100)/100;
+	tube.userData.wf_tube.diameter = diameter;
+
 	
-	updateListObjUI_1({o: line, type: 'update'});	// обновляем список материалов 
+	updateListObjUI_1({o: tube, type: 'update'});	// обновляем список материалов 
 	
 	renderCamera();
 	
@@ -267,29 +268,12 @@ function deletePointWF(obj)
 	
 	if(line)
 	{
-		disposeNode(line);
+		
 		
 		// если у линии 2 точки, то удаляем точки и линию
 		if(line.userData.wf_line.point.length == 2)
 		{		
-			updateListObjUI_1({type: 'delete', o: line});
-			deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
-			
-			disposeNode(line.userData.wf_line.point[0]);
-			disposeNode(line.userData.wf_line.point[1]);
-			
-			scene.remove(line.userData.wf_line.point[0]);
-			scene.remove(line.userData.wf_line.point[1]);
-			
-			if(line.userData.wf_line.tube) 
-			{ 
-				disposeNode(line.userData.wf_line.tube);
-				scene.remove(line.userData.wf_line.tube); 
-			}
-
-			disposeNode(line);
-			scene.remove(line);	
-			line = null;			
+			deleteLineWF(line.userData.wf_line.tube);			
 		}
 		else	// удаляем точку
 		{
@@ -302,6 +286,9 @@ function deletePointWF(obj)
 				geometry.vertices[i] = line.userData.wf_line.point[i].position;
 			}
 			
+			disposeNode(line);
+			disposeNode(line.userData.wf_line.tube);
+			
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
@@ -309,26 +296,14 @@ function deletePointWF(obj)
 			line.material.color = line.userData.wf_line.color.clone();
 			line.material.needsUpdate = true;
 			
-			if(line.userData.wf_line.tube) 
-			{ 
-				disposeNode(line.userData.wf_line.tube);
-				scene.remove(line.userData.wf_line.tube); 
-			}
+			// создаем трубу			
+			geometryTubeWF({line : line});
 			
-			// создаем трубу
-			geometryTubeWF({line : line, createLine : true});
+			clickO = resetPop.clickO();			
+			hidePivotGizmo(obj);
+			disposeNode(obj);
+			scene.remove(obj);	// удаляем точку			
 		}
-	}
-	
-	clickO = resetPop.clickO();
-	
-	hidePivotGizmo(obj);
-	disposeNode(obj);
- 	scene.remove(obj);	// удаляем точку
-	
-	if(line)
-	{  
-		//clickTubeWF({ray: {object: line.userData.wf_line.tube}});
 	}
 }
 
@@ -381,16 +356,12 @@ function changeColorTube(cdm)
 	var line = tube.userData.wf_tube.line;
 	
 	line.material.color = new THREE.Color(cdm.value);
-	line.userData.wf_line.color = line.material.color.clone();
-	line.material.needsUpdate = true;
-	
+	line.material.needsUpdate = true;	
 	
 	tube.material.color = new THREE.Color(cdm.value); 
-	tube.userData.wf_tube.color = tube.material.color.clone();
 	tube.material.needsUpdate = true;	
-
 	
-	updateListObjUI_1({o: line, type: 'update'});
+	updateListObjUI_1({o: tube, type: 'update'});
 	
 	renderCamera(); 
 };

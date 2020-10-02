@@ -116,7 +116,6 @@ function activeHover2D_2()
 	else if ( tag == 'point' ) { object.material.color = object.userData.point.color; }
 	else if ( tag == 'wf_tube' ) 
 	{ 
-		object.material.color = object.userData.wf_tube.color; 
 	}
 	
 	clickO.hover = null;
@@ -172,8 +171,7 @@ function objDeActiveColor_2D()
 		//o.material.color = o.userData.wf_point.color; 
 	}
 	else if(o.userData.tag == 'wf_tube')
-	{ 
-		//o.material.color = o.userData.wf_tube.color;		
+	{ 	
 	}
 	
 	if(clickO.hover == clickO.last_obj) { clickO.hover = null; }

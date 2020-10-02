@@ -23,7 +23,7 @@ function updateListObjUI_1(cdm)
 		</div>';		
 
 		
-		if(tag == 'wf_line')
+		if(tag == 'wf_tube')
 		{
 			var html = 
 			'<div>\
@@ -77,7 +77,7 @@ function updateListObjUI_1(cdm)
 		var num = infProject.list.obj_scene_ui.length;
 		infProject.list.obj_scene_ui[num] = { el: elem, o: obj, parent: null };
 		
-		upTubeListObjUI({line: obj});
+		upTubeListObjUI({tube: obj});
 		
 		crtGroupItemListObjUI_1({obj: obj, num: num});
 	}
@@ -102,7 +102,7 @@ function updateListObjUI_1(cdm)
 	if(cdm.type == 'update')
 	{
 		
-		upTubeListObjUI({line: cdm.o});
+		upTubeListObjUI({tube: cdm.o});
 		upObjListObjUI({obj: cdm.o});
 	}	
 }
@@ -131,11 +131,11 @@ function crtGroupItemListObjUI_1(cdm)
 				if(o2.userData.obj3D.lotid == obj.userData.obj3D.lotid){ equally = true; }
 			}				
 		}
-		else if(obj.userData.tag == 'wf_line')
+		else if(obj.userData.tag == 'wf_tube')
 		{
-			if(o2.userData.tag == 'wf_line')			
+			if(o2.userData.tag == 'wf_tube')			
 			{ 
-				if(o2.userData.wf_line.diameter == obj.userData.wf_line.diameter){ equally = true; }
+				if(o2.userData.wf_tube.diameter == obj.userData.wf_tube.diameter){ equally = true; }
 			}
 		}				
 			
@@ -143,7 +143,7 @@ function crtGroupItemListObjUI_1(cdm)
 		{
 			if(!infProject.list.obj_scene_ui[i].parent)
 			{
-				if(o2.userData.tag == 'wf_line'){ crtGroupItemListObjUI_2({num: i, name: 'трубы '+obj.userData.wf_line.diameter*1000}); }
+				if(o2.userData.tag == 'wf_tube'){ crtGroupItemListObjUI_2({num: i, name: 'трубы '+obj.userData.wf_tube.diameter*1000}); }
 				else { crtGroupItemListObjUI_2({num: i, name: obj.userData.obj3D.nameRus}); }					
 			}
 
@@ -299,8 +299,8 @@ function upObjListObjUI(cdm)
 // обновляем название/длину/цвет у трубы в списке материалов
 function upTubeListObjUI(cdm)
 {
-	var line = cdm.line;	
-	if(line.userData.tag != 'wf_line'){ return; }
+	var tube = cdm.tube;	
+	if(tube.userData.tag != 'wf_tube'){ return; }
 	
 	var q = null;	
 	
@@ -308,7 +308,7 @@ function upTubeListObjUI(cdm)
 	
 	for(var i = 0; i < list.length; i++)
 	{
-		if(list[i].o == line) 
+		if(list[i].o == tube) 
 		{
 			q = infProject.list.obj_scene_ui[i].el;
 			break;
@@ -317,14 +317,10 @@ function upTubeListObjUI(cdm)
 
 	if(q)
 	{
-		q.querySelector('[item="color"]').style.backgroundColor = '#'+line.userData.wf_line.color.clone().getHexString();
+		q.querySelector('[item="color"]').style.backgroundColor = '#'+tube.material.color.clone().getHexString();
 		
-		var v = line.geometry.vertices;
-		var length = 0;				
-		for(var i = 0; i < v.length - 1; i++){ length += v[i].distanceTo(v[i + 1]); }
-		
-		q.querySelector('[item="name"]').innerText = 'труба '+line.userData.wf_line.diameter * 1000;
-		q.querySelector('[item="value"]').innerText = Math.round(length * 100)/100+'м';		
+		q.querySelector('[item="name"]').innerText = 'труба '+tube.userData.wf_tube.diameter * 1000;
+		q.querySelector('[item="value"]').innerText = tube.userData.wf_tube.length+'м';		
 	}
 }	
 
@@ -369,10 +365,9 @@ function saveListTxt()
 			txt += n+'. '+o.userData.obj3D.nameRus+'\n';
 			n++;
 		}
-		else if(o.userData.wf_line)
+		else if(o.userData.wf_tube)
 		{
-			var tube = o.userData.wf_line.tube;
-			txt += n+'. '+tube.userData.wf_tube.nameRus+' ('+tube.userData.wf_tube.length+'м)\n';
+			txt += n+'. '+o.userData.wf_tube.nameRus+' ('+o.userData.wf_tube.length+'м)\n';
 			n++;
 		}				
 	}

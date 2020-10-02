@@ -6,19 +6,9 @@ function showWF_point_UI(point)
 {
 	var line = point.userData.wf_point.line.o;
 	
-	var length = 0;
-	
-	if(line)
-	{
-		var v = line.geometry.vertices;
-		
-		for(var i = 0; i < v.length - 1; i++)
-		{
-			length += v[i].distanceTo(v[i + 1]);
-		}		
-	}
-
-	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
+	var tube = line.userData.wf_line.tube;
+	var elem = document.querySelector('[nameId="rp_bl_wf_point"]');
+	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
 	
 	
 	// если точка является началом или концом трубы, то показываем кнопку
@@ -50,23 +40,12 @@ function showWF_point_UI(point)
 // при выделении трубы, обновляем меню длины трубы UI
 function showWF_line_UI(tube)  
 {	
-	var line = tube.userData.wf_tube.line;
+	var elem = document.querySelector('[nameId="rp_bl_wf_tube"]');
 	
-	var v = line.geometry.vertices;
-	var length = 0;
-	
-	for(var i = 0; i < v.length - 1; i++)
-	{
-		length += v[i].distanceTo(v[i + 1]);
-	}
-	
-	$('[nameId="size_tube_diameter_2"]').val(line.userData.wf_line.diameter * 1000);
-	$('[nameId="size_tube_dist_4"]').val(Math.round(length * 100)/100);
-	
-	let colorTube = document.querySelector('[nameId="color_tube_1_default"]');
-	colorTube.value = '#'+line.userData.wf_line.color.clone().getHexString();
-
-	 
+	elem.querySelector('[nameId="color_tube_1_default"]').value = '#'+tube.material.color.clone().getHexString();	
+	elem.querySelector('[nameId="size_tube_diameter_2"]').value = tube.userData.wf_tube.diameter * 1000;
+	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
+		
 	activeObjRightPanelUI_1({obj: tube});
 }
 
