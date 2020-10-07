@@ -220,7 +220,7 @@ function copyTubeWF(cdm)
 	var p = [];
 	for(var i = 0; i < point.length; i++)
 	{
-		p[i] = createPointWF({pos: point[i].position});
+		p[i] = createPointWF({pos: point[i].position, visible: false});
 	}	
 	
 	var tube = createLineWF({point: p, diameter: line.userData.wf_line.diameter, color: line.material.color});

@@ -17,6 +17,9 @@ function createPointWF(cdm)
 	point.userData.tag = 'wf_point';
 	point.userData.wf_point = {};
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
+	
+	if(cdm.visible != undefined) point.visible = cdm.visible;
+	
 	scene.add( point );
 	
 	return point;	
@@ -232,10 +235,10 @@ function geometryTubeWF(cdm)
 	}
 	else
 	{
-		line.userData.wf_line.tube.geometry.dispose();
-		line.userData.wf_line.tube.geometry = geometry;
-		
 		var tube = line.userData.wf_line.tube;
+		
+		tube.geometry.dispose();
+		tube.geometry = geometry;
 	}
 	
 	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
@@ -263,15 +266,17 @@ function deletePointWF(obj)
 	
 	if(line)
 	{
+		var tube = line.userData.wf_line.tube;
 		
-		
-		// если у линии 2 точки, то удаляем точки и линию
+		// если у трубы 2 точки, то удаляем трубу
 		if(line.userData.wf_line.point.length == 2)
 		{		
-			deleteLineWF(line.userData.wf_line.tube);			
+			deleteLineWF(tube);			
 		}
 		else	// удаляем точку
 		{
+			deClickTube({obj: tube, moment: ''});	// диактивируем трубу
+			
 			deleteValueFromArrya({arr : line.userData.wf_line.point, o : obj});
 
 			var geometry = new THREE.Geometry();
@@ -282,19 +287,17 @@ function deletePointWF(obj)
 			}
 			
 			disposeNode(line);
-			disposeNode(line.userData.wf_line.tube);
+			disposeNode(tube);
 			
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
 			
-			// создаем трубу			
+			// обновляем трубу			
 			geometryTubeWF({line : line});
 			
-			clickO = resetPop.clickO();			
-			hidePivotGizmo(obj);
 			disposeNode(obj);
-			scene.remove(obj);	// удаляем точку			
+			scene.remove(obj);	// удаляем точку
 		}
 	}
 }

@@ -501,21 +501,23 @@ function getJsonGeometry()
 	
 	for ( var i = 0; i < infProject.scene.array.tube.length; i++ )
 	{
-		var tube = infProject.scene.array.tube[i].userData.wf_line;
+		var line = infProject.scene.array.tube[i];
+		
+		var tube = line.userData.wf_line.tube;
 		
 		var m = pipe.length;
 		pipe[m] = {};
-		pipe[m].id = infProject.scene.array.tube[i].userData.id;
-		pipe[m].diameter = tube.diameter;
-		pipe[m].color = tube.color;
+		pipe[m].id = line.userData.id;
+		pipe[m].diameter = tube.userData.wf_tube.diameter;
+		pipe[m].color = tube.material.color;
 		
 		pipe[m].point = [];
 		
-		for ( var i2 = 0; i2 < tube.point.length; i2++ )
+		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
 		{
 			pipe[m].point[i2] = {};
-			pipe[m].point[i2].id = tube.point[i2].userData.id;
-			pipe[m].point[i2].pos = tube.point[i2].position;
+			pipe[m].point[i2].id = line.userData.wf_line.point[i2].userData.id;
+			pipe[m].point[i2].pos = line.userData.wf_line.point[i2].position;
 		}
 	}
 
@@ -848,7 +850,7 @@ async function loadFilePL(arr)
 		var p = [];
 		for ( var i2 = 0; i2 < pipe[i].point.length; i2++ )
 		{
-			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos});
+			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos, visible: false});
 		}
 		
 		createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 	 

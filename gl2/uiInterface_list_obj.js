@@ -352,17 +352,61 @@ function clickShowHideGroupObj_UI_1(cdm)
 // сохраняем список материалов в txt
 function saveListTxt() 
 { 
-	var txt = '';
-	var n = 1;
-	var list = infProject.list.obj_scene_ui;
+	var list = infProject.list.obj_scene_ui;	
+	var arr = [];
 	
-	for(var i = list.length - 1; i >= 0; i--)
+	for(var i = 0; i < list.length; i++)
 	{
 		var o = list[i].o;
 		
 		if(o.userData.obj3D)
 		{
-			txt += n+'. '+o.userData.obj3D.nameRus+'\n';
+			checkObjExistList({obj: o, arr: arr});
+		}
+		else if(o.userData.wf_tube)
+		{
+			arr[arr.length] = {obj: o, count: 1};
+		}				
+	}
+	
+	
+	// проверяем есть ли такой же объект в списке, если есть-> то увеличеваем кол-во на +1, если нету-> то добавляем в список
+	function checkObjExistList(cdm)
+	{
+		var obj = cdm.obj;
+		var arr = cdm.arr;
+		var exist = false;
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(!arr[i].obj.userData.obj3D) continue;
+			
+			if(arr[i].obj.userData.obj3D.lotid == obj.userData.obj3D.lotid)
+			{
+				arr[i].count += 1;
+				exist = true;
+				break;
+			}
+		}
+		
+		if(!exist)
+		{
+			arr[arr.length] = { obj: obj, count: 1 };			
+		}
+	}
+	
+	
+	var txt = '';
+	var n = 1;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		var o = arr[i].obj;
+		var count = (arr[i].count < 2) ? '' : ' ['+arr[i].count+']';
+		
+		if(o.userData.obj3D)
+		{
+			txt += n+'. '+o.userData.obj3D.nameRus+count+'\n';
 			n++;
 		}
 		else if(o.userData.wf_tube)
@@ -371,6 +415,7 @@ function saveListTxt()
 			n++;
 		}				
 	}
+	
 
 	{	
 		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(txt);	
