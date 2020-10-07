@@ -6,6 +6,8 @@ function showWF_point_UI(point)
 {
 	var line = point.userData.wf_point.line.o;
 	
+	document.querySelector('[nameId="rp_obj_name"]').value = 'точка';
+	
 	var tube = line.userData.wf_line.tube;
 	var elem = document.querySelector('[nameId="rp_bl_wf_point"]');
 	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
@@ -38,15 +40,17 @@ function showWF_point_UI(point)
 
 
 // при выделении трубы, обновляем меню длины трубы UI
-function showWF_line_UI(tube)  
+function showWF_line_UI(cdm)  
 {	
+	var tube = cdm.tube;
+	
+	document.querySelector('[nameId="rp_obj_name"]').value = tube.userData.wf_tube.nameRus;
+	
 	var elem = document.querySelector('[nameId="rp_bl_wf_tube"]');
 	
 	elem.querySelector('[nameId="color_tube_1_default"]').value = '#'+tube.material.color.clone().getHexString();	
 	elem.querySelector('[nameId="size_tube_diameter_2"]').value = tube.userData.wf_tube.diameter * 1000;
 	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
-		
-	activeObjRightPanelUI_1({obj: tube});
 }
 
 

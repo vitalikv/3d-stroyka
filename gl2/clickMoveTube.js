@@ -72,7 +72,9 @@ function clickTubeWF(cdm)
 	
 	setScaleTubePoint();
 
-	showWF_line_UI(tube);
+	showWF_line_UI({tube: tube});
+	
+	activeObjRightPanelUI_1({obj: tube});
 	
 	outlineAddObj(tube);
 	
@@ -162,9 +164,6 @@ function moveFullTube(cdm)
 
 
 
-
-
-
 // перемещаем всю трубу
 function moveFullTube_2(cdm)
 {	
@@ -206,8 +205,30 @@ function clickMouseUpTube(obj)
 
 
 
+// копировать трубу
+function copyTubeWF(cdm)
+{
+	var tube = cdm.tube;
+	
+	if(!tube) return;	
+	if(tube.userData.tag != 'wf_tube') return;
 
-// удаляем линию
+	var line = tube.userData.wf_tube.line;
+	
+	var point = line.userData.wf_line.point;
+	
+	var p = [];
+	for(var i = 0; i < point.length; i++)
+	{
+		p[i] = createPointWF({pos: point[i].position});
+	}	
+	
+	var tube = createLineWF({point: p, diameter: line.userData.wf_line.diameter, color: line.material.color});
+}
+
+
+
+// удалить трубу
 function deleteLineWF(tube)
 {
 	hideMenuUI(tube);

@@ -83,13 +83,9 @@ function clickWFPoint_3D(cdm)
 	var line = obj.userData.wf_point.line.o;
 	
 	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
+	showHideArrObj(line.userData.wf_line.point, true);	
 	
-	showHideArrObj(wf, true);	
+	showWF_point_UI( obj );
 	
 	activeObjRightPanelUI_1({obj: obj});
 	
@@ -175,7 +171,6 @@ function createLineWF(cdm)
 	line.userData.wf_line = {};
 	line.userData.wf_line.tube = null;
 	line.userData.wf_line.point = point;
-	line.userData.wf_line.color = color;
 	line.userData.wf_line.diameter = cdm.diameter;
 	scene.add( line );
 	
@@ -228,7 +223,7 @@ function geometryTubeWF(cdm)
 
 	if(cdm.createLine)
 	{
-		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({ color: line.userData.wf_line.color.getHex(), side: THREE.DoubleSide, lightMap: lightMap_1 }));	
+		var tube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial({ color: line.material.color, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
 		line.userData.wf_line.tube = tube;
 		tube.userData.tag = 'wf_tube';		
 		tube.userData.wf_tube = {};
@@ -292,9 +287,6 @@ function deletePointWF(obj)
 			line.geometry = geometry;
 			line.geometry.verticesNeedUpdate = true; 
 			line.geometry.elementsNeedUpdate = true;
-
-			line.material.color = line.userData.wf_line.color.clone();
-			line.material.needsUpdate = true;
 			
 			// создаем трубу			
 			geometryTubeWF({line : line});
@@ -314,33 +306,29 @@ function deletePointWF(obj)
 // input меняем диаметр трубы
 function inputWF_tubeDiametr(cdm)
 {
-	var line = cdm.line;
+	var tube = cdm.line;
 	
-	if(!line) return;	
-	if(line.userData.tag != 'wf_tube') return;
+	if(!tube) return;	
+	if(tube.userData.tag != 'wf_tube') return;
 	
-	line = line.userData.wf_tube.line;
+	var line = tube.userData.wf_tube.line;
 	
-	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.05}, int: true });
+	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.063}, int: true });
 	
 	if(!size) 
 	{
-		var size = line.userData.wf_line.diameter; // перводим в мм
-		$('[nameId="size_tube_diameter_2"]').val(size);
-		
+		showWF_line_UI({tube: tube});		
 		return;
 	}
 	
 	var size = size.num;
 	
 	infProject.settings.wf_tube.d = size;
-	line.userData.wf_line.diameter = size;
-	$('[nameId="size_tube_diameter_2"]').val(size * 1000);
-	if(line.userData.wf_line.tube) geometryTubeWF({line : line});
+	line.userData.wf_line.diameter = size;	
 	
+	geometryTubeWF({line : line});	
 	
-	var tube = line.userData.wf_line.tube;
-	$('[nameId="rp_obj_name"]').val(tube.userData.wf_tube.nameRus);		// обновляем название 		
+	showWF_line_UI({tube: tube});		
 }
 
 

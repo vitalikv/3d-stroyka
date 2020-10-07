@@ -105,7 +105,7 @@ var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
 elem.addEventListener('mousedown', function() { switchAddPointOnTube(); });
 
 var elem = document.querySelector('[nameId="copy_tube"]');
-elem.addEventListener('mousedown', function() { console.log(99999); });
+elem.addEventListener('mousedown', function() { copyTubeWF({ tube: clickO.last_obj }); });
 
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
