@@ -62,7 +62,7 @@
 			<div nameId="msDiv_1" style="display: none; position: absolute; left: 50%; top: 50%; border:solid 1px #b3b3b3; background: #fff; padding: 5px 10px; font-family: arial,sans-serif; font-size: 15px; color: #666;">
 				
 			</div>
-			<div style="flex-grow:1; position: relative;">
+			<div nameId="mainDiv_1" style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>			
 	
 				<noindex>		
@@ -127,6 +127,7 @@
 	<script src="<?=$path?>createObj/st/ugol.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/mufta.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/krestovina.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/collector.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/pl/troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/pl/ugol.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/pl/mufta.js?<?=$vrs?>"></script>

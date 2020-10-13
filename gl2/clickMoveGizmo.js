@@ -450,6 +450,7 @@ function setRotationGizmo(cdm)
 	}
 	
 	upMenuRotateObjPop(obj);
+	renderCamera();
 }
 
 
@@ -541,6 +542,8 @@ function resetRotateObj(cdm)
 	
 	upMenuRotateObjPop( obj );
 	clippingGizmo360( obj );
+
+	renderCamera();
 }
 
 

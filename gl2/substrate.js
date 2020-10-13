@@ -901,6 +901,8 @@ function deleteSubstrate(cdm)
 	}
 	
 	infProject.scene.substrate.active = null;	// деактивируем активный этаж
+
+	renderCamera();	
 }
 
 

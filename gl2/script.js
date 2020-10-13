@@ -1444,22 +1444,22 @@ function findObjFromId( cdm, id )
 animate();
 renderCamera();
 
-
+var mainDiv_1 = document.querySelector('[nameId="mainDiv_1"]');
 
 document.body.addEventListener('contextmenu', function(event) { event.preventDefault() });
-document.body.addEventListener( 'mousedown', onDocumentMouseDown, false );
-document.body.addEventListener( 'mousemove', onDocumentMouseMove, false );
-document.body.addEventListener( 'mouseup', onDocumentMouseUp, false );
+mainDiv_1.addEventListener( 'mousedown', onDocumentMouseDown, false );
+mainDiv_1.addEventListener( 'mousemove', onDocumentMouseMove, false );
+mainDiv_1.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 
-document.body.addEventListener( 'touchstart', onDocumentMouseDown, false );
-document.body.addEventListener( 'touchmove', onDocumentMouseMove, false );
-document.body.addEventListener( 'touchend', onDocumentMouseUp, false );
+mainDiv_1.addEventListener( 'touchstart', onDocumentMouseDown, false );
+mainDiv_1.addEventListener( 'touchmove', onDocumentMouseMove, false );
+mainDiv_1.addEventListener( 'touchend', onDocumentMouseUp, false );
 
-document.body.addEventListener("mouseout", function () { infProject.ui.div.msDiv_1.style.display = "none"; });	// вышли из canvas или навели на другой элемент
+mainDiv_1.addEventListener("mouseout", function () { infProject.ui.div.msDiv_1.style.display = "none"; });	// вышли из canvas или навели на другой элемент
 
-document.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
-document.addEventListener('mousewheel', onDocumentMouseWheel, false);	
+mainDiv_1.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
+mainDiv_1.addEventListener('mousewheel', onDocumentMouseWheel, false);	
 
 
 document.body.addEventListener("keydown", function (e) 

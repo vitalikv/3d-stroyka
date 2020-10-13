@@ -119,7 +119,7 @@ function showHidePlaneHeight(cdm)
 		infProject.tools.heightPl.visible = !infProject.tools.heightPl.visible;
 	}
 			
-	
+	renderCamera();
 	//if(infProject.list.alignP.active)	// вкл	
 }
 

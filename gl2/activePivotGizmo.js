@@ -132,6 +132,8 @@ function hidePivotGizmo(obj)
 	
 	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
+
+	renderCamera();
 }
 
 
@@ -160,6 +162,8 @@ function switchPivotGizmo(cdm)
 	infProject.tools.gizmo.userData.gizmo.obj = null;
 
 	clickObject3D( obj ); 
+
+	renderCamera();
 }
 
 

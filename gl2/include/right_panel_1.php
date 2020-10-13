@@ -176,9 +176,12 @@
 
 
 
-<div class="right_panel_1" data-action ='right_panel_1' ui_1="" style="z-index: 1;">
+<div class="right_panel_1" data-action ='right_panel_1' style="display: flex; z-index: 1;">
 
-	<div class="flex_column_1 right_panel_1_1" nameId="panel_catalog_1">
+	<div nameId="right_panel_resize_1" style="height: 100%; width: 3px; background: #909090; cursor: w-resize;">
+	</div>
+
+	<div class="flex_column_1 right_panel_1_1" nameId="dv_right_panel_1">
 		<div class="flex_1 bottom_line_1">
 			<div class="flex_1 relative_1 right_panel_1_item">
 				<div class="right_panel_1_item_block" nameId="button_wrap_plan">
@@ -655,3 +658,133 @@
 	</div>
 	
 </div>
+
+
+
+
+<script>
+
+var dv_right_panel_1 = document.querySelector('[nameId="dv_right_panel_1"]');
+var button_catalog_close = document.querySelector('[nameId="button_catalog_close"]');
+var button_show_panel_catalog = document.querySelector('[nameId="button_show_panel_catalog"]');
+var resize_el = document.querySelector('[nameId="right_panel_resize_1"]');
+
+
+button_show_panel_catalog.onmousedown = function(e){ showHideCatalogMenuUI({show: true}); e.stopPropagation(); };
+button_catalog_close.onmousedown = function(e){ showHideCatalogMenuUI({show: false}); e.stopPropagation(); };
+
+// скрываем/показываем правое меню UI
+function showHideCatalogMenuUI(cdm)
+{
+	var show = cdm.show;
+	
+	if(show) { dv_right_panel_1.style.display = 'block'; button_show_panel_catalog.style.display = 'none'; }
+	else { dv_right_panel_1.style.display = 'none'; button_show_panel_catalog.style.display = 'block'; }
+}
+
+
+resize_el.addEventListener("mousedown", function(e){
+    m_pos = e.x;
+	document.addEventListener("mousemove", resizeRightPanel, false);
+	e.stopPropagation();
+}, false);
+document.addEventListener("mouseup", function(e){
+	document.removeEventListener("mousemove", resizeRightPanel, false);
+	e.stopPropagation();
+}, false);
+
+
+var m_pos;
+
+function resizeRightPanel(e)
+{
+    var parent = dv_right_panel_1;
+	var dx = m_pos - e.x;
+	
+	m_pos = e.x;
+
+	var width = (parseInt(getComputedStyle(parent, '').width) + dx);
+	if(width < 240) width = 240;
+	if(width > 1000) width = 1000;
+
+    parent.style.width = width + "px";
+}
+
+
+// переключаем вкладки правой панели 
+function changeRightMenuUI_1(cdm)
+{
+	$('[nameId="wrap_catalog"]').hide();
+	$('[nameId="wrap_list_obj"]').hide();
+	$('[nameId="wrap_object"]').hide();
+	$('[nameId="wrap_plan"]').hide();
+	
+	clickItemFloorUI();		// диактивируем выбранный этаж
+	
+	var name = '';
+	//var name_2 = infProject.ui.right_menu.active;
+	
+	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
+	else if(cdm.name) { name = cdm.name; }
+	else if(cdm.current) { name = infProject.ui.right_menu.active; }
+	
+	
+	if(name == "button_wrap_catalog") 
+	{
+		$('[nameId="wrap_catalog"]').show();
+	}
+	if(name == "button_wrap_list_obj") 
+	{
+		$('[nameId="wrap_list_obj"]').show();
+	}
+	if(name == "button_wrap_object") 
+	{
+		$('[nameId="wrap_object"]').show(); 
+	}
+	if(name == "button_wrap_plan") 
+	{
+		$('[nameId="wrap_plan"]').show();
+		if(camera == cameraTop) 
+		{ 
+			deActiveSelected();
+		}
+	}
+
+	infProject.ui.right_menu.active = name;
+}
+
+
+
+
+
+// переключаем вкладку для объекта перемещение/параметры 
+function changeRightMenuUI_2(cdm)
+{
+	$('[nameId="rp_bl_obj_tool_pivot"]').hide();
+	$('[nameId="rp_bl_obj_properties"]').hide();
+	
+	var name = '';
+	
+	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
+	else if(cdm.name) { name = cdm.name; }
+	else if(cdm.current) { name = infProject.ui.right_menu.active; }
+	
+	
+	if(name == "button_obj_tool_pivot") 
+	{
+		$('[nameId="rp_bl_obj_tool_pivot"]').show();
+	}
+	if(name == "button_obj_properties") 
+	{
+		$('[nameId="rp_bl_obj_properties"]').show();
+	}
+	
+	switchAlignPoint_1({active: false});
+	activeObjRightPanelUI_1({obj: clickO.last_obj});
+}
+
+
+
+
+
+</script>

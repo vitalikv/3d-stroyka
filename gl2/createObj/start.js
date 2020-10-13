@@ -76,7 +76,14 @@ async function saveObjSql_2(cdm)
 
 async function cr_obj_cat()
 {
-	
+
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', r3: '1', m1: 0.169, m2: 0.035 };	
+		
+		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 3+0.0), cat: 'st_collector_1'});		
+	}
 	
 	return;
 	

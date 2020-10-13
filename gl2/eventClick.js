@@ -194,21 +194,7 @@ $('[data-action="modal_window_close_1"]').mousedown(function ()
 
 //----------------- правая панель
 
-$('[nameId="button_show_panel_catalog"]').mousedown(function () { showHideCatalogMenuUI({show: true}); });
-$('[nameId="button_catalog_close"]').mousedown(function () { showHideCatalogMenuUI({show: false}); });
 
-
-// скрываем/показываем правое меню UI
-function showHideCatalogMenuUI(cdm)
-{
-	var show = cdm.show;
-	
-	var block = $('[nameId="panel_catalog_1"]');
-	var button = $('[nameId="button_show_panel_catalog"]');
-	
-	if(show) { block.show(); button.hide(); }
-	else { block.hide(); button.show(); }
-}
 
 $('[nameId="rp_show_hide_planeHeight"]').mousedown(function () { showHidePlaneHeight(); });
 
@@ -256,76 +242,7 @@ $('[nameId="rp_plane_1"]').mousedown(function (e) { clickItemFloorUI(); });
 
 
 
-// переключаем вкладки правой панели 
-function changeRightMenuUI_1(cdm)
-{
-	$('[nameId="wrap_catalog"]').hide();
-	$('[nameId="wrap_list_obj"]').hide();
-	$('[nameId="wrap_object"]').hide();
-	$('[nameId="wrap_plan"]').hide();
-	
-	clickItemFloorUI();		// диактивируем выбранный этаж
-	
-	var name = '';
-	//var name_2 = infProject.ui.right_menu.active;
-	
-	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
-	else if(cdm.name) { name = cdm.name; }
-	else if(cdm.current) { name = infProject.ui.right_menu.active; }
-	
-	
-	if(name == "button_wrap_catalog") 
-	{
-		$('[nameId="wrap_catalog"]').show();
-	}
-	if(name == "button_wrap_list_obj") 
-	{
-		$('[nameId="wrap_list_obj"]').show();
-	}
-	if(name == "button_wrap_object") 
-	{
-		$('[nameId="wrap_object"]').show(); 
-	}
-	if(name == "button_wrap_plan") 
-	{
-		$('[nameId="wrap_plan"]').show();
-		if(camera == cameraTop) 
-		{ 
-			deActiveSelected();
-		}
-	}
 
-	infProject.ui.right_menu.active = name;
-}
-
-
-
-
-// переключаем вкладку для объекта перемещение/параметры 
-function changeRightMenuUI_2(cdm)
-{
-	$('[nameId="rp_bl_obj_tool_pivot"]').hide();
-	$('[nameId="rp_bl_obj_properties"]').hide();
-	
-	var name = '';
-	
-	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
-	else if(cdm.name) { name = cdm.name; }
-	else if(cdm.current) { name = infProject.ui.right_menu.active; }
-	
-	
-	if(name == "button_obj_tool_pivot") 
-	{
-		$('[nameId="rp_bl_obj_tool_pivot"]').show();
-	}
-	if(name == "button_obj_properties") 
-	{
-		$('[nameId="rp_bl_obj_properties"]').show();
-	}
-	
-	switchAlignPoint_1({active: false});
-	activeObjRightPanelUI_1({obj: clickO.last_obj});
-}
 
 
 

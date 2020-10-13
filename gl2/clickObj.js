@@ -185,6 +185,7 @@ function deleteObjectPop(obj)
 	}
 	
 	outlineRemoveObj();
+	renderCamera();
 }
 
 
@@ -266,6 +267,9 @@ function copyObj(cdm)
 	{
 		clickObject3D( arr2[0], {menu_1: true, outline: true} );
 	}
+
+	scaleToolsMoveCamera();	
+	renderCamera();		
 }
 
 

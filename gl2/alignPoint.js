@@ -230,6 +230,8 @@ function clickItemCenterObjUI_2(cdm)
 	infProject.list.alignP.p2 = obj;
 	
 	setClickLastObj({obj: infProject.list.alignP.p1});
+
+	renderCamera();
 }
 
 
@@ -249,6 +251,9 @@ function alignPointToPoint_1()
 	if(o1.userData.tag == 'wf_point'){ alignTubePointToPoint(); }
 	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'wf_point'){ alignObjPointToTubePoint(); }
 	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'joinPoint'){ alignObjPointToObjPoint(); }
+
+	scaleToolsMoveCamera();	
+	renderCamera();	
 }
 
 
@@ -277,9 +282,6 @@ function alignTubePointToPoint()
 	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
 	
 	infProject.tools.pivot.position.copy(o1.position);
-	setScalePivotGizmo();	
-
-	renderCamera();
 }
 
 
@@ -324,8 +326,6 @@ function alignObjPointToTubePoint()
 	
 	tools.position.copy(pos);
 	tools.quaternion.copy(q);
-
- 	setScalePivotGizmo();
 }
 
 
@@ -401,8 +401,6 @@ function alignObjPointToObjPoint(cdm)
 	
 	tools.position.copy(pos);
 	tools.quaternion.copy(q); 
-
-	setScalePivotGizmo();
 }
 
 

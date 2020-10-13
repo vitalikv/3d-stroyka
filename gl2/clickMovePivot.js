@@ -423,6 +423,7 @@ function inputChangePos()
 	
 	let pos1 = obj.position;
 	let pivot = infProject.tools.pivot;
+	let gizmo = infProject.tools.gizmo;
 	
 	if(obj.userData.tag == 'obj'){ pos1 = obj.localToWorld( obj.geometry.boundingSphere.center.clone() ); }		// группа или объект	
 	else if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
@@ -436,6 +437,8 @@ function inputChangePos()
 	let pos2 = new THREE.Vector3(x,y,z).sub(pos1);
 	
 	pivot.position.add(pos2);
+	gizmo.position.add(pos2);
+	clippingGizmo360( obj );
 	
 	movePivot_2({obj: obj, pos2: pos2});
 

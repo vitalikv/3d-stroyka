@@ -115,6 +115,8 @@ function detachObjGroup(cdm)
 	{
 		clickObject3D( obj, {menu_1: true, outline: true} );
 	}
+
+	renderCamera();
 }
 
 
