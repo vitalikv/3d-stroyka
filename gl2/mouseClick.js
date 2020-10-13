@@ -91,6 +91,8 @@ function onDocumentMouseDown( event )
 
 	infProject.tools.axis[0].visible = false;
 	infProject.tools.axis[1].visible = false;
+	
+	if(camera == cameraView){ clickSetCameraView( event, vk_click ); return; }
 
 	clickSetCamera2D( event, vk_click );
 	clickSetCamera3D( event, vk_click );
@@ -453,6 +455,7 @@ function onDocumentMouseMove( event )
 		if ( camera == camera3D ) { cameraMove3D( event ); }
 		else if ( camera == cameraTop ) { moveCameraTop( event ); }
 		else if ( camera == cameraWall ) { moveCameraWall2D( event ); }
+		else if( camera == cameraView ) { moveCameraView( event ); }
 	}
 	
 
@@ -513,6 +516,8 @@ function onDocumentMouseUp( event )
 	infProject.tools.axis[1].visible = false;	
 	
 	clickO.offset = new THREE.Vector3();
+	
+	stopCameraView();
 	
 	renderCamera();
 }

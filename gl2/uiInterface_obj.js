@@ -171,7 +171,7 @@ function clickObjUI(cdm)
 			
 			container.append(elem);
 			(function() 
-			{  console.trace();
+			{  
 				elem.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };	
 			}());
 			
@@ -448,8 +448,8 @@ function clickItemObjNameUI(cdm)
 	{
 		clickObject3D(obj, {outline: true});
 		renderCamera();
-	}
-	
+	} 
+
 	showHideJP();
 	
 }

@@ -10,6 +10,7 @@ addPoint.js
 addWD.js
 mouseClick.js
 changeCamera.js
+cameraView.js
 moveCamera.js
 clickChangeWD.js
 clickMovePoint.js
@@ -51,6 +52,7 @@ createObj/st/troinik.js
 createObj/st/ugol.js
 createObj/st/mufta.js
 createObj/st/krestovina.js
+createObj/st/collector.js
 createObj/pl/troinik.js
 createObj/pl/ugol.js
 createObj/pl/mufta.js

@@ -46,6 +46,18 @@ camera3D.userData.camera.click = { pos : new THREE.Vector3() };
 
 
 
+var cameraView = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.05, 1000 );  
+cameraView.rotation.order = 'YZX';		//'ZYX'
+cameraView.position.set(0, 1, 1);
+cameraView.lookAt(new THREE.Vector3());
+cameraView.userData.cameraView = {};
+cameraView.userData.cameraView.click = '';
+cameraView.userData.cameraView.mouse = new THREE.Vector2();
+cameraView.userData.cameraView.targetPos = new THREE.Vector3(0, 0, 0);
+cameraView.userData.cameraView.intersectPos = new THREE.Vector3();
+cameraView.userData.cameraView.theta = 0;
+cameraView.userData.cameraView.phi = 0; 
+
 
 //----------- cameraWall
 var cameraWall = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
@@ -1467,9 +1479,11 @@ document.body.addEventListener("keydown", function (e)
 	if(clickO.keys[e.keyCode]) return;
 	
 	
-	if(e.keyCode == 13 && 1==2)
+	if(e.keyCode == 13 && 1==1)
 	{
-		console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
+		//console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
+		
+		activeCameraView();
 	}
 	
 	if(infProject.activeInput) 

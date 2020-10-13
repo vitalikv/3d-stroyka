@@ -347,6 +347,10 @@ function onDocumentMouseWheel( event )
 	{ 
 		//cameraZoom3D( delta, 1 ); 
 		zoomCamera3D_2({event: event, delta: delta});
+	}
+	else if(camera == cameraView) 
+	{ 
+		zoomCameraView(delta, 1);
 	}	
 	
 	renderCamera();
