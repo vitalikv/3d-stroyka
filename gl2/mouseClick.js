@@ -2,8 +2,6 @@
 
 var isMouseDown1 = false;
 var isMouseRight1 = false;
-var isMouseDown2 = false;
-var isMouseDown3 = false;
 var onMouseDownPosition = new THREE.Vector2();
 var long_click = false;
 var lastClickTime = 0;
@@ -412,7 +410,6 @@ function onDocumentMouseMove( event )
 	{
 		event.clientX = event.changedTouches[0].clientX;
 		event.clientY = event.changedTouches[0].clientY;
-		isMouseDown2 = true;
 	}
 	
 	{
@@ -509,14 +506,13 @@ function onDocumentMouseUp( event )
 	param_win.click = false;
 	isMouseDown1 = false;
 	isMouseRight1 = false;
-	isMouseDown2 = false;
-	isMouseDown3 = false;
 	
 	infProject.tools.axis[0].visible = false;
 	infProject.tools.axis[1].visible = false;	
 	
 	clickO.offset = new THREE.Vector3();
 	
+	stopCamera3D();
 	stopCameraView();
 	
 	renderCamera();

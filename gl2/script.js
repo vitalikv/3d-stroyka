@@ -41,7 +41,15 @@ camera3D.position.set(5, 7, 5);
 camera3D.lookAt(scene.position);
 camera3D.rotation.z = 0;
 camera3D.userData.camera = { type : 'fly', height : camera3D.position.y, startProject : true };
-camera3D.userData.camera.click = { pos : new THREE.Vector3() }; 
+
+camera3D.userData.camera3D = {};
+camera3D.userData.camera3D.click = '';
+camera3D.userData.camera3D.mouse = new THREE.Vector2();
+camera3D.userData.camera3D.targetPos = new THREE.Vector3(0, 0, 0);
+camera3D.userData.camera3D.intersectPos = new THREE.Vector3();
+camera3D.userData.camera3D.theta = 0;
+camera3D.userData.camera3D.phi = 0; 
+
 //----------- camera3D
 
 
@@ -185,7 +193,6 @@ infProject.texture[0] = { texture: new THREE.TextureLoader().load(infProject.pat
 
 var clickO = resetPop.clickO();
 infProject.project = null;
-infProject.camera = { d3: { theta: 0, phi: 75, targetPos: new THREE.Vector3() } };
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.substrate = { ruler: [], floor: [], active: null };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
