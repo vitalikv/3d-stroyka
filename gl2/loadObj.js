@@ -124,12 +124,15 @@ function addObjInScene(inf, cdm)
 	
 	
 	//if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
-	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 
 	scene.add( obj );
-	 
-	updateListObjUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 
+	
+	if(cdm.notArray){}
+	else
+	{
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj; 
+		updateListObjUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 		
+	}
 	
 	if(cdm.cursor) 
 	{ 
@@ -143,7 +146,14 @@ function addObjInScene(inf, cdm)
 		obj.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y;
 		planeMath.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y; 
 		planeMath.updateMatrixWorld();
-	} 
+	}
+
+	if(cdm.viewObj)
+	{
+		clickO.viewObj = obj;
+		fitCameraToObject({obj: clickO.viewObj});
+	}
+	
 	
 	renderCamera();
 	

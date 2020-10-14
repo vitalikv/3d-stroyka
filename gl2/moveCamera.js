@@ -568,7 +568,7 @@ function fitCameraToObject(cdm)
 	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
 
 
-	if(camera == camera3D)
+	if(camera == camera3D || camera == cameraView)
 	{
 		var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
 		
@@ -620,13 +620,13 @@ function fitCameraToObject(cdm)
 		}
 		else
 		{	
-			var dir = obj.getWorldDirection();
 			var dir = obj.getWorldDirection().multiplyScalar( maxSize + 0.15 );	
 			camera.position.copy(center).add(dir);
 			camera.lookAt(center);			
 		}		
 		
-		camera3D.userData.camera3D.targetPos.copy( center );
+		if(camera == camera3D) { camera3D.userData.camera3D.targetPos.copy( center ); }
+		if(camera == cameraView) { cameraView.userData.cameraView.targetPos.copy( center ); }
 	}
 	
 	

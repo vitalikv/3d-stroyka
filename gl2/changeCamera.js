@@ -12,7 +12,9 @@ function changeCamera(cam)
 	renderPass.camera = cam;
 	outlinePass.renderCamera = cam;
 
-
+	infProject.elem.butt_camera_2D.style.display = 'none';
+	infProject.elem.butt_camera_3D.style.display = 'none';
+	infProject.elem.butt_close_cameraView.style.display = 'none';
 	
 	if(camera == cameraTop)
 	{					
@@ -20,6 +22,7 @@ function changeCamera(cam)
 		cameraZoomTop( camera.zoom );
 		
 		changeRightMenuUI_1({current: true});
+		infProject.elem.butt_camera_3D.style.display = '';
 	}
 	else if(camera == camera3D)
 	{	
@@ -29,7 +32,8 @@ function changeCamera(cam)
 		cameraZoomTop( cameraTop.zoom );
 		changeDepthColor();
 		
-		changeRightMenuUI_1({current: true});
+		changeRightMenuUI_1({current: true});		
+		infProject.elem.butt_camera_2D.style.display = '';
 	}
 	
 	infProject.tools.axis[0].visible = false;

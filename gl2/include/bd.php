@@ -71,7 +71,7 @@ $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 
 $infProject['scene'] = [ 'tool' => [] ];
 $infProject['scene']['load'] = '';
-
+$infProject['elem']['test'] = '';
 
 
 

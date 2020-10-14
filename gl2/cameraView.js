@@ -8,17 +8,21 @@ function activeCameraView()
 {  
 	deActiveSelected();
 	
+	if(camera != cameraView.userData.cameraView.lastCam)
+	{
+		cameraView.userData.cameraView.lastCam = camera;
+	}
+	
 	camera = cameraView;
 	renderPass.camera = cameraView;
 	outlinePass.renderCamera = cameraView;
 	
+	infProject.elem.butt_close_cameraView.style.display = '';
+	infProject.elem.butt_camera_2D.style.display = 'none';
+	infProject.elem.butt_camera_3D.style.display = 'none';	
 	
-	var geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5 );
-	var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-	var cube = new THREE.Mesh( geometry, material );
-	scene.add( cube );	
 
-	clickO.viewObj = cube;
+	loadObjServer({lotid: 47, pos: new THREE.Vector3(1, 2000, 1), notArray: true, viewObj: true});
 	
 	//clickO = resetPop.clickO();
 	
@@ -80,7 +84,7 @@ function moveCameraView(event)
 		var radious = inf.targetPos.distanceTo( camera.position );
 		var theta = - ( ( event.clientX - inf.mouse.x ) * 0.5 ) + inf.theta;
 		var phi = ( ( event.clientY - inf.mouse.y ) * 0.5 ) + inf.phi;
-		var phi = Math.min( 180, Math.max( -80, phi ) );
+		var phi = Math.min( 170, Math.max( -160, phi ) );
 
 		camera.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 		camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
@@ -130,6 +134,29 @@ function zoomCameraView( delta, z )
 	{ 
 		camera.position.copy( pos ); 	
 	}
+}
+
+
+
+// включаем CameraView
+function deActiveCameraView()
+{  
+	var cam = cameraView.userData.cameraView.lastCam;
+	
+	camera = cam;
+	renderPass.camera = cam;
+	outlinePass.renderCamera = cam;
+	
+	infProject.elem.butt_close_cameraView.style.display = 'none';
+	infProject.elem.butt_camera_2D.style.display = 'none';
+	infProject.elem.butt_camera_3D.style.display = 'none';
+	
+	if(camera == cameraTop) { infProject.elem.butt_camera_3D.style.display = ''; }
+	if(camera == camera3D) { infProject.elem.butt_camera_2D.style.display = ''; }		
+	
+	//clickO = resetPop.clickO();
+	
+	renderCamera();
 }
 
 
