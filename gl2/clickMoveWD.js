@@ -11,7 +11,7 @@ function clickWD( intersect )
 	
 	var pos = intersect.point;
 	
-	if(camera != cameraWall) { pos.y = obj.position.y; }
+	pos.y = obj.position.y;
 	
 	if(camera == cameraTop) 
 	{

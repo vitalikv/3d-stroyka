@@ -185,7 +185,7 @@ function dragWD_2( event, obj )
 	var pos = wall.localToWorld( new THREE.Vector3(pos.x, pos.y, 0 ) ); 	
 	
 	  
-	if(camera == camera3D || camera == cameraWall) 
+	if(camera == camera3D) 
 	{ 
 		obj.position.set( pos.x, pos.y, pos.z ); 
 	}

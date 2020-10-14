@@ -31,17 +31,15 @@ cameraTop.lookAt(scene.position);
 cameraTop.zoom = infProject.settings.camera.zoom;
 cameraTop.updateMatrixWorld();
 cameraTop.updateProjectionMatrix();
+cameraTop.userData.cameraTop = {};
+cameraTop.userData.cameraTop.click = '';
+cameraTop.userData.cameraTop.mouse = new THREE.Vector2();
 //----------- cameraTop
 
  
 //----------- camera3D
 var camera3D = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.05, 1000 );  
 camera3D.rotation.order = 'YZX';		//'ZYX'
-camera3D.position.set(5, 7, 5);
-camera3D.lookAt(scene.position);
-camera3D.rotation.z = 0;
-camera3D.userData.camera = { type : 'fly', height : camera3D.position.y, startProject : true };
-
 camera3D.userData.camera3D = {};
 camera3D.userData.camera3D.click = '';
 camera3D.userData.camera3D.mouse = new THREE.Vector2();
@@ -66,11 +64,6 @@ cameraView.userData.cameraView.intersectPos = new THREE.Vector3();
 cameraView.userData.cameraView.theta = 0;
 cameraView.userData.cameraView.phi = 0; 
 
-
-//----------- cameraWall
-var cameraWall = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
-cameraWall.zoom = 2
-//----------- cameraWall
 
 
 //----------- Light 
@@ -111,7 +104,6 @@ function animate()
 	requestAnimationFrame( animate );	
 
 	cameraZoomTopLoop();	
-	moveCameraToNewPosition();
 	
 	updateKeyDown();
 	
@@ -153,11 +145,8 @@ function onWindowResize()
 	camera3D.aspect = aspect;
 	camera3D.updateProjectionMatrix();
 	
-	cameraWall.left = -d * aspect;
-	cameraWall.right = d * aspect;
-	cameraWall.top = d;
-	cameraWall.bottom = -d;
-	cameraWall.updateProjectionMatrix();
+	cameraView.aspect = aspect;
+	cameraView.updateProjectionMatrix();
 	
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	
@@ -1171,14 +1160,6 @@ function clickButton( event )
 		planeMath.position.set(0, 0, 0);
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 	}
-	if(camera == cameraWall)
-	{
-		var dir = camera.getWorldDirection();
-		dir.addScalar(-10);
-		planeMath.position.copy(camera.position);
-		planeMath.position.add(dir);  
-		planeMath.rotation.copy( camera.rotation ); 				
-	}
 	
 	planeMath.updateMatrixWorld();
 
@@ -1219,13 +1200,6 @@ function clickButton( event )
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
 		}		
-	}
-	else if(camera == cameraWall)
-	{
-		if(clickO.button == 'create_wd_3')
-		{
-			createEmptyFormWD_1({type:'window'});
-		}
 	}
 	
 	clickO.buttonAct = clickO.button;

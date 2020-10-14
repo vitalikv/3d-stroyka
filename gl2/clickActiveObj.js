@@ -4,7 +4,6 @@
 function activeHover2D( event )
 {
 	if (camera != cameraTop) { return; }
-	if (isMouseDown1) { return; }
 
 	if ( clickO.move ) 
 	{
@@ -184,7 +183,6 @@ function objDeActiveColor_2D()
 // кликнули на стену в 3D режиме
 function clickWall_3D( intersect )
 {
-	//if(camera != cameraWall) return;
 	if(!intersect) return;
 	if(!intersect.face) return;
 	var index = intersect.face.materialIndex;	

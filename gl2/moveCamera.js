@@ -1,6 +1,5 @@
 
 var type_browser = detectBrowser();
-var newCameraPosition = null;
 
 
 function updateKeyDown() 
@@ -18,25 +17,21 @@ function updateKeyDown()
 		if ( keys[ 87 ] || keys[ 38 ] ) 
 		{
 			camera.position.z -= 0.1;
-			newCameraPosition = null;
 			flag = true;
 		}
 		else if ( keys[ 83 ] || keys[ 40 ] ) 
 		{
 			camera.position.z += 0.1;
-			newCameraPosition = null;
 			flag = true;
 		}
 		if ( keys[ 65 ] || keys[ 37 ] ) 
 		{
 			camera.position.x -= 0.1;
-			newCameraPosition = null;
 			flag = true;
 		}
 		else if ( keys[ 68 ] || keys[ 39 ] ) 
 		{
 			camera.position.x += 0.1;
-			newCameraPosition = null;
 			flag = true;
 		}
 	}
@@ -90,35 +85,7 @@ function updateKeyDown()
 		if(flag)
 		{
 			camera.position.add( dir );
-			camera3D.userData.camera3D.targetPos.add( dir );
-			newCameraPosition = null;			
-		}
-	}
-	else if ( camera == cameraWall )
-	{
-		if ( keys[ 87 ] || keys[ 38 ] ) 
-		{
-			camera.position.y += 0.1;
-			newCameraPosition = null;
-			flag = true;
-		}
-		else if ( keys[ 83 ] || keys[ 40 ] ) 
-		{
-			camera.position.y -= 0.1;
-			newCameraPosition = null;
-			flag = true;
-		}
-		if ( keys[ 65 ] || keys[ 37 ] ) 
-		{
-			camera.position.x -= 0.1;
-			newCameraPosition = null;
-			flag = true;
-		}
-		else if ( keys[ 68 ] || keys[ 39 ] ) 
-		{
-			camera.position.x += 0.1;
-			newCameraPosition = null;
-			flag = true;
+			camera3D.userData.camera3D.targetPos.add( dir );			
 		}
 	}
 
@@ -140,41 +107,19 @@ function startPosCamera3D(cdm)
 // кликаем левой кнопокой мыши (собираем инфу для перемещения камеры в 2D режиме)
 function clickSetCamera2D( event, click )
 {
-	if ( camera == cameraTop || camera == cameraWall) { }
-	else { return; }
-
-	isMouseDown1 = true;
-	isMouseRight1 = true;
-	onMouseDownPosition.x = event.clientX;
-	onMouseDownPosition.y = event.clientY;
-	newCameraPosition = null;
+	if( camera != cameraTop) return;
 	
-
-	if(camera == cameraTop) 
-	{
-		planeMath.position.set(camera.position.x,0,camera.position.z);
-		planeMath.rotation.set(-Math.PI/2,0,0);  
-		planeMath.updateMatrixWorld();
-		
-		var intersects = rayIntersect( event, planeMath, 'one' );
-		
-		onMouseDownPosition.x = intersects[0].point.x;
-		onMouseDownPosition.z = intersects[0].point.z;	 		
-	}
-	if(camera == cameraWall) 
-	{
-		var dir = camera.getWorldDirection();
-		dir = new THREE.Vector3().addScaledVector(dir, 10);
-		planeMath.position.copy(camera.position);  
-		planeMath.position.add(dir);  
-		planeMath.rotation.copy( camera.rotation ); 
-		planeMath.updateMatrixWorld();
-
-		var intersects = rayIntersect( event, planeMath, 'one' );	
-		onMouseDownPosition.x = intersects[0].point.x;
-		onMouseDownPosition.y = intersects[0].point.y;
-		onMouseDownPosition.z = intersects[0].point.z;		 		
-	}	
+	var inf = cameraTop.userData.cameraTop;
+	
+	planeMath.position.set(camera.position.x,0,camera.position.z);
+	planeMath.rotation.set(-Math.PI/2,0,0);  
+	planeMath.updateMatrixWorld();
+	
+	var intersects = rayIntersect( event, planeMath, 'one' );
+	
+	inf.click = 'click';
+	inf.mouse.x = intersects[0].point.x;
+	inf.mouse.z = intersects[0].point.z;	 			
 }
 
 
@@ -223,16 +168,14 @@ function clickSetCamera3D( event, click )
 
 function moveCameraTop( event ) 
 {
-	if(isMouseRight1 || isMouseDown1) {}
-	else { return; }
-
-
-	newCameraPosition = null;	
+	var inf = cameraTop.userData.cameraTop;
+	
+	if(inf.click == '') return;	
 	
 	var intersects = rayIntersect( event, planeMath, 'one' );
 	
-	camera.position.x += onMouseDownPosition.x - intersects[0].point.x;
-	camera.position.z += onMouseDownPosition.z - intersects[0].point.z;	
+	camera.position.x += inf.mouse.x - intersects[0].point.x;
+	camera.position.z += inf.mouse.z - intersects[0].point.z;	
 }
 
 
@@ -246,7 +189,6 @@ function cameraMove3D( event )
 	
 	if(inf.click == 'left') 
 	{  
-		newCameraPosition = null;
 		var radious = inf.targetPos.distanceTo( camera.position );
 		var theta = - ( ( event.clientX - inf.mouse.x ) * 0.5 ) + inf.theta;
 		var phi = ( ( event.clientY - inf.mouse.y ) * 0.5 ) + inf.phi;
@@ -265,8 +207,6 @@ function cameraMove3D( event )
 	}
 	else if(inf.click == 'right')    
 	{
-		newCameraPosition = null;
-		
 		var intersects = rayIntersect( event, planeMath, 'one' );
 		var offset = new THREE.Vector3().subVectors( inf.intersectPos, intersects[0].point );
 		camera.position.add( offset );
@@ -277,25 +217,16 @@ function cameraMove3D( event )
 }
 
 
+function stopCameraTop()
+{
+	cameraTop.userData.cameraTop.click = '';
+}
+
 function stopCamera3D()
 {
 	camera3D.userData.camera3D.click = '';
 }
 
-
-// перемещение cameraWall
-function moveCameraWall2D( event )
-{
-	if ( !isMouseRight1 ) { return; }
-
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	camera.position.x += onMouseDownPosition.x - intersects[0].point.x;
-	camera.position.y += onMouseDownPosition.y - intersects[0].point.y;	
-	camera.position.z += onMouseDownPosition.z - intersects[0].point.z;
-	
-	newCameraPosition = null;	
-}
 
 
 // cameraZoom
@@ -574,12 +505,6 @@ function cameraZoomTopLoop()
 		if ( zoomLoop == 'zoomOut' ) { cameraZoom3D( 0.3, 0.3 ); flag = true; }
 		if ( zoomLoop == 'zoomIn' ) { cameraZoom3D( -0.3, 0.3 ); flag = true; }
 	}
-	else if ( camera == cameraWall )
-	{
-		if ( zoomLoop == 'zoomOut' ) { camera.zoom = camera.zoom - ( 0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { camera.zoom = camera.zoom - ( -0.4 * 0.1 * ( camera.zoom / 2 ) ); flag = true; }
-		camera.updateProjectionMatrix();
-	}
 	
 	if(flag) { renderCamera(); }
 }
@@ -599,8 +524,6 @@ function centerCamera2D()
 		for ( var i = 0; i < obj_point.length; i++ ) { pos.add( obj_point[ i ].position ); }
 		pos.divideScalar( obj_point.length );
 	}
-
-	newCameraPosition = {position2D: new THREE.Vector3(pos.x, cameraTop.position.y, pos.z)};
 }
 
 
@@ -616,68 +539,8 @@ function centerCamera3D()
 		pos.divideScalar( obj_point.length );
 	}
 
-	newCameraPosition = { position3D: new THREE.Vector3( pos.x, 0, pos.z )};
-
 }
 
-
-function moveCameraToNewPosition()
-{
-
-	if ( !newCameraPosition ) return;
-	
-	var inf = camera3D.userData.camera3D;
-
-	if (camera === cameraTop && newCameraPosition.position2D) 
-	{ 
-
-		var pos = camera.position.clone();
-		
-		camera.position.lerp(newCameraPosition.position2D, 0.1);
-		
-		if(camera3D.userData.camera.startProject)
-		{
-			var pos2 = new THREE.Vector3( camera.position.x - pos.x, 0, camera.position.z - pos.z );
-			inf.targetPos.add( pos2 );
-			camera3D.position.add( pos2 );			
-		}
-		
-		if(comparePos(camera.position, newCameraPosition.position2D)) { newCameraPosition = null; if(camera3D.userData.camera.startProject) { camera3D.userData.camera.startProject = false; }; };	
-		
-	}	
-	else if ( camera === camera3D && newCameraPosition.position3D )
-	{
-		
-		inf.targetPos.lerp( newCameraPosition.position3D, 0.1 );
-
-		var oldDistance = inf.targetPos.distanceTo( camera.position );
-
-		camera.position.x = oldDistance * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
-		camera.position.y = oldDistance * Math.sin( phi * Math.PI / 360 );
-		camera.position.z = oldDistance * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
-
-		camera.position.add( inf.targetPos );
-		camera.lookAt( inf.targetPos );
-		
-		if(comparePos(inf.targetPos, newCameraPosition.position3D)) { newCameraPosition = null; };
-		
-	}
-	else if ( camera === camera3D && newCameraPosition.positionFirst || camera === camera3D && newCameraPosition.positionFly )
-	{
-		
-		var pos = (newCameraPosition.positionFirst) ? newCameraPosition.positionFirst : newCameraPosition.positionFly;		
-		camera.position.lerp( pos, 0.1 );		
-		camera.lookAt( inf.targetPos ); 		
-		if(comparePos(camera.position, pos)) { newCameraPosition = null; };	
-		
-	}
-	else
-	{
-		newCameraPosition = null;
-	}
-	
-	renderCamera();
-}
 
 
 // приближаемся к выбранному объекту

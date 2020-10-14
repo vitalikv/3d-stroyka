@@ -1,8 +1,7 @@
 
 
-var isMouseDown1 = false;
-var isMouseRight1 = false;
-var onMouseDownPosition = new THREE.Vector2();
+
+
 var long_click = false;
 var lastClickTime = 0;
 var catchTime = 0.30;
@@ -451,7 +450,6 @@ function onDocumentMouseMove( event )
 	{
 		if ( camera == camera3D ) { cameraMove3D( event ); }
 		else if ( camera == cameraTop ) { moveCameraTop( event ); }
-		else if ( camera == cameraWall ) { moveCameraWall2D( event ); }
 		else if( camera == cameraView ) { moveCameraView( event ); }
 	}
 	
@@ -504,14 +502,13 @@ function onDocumentMouseUp( event )
 	
 	
 	param_win.click = false;
-	isMouseDown1 = false;
-	isMouseRight1 = false;
 	
 	infProject.tools.axis[0].visible = false;
 	infProject.tools.axis[1].visible = false;	
 	
 	clickO.offset = new THREE.Vector3();
 	
+	stopCameraTop();
 	stopCamera3D();
 	stopCameraView();
 	

@@ -110,23 +110,14 @@ function showRulerWD(obj)
 	
 	var boundPos = [];
 	
-	if(camera == cameraWall)
-	{
-		var arr = detectDirectionWall_1(wall, arrWallFront.wall[0].index, detectRoomWallSide(wall, (arrWallFront.wall[0].index == 1) ? 1 : 0));
-		boundPos[0] = arr[0].clone();
-		boundPos[1] = arr[2].clone();		
-	}
-	else	
-	{
-		// находим (границы) позиции от выбранного окна/двери до ближайших окон/дверей/края стены
-		var arr = detectDirectionWall_1(wall, 1, detectRoomWallSide(wall, 1));	
-		boundPos[0] = arr[0].clone();
-		boundPos[1] = arr[2].clone();
-		
-		var arr = detectDirectionWall_1(wall, 2, detectRoomWallSide(wall, 0));
-		boundPos[2] = arr[0].clone();
-		boundPos[3] = arr[2].clone();  		
-	}	
+	// находим (границы) позиции от выбранного окна/двери до ближайших окон/дверей/края стены
+	var arr = detectDirectionWall_1(wall, 1, detectRoomWallSide(wall, 1));	
+	boundPos[0] = arr[0].clone();
+	boundPos[1] = arr[2].clone();
+	
+	var arr = detectDirectionWall_1(wall, 2, detectRoomWallSide(wall, 0));
+	boundPos[2] = arr[0].clone();
+	boundPos[3] = arr[2].clone();  		
 	
 	
 	for ( var i = 0; i < arrWallFront.wall.length; i++ )
@@ -358,19 +349,6 @@ function clickToggleChangeWin( intersect, cdm )
 	
 		if(m == 0) { pos2 = wall.localToWorld( new THREE.Vector3(wd.userData.door.bound.min.x, controll.position.y, z) ); }
 		else if(m == 1) { pos2 = wall.localToWorld( new THREE.Vector3(wd.userData.door.bound.max.x, controll.position.y, z) ); }				
-	}
-	else if(camera == cameraWall)
-	{
-		//clickO.obj = null;
-		planeMath.position.copy( intersect.point );
-		planeMath.rotation.set( 0, controll.rotation.y, 0 );
-		
-		var dir = new THREE.Vector3().subVectors( wall.userData.wall.p[1].position, wall.userData.wall.p[0].position ).normalize();
-		
-		if(m == 0) { pos2 = new THREE.Vector3().addVectors( controll.position, dir ); }
-		else if(m == 1) { pos2 = new THREE.Vector3().subVectors( controll.position, dir ); }	
-		else if(m == 2) { pos2 = controll.position.clone(); pos2.y = -9999; }
-		else if(m == 3) { pos2 = controll.position.clone(); pos2.y = 9999; }
 	}
 
 	
