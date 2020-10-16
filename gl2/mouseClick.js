@@ -394,11 +394,6 @@ function clickMouseActive(cdm)
 		else if( tag == 'obj' && camera == camera3D ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'wf_tube' && camera == camera3D ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }		
-	}	
-	
-	if(camera == cameraTop)
-	{
-		//objActiveColor_2D(obj);			
 	}		
 }
 
@@ -453,8 +448,6 @@ function onDocumentMouseMove( event )
 		else if( camera == cameraView ) { moveCameraView( event ); }
 	}
 	
-
-	//activeHover2D( event );
 
 	renderCamera();
 }
@@ -546,8 +539,6 @@ function hideMenuObjUI_2D(cdm)
 	
 	if(obj)
 	{ 
-		objDeActiveColor_2D(); 
-
 		var tag = obj.userData.tag;
 		
 		if(cdm.type == 'down')

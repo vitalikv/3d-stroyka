@@ -123,7 +123,6 @@ function addPointCenterWall()
 {
 	var wall = clickO.obj;
 	clickO.obj = null;
-	objDeActiveColor_2D();
 	
 	var pos1 = wall.userData.wall.p[0].position;
 	var pos2 = wall.userData.wall.p[1].position;

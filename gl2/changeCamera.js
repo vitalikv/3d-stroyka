@@ -16,9 +16,10 @@ function changeCamera(cam)
 	infProject.elem.butt_camera_3D.style.display = 'none';
 	infProject.elem.butt_close_cameraView.style.display = 'none';
 	
+	changeDepthColor();
+	
 	if(camera == cameraTop)
-	{					
-		changeDepthColor();			
+	{						
 		cameraZoomTop( camera.zoom );
 		
 		changeRightMenuUI_1({current: true});
@@ -28,9 +29,7 @@ function changeCamera(cam)
 	{	
 		blockActiveObj({visible_1: true, visible_2: true});
 		
-		activeHover2D_2(); 
 		cameraZoomTop( cameraTop.zoom );
-		changeDepthColor();
 		
 		changeRightMenuUI_1({current: true});		
 		infProject.elem.butt_camera_2D.style.display = '';

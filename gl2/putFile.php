@@ -20,8 +20,7 @@ deleteObj.js
 floor.js
 detectZone.js
 inputWall.js
-label.js  	
-clickActiveObj.js    
+label.js  	   
 saveLoad.js
 script.js
 floorWarm.js

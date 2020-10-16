@@ -82,9 +82,7 @@ function deleteWall_1( wall )
 
 // здесь только удаление стены, без обновления зон/площади/пола
 function deleteWall_2(wall)
-{
-	objDeActiveColor_2D();
-	
+{	
 	var arr = wall.userData.wall.arrO;
 
 	for(var i = 0; i < arr.length; i++)
@@ -126,8 +124,6 @@ function deleteWall_3(wall, cdm)
 {
 	if(!cdm) { cdm = {}; }
 	if(!cdm.dw) { cdm.dw = ''; }
-	
-	objDeActiveColor_2D();
 	
 	if(cdm.dw == 'no delete') {}
 	else
