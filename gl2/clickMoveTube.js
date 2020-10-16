@@ -221,7 +221,7 @@ function deleteLineWF(tube)
 	var line = tube.userData.wf_tube.line;
 	
 	updateListObjUI_1({type: 'delete', o: tube});
-	deleteValueFromArrya({arr : infProject.scene.array.tube, o : line});
+	deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
 
 	deClickTube({obj: tube, moment: ''});
 	

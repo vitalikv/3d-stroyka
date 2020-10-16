@@ -75,11 +75,9 @@ function clickWFPoint_3D(cdm)
 	outlineAddObj(obj);
 	
 	setPivotGizmo({obj: obj});
-
-	var line = obj.userData.wf_point.line.o;
 	
 	// показываем точки у труб
-	showHideArrObj(line.userData.wf_line.point, true);	
+	showHideTubePoint({tube: obj.userData.wf_point.tube, visible: true});	
 	
 	showWF_point_UI( obj );
 	
@@ -168,14 +166,14 @@ function createLineWF(cdm)
 	line.userData.wf_line.diameter = cdm.diameter;
 	scene.add( line );
 	
-	infProject.scene.array.tube[infProject.scene.array.tube.length] = line;
-	
 	for(var i = 0; i < point.length; i++)
 	{
 		point[i].userData.wf_point.line.o = line;
 	}
 
 	var tube = geometryTubeWF({line: line, createLine: true});
+	
+	infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;
 	
 	updateListObjUI_1({o: tube, type: 'add'}); // обновляем список материалов
 

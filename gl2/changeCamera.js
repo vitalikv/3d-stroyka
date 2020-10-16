@@ -16,7 +16,13 @@ function changeCamera(cam)
 	infProject.elem.butt_camera_3D.style.display = 'none';
 	infProject.elem.butt_close_cameraView.style.display = 'none';
 	
-	changeDepthColor();
+	
+	var tube = infProject.scene.array.tube;
+	
+	for ( var i = 0; i < tube.length; i++ )
+	{
+		showHideTubePoint({tube: tube[i], visible: false});
+	}	
 	
 	if(camera == cameraTop)
 	{						
@@ -45,66 +51,6 @@ function changeCamera(cam)
 
 
 
-
-
-
-// меняем уровень отрисовки объектов 
-function changeDepthColor()
-{
-	if(camera == cameraTop)
-	{
-		var depthTest = false;
-		var w2 = 1;
-		var visible = true;
-		var visible_2 = true;
-	}
-	else if(camera == camera3D)
-	{
-		var depthTest = true;
-		var w2 = 0.0;
-		var visible = false;
-		var visible_2 = false;
-	}
-	else { return; } 
-	
-	var point = infProject.scene.array.point;
-	var wall = infProject.scene.array.wall;
-	var window = infProject.scene.array.window;
-	var door = infProject.scene.array.door;	
-	var line = infProject.scene.array.tube;
-	
-	for ( var i = 0; i < wall.length; i++ )
-	{
-		if(wall[i].children[0]) wall[i].children[0].visible = visible_2;	// скрываем штукатурку 
-				
-		for ( var i2 = 0; i2 < wall[i].label.length; i2++ )
-		{
-			wall[i].label[i2].visible = visible;
-		}
-	}
-	
-	for ( var i = 0; i < point.length; i++ )
-	{ 
-		point[i].visible = visible; 
-	}		
-	
-	var wf = [];
-	
-	for ( var i = 0; i < line.length; i++ )
-	{
-		var tube = line[i].userData.wf_line.tube;
-		
-		for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
-		{
-			wf[wf.length] = tube.userData.wf_tube.point[i2];
-		}		
-	}
-	
-	showHideArrObj(wf, false);
-	showHideArrObj(window, visible_2);
-	showHideArrObj(door, visible_2);
-	
-}
 
 
 // скрываем/показываем объекты

@@ -219,18 +219,10 @@ function clickRayHit(event)
 	
 	// труба
 	if(!infProject.scene.block.click.tube)
-	{
-		var arrT = [];		
-		var tube = infProject.scene.array.tube;	
-		
-		for ( var i = 0; i < tube.length; i++ )
-		{
-			arrT[arrT.length] = tube[i].userData.wf_line.tube;
-		}	
-		
+	{	
 		if(!rayhit)
 		{
-			var ray = rayIntersect( event, arrT, 'arr' );
+			var ray = rayIntersect( event, infProject.scene.array.tube, 'arr' );
 			if(ray.length > 0) { rayhit = ray[0]; }					
 		}
 	}
@@ -619,7 +611,7 @@ function detectMouseObj()
 		var arr = [];
 		
 		var floor = infProject.scene.substrate.floor;
-		var line = infProject.scene.array.tube;
+		var tube = infProject.scene.array.tube;
 		var obj = infProject.scene.array.obj;
 		
 		for ( var i = 0; i < floor.length; i++ )
@@ -627,9 +619,9 @@ function detectMouseObj()
 			arr[arr.length] = floor[i].plane;
 		}
 		
-		for ( var i = 0; i < line.length; i++ )
+		for ( var i = 0; i < tube.length; i++ )
 		{
-			arr[arr.length] = line[i].userData.wf_line.tube;
+			arr[arr.length] = tube[i];
 		}	
 
 		for ( var i = 0; i < obj.length; i++ )
