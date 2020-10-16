@@ -620,7 +620,8 @@ function fitCameraToObject(cdm)
 		}
 		else
 		{	
-			var dir = obj.getWorldDirection().multiplyScalar( maxSize + 0.15 );	
+			var maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y );
+			var dir = obj.getWorldDirection().multiplyScalar( maxSize * 2 );	
 			camera.position.copy(center).add(dir);
 			camera.lookAt(center);			
 		}		

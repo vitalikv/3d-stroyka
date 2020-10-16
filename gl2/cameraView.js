@@ -4,11 +4,21 @@
 
 
 // включаем CameraView
-function activeCameraView()
+function activeCameraView(cdm)
 {  
 	deActiveSelected();
+
+	var obj = clickO.viewObj;
 	
-	if(camera != cameraView.userData.cameraView.lastCam)
+	if(obj)
+	{
+		if(obj.userData.tag == 'obj') 
+		{
+			deleteObjectPop(obj);
+		}				
+	}
+	
+	if(camera != cameraView)
 	{
 		cameraView.userData.cameraView.lastCam = camera;
 	}
@@ -21,9 +31,11 @@ function activeCameraView()
 	infProject.elem.butt_camera_2D.style.display = 'none';
 	infProject.elem.butt_camera_3D.style.display = 'none';	
 	
+console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
-	loadObjServer({lotid: 47, pos: new THREE.Vector3(1, 2000, 1), notArray: true, viewObj: true});
-	
+	loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(1, 2000, 1), notArray: true, viewObj: true});
+	 
+console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
 	//clickO = resetPop.clickO();
 	
 	renderCamera();
@@ -130,7 +142,7 @@ function zoomCameraView( delta, z )
 	var v1 = localTransformPoint( new THREE.Vector3().subVectors( inf.targetPos, pos ), qt );
 
 	
-	if ( v1.z >= 0.1) 
+	if ( v1.z >= 0.03) 
 	{ 
 		camera.position.copy( pos ); 	
 	}
@@ -143,20 +155,17 @@ function deActiveCameraView()
 {  
 	var cam = cameraView.userData.cameraView.lastCam;
 	
-	camera = cam;
-	renderPass.camera = cam;
-	outlinePass.renderCamera = cam;
+	var obj = clickO.viewObj;
 	
-	infProject.elem.butt_close_cameraView.style.display = 'none';
-	infProject.elem.butt_camera_2D.style.display = 'none';
-	infProject.elem.butt_camera_3D.style.display = 'none';
+	if(obj)
+	{
+		if(obj.userData.tag == 'obj') 
+		{
+			deleteObjectPop(obj);
+		}				
+	}
 	
-	if(camera == cameraTop) { infProject.elem.butt_camera_3D.style.display = ''; }
-	if(camera == camera3D) { infProject.elem.butt_camera_2D.style.display = ''; }		
-	
-	//clickO = resetPop.clickO();
-	
-	renderCamera();
+	changeCamera(cam);		
 }
 
 

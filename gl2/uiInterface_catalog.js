@@ -33,7 +33,7 @@ async function addObjInCatalogUI_1(cdm)
 	}
 	
 
-	
+	var container = document.body.querySelector('[list_ui="catalog"]');
 	
 	if(flag)
 	{
@@ -41,7 +41,7 @@ async function addObjInCatalogUI_1(cdm)
 		{
 			json[i] = getItemChilds({json: json[i]});		
 			
-			json[i].elem.appendTo('[list_ui="catalog"]');
+			container.append(json[i].elem);
 		}		
 	}
 	else
@@ -50,32 +50,60 @@ async function addObjInCatalogUI_1(cdm)
 		{
 			json[i] = getItemChilds({json: json[i]});		
 			
-			json[i].elem.appendTo('[list_ui="catalog"]');
+			container.append(json[i].elem);
 		}		
 	}
 	
-	console.log(json);
+	
 	
 	// находим дочерние объекты 
 	function getItemChilds(cdm)
 	{
 		var json = cdm.json;
 		
-		if(json.id != 'group') 
+		if(json.id != 'group') 	// это объект, а не группа
 		{
-			json.html = 
-			'<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'" style="top:0px; left:0px">\
-				<div class="right_panel_1_1_list_item_text">'
-				+json.name+
-				'</div>\
+			var str_button = 
+			'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 10px; height: 20px;">\
+				<div>\
+					<svg height="100%" width="100%" viewBox="0 0 100 100">\
+						<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					</svg>\
+				</div>\
 			</div>';
 			
-			json.elem = $(json.html);
+			var html = 
+			'<div>\
+				<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'">\
+					<div class="flex_1 relative_1">\
+						<div class="right_panel_1_1_list_item_text">'+json.name+'</div>\
+						'+str_button+'\
+					</div>\
+				</div>\
+			</div>';			
+			
+			var div = document.createElement('div');
+			div.innerHTML = html;
+			var elem = div.firstChild;
+			
+			json.elem = elem;
 
+			// при клике добавляем объект в сцену
 			var n = json.id;
 			(function(n) 
 			{
-				json.elem.on('mousedown', function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); });	
+				elem.onmousedown = function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); };	
+			}(n));
+
+			// назначаем событие при клике на кружок UI
+			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
+			(function(n) 
+			{
+				elem_2.onmousedown = function(e)
+				{ 
+					activeCameraView({lotid: n});
+					e.stopPropagation();
+				};	
 			}(n));			
 		}
 		else
@@ -91,7 +119,7 @@ async function addObjInCatalogUI_1(cdm)
 				</div>\
 			</div>';				
 				
-			json.html = 
+			var html = 
 			'<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'" style="top:0px; left:0px;">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
 					'+str_button+'\
@@ -102,36 +130,28 @@ async function addObjInCatalogUI_1(cdm)
 				</div>\
 			</div>';
 			
-			json.elem = $(json.html); 
-
-			// кликаем по названию объекта
-			if(1==2)
-			{
-				var n = json.id;
-				(function(n) 
-				{
-					json.elem.on('mousedown', function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); }); 	
-				}(n));				
-			}
+			var div = document.createElement('div');
+			div.innerHTML = html;
+			var elem = div.firstChild;
+			
+			json.elem = elem; 
 			
 			// назначаем кнопки треугольник событие
-			var el_2 = $(json.elem[0].querySelector('[nameId="shCp_1"]'));
-			var el_3 = json.elem[0].querySelector('[nameId="groupItem"]');
+			var el_2 = elem.querySelector('[nameId="shCp_1"]');
+			var el_3 = elem.querySelector('[nameId="groupItem"]');
 			var num = 0;
 			(function(num) 
 			{
-				el_2.on('mousedown', function(e){ clickRtekUI_2({elem: this, elem_2: el_3}); e.stopPropagation(); });	
-			}(num));
-
+				el_2.onmousedown = function(e){ clickRtekUI_2({elem: this, elem_2: el_3}); e.stopPropagation(); };	
+			}(num));			
 			
-			
-			var container = json.elem[0].querySelector('[nameid="groupItem"]');
+			var container = json.elem.querySelector('[nameid="groupItem"]');
 			
 			for ( var i = 0; i < json.child.length; i++ )
 			{
 				json.child[i] = getItemChilds({json: json.child[i]});
 				
-				json.child[i].elem.appendTo(container);
+				container.append(json.child[i].elem);
 			}			
 		}
 		

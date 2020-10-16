@@ -52,13 +52,13 @@
 				2D
 			</div>	
 		</div>		
-		<div class="button1-wrap-1" nameId='butt_camera_3D'>
-			<div class="button1 button_gradient_1" style="width: 39px; "> 
+		<div class="button1-wrap-1" nameId='butt_camera_3D' style="display: none;">
+			<div class="button1 button_gradient_1" style="width: 39px;"> 
 				3D
 			</div>	
 		</div>	
-		<div class="button1-wrap-1" nameId='butt_close_cameraView'>
-			<div class="button1 button_gradient_1" style="width: 39px; ">
+		<div class="button1-wrap-1" nameId='butt_close_cameraView' style="display: none;">
+			<div class="button1 button_gradient_1" style="width: 39px;">
 				<div style="transform: rotate(-45deg); font-family: arial,sans-serif; font-size: 40px; text-align: center; text-decoration: none; line-height: 0.5em; color: #666; cursor: pointer;">
 					+
 				</div>
