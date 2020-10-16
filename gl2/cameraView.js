@@ -15,7 +15,11 @@ function activeCameraView(cdm)
 		if(obj.userData.tag == 'obj') 
 		{
 			deleteObjectPop(obj);
-		}				
+		}
+		if(obj.userData.tag == 'wf_tube')
+		{
+			deleteLineWF(obj);
+		}		
 	}
 	
 	if(camera != cameraView)
@@ -33,10 +37,9 @@ function activeCameraView(cdm)
 	
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
-	loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(1, 2000, 1), notArray: true, viewObj: true});
+	loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(0, 2000, 0), notArray: true, viewObj: true});
 	 
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
-	//clickO = resetPop.clickO();
 	
 	renderCamera();
 }
@@ -162,8 +165,14 @@ function deActiveCameraView()
 		if(obj.userData.tag == 'obj') 
 		{
 			deleteObjectPop(obj);
-		}				
+		}
+		if(obj.userData.tag == 'wf_tube')
+		{
+			deleteLineWF(obj);
+		}		
 	}
+	
+	clickO.viewObj = null;
 	
 	changeCamera(cam);		
 }

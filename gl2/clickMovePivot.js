@@ -265,7 +265,7 @@ function movePivot_2(cdm)
 	{
 		obj.position.add(pos2);	
 
-		geometryTubeWF({tube: obj.userData.wf_point.tube});
+		updateTubeWF({tube: obj.userData.wf_point.tube});
 
 		showWF_point_UI(obj);
 	}
@@ -322,7 +322,7 @@ function clickPivotUp()
 	{
 		if(clickO.actMove)
 		{		
-			geometryTubeWF({tube: obj.userData.wf_point.tube});
+			updateTubeWF({tube: obj.userData.wf_point.tube});
 			obj.userData.wf_point.tube.visible = true;
 		}		
 	}

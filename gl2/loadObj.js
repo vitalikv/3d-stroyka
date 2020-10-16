@@ -67,8 +67,9 @@ async function loadObjServer(cdm)
 			var obj = window[inf.params.fc.name](inf.params.cdm);
 			
 			if(obj.userData.tag == 'wf_tube')	// если труба, то в кэш сохраняем только параметры
-			{
-				infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+			{				
+				checkAddInf({inf: inf});
+				addTubeInScene(obj, cdm);
 			}		
 			else 	// если объект, то в кэш сохраняем параметры и сам объект
 			{ 
@@ -80,11 +81,22 @@ async function loadObjServer(cdm)
 					
 		}
 	}
-
 	
-	if(inf.type == 'tube') 
-	{ 
-		//createTubeWF_1({type: inf.properties.type, posY: infProject.tools.heightPl.position.y});
+	// если значение есть в кэше, то НЕ сохраняем
+	function checkAddInf(cdm)
+	{
+		var inf = cdm.inf;
+		var base = infProject.scene.array.base;		// объекты в памяти	
+		
+		for(var i = 0; i < base.length; i++)
+		{
+			if(base[i].id == inf.id)
+			{
+				return;		// объект есть в кэше
+			}
+		}
+
+		infProject.scene.array.base[infProject.scene.array.base.length] = inf;
 	}
 }
 

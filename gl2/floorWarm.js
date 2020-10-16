@@ -120,7 +120,7 @@ function addPointOnTube(cdm)
 	disposeNode(line);
 	line.geometry = geometry;	
 	
-	geometryTubeWF({tube: tube});	
+	updateTubeWF({tube: tube});	
 }
 
 
@@ -142,30 +142,47 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 
 
 
-// создаем линию
-function createLineWF(cdm)
+// создаем трубу
+function crTubeWF(cdm)
 {
-	var tube = cdm.tube;
-	var point = tube.userData.wf_tube.point;
+	var point = cdm.point;
+	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);	
+	var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
 	
-	var geometry = new THREE.Geometry();
+	var inf = tubeGeometry({point: point, diameter: diameter});
 	
-	for(var i = 0; i < point.length; i++)
+	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
+	tube.userData.tag = 'wf_tube';		
+	tube.userData.wf_tube = {};
+	tube.userData.wf_tube.line = null;
+	tube.userData.wf_tube.point = point;
+	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
+	tube.userData.wf_tube.length = Math.round(inf.length * 100)/100;
+	tube.userData.wf_tube.diameter = diameter;	
+	scene.add( tube );
+	
+	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }		
+	
+	// line
 	{
-		geometry.vertices.push(point[i].position);
-	}		
+		var geometry = new THREE.Geometry();
+		
+		for(var i = 0; i < point.length; i++)
+		{
+			geometry.vertices.push(point[i].position);
+		}		
+		
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: tube.material.color, linewidth: 2 }) );
+		scene.add( line );
+		
+		tube.userData.wf_tube.line = line;
+		
+		for(var i = 0; i < point.length; i++)
+		{
+			point[i].userData.wf_point.line.o = line;
+		}		
+	}	
 	
-	var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: tube.material.color, linewidth: 2 }) );
-	scene.add( line );
-	
-	tube.userData.wf_tube.line = line;
-	
-	for(var i = 0; i < point.length; i++)
-	{
-		point[i].userData.wf_point.line.o = line;
-	}
-	
-
 	return tube;
 }
 
@@ -174,50 +191,27 @@ function createLineWF(cdm)
 
 
 
-// создаем или обновляем форму трубы
-function geometryTubeWF(cdm)
+// обновляем форму трубы
+function updateTubeWF(cdm)
 {
 	var tube = cdm.tube;
 	
-	if(!tube)
-	{
-		var point = cdm.point;
-		var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);	
-		var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
-		
-		var inf = tubeGeometry({point: point, diameter: diameter});
-		
-		var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
-		tube.userData.tag = 'wf_tube';		
-		tube.userData.wf_tube = {};
-		tube.userData.wf_tube.line = null;
-		tube.userData.wf_tube.point = point;
-		scene.add( tube );
-		
-		createLineWF({tube: tube});
+	var point = (cdm.point) ? cdm.point : tube.userData.wf_tube.point;	
+	var diameter = (cdm.diameter) ? cdm.diameter : tube.userData.wf_tube.diameter;
+	
+	var inf = tubeGeometry({point: point, diameter: diameter});
+	
+	tube.geometry.dispose();
+	tube.geometry = inf.geometry;
+	
+	var line = tube.userData.wf_tube.line;
+	line.geometry.verticesNeedUpdate = true; 
+	line.geometry.elementsNeedUpdate = true;		
 
-		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;
-	}
-	else
+	if(cdm.color)
 	{
-		var point = (cdm.point) ? cdm.point : tube.userData.wf_tube.point;	
-		var diameter = (cdm.diameter) ? cdm.diameter : tube.userData.wf_tube.diameter;
 		
-		var inf = tubeGeometry({point: point, diameter: diameter});
-		
-		tube.geometry.dispose();
-		tube.geometry = inf.geometry;
-		
-		var line = tube.userData.wf_tube.line;
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;		
-
-		if(cdm.color)
-		{
-			
-		}
-	}
-				
+	}	
 	
 	tube.userData.wf_tube.point = point;
 	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
@@ -226,9 +220,7 @@ function geometryTubeWF(cdm)
 	
 	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }
 
-	
-	if(!cdm.tube) { updateListObjUI_1({o: tube, type: 'add'}); } 	// добавляем в список материалов
-	else { updateListObjUI_1({o: tube, type: 'update'}); }			// обновляем список материалов 
+	updateListObjUI_1({o: tube, type: 'update'});			// обновляем список материалов 
 	
 	renderCamera();
 	
@@ -236,6 +228,7 @@ function geometryTubeWF(cdm)
 }
 
 
+// создаем Geometry трубы
 function tubeGeometry(params)
 {
 	var point = params.point;
@@ -298,7 +291,7 @@ function deletePointWF(obj)
 		disposeNode(tube);
 		
 		line.geometry = geometry;
-		geometryTubeWF({tube: tube});
+		updateTubeWF({tube: tube});
 		
 		disposeNode(obj);
 		scene.remove(obj);	// удаляем точку
@@ -332,7 +325,7 @@ function inputWF_tubeDiametr(cdm)
 	
 	infProject.settings.wf_tube.d = size;	
 	
-	geometryTubeWF({tube: tube, diameter: size});	
+	updateTubeWF({tube: tube, diameter: size});	
 	
 	showWF_line_UI({tube: tube});		
 }

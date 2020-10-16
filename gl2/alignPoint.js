@@ -267,7 +267,7 @@ function alignTubePointToPoint()
 	
 	o1.position.copy(pos1);	
 	
-	geometryTubeWF({tube: o1.userData.wf_point.tube});	
+	updateTubeWF({tube: o1.userData.wf_point.tube});	
 	o1.userData.wf_point.tube.visible = true;	
 
 	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI

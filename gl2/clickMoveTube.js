@@ -22,16 +22,45 @@ function createTubeWF_1(cdm)
 	}
 	
 	var r1 = (cdm.r1) ? cdm.r1 : 0.05;
-	var tube = geometryTubeWF({point: p, diameter: r1}); 	 		
-	
-	planeMath.position.y = infProject.tools.heightPl.position.y;  
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
-	planeMath.updateMatrixWorld(); 	
-
-	clickO.move = tube;	
+	var tube = crTubeWF({point: p, diameter: r1}); 	 		
+	 
 	
 	return tube;
 }
+
+
+// добавляем новую трубу в сцену
+function addTubeInScene(tube, cdm)
+{
+	console.log(cdm);
+
+	if(!cdm.notArray)
+	{
+		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
+		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
+	}
+	
+	if(cdm.cursor)
+	{
+		planeMath.position.y = infProject.tools.heightPl.position.y;  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+
+		clickO.move = tube;
+	}
+	
+	if(cdm.viewObj)
+	{		
+		moveFullTube_2({tube: tube, offset: cdm.pos});			
+	
+		showHideTubePoint({tube: tube, visible: false});
+		clickO.viewObj = tube;
+		fitCameraToObject({obj: tube});		
+	}
+	
+	renderCamera();
+}
+
 
 
 // кликнули на трубу, распределяем что делать
@@ -164,7 +193,7 @@ function moveFullTube_2(cdm)
 		point[i].position.add( offset );
 	}
 
-	geometryTubeWF({tube: tube});
+	updateTubeWF({tube: tube});
 }
 
 
@@ -175,7 +204,7 @@ function clickMouseUpTube(obj)
 	if(1==2)
 	{
 		var tube = obj;		
-		geometryTubeWF({tube: tube});
+		updateTubeWF({tube: tube});
 		
 		tube.position.set( 0,0,0 );
 		line.position.set( 0,0,0 );				
@@ -200,7 +229,7 @@ function copyTubeWF(cdm)
 		p[i] = createPointWF({pos: point[i].position, visible: false});
 	}	
 	
-	var tube = geometryTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone()});
+	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone()});
 }
 
 
