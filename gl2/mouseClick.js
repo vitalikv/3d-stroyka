@@ -203,7 +203,7 @@ function clickRayHit(event)
 	// точки у трубы
 	if(!infProject.scene.block.click.tube && !rayhit)
 	{  
-		var rayhit = clickRayhitPointWF();
+		var rayhit = clickRayhitPointWF({event: event});
 		if(rayhit) { return rayhit; }		
 	}
 	

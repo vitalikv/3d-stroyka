@@ -89,7 +89,7 @@ function resetScene()
 	var point = infProject.scene.array.point;
 	var window = infProject.scene.array.window;
 	var door = infProject.scene.array.door;
-	var tube = infProject.scene.array.tube;
+	var line = infProject.scene.array.tube;
 	var obj = infProject.scene.array.obj;
 	var group = infProject.scene.array.group;
 	var substrate = infProject.scene.substrate.floor;
@@ -151,22 +151,21 @@ function resetScene()
 		scene.remove(ceiling[i]);	
 	}
 
-	for ( var i = 0; i < tube.length; i++ )
+	for ( var i = 0; i < line.length; i++ )
 	{
-		for ( var i2 = tube[i].userData.wf_line.point.length - 1; i2 > -1; i2-- )
+		var tube = line[i].userData.wf_line.tube;
+		
+		for ( var i2 = tube.userData.wf_tube.point.length - 1; i2 > -1; i2-- )
 		{
-			disposeNode(tube[i].userData.wf_line.point[i2]);
-			scene.remove(tube[i].userData.wf_line.point[i2]);		
+			disposeNode(tube.userData.wf_tube.point[i2]);
+			scene.remove(tube.userData.wf_tube.point[i2]);		
 		}
 		
-		if(tube[i].userData.wf_line.tube) 
-		{ 
-			disposeNode(tube[i].userData.wf_line.tube);
-			scene.remove(tube[i].userData.wf_line.tube); 
-		}
+		disposeNode(line[i].userData.wf_line.tube);
+		scene.remove(line[i].userData.wf_line.tube); 
 	
-		disposeNode(tube[i]);
-		scene.remove(tube[i]);		
+		disposeNode(line[i]);
+		scene.remove(line[i]);		
 	}
 	
 	for ( var i = 0; i < obj.length; i++ )
@@ -511,11 +510,11 @@ function getJsonGeometry()
 		
 		pipe[m].point = [];
 		
-		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
+		for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
 		{
 			pipe[m].point[i2] = {};
-			pipe[m].point[i2].id = line.userData.wf_line.point[i2].userData.id;
-			pipe[m].point[i2].pos = line.userData.wf_line.point[i2].position;
+			pipe[m].point[i2].id = tube.userData.wf_tube.point[i2].userData.id;
+			pipe[m].point[i2].pos = tube.userData.wf_tube.point[i2].position;
 		}
 	}
 

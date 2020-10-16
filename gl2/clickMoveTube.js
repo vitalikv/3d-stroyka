@@ -57,16 +57,8 @@ function clickTubeWF(cdm)
 	  
 	var tube = ray.object;
 
-	var line = tube.userData.wf_tube.line;
-
-	// показываем точки у труб
-	var wf = [];
-	for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-	{ 
-		wf[wf.length] = line.userData.wf_line.point[i2]; 
-	}
-	
-	showHideArrObj(wf, true);
+	// показываем точки 
+	showHideTubePoint({tube: tube, visible: true});
 
 	setClickLastObj({obj: tube});
 	
@@ -90,22 +82,29 @@ function clickTubeWF(cdm)
 	}
 }
 
+// прячем/показываем точки у трубы
+function showHideTubePoint(cdm)
+{
+	var tube = cdm.tube;
+	var visible = cdm.visible;
+	
+	showHideArrObj(tube.userData.wf_tube.point, visible);	
+}
 
 // определяем в какое место трубы кликнули
 function detectPosTubeWF(cdm)
 {
 	var ray = cdm.ray;			  
 	var tube = ray.object;
-	var line = tube.userData.wf_tube.line;
 	
 	var arr = [];
 	
-	for ( var i = 0; i < line.userData.wf_line.point.length - 1; i++ )
+	for ( var i = 0; i < tube.userData.wf_tube.point.length - 1; i++ )
 	{ 
-		var p1 = line.userData.wf_line.point[i];
-		var p2 = line.userData.wf_line.point[i + 1];
+		var p1 = tube.userData.wf_tube.point[i];
+		var p2 = tube.userData.wf_tube.point[i + 1];
 		
-		var pos = mathProjectPointOnLine({line: {point_1: p1.position, point_2: p2.position}, point: ray.point});
+		var pos = mathProjectPointOnLine({p: [p1.position, p2.position], rayHit: ray.point});
 		
 		var dist = ray.point.distanceTo(pos);	
 		
@@ -125,7 +124,7 @@ function detectPosTubeWF(cdm)
 
 
 
-// перемещение по 2D плоскости 
+// перемещение трубы, когда достали ее из каталога 
 function moveFullTube(cdm)
 {	
 	var intersects = rayIntersect( event, planeMath, 'one' ); 
@@ -139,26 +138,14 @@ function moveFullTube(cdm)
 	{
 		clickO.actMove = true;
 	}	
-	
-	var line = tube.userData.wf_tube.line;
-	var point = line.userData.wf_line.point;
-
+		
+	var point = tube.userData.wf_tube.point;
 	
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );
 	var posCenter = new THREE.Vector3().subVectors( point[1].position, point[0].position ).divideScalar( 2 ).add(point[0].position);
 	var pos2 = new THREE.Vector3().subVectors( pos, posCenter );
 
-	
-	for(var i = 0; i < point.length; i++)
-	{
-		point[i].position.add( pos2 );
-	}
-
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;	
-		
-		
-	geometryTubeWF({line : line});	
+	moveFullTube_2({tube: tube, offset: pos2});
 }
 
 
@@ -169,15 +156,15 @@ function moveFullTube_2(cdm)
 {	
 	var tube = cdm.tube;
 	var offset = cdm.offset;
-	
-	var line = tube.userData.wf_tube.line;
-	var point = line.userData.wf_line.point;	
+		
+	var point = tube.userData.wf_tube.point;	
 	
 	for(var i = 0; i < point.length; i++)
 	{
 		point[i].position.add( offset );
 	}
 
+	var line = tube.userData.wf_tube.line;
 	line.geometry.verticesNeedUpdate = true; 
 	line.geometry.elementsNeedUpdate = true;		
 	geometryTubeWF({line : line});	
@@ -212,10 +199,8 @@ function copyTubeWF(cdm)
 	
 	if(!tube) return;	
 	if(tube.userData.tag != 'wf_tube') return;
-
-	var line = tube.userData.wf_tube.line;
 	
-	var point = line.userData.wf_line.point;
+	var point = tube.userData.wf_tube.point;
 	
 	var p = [];
 	for(var i = 0; i < point.length; i++)
@@ -223,7 +208,7 @@ function copyTubeWF(cdm)
 		p[i] = createPointWF({pos: point[i].position, visible: false});
 	}	
 	
-	var tube = createLineWF({point: p, diameter: line.userData.wf_line.diameter, color: line.material.color});
+	var tube = createLineWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color});
 }
 
 
@@ -240,10 +225,10 @@ function deleteLineWF(tube)
 
 	deClickTube({obj: tube, moment: ''});
 	
-	for ( var i = line.userData.wf_line.point.length - 1; i > -1; i-- )
+	for ( var i = tube.userData.wf_tube.point.length - 1; i > -1; i-- )
 	{
-		disposeNode(line.userData.wf_line.point[i]);
-		scene.remove(line.userData.wf_line.point[i]);		
+		disposeNode(tube.userData.wf_tube.point[i]);
+		scene.remove(tube.userData.wf_tube.point[i]);		
 	}
 	
 	disposeNode(tube);

@@ -106,10 +106,9 @@ function showJoinPoint_2(cdm)
 	
 	// получаем разъемы, если есть
 	if(obj.userData.tag == 'wf_tube')
-	{
-		var line = obj.userData.wf_tube.line;		
-		arr[0] = line.userData.wf_line.point[0]
-		arr[1] = line.userData.wf_line.point[line.userData.wf_line.point.length - 1];
+	{		
+		arr[0] = obj.userData.wf_tube.point[0]
+		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];
 	}
 	
 	if(obj.userData.tag == 'obj')

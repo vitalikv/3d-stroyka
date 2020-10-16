@@ -17,6 +17,7 @@ function createPointWF(cdm)
 	point.userData.tag = 'wf_point';
 	point.userData.wf_point = {};
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
+	point.userData.wf_point.tube = null;
 	
 	if(cdm.visible != undefined) point.visible = cdm.visible;
 	
@@ -28,32 +29,24 @@ function createPointWF(cdm)
 
 
 
-// пускаем луч, определяем кликнули ли на точку активированно трубы
-function clickRayhitPointWF()
+// пускаем луч, определяем кликнули ли на точку, если активирована труба или точка
+function clickRayhitPointWF(cdm)
 {  
-	var rayhit = null;
-	
-	var line = null;
+	var event = cdm.event;
+	var rayhit = null;	
+	var tube = null;
 	
 	if(clickO.last_obj)
 	{
-		if(clickO.last_obj.userData.tag == 'wf_tube'){ line = clickO.last_obj.userData.wf_tube.line; }
-		if(clickO.last_obj.userData.tag == 'wf_point'){ line = clickO.last_obj.userData.wf_point.line.o; }
+		if(clickO.last_obj.userData.tag == 'wf_tube'){ tube = clickO.last_obj; }
+		if(clickO.last_obj.userData.tag == 'wf_point'){ tube = clickO.last_obj.userData.wf_point.tube; }
 	}
-	
-	var wp = [];
 		
-	if(line)
+	if(tube)
 	{			
-		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-		{ 
-			if(!line.userData.wf_line.point[i2].visible) continue;
-			wp[wp.length] = line.userData.wf_line.point[i2]; 
-		}			
-	}
-	
-	var ray = rayIntersect( event, wp, 'arr' );  
-	if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }
+		var ray = rayIntersect( event, tube.userData.wf_tube.point, 'arr' );  
+		if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }		
+	}	
 
 	return null;
 }
@@ -111,7 +104,7 @@ function addPointOnTube(cdm)
 	var p1 = result.p1;
 	var pos = result.pos;	
 	
-	var arrP = line.userData.wf_line.point;  
+	var arrP = tube.userData.wf_tube.point;  
 	
 	var newPoint = createPointWF({ pos: pos, line: line });
 	
@@ -129,9 +122,7 @@ function addPointOnTube(cdm)
 	disposeNode(line);
 	line.geometry = geometry;	
 	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;
-	
-	console.log(newPoint.userData.id, line.userData.wf_line.point.length);
+	line.geometry.elementsNeedUpdate = true;		
 	geometryTubeWF({line: line});	
 }
 
@@ -231,6 +222,7 @@ function geometryTubeWF(cdm)
 		tube.userData.tag = 'wf_tube';		
 		tube.userData.wf_tube = {};
 		tube.userData.wf_tube.line = line;
+		tube.userData.wf_tube.point = [];
 		scene.add( tube );
 	}
 	else
@@ -241,9 +233,14 @@ function geometryTubeWF(cdm)
 		tube.geometry = geometry;
 	}
 	
+	tube.userData.wf_tube.point = line.userData.wf_line.point;
 	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
 	tube.userData.wf_tube.length = Math.round(length * 100)/100;
 	tube.userData.wf_tube.diameter = diameter;
+	
+	
+	var point = tube.userData.wf_tube.point;
+	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }
 
 	
 	updateListObjUI_1({o: tube, type: 'update'});	// обновляем список материалов 
@@ -262,44 +259,39 @@ function deletePointWF(obj)
 	
 	hideMenuUI(obj);
 	
-	var line = obj.userData.wf_point.line.o;
+	var line = obj.userData.wf_point.line.o;	
+	var tube = obj.userData.wf_point.tube;
 	
-	if(line)
-	{
-		var tube = line.userData.wf_line.tube;
-		
-		// если у трубы 2 точки, то удаляем трубу
-		if(line.userData.wf_line.point.length == 2)
-		{		
-			deleteLineWF(tube);			
-		}
-		else	// удаляем точку
-		{
-			deClickTube({obj: tube, moment: ''});	// диактивируем трубу
-			
-			deleteValueFromArrya({arr : line.userData.wf_line.point, o : obj});
-
-			var geometry = new THREE.Geometry();
-			
-			for(var i = 0; i < line.userData.wf_line.point.length; i++)
-			{
-				geometry.vertices[i] = line.userData.wf_line.point[i].position;
-			}
-			
-			disposeNode(line);
-			disposeNode(tube);
-			
-			line.geometry = geometry;
-			line.geometry.verticesNeedUpdate = true; 
-			line.geometry.elementsNeedUpdate = true;
-			
-			// обновляем трубу			
-			geometryTubeWF({line : line});
-			
-			disposeNode(obj);
-			scene.remove(obj);	// удаляем точку
-		}
+	// если у трубы 2 точки, то удаляем трубу
+	if(tube.userData.wf_tube.point.length == 2)
+	{		
+		deleteLineWF(tube);			
 	}
+	else	// удаляем точку
+	{
+		deClickTube({obj: tube, moment: ''});	// диактивируем трубу
+		
+		deleteValueFromArrya({arr : tube.userData.wf_tube.point, o : obj});
+
+		var geometry = new THREE.Geometry();
+		
+		for(var i = 0; i < tube.userData.wf_tube.point.length; i++)
+		{
+			geometry.vertices[i] = tube.userData.wf_tube.point[i].position;
+		}
+		
+		disposeNode(line);
+		disposeNode(tube);
+		
+		line.geometry = geometry;
+		line.geometry.verticesNeedUpdate = true; 
+		line.geometry.elementsNeedUpdate = true;			
+		geometryTubeWF({line : line});
+		
+		disposeNode(obj);
+		scene.remove(obj);	// удаляем точку
+	}
+
 }
 
 
@@ -459,18 +451,11 @@ function deClickTube(cdm)
 		
 		var obj = cdm.obj;
 		
-		if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
-		else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }		
+		if(obj.userData.wf_tube) { var tube = obj; }		
+		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }		
 		
 		// скрываем точки у трубы
-		{
-			var wf = [];
-			for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-			{ 
-				wf[wf.length] = line.userData.wf_line.point[i2]; 
-			}		
-			showHideArrObj(wf, false);
-		}
+		showHideTubePoint({tube: tube, visible: false});
 		
 		// скрываем pivot
 		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube')
@@ -513,14 +498,11 @@ function setScaleTubePoint(cdm)
 		var obj = clickO.last_obj; 	
 		if(!obj) return;
 		
-		if(obj.userData.wf_tube) { var line = obj.userData.wf_tube.line; }		
-		else if(obj.userData.wf_point) { var line = obj.userData.wf_point.line.o; }
+		if(obj.userData.wf_tube) { var tube = obj; }		
+		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }
 		else { return; }
 		
-		for ( var i2 = 0; i2 < line.userData.wf_line.point.length; i2++ )
-		{ 
-			arr[arr.length] = line.userData.wf_line.point[i2];						
-		}	
+		arr = tube.userData.wf_tube.point;	
 	}
 	
 	if(arr.length == 0) return;		 

@@ -158,9 +158,9 @@ function spPoint(A,B,C){
 // проекция точки на линию (3D), получаем точку пересечения
 function mathProjectPointOnLine(cdm)
 {
-	var A = cdm.line.point_1;
-	var B = cdm.line.point_2;
-	var C = cdm.point;
+	var A = cdm.p[0];
+	var B = cdm.p[1];
+	var C = cdm.rayHit;
 	
 	var x1 = A.x;
 	var y1 = A.y;

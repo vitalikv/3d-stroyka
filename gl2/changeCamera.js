@@ -71,7 +71,7 @@ function changeDepthColor()
 	var wall = infProject.scene.array.wall;
 	var window = infProject.scene.array.window;
 	var door = infProject.scene.array.door;	
-	var tube = infProject.scene.array.tube;
+	var line = infProject.scene.array.tube;
 	
 	for ( var i = 0; i < wall.length; i++ )
 	{
@@ -90,11 +90,13 @@ function changeDepthColor()
 	
 	var wf = [];
 	
-	for ( var i = 0; i < tube.length; i++ )
+	for ( var i = 0; i < line.length; i++ )
 	{
-		for ( var i2 = 0; i2 < tube[i].userData.wf_line.point.length; i2++ )
+		var tube = line[i].userData.wf_line.tube;
+		
+		for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
 		{
-			wf[wf.length] = tube[i].userData.wf_line.point[i2];
+			wf[wf.length] = tube.userData.wf_tube.point[i2];
 		}		
 	}
 	

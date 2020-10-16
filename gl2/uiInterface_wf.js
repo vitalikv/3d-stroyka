@@ -4,11 +4,10 @@
 // при выделении точки, обновляем меню длины трубы UI
 function showWF_point_UI(point)
 {
-	var line = point.userData.wf_point.line.o;
+	var tube = point.userData.wf_point.tube;
 	
 	document.querySelector('[nameId="rp_obj_name"]').value = 'точка';
 	
-	var tube = line.userData.wf_line.tube;
 	var elem = document.querySelector('[nameId="rp_bl_wf_point"]');
 	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
 	
@@ -17,10 +16,8 @@ function showWF_point_UI(point)
 	{
 		var show = false;
 		
-		var line = point.userData.wf_point.line.o;
-		
-		if(line.userData.wf_line.point[0] == point){ show = true; }
-		if(line.userData.wf_line.point[line.userData.wf_line.point.length - 1] == point){ show = true; }
+		if(tube.userData.wf_tube.point[0] == point){ show = true; }
+		if(tube.userData.wf_tube.point[tube.userData.wf_tube.point.length - 1] == point){ show = true; }
 		
 		var elem_1 = document.querySelector('[nameId="button_active_join_wf_point"]');
 		var elem_2 = document.querySelector('[nameId="button_active_align_wf_point"]');
@@ -131,9 +128,10 @@ function switchAddPointOnTube(cdm)
 	{
 		var color = "#b3b3b3";		
 	}
+		
+	document.querySelector('[nameId="butt_add_point_on_tube"]').style.borderColor = color;
 	
-	
-	$('[nameId="butt_add_point_on_tube"]').css({"border-color": color});		
+	renderCamera();
 }
 
 

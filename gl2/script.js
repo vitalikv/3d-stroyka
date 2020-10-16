@@ -1460,9 +1460,9 @@ document.body.addEventListener("keydown", function (e)
 	if(clickO.keys[e.keyCode]) return;
 	
 	
-	if(e.keyCode == 13 && 1==2)
+	if(e.keyCode == 13 && 1==1)
 	{
-		//console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
+		console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
 	}
 	
 	if(infProject.activeInput) 
