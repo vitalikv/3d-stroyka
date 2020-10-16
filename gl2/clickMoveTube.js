@@ -22,7 +22,7 @@ function createTubeWF_1(cdm)
 	}
 	
 	var r1 = (cdm.r1) ? cdm.r1 : 0.05;
-	var tube = createLineWF({point: p, diameter: r1}); 	 		
+	var tube = geometryTubeWF({point: p, diameter: r1}); 	 		
 	
 	planeMath.position.y = infProject.tools.heightPl.position.y;  
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -164,10 +164,7 @@ function moveFullTube_2(cdm)
 		point[i].position.add( offset );
 	}
 
-	var line = tube.userData.wf_tube.line;
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;		
-	geometryTubeWF({line : line});	
+	geometryTubeWF({tube: tube});
 }
 
 
@@ -178,12 +175,7 @@ function clickMouseUpTube(obj)
 	if(1==2)
 	{
 		var tube = obj;		
-		var line = tube.userData.wf_tube.line;
-			
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;			
-			
-		geometryTubeWF({line : line});
+		geometryTubeWF({tube: tube});
 		
 		tube.position.set( 0,0,0 );
 		line.position.set( 0,0,0 );				
@@ -208,7 +200,7 @@ function copyTubeWF(cdm)
 		p[i] = createPointWF({pos: point[i].position, visible: false});
 	}	
 	
-	var tube = createLineWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color});
+	var tube = geometryTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone()});
 }
 
 

@@ -228,12 +228,7 @@ function movePivot( event )
 		
 		if(obj.userData.tag == 'wf_point')
 		{
-			var line = obj.userData.wf_point.line.o;
-			
-			if(line) 
-			{ 			
-				if(line.userData.wf_line.tube) { line.userData.wf_line.tube.visible = false; }			 
-			}			
+			obj.userData.wf_point.tube.visible = false;	
 		}
 	}			
 	
@@ -268,11 +263,9 @@ function movePivot_2(cdm)
 	
 	if(obj.userData.tag == 'wf_point')		// точка трубы
 	{
-		obj.position.add(pos2);
-		let line = obj.userData.wf_point.line.o;		
-		line.geometry.verticesNeedUpdate = true; 
-		line.geometry.elementsNeedUpdate = true;
-		geometryTubeWF({line : line});
+		obj.position.add(pos2);	
+
+		geometryTubeWF({tube: obj.userData.wf_point.tube});
 
 		showWF_point_UI(obj);
 	}
@@ -329,18 +322,8 @@ function clickPivotUp()
 	{
 		if(clickO.actMove)
 		{		
-			var line = obj.userData.wf_point.line.o;
-			
-			if(line) 
-			{ 
-				//line.material.color = new THREE.Color(infProject.listColor.active2D);
-				
-				if(line.userData.wf_line.tube)
-				{
-					geometryTubeWF({line : line});
-					line.userData.wf_line.tube.visible = true;
-				}			 
-			}
+			geometryTubeWF({tube: obj.userData.wf_point.tube});
+			obj.userData.wf_point.tube.visible = true;
 		}		
 	}
 	else if(obj.userData.tag == 'wf_tube') 

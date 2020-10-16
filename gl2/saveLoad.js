@@ -159,8 +159,8 @@ function resetScene()
 			scene.remove(tube[i].userData.wf_tube.point[i2]);		
 		}
 		
-		disposeNode(tube[i].userData.wf_line.tube);
-		scene.remove(tube[i].userData.wf_line.tube); 
+		disposeNode(tube[i].userData.wf_tube.line);
+		scene.remove(tube[i].userData.wf_tube.line); 
 	
 		disposeNode(tube[i]);
 		scene.remove(tube[i]);		
@@ -846,7 +846,7 @@ async function loadFilePL(arr)
 			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos, visible: false});
 		}
 		
-		createLineWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 	 
+		geometryTubeWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)}); 	 
 	}
 
 

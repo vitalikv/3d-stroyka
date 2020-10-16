@@ -256,7 +256,7 @@ function alignPointToPoint_1()
 }
 
 
-// нажали кнопку выровнить, подтягиваем точку трубы к выбранному разъему трубы/объекту
+// нажали кнопку подключить, подтягиваем точку трубы к выбранному разъему трубы/объекту
 function alignTubePointToPoint()
 {
 	var o1 = infProject.list.alignP.p1;		// двигаем и присоединяем   
@@ -267,16 +267,8 @@ function alignTubePointToPoint()
 	
 	o1.position.copy(pos1);	
 	
-	var line = o1.userData.wf_point.line.o;
-	
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;
-	
-
-	{
-		geometryTubeWF({line : line});
-		line.userData.wf_line.tube.visible = true;
-	}	
+	geometryTubeWF({tube: o1.userData.wf_point.tube});	
+	o1.userData.wf_point.tube.visible = true;	
 
 	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
 	
@@ -286,7 +278,7 @@ function alignTubePointToPoint()
 
 
 
-// нажали кнопку выровнить, подтягиваем разъем с объектом/группой к выбранному разъему 
+// нажали кнопку подключить, подтягиваем разъем с объектом/группой к выбранному разъему 
 function alignObjPointToTubePoint()
 { 	
 	var joint = infProject.list.alignP;	
