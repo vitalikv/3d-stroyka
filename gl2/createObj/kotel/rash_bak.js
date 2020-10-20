@@ -10,9 +10,7 @@ function cr_rash_bak_1(cdm)
 	var h1 = cdm.h1;
 	var name = cdm.name;
 	var d2 = sizeRezba({size: cdm.r1, side: 'n'});
-	
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
+
 	
 	// доп. расчеты 
 	var radius = d/2;
@@ -82,19 +80,9 @@ function cr_rash_bak_1(cdm)
 	//console.log(66666, obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y);
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Расш.бак '+name;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Расш.бак '+name;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

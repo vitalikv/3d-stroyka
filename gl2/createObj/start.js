@@ -18,9 +18,11 @@ async function fc_cr_obj(params)
 		if(params.offsetX) { pos.x += step * n; }
 		else { pos.z += step * n; }
 		
-		arr[i].offset = pos;
-		arr[i].demo = true;
 		var obj = window[funcName](arr[i]);
+		
+		obj.position.copy(pos);
+		scene.add( obj );				
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;			
 		
 		var arrO = getAllChildObect({obj: obj});
 		for(var i2 = 0; i2 < arrO.length; i2++)
@@ -28,6 +30,7 @@ async function fc_cr_obj(params)
 			disposeNode(arrO[i2]);
 		}		
 		
+		// сохраняем в базу
 		if(1==2)
 		{
 			var name = (obj.userData.obj3D) ? obj.userData.obj3D.nameRus : obj.userData.wf_tube.nameRus;
@@ -49,8 +52,8 @@ async function saveObjSql_2(cdm)
 	var type = 'obj';
 	var params = cdm.params;
 	
-	delete params.cdm.demo;
-	delete params.cdm.offset;
+	//delete params.cdm.demo;
+	//delete params.cdm.offset;
 	
 	
 	var name = (name) ? JSON.stringify( name ) : null;
@@ -744,6 +747,54 @@ async function cr_obj_cat()
 
 
 
+
+function getInfoFcObj()
+{
+	var obj = clickO.last_obj;
+	
+	if(obj.userData.tag != 'obj') return;
+	
+	if(obj.userData.obj3D.group) 	// группа
+	{
+		var arrO = [];
+		var arr = obj.userData.obj3D.group.userData.groupObj.child; 
+		
+		// добавляем новый список объектов из группы
+		for(var i = 0; i < arr.length; i++)
+		{	
+			if(!arr[i].userData.obj3D) continue;			
+			
+			arrO[arrO.length] = arr[i];			
+		} 
+	}
+	else	// у объекта нет группы
+	{
+		var arrO = [obj]; 
+	}
+	
+	
+	var txt = '';
+	var n = 1;
+	
+	var offset = new THREE.Vector3(0.0, 1, 2).sub(arrO[0].position);
+	
+	for(var i = 0; i < arrO.length; i++)
+	{
+		var fc_name = arrO[i].userData.fc.name;
+		var params = JSON.stringify(arrO[i].userData.fc.params);
+		
+		//txt += n+'. '+fc_name+' '+params+'\n';
+		
+		var pos = offset.clone().add(arrO[i].position);
+		var posTxt = `new THREE.Vector3(${pos.x}, ${pos.y}, ${pos.z})`;
+		
+		txt += 'fc_cr_obj({funcName: "'+fc_name+'", arr: ['+params+'], startPos: '+posTxt+', cat: ""})\n';
+		
+		n++;
+	}
+
+	console.log(txt);
+}
 
 
 

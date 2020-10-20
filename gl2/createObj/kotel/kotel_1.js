@@ -13,8 +13,6 @@ function cr_kotel_1(cdm)
 	var d1 = sizeRezba({size: cdm.r1, side: 'n'});
 	var size = cdm.size;	
 	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
-	
 	var type = (cdm.type) ? cdm.type : 'bottom';
 	
 	// доп. расчеты 	
@@ -201,18 +199,9 @@ function cr_kotel_1(cdm)
 	}			
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	obj.userData.obj3D.nameRus = 'Котел ' + name2; 
-	obj.material.visible = false;
+	cdm.name = 'Котел ' + name2;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

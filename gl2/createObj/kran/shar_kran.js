@@ -9,8 +9,6 @@ function shar_kran_v_1(cdm)
 	var m1 = cdm.m1;
 	var t1 = cdm.t1;	// длина бабочки
 	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
-	
 	// доп. расчеты 
 	var x_1 = 0.02 * d1.n*20;
 	if(x_1 < 0.012) { x_1 = 0.012; }
@@ -141,19 +139,9 @@ function shar_kran_v_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Шаровой кран '+cdm.r1+'(в-в)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Шаровой кран '+cdm.r1+'(в-в)';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -168,8 +156,6 @@ function shar_kran_n_1(cdm)
 	
 	var m1 = cdm.m1;
 	var t1 = cdm.t1;	// длина бабочки
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var x_1 = 0.02 * d1.n*20;
@@ -301,19 +287,9 @@ function shar_kran_n_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Шаровой кран '+cdm.r1+'(н-н)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Шаровой кран '+cdm.r1+'(н-н)';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -329,8 +305,6 @@ function shar_kran_v_n_1(cdm)
 	
 	var m1 = cdm.m1;
 	var t1 = cdm.t1;	// длина бабочки
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var x_1 = 0.02 * d1.n*20;
@@ -465,19 +439,9 @@ function shar_kran_v_n_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Шаровой кран '+cdm.r1+'(в-н)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Шаровой кран '+cdm.r1+'(в-н)';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -493,8 +457,6 @@ function shar_kran_sgon_1(cdm)
 	
 	var m1 = cdm.m1;
 	var t1 = cdm.t1;	// длина бабочки
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var x_1 = 0.02 * d1.n*20;
@@ -630,19 +592,9 @@ function shar_kran_sgon_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Шаровой кран с полусгоном '+cdm.r1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Шаровой кран с полусгоном '+cdm.r1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

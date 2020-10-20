@@ -7,8 +7,7 @@ function st_radiator_1(cdm)
 	var size = cdm.size;
 	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
 	var sizeY = size.y;
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3(0, 1, 0);
+
 	
 	// доп. расчеты 
 	var x_1 = 0.015;			// длина резьбы
@@ -291,19 +290,9 @@ function st_radiator_1(cdm)
 		cr_CenterPoint(arrP[i]);
 	}		
 
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Ст.радиатор '+'h'+(sizeY*1000)+' ('+size.x+'м)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Ст.радиатор '+'h'+(sizeY*1000)+' ('+size.x+'м)';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 
 	return obj;

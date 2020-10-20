@@ -9,7 +9,6 @@ function pl_troinik_1(cdm)
 	
 	var m1 = cdm.m1;
 	var m2 = m1/2;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -57,19 +56,9 @@ function pl_troinik_1(cdm)
 	}
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Тройник '+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Тройник '+name1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;	
 }
@@ -86,7 +75,6 @@ function pl_troinik_rezba_1(cdm)
 	
 	var m1 = cdm.m1;
 	var m2 = m1/2;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -178,19 +166,9 @@ function pl_troinik_rezba_1(cdm)
 	}
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Тройник '+name1+'x'+name2+'x'+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Тройник '+name1+'x'+name2+'x'+name1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;	
 }
@@ -213,7 +191,6 @@ function pl_troinik_2(cdm)
 	var m1 = cdm.m1;
 	var m2 = cdm.m2;		
 	 
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.020;
@@ -282,19 +259,9 @@ function pl_troinik_2(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Тройник '+name1+'x'+name2+'x'+name3;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Тройник '+name1+'x'+name2+'x'+name3;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

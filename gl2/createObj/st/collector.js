@@ -17,8 +17,6 @@ function st_collector_1(cdm)
 	
 	var m1 = cdm.m1;
 	var m2 = cdm.m2;		
-	 
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var w1 = 0.015;
@@ -136,19 +134,9 @@ function st_collector_1(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = (name1 == name2 && name1 == name3) ? 'Тройник '+name1 : 'Тройник '+name1+'x'+name2+'x'+name3;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = (name1 == name2 && name1 == name3) ? 'Тройник '+name1 : 'Тройник '+name1+'x'+name2+'x'+name3;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

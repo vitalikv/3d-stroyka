@@ -446,12 +446,11 @@ function clickItemObjNameUI(cdm)
 	
 	if(!cdm.obj) 
 	{
-		clickObject3D(obj, {outline: true});
-		renderCamera();
+		clickObject3D(obj, {outline: true});		
 	} 
 
 	showHideJP();
-	
+	renderCamera();
 }
 
 

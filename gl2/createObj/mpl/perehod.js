@@ -10,8 +10,6 @@ function mpl_perehod_1(cdm)
 	if(dc.n < d3.n) dc = d3;
 	
 	var m1 = cdm.m1;		
-	 
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var w1 = 0.030 * d1.n * 30;
@@ -131,19 +129,9 @@ function mpl_perehod_1(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = (name1==name2) ? 'Соединитель '+name1 :  'Соединитель '+name1+'x'+name2;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = (name1==name2) ? 'Соединитель '+name1 :  'Соединитель '+name1+'x'+name2;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -158,8 +146,6 @@ function mpl_perehod_rezba_1(cdm)
 	var d1 = sizeTubeMP({size: cdm.r1});	// правый
 	
 	var m1 = cdm.m1;		
-	 
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	if(cdm.side == 'v') 
@@ -277,19 +263,9 @@ function mpl_perehod_rezba_1(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Соединитель '+name1+'x'+name2;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Соединитель '+name1+'x'+name2;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

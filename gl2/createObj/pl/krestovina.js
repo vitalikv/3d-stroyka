@@ -9,7 +9,6 @@ function pl_krestovina_1(cdm)
 	var d1 = sizeTubePP({size: cdm.r1});
 	
 	var m1 = cdm.m1; 	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -73,19 +72,9 @@ function pl_krestovina_1(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Крестовина '+name;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Крестовина '+name;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

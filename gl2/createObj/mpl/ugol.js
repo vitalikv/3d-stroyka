@@ -6,7 +6,6 @@ function mpl_ugol_1(cdm)
 	var d1 = sizeTubeMP({size: cdm.r1});	
 	
 	var m1 = cdm.m1;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var w1 = 0.030 * d1.n * 30;	
@@ -123,20 +122,10 @@ function mpl_ugol_1(cdm)
 		cr_CenterPoint(arrP[i]);
 	}
 	
+
+	cdm.name = 'Угол '+name1;
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Угол '+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
-	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -151,7 +140,6 @@ function mpl_ugol_rezba_1(cdm)
 	
 	var m1 = cdm.m1;
 	var m2 = cdm.m2;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты	
 	if(cdm.side == 'v') 
@@ -284,19 +272,9 @@ function mpl_ugol_rezba_1(cdm)
 	}	
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Угол '+name1+'x'+name2;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Угол '+name1+'x'+name2;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

@@ -1155,6 +1155,12 @@ function clickButton( event )
 {
 	if(!clickO.button) return;	
 	
+	if(camera == cameraView) 
+	{
+		clickO.button = null;		
+		return;
+	}
+	
 	if(camera == cameraTop)
 	{
 		planeMath.position.set(0, 0, 0);
@@ -1204,7 +1210,6 @@ function clickButton( event )
 	
 	clickO.buttonAct = clickO.button;
 	clickO.button = null;
-
 	
 }	
 	
@@ -1460,10 +1465,6 @@ document.body.addEventListener("keydown", function (e)
 	if(clickO.keys[e.keyCode]) return;
 	
 	
-	if(e.keyCode == 13 && 1==1)
-	{
-		console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
-	}
 	
 	if(infProject.activeInput) 
 	{ 
@@ -1533,12 +1534,21 @@ document.body.addEventListener("keydown", function (e)
 		
 	if(e.keyCode == 46) { detectDeleteObj(); }
 	
-	if(clickO.keys[18] && e.keyCode == 83) {  }		// alt + s
-	if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
-	if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
-	if(clickO.keys[18] && e.keyCode == 84) { saveFile({json: true}); }			// alt + t
-	if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
-	if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v
+	if (window.location.hostname == '3d-stroyka')
+	{
+		if(e.keyCode == 13 && 1==1)
+		{
+			//console.log(renderer.info.memory.geometries, renderer.info.memory.textures);
+			getInfoFcObj();
+		}		
+		
+		if(clickO.keys[18] && e.keyCode == 83) {  }		// alt + s
+		if(clickO.keys[18] && e.keyCode == 72) { getConsoleRendererInfo(); }		// alt + h
+		if(clickO.keys[18] && e.keyCode == 77) { inputLoadProject(); }				// alt + m
+		if(clickO.keys[18] && e.keyCode == 84) { saveFile({json: true}); }			// alt + t
+		if(clickO.keys[18] && e.keyCode == 86) { console.log(infProject); }
+		if(clickO.keys[18] && e.keyCode == 86) { console.log(clickO); }  		// alt + v		
+	}
 } );
 
 document.body.addEventListener("keydown", function (e) { clickO.keys[e.keyCode] = true; });

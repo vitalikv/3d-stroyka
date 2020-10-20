@@ -9,7 +9,6 @@ function al_radiator_1(cdm)
 	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
 	var count = cdm.count;
 	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3(0, 1, 0);
 
 	// доп. расчеты		
 	var x_1 = 0.04;
@@ -341,21 +340,11 @@ function al_radiator_1(cdm)
 		arrP[i].id = i;
 		cr_CenterPoint(arrP[i]);
 	}
-	console.log( 'distance', poM1.pos.distanceTo(poM2.pos) );
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Ал.радиатор h'+size.y*1000+ ' ('+count+'шт.)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	cdm.name = 'Ал.радиатор h'+size.y*1000+ ' ('+count+'шт.)';
+	
+	assignObjParams(obj, cdm);
 
 	return obj;		
 }
@@ -382,8 +371,6 @@ function al_zagl_radiator_1(cdm)
 	}
 	
 	var m1 = cdm.m1;
-	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var x_1 = 0.008;	
@@ -481,19 +468,8 @@ function al_zagl_radiator_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = cdm.name;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

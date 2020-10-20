@@ -73,6 +73,9 @@ async function loadObjServer(cdm)
 			}		
 			else 	// если объект, то в кэш сохраняем параметры и сам объект
 			{ 
+				obj.userData.fc = {};
+				obj.userData.fc.name = inf.params.fc.name;
+				obj.userData.fc.params = inf.params.cdm;			
 				inf.obj = obj;
 				infProject.scene.array.base[infProject.scene.array.base.length] = inf; 
 				addObjInScene(inf, cdm);

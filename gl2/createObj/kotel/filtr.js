@@ -8,8 +8,6 @@ function filtr_kosoy_1(cdm)
 	
 	var m1 = cdm.m1;
 	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
-	
 	// доп. расчеты 
 	var x_1 = 0.02 * d1.n*20;
 	if(x_1 < 0.012) { x_1 = 0.012; }
@@ -112,19 +110,9 @@ function filtr_kosoy_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Фильтр косой '+cdm.r1+'(в-в)';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Фильтр косой '+cdm.r1+'(в-в)';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

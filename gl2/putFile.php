@@ -67,7 +67,6 @@ createObj/kotel/filtr.js
 createObj/kotel/kotel_1.js
 createObj/calculation_1.js
 createObj/calculation_2.js
-createObj/start.js
 ';
 
 

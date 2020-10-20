@@ -8,7 +8,6 @@ function st_mufta_1(cdm)
 	var d2 = sizeRezba({size: cdm.r2, side: 'v'});		// правый	
 		
 	var m1 = cdm.m1;	
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var x_1 = 0.015 * d1.n*20;
@@ -95,19 +94,9 @@ function st_mufta_1(cdm)
 	}	
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = (cdm.r1 != cdm.r2) ? 'Муфта '+name1+'х'+name2 : 'Муфта '+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = (cdm.r1 != cdm.r2) ? 'Муфта '+name1+'х'+name2 : 'Муфта '+name1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

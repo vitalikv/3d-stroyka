@@ -7,7 +7,6 @@ function pl_ugol_90_1(cdm)
 	var d1 = sizeTubePP({size: cdm.r1});	
 	
 	var m1 = cdm.m1;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -69,19 +68,9 @@ function pl_ugol_90_1(cdm)
 	}
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Угол '+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Угол '+name1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
@@ -96,7 +85,6 @@ function pl_ugol_45_1(cdm)
 	var d1 = sizeTubePP({size: cdm.r1});	
 	
 	var m1 = cdm.m1;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -158,19 +146,9 @@ function pl_ugol_45_1(cdm)
 	}
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Отвод_45 '+name1;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Отвод_45 '+name1;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;	 
 }
@@ -186,7 +164,6 @@ function pl_ugol_90_rezba_1(cdm)
 	var d1 = sizeTubePP({size: cdm.r1});	
 	
 	var m1 = cdm.m1;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты		
 	var x_1 = 0.015;
@@ -278,19 +255,9 @@ function pl_ugol_90_rezba_1(cdm)
 	}
 	
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Угол '+name1+'x'+name2;
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Угол '+name1+'x'+name2;
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }

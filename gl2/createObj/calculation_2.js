@@ -440,3 +440,19 @@ function upUvs_5( geometry )
 
 
 
+// назначем свойства объектам
+function assignObjParams(obj, cdm)
+{
+	if(cdm.pos) obj.position.copy(cdm.pos);
+	if(cdm.rot) obj.rotation.copy(cdm.rot);
+	
+	obj.userData.tag = 'obj';
+	obj.userData.obj3D = {};
+	obj.userData.obj3D.lotid = 0;	
+	obj.userData.obj3D.nameRus = cdm.name; 
+	obj.material.visible = false;	
+	
+}
+
+
+

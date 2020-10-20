@@ -13,8 +13,6 @@ function gr_bez_1(cdm)
 	var d1 = sizeRezba({size: cdm.r1, side: 'v'});
 	var size = cdm.size;
 	
-	//var m1 = cdm.m1;
-	var offset = (cdm.offset) ? cdm.offset : new THREE.Vector3();
 	
 	// доп. расчеты 
 	var d2 = sizeRezba({size: '3/8', side: 'v'});
@@ -256,19 +254,9 @@ function gr_bez_1(cdm)
 	}			
 
 	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	var name = 'Группа безопасности ';
-	obj.userData.obj3D.nameRus = name; 
-	obj.material.visible = false;
+	cdm.name = 'Группа безопасности ';
 	
-	if(cdm.demo)
-	{
-		scene.add( obj );
-		obj.position.copy(offset);		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
-	}
+	assignObjParams(obj, cdm);
 
 	return obj;
 }
