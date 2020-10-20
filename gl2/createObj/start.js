@@ -4,7 +4,6 @@ async function fc_cr_obj(params)
 {
 	var arr = params.arr;
 	var funcName = params.funcName;
-	var startPos = params.startPos;	
 	var n = (params.n) ? params.n : 0;	
 	var step = (params.step) ? params.step : 0.1;
 	
@@ -13,14 +12,16 @@ async function fc_cr_obj(params)
 
 	for(var i = 0; i < arr.length; i++)
 	{
-		var pos = startPos.clone();
-		
-		if(params.offsetX) { pos.x += step * n; }
-		else { pos.z += step * n; }
-		
 		var obj = window[funcName](arr[i]);
 		
-		obj.position.copy(pos);
+		if(params.startPos)
+		{
+			var pos = params.startPos.clone();	
+			if(params.offsetX) { pos.x += step * n; }
+			else { pos.z += step * n; }
+			obj.position.copy(pos);			
+		}
+		
 		scene.add( obj );				
 		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;			
 		
@@ -782,13 +783,18 @@ function getInfoFcObj()
 	{
 		var fc_name = arrO[i].userData.fc.name;
 		var params = JSON.stringify(arrO[i].userData.fc.params);
+		params = JSON.parse(params);
 		
 		//txt += n+'. '+fc_name+' '+params+'\n';
 		
 		var pos = offset.clone().add(arrO[i].position);
-		var posTxt = `new THREE.Vector3(${pos.x}, ${pos.y}, ${pos.z})`;
 		
-		txt += 'fc_cr_obj({funcName: "'+fc_name+'", arr: ['+params+'], startPos: '+posTxt+', cat: ""})\n';
+		params.pos = {x: pos.x, y: pos.y, z: pos.z};
+		params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
+		
+		params = JSON.stringify(params);
+		
+		txt += 'fc_cr_obj({ funcName: "'+fc_name+'", arr: ['+params+'] })\n';
 		
 		n++;
 	}
@@ -797,6 +803,63 @@ function getInfoFcObj()
 }
 
 
+
+function newObjTest_1()
+{
+	var arr = [];
+	
+	arr[arr.length] = al_radiator_1({"count":6,"size":{"x":0.08,"y":0.5,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)","pos":{"x":0,"y":1,"z":2},"q":{"x":0,"y":0,"z":0,"w":1} });
+
+	arr[arr.length] = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","pos":{"x":-0.08770000000000033,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
+
+	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","pos":{"x":-0.04300000000000015,"y":1.25,"z":2},"q":{"x":0,"y":-1,"z":0,"w":6.123233995736766e-17} });
+
+	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная","pos":{"x":-0.04300000000000015,"y":0.75,"z":2},"q":{"x":0,"y":1,"z":0,"w":-6.123233995736767e-17} });
+
+	arr[arr.length] = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","pos":{"x":0.4977000000000005,"y":0.75,"z":2},"q":{"x":0,"y":-0.9999999999999998,"z":0,"w":1.836970198721029e-16} });
+
+	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","pos":{"x":0.4530000000000003,"y":0.75,"z":2},"q":{"x":0,"y":-1.224646799147353e-16,"z":0,"w":-0.9999999999999998} });
+
+	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный","pos":{"x":0.4530000000000003,"y":1.25,"z":2},"q":{"x":0,"y":-1.2246467991473532e-16,"z":0,"w":-1} });
+
+	arr[arr.length] = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","pos":{"x":0.5357000000000007,"y":0.75,"z":2},"q":{"x":0,"y":-1,"z":0,"w":1.8369701987210302e-16} });
+
+	arr[arr.length] = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","pos":{"x":-0.1257000000000006,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
+
+	for(var i = 0; i < arr.length; i++)
+	{
+		scene.add( arr[i] );				
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = arr[i];		
+	}
+	
+	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
+	
+	{ 
+		var obj = arr[0];
+		clickO.move = obj; 
+		
+		planeMath.position.y = infProject.tools.heightPl.position.y; 
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld(); 		
+		
+		// устанавливаем высоту над полом
+		clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
+		clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
+		clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
+
+		var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].position.y -= offsetY;
+		}
+		
+		planeMath.position.y -= offsetY; 
+		planeMath.updateMatrixWorld();
+	}
+	
+	renderCamera();
+}
 
 
 

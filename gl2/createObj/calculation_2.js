@@ -443,8 +443,10 @@ function upUvs_5( geometry )
 // назначем свойства объектам
 function assignObjParams(obj, cdm)
 {
-	if(cdm.pos) obj.position.copy(cdm.pos);
-	if(cdm.rot) obj.rotation.copy(cdm.rot);
+	if(cdm.pos) obj.position.set(cdm.pos.x, cdm.pos.y, cdm.pos.z);
+	if(cdm.q) obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w);
+	
+	console.log(cdm);
 	
 	obj.userData.tag = 'obj';
 	obj.userData.obj3D = {};
