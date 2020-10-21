@@ -674,35 +674,10 @@ function consoleInfo( obj )
 	
 	var tag = obj.userData.tag;
 	console.log(obj.userData.tag);
-	if ( tag == 'room' ) 
+
+	if ( tag == 'obj' ) 
 	{
-		var txt = '';
-		//for ( var i = 0; i < obj.w.length; i++ ) { txt += '| ' + obj.w[i].userData.id; }
-		for ( var i = 0; i < obj.p.length - 1; i++ ) { txt += '| ' + obj.p[i].userData.id; }
-		
-		console.log( "room id : " + obj.userData.id + " | point : " + txt, " | userData : ", obj.userData, obj );
-	}
-	else if( tag == 'wall' )
-	{ 
-		console.log(obj);
-		console.log( "wall id : " + obj.userData.id + " index : " + clickO.index + " | point : " + obj.userData.wall.p[0].userData.id + " | " + obj.userData.wall.p[1].userData.id + " | userData : ", obj.userData ); 
-	}
-	else if( tag == 'point' )
-	{ 
-		console.log( "point id : " + obj.userData.id + " | userData : ", obj.userData, obj ); 
-	}
-	else if( tag == 'window' || tag == 'door' )
-	{ 
-		var txt = {};		
-		console.log( tag + " id : " + obj.userData.id + " | lotid : " + obj.userData.door.lotid + " | " + " type : " + obj.userData.door.type, txt, " | userData : ", obj.userData, obj ); 
-	}
-	else if ( tag == 'controll_wd' ) 
-	{
-		console.log( "controll_wd number : " + obj.userData.controll_wd.id, obj );
-	}
-	else if ( tag == 'obj' ) 
-	{
-		console.log( "obj : " + obj.userData.id + " | lotid : " + obj.lotid  + " | userData : ", obj.userData, obj );
+		console.log( "tag: obj | id: " + obj.userData.id + " | lotid : " + obj.userData.obj3D.lotid  + " | userData : ", obj.userData, obj );
 	}	
 	else if ( tag == 'wf_tube' ) 
 	{

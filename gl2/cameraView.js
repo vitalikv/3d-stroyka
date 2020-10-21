@@ -4,23 +4,10 @@
 
 
 // включаем CameraView
-function activeCameraView(cdm)
+async function activeCameraView(cdm)
 {  
 	deActiveSelected();
-
-	var obj = clickO.viewObj;
-	
-	if(obj)
-	{
-		if(obj.userData.tag == 'obj') 
-		{
-			deleteObjectPop(obj);
-		}
-		if(obj.userData.tag == 'wf_tube')
-		{
-			deleteLineWF(obj);
-		}		
-	}
+	deleteObjCameraView();
 	
 	if(camera != cameraView)
 	{
@@ -37,7 +24,15 @@ function activeCameraView(cdm)
 	
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
-	loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(0, 2000, 0), notArray: true, viewObj: true});
+	var obj = await loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(0, 2000, 0), notArray: true});
+
+	if(obj.userData.tag == 'wf_tube')
+	{								
+		showHideTubePoint({tube: obj, visible: false});		
+	}
+	
+	clickO.viewObj = obj;
+	fitCameraToObject({obj: obj});	
 	 
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
 	
@@ -156,8 +151,15 @@ function zoomCameraView( delta, z )
 // включаем CameraView
 function deActiveCameraView()
 {  
-	var cam = cameraView.userData.cameraView.lastCam;
+	deleteObjCameraView();
 	
+	var cam = cameraView.userData.cameraView.lastCam;
+	changeCamera(cam);		
+}
+
+// удаляем объект из сцены
+function deleteObjCameraView()
+{
 	var obj = clickO.viewObj;
 	
 	if(obj)
@@ -172,11 +174,6 @@ function deActiveCameraView()
 		}		
 	}
 	
-	clickO.viewObj = null;
-	
-	changeCamera(cam);		
+	clickO.viewObj = null;	
 }
-
-
-
 

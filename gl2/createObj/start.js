@@ -779,24 +779,50 @@ function getInfoFcObj()
 	
 	var offset = new THREE.Vector3(0.0, 1, 2).sub(arrO[0].position);
 	
-	for(var i = 0; i < arrO.length; i++)
+	if(1==2)
 	{
-		var fc_name = arrO[i].userData.fc.name;
-		var params = JSON.stringify(arrO[i].userData.fc.params);
-		params = JSON.parse(params);
+		for(var i = 0; i < arrO.length; i++)
+		{
+			var fc_name = arrO[i].userData.fc.name;
+			var params = JSON.stringify(arrO[i].userData.fc.params);
+			params = JSON.parse(params);
+			
+			//txt += n+'. '+fc_name+' '+params+'\n';
+			
+			var pos = offset.clone().add(arrO[i].position);
+			
+			params.pos = {x: pos.x, y: pos.y, z: pos.z};
+			params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
+			
+			params = JSON.stringify(params);
+			
+			txt += 'fc_cr_obj({ funcName: "'+fc_name+'", arr: ['+params+'] })\n';
+			
+			n++;
+		}		
+	}
+	else
+	{
+		for(var i = 0; i < arrO.length; i++)
+		{
+			if(!arrO[i].userData.obj3D) continue;
+			
+			var lotid = arrO[i].userData.obj3D.lotid;
+			
+			var pos = offset.clone().add(arrO[i].position);
+			
+			var params = {};
+			params.lotid = lotid;
+			params.pos = {x: pos.x, y: pos.y, z: pos.z};
+			params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
+			
+			params = JSON.stringify(params);
+			
+			txt += `${params},\n`;
+			
+			n++;
+		}
 		
-		//txt += n+'. '+fc_name+' '+params+'\n';
-		
-		var pos = offset.clone().add(arrO[i].position);
-		
-		params.pos = {x: pos.x, y: pos.y, z: pos.z};
-		params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
-		
-		params = JSON.stringify(params);
-		
-		txt += 'fc_cr_obj({ funcName: "'+fc_name+'", arr: ['+params+'] })\n';
-		
-		n++;
 	}
 
 	console.log(txt);
@@ -804,7 +830,62 @@ function getInfoFcObj()
 
 
 
-function newObjTest_1()
+async function newObjTest_1()
+{
+
+	var arr = [{"lotid":47,"pos":{"x":0,"y":1,"z":2},"q":{"x":0,"y":0,"z":0,"w":1}},
+	{"lotid":142,"pos":{"x":-0.08770000000000033,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1}},
+	{"lotid":18,"pos":{"x":-0.04300000000000015,"y":1.25,"z":2},"q":{"x":0,"y":-1,"z":0,"w":6.123233995736766e-17}},
+	{"lotid":20,"pos":{"x":-0.04300000000000015,"y":0.75,"z":2},"q":{"x":0,"y":1,"z":0,"w":-6.123233995736767e-17}},
+	{"lotid":142,"pos":{"x":0.4977000000000005,"y":0.75,"z":2},"q":{"x":0,"y":-0.9999999999999998,"z":0,"w":1.836970198721029e-16}},
+	{"lotid":18,"pos":{"x":0.4530000000000003,"y":0.75,"z":2},"q":{"x":0,"y":-1.224646799147353e-16,"z":0,"w":-0.9999999999999998}},
+	{"lotid":21,"pos":{"x":0.4530000000000003,"y":1.25,"z":2},"q":{"x":0,"y":-1.2246467991473532e-16,"z":0,"w":-1}},
+	{"lotid":332,"pos":{"x":0.5357000000000007,"y":0.75,"z":2},"q":{"x":0,"y":-1,"z":0,"w":1.8369701987210302e-16}},
+	{"lotid":332,"pos":{"x":-0.1257000000000006,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1}}];
+	
+	
+	var arrO = [];
+	
+	for(var i = 0; i < arr.length; i++)
+	{				
+		arrO[arrO.length] = await loadObjServer(arr[i]);
+		console.log(arr[i].lotid);
+	}
+	
+	console.log(arrO);
+	
+	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
+	
+	{ 
+		var obj = arrO[0];
+		clickO.move = obj; 
+		
+		planeMath.position.y = infProject.tools.heightPl.position.y; 
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld(); 		
+		
+		// устанавливаем высоту над полом
+		clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
+		clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
+		clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
+
+		var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
+		
+		for(var i = 0; i < arrO.length; i++)
+		{
+			arrO[i].position.y -= offsetY;
+		}
+		
+		planeMath.position.y -= offsetY; 
+		planeMath.updateMatrixWorld();
+	}		
+	
+	renderCamera();
+}
+
+
+
+async function newObjTest_2()
 {
 	var arr = [];
 	

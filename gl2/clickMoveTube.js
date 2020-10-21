@@ -32,12 +32,16 @@ function createTubeWF_1(cdm)
 // добавляем новую трубу в сцену
 function addTubeInScene(tube, cdm)
 {
-	console.log(cdm);
 
 	if(!cdm.notArray)
 	{
 		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
 		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
+	}
+
+	if(cdm.pos)
+	{
+		moveFullTube_2({tube: tube, offset: cdm.pos});
 	}
 	
 	if(cdm.cursor)
@@ -49,16 +53,10 @@ function addTubeInScene(tube, cdm)
 		clickO.move = tube;
 	}
 	
-	if(cdm.viewObj)
-	{		
-		moveFullTube_2({tube: tube, offset: cdm.pos});			
-	
-		showHideTubePoint({tube: tube, visible: false});
-		clickO.viewObj = tube;
-		fitCameraToObject({obj: tube});		
-	}
 	
 	renderCamera();
+	
+	return tube;
 }
 
 

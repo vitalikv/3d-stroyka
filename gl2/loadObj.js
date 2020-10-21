@@ -58,7 +58,7 @@ async function loadObjServer(cdm)
 	
 	if(inf.obj)		// объект есть в кэше
 	{ 
-		addObjInScene(inf, cdm); 
+		return addObjInScene(inf, cdm); 
 	}		
 	else if(inf.params)		// обращаемся к BD list_obj_2
 	{ 
@@ -69,7 +69,7 @@ async function loadObjServer(cdm)
 			if(obj.userData.tag == 'wf_tube')	// если труба, то в кэш сохраняем только параметры
 			{				
 				checkAddInf({inf: inf});
-				addTubeInScene(obj, cdm);
+				return addTubeInScene(obj, cdm);
 			}		
 			else 	// если объект, то в кэш сохраняем параметры и сам объект
 			{ 
@@ -78,7 +78,7 @@ async function loadObjServer(cdm)
 				obj.userData.fc.params = inf.params.cdm;			
 				inf.obj = obj;
 				infProject.scene.array.base[infProject.scene.array.base.length] = inf; 
-				addObjInScene(inf, cdm);
+				return addObjInScene(inf, cdm);
 			}			
 			
 					
@@ -162,17 +162,8 @@ function addObjInScene(inf, cdm)
 		planeMath.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y; 
 		planeMath.updateMatrixWorld();
 	}
+	
 
-	if(cdm.viewObj)
-	{
-		clickO.viewObj = obj;
-		fitCameraToObject({obj: clickO.viewObj});
-	}
-	
-	
-	renderCamera();
-	
-	
 	
 	if(1 == 1)
 	{
@@ -215,7 +206,9 @@ function addObjInScene(inf, cdm)
 	}
 
 		
+	renderCamera();
 	
+	return obj;
 }
 
 
