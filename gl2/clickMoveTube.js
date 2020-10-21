@@ -8,13 +8,15 @@ function createTubeWF_1(cdm)
 	
 	if(cdm.type == 'horizontal')
 	{
-		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0)});
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0)});		
+		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0), visible: false});
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0), visible: false});		
 	}
 	else if(cdm.type == 'vertical')
 	{
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0,-0.5,0)});
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0,0.5,0)});		
+		var visible = (camera == cameraTop) ? true : false;
+		
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0,-0.5,0), visible: visible});
+		p[p.length] = createPointWF({pos: new THREE.Vector3(0,0.5,0), visible: visible});	
 	}
 	else
 	{

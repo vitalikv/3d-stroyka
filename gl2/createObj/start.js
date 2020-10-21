@@ -849,13 +849,13 @@ async function newObjTest_1()
 	for(var i = 0; i < arr.length; i++)
 	{				
 		arrO[arrO.length] = await loadObjServer(arr[i]);
-		console.log(arr[i].lotid);
 	}
 	
-	console.log(arrO);
 	
 	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
 	
+	// добавляем в сцену из каталога
+	if(1==1)
 	{ 
 		var obj = arrO[0];
 		clickO.move = obj; 
@@ -943,4 +943,54 @@ async function newObjTest_2()
 }
 
 
+
+function testAddElemToContaner()
+{
+	var json = {id: 1, name: "сборка"};
+	
+	var str_button = 
+	'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 20px; height: 20px;">\
+		<img src="'+infProject.path+'/img/look.png" style="display: block; height: 95%; margin: auto; -o-object-fit: contain; object-fit: contain;">\
+	</div>';
+	
+	var html = 
+	'<div>\
+		<div class="right_panel_1_1_list_item">\
+			<div class="flex_1 relative_1">\
+				<div class="right_panel_1_1_list_item_text">'+json.name+'</div>\
+				'+str_button+'\
+			</div>\
+		</div>\
+	</div>';			
+	
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;
+	
+	json.elem = elem;
+
+	// при клике добавляем объект в сцену
+	var n = json.id;
+	(function(n) 
+	{
+		elem.onmousedown = function(e){ newObjTest_1(); e.stopPropagation(); };	
+	}(n));
+
+	// назначаем событие при клике на лупу UI
+	var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
+	(function(n) 
+	{
+		elem_2.onmousedown = function(e)
+		{ 
+			//activeCameraView({lotid: n});
+			e.stopPropagation();
+		};	
+	}(n));			
+	
+	
+	
+	var container = document.body.querySelector('[list_ui="catalog"]');
+	
+	container.append(json.elem);
+}
 

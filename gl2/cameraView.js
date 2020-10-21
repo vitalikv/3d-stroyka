@@ -25,11 +25,6 @@ async function activeCameraView(cdm)
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
 	var obj = await loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(0, 2000, 0), notArray: true});
-
-	if(obj.userData.tag == 'wf_tube')
-	{								
-		showHideTubePoint({tube: obj, visible: false});		
-	}
 	
 	clickO.viewObj = obj;
 	fitCameraToObject({obj: obj});	

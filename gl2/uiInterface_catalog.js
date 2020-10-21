@@ -54,7 +54,7 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	
+	testAddElemToContaner();
 	
 	// находим дочерние объекты 
 	function getItemChilds(cdm)
@@ -70,7 +70,7 @@ async function addObjInCatalogUI_1(cdm)
 			
 			var html = 
 			'<div>\
-				<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'">\
+				<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1">\
 						<div class="right_panel_1_1_list_item_text">'+json.name+'</div>\
 						'+str_button+'\
@@ -91,7 +91,7 @@ async function addObjInCatalogUI_1(cdm)
 				elem.onmousedown = function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); };	
 			}(n));
 
-			// назначаем событие при клике на кружок UI
+			// назначаем событие при клике на лупу UI
 			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
 			(function(n) 
 			{
@@ -116,7 +116,7 @@ async function addObjInCatalogUI_1(cdm)
 			</div>';				
 				
 			var html = 
-			'<div class="right_panel_1_1_list_item" add_lotid="'+json.id+'" style="top:0px; left:0px;">\
+			'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
 					'+str_button+'\
 					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+json.name+'</div>\

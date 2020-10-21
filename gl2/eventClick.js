@@ -122,7 +122,6 @@ $('[data-action="create_wd_3"]').mousedown(function () { clickInterface({button:
 $('[data-action="grid_show_1"]').mousedown(function () { clickInterface({button:'grid_show_1'}); });
 $('[data-action="grid_move_1"]').mousedown(function () { clickInterface({button:'grid_move_1'}); });
 $('[data-action="grid_link_1"]').mousedown(function () { clickInterface({button:'grid_link_1'}); });
-$('[add_lotid]').mousedown(function () { clickInterface({button: 'add_lotid', value: this.attributes.add_lotid.value}); });
  				
 
 
