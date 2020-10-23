@@ -40,11 +40,6 @@ function addTubeInScene(tube, cdm)
 		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
 		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
 	}
-
-	if(cdm.pos)
-	{
-		moveFullTube_2({tube: tube, offset: cdm.pos});
-	}
 	
 	if(cdm.cursor)
 	{

@@ -24,7 +24,9 @@ async function activeCameraView(cdm)
 	
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
-	var obj = await loadObjServer({lotid: cdm.lotid, pos: new THREE.Vector3(0, 2000, 0), notArray: true});
+	var obj = await loadObjServer({lotid: cdm.lotid, notArray: true});
+	
+	obj.position.y += 2000;
 	
 	clickO.viewObj = obj;
 	fitCameraToObject({obj: obj});	
@@ -124,7 +126,7 @@ function zoomCameraView( delta, z )
 	
 	var inf = cameraView.userData.cameraView;
 
-	var vect = delta * -0.1;
+	var vect = delta * -0.08;
 
 	var dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
 	dir = new THREE.Vector3().addScaledVector( dir, vect );

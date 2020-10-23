@@ -52,7 +52,7 @@ camera3D.userData.camera3D.phi = 0;
 
 
 
-var cameraView = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.05, 1000 );  
+var cameraView = new THREE.PerspectiveCamera( 65, w_w / w_h, 0.01, 1000 );  
 cameraView.rotation.order = 'YZX';		//'ZYX'
 cameraView.position.set(0, 1, 1);
 cameraView.lookAt(new THREE.Vector3());
