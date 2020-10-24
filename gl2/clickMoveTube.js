@@ -225,6 +225,8 @@ function copyTubeWF(cdm)
 	}	
 	
 	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone()});
+	
+	addTubeInScene(tube, {});
 }
 
 

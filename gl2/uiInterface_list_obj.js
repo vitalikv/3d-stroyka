@@ -67,7 +67,7 @@ function updateListObjUI_1(cdm)
 			elem_2.onmousedown = function(e)
 			{ 
 				hideMenuObjUI_2D();
-				clickObject3D( obj, { menu_1: true, outline: true} );			
+				if(obj.userData.tag == 'obj') { clickObject3D( obj, { menu_1: true, outline: true} ); }			
 				fitCameraToObject({obj: obj});
 				e.stopPropagation();
 			};	

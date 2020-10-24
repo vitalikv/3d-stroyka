@@ -28,7 +28,7 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 	
 	obj.position.y += 2000;
 	
-	clickO.viewObj = obj;
+	cameraView.userData.cameraView.arrO = [obj];
 	fitCameraToObject({obj: obj});	
 	 
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
@@ -157,20 +157,22 @@ function deActiveCameraView()
 // удаляем объект из сцены
 function deleteObjCameraView()
 {
-	var obj = clickO.viewObj;
+	var arr = cameraView.userData.cameraView.arrO;
 	
-	if(obj)
+	for(var i = 0; i < arr.length; i++)
 	{
-		if(obj.userData.tag == 'obj') 
+		if(arr[i].userData.tag == 'obj') 
 		{
-			deleteObjectPop(obj);
+			deleteObjectPop(arr[i]);
 		}
-		if(obj.userData.tag == 'wf_tube')
+		if(arr[i].userData.tag == 'wf_tube')
 		{
-			deleteLineWF(obj);
-		}		
+			deleteLineWF(arr[i]);
+		}			
 	}
 	
-	clickO.viewObj = null;	
+	cameraView.userData.cameraView.arrO = [];
+
+	renderCamera();
 }
 

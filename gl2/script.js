@@ -64,6 +64,7 @@ cameraView.userData.cameraView.intersectPos = new THREE.Vector3();
 cameraView.userData.cameraView.theta = 0;
 cameraView.userData.cameraView.phi = 0; 
 cameraView.userData.cameraView.lastCam = null;
+cameraView.userData.cameraView.arrO = [];
 
 
 //----------- Light 

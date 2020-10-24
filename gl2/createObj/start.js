@@ -753,24 +753,30 @@ function getInfoFcObj()
 {
 	var obj = clickO.last_obj;
 	
-	if(obj.userData.tag != 'obj') return;
+	var arrO = [];
 	
-	if(obj.userData.obj3D.group) 	// группа
+	if(obj.userData.tag == 'obj') 
 	{
-		var arrO = [];
-		var arr = obj.userData.obj3D.group.userData.groupObj.child; 
-		
-		// добавляем новый список объектов из группы
-		for(var i = 0; i < arr.length; i++)
-		{	
-			if(!arr[i].userData.obj3D) continue;			
+		if(obj.userData.obj3D.group) 	// группа
+		{			
+			var arr = obj.userData.obj3D.group.userData.groupObj.child; 
 			
-			arrO[arrO.length] = arr[i];			
-		} 
+			// добавляем новый список объектов из группы
+			for(var i = 0; i < arr.length; i++)
+			{	
+				if(!arr[i].userData.obj3D) continue;			
+				
+				arrO[arrO.length] = arr[i];			
+			} 
+		}
+		else	// у объекта нет группы
+		{
+			var arrO = [obj]; 
+		}		
 	}
-	else	// у объекта нет группы
+	else if(obj.userData.tag == 'wf_tube')
 	{
-		var arrO = [obj]; 
+		var arrO = [obj];
 	}
 	
 	
@@ -805,32 +811,45 @@ function getInfoFcObj()
 	{
 		for(var i = 0; i < arrO.length; i++)
 		{
-			if(!arrO[i].userData.obj3D) continue;
-			
-			var lotid = arrO[i].userData.obj3D.lotid;
-			
-			var pos = offset.clone().add(arrO[i].position);
-			
-			var params = {};
-			params.lotid = lotid;
-			params.pos = {x: pos.x, y: pos.y, z: pos.z};
-			params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
+			if(arrO[i].userData.tag == 'obj') 
+			{
+				var lotid = arrO[i].userData.obj3D.lotid;
+				
+				var pos = offset.clone().add(arrO[i].position);
+				
+				var params = {};
+				params.lotid = lotid;
+				params.pos = {x: pos.x, y: pos.y, z: pos.z};
+				params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};				
+			}
+
+			if(arrO[i].userData.tag == 'wf_tube')
+			{
+				var params = {};
+				params.point = [];
+				
+				params.diameter = arrO[i].userData.wf_tube.diameter;
+				params.color = arrO[i].material.color;
+				
+				for ( var i2 = 0; i2 < arrO[i].userData.wf_tube.point.length; i2++ )
+				{
+					params.point[i2] = {};
+					params.point[i2].pos = arrO[i].userData.wf_tube.point[i2].position.clone();
+				}
+			}
 			
 			params = JSON.stringify(params);
-			
 			txt += `${params},\n`;
-			
-			n++;
 		}
 		
-	}
+	}	
 
 	console.log(txt);
 }
 
 
 
-async function newObjTest_1()
+async function newObjTest_1(cdm)
 {
 
 	var arr = [{"lotid":47,"pos":{"x":0,"y":1,"z":2},"q":{"x":0,"y":0,"z":0,"w":1}},
@@ -847,15 +866,27 @@ async function newObjTest_1()
 	var arrO = [];
 	
 	for(var i = 0; i < arr.length; i++)
-	{				
+	{			
+		if(cdm.cameraView) { arr[i].notArray = true; }
 		arrO[arrO.length] = await loadObjServer(arr[i]);
 	}
+
 	
+	var p = [];
+	var point = [{"pos":{"x":-0.0023359698043122767,"y":0.26927338552259106,"z":-1.9686926701178464}},{"pos":{"x":0.6546592016335788,"y":0.14669898038997914,"z":-2.183378278257117}},{"pos":{"x":0.9876451363862342,"y":0.09380320768234893,"z":-1.9436629270052377}},{"pos":{"x":1.2906558925518492,"y":-8.80569763340967e-16,"z":-1.7860198724393936}}];
+	
+	for ( var i2 = 0; i2 < point.length; i2++ )
+	{
+		p[p.length] = createPointWF({pos: point[i2].pos, visible: false});
+	}
+		
+	var tube = crTubeWF({point: p, "diameter":0.026,"color": new THREE.Color(152306) });
+	addTubeInScene(tube, {});	
 	
 	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
 	
 	// добавляем в сцену из каталога
-	if(1==1)
+	if(cdm.addScene)
 	{ 
 		var obj = arrO[0];
 		clickO.move = obj; 
@@ -878,7 +909,34 @@ async function newObjTest_1()
 		
 		planeMath.position.y -= offsetY; 
 		planeMath.updateMatrixWorld();
-	}		
+	}
+
+	if(cdm.cameraView)
+	{
+		deActiveSelected();
+		deleteObjCameraView();
+		
+		if(camera != cameraView)
+		{
+			cameraView.userData.cameraView.lastCam = camera;
+		}
+		
+		camera = cameraView;
+		renderPass.camera = cameraView;
+		outlinePass.renderCamera = cameraView;
+		
+		infProject.elem.butt_close_cameraView.style.display = '';
+		infProject.elem.butt_camera_2D.style.display = 'none';
+		infProject.elem.butt_camera_3D.style.display = 'none';	
+
+		for(var i = 0; i < arrO.length; i++)
+		{				
+			arrO[i].position.y += 2000;
+		}
+		
+		cameraView.userData.cameraView.arrO = [arrO[0]];
+		fitCameraToObject({obj: arrO[0]});				
+	}
 	
 	renderCamera();
 }
@@ -973,7 +1031,7 @@ function testAddElemToContaner()
 	var n = json.id;
 	(function(n) 
 	{
-		elem.onmousedown = function(e){ newObjTest_1(); e.stopPropagation(); };	
+		elem.onmousedown = function(e){ newObjTest_1({addScene: true}); e.stopPropagation(); };	
 	}(n));
 
 	// назначаем событие при клике на лупу UI
@@ -983,6 +1041,7 @@ function testAddElemToContaner()
 		elem_2.onmousedown = function(e)
 		{ 
 			//activeCameraView({lotid: n});
+			newObjTest_1({cameraView: true});
 			e.stopPropagation();
 		};	
 	}(n));			
