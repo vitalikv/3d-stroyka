@@ -6,7 +6,7 @@
 function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.pointTube.default ); 
-	point.position.copy( cdm.pos );		
+	point.position.set( cdm.pos.x, cdm.pos.y, cdm.pos.z );		
 	
 	point.renderOrder = 1;
 	
@@ -145,7 +145,15 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 // создаем трубу
 function crTubeWF(cdm)
 {
-	var point = cdm.point;
+	var p = cdm.point;
+	
+	var point = [];
+	for ( var i = 0; i < p.length; i++ )
+	{
+		p[i].visible = cdm.pVisible;
+		point[point.length] = createPointWF(p[i]); 
+	}	
+	
 	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);	
 	var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
 	

@@ -81,7 +81,7 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
-	if(1==1)
+	if(1==2)
 	{
 		var arr = [];
 		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', r3: '1', m1: 0.169, m2: 0.035 };	
@@ -97,27 +97,27 @@ async function cr_obj_cat()
 		var startPos = new THREE.Vector3(0.5, 1, 3.5);
 		
 		var arr = [];
-		arr[arr.length] = { type: 'horizontal', r1: 0.016 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.020 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.025 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.026 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.030 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.032 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.040 };
-		arr[arr.length] = { type: 'horizontal', r1: 0.050 };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.016, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.020, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.025, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.026, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.030, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.032, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.040, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
+		arr[arr.length] = { type: 'horizontal', diameter: 0.050, point: [{pos: new THREE.Vector3(-0.5,0,0)}, {pos: new THREE.Vector3(0.5,0,0)}] };
 		
 		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_horiz_1'});
 		
 		var arr = [];
-		arr[arr.length] = { type: 'vertical', r1: 0.016 };
-		arr[arr.length] = { type: 'vertical', r1: 0.020 };
-		arr[arr.length] = { type: 'vertical', r1: 0.025 };
-		arr[arr.length] = { type: 'vertical', r1: 0.026 };
-		arr[arr.length] = { type: 'vertical', r1: 0.030 };
-		arr[arr.length] = { type: 'vertical', r1: 0.032 };
-		arr[arr.length] = { type: 'vertical', r1: 0.040 };
-		arr[arr.length] = { type: 'vertical', r1: 0.050 };
-		arr[arr.length] = { type: 'vertical', r1: 0.050 };
+		arr[arr.length] = { type: 'vertical', diameter: 0.016, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.020, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.025, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.026, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.030, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.032, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.040, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.050, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
+		arr[arr.length] = { type: 'vertical', diameter: 0.050, point: [{pos: new THREE.Vector3(0,-0.5,0)}, {pos: new THREE.Vector3(0,0.5,0)}] };
 		
 		await fc_cr_obj({funcName: 'createTubeWF_1', arr: arr, startPos: startPos, cat: 'tube_vert_1'});		
 	}
@@ -872,15 +872,13 @@ async function newObjTest_1(cdm)
 	}
 
 	
-	var p = [];
-	var point = [{"pos":{"x":-0.0023359698043122767,"y":0.26927338552259106,"z":-1.9686926701178464}},{"pos":{"x":0.6546592016335788,"y":0.14669898038997914,"z":-2.183378278257117}},{"pos":{"x":0.9876451363862342,"y":0.09380320768234893,"z":-1.9436629270052377}},{"pos":{"x":1.2906558925518492,"y":-8.80569763340967e-16,"z":-1.7860198724393936}}];
 	
-	for ( var i2 = 0; i2 < point.length; i2++ )
-	{
-		p[p.length] = createPointWF({pos: point[i2].pos, visible: false});
-	}
+	
+	var inf = {"point":[{"pos":{"x":-0.5611547531125066,"y":0.26927338552259106,"z":-1.4942238894649595}},{"pos":{"x":0.09584041832538448,"y":0.14669898038997925,"z":-1.7089094976042303}},{"pos":{"x":0.42882635307803985,"y":0.09380320768234904,"z":-1.4691941463523508}},{"pos":{"x":0.7318371092436547,"y":-7.695474608784516e-16,"z":-1.3115510917865068}}],"diameter":0.026,"color":14650901, pVisible: false};
+
+	var inf = {"point":[{"pos":{"x":2.3400637720154194,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.450574937475825,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.472151701510927,"y":0.15310790275905503,"z":-3.0917399499678515}},{"pos":{"x":2.4841326729874345,"y":0.17240056985333765,"z":-3.0917399499678515}},{"pos":{"x":2.4942349677354922,"y":0.6091230504491234,"z":-3.0917399499678515}},{"pos":{"x":2.5227232308610894,"y":0.6292413169113358,"z":-3.0917399499678515}},{"pos":{"x":2.5732247822230025,"y":0.6302942062224188,"z":-3.0921976591959366}}],"diameter":0.016,"color":14632981, pVisible: false}	
 		
-	var tube = crTubeWF({point: p, "diameter":0.026,"color": new THREE.Color(152306) });
+	var tube = crTubeWF(inf);
 	addTubeInScene(tube, {});	
 	
 	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });

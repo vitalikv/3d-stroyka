@@ -839,13 +839,7 @@ async function loadFilePL(arr)
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
-		var p = [];
-		for ( var i2 = 0; i2 < pipe[i].point.length; i2++ )
-		{
-			p[p.length] = createPointWF({id: pipe[i].point[i2].id, pos: pipe[i].point[i2].pos, visible: false});
-		}
-		
-		var tube = crTubeWF({point: p, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)});
+		var tube = crTubeWF({point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
 		addTubeInScene(tube, {});
 	}
 

@@ -4,27 +4,20 @@
 // создаем трубу из каталога 
 function createTubeWF_1(cdm)
 {
-	var p = [];
+	var visible = false;
 	
 	if(cdm.type == 'horizontal')
 	{
-		p[p.length] = createPointWF({pos: new THREE.Vector3(-0.5,0,0), visible: false});
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0.5,0,0), visible: false});		
+		
 	}
 	else if(cdm.type == 'vertical')
 	{
-		var visible = (camera == cameraTop) ? true : false;
-		
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0,-0.5,0), visible: visible});
-		p[p.length] = createPointWF({pos: new THREE.Vector3(0,0.5,0), visible: visible});	
-	}
-	else
-	{
-		return;
+		visible = (camera == cameraTop) ? true : false;
 	}
 	
-	var r1 = (cdm.r1) ? cdm.r1 : 0.05;
-	var tube = crTubeWF({point: p, diameter: r1}); 	 		
+	
+	var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
+	var tube = crTubeWF({point: cdm.point, diameter: diameter, pVisible: visible}); 	 		
 	 
 	
 	return tube;
@@ -221,10 +214,10 @@ function copyTubeWF(cdm)
 	var p = [];
 	for(var i = 0; i < point.length; i++)
 	{
-		p[i] = createPointWF({pos: point[i].position, visible: false});
+		p[i] = {pos: point[i].position.clone(), visible: false};
 	}	
 	
-	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone()});
+	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone(), pVisible: false});
 	
 	addTubeInScene(tube, {});
 }
