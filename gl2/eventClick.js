@@ -269,6 +269,14 @@ infProject.elem.button_obj_properties = document.querySelector('[nameId="button_
 infProject.elem.rp_bl_obj_tool_pivot = document.querySelector('[nameId="rp_bl_obj_tool_pivot"]');
 infProject.elem.rp_bl_obj_properties = document.querySelector('[nameId="rp_bl_obj_properties"]');
 
+// вкладка со списком объектов в группе 
+infProject.elem.bl_rp_obj_group = document.querySelector('[nameId="bl_rp_obj_group"]');
+
+// вкладка со списком объединения в группу
+infProject.elem.rp_wrap_add_group = document.querySelector('[nameId="rp_wrap_add_group"]');
+// список объединения в группу
+infProject.elem.rp_add_group = document.querySelector('[nameId="rp_add_group"]');
+
 
 infProject.elem.button_wrap_catalog.onmousedown = function(e){ changeRightMenuUI_1({el: this}); };
 infProject.elem.button_wrap_list_obj.onmousedown = function(e){ changeRightMenuUI_1({el: this}); };

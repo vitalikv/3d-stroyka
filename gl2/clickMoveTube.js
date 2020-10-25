@@ -58,6 +58,7 @@ function clickFirstTubeWF(cdm)
 	var rayhit = cdm.rayhit;	
 	
 	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	// вкл кнопка подключить/выронить
+	else if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }
 	else { clickTubeWF({ray: rayhit}); }	
 }
 

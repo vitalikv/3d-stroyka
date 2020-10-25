@@ -26,7 +26,7 @@ function switchSelectAddObjGroup(cdm)
 	
 	if(infProject.list.mergeO.active)	// вкл
 	{
-		$('[nameId="rp_wrap_add_group"]').show();
+		infProject.elem.rp_wrap_add_group.style.display = 'block';
 		infProject.list.mergeO.o1 = [];	
 
 		if(obj)
@@ -34,20 +34,20 @@ function switchSelectAddObjGroup(cdm)
 			infProject.list.mergeO.o1 = getObjsFromGroup_1({obj: obj});
 		}
 		
-		$('[nameId="bl_rp_obj_group"]').hide();
-		$('[nameId="pr_list_button_for_obj"]').hide();		
+		infProject.elem.bl_rp_obj_group.style.display = 'none';		
 	}
 	else		// выкл
 	{
 		clearListUI_2({list: infProject.list.mergeO.el});
-		$('[nameId="rp_wrap_add_group"]').hide();
+		infProject.elem.rp_wrap_add_group.style.display = 'none';
 		
-		$('[nameId="bl_rp_obj_group"]').show();
-		$('[nameId="pr_list_button_for_obj"]').show();		
+		infProject.elem.bl_rp_obj_group.style.display = 'block';	
 		
 		infProject.list.mergeO.o1 = [];
 		infProject.list.mergeO.o2 = [];
-	}	
+	}
+
+	renderCamera();
 }
 
 
@@ -102,17 +102,25 @@ function showListSelectedObjGroupUI(cdm)
 	{
 		var child = infProject.list.mergeO.o2[i];
 		
-		if(!child.userData.obj3D) continue;	
+		var name = '';
+		
+		if(child.userData.obj3D) { name = child.userData.obj3D.nameRus; }
+		else if(child.userData.wf_tube) { name = child.userData.wf_tube.nameRus; }
 
-		var str = 
-		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+child.uuid+'">\
-		<div class="right_panel_1_1_list_item_text">'+child.userData.obj3D.nameRus+'</div>\
-		</div>';		
-
-		var el = $(str).appendTo('[nameId="rp_add_group"]');
+		var html = 
+		'<div class="flex_1 right_panel_1_1_list_item">\
+			<div class="right_panel_1_1_list_item_text">'+name+'</div>\
+		</div>';				
+		
+		var div = document.createElement('div');
+		div.innerHTML = html;
+		var elem = div.firstChild;	
+		
+		var container = infProject.elem.rp_add_group;
+		container.append(elem);		
 		
 		var n = infProject.list.mergeO.el.length;	
-		infProject.list.mergeO.el[n] = el;
+		infProject.list.mergeO.el[n] = elem;
 		
 	}	
 }

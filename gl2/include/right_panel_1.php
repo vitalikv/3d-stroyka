@@ -552,37 +552,34 @@
 								
 								<div class="right_panel_1_1_list" nameId="rp_obj_group">
 									
-								</div>									
-							
-							</div>
-							
-														
-							
-							<div nameId="pr_list_button_for_obj" style="display: none;">
-								
-								<div class="flex_1">
-									<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;">
-										сгруппировать	
-									</div>
-									<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;">
-										отделить	
-									</div>															
 								</div>
-								
-								<div class="flex_1">
-									<div class="button1 button_gradient_1" nameId="button_copy_obj" style="width: 100%;">
-										копировать	
-									</div>
-									<div class="button1 button_gradient_1" nameId="button_delete_obj" style="width: 100%;">
-										удалить	
-									</div>								
-								</div>
-		
-								<div nameId="sp_block_drt">
 
-								</div>		
-							</div>
+								<div nameId="pr_list_button_for_obj" style="display: none;">
+									
+									<div class="flex_1">
+										<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;">
+											сгруппировать	
+										</div>
+										<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;">
+											отделить	
+										</div>															
+									</div>
+									
+									<div class="flex_1">
+										<div class="button1 button_gradient_1" nameId="button_copy_obj" style="width: 100%;">
+											копировать	
+										</div>
+										<div class="button1 button_gradient_1" nameId="button_delete_obj" style="width: 100%;">
+											удалить	
+										</div>								
+									</div>
+			
+									<div nameId="sp_block_drt">
+
+									</div>		
+								</div>								
 							
+							</div>
 							
 							<div nameId="pr_list_button_center_point" style="display: none;"> 
 								<div class="button1 button_gradient_1" nameId="button_active_join_element">

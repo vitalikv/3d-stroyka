@@ -38,7 +38,9 @@ function createGroupObj_1(cdm)
 	for(var i = 0; i < arr2.length; i++)
 	{
 		if(!arr2[i]) continue;
-		arr2[i].userData.obj3D.group = group;
+		if(arr2[i].userData.obj3D) { arr2[i].userData.obj3D.group = group; }
+		if(arr2[i].userData.wf_tube) { arr2[i].userData.wf_tube.group = group; }
+		
 		group.userData.groupObj.child[group.userData.groupObj.child.length] = arr2[i];
 	}	
 	
@@ -92,12 +94,13 @@ function addObjToGroup(cdm)
 // отделяем объект от группы, если остается в группе один объект, то удаляем группу
 function detachObjGroup(cdm)
 {
-	var obj = cdm.obj;			
-	if(!obj.userData.obj3D.group) return;
-
-	var group = obj.userData.obj3D.group;
+	var obj = cdm.obj;	
+	var group = null;
 	
-	obj.userData.obj3D.group = null;
+	if(obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }
+	if(obj.userData.obj3D.wf_tube) { group = obj.userData.obj3D.wf_tube; }
+	
+	if(!group) return;
 	
 	deleteValueFromArrya({arr : group.userData.groupObj.child, o : obj});	// удаляем объект из группы
 	

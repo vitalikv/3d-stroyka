@@ -411,6 +411,7 @@ function deClickObj(cdm)
 			if(infProject.list.mergeO.active)
 			{
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
 			}
 		}
 

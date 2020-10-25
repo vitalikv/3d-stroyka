@@ -27,7 +27,7 @@ function switchAlignPoint_1(cdm)
 		if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 		{
 			$('[nameId="rp_wrap_obj_align"]').show();
-			$('[nameId="bl_rp_obj_group"]').hide();
+			infProject.elem.bl_rp_obj_group.style.display = 'none';
 			$('[nameId="pr_list_button_for_obj"]').hide();
 			$('[nameId="pr_list_button_center_point"]').hide();
 		}
@@ -45,7 +45,7 @@ function switchAlignPoint_1(cdm)
 			if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 			{
 				$('[nameId="rp_wrap_obj_align"]').hide();
-				$('[nameId="bl_rp_obj_group"]').show();
+				infProject.elem.bl_rp_obj_group.style.display = 'block';
 				$('[nameId="pr_list_button_for_obj"]').hide();
 				$('[nameId="pr_list_button_center_point"]').show();				
 			}
