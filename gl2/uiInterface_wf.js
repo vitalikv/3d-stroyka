@@ -6,7 +6,7 @@ function showWF_point_UI(point)
 {
 	var tube = point.userData.wf_point.tube;
 	
-	document.querySelector('[nameId="rp_obj_name"]').value = 'точка';
+	infProject.elem.rp_obj_name.value = 'точка';
 	
 	var elem = document.querySelector('[nameId="rp_bl_wf_point"]');
 	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
@@ -41,7 +41,7 @@ function showWF_line_UI(cdm)
 {	
 	var tube = cdm.tube;
 	
-	document.querySelector('[nameId="rp_obj_name"]').value = tube.userData.wf_tube.nameRus;
+	infProject.elem.rp_obj_name.value = tube.userData.wf_tube.nameRus;
 	
 	var elem = document.querySelector('[nameId="rp_bl_wf_tube"]');
 	

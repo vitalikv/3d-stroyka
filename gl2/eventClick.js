@@ -249,6 +249,9 @@ infProject.elem.button_catalog_close = document.querySelector('[nameId="button_c
 infProject.elem.button_show_panel_catalog = document.querySelector('[nameId="button_show_panel_catalog"]');
 infProject.elem.resize_el = document.querySelector('[nameId="right_panel_resize_1"]');
 
+// input название объекта, трубы, точки и т.д.
+infProject.elem.rp_obj_name = document.querySelector('[nameId="rp_obj_name"]');
+
 // кнопки вкладок
 infProject.elem.button_wrap_catalog = document.querySelector('[nameId="button_wrap_catalog"]');
 infProject.elem.button_wrap_list_obj = document.querySelector('[nameId="button_wrap_list_obj"]');

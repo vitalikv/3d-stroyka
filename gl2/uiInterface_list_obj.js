@@ -14,7 +14,7 @@ function updateListObjUI_1(cdm)
 		var container = document.body.querySelector('[list_ui="wf"]');
 		
 		var str_button = 
-		'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 10px; height: 20px;">\
+		'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 10px; height: 20px;">\
 			<div>\
 				<svg height="100%" width="100%" viewBox="0 0 100 100">\
 					<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
@@ -29,8 +29,8 @@ function updateListObjUI_1(cdm)
 			'<div>\
 				<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1">\
-						<div class="right_panel_1_1_list_item_color" item="color"></div>\
 						<div class="right_panel_1_1_list_item_text" item="name">труба</div>\
+						<div class="right_panel_1_1_list_item_color" item="color"></div>\
 						<div class="right_panel_1_1_list_item_text" item="value"></div>\
 						'+str_button+'\
 					</div>\
@@ -67,7 +67,8 @@ function updateListObjUI_1(cdm)
 			elem_2.onmousedown = function(e)
 			{ 
 				hideMenuObjUI_2D();
-				if(obj.userData.tag == 'obj') { clickObject3D( obj, { menu_1: true, outline: true} ); }			
+				if(obj.userData.tag == 'obj') { clickObject3D( obj, { menu_1: true, outline: true} ); }	
+				if(obj.userData.tag == 'wf_tube') { clickTubeWF({obj: obj}); }	
 				fitCameraToObject({obj: obj});
 				e.stopPropagation();
 			};	
@@ -185,7 +186,7 @@ function crtGroupItemListObjUI_1(cdm)
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+str_button+'\
 				<div class="right_panel_1_1_list_item_text" nameId="nameGroup">'+cdm.name+'</div>\
-				<div class="right_panel_1_1_list_item_text" nameId="countItem" style="margin-right: 10px;">[1]</div>\
+				<div class="right_panel_1_1_list_item_text" nameId="countItem" style="margin-right: 10px; margin-left: auto;">[1]</div>\
 			</div>\
 			<div nameId="groupItem" style="display: none;">\
 				'+groupItem+'\

@@ -97,26 +97,48 @@ function detachObjGroup(cdm)
 	var obj = cdm.obj;	
 	var group = null;
 	
-	if(obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }
-	if(obj.userData.obj3D.wf_tube) { group = obj.userData.obj3D.wf_tube; }
+	if(obj.userData.obj3D) 
+	{ 
+		if(obj.userData.obj3D.group) 
+		{
+			group = obj.userData.obj3D.group;
+			obj.userData.obj3D.group = null;
+		}
+	}
+	if(obj.userData.wf_tube) 
+	{ 
+		if(obj.userData.wf_tube.group) 
+		{ 
+			group = obj.userData.wf_tube.group;
+			obj.userData.wf_tube.group = null; 
+		} 
+	}
 	
 	if(!group) return;
 	
-	deleteValueFromArrya({arr : group.userData.groupObj.child, o : obj});	// удаляем объект из группы
+	deleteValueFromArrya({arr: group.userData.groupObj.child, o: obj});	// удаляем объект из группы
 	
 	// удаляем группу
 	if(group.userData.groupObj.child.length == 1)
 	{
 		var obj_2 = group.userData.groupObj.child[0];
 		
-		obj_2.userData.obj3D.group = null;
-		
+		if(obj_2.userData.obj3D) { obj_2.userData.obj3D.group = null; }
+		if(obj_2.userData.wf_tube) { obj_2.userData.wf_tube.group = null; }
+			
 		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
 	}
 	
 	if(cdm.active)
 	{
-		clickObject3D( obj, {menu_1: true, outline: true} );
+		if(obj.userData.obj3D)
+		{
+			clickObject3D( obj, {menu_1: true, outline: true} );
+		}
+		else if(obj.userData.wf_tube)
+		{
+			clickTubeWF({obj: obj});
+		}		
 	}
 
 	renderCamera();

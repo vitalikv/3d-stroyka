@@ -2,7 +2,7 @@
 
 
 
-// создаем точку для теплого пола
+// создаем точку трубы
 function createPointWF(cdm)
 {
 	var point = new THREE.Mesh( infProject.geometry.wf_point, infProject.material.pointTube.default ); 

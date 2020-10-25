@@ -71,9 +71,12 @@ function clickTubeWF(cdm)
 		addPointOnTube(cdm);	// добавляем точку на трубу
 	}
 	
-	var ray = cdm.ray;		
-	  
-	var tube = ray.object;
+	var tube = null;
+
+	if(cdm.ray) { tube = cdm.ray.object; }
+	if(cdm.obj) { tube = cdm.obj; }  
+	
+	if(!tube) return;
 
 	// показываем точки 
 	showHideTubePoint({tube: tube, visible: true});
@@ -92,11 +95,32 @@ function clickTubeWF(cdm)
 	// режим "добавить точку на трубу" выкл	
 	if(!infProject.settings.active.tube)
 	{
-		var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
-		var p1 = result.p1;
-		var pos = result.pos;		
+		if(cdm.ray)
+		{
+			var result = detectPosTubeWF({ray: cdm.ray});	// определяем в какое место трубы кликнули
+			var p1 = result.p1;
+			var pos = result.pos;							
+		}
+		else
+		{
+			var p = tube.userData.wf_tube.point;
+			var n = (p.length % 2);	// четное/нечетное, 2=false 3=true
+			
+			if(n)
+			{
+				var n = (p.length - 1)/2;				
+				var pos = p[n].position;
+			}
+			else
+			{
+				var n = (p.length - p.length/2) - 1;				
+				var pos1 = p[n].position;
+				var pos2 = p[n+1].position;
+				var pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
+			}			
+		}
 		
-		setPivotGizmo({obj: tube, pos: pos});			
+		setPivotGizmo({obj: tube, pos: pos});
 	}
 }
 

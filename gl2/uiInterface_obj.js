@@ -83,7 +83,9 @@ function clickObjUI(cdm)
 		// добавляем новый список объектов из группы
 		for(var i = 0; i < arr.length; i++)
 		{	
-			if(!arr[i].userData.obj3D) continue;			
+			if(arr[i].userData.obj3D) {}
+			else if(arr[i].userData.wf_tube){}
+			else { continue; }
 			
 			arrO[arrO.length] = arr[i];			
 		} 
@@ -127,6 +129,8 @@ function clickObjUI(cdm)
 			
 			// получаем разъемы объекта
 			var o = getCenterPointFromObj_1(arrO[i]);
+			
+			var tag = arrO[i].userData.tag;
 
 			var str_button = '';
 			
@@ -143,25 +147,40 @@ function clickObjUI(cdm)
 			}
 			
 			var button_2 = 
-			'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 10px; height: 20px;">\
+			'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 10px; height: 20px;">\
 				<div>\
 					<svg height="100%" width="100%" viewBox="0 0 100 100">\
 						<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
 					</svg>\
 				</div>\
-			</div>';			
+			</div>';
 
-			var html = 
-			'<div class="right_panel_1_1_list_item">\
-				<div class="flex_1 relative_1" style="margin: auto;">\
-					'+str_button+'\
-					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
-					'+button_2+'\
-				</div>\
-				<div nameId="groupItem" style="display: none;">\
-				</div>\
-			</div>';			
-			
+			if(tag == 'wf_tube')
+			{
+				var html = 
+				'<div class="right_panel_1_1_list_item">\
+					<div class="flex_1 relative_1" style="margin: auto;">\
+						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.wf_tube.nameRus+'</div>\
+						<div class="right_panel_1_1_list_item_color" item="color" style="background:#'+arrO[i].material.color.clone().getHexString()+';"></div>\
+						<div class="right_panel_1_1_list_item_text" item="value">'+arrO[i].userData.wf_tube.length+'м</div>\
+						'+button_2+'\
+					</div>\
+				</div>';
+			}
+			else if(tag == 'obj')
+			{
+				var html = 
+				'<div class="right_panel_1_1_list_item">\
+					<div class="flex_1 relative_1" style="margin: auto;">\
+						'+str_button+'\
+						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
+						'+button_2+'\
+					</div>\
+					<div nameId="groupItem" style="display: none;">\
+					</div>\
+				</div>';			
+			}			
+
 					
 			var div = document.createElement('div');
 			div.innerHTML = html;
@@ -178,6 +197,7 @@ function clickObjUI(cdm)
 			
 			
 			// назначаем кнопки треугольник событие
+			if(o.length > 0)
 			{
 				let id = arrO[i].userData.id; 
 				let el_2 = elem.querySelector('[nameId="shCp_1"]');
@@ -392,7 +412,14 @@ function clickItemObjNameUI(cdm)
 	// кликнули не в сцену на объект, а на пункт в меню (скрываем разъемы старого объекта)
 	if(cdm.clickItem)
 	{
-		deClickObj({obj: clickO.last_obj, moment: ''});
+		if(clickO.last_obj.userData.obj3D || clickO.last_obj.userData.centerPoint)
+		{
+			deClickObj({obj: clickO.last_obj, moment: ''});
+		}
+		else if(clickO.last_obj.userData.wf_tube || clickO.last_obj.userData.wf_point)
+		{
+			deClickTube({obj: clickO.last_obj, moment: ''});
+		}		
 	}
 	
 	  
@@ -418,11 +445,15 @@ function clickItemObjNameUI(cdm)
 
 	if(obj.userData.obj3D) 
 	{ 
-		$('[nameId="rp_obj_name"]').val(obj.userData.obj3D.nameRus);
+		infProject.elem.rp_obj_name.value = obj.userData.obj3D.nameRus;  
 	}
+	else if(obj.userData.wf_tube) 
+	{ 
+		infProject.elem.rp_obj_name.value = obj.userData.wf_tube.nameRus;  
+	}	
 	else if(obj.userData.centerPoint)
 	{		
-		$('[nameId="rp_obj_name"]').val(obj.userData.centerPoint.nameRus);
+		infProject.elem.rp_obj_name.value = obj.userData.centerPoint.nameRus;
 		
 		var parent = obj.parent;
 		
@@ -446,7 +477,15 @@ function clickItemObjNameUI(cdm)
 	
 	if(!cdm.obj) 
 	{
-		clickObject3D(obj, {outline: true});		
+		if(obj.userData.obj3D || obj.userData.centerPoint)
+		{
+			clickObject3D(obj, {outline: true});
+		}
+		else if(obj.userData.wf_tube)
+		{
+			clickTubeWF({obj: obj});
+		}
+		
 	} 
 
 	showHideJP();

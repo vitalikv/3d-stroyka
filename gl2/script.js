@@ -1510,7 +1510,7 @@ document.body.addEventListener("keydown", function (e)
 			}			
 			else if(infProject.activeInput == 'rp_obj_name')
 			{
-				renameObject({ obj: clickO.last_obj, name: $('[nameId="rp_obj_name"]').val() });
+				renameObject({ obj: clickO.last_obj, name: infProject.elem.rp_obj_name.value });
 			}
 			else if(infProject.activeInput == 'rp_planeHeight_posY')
 			{

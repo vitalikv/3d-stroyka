@@ -64,7 +64,7 @@ async function addObjInCatalogUI_1(cdm)
 		if(json.id != 'group') 	// это объект, а не группа
 		{
 			var str_button = 
-			'<div nameId="sh_select_obj3D" style="margin-right: 5px; width: 20px; height: 20px;">\
+			'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 20px; height: 20px;">\
 				<img src="'+infProject.path+'/img/look.png" style="display: block; height: 95%; margin: auto; -o-object-fit: contain; object-fit: contain;">\
 			</div>';
 			
