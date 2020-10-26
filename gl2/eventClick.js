@@ -240,7 +240,7 @@ infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraV
 
 
 document.querySelector('[nameId="button_delete_obj"]').onmousedown = function(e){ detectDeleteObj(); e.stopPropagation(); };
-document.querySelector('[nameId="button_copy_obj"]').onmousedown = function(e){ detectCopyObj(); e.stopPropagation(); };
+document.querySelector('[nameId="button_copy_obj"]').onmousedown = function(e){ copyObj(); e.stopPropagation(); };
 
 
 

@@ -103,6 +103,10 @@ function clickTubeWF(cdm)
 			var p1 = result.p1;
 			var pos = result.pos;							
 		}
+		else if(cdm.toolPos)
+		{
+			var pos = cdm.toolPos;
+		}
 		else
 		{
 			var p = tube.userData.wf_tube.point;

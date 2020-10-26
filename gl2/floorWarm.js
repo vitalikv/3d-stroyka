@@ -169,6 +169,9 @@ function crTubeWF(cdm)
 	tube.userData.wf_tube.diameter = diameter;	
 	scene.add( tube );
 	
+	if(cdm.id){ tube.userData.id = cdm.id; }
+	else { tube.userData.id = countId; countId++; }	
+	
 	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }		
 	
 	// line

@@ -1,95 +1,62 @@
 
 
 
-function detectCopyObj()
-{
-	var obj = clickO.last_obj;
-	
-	if(!obj) return;
-	
-	if(obj.userData.tag == 'obj') { copyObj({obj: obj}); }
-	if(obj.userData.tag == 'wf_tube') { copyTubeWF({tube: obj}); }
-}
-
-
 
 // копируем объект или группу
-function copyObj(cdm) 
-{
-	//var obj = getObjFromPivotGizmo();
-	
-	var obj = cdm.obj;
+function copyObj() 
+{	
+	var obj = clickO.last_obj;
 	
 	if(!obj) return;	
 	
 	
 	var arr = getObjsFromGroup_1({obj: obj});
 
-	var flag = obj.userData.obj3D.group;	// группа или одиночный объект		
+	var group = null;
+	if(obj.userData.obj3D) { var group = obj.userData.obj3D.group; }
+	if(obj.userData.wf_tube) { var group = obj.userData.wf_tube.group; }		
+
+	
 	
 	var arr2 = [];
 	
 	for(var i = 0; i < arr.length; i++)
 	{ 
-		if(flag) 
-		{
-			var gr = arr[i].userData.obj3D.group;
-			arr[i].userData.obj3D.group = null;			
-		}
+		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = null; }					
 		
-		var clone = arr2[arr2.length] = arr[i].clone();
-
-		clone.userData.id = countId; countId++;
-
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
-		scene.add( clone );
-
-		// клонируем материал
-		clone.traverse( function ( child ) 
-		{
-			if ( child.isMesh ) 
-			{ 
-				if(child.userData.centerPoint)
-				{
-					child.material = infProject.material.pointObj.default;
-				}
-			}
-		});
 		
-
-		updateListObjUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
-		
-		if(flag)
-		{
-			arr[i].userData.obj3D.group = gr;		// восстанавливаем группу
-		}		
-	}
-
-	// у старого объекта с которого делали копию, прячем centerPoint
-	obj.traverse( function ( child ) 
-	{
-		if ( child.isMesh ) 
+		if(arr[i].userData.obj3D) 
 		{ 
-			if(child.userData.centerPoint)
-			{
-				child.material = infProject.material.pointObj.default;
-				child.visible = false;
-			}
+			var clone = arr[i].clone();
+			arr2[arr2.length] = clone;
+			clone.userData.id = countId; countId++;
+			scene.add( clone );
+	
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
+			
+			updateListObjUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
 		}
-	});		
-	
+		
+		if(arr[i].userData.wf_tube) 
+		{ 
+			arr2[arr2.length] = copyTubeWF({tube: arr[i]}); 
+		}		 
+		
+		
+		// восстанавливаем группу
+		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }					
+	}
+
+
+	var toolPos = (infProject.tools.pivot.visible) ? infProject.tools.pivot.position : infProject.tools.gizmo.position;
 	 
+	hideMenuObjUI_2D();
 	
-	hidePivotGizmo(obj);
+	createGroupObj_1({nameRus: 'новая группа', obj: {o: arr2} });
 	
-	if(flag)
-	{
-		addObjToGroup({arr: arr2});
-	}
-	else
-	{
-		clickObject3D( arr2[0], {menu_1: true, outline: true} );
-	}
+	if(arr2[0].userData.obj3D) { clickObject3D( arr2[0], {menu_1: true, outline: true} ); }
+	else if(arr2[0].userData.wf_tube) { clickTubeWF({obj: arr2[0], toolPos: toolPos, menu_1: true}); }		
+
 
 	scaleToolsMoveCamera();	
 	renderCamera();		
@@ -117,5 +84,7 @@ function copyTubeWF(cdm)
 	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone(), pVisible: false});
 	
 	addTubeInScene(tube, {});
+	
+	return tube;
 }
 

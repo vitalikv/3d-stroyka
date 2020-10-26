@@ -681,7 +681,7 @@ function consoleInfo( obj )
 	}	
 	else if ( tag == 'wf_tube' ) 
 	{
-		console.log( tag + " id : " + obj.userData.id + " | userData : ", obj.userData, obj );
+		console.log( "tag: " + tag + " | id : " + obj.userData.id + " | userData : ", obj.userData, obj );
 	}	
 	else 
 	{
