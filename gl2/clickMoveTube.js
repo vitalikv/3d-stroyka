@@ -228,27 +228,6 @@ function clickMouseUpTube(obj)
 
 
 
-// копировать трубу
-function copyTubeWF(cdm)
-{
-	var tube = cdm.tube;
-	
-	if(!tube) return;	
-	if(tube.userData.tag != 'wf_tube') return;
-	
-	var point = tube.userData.wf_tube.point;
-	
-	var p = [];
-	for(var i = 0; i < point.length; i++)
-	{
-		p[i] = {pos: point[i].position.clone(), visible: false};
-	}	
-	
-	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone(), pVisible: false});
-	
-	addTubeInScene(tube, {});
-}
-
 
 
 // удалить трубу

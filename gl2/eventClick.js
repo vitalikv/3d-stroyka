@@ -15,8 +15,6 @@ $('[nameId="button_load_1"]').mousedown(function () { changeMainMenuUI({value: '
 $('[nameId="button_save_1"]').mousedown(function () { changeMainMenuUI({value: 'button_save_1'}); });
 $('[nameId="button_help"]').mousedown(function () { changeMainMenuUI({value: 'button_help'}); });
 $('[nameId="button_contact"]').mousedown(function () { changeMainMenuUI({value: 'button_contact'}); });
-//$('[nameId="load_pr_1"]').mousedown(function () { loadFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
-//$('[nameId="save_pr_1"]').mousedown(function () { saveFile(); $('[nameId="background_main_menu"]').css({"display":"none"}); });
 
 
 
@@ -102,9 +100,9 @@ $('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'piv
 $('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });
 
 $('[nameId="obj_rotate_reset"]').mousedown(function () { resetRotateObj(); });	
-$('[nameId="button_copy_obj"]').mousedown(function () { copyObj(); });
+
 $('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
-$('[nameId="button_delete_obj"]').mousedown(function () { deleteObjectPop(clickO.last_obj); });
+
 
 
 $('[nameId="obj_rotate_X_90"]').mousedown(function () { setRotationGizmo({axis: 'x', angle: 90}); });
@@ -131,13 +129,6 @@ $('[link_form]').mousedown(function ()
 	createForm({form : 'shape'+$(this).attr("link_form")}); 
 	$('[data-action="modal"]').css({"display":"none"}); 
 }); 
-
-
-
-
-$('[data-action="deleteObj"]').mousedown(function () { detectDeleteObj(); return false; });
-$('[data-action="addPointCenterWall"]').mousedown(function () { addPointCenterWall(); return false; });
-
 
 
 
@@ -180,6 +171,8 @@ $('[data-action="modal_window_close_1"]').mousedown(function ()
 
 
 //----------------- правая панель
+
+
 
 
 
@@ -243,6 +236,14 @@ infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraV
 
 
 //----------------- правая панель ->
+
+
+
+document.querySelector('[nameId="button_delete_obj"]').onmousedown = function(e){ detectDeleteObj(); e.stopPropagation(); };
+document.querySelector('[nameId="button_copy_obj"]').onmousedown = function(e){ detectCopyObj(); e.stopPropagation(); };
+
+
+
 
 infProject.elem.dv_right_panel_1 = document.querySelector('[nameId="dv_right_panel_1"]');
 infProject.elem.button_catalog_close = document.querySelector('[nameId="button_catalog_close"]');
@@ -408,8 +409,7 @@ function changeRightMenuUI_2(cdm)
 var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
 elem.addEventListener('mousedown', function() { switchAddPointOnTube(); });
 
-var elem = document.querySelector('[nameId="copy_tube"]');
-elem.addEventListener('mousedown', function() { copyTubeWF({ tube: clickO.last_obj }); });
+
 
 document.querySelector('[nameId="save_list_obj"]').onmousedown = function(){ saveListTxt(); };
 

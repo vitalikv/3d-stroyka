@@ -21,11 +21,13 @@ function activeObjRightPanelUI_1(cdm)
 	{
 		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="rp_bl_wf_point"]').show();
+		$('[nameId="pr_list_button_for_obj"]').show();
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
 		$('[nameId="bl_object_3d"]').show();
-		$('[nameId="rp_bl_wf_tube"]').show();		
+		$('[nameId="rp_bl_wf_tube"]').show();
+		$('[nameId="pr_list_button_for_obj"]').show();
 	}			
 	else if(obj.userData.tag == 'obj')
 	{		     

@@ -17,6 +17,7 @@ clickMovePoint.js
 clickMoveWall.js
 clickMoveWD.js
 deleteObj.js
+copyObj.js
 floor.js
 detectZone.js
 inputWall.js
