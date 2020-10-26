@@ -6,11 +6,9 @@ function showWF_point_UI(point)
 {
 	var tube = point.userData.wf_point.tube;
 	
-	infProject.elem.rp_obj_name.value = 'точка';
+	infProject.elem.rp_obj_name.value = 'точка';	
 	
-	var elem = document.querySelector('[nameId="rp_bl_wf_point"]');
-	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
-	
+	upInfoTubeUI({tube: tube, size: true});
 	
 	// если точка является началом или концом трубы, то показываем кнопку
 	{
@@ -44,14 +42,40 @@ function showWF_line_UI(cdm)
 	infProject.elem.rp_obj_name.value = tube.userData.wf_tube.nameRus;
 	
 	var elem = document.querySelector('[nameId="rp_bl_wf_tube"]');
-	
-	elem.querySelector('[nameId="color_tube_1_default"]').value = '#'+tube.material.color.clone().getHexString();	
+		
 	elem.querySelector('[nameId="size_tube_diameter_2"]').value = tube.userData.wf_tube.diameter * 1000;
-	elem.querySelector('[nameId="size_tube_dist_4"]').value = tube.userData.wf_tube.length;	
+	
+
+	upInfoTubeUI({tube: tube, size: true, color: true});
 }
 
 
-
+// обновляем значение трубы во вкладке объект UI
+function upInfoTubeUI(cdm)
+{
+	var tube = cdm.tube;
+	
+	var el = null;
+	var arr = infProject.list.rp_ui.arr;
+	
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].o == tube) { el = arr[i].el; break; }			
+	}
+	
+	if(el)
+	{ 
+		if(cdm.size)
+		{
+			el.querySelector('[item="value"]').innerText = tube.userData.wf_tube.length+'м';
+		}
+		
+		if(cdm.color)
+		{
+			el.querySelector('input[type="color"]').value = '#'+tube.material.color.clone().getHexString();
+		}		
+	}	
+}
 
 
 

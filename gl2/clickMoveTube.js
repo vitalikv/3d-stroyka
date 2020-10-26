@@ -59,7 +59,7 @@ function clickFirstTubeWF(cdm)
 	
 	if(infProject.list.alignP.active) { showJoinPoint_2({obj: obj}); }	// вкл кнопка подключить/выронить
 	else if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }
-	else { clickTubeWF({ray: rayhit}); }	
+	else { clickTubeWF({ray: rayhit, menu_1: true}); }	
 }
 
 
@@ -84,7 +84,9 @@ function clickTubeWF(cdm)
 	setClickLastObj({obj: tube});
 	
 	setScaleTubePoint();
-
+	
+	if(cdm.menu_1) { clickObjUI({obj: tube}); }		// обновляем правое меню 
+	
 	showWF_line_UI({tube: tube});
 	
 	activeObjRightPanelUI_1({obj: tube});

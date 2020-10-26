@@ -753,31 +753,7 @@ function getInfoFcObj()
 {
 	var obj = clickO.last_obj;
 	
-	var arrO = [];
-	
-	if(obj.userData.tag == 'obj') 
-	{
-		if(obj.userData.obj3D.group) 	// группа
-		{			
-			var arr = obj.userData.obj3D.group.userData.groupObj.child; 
-			
-			// добавляем новый список объектов из группы
-			for(var i = 0; i < arr.length; i++)
-			{	
-				if(!arr[i].userData.obj3D) continue;			
-				
-				arrO[arrO.length] = arr[i];			
-			} 
-		}
-		else	// у объекта нет группы
-		{
-			var arrO = [obj]; 
-		}		
-	}
-	else if(obj.userData.tag == 'wf_tube')
-	{
-		var arrO = [obj];
-	}
+	var arrO = getObjsFromGroup_1({obj: obj});
 	
 	
 	var txt = '';
@@ -833,8 +809,8 @@ function getInfoFcObj()
 				
 				for ( var i2 = 0; i2 < arrO[i].userData.wf_tube.point.length; i2++ )
 				{
-					params.point[i2] = {};
-					params.point[i2].pos = arrO[i].userData.wf_tube.point[i2].position.clone();
+					params.point[i2] = {};					
+					params.point[i2].pos = offset.clone().add(arrO[i].userData.wf_tube.point[i2].position);
 				}
 			}
 			
@@ -872,7 +848,9 @@ async function newObjTest_1(cdm)
 	}
 	
 
-	var inf = {"point":[{"pos":{"x":2.3400637720154194,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.450574937475825,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.472151701510927,"y":0.15310790275905503,"z":-3.0917399499678515}},{"pos":{"x":2.4841326729874345,"y":0.17240056985333765,"z":-3.0917399499678515}},{"pos":{"x":2.4942349677354922,"y":0.6091230504491234,"z":-3.0917399499678515}},{"pos":{"x":2.5227232308610894,"y":0.6292413169113358,"z":-3.0917399499678515}},{"pos":{"x":2.5732247822230025,"y":0.6302942062224188,"z":-3.0921976591959366}}],"diameter":0.016,"color":14632981, pVisible: false}	
+	var inf = {"point":[{"pos":{"x":2.3400637720154194,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.450574937475825,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.472151701510927,"y":0.15310790275905503,"z":-3.0917399499678515}},{"pos":{"x":2.4841326729874345,"y":0.17240056985333765,"z":-3.0917399499678515}},{"pos":{"x":2.4942349677354922,"y":0.6091230504491234,"z":-3.0917399499678515}},{"pos":{"x":2.5227232308610894,"y":0.6292413169113358,"z":-3.0917399499678515}},{"pos":{"x":2.5732247822230025,"y":0.6302942062224188,"z":-3.0921976591959366}}],"diameter":0.016,"color":14632981, pVisible: false}
+
+	var inf = {"point":[{"pos":{"x":0.5524333308010525,"y":0.7500173013061321,"z":2.00014500349682}},{"pos":{"x":0.8119162357689613,"y":0.7500173013061321,"z":2.00014500349682}}],"diameter":0.016,"color":3778747, pVisible: false}	
 		
 	var tube = crTubeWF(inf);
 	addTubeInScene(tube, {});

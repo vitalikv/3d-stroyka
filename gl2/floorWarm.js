@@ -343,7 +343,7 @@ function inputWF_tubeDiametr(cdm)
 // меняем цвет трубы input
 function changeColorTube(cdm) 
 {  
-	var tube = clickO.last_obj;
+	var tube = cdm.obj;
 	
 	if(!tube) return;	
 	if(tube.userData.tag != 'wf_tube') return;		 

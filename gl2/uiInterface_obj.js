@@ -19,10 +19,12 @@ function activeObjRightPanelUI_1(cdm)
 	
 	if(obj.userData.tag == 'wf_point')
 	{
+		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="rp_bl_wf_point"]').show();
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
+		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="rp_bl_wf_tube"]').show();		
 	}			
 	else if(obj.userData.tag == 'obj')
@@ -68,32 +70,14 @@ function clickObjUI(cdm)
 	if(!cdm.obj) return;
 	
 	var obj = cdm.obj;
-	var inf = null;
 	
 	if(obj.userData.obj3D) { var obj = cdm.obj; }
 	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
+	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
 	else { return; }
 
 
-	if(obj.userData.obj3D.group) 	// группа
-	{
-		var arrO = [];
-		var arr = obj.userData.obj3D.group.userData.groupObj.child; 
-		
-		// добавляем новый список объектов из группы
-		for(var i = 0; i < arr.length; i++)
-		{	
-			if(arr[i].userData.obj3D) {}
-			else if(arr[i].userData.wf_tube){}
-			else { continue; }
-			
-			arrO[arrO.length] = arr[i];			
-		} 
-	}
-	else	// у объекта нет группы
-	{
-		var arrO = [obj]; 
-	}
+	var arrO = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект
 	
 	
 	var flag = true;	// если другая группа или объект, тогда очищаем список и создаем новый
@@ -161,12 +145,14 @@ function clickObjUI(cdm)
 				'<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1" style="margin: auto;">\
 						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.wf_tube.nameRus+'</div>\
-						<div class="right_panel_1_1_list_item_color" item="color" style="background:#'+arrO[i].material.color.clone().getHexString()+';"></div>\
+						<div class="right_panel_1_1_list_item_color">\
+							<input type="color" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
+						</div>\
 						<div class="right_panel_1_1_list_item_text" item="value">'+arrO[i].userData.wf_tube.length+'м</div>\
 						'+button_2+'\
 					</div>\
 				</div>';
-			}
+			} 
 			else if(tag == 'obj')
 			{
 				var html = 
@@ -192,8 +178,21 @@ function clickObjUI(cdm)
 			(function() 
 			{  
 				elem.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };	
-			}());
+			}());			
 			
+			// замена цвета у трубы
+			if(tag == 'wf_tube')
+			{
+				var obj = arrO[i];
+				var colorTube = elem.querySelector('input[type="color"]');
+				colorTube.value = '#'+obj.material.color.clone().getHexString();
+								
+				(function(obj) 
+				{  					
+					colorTube.onmousedown = function(e){ e.stopPropagation(); };
+					colorTube.onchange = function(e){ changeColorTube({ obj: obj, value: this.value }); e.stopPropagation(); };					
+				}(obj));							
+			}
 			
 			
 			// назначаем кнопки треугольник событие

@@ -104,6 +104,13 @@ function getObjsFromGroup_1( cdm )
 			var arr = obj.userData.obj3D.group.userData.groupObj.child;			
 		}
 	}
+	else if(obj.userData.wf_tube)
+	{
+		if(obj.userData.wf_tube.group)
+		{						
+			var arr = obj.userData.wf_tube.group.userData.groupObj.child;			
+		}		
+	}
 	
 	return arr;	
 }

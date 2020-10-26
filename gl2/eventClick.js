@@ -403,8 +403,7 @@ function changeRightMenuUI_2(cdm)
 	activeObjRightPanelUI_1({obj: clickO.last_obj});
 }
 
-let colorTube = document.querySelector('[nameId="color_tube_1_default"]');
-colorTube.addEventListener('change', function() { changeColorTube({ value: this.value }); });
+
 
 var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
 elem.addEventListener('mousedown', function() { switchAddPointOnTube(); });

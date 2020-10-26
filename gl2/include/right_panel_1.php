@@ -404,109 +404,7 @@
 					
 					<div nameId="rp_bl_obj_properties">	
 					
-						<div nameId="rp_bl_wf_point" style="display: none;">
-							
-							<div class="flex_1">
-								<div class="flex_1 align_items">
-									<div class="rp_label_plane">
-										длина (м)
-									</div>
-								</div>
-								<div class="flex_1 align_items" style="width: auto;">
-									<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
-								</div>
-							</div>	
 
-							
-					
-							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">								
-								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="display: none; margin: 10px 0;">соединить с трубой</div>	
-								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">подключить</div>
-								<div data-action ='deleteObj' class="button1 button_gradient_1" style="margin: 10px 0;">удалить</div>								
-							</div>
-							
-							<div nameId="rp_wrap_align_wf_point" style="display: none;">
-							
-								<div class="button1 button_gradient_1" nameId="button_deactive_align_wf_point" style="border-color: #ff0000">
-									закрыть	
-								</div> 
-							
-								<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point" style="min-height: 150px; max-height: 150px;">
-									
-								</div>	
-								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
-									подключить	
-								</div>
-								
-							</div>	
-
-
-							<div nameId="rp_wrap_join_wf_point" style="display: none;">
-							
-								<div class="button1 button_gradient_1" nameId="button_deactive_join_wf_point" style="border-color: #ff0000">
-									закрыть	
-								</div>
-							
-								<div class="right_panel_1_1_list" nameId="rp_list_join_wf_point" style="min-height: 150px; max-height: 150px;">
-									
-								</div>	
-								<div class="button1 button_gradient_1" nameId="button_done_join_wf_point">
-									соединить	
-								</div>
-								
-							</div>								
-							
-						</div>
-						
-						
-						<div nameId="rp_bl_wf_tube" style="display: none;">
-							
-							<div class="flex_1">
-								<div class="flex_1 align_items">
-									<div class="rp_label_plane">
-										диаметр (мм)
-									</div>
-								</div>
-								<div class="flex_1 align_items" style="width: auto;">
-									<input type="text" nameId="size_tube_diameter_2" style="width: 90%; margin:5px 5px;" value=0>
-								</div>
-							</div>
-
-							<div class="flex_1">
-								<div class="flex_1 align_items">
-									<div class="rp_label_plane">
-										длина (м)
-									</div>
-								</div>
-								<div class="flex_1 align_items" style="width: auto;">
-									<input type="text" nameId="size_tube_dist_4" style="width: 90%; margin:5px 5px;" value=0>
-								</div>
-							</div>						
-							
-							<div class="flex_1">
-								<div class="flex_1 align_items">
-									<div class="rp_label_plane">
-										цвет
-									</div>
-								</div>
-								<div class="flex_1 align_items" style="width: 100%;">
-									<input nameId="color_tube_1_default" type="color" style="width: 90%; margin:5px 5px; cursor: pointer;">
-								</div>
-							</div>					 
-			
-							<div style="margin: 10px 0;">
-								<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>
-							</div>
-							
-							<div style="margin: 10px 0;">
-								<div nameId="copy_tube" class="button1 button_gradient_1">копировать</div>
-							</div>							
-							
-							<div style="margin: 10px 0;">
-								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
-							</div>
-						</div>					
-						
 						<div nameId="bl_object_3d" style="display: none;">
 							
 							
@@ -589,6 +487,77 @@
 							
 						</div>	
 
+
+						<div nameId="rp_bl_wf_tube" style="display: none;">
+							
+							<div class="flex_1">
+								<div class="flex_1 align_items">
+									<div class="rp_label_plane">
+										диаметр (мм)
+									</div>
+								</div>
+								<div class="flex_1 align_items" style="width: auto;">
+									<input type="text" nameId="size_tube_diameter_2" style="width: 90%; margin:5px 5px;" value=0>
+								</div>
+							</div>					
+											 
+			
+							<div style="margin: 10px 0;">
+								<div nameId="butt_add_point_on_tube" class="button1 button_gradient_1">добавить точку</div>
+							</div>
+							
+							<div style="margin: 10px 0;">
+								<div nameId="copy_tube" class="button1 button_gradient_1">копировать</div>
+							</div>							
+							
+							<div style="margin: 10px 0;">
+								<div data-action ='deleteObj' class="button1 button_gradient_1">удалить</div>
+							</div>
+						</div>					
+						
+						
+						<div nameId="rp_bl_wf_point" style="display: none;">
+					
+							<div nameId="pr_list_button_for_tube_point" style="margin: 10px 0;">								
+								<div nameId="button_active_join_wf_point" class="button1 button_gradient_1" style="display: none; margin: 10px 0;">соединить с трубой</div>	
+								<div nameId="button_active_align_wf_point" class="button1 button_gradient_1">подключить</div>
+								<div data-action ='deleteObj' class="button1 button_gradient_1" style="margin: 10px 0;">удалить</div>								
+							</div>
+							
+							<div nameId="rp_wrap_align_wf_point" style="display: none;">
+							
+								<div class="button1 button_gradient_1" nameId="button_deactive_align_wf_point" style="border-color: #ff0000">
+									закрыть	
+								</div> 
+							
+								<div class="right_panel_1_1_list" nameId="rp_list_align_wf_point" style="min-height: 150px; max-height: 150px;">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="button_done_align_wf_point">
+									подключить	
+								</div>
+								
+							</div>	
+
+
+							<div nameId="rp_wrap_join_wf_point" style="display: none;">
+							
+								<div class="button1 button_gradient_1" nameId="button_deactive_join_wf_point" style="border-color: #ff0000">
+									закрыть	
+								</div>
+							
+								<div class="right_panel_1_1_list" nameId="rp_list_join_wf_point" style="min-height: 150px; max-height: 150px;">
+									
+								</div>	
+								<div class="button1 button_gradient_1" nameId="button_done_join_wf_point">
+									соединить	
+								</div>
+								
+							</div>								
+							
+						</div>
+						
+												
 					</div>
 					
 				</div> 
