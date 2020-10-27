@@ -80,8 +80,6 @@ var resetPop =
 
 function resetScene() 
 {	
-	hideMenuUI(clickO.last_obj);
-	
 	console.log(renderer.info.memory);
 	
 	var wall = infProject.scene.array.wall;

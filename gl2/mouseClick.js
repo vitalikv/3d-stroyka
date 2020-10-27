@@ -21,25 +21,8 @@ function mouseDownRight()
 	var obj = clickO.move;
 	
 	if(obj)
-	{
-		if(obj.userData.tag == 'free_dw') { scene.remove(obj); }
-		
-		if(obj.userData.tag == 'point') 
-		{ 	
-			if(obj.w.length == 0){ deleteOnePoint(obj); }  
-			else 
-			{ 
-				if(obj.userData.point.type == 'continue_create_wall')
-				{
-					var point = obj.p[0]; 
-					deleteWall_2(obj.w[0]); 
-					//upLabelPlan_1([point.w[0]]);					
-				}
-				
-				if(point.userData.point.last.cdm == 'new_point_1') { deletePoint( point ).wall.userData.id = point.userData.point.last.cross.walls.old; }
-			}
-		}
-		else if(obj.userData.tag == 'obj')
+	{		
+		if(obj.userData.tag == 'obj')
 		{
 			deleteObjectPop(obj); 
 		}		
@@ -564,29 +547,10 @@ function hideMenuObjUI_2D(cdm)
 	
 	if(flag) 
 	{
-		hideMenuUI(obj);
 		resetClickLastObj({});
 	}
 }
 
-
-
-
-
-function hideMenuUI(obj) 
-{
-	if(!obj) return;  console.log('hideMenuUI', obj);
-	if(!obj.userData) return;
-	if(!obj.userData.tag) return;
-	
-	var tag = obj.userData.tag;
-	
-	if(tag == 'wall') { $('[nameId="wall_menu_1"]').hide(); }
-	else if(tag == 'point') { $('[nameId="point_menu_1"]').hide(); }
-	else if(tag == 'window') { $('[nameId="wd_menu_1"]').hide(); }
-	else if(tag == 'door') { $('[nameId="wd_menu_1"]').hide(); }	
-	else if(tag == 'boxWF') { hideBoxWF_UI(); } 
-}
 
 
 

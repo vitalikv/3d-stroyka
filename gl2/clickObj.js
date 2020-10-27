@@ -149,53 +149,6 @@ function clickMouseUpObject(obj)
 }
 
 
-// удаление объекта
-function deleteObjectPop(obj)
-{ 
-	if(obj.userData.tag != 'obj') return;
-	
-	clickO = resetPop.clickO(); 
-	
-	hidePivotGizmo(obj);
-	
-	deClickObj({obj: obj, moment: ''});
-	
-	var arr = [];
-	
-	if(obj.userData.obj3D.group && infProject.settings.active.group)
-	{
-		var group = obj.userData.obj3D.group;
-		arr = group.userData.groupObj.child;
-		
-		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
-	}
-	else
-	{
-		arr[0] = obj;
-		
-		detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
-	}
-	
-
-	for(var i = 0; i < arr.length; i++)
-	{	
-		updateListObjUI_1({type: 'delete', o: arr[i]});
-		deleteValueFromArrya({arr : infProject.scene.array.obj, o : arr[i]});				
-
-		var arrO = getAllChildObect({obj: obj});
-		for(var i2 = 0; i2 < arrO.length; i2++)
-		{
-			disposeNode(arrO[i2]);
-		}
-		
-		scene.remove(arr[i]);
-	}
-	
-	outlineRemoveObj();
-	renderCamera();
-}
-
-
 
 
 

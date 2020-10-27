@@ -1533,7 +1533,7 @@ document.body.addEventListener("keydown", function (e)
 	
 	if(e.keyCode == 90) { fitCameraToObject({obj: clickO.last_obj, rot: true}); }	// z
 		
-	if(e.keyCode == 46) { detectDeleteObj(); }
+	if(e.keyCode == 46) { detectDeleteObj({obj: clickO.last_obj}); }
 	
 	if (window.location.hostname == '3d-stroyka')
 	{

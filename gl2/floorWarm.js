@@ -270,49 +270,6 @@ function tubeGeometry(params)
 
 
 
-// удаляем точку
-function deletePointWF(obj)
-{
-	//arr_wf.point.pop();	// удаляем последнее значение в массиве
-	
-	hideMenuUI(obj);
-	
-	var line = obj.userData.wf_point.line.o;	
-	var tube = obj.userData.wf_point.tube;
-	
-	// если у трубы 2 точки, то удаляем трубу
-	if(tube.userData.wf_tube.point.length == 2)
-	{		
-		deleteLineWF(tube);			
-	}
-	else	// удаляем точку
-	{
-		deClickTube({obj: tube, moment: ''});	// диактивируем трубу
-		
-		deleteValueFromArrya({arr: tube.userData.wf_tube.point, o: obj});
-
-		var geometry = new THREE.Geometry();
-		
-		for(var i = 0; i < tube.userData.wf_tube.point.length; i++)
-		{
-			geometry.vertices[i] = tube.userData.wf_tube.point[i].position;
-		}
-		
-		disposeNode(line);
-		disposeNode(tube);
-		
-		line.geometry = geometry;
-		updateTubeWF({tube: tube});
-		
-		disposeNode(obj);
-		scene.remove(obj);	// удаляем точку
-	}
-
-}
-
-
-
-
 
 // input меняем диаметр трубы
 function inputWF_tubeDiametr(cdm)

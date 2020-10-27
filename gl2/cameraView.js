@@ -161,14 +161,7 @@ function deleteObjCameraView()
 	
 	for(var i = 0; i < arr.length; i++)
 	{
-		if(arr[i].userData.tag == 'obj') 
-		{
-			deleteObjectPop(arr[i]);
-		}
-		if(arr[i].userData.tag == 'wf_tube')
-		{
-			deleteLineWF(arr[i]);
-		}			
+		detectDeleteObj({obj: arr[i]});		
 	}
 	
 	cameraView.userData.cameraView.arrO = [];

@@ -853,7 +853,8 @@ async function newObjTest_1(cdm)
 	var inf = {"point":[{"pos":{"x":0.5524333308010525,"y":0.7500173013061321,"z":2.00014500349682}},{"pos":{"x":0.8119162357689613,"y":0.7500173013061321,"z":2.00014500349682}}],"diameter":0.016,"color":3778747, pVisible: false}	
 		
 	var tube = crTubeWF(inf);
-	addTubeInScene(tube, {});
+	var inf = (cdm.cameraView) ? {notArray: true} : {};
+	addTubeInScene(tube, inf);
 	
 	arrO[arrO.length] = tube;
 	
