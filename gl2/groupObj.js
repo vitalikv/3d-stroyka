@@ -85,7 +85,17 @@ function addObjToGroup(cdm)
 
 	switchSelectAddObjGroup({active: false});
 	
-	clickObject3D( arr[0], {menu_1: true, outline: true} );
+	
+	
+	if(arr[0].userData.obj3D)
+	{
+		clickObject3D( arr[0], {menu_1: true, outline: true} );
+	}
+	else if(arr[0].userData.wf_tube)
+	{
+		var toolPos = (infProject.tools.pivot.visible) ? infProject.tools.pivot.position : infProject.tools.gizmo.position;
+		clickTubeWF({obj: arr[0], toolPos: toolPos, menu_1: true});
+	}	
 
 }
 
@@ -137,7 +147,8 @@ function detachObjGroup(cdm)
 		}
 		else if(obj.userData.wf_tube)
 		{
-			clickTubeWF({obj: obj});
+			var toolPos = (infProject.tools.pivot.visible) ? infProject.tools.pivot.position : infProject.tools.gizmo.position;
+			clickTubeWF({obj: obj, toolPos: toolPos, menu_1: true});
 		}		
 	}
 

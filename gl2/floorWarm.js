@@ -330,6 +330,10 @@ function changeColorTube(cdm)
 // кликнули на другой объект, деактивируем трубу
 function deClickTube(cdm)  
 {	
+	var obj = cdm.obj;
+	if(!obj) return;
+	
+
 	if(clickO.rayhit)
 	{  
 		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
@@ -346,9 +350,8 @@ function deClickTube(cdm)
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
 		}		
-	}
+	}	
 	
-	var obj = cdm.obj;
 	
 	if(cdm.moment == 'down' && camera == cameraTop && !checkClickTube_1())
 	{
@@ -376,6 +379,12 @@ function deClickTube(cdm)
 				if(clickO.rayhit.object.userData.tag == 'wf_point') { return checkWFPoint_1({obj: clickO.rayhit.object}); }
 				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
 			}
+			
+			if(infProject.list.mergeO.active)
+			{
+				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
+				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
+			}			
 		}
 
 		return false;
