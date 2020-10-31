@@ -91,30 +91,6 @@ function clickObject3D( obj, cdm )
 }
 
 
-// пролучить все объекты принадлежащие группе 
-function getObjsFromGroup_1( cdm )
-{
-	var obj = cdm.obj;
-	var arr = [ obj ];
-	
-	if(obj.userData.obj3D)
-	{
-		if(obj.userData.obj3D.group)
-		{						
-			var arr = obj.userData.obj3D.group.userData.groupObj.child;			
-		}
-	}
-	else if(obj.userData.wf_tube)
-	{
-		if(obj.userData.wf_tube.group)
-		{						
-			var arr = obj.userData.wf_tube.group.userData.groupObj.child;			
-		}		
-	}
-	
-	return arr;	
-}
-
 
 
 

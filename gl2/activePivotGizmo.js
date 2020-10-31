@@ -6,8 +6,7 @@
 // ставим pivot/gizmo
 function setPivotGizmo(cdm)
 {
-	var obj = cdm.obj;
-	
+	var obj = cdm.obj;	
 	if(!obj) return;		
 	
 	
@@ -62,12 +61,14 @@ function setPivotGizmo(cdm)
 	else { type = infProject.settings.active.pg; }					// объекты
 	
 	
+	
 	// показываем pivot
 	if(type == 'pivot')
 	{
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
+		pivot.userData.pivot.arrO = arrObjFromGroup({obj: obj});
 		pivot.position.copy(pos);
 		pivot.quaternion.copy(qt);
 		

@@ -211,8 +211,10 @@ function moveFullTube_2(cdm)
 	{
 		point[i].position.add( offset );
 	}
+	
+	tube.position.add( offset );
 
-	updateTubeWF({tube: tube});
+	//updateTubeWF({tube: tube});
 }
 
 
@@ -220,14 +222,7 @@ function clickMouseUpTube(obj)
 {
 	if(!clickO.actMove) return;
 	
-	if(1==2)
-	{
-		var tube = obj;		
-		updateTubeWF({tube: tube});
-		
-		tube.position.set( 0,0,0 );
-		line.position.set( 0,0,0 );				
-	}	
+	
 }
 
 

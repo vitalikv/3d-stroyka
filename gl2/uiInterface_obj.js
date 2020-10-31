@@ -73,15 +73,7 @@ function clickObjUI(cdm)
 	
 	var obj = cdm.obj;
 	
-	if(obj.userData.obj3D) { var obj = cdm.obj; }
-	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
-	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
-	else if(obj.userData.wf_point) { var obj = cdm.obj.userData.wf_point.tube; }
-	else { return; }
-
-
-	var arrO = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект
-	
+	var arrO = arrObjFromGroup({obj: obj});		// получаем все объекты группы, если нет группы -> получаем один объект
 	
 	var flag = true;	// если другая группа или объект, тогда очищаем список и создаем новый
 	

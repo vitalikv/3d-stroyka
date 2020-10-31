@@ -9,6 +9,7 @@ function createPivot()
 	pivot.userData.pivot = {};
 	pivot.userData.pivot.active = { axis: '', startPos: new THREE.Vector3(), dir: new THREE.Vector3(), qt: new THREE.Quaternion() };
 	pivot.userData.pivot.obj = null;
+	pivot.userData.pivot.arrO = [];		// группа объектов
 	pivot.userData.pivot.axs = [];
 	
 	var param = [];
@@ -250,13 +251,14 @@ function movePivot( event )
 	var pos2 = new THREE.Vector3().subVectors( pos, pivot.position );
 	pivot.position.add( pos2 );
 	
-	
-	movePivot_2({obj: obj, pos2: pos2});
+	var arrO = pivot.userData.pivot.arrO;
+	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});
 }
 
 
 function movePivot_2(cdm)
 {
+	let arrO = cdm.arrO;
 	let obj = cdm.obj;
 	let pos2 = cdm.pos2;
 	
@@ -269,44 +271,23 @@ function movePivot_2(cdm)
 
 		showWF_point_UI(obj);
 	}
-	else if(obj.userData.tag == 'wf_tube')		// труба
+	else 
 	{
-		moveFullTube_2({tube: obj, offset: pos2});
-	}
-	else if(obj.userData.tag == 'joinPoint')		// разъем
-	{ 
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)		// группа
+		for(let i = 0; i < arrO.length; i++)
 		{
-			let arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
+			arrO[i].position.add( pos2 );
 			
-			for(let i = 0; i < arr.length; i++)
+			if(!arrO[i].userData.wf_tube) continue;
+
+			let point = arrO[i].userData.wf_tube.point;	
+			
+			for(let i2 = 0; i2 < point.length; i2++)
 			{
-				arr[i].position.add( pos2 );
-			}
-			obj.parent.updateMatrixWorld();
+				point[i2].position.add( pos2 );
+			}			
 		}
-		else	// один разъем
-		{
-			obj.parent.position.add( pos2 );
-			obj.parent.updateMatrixWorld();
-		}			
+		
 	}	
-	else if(obj.userData.tag == 'obj')		// объект
-	{
-		if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа
-		{
-			let arr = obj.userData.obj3D.group.userData.groupObj.child;
-			
-			for(let i = 0; i < arr.length; i++)
-			{
-				arr[i].position.add( pos2 );
-			}
-		}	
-		else 	// один объект 
-		{ 
-			obj.position.add(pos2); 
-		}		
-	}
 
 	upMenuPosObjPop(obj);
 }
@@ -314,22 +295,29 @@ function movePivot_2(cdm)
 
 function clickPivotUp()
 {
-	var obj = infProject.tools.pivot.userData.pivot.obj;
+	if(!clickO.actMove) return;
 	
+	var obj = infProject.tools.pivot.userData.pivot.obj;	
 	if(!obj) return;
 		
 	if(obj.userData.tag == 'wf_point')
 	{
-		if(clickO.actMove)
-		{		
-			updateTubeWF({tube: obj.userData.wf_point.tube});
-			obj.userData.wf_point.tube.visible = true;
+		updateTubeWF({tube: obj.userData.wf_point.tube});
+		obj.userData.wf_point.tube.visible = true;		
+	}	
+
+	var arrO = infProject.tools.pivot.userData.pivot.arrO;
+	if(arrO)
+	{
+		for(var i = 0; i < arrO.length; i++)
+		{
+			if(!arrO[i].userData.wf_tube) continue;
+
+			arrO[i].position.set( 0,0,0 );
+			updateTubeWF({tube: arrO[i]});			
 		}		
-	}
-	else if(obj.userData.tag == 'wf_tube') 
-	{ 
-		clickMouseUpTube(obj); 
-	}
+	}		
+
 	
 	setClickLastObj({obj: obj});
 }
@@ -348,6 +336,7 @@ function upMenuPosObjPop(obj)
 	}	
 	else if(obj.userData.tag == 'joinPoint')		// разъем
 	{
+		obj.parent.updateMatrixWorld();
 		pos = obj.getWorldPosition(new THREE.Vector3());
 	}
 	else if(obj.userData.tag == 'wf_tube')
@@ -423,7 +412,17 @@ function inputChangePos()
 	gizmo.position.add(pos2);
 	clippingGizmo360( obj );
 	
-	movePivot_2({obj: obj, pos2: pos2});
+	let arrO = arrObjFromGroup({obj: obj});
+	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});
+	
+	
+	for(let i = 0; i < arrO.length; i++)
+	{
+		if(!arrO[i].userData.wf_tube) continue;
+
+		arrO[i].position.set( 0,0,0 );
+		updateTubeWF({tube: arrO[i]});			
+	}	
 
 	renderCamera();
 }

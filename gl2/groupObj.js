@@ -56,6 +56,51 @@ function createGroupObj_1(cdm)
 
 
 
+// пролучить все объекты принадлежащие группе 
+function getObjsFromGroup_1( cdm )
+{
+	var obj = cdm.obj;
+	var arr = [ obj ];
+	
+	if(!infProject.settings.active.group) return arr;
+	
+	if(obj.userData.obj3D)
+	{
+		if(obj.userData.obj3D.group)
+		{						
+			var arr = obj.userData.obj3D.group.userData.groupObj.child;			
+		}
+	}
+	else if(obj.userData.wf_tube)
+	{
+		if(obj.userData.wf_tube.group)
+		{						
+			var arr = obj.userData.wf_tube.group.userData.groupObj.child;			
+		}		
+	}
+	
+	return arr;	
+}
+
+
+function arrObjFromGroup(cdm)
+{
+	var obj = cdm.obj;
+	var arr = [];
+	
+	if(obj.userData.obj3D) { var obj = cdm.obj; }
+	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
+	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
+	else if(obj.userData.wf_point) { var obj = cdm.obj.userData.wf_point.tube; }
+	else { return arr; }
+
+	var arr = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект	
+
+	return arr;
+}
+
+
+
 // объединяем объекты в группу
 function addObjToGroup(cdm) 
 {
