@@ -76,6 +76,7 @@ function clickObjUI(cdm)
 	if(obj.userData.obj3D) { var obj = cdm.obj; }
 	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
 	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
+	else if(obj.userData.wf_point) { var obj = cdm.obj.userData.wf_point.tube; }
 	else { return; }
 
 
@@ -113,26 +114,10 @@ function clickObjUI(cdm)
 			var num = infProject.list.rp_ui.arr.length;
 			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: null, p: [], p_vis: false };
 			
-			// получаем разъемы объекта
-			var o = getCenterPointFromObj_1(arrO[i]);
+			var tag = arrO[i].userData.tag;		
 			
-			var tag = arrO[i].userData.tag;
-
-			var str_button = '';
-			
-			if(o.length > 0)
-			{
-				str_button = 
-				'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
-					<div>\
-						<svg height="100%" width="100%" viewBox="0 0 100 100">\
-							<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-						</svg>\
-					</div>\
-				</div>';			
-			}
-			
-			var button_2 = 
+			// кнопка центрирование на объекте
+			var htmlViewObj = 
 			'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 10px; height: 20px;">\
 				<div>\
 					<svg height="100%" width="100%" viewBox="0 0 100 100">\
@@ -140,18 +125,54 @@ function clickObjUI(cdm)
 					</svg>\
 				</div>\
 			</div>';
+			
+			
+			// получаем разъемы объекта или точки трубы
+			{
+				var arrP = [];
+							
+				if(tag == 'wf_tube')
+				{
+					arrP[0] = arrO[i].userData.wf_tube.point[0];
+					arrP[1] = arrO[i].userData.wf_tube.point[arrO[i].userData.wf_tube.point.length - 1];				
+				}
+				else if(tag == 'obj')
+				{ 
+					arrP = getCenterPointFromObj_1(arrO[i]); 
+				}
+
+				var htmlTr = '';
+				
+				if(arrP.length > 0)
+				{
+					htmlTr = 
+					'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
+						<div>\
+							<svg height="100%" width="100%" viewBox="0 0 100 100">\
+								<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+							</svg>\
+						</div>\
+					</div>';			
+				}				
+			}
+				
 
 			if(tag == 'wf_tube')
 			{
+				var htmlTP = '';
+				
 				var html = 
 				'<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1" style="margin: auto;">\
+						'+htmlTr+'\
 						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.wf_tube.nameRus+'</div>\
 						<div class="right_panel_1_1_list_item_color">\
 							<input type="color" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
 						</div>\
 						<div class="right_panel_1_1_list_item_text" item="value">'+arrO[i].userData.wf_tube.length+'м</div>\
-						'+button_2+'\
+						'+htmlViewObj+'\
+					</div>\
+					<div nameId="groupItem" style="display: none;">\
 					</div>\
 				</div>';
 			} 
@@ -160,9 +181,9 @@ function clickObjUI(cdm)
 				var html = 
 				'<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1" style="margin: auto;">\
-						'+str_button+'\
+						'+htmlTr+'\
 						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
-						'+button_2+'\
+						'+htmlViewObj+'\
 					</div>\
 					<div nameId="groupItem" style="display: none;">\
 					</div>\
@@ -176,6 +197,7 @@ function clickObjUI(cdm)
 			
 			infProject.list.rp_ui.arr[num].el = elem;
 			
+			// клик на объект в меню
 			container.append(elem);
 			(function() 
 			{  
@@ -195,22 +217,9 @@ function clickObjUI(cdm)
 					colorTube.onchange = function(e){ changeColorTube({ obj: obj, value: this.value }); e.stopPropagation(); };					
 				}(obj));							
 			}
+					
 			
-			
-			// назначаем кнопки треугольник событие
-			if(o.length > 0)
-			{
-				let id = arrO[i].userData.id; 
-				let el_2 = elem.querySelector('[nameId="shCp_1"]');
-				var container_2 = elem.querySelector('[nameid="groupItem"]');
-
-				(function(container_2, id) 
-				{
-					el_2.onmousedown = function(e){ clickRtekUI_1({elem_2: container_2, id: id}); e.stopPropagation(); };	
-				}(container_2, id));											
-			}
-			
-			// назначаем событие при клике на кружок UI
+			// создаем событие по клику на кнопку центрирование на объекте
 			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
 			var obj = arrO[i];
 			(function(obj) 
@@ -222,29 +231,48 @@ function clickObjUI(cdm)
 				};	
 			}(obj));				
 			
-			
-			// разъемы
-			for(var i2 = 0; i2 < o.length; i2++)
-			{				
-				if(!o[i2].userData.centerPoint) continue;			
-				
-				var html = 
-				'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-				<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+o[i2].userData.centerPoint.nameRus+'</div>\
-				</div>';				
 
-				var div = document.createElement('div');
-				div.innerHTML = html;
-				let el_3 = div.firstChild;
-
-				infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: o[i2], el: el_3 };
-				
-				container_2.append(el_3);
-				el_3.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };
-			}				
 			
-		}
-		
+			// разъемы объекта или точки трубы
+			if(arrP.length > 0)
+			{
+				// создаем событие -> показываем/скрываем список разъемов объекта
+				let id = arrO[i].userData.id; 
+				let el_2 = elem.querySelector('[nameId="shCp_1"]');
+				var container_2 = elem.querySelector('[nameid="groupItem"]');
+
+				(function(container_2, id) 
+				{
+					el_2.onmousedown = function(e){ clickRtekUI_1({elem_2: container_2, id: id}); e.stopPropagation(); };	
+				}(container_2, id));
+
+
+				// создаем html пункты для разъемов и создаем событие по клику на разъем
+				for(var i2 = 0; i2 < arrP.length; i2++)
+				{				
+					//if(!arrCP[i2].userData.centerPoint) continue;
+					var nameRus = '';
+					
+					if(arrP[i2].userData.centerPoint){ nameRus = arrP[i2].userData.centerPoint.nameRus; }
+					else if(arrP[i2].userData.wf_point){ nameRus = arrP[i2].userData.wf_point.nameRus; }
+					else { continue; }
+					
+					var html = 
+					'<div class="flex_1 right_panel_1_1_list_item relative_1">\
+					<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+nameRus+'</div>\
+					</div>';				
+
+					var div = document.createElement('div');
+					div.innerHTML = html;
+					let el_3 = div.firstChild;
+
+					infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: arrP[i2], el: el_3 };
+					
+					container_2.append(el_3);
+					el_3.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };
+				}								
+			}
+		}		
 	}
 	
 	// выделяем в меню
@@ -413,14 +441,7 @@ function clickItemObjNameUI(cdm)
 	// кликнули не в сцену на объект, а на пункт в меню (скрываем разъемы старого объекта)
 	if(cdm.clickItem)
 	{
-		if(clickO.last_obj.userData.obj3D || clickO.last_obj.userData.centerPoint)
-		{
-			deClickObj({obj: clickO.last_obj, moment: ''});
-		}
-		else if(clickO.last_obj.userData.wf_tube || clickO.last_obj.userData.wf_point)
-		{
-			deClickTube({obj: clickO.last_obj, moment: ''});
-		}		
+		hideMenuObjUI_2D();		
 	}
 	
 	  
@@ -439,6 +460,9 @@ function clickItemObjNameUI(cdm)
 			}
 		}
 	}
+	
+	if(!item) return;
+	if(!obj) return;
 
 	// меняем цвет у выделеной вкладки
 	item.style.backgroundColor = infProject.listColor.activeItem_1;
@@ -451,6 +475,29 @@ function clickItemObjNameUI(cdm)
 	else if(obj.userData.wf_tube) 
 	{ 
 		infProject.elem.rp_obj_name.value = obj.userData.wf_tube.nameRus;  
+	}
+	else if(obj.userData.wf_point) 
+	{ 
+		infProject.elem.rp_obj_name.value = obj.userData.wf_point.nameRus; 
+
+		var parent = obj.userData.wf_point.tube;
+		
+		for(var i = 0; i < list.length; i++)
+		{
+			if(list[i].o == parent)
+			{ 
+				list[i].el.style.backgroundColor = '#ebebeb';
+				
+				var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
+				
+				if(el_1)
+				{
+					el_1.style.display = 'block';
+				}
+				
+				break; 
+			} 					
+		}		
 	}	
 	else if(obj.userData.centerPoint)
 	{		
@@ -486,7 +533,10 @@ function clickItemObjNameUI(cdm)
 		{
 			clickTubeWF({obj: obj});
 		}
-		
+		else if(obj.userData.wf_point)
+		{
+			clickWFPoint_3D({obj: obj});
+		}		
 	} 
 
 	showHideJP();

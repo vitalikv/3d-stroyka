@@ -78,7 +78,7 @@ function setPlaneHeightPositionY(cdm)
 	
 	if(cdm.value !== undefined)
 	{
-		var value = checkNumberInput({ value: cdm.value, unit: 1 });
+		var value = checkNumberInput({ value: cdm.value, unit: 1, limit: {min: -15, max: 15} });
 		
 		if(!value)
 		{

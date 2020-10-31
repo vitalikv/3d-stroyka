@@ -6,7 +6,7 @@ function showWF_point_UI(point)
 {
 	var tube = point.userData.wf_point.tube;
 	
-	infProject.elem.rp_obj_name.value = 'точка';	
+	infProject.elem.rp_obj_name.value = point.userData.wf_point.nameRus;	
 	
 	upInfoTubeUI({tube: tube, size: true});
 	

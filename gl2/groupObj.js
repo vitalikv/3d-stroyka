@@ -22,7 +22,13 @@ function createGroupObj_1(cdm)
 	{
 		for(var i = 0; i < cdm.obj.id.length; i++)
 		{
-			arr2[arr2.length] = findObjFromId( 'obj', cdm.obj.id[i] ); 
+			var obj = null;
+			
+			obj = findObjFromId( 'obj', cdm.obj.id[i] );
+			if(!obj) { obj = findObjFromId( 'tube', cdm.obj.id[i] ); console.log(obj);}
+				
+			if(obj) { arr2[arr2.length] = obj; }
+			 
 		}			
 	}
 	else if(cdm.obj.o)

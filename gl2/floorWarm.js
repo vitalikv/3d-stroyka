@@ -16,6 +16,7 @@ function createPointWF(cdm)
 	point.userData.id = id;	
 	point.userData.tag = 'wf_point';
 	point.userData.wf_point = {};
+	point.userData.wf_point.nameRus = 'точка';
 	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
 	point.userData.wf_point.tube = null;
 	
@@ -62,7 +63,7 @@ function clickFirstWFPoint(cdm)
 	var rayhit = cdm.rayhit;
 	
 	if(infProject.list.alignP.active) { clickItemCenterObjUI_2({obj: obj}); }	// вкл кнопка подключить/выронить
-	else { clickWFPoint_3D({ intersect: rayhit }); }
+	else { clickWFPoint_3D({ray: rayhit, menu_1: true}); }
 }
 
 
@@ -70,7 +71,12 @@ function clickFirstWFPoint(cdm)
 // кликнули на точку
 function clickWFPoint_3D(cdm)
 {
-	var obj = cdm.intersect.object;	
+	var obj = null;
+
+	if(cdm.ray) { obj = cdm.ray.object; }
+	if(cdm.obj) { obj = cdm.obj; } 
+
+	if(!obj) return;
 	
 	outlineAddObj(obj);
 	
@@ -80,6 +86,8 @@ function clickWFPoint_3D(cdm)
 	showHideTubePoint({tube: obj.userData.wf_point.tube, visible: true});	
 	
 	showWF_point_UI( obj );
+	
+	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
 	
 	activeObjRightPanelUI_1({obj: obj});
 	

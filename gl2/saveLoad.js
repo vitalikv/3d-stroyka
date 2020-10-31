@@ -480,7 +480,7 @@ function getJsonGeometry()
 		for ( var i2 = 0; i2 < child.length; i2++ )
 		{			
 			if(!child[i2].userData.tag) continue;
-			if(child[i2].userData.tag != 'obj') continue;
+			//if(child[i2].userData.tag != 'obj') continue;
 			
 			arrO[arrO.length] = { id: Number(child[i2].userData.id) };
 		}
@@ -497,7 +497,7 @@ function getJsonGeometry()
 		
 		var m = pipe.length;
 		pipe[m] = {};
-		//pipe[m].id = line.userData.id;
+		pipe[m].id = tube.userData.id;
 		pipe[m].diameter = tube.userData.wf_tube.diameter;
 		pipe[m].color = tube.material.color;
 		
@@ -837,7 +837,7 @@ async function loadFilePL(arr)
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
-		var tube = crTubeWF({point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
+		var tube = crTubeWF({id: pipe[i].id, point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
 		addTubeInScene(tube, {});
 	}
 
