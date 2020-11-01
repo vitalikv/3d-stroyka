@@ -30,6 +30,7 @@ function createGizmo360()
 	var gizmo = new THREE.Object3D();
 	gizmo.userData.gizmo = {};
 	gizmo.userData.gizmo.obj = null;
+	gizmo.userData.gizmo.arrO = [];
 	gizmo.userData.gizmo.active = { axis: '', startPos: new THREE.Vector3(), rotY: 0 };
 
 	
@@ -207,6 +208,11 @@ function moveGizmo( event )
 	var intersects = rayIntersect( event, planeMath, 'one' );	 	 
 	if(intersects.length == 0) return;
 	
+	if(!clickO.actMove)
+	{
+		clickO.actMove = true;
+	}	
+	
 	
 	var gizmo = infProject.tools.gizmo;
 	
@@ -223,27 +229,8 @@ function moveGizmo( event )
 	var rotY = Math.atan2(dir.x, dir.y);
 	
 
-	if(obj.userData.tag == 'joinPoint')		// разъем
-	{ 
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
-		{
-			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
-		}
-		else
-		{
-			var arr = [obj.parent];
-		}			
-	}			
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
-	{
-		var arr = obj.userData.obj3D.group.userData.groupObj.child;
-	}
-	else	// объект 
-	{
-		var arr = [obj];
-	}
-
 	
+	var arr = gizmo.userData.gizmo.arrO;	
 	
 	if(camera == cameraTop) 
 	{ 
@@ -310,9 +297,24 @@ function moveGizmo( event )
 
 function clickGizmoUp()
 {
+	if(!clickO.actMove) return;
+	
 	var obj = infProject.tools.gizmo.userData.gizmo.obj;
 	
 	if(!obj) return;
+	
+	var arrO = infProject.tools.gizmo.userData.gizmo.arrO;
+	if(arrO)
+	{
+		for(var i = 0; i < arrO.length; i++)
+		{
+			if(!arrO[i].userData.wf_tube) continue;
+
+			arrO[i].position.set( 0,0,0 );
+			arrO[i].rotation.set( 0,0,0 );
+			updateTubeWF({tube: arrO[i]});			
+		}		
+	}		
 	
 	setClickLastObj({obj: infProject.tools.gizmo.userData.gizmo.obj});
 }
@@ -366,25 +368,7 @@ function setRotationGizmo(cdm)
 	}		
 	
 
-	if(obj.userData.tag == 'joinPoint')		// разъем
-	{ 
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
-		{
-			var arr = obj.parent.userData.obj3D.group.userData.groupObj.child; 
-		}
-		else
-		{
-			var arr = [obj.parent];
-		}			
-	}			
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)	// группа 
-	{
-		var arr = obj.userData.obj3D.group.userData.groupObj.child;
-	}
-	else	// объект 
-	{
-		var arr = [obj];
-	}
+	var arr = arrObjFromGroup({obj: obj, wf_point: true});
 
 	
 	
@@ -430,6 +414,17 @@ function setRotationGizmo(cdm)
 		}		
 	}
 	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].updateMatrixWorld();
+		
+		if(!arr[i].userData.wf_tube) continue;
+
+		arr[i].position.set( 0,0,0 );
+		arr[i].rotation.set( 0,0,0 );
+		updateTubeWF({tube: arr[i]});		
+	}	
+	
 	
 	if(camera == camera3D)
 	{
@@ -466,27 +461,7 @@ function resetRotateObj(cdm)
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
 	else { return; }
-
-	
-	if(obj.userData.tag == 'joinPoint')
-	{
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
-		{
-			var arr_2 = obj.parent.userData.obj3D.group.userData.groupObj.child;
-		}
-		else
-		{
-			var arr_2 = [obj.parent];
-		}
-	}					
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
-	{
-		var arr_2 = obj.userData.obj3D.group.userData.groupObj.child;
-	}
-	else	// объект без группы или объект с группой, но выдилен как отдельный объект
-	{
-		var arr_2 = [obj];
-	}
+		
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{
@@ -500,6 +475,7 @@ function resetRotateObj(cdm)
 		var diff_2 = obj.quaternion.clone().inverse();
 	}	
 	
+	var arr_2 = arrObjFromGroup({obj: obj, wf_point: true});
 	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
@@ -527,6 +503,12 @@ function resetRotateObj(cdm)
 	for(var i = 0; i < arr_2.length; i++)
 	{
 		arr_2[i].updateMatrixWorld();
+		
+		if(!arr_2[i].userData.wf_tube) continue;
+
+		arr_2[i].position.set( 0,0,0 );
+		arr_2[i].rotation.set( 0,0,0 );
+		updateTubeWF({tube: arr_2[i]});		
 	}	
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
@@ -589,27 +571,7 @@ function inputChangeRot()
 	let rot = new THREE.Euler().set(x, y, z);
 
 	// ----------------
-	
-	
-	if(obj.userData.tag == 'joinPoint')
-	{
-		if(obj.parent.userData.obj3D.group && infProject.settings.active.group)
-		{
-			var arr_2 = obj.parent.userData.obj3D.group.userData.groupObj.child;
-		}
-		else
-		{
-			var arr_2 = [obj.parent];
-		}
-	}					
-	else if(obj.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилен как группа	
-	{
-		var arr_2 = obj.userData.obj3D.group.userData.groupObj.child;
-	}
-	else	// объект без группы или объект с группой, но выдилен как отдельный объект
-	{
-		var arr_2 = [obj];
-	}
+		
 	
 	obj.updateMatrixWorld();
 	var q1 = new THREE.Quaternion().setFromEuler(rot);	
@@ -627,6 +589,8 @@ function inputChangeRot()
 	}	
 
 	
+	var arr_2 = arrObjFromGroup({obj: obj, wf_point: true});
+	
 	// поворачиваем объекты в нужном направлении 
 	for(var i = 0; i < arr_2.length; i++)
 	{
@@ -641,19 +605,24 @@ function inputChangeRot()
 		arr_2[i].position.sub(pos);
 		arr_2[i].position.applyQuaternion(diff_2); 	
 		arr_2[i].position.add(pos);
-	}
-	
-
-	
-	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
-	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
-	
+	}	
 	
 	
 	for(var i = 0; i < arr_2.length; i++)
 	{
 		arr_2[i].updateMatrixWorld();
-	}	
+		
+		if(!arr_2[i].userData.wf_tube) continue;
+
+		arr_2[i].position.set( 0,0,0 );
+		arr_2[i].rotation.set( 0,0,0 );
+		updateTubeWF({tube: arr_2[i]});			
+	}
+
+
+	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
+	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }		
+	
 	
 	if(camera == camera3D)
 	{

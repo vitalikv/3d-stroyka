@@ -92,25 +92,11 @@ $('[nameId="button1 button_gradient_1"]').mousedown(function () {  });
 
 
 
-
+$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
  	
-$('[nameId="select_pivot"]').mousedown(function () { switchPivotGizmo({mode:'pivot'}); });
-$('[nameId="select_gizmo"]').mousedown(function () { switchPivotGizmo({mode:'gizmo'}); });
 
-$('[nameId="obj_rotate_reset"]').mousedown(function () { resetRotateObj(); });	
-
-$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
-
-
-
-$('[nameId="obj_rotate_X_90"]').mousedown(function () { setRotationGizmo({axis: 'x', angle: 90}); });
-$('[nameId="obj_rotate_X_90m"]').mousedown(function () { setRotationGizmo({axis: 'x', angle: -90}); });
-$('[nameId="obj_rotate_Y_90"]').mousedown(function () { setRotationGizmo({axis: 'y', angle: 90}); });
-$('[nameId="obj_rotate_Y_90m"]').mousedown(function () { setRotationGizmo({axis: 'y', angle: -90}); });
-$('[nameId="obj_rotate_Z_90"]').mousedown(function () { setRotationGizmo({axis: 'z', angle: 90}); });
-$('[nameId="obj_rotate_Z_90m"]').mousedown(function () { setRotationGizmo({axis: 'z', angle: -90}); });
 
  
 
@@ -292,6 +278,22 @@ infProject.elem.button_obj_properties.onmousedown = function(e){ changeRightMenu
 
 infProject.elem.button_show_panel_catalog.onmousedown = function(e){ showHideCatalogMenuUI({show: true}); e.stopPropagation(); };
 infProject.elem.button_catalog_close.onmousedown = function(e){ showHideCatalogMenuUI({show: false}); e.stopPropagation(); };
+
+
+// вкладка перемещение/вращение
+
+document.querySelector('[nameId="select_pivot"]').onmousedown = function(e){ switchPivotGizmo({mode:'pivot'}); e.stopPropagation(); };
+document.querySelector('[nameId="select_gizmo"]').onmousedown = function(e){ switchPivotGizmo({mode:'gizmo'}); e.stopPropagation(); };
+
+document.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: 90}); e.stopPropagation(); };
+document.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: -90}); e.stopPropagation(); };
+document.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: 90}); e.stopPropagation(); };
+document.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: -90}); e.stopPropagation(); };
+document.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: 90}); e.stopPropagation(); };
+document.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: -90}); e.stopPropagation(); };
+
+document.querySelector('[nameId="obj_rotate_reset"]').onmousedown = function(e){ resetRotateObj(); e.stopPropagation(); };
+
 
 // скрываем/показываем правое меню UI
 function showHideCatalogMenuUI(cdm)

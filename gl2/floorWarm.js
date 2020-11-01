@@ -449,7 +449,8 @@ function deClickTube(cdm)
 			var pivot = infProject.tools.pivot;
 			
 			pivot.visible = false;
-			pivot.userData.pivot.obj = null; 		
+			pivot.userData.pivot.obj = null; 
+			pivot.userData.pivot.arrO = [];
 		}
 		
 		

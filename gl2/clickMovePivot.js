@@ -275,18 +275,9 @@ function movePivot_2(cdm)
 	{
 		for(let i = 0; i < arrO.length; i++)
 		{
-			arrO[i].position.add( pos2 );
-			
-			if(!arrO[i].userData.wf_tube) continue;
-
-			let point = arrO[i].userData.wf_tube.point;	
-			
-			for(let i2 = 0; i2 < point.length; i2++)
-			{
-				point[i2].position.add( pos2 );
-			}			
+			arrO[i].position.add( pos2 );			
 		}
-		
+		 
 	}	
 
 	upMenuPosObjPop(obj);
@@ -412,7 +403,7 @@ function inputChangePos()
 	gizmo.position.add(pos2);
 	clippingGizmo360( obj );
 	
-	let arrO = arrObjFromGroup({obj: obj});
+	let arrO = arrObjFromGroup({obj: obj, wf_point: true});
 	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});
 	
 	
