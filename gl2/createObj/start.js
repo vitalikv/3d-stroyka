@@ -757,30 +757,56 @@ function getInfoFcObj()
 	
 	
 	var txt = '';
-	var n = 1;
 	
-	var offset = new THREE.Vector3(0.0, 1, 2).sub(arrO[0].position);
+	var offset = new THREE.Vector3(0, 0, 0).sub(arrO[0].position);
 	
-	if(1==2)
+	if(1==1)
 	{
 		for(var i = 0; i < arrO.length; i++)
 		{
-			var fc_name = arrO[i].userData.fc.name;
-			var params = JSON.stringify(arrO[i].userData.fc.params);
-			params = JSON.parse(params);
-			
-			//txt += n+'. '+fc_name+' '+params+'\n';
-			
-			var pos = offset.clone().add(arrO[i].position);
-			
-			params.pos = {x: pos.x, y: pos.y, z: pos.z};
-			params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
-			
-			params = JSON.stringify(params);
-			
-			txt += 'fc_cr_obj({ funcName: "'+fc_name+'", arr: ['+params+'] })\n';
-			
-			n++;
+			if(arrO[i].userData.tag == 'obj')
+			{
+				var fc_name = arrO[i].userData.fc.name;
+				var params = JSON.stringify(arrO[i].userData.fc.params);
+				params = JSON.parse(params);
+				
+				var pos = offset.clone().add(arrO[i].position);
+				
+				//params.pos = {x: pos.x, y: pos.y, z: pos.z};
+				params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};
+				
+				params = JSON.stringify(params);
+
+				txt += fc_name+'('+params+')\n';
+			}
+		}
+
+		for(var i = 0; i < arrO.length; i++)
+		{
+			if(arrO[i].userData.tag == 'wf_tube')
+			{
+				var params = {};
+				params.point = [];
+				
+				params.diameter = arrO[i].userData.wf_tube.diameter;
+				params.color = arrO[i].material.color;
+				
+				for ( var i2 = 0; i2 < arrO[i].userData.wf_tube.point.length; i2++ )
+				{
+					params.point[i2] = {};					
+					params.point[i2].pos = offset.clone().add(arrO[i].userData.wf_tube.point[i2].position);
+				}
+				
+				var offsetTube = params.point[0].pos.clone();
+				
+				for ( var i2 = 0; i2 < params.point.length; i2++ )
+				{				
+					params.point[i2].pos.sub(offsetTube);
+				}				
+				
+				params = JSON.stringify(params);
+				txt += `crTubeWF(${params}),\n`;				
+			}
 		}		
 	}
 	else
@@ -825,7 +851,7 @@ function getInfoFcObj()
 
 
 
-async function newObjTest_1(cdm)
+async function newObjTest_2(cdm)
 {
 
 	var arr = [{"lotid":47,"pos":{"x":0,"y":1,"z":2},"q":{"x":0,"y":0,"z":0,"w":1}},
@@ -850,24 +876,30 @@ async function newObjTest_1(cdm)
 
 	var inf = {"point":[{"pos":{"x":2.3400637720154194,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.450574937475825,"y":0.133882851397884,"z":-3.0917399499678515}},{"pos":{"x":2.472151701510927,"y":0.15310790275905503,"z":-3.0917399499678515}},{"pos":{"x":2.4841326729874345,"y":0.17240056985333765,"z":-3.0917399499678515}},{"pos":{"x":2.4942349677354922,"y":0.6091230504491234,"z":-3.0917399499678515}},{"pos":{"x":2.5227232308610894,"y":0.6292413169113358,"z":-3.0917399499678515}},{"pos":{"x":2.5732247822230025,"y":0.6302942062224188,"z":-3.0921976591959366}}],"diameter":0.016,"color":14632981, pVisible: false}
 
-	var inf = {"point":[{"pos":{"x":0.5524333308010525,"y":0.7500173013061321,"z":2.00014500349682}},{"pos":{"x":0.8119162357689613,"y":0.7500173013061321,"z":2.00014500349682}}],"diameter":0.016,"color":3778747, pVisible: false}	
+	var inf = {"point":[{"pos":{"x":0.5524333308010525,"y":0.7500173013061321,"z":2.00014500349682}},{"pos":{"x":0.8119162357689613,"y":0.7500173013061321,"z":2.00014500349682}}],"diameter":0.016,"color":3778747, pVisible: true}	
 		
 	var tube = crTubeWF(inf);
 	var inf = (cdm.cameraView) ? {notArray: true} : {};
-	addTubeInScene(tube, inf);
+	addTubeInScene(tube, inf);	
 	
 	arrO[arrO.length] = tube;
-	
-	
-	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
 	
 	
 	
 	// добавляем в сцену из каталога
 	if(cdm.addScene)
 	{ 
+
+		var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
+		
+		for(var i = 0; i < tube.userData.wf_tube.point.length; i++)
+		{		
+			arrO[arrO.length] = tube.userData.wf_tube.point[i];		
+		}			
+		
 		var obj = arrO[0];
 		clickO.move = obj; 
+		clickO.arrO = arrO;
 		
 		planeMath.position.y = infProject.tools.heightPl.position.y; 
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -912,7 +944,8 @@ async function newObjTest_1(cdm)
 			arrO[i].position.y += 2000;
 		}
 		
-		cameraView.userData.cameraView.arrO = [arrO[0]];
+		//cameraView.userData.cameraView.arrO = [arrO[0]];
+		cameraView.userData.cameraView.arrO = arrO;
 		fitCameraToObject({obj: arrO[0]});				
 	}
 	
@@ -921,39 +954,194 @@ async function newObjTest_1(cdm)
 
 
 
-async function newObjTest_2()
+async function newObjTest_1(cdm)
 {
-	var arr = [];
+
+	var rad = al_radiator_1({"count":7,"size":{"x":0.08,"y":0.5,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)","q":{"x":0,"y":0,"z":0,"w":1} });
+
+
+	//------- заглушки для ал.радиатора
+	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","q":{"x":0,"y":-1.224646799147353e-16,"z":0,"w":-0.9999999999999998} });
+
+	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный","q":{"x":0,"y":-1.2246467991473532e-16,"z":0,"w":-1} });
 	
-	arr[arr.length] = al_radiator_1({"count":6,"size":{"x":0.08,"y":0.5,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)","pos":{"x":0,"y":1,"z":2},"q":{"x":0,"y":0,"z":0,"w":1} });
+	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","q":{"x":0,"y":-1,"z":0,"w":6.123233995736766e-17} });
 
-	arr[arr.length] = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","pos":{"x":-0.08770000000000033,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
+	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная","q":{"x":0,"y":1,"z":0,"w":-6.123233995736767e-17} });
 
-	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","pos":{"x":-0.04300000000000015,"y":1.25,"z":2},"q":{"x":0,"y":-1,"z":0,"w":6.123233995736766e-17} });
+	
+	//------- регулировочные краны
+	var reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
 
-	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная","pos":{"x":-0.04300000000000015,"y":0.75,"z":2},"q":{"x":0,"y":1,"z":0,"w":-6.123233995736767e-17} });
+	var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","q":{"x":0,"y":-0.9999999999999998,"z":0,"w":1.836970198721029e-16} });	
 
-	arr[arr.length] = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","pos":{"x":0.4977000000000005,"y":0.75,"z":2},"q":{"x":0,"y":-0.9999999999999998,"z":0,"w":1.836970198721029e-16} });
+	//------- металлопластиковые переходники
+	var mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
 
-	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","pos":{"x":0.4530000000000003,"y":0.75,"z":2},"q":{"x":0,"y":-1.224646799147353e-16,"z":0,"w":-0.9999999999999998} });
+	var mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","q":{"x":0,"y":-1,"z":0,"w":1.8369701987210302e-16} });
+	
+	//------- трубы
+	
+	var tube1 = crTubeWF({"point":[{"pos":{"x":0,"y":0,"z":0}},{"pos":{"x":0.12993864393840449,"y":0,"z":0}},{"pos":{"x":0.16011309599573753,"y":0,"z":0}},{"pos":{"x":0.4267850210109847,"y":0,"z":0}},{"pos":{"x":0.453218650569033,"y":0.01736471704960707,"z":0}},{"pos":{"x":0.47611728309754753,"y":0.04829694841283255,"z":0}},{"pos":{"x":0.48368988952495107,"y":0.46748025711061986,"z":0}},{"pos":{"x":0.49413113075578785,"y":0.48911246977300854,"z":0}},{"pos":{"x":0.5164874941874076,"y":0.497445673710086,"z":0}},{"pos":{"x":0.5509997122279362,"y":0.4971305785519932,"z":-0.00018514573938022139}}],"diameter":0.016,"color":15688453})	
+	
+	var tube2 = crTubeWF({"point":[{"pos":{"x":0,"y":0,"z":0}},{"pos":{"x":0.3627702363461198,"y":0,"z":0}}],"diameter":0.016,"color":505069})
+	
+	
+	var arrO = [];
+	
+	arrO[arrO.length] = rad;
+	arrO[arrO.length] = r_zagl;
+	arrO[arrO.length] = r_per2;
+	arrO[arrO.length] = r_vozd;
+	arrO[arrO.length] = r_per1;
+	arrO[arrO.length] = reg_kran_1;
+	arrO[arrO.length] = reg_kran_2;
+	arrO[arrO.length] = mpl_pereh_1;
+	arrO[arrO.length] = mpl_pereh_2;
+	
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;
+	
+	// --- get wrold position Razyem
+	var posJ = {};
+	
+	posJ.rad = getRazyem({obj: rad});
+	
+	posJ.r_zagl = getRazyem({obj: r_zagl});	
+	posJ.r_per2 = getRazyem({obj: r_per2});		
+	posJ.r_vozd = getRazyem({obj: r_vozd});	
+	posJ.r_per1 = getRazyem({obj: r_per1});
+	
+	posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
+	posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
+	
+	posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
+	posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});		
 
-	arr[arr.length] = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный","pos":{"x":0.4530000000000003,"y":1.25,"z":2},"q":{"x":0,"y":-1.2246467991473532e-16,"z":0,"w":-1} });
+	// --- set position
+	r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
+	r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
+	r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
+	r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );
+	
+	
+	reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]).add(r_per2.position) );
+	reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]).add(r_per1.position) );
+	
+	mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
+	mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );	
+	
 
-	arr[arr.length] = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","pos":{"x":0.5357000000000007,"y":0.75,"z":2},"q":{"x":0,"y":-1,"z":0,"w":1.8369701987210302e-16} });
-
-	arr[arr.length] = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","pos":{"x":-0.1257000000000006,"y":1.25,"z":2},"q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
-
-	for(var i = 0; i < arr.length; i++)
+	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
+	setPosTube({tube: tube2, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
+	
+	
+	function getRazyem(cdm)
 	{
-		scene.add( arr[i] );				
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = arr[i];		
+		var obj = cdm.obj;				
+		obj.updateMatrixWorld();
+		
+		var arrNum = (cdm.arrNum) ? cdm.arrNum : [];
+		
+		var centerPoint = getCenterPointFromObj_1( obj );
+		
+		var arr = [];
+		for(var i = 0; i < centerPoint.length; i++)
+		{	
+			if(arrNum.length > 0)
+			{
+				var stop = true;
+				for(var i2 = 0; i2 < arrNum.length; i2++)
+				{
+					if(i == arrNum[i2]) { stop = false; break; }
+				}
+				console.log(i, stop);
+				if(stop){ continue; }
+			}
+			
+			arr[arr.length] = obj.localToWorld( centerPoint[i].position.clone() );
+		}	
+
+		return arr;
 	}
 	
-	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
 	
+	function setPosTube(cdm)
+	{
+		var tube = cdm.tube;
+		var startPos = cdm.startPos;
+		
+		var pointTube = tube.userData.wf_tube.point;
+		
+		var pos = (cdm.lastP) ? pointTube[pointTube.length-1].position : pointTube[0].position;
+		
+		startPos.sub( pos );
+		
+		for(var i = 0; i < pointTube.length; i++)
+		{
+			pointTube[i].position.add(startPos);	
+		}	
+		
+		updateTubeWF({tube: tube});		
+	}
+	
+	
+	var objectN = 
+	[
+		{
+			o: rad, pos:{}, q:{},
+			cp: [],
+			child:[this.o]
+		}
+	]
+
+	
+	console.log(7777, objectN);
+	
+
+
+	
+
+	
+	
+
+	for(var i = 0; i < arrO.length; i++)
+	{
+		scene.add( arrO[i] );	
+
+		if(arrO[i].userData.tag == 'obj')
+		{
+			infProject.scene.array.obj[infProject.scene.array.obj.length] = arrO[i];
+		}
+		if(arrO[i].userData.tag == 'wf_tube')
+		{
+			infProject.scene.array.tube[infProject.scene.array.tube.length] = arrO[i];
+		}				
+	}
+	
+	
+	
+	// добавляем в сцену из каталога
+	if(cdm.addScene)
 	{ 
-		var obj = arr[0];
+
+		var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arrO} });
+		
+		for(var i = 0; i < arrO.length; i++)
+		{		
+			if(!arrO[i].userData.wf_tube) continue;
+
+			var point = arrO[i].userData.wf_tube.point;	
+			
+			for(var i2 = 0; i2 < point.length; i2++)
+			{
+				arrO[arrO.length] = point[i2];
+			}			
+		}			
+		
+		var obj = arrO[0];
 		clickO.move = obj; 
+		clickO.arrO = arrO;
 		
 		planeMath.position.y = infProject.tools.heightPl.position.y; 
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -966,13 +1154,41 @@ async function newObjTest_2()
 
 		var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
 		
-		for(var i = 0; i < arr.length; i++)
+		for(var i = 0; i < arrO.length; i++)
 		{
-			arr[i].position.y -= offsetY;
+			arrO[i].position.y -= offsetY;
 		}
 		
 		planeMath.position.y -= offsetY; 
 		planeMath.updateMatrixWorld();
+	}
+
+	if(cdm.cameraView)
+	{
+		deActiveSelected();
+		deleteObjCameraView();
+		
+		if(camera != cameraView)
+		{
+			cameraView.userData.cameraView.lastCam = camera;
+		}
+		
+		camera = cameraView;
+		renderPass.camera = cameraView;
+		outlinePass.renderCamera = cameraView;
+		
+		infProject.elem.butt_close_cameraView.style.display = '';
+		infProject.elem.butt_camera_2D.style.display = 'none';
+		infProject.elem.butt_camera_3D.style.display = 'none';	
+
+		for(var i = 0; i < arrO.length; i++)
+		{				
+			arrO[i].position.y += 2000;
+		}
+		
+		//cameraView.userData.cameraView.arrO = [arrO[0]];
+		cameraView.userData.cameraView.arrO = arrO;
+		fitCameraToObject({obj: arrO[0]});				
 	}
 	
 	renderCamera();

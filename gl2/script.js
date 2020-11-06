@@ -1242,21 +1242,9 @@ function clickInterface(cdm)
 		}		
 		else if(cdm.button == 'add_lotid')
 		{
-			clickO.button = 'add_lotid';
+			clickO.button = 'add_lotid'; 
 			clickO.options = cdm.value;					
-		}			
-		else if(cdm.button == 'grid_show_1')
-		{
-			showHideGrid(); 
-		}
-		else if(cdm.button == 'grid_move_1')
-		{
-			startEndMoveGrid(); 
-		}
-		else if(cdm.button == 'grid_link_1')
-		{
-			linkGrid(); 
-		}		
+		}					
 	}
 
 }	
@@ -1269,7 +1257,11 @@ function deActiveSelected()
 	clickO.obj = null;
 	clickO.rayhit = null;
 	
-	hideMenuObjUI_2D();		
+	hideMenuObjUI_2D();	
+
+	clickO = resetPop.clickO();
+
+	renderCamera();	
 }
 
 

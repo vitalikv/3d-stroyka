@@ -3,7 +3,8 @@
 
 
 
-$list = 'meshBSP.js 	
+$list = 'meshBSP.js
+eventClick.js 	
 calculationArea.js
 crossWall.js
 addPoint.js
@@ -25,7 +26,6 @@ label.js
 saveLoad.js
 script.js
 floorWarm.js
-eventClick.js
 clickMovePivot.js
 clickObj.js
 clickMoveGizmo.js
@@ -68,6 +68,7 @@ createObj/kotel/filtr.js
 createObj/kotel/kotel_1.js
 createObj/calculation_1.js
 createObj/calculation_2.js
+createObj/start.js
 ';
 
 

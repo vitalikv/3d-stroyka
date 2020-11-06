@@ -71,7 +71,10 @@ function deleteObjectPop(obj)
 	
 	var group = null;
 	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }
-	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }		
+	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }	
+
+
+console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
 	
 	if(group && infProject.settings.active.group)
 	{
@@ -84,7 +87,7 @@ function deleteObjectPop(obj)
 		detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
 	}
 	
-console.log(infProject.scene.array.obj.length, infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);
+
 	for(var i = 0; i < arr.length; i++)
 	{	
 		updateListObjUI_1({type: 'delete', o: arr[i]});
@@ -121,7 +124,9 @@ console.log(infProject.scene.array.obj.length, infProject.scene.array.tube.lengt
 			scene.remove(arr[i]);			
 		}
 	}
-console.log(infProject.scene.array.obj.length, infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
+	
+console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);
+
 	outlineRemoveObj();
 	renderCamera();
 }
