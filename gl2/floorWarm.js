@@ -167,7 +167,7 @@ function crTubeWF(cdm)
 	
 	var inf = tubeGeometry({point: point, diameter: diameter});
 	
-	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
+	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: true, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
 	tube.userData.tag = 'wf_tube';		
 	tube.userData.wf_tube = {};
 	tube.userData.wf_tube.line = null;
@@ -266,7 +266,7 @@ function tubeGeometry(params)
 	var length = 0;
 	for(var i = 0; i < arrPos.length - 1; i++) { length += arrPos[i].distanceTo(arrPos[i + 1]); }		
 	
-	var inf = { extrusionSegments: Math.round(length * 30), radiusSegments: 12, closed: false };
+	var inf = { extrusionSegments: Math.round(length * 50), radiusSegments: 12, closed: false };
 	
 	var geometry = new THREE.TubeBufferGeometry( pipeSpline, inf.extrusionSegments, diameter/2, inf.radiusSegments, inf.closed );	
 	geometry.computeFaceNormals();

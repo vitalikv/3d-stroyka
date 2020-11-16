@@ -290,6 +290,8 @@ function disposeNode(node)
 			mtrl.dispose();
 		});
 	}
+	
+	renderer.renderLists.dispose();
 }
 
 

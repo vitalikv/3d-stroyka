@@ -167,6 +167,7 @@ function deleteObjCameraView()
 	{
 		for(var i = 0; i < arr.length; i++)
 		{
+			
 			if(arr[i].userData.wf_tube)
 			{
 				var tube = arr[i];
@@ -185,16 +186,22 @@ function deleteObjCameraView()
 				scene.remove(line); 			
 			}
 			else if(arr[i].userData.obj3D)
-			{				
+			{		
+console.log(arr[i].userData.obj3D.nameRus);		
 				var arrO = getAllChildObect({obj: arr[i]});
 				for(var i2 = 0; i2 < arrO.length; i2++)
 				{
 					disposeNode(arrO[i2]);
 				}
 				
-				scene.remove(arr[i]);			
+				scene.remove(arr[i]);
+arr[i] = undefined;				
 			}		
 		}
+		
+		
+		
+		console.log(infProject.scene.array.obj);
 	}
 	
 	cameraView.userData.cameraView.arrO = [];

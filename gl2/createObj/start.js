@@ -953,39 +953,218 @@ async function newObjTest_2(cdm)
 }
 
 
+var sborff = {};
+sborff.countRad = 7;
+sborff.heightRad = 0.5;
+sborff.pipe_c1 = 'top';
+sborff.pipe_c2 = 'left';
+sborff.pipe_level = 0;
+sborff.kran = 'regulator';
+sborff.termoreg = false;
+
+
+function getPointTubeCurve_1(cdm)
+{
+	var size = cdm.size;
+	var count = cdm.count;
+	var startY = (cdm.startY) ? cdm.startY : 0;
+	var endY = (cdm.endY) ? cdm.endY - size*2 : -size*2;
+	
+	var arrP_1 = getCircle({reverse: true, count: count, size: size, r1: Math.PI/2, offsetR: 0, offsetX: 0, offsetY: startY});
+	arrP_1.unshift(arrP_1[0].clone());
+	arrP_1[0].x -= 0.05;	
+	//arrP_1.push(arrP_1[arrP_1.length-1].clone());
+	//arrP_1[arrP_1.length-1].z -= 0.15;
+	
+	var arrP_2 = getCircle({count: count, size: size, r1: Math.PI/2, offsetR: Math.PI, offsetX: size*2, offsetY: endY});
+ 
+	
+	arrP_2.push(arrP_2[arrP_2.length-1].clone());
+	arrP_2[arrP_2.length-1].x += 0.05;	
+	
+	var arrP = arrP_1.concat(arrP_2);
+	
+	//getLine({point: arrP});
+	
+	
+	
+	function getCircle(cdm)
+	{
+		var count = cdm.count;
+		var circle = [];
+		var g = cdm.r1 / count;
+		
+		for ( var i = 0; i < count+1; i++ )
+		{
+			var angle = g * i;
+			circle[i] = new THREE.Vector3();
+			
+			if(cdm.reverse)
+			{
+				circle[i].y = -Math.cos(angle + cdm.offsetR) * cdm.size;
+				circle[i].x = Math.sin(angle + cdm.offsetR) * cdm.size;					
+			}
+			else
+			{
+				circle[i].y = -Math.sin(angle + cdm.offsetR) * cdm.size;
+				circle[i].x = Math.cos(angle + cdm.offsetR) * cdm.size;					
+			}
+			
+			circle[i].x += cdm.offsetX;
+			circle[i].y += cdm.offsetY;
+		}			
+
+		return circle;
+	}	
+
+	function getLine(cdm)
+	{
+		var geometry = new THREE.Geometry();
+		
+		var point = cdm.point;
+		
+		for(var i = 0; i < point.length; i++)
+		{
+			geometry.vertices.push(point[i]);
+		}		
+		
+		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: 0x0000ff, linewidth: 2 }) );
+		scene.add( line );
+
+		line.position.y = 1;		
+	}
+	
+	return arrP;
+}
 
 async function newObjTest_1(cdm)
 {
-
-	var rad = al_radiator_1({"count":7,"size":{"x":0.08,"y":0.5,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)","q":{"x":0,"y":0,"z":0,"w":1} });
+	deleteObjCameraView();
+	
+	if(cdm.countRad) { sborff.countRad = cdm.countRad; }
+	if(cdm.heightRad) { sborff.heightRad = cdm.heightRad; }
+	if(cdm.pipe_c1) { sborff.pipe_c1 = cdm.pipe_c1; }
+	if(cdm.pipe_c2) { sborff.pipe_c2 = cdm.pipe_c2; }
+	if(cdm.kran) { sborff.kran = cdm.kran; }
+	if(cdm.termoreg) { sborff.termoreg = !sborff.termoreg; }
+	if(cdm.pipe_level !== undefined) { sborff.pipe_level = cdm.pipe_level; }
+	
+	
+	var rad = al_radiator_1({"count": sborff.countRad,"size":{"x":0.08,"y":sborff.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
 
 
 	//------- заглушки для ал.радиатора
-	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","q":{"x":0,"y":-1.224646799147353e-16,"z":0,"w":-0.9999999999999998} });
-
-	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный","q":{"x":0,"y":-1.2246467991473532e-16,"z":0,"w":-1} });
-	
-	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2","q":{"x":0,"y":-1,"z":0,"w":6.123233995736766e-17} });
-
-	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная","q":{"x":0,"y":1,"z":0,"w":-6.123233995736767e-17} });
+	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2" });
+	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный" });	
+	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2" });
+	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная" });
 
 	
 	//------- регулировочные краны
-	var reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
-
-	var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2","q":{"x":0,"y":-0.9999999999999998,"z":0,"w":1.836970198721029e-16} });	
-
+	
+	if(sborff.kran == 'regulator')
+	{
+		if(sborff.termoreg)
+		{
+			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		}
+		else
+		{
+			var reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });
+		}
+			
+		var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
+	}
+	else if(sborff.kran == 'sharov')
+	{
+		if(sborff.termoreg)
+		{
+			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		}
+		else
+		{
+			var reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
+		}		
+		
+		var reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
+	}
+	else if(sborff.kran == 'none')
+	{
+		if(sborff.termoreg)
+		{
+			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		}		
+	}
+	
+	
+	
 	//------- металлопластиковые переходники
-	var mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","q":{"x":0,"y":1.2246467991473532e-16,"z":0,"w":1} });
-
-	var mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)","q":{"x":0,"y":-1,"z":0,"w":1.8369701987210302e-16} });
+	var mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	var mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
 	
 	//------- трубы
 	
-	var tube1 = crTubeWF({"point":[{"pos":{"x":0,"y":0,"z":0}},{"pos":{"x":0.12993864393840449,"y":0,"z":0}},{"pos":{"x":0.16011309599573753,"y":0,"z":0}},{"pos":{"x":0.4267850210109847,"y":0,"z":0}},{"pos":{"x":0.453218650569033,"y":0.01736471704960707,"z":0}},{"pos":{"x":0.47611728309754753,"y":0.04829694841283255,"z":0}},{"pos":{"x":0.48368988952495107,"y":0.46748025711061986,"z":0}},{"pos":{"x":0.49413113075578785,"y":0.48911246977300854,"z":0}},{"pos":{"x":0.5164874941874076,"y":0.497445673710086,"z":0}},{"pos":{"x":0.5509997122279362,"y":0.4971305785519932,"z":-0.00018514573938022139}}],"diameter":0.016,"color":15688453})	
+	var point1 = [];
+	var point2 = [];
 	
-	var tube2 = crTubeWF({"point":[{"pos":{"x":0,"y":0,"z":0}},{"pos":{"x":0.3627702363461198,"y":0,"z":0}}],"diameter":0.016,"color":505069})
 	
+	
+	if(sborff.pipe_c1 == 'bottom')
+	{		
+		if(sborff.pipe_level)
+		{
+			var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: sborff.pipe_level});
+			var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: sborff.pipe_level}); 					
+		}
+		else
+		{
+			var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];
+			var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];			
+		}
+	}
+	else
+	{
+		if(sborff.pipe_level)
+		{ 
+			var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: sborff.pipe_level, endY: sborff.heightRad});
+			var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: sborff.pipe_level, endY: 0.00}); 					
+		}
+		else
+		{
+			var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: sborff.pipe_level, endY: sborff.heightRad});
+			var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];			
+		}
+	}
+	
+	for(var i = 0; i < arrP_1.length; i++)
+	{
+		point1[point1.length] = {pos: arrP_1[i]};
+	}
+
+	for(var i = 0; i < arrP_2.length; i++)
+	{
+		arrP_2[i].x *= -1;
+		point2[point2.length] = {pos: arrP_2[i]};
+	}	
+	
+	
+	if(sborff.pipe_c2 == 'right')
+	{
+		for(var i = 0; i < point1.length; i++)
+		{
+			point1[i].pos.x *= -1;
+		}	
+		
+		for(var i = 0; i < point2.length; i++)
+		{
+			point2[i].pos.x *= -1;
+		}		
+	}
+	
+	
+	
+	var tube1 = crTubeWF({"point": point1, "diameter":0.016, "color":15688453, pVisible: false});
+	var tube2 = crTubeWF({"point": point2, "diameter":0.016, "color":505069, pVisible: false});
 	
 	var arrO = [];
 	
@@ -994,15 +1173,32 @@ async function newObjTest_1(cdm)
 	arrO[arrO.length] = r_per2;
 	arrO[arrO.length] = r_vozd;
 	arrO[arrO.length] = r_per1;
-	arrO[arrO.length] = reg_kran_1;
-	arrO[arrO.length] = reg_kran_2;
+	if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
+	if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
 	arrO[arrO.length] = mpl_pereh_1;
 	arrO[arrO.length] = mpl_pereh_2;
+	
+	if(sborff.pipe_c2 == 'right')
+	{
+		r_vozd.quaternion.set(0, -1, 0, 0);
+		r_per1.quaternion.set(0, -1, 0, 0);
+		
+		if(reg_kran_1) reg_kran_1.quaternion.set(0, -1, 0, 0);
+		mpl_pereh_1.quaternion.set(0, -1, 0, 0);		
+	}
+	else
+	{
+		r_zagl.quaternion.set(0, -1, 0, 0);
+		r_per2.quaternion.set(0, -1, 0, 0);
+		
+		if(reg_kran_2) reg_kran_2.quaternion.set(0, -1, 0, 0);
+		mpl_pereh_2.quaternion.set(0, -1, 0, 0);		
+	}
 	
 	arrO[arrO.length] = tube1;
 	arrO[arrO.length] = tube2;
 	
-	// --- get wrold position Razyem
+	// --- получаем мировые значяения разъемов
 	var posJ = {};
 	
 	posJ.rad = getRazyem({obj: rad});
@@ -1012,30 +1208,83 @@ async function newObjTest_1(cdm)
 	posJ.r_vozd = getRazyem({obj: r_vozd});	
 	posJ.r_per1 = getRazyem({obj: r_per1});
 	
-	posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
-	posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
+	if(reg_kran_1) posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
+	if(reg_kran_2) posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
 	
 	posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
 	posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});		
 
-	// --- set position
-	r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
-	r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
-	r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
-	r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );
+	// --- устанвливаем раъемы
 	
+	if(sborff.pipe_c1 == 'bottom')
+	{
+		if(sborff.pipe_c2 == 'right')
+		{
+			r_zagl.position.copy( posJ.rad[2].clone().sub(posJ.r_zagl[0]) );
+			r_per2.position.copy( posJ.rad[3].clone().sub(posJ.r_per2[0]) );		
+			r_vozd.position.copy( posJ.rad[1].clone().sub(posJ.r_vozd[0]) );
+			r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );			
+		}
+		else
+		{
+			r_zagl.position.copy( posJ.rad[1].clone().sub(posJ.r_zagl[0]) );
+			r_per2.position.copy( posJ.rad[0].clone().sub(posJ.r_per2[0]) );		
+			r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
+			r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );			
+		}
+	}
+	else
+	{
+		if(sborff.pipe_c2 == 'right')
+		{
+			r_zagl.position.copy( posJ.rad[3].clone().sub(posJ.r_zagl[0]) );
+			r_per2.position.copy( posJ.rad[2].clone().sub(posJ.r_per2[0]) );
+			r_vozd.position.copy( posJ.rad[1].clone().sub(posJ.r_vozd[0]) );
+			r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );		
+		}	
+		else
+		{
+			r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
+			r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
+			r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
+			r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );					
+		}
+	}	
 	
-	reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]).add(r_per2.position) );
-	reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]).add(r_per1.position) );
-	
-	mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
-	mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );	
 	
 
+	
+	
+	if(reg_kran_1) 
+	{
+		reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]).add(r_per2.position) );
+		mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
+	}
+	else
+	{
+		mpl_pereh_1.position.copy( posJ.r_per2[1].clone().sub(posJ.mpl_pereh_1[1]).add(r_per2.position) );
+	}
+	
+	if(reg_kran_2) 
+	{
+		reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]).add(r_per1.position) );
+		mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );
+	}
+	else
+	{
+		mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]).add(r_per1.position) );
+	}
+	
+	
+		
+	
+
+	// --- устанвливаем трубы	
 	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
-	setPosTube({tube: tube2, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
+	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
 	
 	
+	// получаем разъемы объекта и находим у разъемов мировые position
 	function getRazyem(cdm)
 	{
 		var obj = cdm.obj;				
@@ -1055,7 +1304,7 @@ async function newObjTest_1(cdm)
 				{
 					if(i == arrNum[i2]) { stop = false; break; }
 				}
-				console.log(i, stop);
+				
 				if(stop){ continue; }
 			}
 			
@@ -1066,6 +1315,7 @@ async function newObjTest_1(cdm)
 	}
 	
 	
+	// смещаем трубу в нужное положение
 	function setPosTube(cdm)
 	{
 		var tube = cdm.tube;
@@ -1073,7 +1323,7 @@ async function newObjTest_1(cdm)
 		
 		var pointTube = tube.userData.wf_tube.point;
 		
-		var pos = (cdm.lastP) ? pointTube[pointTube.length-1].position : pointTube[0].position;
+		var pos = (cdm.lastP) ? pointTube[pointTube.length-1].position : pointTube[0].position;		// понменять место соединения начало/конец
 		
 		startPos.sub( pos );
 		
@@ -1086,25 +1336,9 @@ async function newObjTest_1(cdm)
 	}
 	
 	
-	var objectN = 
-	[
-		{
-			o: rad, pos:{}, q:{},
-			cp: [],
-			child:[this.o]
-		}
-	]
 
 	
-	console.log(7777, objectN);
-	
-
-
-	
-
-	
-	
-
+	// добавляем объекты и трубы в массив
 	for(var i = 0; i < arrO.length; i++)
 	{
 		scene.add( arrO[i] );	
@@ -1168,8 +1402,10 @@ async function newObjTest_1(cdm)
 		deActiveSelected();
 		deleteObjCameraView();
 		
+		var flag = false;
 		if(camera != cameraView)
 		{
+			flag = true;
 			cameraView.userData.cameraView.lastCam = camera;
 		}
 		
@@ -1184,11 +1420,21 @@ async function newObjTest_1(cdm)
 		for(var i = 0; i < arrO.length; i++)
 		{				
 			arrO[i].position.y += 2000;
+			
+			if(!arrO[i].userData.wf_tube) continue;
+
+			var point = arrO[i].userData.wf_tube.point;	
+			
+			for(var i2 = 0; i2 < point.length; i2++)
+			{
+				arrO[arrO.length] = point[i2];
+			}				
 		}
 		
 		//cameraView.userData.cameraView.arrO = [arrO[0]];
 		cameraView.userData.cameraView.arrO = arrO;
-		fitCameraToObject({obj: arrO[0]});				
+		
+		if(flag) fitCameraToObject({obj: arrO[0]});						
 	}
 	
 	renderCamera();
@@ -1235,7 +1481,7 @@ function testAddElemToContaner()
 		elem_2.onmousedown = function(e)
 		{ 
 			//activeCameraView({lotid: n});
-			newObjTest_1({cameraView: true});
+			newObjTest_1({cameraView: true, countRad: 7});
 			e.stopPropagation();
 		};	
 	}(n));			

@@ -85,7 +85,7 @@
 			</div>
 			
 			<? require_once("include/right_panel_1.php"); ?>
-			
+			<? require_once("include/left_panel_1.php"); ?>
 		</div>
 	
 	</div>

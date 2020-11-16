@@ -1,10 +1,7 @@
 $(document).ready(function(){
 
 $('[data-action="top_panel_1"]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });
-$('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });
-		
-$('[data-action="top_panel_1"]').mousedown(function () { clickInterface(); });
-$('[data-action="left_panel_1"]').mousedown(function () { clickInterface(); });
+$('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });		
 
 
 // переключаем разделы
@@ -218,6 +215,58 @@ infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraV
 
 
 //----------------- верхняя панель <-
+
+
+
+
+//----------------- панель настройки сборных объектов ->
+
+infProject.elem.panel_setting_obj_1 = document.querySelector('[nameId="panel_setting_obj_1"]');
+
+infProject.elem.p_left_rad_1 = document.querySelector('[nameId="p_left_rad_1"]');
+infProject.elem.p_right_rad_1 = document.querySelector('[nameId="p_right_rad_1"]');
+
+infProject.elem.p_height_rad_350 = document.querySelector('[nameId="p_height_rad_350"]');
+infProject.elem.p_height_rad_500 = document.querySelector('[nameId="p_height_rad_500"]');
+infProject.elem.p_count_rad_2 = document.querySelector('[nameId="p_count_rad_2"]');
+infProject.elem.p_count_rad_7 = document.querySelector('[nameId="p_count_rad_7"]');
+
+infProject.elem.p_bottom_rad_1 = document.querySelector('[nameId="p_bottom_rad_1"]');
+infProject.elem.p_top_rad_1 = document.querySelector('[nameId="p_top_rad_1"]');
+
+infProject.elem.p_termoreg_rad_1 = document.querySelector('[nameId="p_termoreg_rad_1"]');
+infProject.elem.p_kran_rad_1 = document.querySelector('[nameId="p_kran_rad_1"]');
+infProject.elem.p_kran_rad_2 = document.querySelector('[nameId="p_kran_rad_2"]');
+infProject.elem.p_kran_rad_3 = document.querySelector('[nameId="p_kran_rad_3"]');
+
+infProject.elem.p_level_tube_rad_1 = document.querySelector('[nameId="p_level_tube_rad_1"]');
+infProject.elem.p_level_tube_rad_2 = document.querySelector('[nameId="p_level_tube_rad_2"]');
+
+
+
+infProject.elem.p_left_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_c2: 'left'}); e.stopPropagation(); };
+infProject.elem.p_right_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_c2: 'right'}); e.stopPropagation(); }
+
+infProject.elem.p_height_rad_350.onmousedown = function(e){ newObjTest_1({cameraView: true, heightRad: 0.35}); e.stopPropagation(); }
+infProject.elem.p_height_rad_500.onmousedown = function(e){ newObjTest_1({cameraView: true, heightRad: 0.5}); e.stopPropagation(); }
+
+infProject.elem.p_count_rad_2.onmousedown = function(e){ newObjTest_1({cameraView: true, countRad: 2}); e.stopPropagation(); }
+infProject.elem.p_count_rad_7.onmousedown = function(e){ newObjTest_1({cameraView: true, countRad: 7}); e.stopPropagation(); }
+
+infProject.elem.p_bottom_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_c1: 'bottom'}); e.stopPropagation(); }
+infProject.elem.p_top_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_c1: 'top'}); e.stopPropagation(); }
+
+infProject.elem.p_termoreg_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, termoreg: 'toggle'}); e.stopPropagation(); }
+infProject.elem.p_kran_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, kran: 'none'}); e.stopPropagation(); }
+infProject.elem.p_kran_rad_2.onmousedown = function(e){ newObjTest_1({cameraView: true, kran: 'regulator'}); e.stopPropagation(); }
+infProject.elem.p_kran_rad_3.onmousedown = function(e){ newObjTest_1({cameraView: true, kran: 'sharov'}); e.stopPropagation(); }
+
+infProject.elem.p_level_tube_rad_1.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_level: 0}); e.stopPropagation(); }
+infProject.elem.p_level_tube_rad_2.onmousedown = function(e){ newObjTest_1({cameraView: true, pipe_level: -0.1}); e.stopPropagation(); }
+
+
+
+//----------------- панель настройки сборных объектов <-
 
 
 
