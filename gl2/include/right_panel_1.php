@@ -315,6 +315,88 @@
 		
 		
 		<div nameId="wrap_object">
+			<div class="flex_column_1" nameId="wrap_sborka_1">
+
+				<div nameId="wrap_sborka_2" style="position: relative;">
+					<div nameId="wrap_slid_1" style="position: relative; height: 60px;">
+						
+					</div>
+					<div nameId="wrap_slid_2" style="position: relative; height: 100px;">
+						
+					</div>				
+					<div nameId="wrap_slid_3" style="position: relative; height: 60px;">
+						
+					</div>
+
+					<div nameId="wrap_slid_4" style="position: relative; height: 100px;">
+						
+					</div>	
+
+					<div nameId="wrap_slid_5">
+						
+					</div>
+
+					<div nameId="wrap_slid_6">
+						
+					</div>					
+				</div>
+				
+				<div class="right_panel_1_1_list" style="display: block;">
+					
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_left_rad_1">слева</div>		
+					</div>
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_right_rad_1">справа</div>		
+					</div>
+					
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_bottom_rad_1">ниж. подключение</div>		
+					</div>	
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_top_rad_1">верх. подключение</div>		
+					</div>				
+					
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_count_rad_2">2 сек</div>		
+					</div>
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_count_rad_7">7 сек</div>		
+					</div>
+
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_height_rad_350">h 350</div>		
+					</div>
+					
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_height_rad_500">h 500</div>		
+					</div>				
+
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_termoreg_rad_1">терморег (вкл/выкл)</div>		
+					</div>
+					
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_kran_rad_1">без кранов</div>		
+					</div>
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_kran_rad_2">регул. кран</div>		
+					</div>	
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_kran_rad_3">шаровой кран</div>		
+					</div>	
+
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_level_tube_rad_2">трубы выше</div>		
+					</div>	
+					<div class="sborka_1_list">			
+						<div class="item_text" nameId="p_level_tube_rad_1">трубы ниже</div>		
+					</div>				
+				
+				</div>				
+				
+			</div>
+			
 			<div class="flex_column_1" nameId="wrap_object_1" style="display: none; overflow: auto;">
 				<div class="right_panel_1_1_h">Объект</div>
 				

@@ -69,6 +69,8 @@ createObj/kotel/kotel_1.js
 createObj/calculation_1.js
 createObj/calculation_2.js
 createObj/start.js
+ui/select_list_1.js
+ui/slider_2mov.js
 ';
 
 

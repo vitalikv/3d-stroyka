@@ -64,7 +64,8 @@
 			</div>
 			<div nameId="mainDiv_1" style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>			
-	
+				<? require_once("include/left_panel_1.php"); ?>
+				
 				<noindex>		
 				
 
@@ -85,7 +86,7 @@
 			</div>
 			
 			<? require_once("include/right_panel_1.php"); ?>
-			<? require_once("include/left_panel_1.php"); ?>
+			
 		</div>
 	
 	</div>
@@ -163,7 +164,10 @@
 	 
     <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
 	
-	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script> 
+	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	
+	<script src="<?=$path?>ui/slider_2mov.js?<?=$vrs?>"></script> 
+	
 	
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) {?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
