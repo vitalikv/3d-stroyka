@@ -251,31 +251,5 @@ class SelSborka_2
 }
 
 
-function testStepO(cdm)
-{
-	console.log(cdm);
-}
 
-var stepArr1 = [];
-stepArr1[0] = {text: 'слева', cssT: {top: '-8px', left: '-55px'}, fc: {name: 'newObjTest_1', params: {cameraView: true, pipe_c2: 'left'}} }; 
-stepArr1[1] = {text: 'справа', cssT: {top: '-8px', left: '120px'}, fc: {name: 'newObjTest_1', params: {cameraView: true, pipe_c2: 'right'}} };
-
-var stepArr2 = [];
-stepArr2[0] = {text: 'верх. подключение'}; 
-stepArr2[1] = {text: 'ниж. подключение'};
-
-var stepArr3 = [];
-stepArr3[0] = {text: '(без кранов)', cssT: {fontSize: '12px'}}; 
-stepArr3[1] = {text: '(регул. краны)', cssT: {fontSize: '12px'}};
-stepArr3[2] = {text: '(шаровые краны)', cssT: {fontSize: '12px'}};
-
-var stepArr4 = [];
-stepArr4[0] = {text: '1'}; 
-stepArr4[1] = {text: '2'};
-stepArr4[2] = {text: '3'};
-
-var idd2 = new SelSborka_2({selector: '[nameId="wrap_slid_1"]', step: stepArr1, line: {x: 100} });
-var idd3 = new SelSborka_2({selector: '[nameId="wrap_slid_2"]', step: stepArr2, vertical: true, line: {x: 50}});
-var idd4 = new SelSborka_2({selector: '[nameId="wrap_slid_3"]', step: stepArr3, line: {x: 200} });
-var idd5 = new SelSborka_2({selector: '[nameId="wrap_slid_4"]', step: stepArr4, vertical: true, line: {x: 60} });
 

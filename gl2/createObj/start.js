@@ -1064,7 +1064,7 @@ function crSborkaRad_1(cdm)
 	if(cdm.pipe_level !== undefined) { sborff.pipe_level = cdm.pipe_level; }
 	
 	
-	var result = getObjectsSborkaRad_1();
+	var result = getObjectsSborkaRad_1({countRad: sborff.countRad, heightRad: sborff.heightRad, termoreg: sborff.termoreg, kran: sborff.kran});
 	
 	var rad = result.rad;
 	var r_per1 = result.r_per1;
@@ -1274,7 +1274,7 @@ function crSborkaRad_2(cdm)
 	if(cdm.pipe_level !== undefined) { sborff.pipe_level = cdm.pipe_level; }
 	
 	
-	var result = getObjectsSborkaRad_1();
+	var result = getObjectsSborkaRad_1({countRad: sborff.countRad, heightRad: sborff.heightRad, termoreg: sborff.termoreg, kran: sborff.kran});
 	
 	var rad = result.rad;
 	var r_per1 = result.r_per1;
@@ -1519,7 +1519,7 @@ function crSborkaRad_2(cdm)
 // получаем объекты для сборки радиатора
 function getObjectsSborkaRad_1(cdm)
 {
-	var rad = al_radiator_1({"count": sborff.countRad,"size":{"x":0.08,"y":sborff.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+	var rad = al_radiator_1({"count": cdm.countRad,"size":{"x":0.08,"y":cdm.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
 
 
 	//------- заглушки для ал.радиатора
@@ -1530,39 +1530,25 @@ function getObjectsSborkaRad_1(cdm)
 
 	
 	//------- регулировочные краны
-	
-	if(sborff.kran == 'regulator')
+	console.log(777, cdm.termoreg);
+	if(cdm.termoreg)
 	{
-		if(sborff.termoreg)
-		{
-			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
-		}
-		else
-		{
-			var reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });
-		}
-			
+		var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+	}
+	
+	if(cdm.kran == 'regulator')
+	{
+		if(!reg_kran_1) reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
 		var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
 	}
-	else if(sborff.kran == 'sharov')
+	else if(cdm.kran == 'sharov')
 	{
-		if(sborff.termoreg)
-		{
-			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
-		}
-		else
-		{
-			var reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
-		}		
-		
+		if(!reg_kran_1) reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});			
 		var reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
 	}
-	else if(sborff.kran == 'none')
+	else if(cdm.kran == 'none')
 	{
-		if(sborff.termoreg)
-		{
-			var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
-		}		
+		// не создаем краны
 	}
 	
 	
@@ -1587,7 +1573,7 @@ function crSborkaRad_3(cdm)
 	if(cdm.pipe_level !== undefined) { sborff.pipe_level = cdm.pipe_level; }
 	
 	
-	var result = getObjectsSborkaRad_1();
+	var result = getObjectsSborkaRad_1({countRad: sborff.countRad, heightRad: sborff.heightRad, termoreg: sborff.termoreg, kran: sborff.kran});
 	
 	var rad = result.rad;
 	var r_per1 = result.r_per1;
@@ -1818,11 +1804,21 @@ async function newObjTest_1(cdm)
 {
 	deleteObjCameraView();
 	
-
-	var arrO = crSborkaRad_1(cdm);	
-	//var arrO = crSborkaRad_2(cdm);
-	//var arrO = crSborkaRad_3(cdm);
 	
+	if(cdm.typeV == 1) { var arrO = crSborkaRad_Odnotrub_Verh_Mp(cdm); }
+	else if(cdm.typeV == 2) { var arrO = crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm); }
+	else if(cdm.typeV == 3) { var arrO = crSborkaRad_Odnotrub_Bok_Mp(cdm); }
+	else if(cdm.typeV == 4) { var arrO = crSborkaRad_Odnotrub_Niz_Mp(cdm); }
+
+	showHideSettingsRadiator_1(cdm);
+	
+	newObjTestFinish_1(cdm, arrO);
+}
+
+
+
+function newObjTestFinish_1(cdm, arrO)
+{
 	// добавляем объекты и трубы в массив
 	for(var i = 0; i < arrO.length; i++)
 	{
@@ -1922,14 +1918,13 @@ async function newObjTest_1(cdm)
 		if(flag) fitCameraToObject({obj: arrO[0]});						
 	}
 	
-	renderCamera();
+	renderCamera();	
 }
 
 
-
-function testAddElemToContaner()
+function testAddElemToContaner(cdm)
 {
-	var json = {id: 1, name: "сборка"};
+	var json = cdm;
 	
 	var str_button = 
 	'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 20px; height: 20px;">\
@@ -1953,23 +1948,22 @@ function testAddElemToContaner()
 	json.elem = elem;
 
 	// при клике добавляем объект в сцену
-	var n = json.id;
-	(function(n) 
+	
+	(function() 
 	{
-		elem.onmousedown = function(e){ newObjTest_1({addScene: true}); e.stopPropagation(); };	
-	}(n));
+		elem.onmousedown = function(e){ newObjTest_1({typeV: cdm.type, addScene: true}); e.stopPropagation(); };	
+	}());
 
 	// назначаем событие при клике на лупу UI
 	var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
-	(function(n) 
+	(function() 
 	{
 		elem_2.onmousedown = function(e)
 		{ 
-			//activeCameraView({lotid: n});
-			newObjTest_1({cameraView: true, countRad: 7});
+			newObjTest_1({typeV: cdm.type, cameraView: true});
 			e.stopPropagation();
 		};	
-	}(n));			
+	}());			
 	
 	
 	

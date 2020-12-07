@@ -54,7 +54,10 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	testAddElemToContaner();
+	testAddElemToContaner({type: 1, name: "верхнее подкл."});
+	testAddElemToContaner({type: 2, name: "верхнее подкл. с байпасом"});
+	testAddElemToContaner({type: 3, name: "подкл. с сбоку"});
+	testAddElemToContaner({type: 4, name: "нижнее подкл."});
 	
 	// находим дочерние объекты 
 	function getItemChilds(cdm)

@@ -5,16 +5,17 @@
 
 class SelectList_1
 {
-	constructor(selector, cdm)
+	constructor(el_parent, cdm)
 	{
-		this.el = document.querySelector(selector);
+		this.el_parent = el_parent;
+		this.el = null;
 		this.selectId = null;
 		this.arrList = cdm.arrList;
 
 		this.render();
 		this.setup();
 		
-		if(cdm.selectItem) this.selectItem(cdm.selectItem);		
+		if(cdm.selectItem !== undefined) this.selectItem(cdm.selectItem);		
 	}
 	
 	
@@ -24,12 +25,12 @@ class SelectList_1
 
 		const items = arr.map(item => 
 			{
-				return `<div nameId="items" class="item">${item.value}</div>`;
+				return `<div nameId="items" class="item">${item.text}</div>`;
 			})
 
 		let html = 
 		`<div nameId="select_item">
-			<div nameId="select_item_text">1111</div>
+			<div nameId="select_item_text">------</div>
 			
 			<div style="width: 10px; height: auto;">
 				<svg height="100%" width="100%" viewBox="0 0 100 100">
@@ -48,6 +49,11 @@ class SelectList_1
 	
 	render()
 	{
+		this.el = document.createElement('div');			
+		this.el.innerHTML = this.html();
+		
+		this.el_parent.append(this.el);
+		
 		this.el.style.cssText = `
 		display: block;
 		position: relative; 
@@ -59,9 +65,8 @@ class SelectList_1
 		margin: 20px;
 		//border: 1px solid #b3b3b3; 
 		`;
-
-
-		this.el.innerHTML = this.html();
+		
+		
 
 		this.el_input = this.el.querySelector('[nameId="select_item"]');
 		this.el_text_input = this.el_input.querySelector('[nameId="select_item_text"]');
@@ -119,15 +124,15 @@ class SelectList_1
 
 			this.el_items[i].addEventListener("mouseover", function(e) 
 			{
-				e.target.style.background = "#eee";
+				//e.target.style.background = "#eee";
 			});
 			this.el_items[i].addEventListener("mouseout", function(e) 
 			{
-				e.target.style.background = "#ffffff";
+				//e.target.style.background = "#ffffff";
 			});	
 
 			this.el_items[i].userData = {};
-			this.el_items[i].userData.id = this.arrList[i].id;			
+			this.el_items[i].userData.value = this.arrList[i].value;
 		}
 	}
 
@@ -151,27 +156,38 @@ class SelectList_1
 	
 	clickItems(event)
 	{
-		let id = event.target.userData.id;
+		let value = event.target.userData.value;
 		
 		
-		this.selectItem(id);
+		this.selectItem(value, true);
 	}
 
-	selectItem(id)
+	selectItem(value, fc)
 	{
-		if(id == undefined) return;
+		if(value == undefined) return;
 		let result = null;
+		let n = 0;
 		
 		for (let i = 0; i < this.arrList.length; i++)
 		{
-			if(this.arrList[i].id == id) { result = this.arrList[i]; break; } 
+			if(this.arrList[i].value == value) { result = this.arrList[i]; n = i; break; } 
 		}
+		
+		for (let i = 0; i < this.el_items.length; i++)
+		{
+			this.el_items[i].style.background = "#ffffff";			
+		}		
 		
 		if(result)
 		{
-			this.el_text_input.textContent = result.value;
-			this.selectId = id;
+			this.el_text_input.textContent = result.text;
+			this.selectId = n;
+
+			this.el_items[n].style.background = 'rgb(235, 235, 235)';
+			
 			this.close();
+			
+			if(fc) this.activeFc();
 		}	
 	}	
 
@@ -187,30 +203,25 @@ class SelectList_1
 	
 	open()
 	{
-		this.el_input.style.borderBottom = 'none';
+		//this.el_input.style.borderBottom = 'none';
 		this.el_list.style.display = '';
 	}
 	
 	close()
 	{
-		this.el_input.style.borderBottom = '1px solid #b3b3b3';
+		//this.el_input.style.borderBottom = '1px solid #b3b3b3';
 		this.el_list.style.display = 'none';
 	}
-
-	destroy()
-	{
-		this.el.removeEventListener('click', this.clickHandler)
-	}
+	
+	activeFc()
+	{		
+		if(this.arrList[this.selectId].fc)
+		{
+			window[this.arrList[this.selectId].fc.name](this.arrList[this.selectId].fc.params);
+		}
+	}	
 }
 
-var infSelArr = [
-	{id: 1, value: 'text 1'},
-	{id: 2, value: 'text 2'},
-	{id: 3, value: 'text 3'},
-	{id: 4, value: 'text 4'},
-	{id: 5, value: 'text 5'},
-];
 
-var idd = new SelectList_1('[nameId="wrap_slid_5"]', {arrList: infSelArr, selectItem: '3'});
-var idd = new SelectList_1('[nameId="wrap_slid_6"]', {arrList: infSelArr, selectItem: '5'});
+
 

@@ -64,7 +64,6 @@
 			</div>
 			<div nameId="mainDiv_1" style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>			
-				<? require_once("include/left_panel_1.php"); ?>
 				
 				<noindex>		
 				
@@ -150,6 +149,11 @@
 	<script src="<?=$path?>createObj/test.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/start.js?<?=$vrs?>"></script>
 	
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/niz_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/verh_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/bok_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/verh_bay_mp.js?<?=$vrs?>"></script>
+	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
@@ -162,12 +166,14 @@
 	<script src="<?=$path?>uiInterface_catalog.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
 	 
-    <script src="<?=$path?>script.js?<?=$vrs?>"></script>    		
+       		
 	
 	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	
 	<script src="<?=$path?>ui/slider_2mov.js?<?=$vrs?>"></script> 
+	<script src="<?=$path?>ui/sborka_rad.js?<?=$vrs?>"></script> 
 	
+	<script src="<?=$path?>script.js?<?=$vrs?>"></script> 
 	
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) {?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
