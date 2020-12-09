@@ -29,8 +29,7 @@ function addTubeInScene(tube, cdm)
 {
 
 	if(!cdm.notArray)
-	{
-		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
+	{		
 		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
 	}
 	
@@ -43,6 +42,7 @@ function addTubeInScene(tube, cdm)
 		clickO.move = tube;
 	}
 	
+	infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
 	
 	renderCamera();
 	

@@ -52,8 +52,8 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	var point2 = [];
 	
 	
-	var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.5, 0, 0)];
-	var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.5, 0, 0)];		
+	var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.2, 0, 0)];
+	var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.2, 0, 0)];		
 
 	
 	for(var i = 0; i < arrP_1.length; i++)
@@ -164,15 +164,18 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]).add(r_per1.position) );
 	}
 	
-	
-		
-	
+	// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
+	var x1 = mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]).x - mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]).x;
+	var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
+	updateTubeWF({tube: tube1});	
 
 	// --- устанвливаем трубы	
 	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
 	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
 
-
-	return arrO;
+	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
+	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
+	
+	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
 }
 

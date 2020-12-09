@@ -137,15 +137,14 @@ function addObjInScene(inf, cdm)
 	obj.material.visible = false;
 	//obj.rotation.y += 1;
 	
-	
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	//if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
 
 	scene.add( obj );
 	
 	if(cdm.notArray){}
 	else
-	{
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj; 
+	{		 
 		updateListObjUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 		
 	}
 	

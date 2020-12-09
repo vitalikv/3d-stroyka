@@ -149,10 +149,13 @@
 	<script src="<?=$path?>createObj/test.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/start.js?<?=$vrs?>"></script>
 	
+	<script src="<?=$path?>createObj/sborka/sbr_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/niz_mp.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/verh_mp.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/bok_mp.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/verh_bay_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/niz_bay_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/bok_bay_mp.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>

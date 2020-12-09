@@ -10,7 +10,7 @@ function paramSborkaRad_Odnotrub_Verh_Bay_Mp()
 		side: 'left',
 		kran: 'regulator',
 		termoreg: false,
-		pipe_level: -0.1
+		//pipe_level: -0.1
 	}
 	
 	inf.ui = settingSborkaRadiatorMenuUI_1({nameId: 'sborka_rad_2', typeV: 2, inf: inf});
@@ -59,8 +59,8 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 	}
 	else
 	{
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.2, endY: inf.heightRad, type: 2});
-		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.2, endY: 0.00, type: 2});			
+		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.05, endY: inf.heightRad, type: 2});
+		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.05, endY: 0.00, type: 2});			
 	}	
 
 	
@@ -182,6 +182,7 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
 	
 	
+	// байпас
 	var troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"20","m1":0.096,"m2":0.047,"name":"Тройник 26x16x20"});
 	var troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"20","m1":0.096,"m2":0.047,"name":"Тройник 26x16x20"});
 	
@@ -225,7 +226,13 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 	arrO[arrO.length] = troin_2;
 	arrO[arrO.length] = tube3;	
 
+	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
+	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
 
-	return arrO;
+	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
 }
+
+
+
+
 

@@ -23,12 +23,7 @@ async function addObjInCatalogUI_1(cdm)
 	{
 		var url = infProject.path+'t/catalog_2.json';
 		
-		var response = await fetch(url, 
-		{
-			method: 'POST',
-			body: 'select_list=id, name' ,
-			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
-		});
+		var response = await fetch(url);
 		var json = await response.json();		
 	}
 	
@@ -54,10 +49,13 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	testAddElemToContaner({type: 1, name: "верхнее подкл."});
-	testAddElemToContaner({type: 2, name: "верхнее подкл. с байпасом"});
-	testAddElemToContaner({type: 3, name: "подкл. с сбоку"});
+	testAddElemToContaner({type: 1, name: "верхнее подкл."});	
+	testAddElemToContaner({type: 3, name: "подкл. сбоку"});
 	testAddElemToContaner({type: 4, name: "нижнее подкл."});
+	
+	testAddElemToContaner({type: 2, name: "верхнее подкл. с байпасом"});
+	testAddElemToContaner({type: 5, name: "подкл. сбоку с байпасом"});
+	testAddElemToContaner({type: 6, name: "нижнее подкл. с байпасом"});
 	
 	// находим дочерние объекты 
 	function getItemChilds(cdm)

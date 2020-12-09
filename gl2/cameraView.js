@@ -23,10 +23,28 @@ async function activeCameraView(cdm)
 	infProject.elem.butt_camera_3D.style.display = 'none';	
 	
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
-
-	var obj = await loadObjServer({lotid: cdm.lotid, notArray: true});
 	
-	obj.position.y += 2000;
+	if(cdm.sborka)
+	{
+		if(cdm.typeV == 1) { var inf = crSborkaRad_Odnotrub_Verh_Mp(cdm); }
+		else if(cdm.typeV == 2) { var inf = crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm); }
+		else if(cdm.typeV == 3) { var inf = crSborkaRad_Odnotrub_Bok_Mp(cdm); }
+		else if(cdm.typeV == 4) { var inf = crSborkaRad_Odnotrub_Niz_Mp(cdm); }
+		else if(cdm.typeV == 5) { var inf = crSborkaRad_Odnotrub_Bok_Bay_Mp(cdm); }
+		else if(cdm.typeV == 6) { var inf = crSborkaRad_Odnotrub_Niz_Bay_Mp(cdm); }
+		
+		for(var i = 0; i < inf.arr2.length; i++) { inf.arr2[i].position.y += 2000; }			
+
+		var obj = inf.arr1[0];
+		
+		showHideSettingsRadiator_1(cdm);
+	}
+	else
+	{
+		var obj = await loadObjServer({lotid: cdm.lotid, notArray: true});
+		
+		obj.position.y += 2000;		
+	}
 	
 	cameraView.userData.cameraView.arrO = [obj];
 	fitCameraToObject({obj: obj});	
@@ -159,7 +177,7 @@ function deleteObjCameraView()
 {
 	var arr = cameraView.userData.cameraView.arrO;
 	
-	if(1==2)
+	if(1==1)
 	{
 		detectDeleteObj({obj: arr[0]});		
 	}
@@ -201,10 +219,12 @@ arr[i] = undefined;
 		
 		
 		
-		console.log(infProject.scene.array.obj);
+		console.log(22, infProject.scene.array.obj);
 	}
 	
 	cameraView.userData.cameraView.arrO = [];
+	
+	showHideSettingsRadiator_1();
 
 	renderCamera();
 }

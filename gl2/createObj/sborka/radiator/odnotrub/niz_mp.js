@@ -181,7 +181,9 @@ function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
 	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
 
+	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
+	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
 
-	return arrO;
+	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
 }
 

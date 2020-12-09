@@ -1,28 +1,28 @@
 
 
 
-function paramSborkaRad_Odnotrub_Verh_Mp()
+function paramSborkaRad_Odnotrub_Bok_Bay_Mp()
 {
 	var inf =
 	{
-		countRad: 7,
-		heightRad: 0.35,
+		countRad: 3,
+		heightRad: 0.6,
 		side: 'right',
 		kran: 'sharov',
 		termoreg: false,
 		pipe_level: 0
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({nameId: 'sborka_rad_1', typeV: 1, inf: inf});
-	
+	inf.ui = settingSborkaRadiatorMenuUI_1({nameId: 'sborka_rad_3', typeV: 5, inf: inf});
+
 
 	return inf;
 }
 
 
-function crSborkaRad_Odnotrub_Verh_Mp(cdm)
+function crSborkaRad_Odnotrub_Bok_Bay_Mp(cdm)
 {
-	var inf = infProject.list.sborka.radiator.odnotrub.verh.mp;
+	var inf = infProject.list.sborka.radiator.odnotrub.bok_bay.mp;
 	
 	if(cdm.countRad) { inf.countRad = cdm.countRad; }
 	if(cdm.heightRad) { inf.heightRad = cdm.heightRad; }
@@ -52,16 +52,8 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 	var point2 = [];
 	
 	
-	if(inf.pipe_level)
-	{ 
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, endY: inf.heightRad, type: 1});
-		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, endY: 0.00, type: 1}); 					
-	}
-	else
-	{
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, endY: inf.heightRad, type: 1});
-		var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];			
-	}	
+	var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];
+	var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];		
 
 	
 	for(var i = 0; i < arrP_1.length; i++)
@@ -71,7 +63,6 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 
 	for(var i = 0; i < arrP_2.length; i++)
 	{
-		arrP_2[i].x *= -1;
 		point2[point2.length] = {pos: arrP_2[i]};
 	}	
 	
@@ -102,18 +93,18 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 	if(inf.side == 'right')
 	{
 		r_vozd.quaternion.set(0, -1, 0, 0);
-		r_per1.quaternion.set(0, -1, 0, 0);
+		r_zagl.quaternion.set(0, -1, 0, 0);
 		
 		if(reg_kran_1) reg_kran_1.quaternion.set(0, -1, 0, 0);
-		mpl_pereh_1.quaternion.set(0, -1, 0, 0);		
+		if(reg_kran_2) reg_kran_2.quaternion.set(0, -1, 0, 0);
+		
+		mpl_pereh_1.quaternion.set(0, -1, 0, 0);
+		mpl_pereh_2.quaternion.set(0, -1, 0, 0);
 	}
 	else
 	{
-		r_zagl.quaternion.set(0, -1, 0, 0);
-		r_per2.quaternion.set(0, -1, 0, 0);
-		
-		if(reg_kran_2) reg_kran_2.quaternion.set(0, -1, 0, 0);
-		mpl_pereh_2.quaternion.set(0, -1, 0, 0);		
+		r_per1.quaternion.set(0, -1, 0, 0);
+		r_per2.quaternion.set(0, -1, 0, 0);	
 	}
 	
 	arrO[arrO.length] = tube1;
@@ -139,17 +130,17 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 	
 	if(inf.side == 'right')
 	{
-		r_zagl.position.copy( posJ.rad[3].clone().sub(posJ.r_zagl[0]) );
+		r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
 		r_per2.position.copy( posJ.rad[2].clone().sub(posJ.r_per2[0]) );
 		r_vozd.position.copy( posJ.rad[1].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );		
+		r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );		
 	}	
 	else
 	{
-		r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
+		r_zagl.position.copy( posJ.rad[3].clone().sub(posJ.r_zagl[0]) );
 		r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
 		r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );					
+		r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );					
 	}	
 	
 	
@@ -173,19 +164,65 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 		mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]).add(r_per1.position) );
 	}
 	
-	
-		
-	
+	// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
+	var x1 = mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]).x - mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]).x;
+	var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
+	updateTubeWF({tube: tube1});	
 
 	// --- устанвливаем трубы	
 	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
 	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
 	
 	
+	
+	
+	
+	// байпас
+	var troin_1 = mpl_troinik_1({"r1":"26","r2":"20","r3":"16","m1":0.096,"m2":0.047});
+	var troin_2 = mpl_troinik_1({"r1":"26","r2":"20","r3":"16","m1":0.096,"m2":0.047});	
+	
+	if(inf.side == 'right')
+	{
+		troin_1.quaternion.copy(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, 0)));
+		troin_2.quaternion.copy(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, Math.PI)));
+	}
+	else
+	{
+		troin_1.quaternion.copy(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, 0)));
+		troin_2.quaternion.copy(new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, Math.PI)));
+	}	
+	
+	var pos1 = tube1.userData.wf_tube.point[0].position;
+	var pos2 = tube2.userData.wf_tube.point[0].position;
+	
+	posJ.troin_1 = getRazyem({obj: troin_1});
+	posJ.troin_2 = getRazyem({obj: troin_2});
+	
+	troin_1.position.copy( pos1.clone().sub(posJ.troin_1[2]) );
+	troin_2.position.copy( pos2.clone().sub(posJ.troin_2[2]) );
+	
+	posJ.troin_1 = getRazyem({obj: troin_1});
+	posJ.troin_2 = getRazyem({obj: troin_2});
+	
+	var point3 = [];
+	point3[point3.length] = {pos: posJ.troin_1[1].clone()};
+	point3[point3.length] = {pos: posJ.troin_2[1].clone()};
+	
+	
+	var tube3 = crTubeWF({"point": point3, "diameter":0.02, "color":15688453, pVisible: false});
+	setPosTube({tube: tube3, startPos: posJ.troin_1[1] });
+
+
+	arrO[arrO.length] = troin_1;
+	arrO[arrO.length] = troin_2;
+	arrO[arrO.length] = tube3;	
+	
+	
+
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
-
-
+	
 	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
 }
 
+var ddfrr = null;
