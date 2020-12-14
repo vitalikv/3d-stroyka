@@ -47,36 +47,9 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	var mpl_pereh_2 = result.mpl_pereh_2;
 	
 	//------- трубы
+	var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
+	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
 	
-	var point1 = [];
-	var point2 = [];
-	
-	
-	var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.2, 0, 0)];
-	var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.2, 0, 0)];		
-
-	
-	for(var i = 0; i < arrP_1.length; i++)
-	{
-		point1[point1.length] = {pos: arrP_1[i]};
-	}
-
-	for(var i = 0; i < arrP_2.length; i++)
-	{
-		point2[point2.length] = {pos: arrP_2[i]};
-	}	
-	
-	
-	if(inf.side == 'right')
-	{
-		for(var i = 0; i < point1.length; i++) { point1[i].pos.x *= -1; }		
-		for(var i = 0; i < point2.length; i++) { point2[i].pos.x *= -1; }	
-	}
-	
-	
-	
-	var tube1 = crTubeWF({"point": point1, "diameter":0.016, "color":15688453, pVisible: false});
-	var tube2 = crTubeWF({"point": point2, "diameter":0.016, "color":505069, pVisible: false});
 	
 	var arrO = [];
 	

@@ -26,12 +26,8 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 	
 	if(cdm.sborka)
 	{
-		if(cdm.typeV == 1) { var inf = crSborkaRad_Odnotrub_Verh_Mp(cdm); }
-		else if(cdm.typeV == 2) { var inf = crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm); }
-		else if(cdm.typeV == 3) { var inf = crSborkaRad_Odnotrub_Bok_Mp(cdm); }
-		else if(cdm.typeV == 4) { var inf = crSborkaRad_Odnotrub_Niz_Mp(cdm); }
-		else if(cdm.typeV == 5) { var inf = crSborkaRad_Odnotrub_Bok_Bay_Mp(cdm); }
-		else if(cdm.typeV == 6) { var inf = crSborkaRad_Odnotrub_Niz_Bay_Mp(cdm); }
+		var inf = actionFnSborkaRad_1(cdm);	
+		if(!inf) return;
 		
 		for(var i = 0; i < inf.arr2.length; i++) { inf.arr2[i].position.y += 2000; }			
 

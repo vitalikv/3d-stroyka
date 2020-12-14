@@ -47,45 +47,11 @@ function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 	var mpl_pereh_2 = result.mpl_pereh_2;
 	
 	//------- трубы
-	
-	var point1 = [];
-	var point2 = [];
-	
-	
-	if(inf.pipe_level)
-	{
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, type: 1});
-		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, type: 1}); 					
-	}
-	else
-	{
-		var arrP_1 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];
-		var arrP_2 = [new THREE.Vector3(), new THREE.Vector3(0.1, 0, 0)];			
-	}
+	var mirror_1 = {x: (inf.side == 'right') ? true : false};
+	var mirror_2 = {x: (inf.side == 'right') ? false : true};	
+	var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: 0.016, mirror: mirror_1});
+	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: 0.016, mirror: mirror_2});	
 
-	
-	for(var i = 0; i < arrP_1.length; i++)
-	{
-		point1[point1.length] = {pos: arrP_1[i]};
-	}
-
-	for(var i = 0; i < arrP_2.length; i++)
-	{
-		arrP_2[i].x *= -1;
-		point2[point2.length] = {pos: arrP_2[i]};
-	}	
-	
-	
-	if(inf.side == 'right')
-	{
-		for(var i = 0; i < point1.length; i++) { point1[i].pos.x *= -1; }		
-		for(var i = 0; i < point2.length; i++) { point2[i].pos.x *= -1; }	
-	}
-	
-	
-	
-	var tube1 = crTubeWF({"point": point1, "diameter":0.016, "color":15688453, pVisible: false});
-	var tube2 = crTubeWF({"point": point2, "diameter":0.016, "color":505069, pVisible: false});
 	
 	var arrO = [];
 	

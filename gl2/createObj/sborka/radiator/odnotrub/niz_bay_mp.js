@@ -10,7 +10,7 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 		side: 'left',
 		kran: 'regulator',
 		termoreg: true,
-		pipe_level: 0
+		pipe_level: -0.05
 	}
 	
 	inf.ui = settingSborkaRadiatorMenuUI_1({nameId: 'sborka_rad_4', typeV: 6, inf: inf});
@@ -47,45 +47,12 @@ function crSborkaRad_Odnotrub_Niz_Bay_Mp(cdm)
 	var mpl_pereh_2 = result.mpl_pereh_2;
 	
 	//------- трубы
+	var mirror_1 = {x: (inf.side == 'right') ? true : false};
+	var mirror_2 = {x: (inf.side == 'right') ? false : true};	
+	var tube1 = getTubeToSborka_1({type: 2, color: 15688453, diameter: 0.016, startY: inf.pipe_level, endY: 0.00, mirror: mirror_1});
+	var tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: 0.016, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2});	
 	
-	var point1 = [];
-	var point2 = [];
-	
-	
-	if(inf.pipe_level)
-	{
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, endY: inf.heightRad, type: 2});
-		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: inf.pipe_level, endY: 0.00, type: 2}); 					
-	}
-	else
-	{
-		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.05, endY: 0.00, type: 2});
-		var arrP_2 = getPointTubeCurve_1({size: 0.02, count: 2, startY: -0.05, endY: 0.00, type: 2});			
-	}
 
-	
-	for(var i = 0; i < arrP_1.length; i++)
-	{
-		point1[point1.length] = {pos: arrP_1[i]};
-	}
-
-	for(var i = 0; i < arrP_2.length; i++)
-	{
-		arrP_2[i].x *= -1;
-		point2[point2.length] = {pos: arrP_2[i]};
-	}	
-	
-	
-	if(inf.side == 'right')
-	{
-		for(var i = 0; i < point1.length; i++) { point1[i].pos.x *= -1; }		
-		for(var i = 0; i < point2.length; i++) { point2[i].pos.x *= -1; }	
-	}
-	
-	
-	
-	var tube1 = crTubeWF({"point": point1, "diameter":0.016, "color":15688453, pVisible: false});
-	var tube2 = crTubeWF({"point": point2, "diameter":0.016, "color":505069, pVisible: false});
 	
 	var arrO = [];
 	
@@ -207,22 +174,24 @@ function crSborkaRad_Odnotrub_Niz_Bay_Mp(cdm)
 	
 	var point3 = [];
 	point3[point3.length] = {pos: posJ.troin_1[2].clone()};
-	point3[point3.length] = {pos: posJ.troin_2[0].clone()};
-	
-	//point3[point3.length] = {pos: pos1};
-	//point3[point3.length] = {pos: pos2};
-	
-	
+	point3[point3.length] = {pos: posJ.troin_2[2].clone()};		
 	var tube3 = crTubeWF({"point": point3, "diameter":0.02, "color":15688453, pVisible: false});
 	setPosTube({tube: tube3, startPos: posJ.troin_1[2] });
-	
-	console.log(2222, posJ.troin_1[2].x, posJ.troin_2[0].x);
 	
 	
 	arrO[arrO.length] = troin_1;
 	arrO[arrO.length] = troin_2;
 	arrO[arrO.length] = tube3;
 	
+	// трубы от тройников
+	var tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: 0.026, mirror: mirror_2});
+	var tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: 0.026, mirror: mirror_1});
+
+	setPosTube({tube: tube4, startPos: posJ.troin_1[0] });
+	setPosTube({tube: tube5, startPos: posJ.troin_2[0] });
+	
+	arrO[arrO.length] = tube4;
+	arrO[arrO.length] = tube5;	
 	
 
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив

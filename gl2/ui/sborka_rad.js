@@ -69,6 +69,10 @@ function showHideSettingsRadiator_1(cdm)
 	arr[arr.length] = infProject.list.sborka.radiator.odnotrub.bok_bay.mp.ui.el;
 	arr[arr.length] = infProject.list.sborka.radiator.odnotrub.niz_bay.mp.ui.el;
 	
+	arr[arr.length] = infProject.list.sborka.radiator.dvuhtrub.verh.mp.ui.el;
+	arr[arr.length] = infProject.list.sborka.radiator.dvuhtrub.niz.mp.ui.el;
+	arr[arr.length] = infProject.list.sborka.radiator.dvuhtrub.bok.mp.ui.el;
+	
 	
 	for(var i = 0; i < arr.length; i++)
 	{		

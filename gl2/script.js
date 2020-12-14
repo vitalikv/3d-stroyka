@@ -284,6 +284,15 @@ infProject.list.sborka.radiator.odnotrub.bok.mp = paramSborkaRad_Odnotrub_Bok_Mp
 infProject.list.sborka.radiator.odnotrub.verh_bay.mp = paramSborkaRad_Odnotrub_Verh_Bay_Mp();
 infProject.list.sborka.radiator.odnotrub.niz_bay.mp = paramSborkaRad_Odnotrub_Niz_Bay_Mp();
 infProject.list.sborka.radiator.odnotrub.bok_bay.mp = paramSborkaRad_Odnotrub_Bok_Bay_Mp();
+
+infProject.list.sborka.radiator.dvuhtrub = {};
+infProject.list.sborka.radiator.dvuhtrub.verh = {};
+infProject.list.sborka.radiator.dvuhtrub.niz = {};
+infProject.list.sborka.radiator.dvuhtrub.bok = {};
+infProject.list.sborka.radiator.dvuhtrub.verh.mp = paramSborkaRad_Dvuhtrub_Verh_Mp(); 
+infProject.list.sborka.radiator.dvuhtrub.niz.mp = paramSborkaRad_Dvuhtrub_Niz_Mp();
+infProject.list.sborka.radiator.dvuhtrub.bok.mp = paramSborkaRad_Dvuhtrub_Bok_Mp();
+
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.settings.active.tube = null;
 infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры

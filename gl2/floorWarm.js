@@ -167,7 +167,7 @@ function crTubeWF(cdm)
 	
 	var inf = tubeGeometry({point: point, diameter: diameter});
 	
-	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: true, side: THREE.DoubleSide, lightMap: lightMap_1 }));	
+	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: true, side: THREE.DoubleSide, lightMap: lightMap_1,depthTest: false, transparent: true }));	
 	tube.userData.tag = 'wf_tube';		
 	tube.userData.wf_tube = {};
 	tube.userData.wf_tube.line = null;

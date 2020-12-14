@@ -157,6 +157,10 @@
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/niz_bay_mp.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/sborka/radiator/odnotrub/bok_bay_mp.js?<?=$vrs?>"></script>
 	
+	<script src="<?=$path?>createObj/sborka/radiator/dvuhtrub/dvuh_verh_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/dvuhtrub/dvuh_niz_mp.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/sborka/radiator/dvuhtrub/dvuh_bok_mp.js?<?=$vrs?>"></script>
+	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>
     <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>

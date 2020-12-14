@@ -79,6 +79,9 @@ createObj/sborka/radiator/odnotrub/bok_mp.js
 createObj/sborka/radiator/odnotrub/verh_bay_mp.js
 createObj/sborka/radiator/odnotrub/niz_bay_mp.js
 createObj/sborka/radiator/odnotrub/bok_bay_mp.js
+createObj/sborka/radiator/dvuhtrub/dvuh_verh_mp.js
+createObj/sborka/radiator/dvuhtrub/dvuh_niz_mp.js
+createObj/sborka/radiator/dvuhtrub/dvuh_bok_mp.js
 ';
 
 
