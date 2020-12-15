@@ -231,22 +231,39 @@ function setPosTube(cdm)
 
 
 
-function actionFnSborkaRad_1(cdm)
+
+// получаем разъемы объекта и находим у разъемов мировые position
+function getRazyem(cdm)
 {
-	var inf = null;
+	var obj = cdm.obj;				
+	obj.updateMatrixWorld();
 	
-	if(cdm.typeV == 1) { inf = crSborkaRad_Odnotrub_Verh_Mp(cdm); }
-	else if(cdm.typeV == 2) { inf = crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm); }
-	else if(cdm.typeV == 3) { inf = crSborkaRad_Odnotrub_Bok_Mp(cdm); }
-	else if(cdm.typeV == 4) { inf = crSborkaRad_Odnotrub_Niz_Mp(cdm); }
-	else if(cdm.typeV == 5) { inf = crSborkaRad_Odnotrub_Bok_Bay_Mp(cdm); }
-	else if(cdm.typeV == 6) { inf = crSborkaRad_Odnotrub_Niz_Bay_Mp(cdm); }	
-	else if(cdm.typeV == 7) { inf = crSborkaRad_Dvuhtrub_Verh_Mp(cdm); }
-	else if(cdm.typeV == 8) { inf = crSborkaRad_Dvuhtrub_Niz_Mp(cdm); }
-	else if(cdm.typeV == 9) { inf = crSborkaRad_Dvuhtrub_Bok_Mp(cdm); }
+	var arrNum = (cdm.arrNum) ? cdm.arrNum : [];
 	
-	return inf;
+	var centerPoint = getCenterPointFromObj_1( obj );
+	
+	var arr = [];
+	for(var i = 0; i < centerPoint.length; i++)
+	{	
+		if(arrNum.length > 0)
+		{
+			var stop = true;
+			for(var i2 = 0; i2 < arrNum.length; i2++)
+			{
+				if(i == arrNum[i2]) { stop = false; break; }
+			}
+			
+			if(stop){ continue; }
+		}
+		
+		arr[arr.length] = obj.localToWorld( centerPoint[i].position.clone() );
+	}	
+
+	return arr;
 }
+
+
+
 
 
 

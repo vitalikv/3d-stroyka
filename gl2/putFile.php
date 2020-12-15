@@ -71,8 +71,8 @@ createObj/calculation_2.js
 createObj/start.js
 ui/select_list_1.js
 ui/slider_2mov.js
-ui/sborka_rad.js
 createObj/sborka/sbr_1.js
+createObj/sborka/radiator/rad_1.js
 createObj/sborka/radiator/odnotrub/niz_mp.js
 createObj/sborka/radiator/odnotrub/verh_mp.js
 createObj/sborka/radiator/odnotrub/bok_mp.js

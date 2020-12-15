@@ -49,17 +49,17 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	testAddElemToContaner({type: 1, name: "верхнее подкл."});	
-	testAddElemToContaner({type: 3, name: "подкл. сбоку"});
-	testAddElemToContaner({type: 4, name: "нижнее подкл."});
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh.mp);	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz.mp);
 	
-	testAddElemToContaner({type: 2, name: "верхнее подкл. с байпасом"});
-	testAddElemToContaner({type: 5, name: "подкл. сбоку с байпасом"});
-	testAddElemToContaner({type: 6, name: "нижнее подкл. с байпасом"});
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh_bay.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok_bay.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz_bay.mp);
 	
-	testAddElemToContaner({type: 7, name: "двухтр. верхнее подкл."});
-	testAddElemToContaner({type: 8, name: "двухтр. нижнее подкл."});
-	testAddElemToContaner({type: 9, name: "двухтр. сбоку"});
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.verh.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.niz.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.bok.mp);
 	
 	
 	// находим дочерние объекты 

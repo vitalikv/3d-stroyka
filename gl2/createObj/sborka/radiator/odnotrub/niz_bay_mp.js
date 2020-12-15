@@ -13,8 +13,11 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 		pipe_level: -0.05
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({typeV: 6, inf: inf});
+	inf.ui = settingSborkaRadiatorMenuUI_1({inf: inf});
 	
+	inf.fc = 'crSborkaRad_Odnotrub_Niz_Bay_Mp';
+	
+	inf.ui.catalog = {name: 'нижнее подкл. с байпасом'};	
 
 	return inf;
 }

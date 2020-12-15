@@ -13,8 +13,11 @@ function paramSborkaRad_Dvuhtrub_Bok_Mp()
 		pipe_level: 0
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({typeV: 9, inf: inf});
-
+	inf.ui = settingSborkaRadiatorMenuUI_1({inf: inf});
+	
+	inf.fc = 'crSborkaRad_Dvuhtrub_Bok_Mp';
+	
+	inf.ui.catalog = {name: 'двухтр. сбоку'};
 
 	return inf;
 }
