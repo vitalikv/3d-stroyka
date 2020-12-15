@@ -2,8 +2,8 @@
 
 function settingSborkaRadiatorMenuUI_1(cdm)
 {
-	var el = document.querySelector('[nameId="'+cdm.nameId+'"]');
-	
+	//var el = document.querySelector('[nameId="'+cdm.nameId+'"]');
+	var el = document.createElement('div');
 	
 	var arr = [];
 	arr[arr.length] = {value: 'left', text: 'подключение слева', fc: {name: 'activeCameraView', params: {sborka: true, typeV: cdm.typeV, side: 'left'}} }; 
@@ -49,7 +49,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 			
 	
 	//el.style.display = '';
-	el.style.display = 'none';			
+	//el.style.display = 'none';			
 	
 	return { el: el };
 }	
@@ -73,15 +73,42 @@ function showHideSettingsRadiator_1(cdm)
 	arr[arr.length] = infProject.list.sborka.radiator.dvuhtrub.niz.mp.ui.el;
 	arr[arr.length] = infProject.list.sborka.radiator.dvuhtrub.bok.mp.ui.el;
 	
+	var el = document.querySelector('[nameId="sborka_rad_1"]');
+	el.innerHTML = '';
+	
 	
 	for(var i = 0; i < arr.length; i++)
 	{		
-		if(arr[i].style) arr[i].style.display = 'none'
+		//if(arr[i].style) arr[i].style.display = 'none'
+		//arr[i].innerHTML = '';
 	}
 
+	if(cdm.inf)
+	{
+		var arr2 = [];
+			
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.verh.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.verh_bay.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.bok.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.niz.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.bok_bay.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.odnotrub.niz_bay.mp.ui.el;
+		
+		arr2[arr2.length] = infProject.list.sborka.radiator.dvuhtrub.verh.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.dvuhtrub.niz.mp.ui.el;
+		arr2[arr2.length] = infProject.list.sborka.radiator.dvuhtrub.bok.mp.ui.el;		
+		
+		for(var i = 0; i < arr2.length; i++)
+		{		
+			if(arr2[i] == cdm.inf) { console.log(2222222, cdm.inf); break; }
+		}		
+	}
+	
+	
 	if(cdm.typeV)
 	{
 		arr[Number(cdm.typeV) - 1].style.display = '';
+		el.append(arr[Number(cdm.typeV) - 1]);
 	}
 }
 

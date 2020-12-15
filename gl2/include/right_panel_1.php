@@ -317,13 +317,7 @@
 		<div nameId="wrap_object">
 			<div class="flex_column_1" nameId="wrap_sborka_1">
 
-				<div nameId="sborka_rad_1" style="position: relative;"></div>
-				
-				<div nameId="sborka_rad_2" style="position: relative;"></div>
-
-				<div nameId="sborka_rad_3" style="position: relative;"></div>
-
-				<div nameId="sborka_rad_4" style="position: relative;"></div>				
+				<div nameId="sborka_rad_1" style="position: relative;"></div>								
 				
 			</div>
 			

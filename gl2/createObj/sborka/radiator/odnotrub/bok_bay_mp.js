@@ -13,7 +13,7 @@ function paramSborkaRad_Odnotrub_Bok_Bay_Mp()
 		pipe_level: 0
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({nameId: 'sborka_rad_3', typeV: 5, inf: inf});
+	inf.ui = settingSborkaRadiatorMenuUI_1({typeV: 5, inf: inf});
 
 
 	return inf;
