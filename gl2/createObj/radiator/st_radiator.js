@@ -15,12 +15,12 @@ function st_radiator_1(cdm)
 	var s2 = 0.02;				// толщина окантовки ребра (грани)
 	var s3 = 0.01;				// глубина ребра
 	
-	var x2 = (size.y/2 - s1 - d1.n/2) * 2;
-	size.y += size.y - x2;  
+	var x2 = (sizeY/2 - s1 - d1.n/2) * 2;
+	sizeY += sizeY - x2;  
 	
 	var w1 = 0.07;				// ширина ребра
 	var w2 = w1 - s2*2;  		// ширина внутреннего ребра
-	var h1 = size.y - s1*2;		// высота ребра
+	var h1 = sizeY - s1*2;		// высота ребра
 	var h2 = h1 - s2*2;
 	
 	
@@ -41,18 +41,18 @@ function st_radiator_1(cdm)
 	{
 		var g1 = new THREE.PlaneGeometry( size.x, size.z );
 		g1.rotateX(Math.PI/2);
-		g1.translate(0, -size.y/2, 0);
+		g1.translate(0, -sizeY/2, 0);
 		
 		var g2 = new THREE.PlaneGeometry( size.x, size.z );
 		g2.rotateX(Math.PI/2);
-		g2.translate(0, size.y/2, 0);
+		g2.translate(0, sizeY/2, 0);
 		
-		var g3 = new THREE.PlaneGeometry( size.y, size.z );	
+		var g3 = new THREE.PlaneGeometry( sizeY, size.z );	
 		g3.rotateZ(Math.PI/2);
 		g3.rotateY(Math.PI/2);
 		g3.translate(-size.x/2, 0, 0);
 		
-		var g4 = new THREE.PlaneGeometry( size.y, size.z );	
+		var g4 = new THREE.PlaneGeometry( sizeY, size.z );	
 		g4.rotateZ(Math.PI/2);
 		g4.rotateY(Math.PI/2);
 		g4.translate(size.x/2, 0, 0);			
@@ -61,16 +61,16 @@ function st_radiator_1(cdm)
 	// оконтовка фронтальной стороны
 	{
 		var g5 = new THREE.PlaneGeometry( size.x, s1 );
-		g5.translate(0, -size.y/2 + s1/2, size.z/2);
+		g5.translate(0, -sizeY/2 + s1/2, size.z/2);
 		
 		var g6 = new THREE.PlaneGeometry( size.x, s1 );
-		g6.translate(0, size.y/2 - s1/2, size.z/2);		
+		g6.translate(0, sizeY/2 - s1/2, size.z/2);		
 
-		var g7 = new THREE.PlaneGeometry( size.y, s1 );
+		var g7 = new THREE.PlaneGeometry( sizeY, s1 );
 		g7.rotateZ(Math.PI/2);
 		g7.translate(-size.x/2 + s1/2, 0, size.z/2);
 
-		var g8 = new THREE.PlaneGeometry( size.y, s1 );
+		var g8 = new THREE.PlaneGeometry( sizeY, s1 );
 		g8.rotateZ(Math.PI/2);
 		g8.translate(size.x/2 - s1/2, 0, size.z/2);		
 	}
@@ -78,16 +78,16 @@ function st_radiator_1(cdm)
 	// оконтовка задней стороны
 	{
 		var g9 = new THREE.PlaneGeometry( size.x, s1 );
-		g9.translate(0, -size.y/2 + s1/2, -size.z/2);
+		g9.translate(0, -sizeY/2 + s1/2, -size.z/2);
 		
 		var g10 = new THREE.PlaneGeometry( size.x, s1 );
-		g10.translate(0, size.y/2 - s1/2, -size.z/2);		
+		g10.translate(0, sizeY/2 - s1/2, -size.z/2);		
 
-		var g11 = new THREE.PlaneGeometry( size.y, s1 );
+		var g11 = new THREE.PlaneGeometry( sizeY, s1 );
 		g11.rotateZ(Math.PI/2);
 		g11.translate(-size.x/2 + s1/2, 0, -size.z/2);
 
-		var g12 = new THREE.PlaneGeometry( size.y, s1 );
+		var g12 = new THREE.PlaneGeometry( sizeY, s1 );
 		g12.rotateZ(Math.PI/2);
 		g12.translate(size.x/2 - s1/2, 0, -size.z/2);		
 	}
@@ -245,20 +245,20 @@ function st_radiator_1(cdm)
 	// трубы (разъемы)
 	{
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: -(size.x/2 + x_1/2), y: size.y/2 - s1 - d1.n/2, z: 0 };
+		inf.pos = { x: -(size.x/2 + x_1/2), y: -sizeY/2 + s1 + d1.n/2, z: 0 };
 		var poM1 = crFormSleeve_1(inf);	
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: (size.x/2 + x_1/2), y: size.y/2 - s1 - d1.n/2, z: 0 };
+		inf.pos = { x: -(size.x/2 + x_1/2), y: sizeY/2 - s1 - d1.n/2, z: 0 };
 		var poM2 = crFormSleeve_1(inf);	
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: (size.x/2 + x_1/2), y: -size.y/2 + s1 + d1.n/2, z: 0 };
-		var poM3 = crFormSleeve_1(inf);
+		inf.pos = { x: (size.x/2 + x_1/2), y: sizeY/2 - s1 - d1.n/2, z: 0 };
+		var poM3 = crFormSleeve_1(inf);	
 		
 		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [0, 3, 0, 0] };
-		inf.pos = { x: -(size.x/2 + x_1/2), y: -size.y/2 + s1 + d1.n/2, z: 0 };
-		var poM4 = crFormSleeve_1(inf);					
+		inf.pos = { x: (size.x/2 + x_1/2), y: -sizeY/2 + s1 + d1.n/2, z: 0 };
+		var poM4 = crFormSleeve_1(inf);						
 	}
 
 	//geom.computeBoundingBox();
@@ -290,7 +290,7 @@ function st_radiator_1(cdm)
 		cr_CenterPoint(arrP[i]);
 	}		
 
-	cdm.name = 'Ст.радиатор '+'h'+(sizeY*1000)+' ('+size.x+'м)';
+	cdm.name = 'Ст.радиатор '+'h'+(size.y*1000)+' ('+size.x+'м)';
 	
 	assignObjParams(obj, cdm);
 

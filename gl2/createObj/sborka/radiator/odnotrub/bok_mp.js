@@ -34,7 +34,6 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
 	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }
 	
-		
 	
 	
 	var result = getObjectsSborkaRad_1({countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
@@ -54,17 +53,9 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
 	
 	
-	var arrO = [];
-	
-	arrO[arrO.length] = rad;
-	arrO[arrO.length] = r_zagl;
-	arrO[arrO.length] = r_per2;
-	arrO[arrO.length] = r_vozd;
-	arrO[arrO.length] = r_per1;
-	if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
-	if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
-	arrO[arrO.length] = mpl_pereh_1;
-	arrO[arrO.length] = mpl_pereh_2;
+	var arrO = setPathRad_1({arrO1: true, result: result});
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;
 	
 	if(inf.side == 'right')
 	{
@@ -79,66 +70,38 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	}
 	else
 	{
-		r_per1.quaternion.set(0, -1, 0, 0);
-		r_per2.quaternion.set(0, -1, 0, 0);	
+		if(r_per1) r_per1.quaternion.set(0, -1, 0, 0);
+		if(r_per2) r_per2.quaternion.set(0, -1, 0, 0);	
 	}
-	
-	arrO[arrO.length] = tube1;
-	arrO[arrO.length] = tube2;
+
 	
 	// --- получаем мировые значяения разъемов
-	var posJ = {};
-	
-	posJ.rad = getRazyem({obj: rad});
-	
-	posJ.r_zagl = getRazyem({obj: r_zagl});	
-	posJ.r_per2 = getRazyem({obj: r_per2});		
-	posJ.r_vozd = getRazyem({obj: r_vozd});	
-	posJ.r_per1 = getRazyem({obj: r_per1});
-	
-	if(reg_kran_1) posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
-	if(reg_kran_2) posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
-	
-	posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
-	posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});		
+	var posJ = setPathRad_1({posJ1: true, result: result});		
 
 	// --- устанвливаем раъемы	
-	
-	if(inf.side == 'right')
+
+	function posSubAdd_1(cdm)
 	{
-		r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
-		r_per2.position.copy( posJ.rad[2].clone().sub(posJ.r_per2[0]) );
-		r_vozd.position.copy( posJ.rad[1].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );		
-	}	
-	else
-	{
-		r_zagl.position.copy( posJ.rad[3].clone().sub(posJ.r_zagl[0]) );
-		r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
-		r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );					
-	}	
-	
-	
-	if(reg_kran_1) 
-	{
-		reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]).add(r_per2.position) );
-		mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
-	}
-	else
-	{
-		mpl_pereh_1.position.copy( posJ.r_per2[1].clone().sub(posJ.mpl_pereh_1[1]).add(r_per2.position) );
+		var o = cdm.o;
+		var arrP = cdm.arrP;
+		var n1 = cdm.n1;
+		var p2 = cdm.p2;
+		
+		o.position.copy( p2.clone().sub(arrP[n1]) );		
+		
+		for(var i = 0; i < arrP.length; i++)
+		{
+			arrP[i].add(o.position);
+		}
 	}
 	
-	if(reg_kran_2) 
-	{
-		reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]).add(r_per1.position) );
-		mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );
-	}
-	else
-	{
-		mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]).add(r_per1.position) );
-	}
+	
+	var arrR = (inf.side == 'right') ? [0,1,3,2] : [3,2,0,1];
+	setPathRad_1({pos0: true, posJ: posJ, arrR: arrR, result: result});		
+
+	
+	setPathRad_1({pos1: true, posJ: posJ, result: result});
+	
 	
 	// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
 	var x1 = mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]).x - mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]).x;

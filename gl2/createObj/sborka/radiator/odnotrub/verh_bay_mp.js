@@ -56,17 +56,9 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 	var tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: 0.016, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2});		
 
 	
-	var arrO = [];
-	
-	arrO[arrO.length] = rad;
-	arrO[arrO.length] = r_zagl;
-	arrO[arrO.length] = r_per2;
-	arrO[arrO.length] = r_vozd;
-	arrO[arrO.length] = r_per1;
-	if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
-	if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
-	arrO[arrO.length] = mpl_pereh_1;
-	arrO[arrO.length] = mpl_pereh_2;
+	var arrO = setPathRad_1({arrO1: true, result: result});
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;
 	
 	if(inf.side == 'right')
 	{
@@ -85,62 +77,16 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 		mpl_pereh_2.quaternion.set(0, -1, 0, 0);		
 	}
 	
-	arrO[arrO.length] = tube1;
-	arrO[arrO.length] = tube2;
 	
 	// --- получаем мировые значяения разъемов
-	var posJ = {};
-	
-	posJ.rad = getRazyem({obj: rad});
-	
-	posJ.r_zagl = getRazyem({obj: r_zagl});	
-	posJ.r_per2 = getRazyem({obj: r_per2});		
-	posJ.r_vozd = getRazyem({obj: r_vozd});	
-	posJ.r_per1 = getRazyem({obj: r_per1});
-	
-	if(reg_kran_1) posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
-	if(reg_kran_2) posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
-	
-	posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
-	posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});		
+	var posJ = setPathRad_1({posJ1: true, result: result});			
 
 	// --- устанвливаем раъемы	
-	
-	if(inf.side == 'right')
-	{
-		r_zagl.position.copy( posJ.rad[3].clone().sub(posJ.r_zagl[0]) );
-		r_per2.position.copy( posJ.rad[2].clone().sub(posJ.r_per2[0]) );
-		r_vozd.position.copy( posJ.rad[1].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[0].clone().sub(posJ.r_per1[0]) );		
-	}	
-	else
-	{
-		r_zagl.position.copy( posJ.rad[0].clone().sub(posJ.r_zagl[0]) );
-		r_per2.position.copy( posJ.rad[1].clone().sub(posJ.r_per2[0]) );
-		r_vozd.position.copy( posJ.rad[2].clone().sub(posJ.r_vozd[0]) );
-		r_per1.position.copy( posJ.rad[3].clone().sub(posJ.r_per1[0]) );					
-	}	
+	var arrR = (inf.side == 'right') ? [3,1,0,2] : [0,2,3,1];
+	setPathRad_1({pos0: true, posJ: posJ, arrR: arrR, result: result});	
 	
 	
-	if(reg_kran_1) 
-	{
-		reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]).add(r_per2.position) );
-		mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
-	}
-	else
-	{
-		mpl_pereh_1.position.copy( posJ.r_per2[1].clone().sub(posJ.mpl_pereh_1[1]).add(r_per2.position) );
-	}
-	
-	if(reg_kran_2) 
-	{
-		reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]).add(r_per1.position) );
-		mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );
-	}
-	else
-	{
-		mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]).add(r_per1.position) );
-	}
+	setPathRad_1({pos1: true, posJ: posJ, result: result});
 	
 	
 		

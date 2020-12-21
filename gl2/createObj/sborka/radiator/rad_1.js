@@ -128,12 +128,14 @@ function getObjectsSborkaRad_1(cdm)
 {
 	var rad = al_radiator_1({"count": cdm.countRad,"size":{"x":0.08,"y":cdm.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
 
+	//var rad = st_radiator_1({"size":{"x":0.6,"y":0.5,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
+
 
 	//------- заглушки для ал.радиатора
-	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2" });
-	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0,"vsd":true,"name":"воздухоотв.радиаторный" });	
-	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2","name":"перех.радиаторный 1/2" });
-	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0,"name":"заглушка радиаторная" });
+	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });
 
 	
 	//------- регулировочные краны
@@ -219,7 +221,119 @@ function actionFnSborkaRad_1(cdm)
 
 
 
+function setPathRad_1(cdm)
+{
+	var rad = cdm.result.rad;
+	var r_per1 = cdm.result.r_per1;	//cdm.result.r_per1 = null; 	
+	var r_per2 = cdm.result.r_per2; //cdm.result.r_per2 = null;
+	var r_vozd = cdm.result.r_vozd;
+	var r_zagl = cdm.result.r_zagl;
+	var reg_kran_1 = cdm.result.reg_kran_1;
+	var reg_kran_2 = cdm.result.reg_kran_2;
+	var mpl_pereh_1 = cdm.result.mpl_pereh_1;
+	var mpl_pereh_2 = cdm.result.mpl_pereh_2;
 
+	
+	if(cdm.arrO1)
+	{
+		var arrO = [];
+		
+		arrO[arrO.length] = rad;	
+		if(r_per1) arrO[arrO.length] = r_per1;
+		if(r_per2) arrO[arrO.length] = r_per2;
+		arrO[arrO.length] = r_zagl;
+		arrO[arrO.length] = r_vozd;	
+		if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
+		if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
+		arrO[arrO.length] = mpl_pereh_1;
+		arrO[arrO.length] = mpl_pereh_2;
+
+		return arrO;
+	}
+	
+
+
+	
+	if(cdm.posJ1)
+	{
+		var posJ = {};
+		posJ.rad = getRazyem({obj: rad});
+		
+		posJ.r_zagl = getRazyem({obj: r_zagl});				
+		posJ.r_vozd = getRazyem({obj: r_vozd});	
+		if(r_per1) posJ.r_per1 = getRazyem({obj: r_per1});
+		if(r_per2) posJ.r_per2 = getRazyem({obj: r_per2});
+		
+		if(reg_kran_1) posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
+		if(reg_kran_2) posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
+		
+		posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
+		posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});
+
+		return posJ;
+	}
+	
+
+	if(cdm.pos0)
+	{
+		var posJ = cdm.posJ;
+		var arrR = cdm.arrR;
+		
+		r_zagl.position.copy( posJ.rad[arrR[0]].clone().sub(posJ.r_zagl[0]) );		
+		r_vozd.position.copy( posJ.rad[arrR[1]].clone().sub(posJ.r_vozd[0]) );
+		
+		if(r_per1) 
+		{ 
+			r_per1.position.copy( posJ.rad[arrR[2]].clone().sub(posJ.r_per1[0]) );
+			posJ.r_per1[1].add(r_per1.position);
+		}
+		else
+		{
+			posJ.r_per1 = [];
+			posJ.r_per1[1] = posJ.rad[arrR[2]].clone();
+		}
+		
+		if(r_per2) 
+		{ 
+			r_per2.position.copy( posJ.rad[arrR[3]].clone().sub(posJ.r_per2[0]) );
+			posJ.r_per2[1].add(r_per2.position);
+		}
+		else
+		{
+			posJ.r_per2 = [];
+			posJ.r_per2[1] = posJ.rad[arrR[3]].clone();
+		}		
+	}
+
+	
+	if(cdm.pos1)
+	{
+		var posJ = cdm.posJ;
+		
+		if(reg_kran_1) 
+		{
+			reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]) );
+			mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
+		}
+		else
+		{
+			mpl_pereh_1.position.copy( posJ.r_per2[1].clone().sub(posJ.mpl_pereh_1[1]) );
+		}
+		
+		if(reg_kran_2) 
+		{
+			reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]) );
+			mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );
+		}
+		else
+		{
+			mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]) );
+		}			
+	}
+	
+	
+
+}
 
 
 

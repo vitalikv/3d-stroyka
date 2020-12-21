@@ -30,7 +30,7 @@ async function fc_cr_obj(params)
 		{
 			disposeNode(arrO[i2]);
 		}		
-		
+		 
 		// сохраняем в базу
 		if(1==2)
 		{
@@ -89,8 +89,8 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 3+0.0), cat: 'st_collector_1'});		
 	}
 	
-	return;
 	
+	return;
 	
 	if(1==1)
 	{
@@ -127,10 +127,10 @@ async function cr_obj_cat()
 	if(1==1)
 	{
 		var arr = [];
-		arr[arr.length] = { r1: '1', r2: '1/2', name: 'перех.радиаторный 1/2' };		
-		arr[arr.length] = { r1: '1', r2: '3/4', name: 'перех.радиаторный 3/4' };
-		arr[arr.length] = { r1: '1', r2: 0, name: 'заглушка радиаторная' };
-		arr[arr.length] = { r1: '1', r2: 0, vsd: true, name: 'воздухоотв.радиаторный' };
+		arr[arr.length] = { r1: '1', r2: '1/2', type: 'prh' };		
+		arr[arr.length] = { r1: '1', r2: '3/4', type: 'prh' };
+		arr[arr.length] = { r1: '1', r2: 0, type: 'zgl' };
+		arr[arr.length] = { r1: '1', r2: 0, type: 'vsd' };
 		
 		await fc_cr_obj({funcName: 'al_zagl_radiator_1', arr: arr, startPos: new THREE.Vector3(-4.7, 1, -1), cat: 'al_zagl_radiator_1'});		
 	}

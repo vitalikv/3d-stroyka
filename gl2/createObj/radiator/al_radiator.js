@@ -413,7 +413,7 @@ function al_zagl_radiator_1(cdm)
 
 	
 	// воздухоотводчик
-	if(cdm.vsd)
+	if(cdm.type == 'vsd')
 	{
 		var vsd = {};
 		vsd.w1 = 0.001;
@@ -467,7 +467,9 @@ function al_zagl_radiator_1(cdm)
 		cr_CenterPoint(arrP[i]);
 	}	
 
-	
+	if(cdm.type == 'prh') { cdm.name = 'перех.радиаторный' + cdm.r2 };		
+	if(cdm.type == 'zgl') { cdm.name = 'заглушка радиаторная' };
+	if(cdm.type == 'vsd') { cdm.name = 'воздухоотв.радиаторный' };	
 	
 	assignObjParams(obj, cdm);
 
