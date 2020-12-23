@@ -126,20 +126,30 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 // получаем объекты для сборки радиатора
 function getObjectsSborkaRad_1(cdm)
 {
-	var rad = al_radiator_1({"count": cdm.countRad,"size":{"x":0.08,"y":cdm.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+	//if(cdm.typeRad)
+	if(1==1)
+	{
+		var rad = st_radiator_1({"size":{"x":0.6,"y":0.5,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
+		
+		//------- заглушки для ал.радиатора
+		var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+		var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+	}
+	else
+	{
+		var rad = al_radiator_1({"count": cdm.countRad,"size":{"x":0.08,"y":cdm.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+		
+		//------- заглушки для ал.радиатора
+		var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+		var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+	}
 
-	//var rad = st_radiator_1({"size":{"x":0.6,"y":0.5,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
 
-
-	//------- заглушки для ал.радиатора
-	var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-	var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-	var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-	var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });
 
 	
 	//------- регулировочные краны
-	console.log(777, cdm.termoreg);
 	if(cdm.termoreg)
 	{
 		var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
@@ -285,7 +295,7 @@ function setPathRad_1(cdm)
 		if(r_per1) 
 		{ 
 			r_per1.position.copy( posJ.rad[arrR[2]].clone().sub(posJ.r_per1[0]) );
-			posJ.r_per1[1].add(r_per1.position);
+			posSubAdd_1({o: r_per1, arr: posJ.r_per1});
 		}
 		else
 		{
@@ -296,7 +306,7 @@ function setPathRad_1(cdm)
 		if(r_per2) 
 		{ 
 			r_per2.position.copy( posJ.rad[arrR[3]].clone().sub(posJ.r_per2[0]) );
-			posJ.r_per2[1].add(r_per2.position);
+			posSubAdd_1({o: r_per2, arr: posJ.r_per2});
 		}
 		else
 		{
@@ -313,25 +323,43 @@ function setPathRad_1(cdm)
 		if(reg_kran_1) 
 		{
 			reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]) );
-			mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]).add(reg_kran_1.position) );
+			posSubAdd_1({o: reg_kran_1, arr: posJ.reg_kran_1});
 		}
 		else
 		{
-			mpl_pereh_1.position.copy( posJ.r_per2[1].clone().sub(posJ.mpl_pereh_1[1]) );
+			posJ.reg_kran_1 = [];
+			posJ.reg_kran_1[0] = posJ.r_per2[1].clone();			
 		}
 		
 		if(reg_kran_2) 
 		{
 			reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]) );
-			mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]).add(reg_kran_2.position) );
+			posSubAdd_1({o: reg_kran_2, arr: posJ.reg_kran_2});
 		}
 		else
 		{
-			mpl_pereh_2.position.copy( posJ.r_per1[1].clone().sub(posJ.mpl_pereh_2[1]) );
-		}			
+			posJ.reg_kran_2 = [];
+			posJ.reg_kran_2[0] = posJ.r_per1[1].clone();
+		}
+
+		mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]) );
+		mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]) );
+		
+		posSubAdd_1({o: mpl_pereh_1, arr: posJ.mpl_pereh_1});
+		posSubAdd_1({o: mpl_pereh_2, arr: posJ.mpl_pereh_2});
 	}
 	
 	
+	function posSubAdd_1(cdm)
+	{
+		var arr = cdm.arr;
+		var o = cdm.o;	
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			arr[i].add(o.position);
+		}
+	}	
 
 }
 

@@ -33,68 +33,57 @@ function crSborkaRad_Odnotrub_Verh_Bay_Mp(cdm)
 	if(cdm.kran) { inf.kran = cdm.kran; }
 	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
 	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }
-	
-		
-	
-	
-	var result = getObjectsSborkaRad_1({countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
-	
-	var rad = result.rad;
-	var r_per1 = result.r_per1;
-	var r_per2 = result.r_per2;
-	var r_vozd = result.r_vozd;
-	var r_zagl = result.r_zagl;
-	var reg_kran_1 = result.reg_kran_1;
-	var reg_kran_2 = result.reg_kran_2;
-	var mpl_pereh_1 = result.mpl_pereh_1;
-	var mpl_pereh_2 = result.mpl_pereh_2;
-	
-	//------- трубы
-	var mirror_1 = {x: (inf.side == 'right') ? true : false};
-	var mirror_2 = {x: (inf.side == 'right') ? false : true};	
-	var tube1 = getTubeToSborka_1({type: 2, color: 15688453, diameter: 0.016, startY: inf.pipe_level, endY: inf.heightRad, mirror: mirror_1});
-	var tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: 0.016, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2});		
 
 	
-	var arrO = setPathRad_1({arrO1: true, result: result});
-	arrO[arrO.length] = tube1;
-	arrO[arrO.length] = tube2;
+	var o = getObjectsSborkaRad_1({countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
+	
+	var arrO = setPathRad_1({arrO1: true, result: o});
+	
+
 	
 	if(inf.side == 'right')
 	{
-		r_vozd.quaternion.set(0, -1, 0, 0);
-		r_per1.quaternion.set(0, -1, 0, 0);
+		if(o.r_vozd) o.r_vozd.quaternion.set(0, -1, 0, 0);
+		if(o.r_per1) o.r_per1.quaternion.set(0, -1, 0, 0);
 		
-		if(reg_kran_1) reg_kran_1.quaternion.set(0, -1, 0, 0);
-		mpl_pereh_1.quaternion.set(0, -1, 0, 0);		
+		if(o.reg_kran_1) o.reg_kran_1.quaternion.set(0, -1, 0, 0);
+		if(o.mpl_pereh_1) o.mpl_pereh_1.quaternion.set(0, -1, 0, 0);		
 	}
 	else
 	{
-		r_zagl.quaternion.set(0, -1, 0, 0);
-		r_per2.quaternion.set(0, -1, 0, 0);
+		if(o.r_zagl) o.r_zagl.quaternion.set(0, -1, 0, 0);
+		if(o.r_per2) o.r_per2.quaternion.set(0, -1, 0, 0);
 		
-		if(reg_kran_2) reg_kran_2.quaternion.set(0, -1, 0, 0);
-		mpl_pereh_2.quaternion.set(0, -1, 0, 0);		
+		if(o.reg_kran_2) o.reg_kran_2.quaternion.set(0, -1, 0, 0);
+		if(o.mpl_pereh_2) o.mpl_pereh_2.quaternion.set(0, -1, 0, 0);		
 	}
 	
 	
 	// --- получаем мировые значяения разъемов
-	var posJ = setPathRad_1({posJ1: true, result: result});			
+	var posJ = setPathRad_1({posJ1: true, result: o});			
 
 	// --- устанвливаем раъемы	
 	var arrR = (inf.side == 'right') ? [3,1,0,2] : [0,2,3,1];
-	setPathRad_1({pos0: true, posJ: posJ, arrR: arrR, result: result});	
+	setPathRad_1({pos0: true, posJ: posJ, arrR: arrR, result: o});	
 	
 	
-	setPathRad_1({pos1: true, posJ: posJ, result: result});
+	setPathRad_1({pos1: true, posJ: posJ, result: o});
 	
 	
 		
 	
-
+	//------- трубы
+	var mirror_1 = {x: (inf.side == 'right') ? true : false};
+	var mirror_2 = {x: (inf.side == 'right') ? false : true};
+	var y1 = posJ.rad[1].y - posJ.rad[0].y;
+	var tube1 = getTubeToSborka_1({type: 2, color: 15688453, diameter: 0.016, startY: inf.pipe_level, endY: y1, mirror: mirror_1});
+	var tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: 0.016, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2});		
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;
+	
 	// --- устанвливаем трубы	
-	setPosTube({tube: tube1, lastP: true, startPos: mpl_pereh_1.position.clone().add(posJ.mpl_pereh_1[0]) });
-	setPosTube({tube: tube2, lastP: true, startPos: mpl_pereh_2.position.clone().add(posJ.mpl_pereh_2[0]) });
+	setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
+	setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
 	
 	
 	// байпас
