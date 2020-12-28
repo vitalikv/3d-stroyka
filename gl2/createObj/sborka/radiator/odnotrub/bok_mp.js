@@ -5,15 +5,18 @@ function paramSborkaRad_Odnotrub_Bok_Mp()
 {
 	var inf =
 	{
-		countRad: 3,
-		heightRad: 0.6,
+		typePt: 'od',
+		typeRad: 'st',
+		typePipe: 'mp',
+		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
+		pipe: {mp: 0.016, pp: 0.020},
 		side: 'left',
 		kran: 'none',
 		termoreg: true,
 		pipe_level: 0
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({inf: inf});
+	inf.ui = {};
 	
 	inf.fc = 'crSborkaRad_Odnotrub_Bok_Mp';
 
@@ -25,17 +28,9 @@ function paramSborkaRad_Odnotrub_Bok_Mp()
 
 function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 {
-	var inf = infProject.list.sborka.radiator.odnotrub.bok.mp;
-	
-	if(cdm.countRad) { inf.countRad = cdm.countRad; }
-	if(cdm.heightRad) { inf.heightRad = cdm.heightRad; }
-	if(cdm.side) { inf.side = cdm.side; }
-	if(cdm.kran) { inf.kran = cdm.kran; }
-	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
-	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }
-	
-	
-	var o = getObjectsSborkaRad_1({countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
+	var inf = cdm.inf;
+		
+	var o = getObjectsSborkaRad_1(cdm);
 	
 	var arrO = setPathRad_1({arrO1: true, result: o});
 	
@@ -70,20 +65,25 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	setPathRad_1({pos1: true, posJ: posJ, result: o});
 	
 
-	//------- трубы
-	var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
-	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
-	arrO[arrO.length] = tube1;
-	arrO[arrO.length] = tube2;	
+	// трубы магистральные
+	var diameter = 0.016;
+	if(inf.typePipe == 'pp') { diameter = inf.pipe.pp; }
+	if(inf.typePipe == 'mp') { diameter = inf.pipe.mp; }
+	
+	var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: diameter, mirror: {x: (inf.side == 'right') ? true : false} });
+	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: diameter, mirror: {x: (inf.side == 'right') ? true : false} });
 	
 	// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
 	var x1 = posJ.mpl_pereh_1[0].x - posJ.mpl_pereh_2[0].x;
 	var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
 	updateTubeWF({tube: tube1});	
-
-	// --- устанвливаем трубы	
+	
 	setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
 	setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
+	
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;	
+	
 
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену

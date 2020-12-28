@@ -180,6 +180,7 @@ class SelectList_1
 		
 		if(result)
 		{
+			let flag = (this.selectId == n) ? true : false;
 			this.el_text_input.textContent = result.text;
 			this.selectId = n;
 
@@ -187,7 +188,10 @@ class SelectList_1
 			
 			this.close();
 			
-			if(fc) this.activeFc();
+			if(!flag)
+			{
+				if(fc) this.activeFc();
+			}			
 		}	
 	}	
 
@@ -205,13 +209,23 @@ class SelectList_1
 	{
 		//this.el_input.style.borderBottom = 'none';
 		this.el_list.style.display = '';
+		
+		this.close_2 = this.close_2.bind(this);
+		document.addEventListener('click', this.close_2);		
 	}
 	
 	close()
 	{
 		//this.el_input.style.borderBottom = '1px solid #b3b3b3';
 		this.el_list.style.display = 'none';
+		
+		document.removeEventListener('click', this.close_2);
 	}
+	
+	close_2(event) 
+	{
+		if (!this.el.contains(event.target)) this.close();
+	}	
 	
 	activeFc()
 	{		

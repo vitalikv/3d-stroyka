@@ -5,15 +5,18 @@ function paramSborkaRad_Odnotrub_Verh_Mp()
 {
 	var inf =
 	{
-		countRad: 7,
-		heightRad: 0.35,
+		typePt: 'od',
+		typeRad: 'al',
+		typePipe: 'mp',
+		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
+		pipe: {mp: 0.016, pp: 0.020},
 		side: 'right',
 		kran: 'sharov',
 		termoreg: false,
 		pipe_level: 0
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({inf: inf});
+	inf.ui = {};
 	
 	inf.fc = 'crSborkaRad_Odnotrub_Verh_Mp';
 	
@@ -25,19 +28,9 @@ function paramSborkaRad_Odnotrub_Verh_Mp()
 
 function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 {
-	var inf = infProject.list.sborka.radiator.odnotrub.verh.mp;
+	var inf = cdm.inf;
 	
-	if(cdm.countRad) { inf.countRad = cdm.countRad; }
-	if(cdm.heightRad) { inf.heightRad = cdm.heightRad; }
-	if(cdm.side) { inf.side = cdm.side; }
-	if(cdm.kran) { inf.kran = cdm.kran; }
-	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
-	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }
-	
-		
-	
-	
-	var o = getObjectsSborkaRad_1({typeRad: 'st', countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
+	var o = getObjectsSborkaRad_1(cdm);
 	
 	var arrO = setPathRad_1({arrO1: true, result: o});
 	
@@ -76,18 +69,23 @@ function crSborkaRad_Odnotrub_Verh_Mp(cdm)
 	
 		
 	
-	//------- трубы
+	// трубы магистральные
 	var mirror_1 = {x: (inf.side == 'right') ? true : false};
 	var mirror_2 = {x: (inf.side == 'right') ? false : true};
-	var y1 = posJ.rad[1].y - posJ.rad[0].y;  
-	var tube1 = getTubeToSborka_1({type: 3, color: 15688453, diameter: 0.016, startY: inf.pipe_level, endY: y1, mirror: mirror_1});
-	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: 0.016, mirror: mirror_2});
-	arrO[arrO.length] = tube1;
-	arrO[arrO.length] = tube2;	
+	var y1 = posJ.rad[1].y - posJ.rad[0].y; 
+
+	var diameter = 0.016;
+	if(inf.typePipe == 'pp') { diameter = inf.pipe.pp; }
+	if(inf.typePipe == 'mp') { diameter = inf.pipe.mp; }
 	
-	// --- устанвливаем трубы	
+	var tube1 = getTubeToSborka_1({type: 3, color: 15688453, diameter: diameter, startY: inf.pipe_level, endY: y1, mirror: mirror_1});
+	var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: diameter, mirror: mirror_2});
+	
 	setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
 	setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
+
+	arrO[arrO.length] = tube1;
+	arrO[arrO.length] = tube2;	
 	
 	
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив

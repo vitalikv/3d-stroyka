@@ -5,15 +5,18 @@ function paramSborkaRad_Dvuhtrub_Verh_Mp()
 {
 	var inf =
 	{
-		countRad: 7,
-		heightRad: 0.35,
+		typePt: 'dv',
+		typeRad: 'al',
+		typePipe: 'mp',
+		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
+		pipe: {mp: 0.026, pp: 0.032},
 		side: 'left',
 		kran: 'regulator',
 		termoreg: false,
 		pipe_level: -0.05
 	}
 	
-	inf.ui = settingSborkaRadiatorMenuUI_1({inf: inf});
+	inf.ui = {};
 	
 	inf.fc = 'crSborkaRad_Dvuhtrub_Verh_Mp';
 	
@@ -25,17 +28,9 @@ function paramSborkaRad_Dvuhtrub_Verh_Mp()
 
 function crSborkaRad_Dvuhtrub_Verh_Mp(cdm)
 {
-	var inf = infProject.list.sborka.radiator.dvuhtrub.verh.mp;
-	
-	if(cdm.countRad) { inf.countRad = cdm.countRad; }
-	if(cdm.heightRad) { inf.heightRad = cdm.heightRad; }
-	if(cdm.side) { inf.side = cdm.side; }
-	if(cdm.kran) { inf.kran = cdm.kran; }
-	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
-	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }
-
-	
-	var o = getObjectsSborkaRad_1({countRad: inf.countRad, heightRad: inf.heightRad, termoreg: inf.termoreg, kran: inf.kran});
+	var inf = cdm.inf;
+		
+	var o = getObjectsSborkaRad_1(cdm);
 	
 	var arrO = setPathRad_1({arrO1: true, result: o});
 	
@@ -85,52 +80,53 @@ function crSborkaRad_Dvuhtrub_Verh_Mp(cdm)
 	
 	
 	// байпас
-	var troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
-	var troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
+	console.log(3333, cdm);
+
 	
 	if(inf.side == 'right')
 	{
-		troin_1.quaternion.set(0, -1, 0, 0);
+		o.troin_1.quaternion.set(0, -1, 0, 0);
 	}
 	else
 	{
-		troin_2.quaternion.set(0, -1, 0, 0);
+		o.troin_2.quaternion.set(0, -1, 0, 0);
 	}
 	
 	
 	var pos1 = tube1.userData.wf_tube.point[0].position;
 	var pos2 = tube2.userData.wf_tube.point[0].position;
 	
-	posJ.troin_1 = getRazyem({obj: troin_1});
-	posJ.troin_2 = getRazyem({obj: troin_2});
+	posJ.troin_1 = getRazyem({obj: o.troin_1});
+	posJ.troin_2 = getRazyem({obj: o.troin_2});
 	
-	troin_1.position.copy( pos1.clone().sub(posJ.troin_1[1]) );
-	troin_2.position.copy( pos2.clone().sub(posJ.troin_2[1]) );
+	o.troin_1.position.copy( pos1.clone().sub(posJ.troin_1[1]) );
+	o.troin_2.position.copy( pos2.clone().sub(posJ.troin_2[1]) );
 	
-	posJ.troin_1 = getRazyem({obj: troin_1});
-	posJ.troin_2 = getRazyem({obj: troin_2});
+	posJ.troin_1 = getRazyem({obj: o.troin_1});
+	posJ.troin_2 = getRazyem({obj: o.troin_2});
+
+
+	
+	// трубы магистральные
+	var diameter = 0.02;
+	if(inf.typePipe == 'pp') { diameter = inf.pipe.pp; }
+	if(inf.typePipe == 'mp') { diameter = inf.pipe.mp; }
 	
 	var lengthX = Math.abs(posJ.troin_1[0].x - posJ.troin_2[2].x) + 0.1; 
 	
-	var tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: 0.026, mirror: mirror_1});
+	var tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: diameter, mirror: mirror_1});	
+	var tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: diameter, mirror: mirror_2});
+	var tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: diameter, mirror: mirror_2});
+	var tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: diameter, mirror: mirror_1});
+
 	setPosTube({tube: tube3, startPos: posJ.troin_1[2] });	
-
-	var tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: 0.026, mirror: mirror_2});
 	setPosTube({tube: tube4, startPos: posJ.troin_2[2] });	
-	
-	
-	arrO[arrO.length] = troin_1;
-	arrO[arrO.length] = troin_2;
-	arrO[arrO.length] = tube3;
-	arrO[arrO.length] = tube4;
-	
-	// трубы от тройников
-	var tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: 0.026, mirror: mirror_2});
-	var tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: 0.026, mirror: mirror_1});
-
 	setPosTube({tube: tube5, startPos: posJ.troin_1[0] });
 	setPosTube({tube: tube6, startPos: posJ.troin_2[0] });
-	
+
+
+	arrO[arrO.length] = tube3;
+	arrO[arrO.length] = tube4;	
 	arrO[arrO.length] = tube5;
 	arrO[arrO.length] = tube6;	
 	

@@ -4,6 +4,115 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 {
 	//var el = document.querySelector('[nameId="'+cdm.nameId+'"]');
 	var el = document.createElement('div');
+	el.setAttribute('listSborkaRad', '');
+	
+	var elText = document.createElement('div');
+	elText.innerText = 'радиатор';
+	elText.style.cssText = `margin-top: 10px; font-family: arial,sans-serif; font-size: 18px; color: #666; text-decoration: none; text-align: center;`;
+	el.append(elText);
+
+
+	
+
+	var arr = [];
+	arr[arr.length] = {value: 'al', text: 'алюминиевый радиатор', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typeRad: 'al'}} }; 
+	arr[arr.length] = {value: 'st', text: 'стальной радиатор', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typeRad: 'st'}} };
+	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.typeRad});	
+	idd.el.style.marginTop = '5px';
+	
+	if(cdm.inf.typeRad == 'al')
+	{
+		var arr = [];
+		arr[arr.length] = {value: 1, text: '1 секция', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 1}} }; 
+		arr[arr.length] = {value: 2, text: '2 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 2}} };
+		arr[arr.length] = {value: 3, text: '3 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 3}} };
+		arr[arr.length] = {value: 4, text: '4 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 4}} }; 
+		arr[arr.length] = {value: 5, text: '5 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 5}} };
+		arr[arr.length] = {value: 6, text: '6 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 6}} };
+		arr[arr.length] = {value: 7, text: '7 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 7}} };
+		arr[arr.length] = {value: 8, text: '8 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 8}} };
+		arr[arr.length] = {value: 9, text: '9 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 9}} };
+		arr[arr.length] = {value: 10, text: '10 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 10}} };
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.x});
+
+
+		var arr = [];
+		arr[arr.length] = {value: 0.2, text: 'h 200', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.2}} }; 
+		arr[arr.length] = {value: 0.35, text: 'h 350', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.35}} };
+		arr[arr.length] = {value: 0.5, text: 'h 500', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.5}} };
+		arr[arr.length] = {value: 0.6, text: 'h 600', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.6}} }; 
+		arr[arr.length] = {value: 0.7, text: 'h 700', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.7}} };
+		arr[arr.length] = {value: 0.8, text: 'h 800', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.8}} };
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.y});		
+	}
+
+
+	if(cdm.inf.typeRad == 'st')
+	{
+		var arr = [];
+		var arr2 = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8, 2];
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			arr[arr.length] = {value: arr2[i], text: 'длина '+arr2[i]+'м', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, stX: arr2[i]}} };
+		}		
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.st.x});
+
+
+		var arr = [];
+		var arr2 = [0.3, 0.4, 0.5, 0.6, 0.9];
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			arr[arr.length] = {value: arr2[i], text: 'h '+(arr2[i]*1000), fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, stY: arr2[i]}} };
+		}		
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.st.y});		
+	}	
+	
+	
+	var elBroder = document.createElement('div');
+	elBroder.style.cssText = `border-bottom: 1px solid #ccc;`;
+	el.append(elBroder);
+
+	var elText = document.createElement('div');
+	elText.innerText = 'трубы';
+	elText.style.cssText = `margin-top: 10px; font-family: arial,sans-serif; font-size: 18px; color: #666; text-decoration: none; text-align: center;`;
+	el.append(elText);	
+
+	var arr = [];
+	arr[arr.length] = {value: 'mp', text: 'металлопластиковые трубы', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typePipe: 'mp'}} }; 
+	arr[arr.length] = {value: 'pp', text: 'полипропиленовые трубы', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typePipe: 'pp'}} };
+	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.typePipe});
+	idd.el.style.marginTop = '5px';
+	
+	
+	if(cdm.inf.typePipe == 'mp')
+	{
+		var arr = [];
+		if(cdm.inf.typePt == 'od'){ var arr2 = [0.016, 0.020]; }
+		else { var arr2 = [0.020, 0.026, 0.032]; }
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, pipeMp: arr2[i]}} };
+		}
+
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.pipe.mp});			
+	}
+	
+	if(cdm.inf.typePipe == 'pp')
+	{
+		var arr = [];
+		if(cdm.inf.typePt == 'od'){ var arr2 = [0.020, 0.025]; }
+		else { var arr2 = [0.025, 0.032, 0.040]; }
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, pipePp: arr2[i]}} };
+		}
+
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.pipe.pp});			
+	}	
 	
 	var arr = [];
 	arr[arr.length] = {value: 'left', text: 'подключение слева', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, side: 'left'}} }; 
@@ -11,36 +120,23 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.side});
 
 
+	var elBroder = document.createElement('div');
+	elBroder.style.cssText = `border-bottom: 1px solid #ccc;`;
+	el.append(elBroder);
+	
+	var elText = document.createElement('div');
+	elText.innerText = 'фитинги';
+	elText.style.cssText = `margin-top: 10px; font-family: arial,sans-serif; font-size: 18px; color: #666; text-decoration: none; text-align: center;`;
+	el.append(elText);	
+
+	
 	var arr = [];
 	arr[arr.length] = {value: 'none', text: 'без кранов', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'none'}} }; 
 	arr[arr.length] = {value: 'regulator', text: 'регулировочные краны', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'regulator'}} };
 	arr[arr.length] = {value: 'sharov', text: 'шаровые краны', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'sharov'}} };
 	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.kran});
-
-
-	var arr = [];
-	arr[arr.length] = {value: 1, text: '1 секция', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 1}} }; 
-	arr[arr.length] = {value: 2, text: '2 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 2}} };
-	arr[arr.length] = {value: 3, text: '3 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 3}} };
-	arr[arr.length] = {value: 4, text: '4 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 4}} }; 
-	arr[arr.length] = {value: 5, text: '5 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 5}} };
-	arr[arr.length] = {value: 6, text: '6 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 6}} };
-	arr[arr.length] = {value: 7, text: '7 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 7}} };
-	arr[arr.length] = {value: 8, text: '8 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 8}} };
-	arr[arr.length] = {value: 9, text: '9 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 9}} };
-	arr[arr.length] = {value: 10, text: '10 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, countRad: 10}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.countRad});
-
-
-	var arr = [];
-	arr[arr.length] = {value: 0.2, text: 'h 200', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.2}} }; 
-	arr[arr.length] = {value: 0.35, text: 'h 350', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.35}} };
-	arr[arr.length] = {value: 0.5, text: 'h 500', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.5}} };
-	arr[arr.length] = {value: 0.6, text: 'h 600', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.6}} }; 
-	arr[arr.length] = {value: 0.7, text: 'h 700', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.7}} };
-	arr[arr.length] = {value: 0.8, text: 'h 800', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, heightRad: 0.8}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.heightRad});
-
+	idd.el.style.marginTop = '5px';
+	
 	
 	var arr = [];
 	arr[arr.length] = {value: false, text: 'без терморегулятора', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, termoreg: false}} }; 
@@ -66,8 +162,11 @@ function showHideSettingsRadiator_1(cdm)
 
 	if(cdm.inf)
 	{
-		el.append(cdm.inf.ui.el);		
+		var ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf});
+		el.append(ui.el);		
 	}
+	
+	//console.log(22, document.querySelector('[listSborkaRad]'));
 }
 
 
@@ -126,10 +225,25 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 // получаем объекты для сборки радиатора
 function getObjectsSborkaRad_1(cdm)
 {
-	//if(cdm.typeRad)
-	if(1==1)
+	var inf = cdm.inf;
+	
+	if(cdm.typePipe) { inf.typePipe = cdm.typePipe; }
+	if(cdm.typeRad) { inf.typeRad = cdm.typeRad; }
+	if(cdm.stX) { inf.rad.st.x = cdm.stX; }
+	if(cdm.stY) { inf.rad.st.y = cdm.stY; }
+	if(cdm.alX) { inf.rad.al.x = cdm.alX; }
+	if(cdm.alY) { inf.rad.al.y = cdm.alY; }	
+	if(cdm.pipePp) { inf.pipe.pp = cdm.pipePp; }
+	if(cdm.pipeMp) { inf.pipe.mp = cdm.pipeMp; }
+	if(cdm.side) { inf.side = cdm.side; }
+	if(cdm.kran) { inf.kran = cdm.kran; }
+	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
+	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }	
+	
+	
+	if(inf.typeRad == 'st')
 	{
-		var rad = st_radiator_1({"size":{"x":0.6,"y":0.5,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
+		var rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
 		
 		//------- заглушки для ал.радиатора
 		var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
@@ -137,7 +251,7 @@ function getObjectsSborkaRad_1(cdm)
 	}
 	else
 	{
-		var rad = al_radiator_1({"count": cdm.countRad,"size":{"x":0.08,"y":cdm.heightRad,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+		var rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
 		
 		//------- заглушки для ал.радиатора
 		var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
@@ -150,22 +264,22 @@ function getObjectsSborkaRad_1(cdm)
 
 	
 	//------- регулировочные краны
-	if(cdm.termoreg)
+	if(inf.termoreg)
 	{
 		var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
 	}
 	
-	if(cdm.kran == 'regulator')
+	if(inf.kran == 'regulator')
 	{
 		if(!reg_kran_1) reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
 		var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
 	}
-	else if(cdm.kran == 'sharov')
+	else if(inf.kran == 'sharov')
 	{
 		if(!reg_kran_1) reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});			
 		var reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
 	}
-	else if(cdm.kran == 'none')
+	else if(inf.kran == 'none')
 	{
 		// не создаем краны
 	}
@@ -175,9 +289,62 @@ function getObjectsSborkaRad_1(cdm)
 	//------- металлопластиковые переходники
 	var mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
 	var mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	
+	
+	if(inf.typePt == 'od_bay')
+	{
+		if(inf.typePipe == 'pp') {  }
+		if(inf.typePipe == 'mp')
+		{
+			if(inf.pipe.mp == 0.020)
+			{
+				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
+				{
+					var troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
+				}
+				else
+				{
+					var troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
+				}				
+			}
+			if(inf.pipe.mp == 0.026)
+			{
+				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
+				{
+					var troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
+				}
+				else
+				{
+					var troin_1 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});			
+				}				
+			}
+			if(inf.pipe.mp == 0.032)
+			{
+				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
+				{
+					var troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
+				}
+				else
+				{
+					var troin_1 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
+					var troin_2 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});			
+				}				
+			}			
+		}
+	
+	}
+	else if(inf.typePt == 'dv')
+	{
+		var troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
+		var troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});		
+	}
 
-
-	return {rad: rad, r_per1: r_per1, r_vozd: r_vozd, r_per2: r_per2, r_zagl: r_zagl, reg_kran_1: reg_kran_1, reg_kran_2: reg_kran_2, mpl_pereh_1: mpl_pereh_1, mpl_pereh_2: mpl_pereh_2};
+	return {rad: rad, r_per1: r_per1, r_vozd: r_vozd, r_per2: r_per2, r_zagl: r_zagl, reg_kran_1: reg_kran_1, reg_kran_2: reg_kran_2, mpl_pereh_1: mpl_pereh_1, mpl_pereh_2: mpl_pereh_2, troin_1: troin_1, troin_2: troin_2};
 }
 
 
@@ -243,6 +410,8 @@ function setPathRad_1(cdm)
 	var mpl_pereh_1 = cdm.result.mpl_pereh_1;
 	var mpl_pereh_2 = cdm.result.mpl_pereh_2;
 
+	var troin_1 = cdm.result.troin_1;
+	var troin_2 = cdm.result.troin_2;
 	
 	if(cdm.arrO1)
 	{
@@ -256,8 +425,11 @@ function setPathRad_1(cdm)
 		if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
 		if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
 		arrO[arrO.length] = mpl_pereh_1;
-		arrO[arrO.length] = mpl_pereh_2;
+		arrO[arrO.length] = mpl_pereh_2; 
 
+		if(troin_1) arrO[arrO.length] = troin_1;
+		if(troin_2) arrO[arrO.length] = troin_2;
+		
 		return arrO;
 	}
 	
@@ -364,6 +536,31 @@ function setPathRad_1(cdm)
 }
 
 
+
+function baypasTube(cdm)
+{
+	var inf = cdm.inf;
+	
+	var res = {mag: 0.02, bay: 0.02};
+	var arrPP = [0.02, 0.025, 0.032, 0.040];
+	var arrMP = [0.016, 0.020, 0.026, 0.032];
+	
+	if(inf.typePipe == 'pp') { res.mag = inf.pipe.pp; var arr = arrPP; }
+	if(inf.typePipe == 'mp') { res.mag = inf.pipe.mp; var arr = arrMP; }	
+
+	
+	for(var i = 0; i < arr.length; i++)
+	{ 
+		if(arr[i] == res.mag)
+		{
+			if(i-1 >= 0) res.bay = arr[i-1];
+			break;
+		}
+	}
+	
+	
+	return res;
+}
 
 
 
