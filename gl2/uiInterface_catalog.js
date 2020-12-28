@@ -49,17 +49,17 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh.mp);	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok.mp);
 	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz.mp);
-	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh_bay.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok_bay.mp);
 	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz_bay.mp);
-	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.verh.mp);
 	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.niz.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.bok.mp);
+	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh.mp);	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh_bay.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.verh.mp);
+	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok_bay.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.bok.mp);	
 	
 	
 	// находим дочерние объекты 

@@ -240,24 +240,25 @@ function getObjectsSborkaRad_1(cdm)
 	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
 	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }	
 	
+	var o = {};
 	
 	if(inf.typeRad == 'st')
 	{
-		var rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
+		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
 		
 		//------- заглушки для ал.радиатора
-		var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-		var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+		o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
 	}
 	else
 	{
-		var rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
 		
 		//------- заглушки для ал.радиатора
-		var r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		var r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-		var r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		var r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+		o.r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+		o.r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
 	}
 
 
@@ -266,18 +267,18 @@ function getObjectsSborkaRad_1(cdm)
 	//------- регулировочные краны
 	if(inf.termoreg)
 	{
-		var reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		o.reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
 	}
 	
 	if(inf.kran == 'regulator')
 	{
-		if(!reg_kran_1) reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
-		var reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
+		if(!o.reg_kran_1) o.reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
+		o.reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
 	}
 	else if(inf.kran == 'sharov')
 	{
-		if(!reg_kran_1) reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});			
-		var reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
+		if(!o.reg_kran_1) o.reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});	
+		o.reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
 	}
 	else if(inf.kran == 'none')
 	{
@@ -287,8 +288,8 @@ function getObjectsSborkaRad_1(cdm)
 	
 	
 	//------- металлопластиковые переходники
-	var mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
-	var mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	o.mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	o.mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
 	
 	
 	if(inf.typePt == 'od_bay')
@@ -300,39 +301,39 @@ function getObjectsSborkaRad_1(cdm)
 			{
 				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
 				{
-					var troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
+					o.troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
 				}
 				else
 				{
-					var troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
+					o.troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
 				}				
 			}
 			if(inf.pipe.mp == 0.026)
 			{
 				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
 				{
-					var troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
+					o.troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
 				}
 				else
 				{
-					var troin_1 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});			
+					o.troin_1 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});			
 				}				
 			}
 			if(inf.pipe.mp == 0.032)
 			{
 				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
 				{
-					var troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
+					o.troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
 				}
 				else
 				{
-					var troin_1 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
-					var troin_2 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});			
+					o.troin_1 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
+					o.troin_2 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});			
 				}				
 			}			
 		}
@@ -340,11 +341,11 @@ function getObjectsSborkaRad_1(cdm)
 	}
 	else if(inf.typePt == 'dv')
 	{
-		var troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
-		var troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});		
+		o.troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
+		o.troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});		
 	}
 
-	return {rad: rad, r_per1: r_per1, r_vozd: r_vozd, r_per2: r_per2, r_zagl: r_zagl, reg_kran_1: reg_kran_1, reg_kran_2: reg_kran_2, mpl_pereh_1: mpl_pereh_1, mpl_pereh_2: mpl_pereh_2, troin_1: troin_1, troin_2: troin_2};
+	return o;
 }
 
 
@@ -415,42 +416,46 @@ function setPathRad_1(cdm)
 	
 	if(cdm.arrO1)
 	{
-		var arrO = [];
+		var arrO = [];		
 		
-		arrO[arrO.length] = rad;	
-		if(r_per1) arrO[arrO.length] = r_per1;
-		if(r_per2) arrO[arrO.length] = r_per2;
-		arrO[arrO.length] = r_zagl;
-		arrO[arrO.length] = r_vozd;	
-		if(reg_kran_1) arrO[arrO.length] = reg_kran_1;
-		if(reg_kran_2) arrO[arrO.length] = reg_kran_2;
-		arrO[arrO.length] = mpl_pereh_1;
-		arrO[arrO.length] = mpl_pereh_2; 
-
-		if(troin_1) arrO[arrO.length] = troin_1;
-		if(troin_2) arrO[arrO.length] = troin_2;
+		for(var index in cdm.result) 
+		{ 
+			var obj = cdm.result[index];
+			if(!obj) continue;
+			arrO[arrO.length] = obj;
+			//console.log(555555, index);
+		}
 		
 		return arrO;
 	}
 	
 
-
+	if(cdm.q1)
+	{
+		var arrO = [];		
+		
+		for(var index in cdm.q1)  
+		{ 
+			var obj = cdm.result[index];
+			if(!obj) continue;
+			
+			//console.log(7777, index, cdm.q1[index]); 
+			 
+			obj.quaternion.copy(cdm.q1[index].q);
+		}
+	}
+	
 	
 	if(cdm.posJ1)
 	{
 		var posJ = {};
-		posJ.rad = getRazyem({obj: rad});
-		
-		posJ.r_zagl = getRazyem({obj: r_zagl});				
-		posJ.r_vozd = getRazyem({obj: r_vozd});	
-		if(r_per1) posJ.r_per1 = getRazyem({obj: r_per1});
-		if(r_per2) posJ.r_per2 = getRazyem({obj: r_per2});
-		
-		if(reg_kran_1) posJ.reg_kran_1 = getRazyem({obj: reg_kran_1});	
-		if(reg_kran_2) posJ.reg_kran_2 = getRazyem({obj: reg_kran_2});	
-		
-		posJ.mpl_pereh_1 = getRazyem({obj: mpl_pereh_1});	
-		posJ.mpl_pereh_2 = getRazyem({obj: mpl_pereh_2});
+		for(var index in cdm.result)  
+		{ 
+			var obj = cdm.result[index];
+			if(!obj) continue;
+			
+			posJ[index] = getRazyem({obj: obj});
+		}
 
 		return posJ;
 	}
@@ -521,6 +526,15 @@ function setPathRad_1(cdm)
 		posSubAdd_1({o: mpl_pereh_2, arr: posJ.mpl_pereh_2});
 	}
 	
+	
+	if(cdm.troin1)
+	{
+		//mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]) );
+		//mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]) );
+		
+		//posSubAdd_1({o: mpl_pereh_1, arr: posJ.mpl_pereh_1});
+		//posSubAdd_1({o: mpl_pereh_2, arr: posJ.mpl_pereh_2});		
+	}
 	
 	function posSubAdd_1(cdm)
 	{
