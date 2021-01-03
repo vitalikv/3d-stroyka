@@ -89,8 +89,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	if(cdm.inf.typePipe == 'mp')
 	{
 		var arr = [];
-		if(cdm.inf.typePt == 'od'){ var arr2 = [0.016, 0.020]; }
-		else { var arr2 = [0.020, 0.026, 0.032]; }
+		var arr2 = cdm.inf.list.mp;
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
@@ -103,8 +102,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	if(cdm.inf.typePipe == 'pp')
 	{
 		var arr = [];
-		if(cdm.inf.typePt == 'od'){ var arr2 = [0.020, 0.025]; }
-		else { var arr2 = [0.025, 0.032, 0.040]; }
+		var arr2 = cdm.inf.list.pp;
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
@@ -223,7 +221,7 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 
 
 // получаем объекты для сборки радиатора
-function getObjectsSborkaRad_1(cdm)
+async function getObjectsSborkaRad_1(cdm)
 {
 	var inf = cdm.inf;
 	
@@ -244,7 +242,7 @@ function getObjectsSborkaRad_1(cdm)
 	
 	if(inf.typeRad == 'st')
 	{
-		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2","name":"Ст.радиатор h461.3 (0.6м)"});
+		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});
 		
 		//------- заглушки для ал.радиатора
 		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
@@ -252,13 +250,18 @@ function getObjectsSborkaRad_1(cdm)
 	}
 	else
 	{
-		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1","name":"Ал.радиатор h500 (6шт.)" });
+		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });
 		
 		//------- заглушки для ал.радиатора
-		o.r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-		o.r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+		//o.r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		//o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
+		//o.r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
+		//o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });	
+
+		o.r_per1 = await loadObjServer({lotid: 18, notArray: true});
+		o.r_vozd = await loadObjServer({lotid: 21, notArray: true});	
+		o.r_per2 = await loadObjServer({lotid: 18, notArray: true});
+		o.r_zagl = await loadObjServer({lotid: 20, notArray: true});				
 	}
 
 
@@ -267,18 +270,25 @@ function getObjectsSborkaRad_1(cdm)
 	//------- регулировочные краны
 	if(inf.termoreg)
 	{
-		o.reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		//o.reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
+		o.reg_kran_1 = await loadObjServer({lotid: 144, notArray: true});
 	}
 	
 	if(inf.kran == 'regulator')
 	{
-		if(!o.reg_kran_1) o.reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
-		o.reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });		
+		//if(!o.reg_kran_1) o.reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
+		//o.reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });
+		
+		if(!o.reg_kran_1) o.reg_kran_1 = await loadObjServer({lotid: 142, notArray: true});
+		o.reg_kran_2 = await loadObjServer({lotid: 142, notArray: true});		
 	}
 	else if(inf.kran == 'sharov')
 	{
-		if(!o.reg_kran_1) o.reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});	
-		o.reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
+		//if(!o.reg_kran_1) o.reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});	
+		//o.reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
+		
+		if(!o.reg_kran_1) o.reg_kran_1 = await loadObjServer({lotid: 441, notArray: true});
+		o.reg_kran_2 = await loadObjServer({lotid: 441, notArray: true});		
 	}
 	else if(inf.kran == 'none')
 	{
@@ -288,63 +298,46 @@ function getObjectsSborkaRad_1(cdm)
 	
 	
 	//------- металлопластиковые переходники
-	o.mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
-	o.mpl_pereh_2 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	var lotid = 334;
+	if(inf.typePipe == 'pp') {  }
+	if(inf.typePipe == 'mp')
+	{
+		var lotid = 332;	//o.mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+	}
+	
+	o.mpl_pereh_1 = await loadObjServer({lotid: lotid, notArray: true});
+	o.mpl_pereh_2 = await loadObjServer({lotid: lotid, notArray: true});
 	
 	
 	if(inf.typePt == 'od_bay')
 	{
+		var lotid = 364;
+		
 		if(inf.typePipe == 'pp') {  }
 		if(inf.typePipe == 'mp')
-		{
-			if(inf.pipe.mp == 0.020)
-			{
-				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
-				{
-					o.troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
-				}
-				else
-				{
-					o.troin_1 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});				
-				}				
-			}
+		{ 			
+			if(inf.pipe.mp == 0.020){ lotid = 364; }	//mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
 			if(inf.pipe.mp == 0.026)
 			{
-				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
-				{
-					o.troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
-				}
-				else
-				{
-					o.troin_1 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});			
-				}				
+				lotid = 369;	//mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
+				
+				if(inf.typePt2 == 'bok'){ lotid = 372; }	//mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});			
 			}
-			if(inf.pipe.mp == 0.032)
-			{
-				if(inf.fc == 'crSborkaRad_Odnotrub_Bok_Bay_Mp')
-				{
-					o.troin_1 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});				
-				}
-				else
-				{
-					o.troin_1 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
-					o.troin_2 = mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});			
-				}				
-			}			
+			if(inf.pipe.mp == 0.032){ lotid = 380; }	//mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
 		}
-	
+		o.troin_1 = await loadObjServer({lotid: lotid, notArray: true});
+		o.troin_2 = await loadObjServer({lotid: lotid, notArray: true});													
 	}
 	else if(inf.typePt == 'dv')
 	{
 		o.troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
 		o.troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});		
 	}
+	
+	
 
+	
+	
 	return o;
 }
 
@@ -353,9 +346,9 @@ function getObjectsSborkaRad_1(cdm)
 
 
 // добавляем сборку радиатора в сцену
-function addSborkaRadiatorToScene_1(cdm)
+async function addSborkaRadiatorToScene_1(cdm)
 {
-	var inf = actionFnSborkaRad_1(cdm);	
+	var inf = await actionFnSborkaRad_1(cdm);	
 	if(!inf) return;
 	
 	var obj = inf.arr1[0];
@@ -388,7 +381,7 @@ function addSborkaRadiatorToScene_1(cdm)
 
 
 // находим нужную ф-цию и создаем/обновляем сборку радитора
-function actionFnSborkaRad_1(cdm)
+async function actionFnSborkaRad_1(cdm)
 {
 	var inf = null;
 	
@@ -555,21 +548,59 @@ function baypasTube(cdm)
 {
 	var inf = cdm.inf;
 	
-	var res = {mag: 0.02, bay: 0.02};
-	var arrPP = [0.02, 0.025, 0.032, 0.040];
-	var arrMP = [0.016, 0.020, 0.026, 0.032];
+	var res = {mag: 0.02, bay: 0.02, jr: 0.02};	
+	res.mag = inf.pipe[inf.typePipe];
 	
-	if(inf.typePipe == 'pp') { res.mag = inf.pipe.pp; var arr = arrPP; }
-	if(inf.typePipe == 'mp') { res.mag = inf.pipe.mp; var arr = arrMP; }	
+	var arrMP = [];
+	var arrPP = [];
 
+	if(inf.typePt == 'od')
+	{
+		arrMP[arrMP.length] = {mag: 0.016};		
+		arrMP[arrMP.length] = {mag: 0.02};		
+		
+		arrPP[arrPP.length] = {mag: 0.02};
+		arrPP[arrPP.length] = {mag: 0.025};			
+	}
 	
-	for(var i = 0; i < arr.length; i++)
-	{ 
-		if(arr[i] == res.mag)
-		{
-			if(i-1 >= 0) res.bay = arr[i-1];
-			break;
-		}
+	if(inf.typePt == 'od_bay')
+	{		
+		arrMP[arrMP.length] = {mag: 0.02, bay: 0.016, jr: 0.016};
+		arrMP[arrMP.length] = {mag: 0.026, bay: 0.02, jr: 0.016};
+		arrMP[arrMP.length] = {mag: 0.032, bay: 0.026, jr: 0.02};
+		
+		arrPP[arrPP.length] = {mag: 0.025, bay: 0.02, jr: 0.02};
+		arrPP[arrPP.length] = {mag: 0.032, bay: 0.025, jr: 0.02};
+		arrPP[arrPP.length] = {mag: 0.04, bay: 0.032, jr: 0.025};			
+	}
+
+	if(inf.typePt == 'dv')
+	{
+		arrMP[arrMP.length] = {mag: 0.02, jr: 0.016};
+		arrMP[arrMP.length] = {mag: 0.026, jr: 0.016};
+		arrMP[arrMP.length] = {mag: 0.032, jr: 0.016};
+		
+		arrPP[arrPP.length] = {mag: 0.025, jr: 0.02};
+		arrPP[arrPP.length] = {mag: 0.032, jr: 0.02};
+		arrPP[arrPP.length] = {mag: 0.04, jr: 0.02};			
+	}
+	
+	
+	if(inf.typePt == 'od_bay' || inf.typePt == 'dv')
+	{
+		if(inf.typePipe == 'pp') { var arr = arrPP; }
+		if(inf.typePipe == 'mp') {  var arr = arrMP; }	
+		
+		
+		for(var i = 0; i < arr.length; i++)
+		{ 
+			if(arr[i].mag == res.mag)
+			{
+				res.bay = arr[i].bay;
+				res.jr = arr[i].jr;
+				break;
+			}
+		}		
 	}
 	
 	

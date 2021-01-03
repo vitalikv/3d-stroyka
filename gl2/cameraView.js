@@ -26,7 +26,7 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 	
 	if(cdm.sborka)
 	{
-		var inf = actionFnSborkaRad_1(cdm);	
+		var inf = await actionFnSborkaRad_1(cdm);	
 		if(!inf) return;
 		
 		for(var i = 0; i < inf.arr2.length; i++) { inf.arr2[i].position.y += 2000; }			

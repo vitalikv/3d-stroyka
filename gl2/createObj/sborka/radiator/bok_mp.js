@@ -3,18 +3,22 @@
 
 function paramSborkaRad_Odnotrub_Bok_Mp()
 {
-	var inf =
-	{
-		typePt: 'od',
-		typeRad: 'st',
-		typePipe: 'mp',
-		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
-		pipe: {mp: 0.016, pp: 0.020},
-		side: 'left',
-		kran: 'none',
-		termoreg: true,
-		pipe_level: 0
-	}
+	var inf = {};
+	
+	inf.list = {};
+	inf.list.mp = [0.016, 0.020];
+	inf.list.pp = [0.020, 0.025];
+	
+	inf.typePt = 'od';
+	inf.typePt2 = 'bok';
+	inf.typeRad = 'st';
+	inf.typePipe = 'mp';
+	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.pipe = {mp: inf.list.mp[0], pp: inf.list.pp[0]};
+	inf.side = 'left';
+	inf.kran = 'none';
+	inf.termoreg = true;
+	inf.pipe_level = 0;
 	
 	inf.ui = {};
 	
@@ -28,18 +32,22 @@ function paramSborkaRad_Odnotrub_Bok_Mp()
 
 function paramSborkaRad_Odnotrub_Bok_Bay_Mp()
 {
-	var inf =
-	{
-		typePt: 'od_bay',
-		typeRad: 'al',
-		typePipe: 'mp',
-		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
-		pipe: {mp: 0.026, pp: 0.032},
-		side: 'right',
-		kran: 'sharov',
-		termoreg: false,
-		pipe_level: 0
-	}
+	var inf = {};
+	
+	inf.list = {};
+	inf.list.mp = [0.020, 0.026];
+	inf.list.pp = [0.025, 0.032];
+	
+	inf.typePt = 'od_bay';
+	inf.typePt2 = 'bok';
+	inf.typeRad = 'al';
+	inf.typePipe = 'mp';
+	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.pipe = {mp: inf.list.mp[1], pp: inf.list.pp[1]};
+	inf.side = 'right';
+	inf.kran = 'sharov';
+	inf.termoreg = false;
+	inf.pipe_level = 0;
 	
 	inf.ui = {};
 	
@@ -53,20 +61,24 @@ function paramSborkaRad_Odnotrub_Bok_Bay_Mp()
 
 function paramSborkaRad_Dvuhtrub_Bok_Mp()
 {
-	var inf =
-	{
-		typePt: 'dv',
-		typeRad: 'al',
-		typePipe: 'mp',
-		rad: {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}},
-		pipe: {mp: 0.026, pp: 0.032},
-		side: 'right',
-		kran: 'sharov',
-		termoreg: false,
-		pipe_level: 0
-	}
+	var inf = {};
 	
-	inf.ui = {};
+	inf.list = {};
+	inf.list.mp = [0.020, 0.026, 0.032];
+	inf.list.pp = [0.025, 0.032, 0.040];
+	
+	inf.typePt = 'dv';
+	inf.typePt2 = 'bok';
+	inf.typeRad = 'al';
+	inf.typePipe = 'mp';
+	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.pipe = {mp: inf.list.mp[1], pp: inf.list.pp[1]};
+	inf.side = 'right';
+	inf.kran = 'sharov';
+	inf.termoreg = false;
+	inf.pipe_level = 0;
+	
+	inf.ui = {};	
 	
 	inf.fc = 'crSborkaRad_Odnotrub_Bok_Mp';
 	
@@ -78,16 +90,22 @@ function paramSborkaRad_Dvuhtrub_Bok_Mp()
 
 
 
-function crSborkaRad_Odnotrub_Bok_Mp(cdm)
+async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 {
 	var inf = cdm.inf;
 		
-	var o = getObjectsSborkaRad_1(cdm);
+	var o = await getObjectsSborkaRad_1(cdm);
 	
 	var arrO = setPathRad_1({arrO1: true, result: o});
 		
 	
 	var o1 = {};
+	
+	var tr_rev = false;
+	if(inf.typePipe == 'mp')
+	{
+		if(inf.pipe.mp == 0.020 && inf.typePt == 'od_bay'){ tr_rev = true; }
+	}
 	
 	if(inf.side == 'right')
 	{		
@@ -97,12 +115,17 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		o1.reg_kran_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 		o1.mpl_pereh_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 		o1.mpl_pereh_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		
-		if(inf.typePt == 'od_bay')
+
+		if(tr_rev)
+		{
+			o1.troin_1 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, 0)) };
+			o1.troin_2 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, Math.PI)) };			
+		}		
+		else if(inf.typePt == 'od_bay')
 		{
 			o1.troin_1 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, 0)) };
 			o1.troin_2 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, Math.PI)) };				
-		}
+		}		
 		else
 		{
 			o1.troin_1 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, Math.PI/2)) };
@@ -114,7 +137,12 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		o1.r_per1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 		o1.r_per2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 
-		if(inf.typePt == 'od_bay')
+		if(tr_rev)
+		{
+			o1.troin_1 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, 0)) };
+			o1.troin_2 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, Math.PI)) };				
+		}		
+		else if(inf.typePt == 'od_bay')
 		{
 			o1.troin_1 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, 0, 0)) };
 			o1.troin_2 = { q: new THREE.Quaternion().setFromEuler(new THREE.Euler(Math.PI, Math.PI, Math.PI)) };			
@@ -139,16 +167,12 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	
 	setPathRad_1({pos1: true, posJ: posJ, result: o});
 	
-
+	var d = baypasTube(cdm);
+	
 	if(inf.typePt == 'od')
 	{
-		// трубы магистральные
-		var diameter = 0.016;
-		if(inf.typePipe == 'pp') { diameter = inf.pipe.pp; }
-		if(inf.typePipe == 'mp') { diameter = inf.pipe.mp; }
-		
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: diameter, mirror: {x: (inf.side == 'right') ? true : false} });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: diameter, mirror: {x: (inf.side == 'right') ? true : false} });
+		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
+		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
 		
 		// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
 		var x1 = posJ.mpl_pereh_1[0].x - posJ.mpl_pereh_2[0].x;
@@ -167,8 +191,8 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		//------- трубы
 		var mirror_1 = {x: (inf.side == 'right') ? true : false};
 		var mirror_2 = {x: (inf.side == 'right') ? false : true};	
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: 0.016, mirror: mirror_1 });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: 0.016, mirror: mirror_1 });
+		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: mirror_1 });
+		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: d.jr, mirror: mirror_1 });
 		arrO[arrO.length] = tube1;
 		arrO[arrO.length] = tube2;
 		
@@ -185,16 +209,40 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		// байпас
 		var pos1 = tube1.userData.wf_tube.point[0].position;
 		var pos2 = tube2.userData.wf_tube.point[0].position;
+
+		if(tr_rev)
+		{
+			var p1 = posJ.troin_2[0].clone();
+			var p2 = posJ.troin_2[2].clone();
+			posJ.troin_2[0] = p2;
+			posJ.troin_2[2] = p1;
+			
+			var p1 = posJ.troin_1[0].clone();
+			var p2 = posJ.troin_1[2].clone();
+			posJ.troin_1[0] = p2;
+			posJ.troin_1[2] = p1;			
+		}
 		
 		o.troin_1.position.copy( pos1.clone().sub(posJ.troin_1[2]) );
 		o.troin_2.position.copy( pos2.clone().sub(posJ.troin_2[2]) );
 		
 		posJ.troin_1 = getRazyem({obj: o.troin_1});
-		posJ.troin_2 = getRazyem({obj: o.troin_2});		
+		posJ.troin_2 = getRazyem({obj: o.troin_2});	
+
+		if(tr_rev)
+		{
+			var p1 = posJ.troin_2[0].clone();
+			var p2 = posJ.troin_2[2].clone();
+			posJ.troin_2[0] = p2;
+			posJ.troin_2[2] = p1;
+			
+			var p1 = posJ.troin_1[0].clone();
+			var p2 = posJ.troin_1[2].clone();
+			posJ.troin_1[0] = p2;
+			posJ.troin_1[2] = p1;			
+		}		
 		
 		// труба байпаса
-		var d = baypasTube(cdm);
-		
 		var point3 = [];
 		point3[point3.length] = {pos: posJ.troin_1[1].clone()};
 		point3[point3.length] = {pos: posJ.troin_2[1].clone()};
@@ -217,8 +265,8 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	if(inf.typePt == 'dv')
 	{
 		//------- трубы
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1 + 0.1, color: 505069, diameter: 0.016, mirror: {x: (inf.side == 'right') ? true : false} });
+		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
+		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1 + 0.1, color: 505069, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
 		arrO[arrO.length] = tube1;
 		arrO[arrO.length] = tube2;
 		
@@ -243,16 +291,12 @@ function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		posJ.troin_2 = getRazyem({obj: o.troin_2});
 		
 		// трубы магистральные
-		var diameter = 0.02;
-		if(inf.typePipe == 'pp') { diameter = inf.pipe.pp; }
-		if(inf.typePipe == 'mp') { diameter = inf.pipe.mp; }
-
 		var lengthY = Math.abs(posJ.troin_1[0].y - posJ.troin_2[2].y) + 0.1; 
 		
-		var tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: diameter, mirror: {y: true} });
-		var tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: diameter, mirror: {y: false} });	
-		var tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: diameter, mirror: {y: false} });
-		var tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: diameter, mirror: {y: true} });
+		var tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: d.mag, mirror: {y: true} });
+		var tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: d.mag, mirror: {y: false} });	
+		var tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: d.mag, mirror: {y: false} });
+		var tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: d.mag, mirror: {y: true} });
 
 		setPosTube({tube: tube3, startPos: posJ.troin_1[2] });	
 		setPosTube({tube: tube4, startPos: posJ.troin_2[2] });	

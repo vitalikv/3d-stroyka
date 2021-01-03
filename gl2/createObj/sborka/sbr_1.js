@@ -7,9 +7,14 @@ function addArrObjToArray(cdm)
 	
 	for(var i = 0; i < arr.length; i++)
 	{
+		var exist = false;
 		if(arr[i].userData.tag == 'obj')
 		{
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = arr[i];
+			for(var i2 = 0; i2 < infProject.scene.array.obj.length; i2++)
+			{
+				if(infProject.scene.array.obj[i2] == arr[i]) { exist = true; break; }
+			}
+			if(!exist) { infProject.scene.array.obj[infProject.scene.array.obj.length] = arr[i]; }
 		}
 		if(arr[i].userData.tag == 'wf_tube')
 		{
