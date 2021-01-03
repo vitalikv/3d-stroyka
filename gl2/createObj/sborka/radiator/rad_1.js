@@ -89,7 +89,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	if(cdm.inf.typePipe == 'mp')
 	{
 		var arr = [];
-		var arr2 = cdm.inf.list.mp;
+		var arr2 = cdm.inf.list.mp.t;
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
@@ -102,7 +102,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	if(cdm.inf.typePipe == 'pp')
 	{
 		var arr = [];
-		var arr2 = cdm.inf.list.pp;
+		var arr2 = cdm.inf.list.pp.t;
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
@@ -264,8 +264,6 @@ async function getObjectsSborkaRad_1(cdm)
 		o.r_zagl = await loadObjServer({lotid: 20, notArray: true});				
 	}
 
-
-
 	
 	//------- регулировочные краны
 	if(inf.termoreg)
@@ -295,48 +293,25 @@ async function getObjectsSborkaRad_1(cdm)
 		// не создаем краны
 	}
 	
+	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]); 	
 	
 	
-	//------- металлопластиковые переходники
-	var lotid = 334;
-	if(inf.typePipe == 'pp') {  }
-	if(inf.typePipe == 'mp')
+	//------- металлопластиковые переходники	
+	if(inf.list[inf.typePipe].obj.pr1)
 	{
-		var lotid = 332;	//o.mpl_pereh_1 = mpl_perehod_rezba_1({ "side":"n","r1":"16","r2":"1/2","m1":0.048,"name":"Соединитель 16x1/2(н)" });
+		var lotid = inf.list[inf.typePipe].obj.pr1[ind];
+		o.mpl_pereh_1 = await loadObjServer({lotid: lotid, notArray: true});
+		o.mpl_pereh_2 = await loadObjServer({lotid: lotid, notArray: true});		
 	}
 	
-	o.mpl_pereh_1 = await loadObjServer({lotid: lotid, notArray: true});
-	o.mpl_pereh_2 = await loadObjServer({lotid: lotid, notArray: true});
 	
-	
-	if(inf.typePt == 'od_bay')
+	if(inf.list[inf.typePipe].obj.tr1)
 	{
-		var lotid = 364;
-		
-		if(inf.typePipe == 'pp') {  }
-		if(inf.typePipe == 'mp')
-		{ 			
-			if(inf.pipe.mp == 0.020){ lotid = 364; }	//mpl_troinik_1({r1: 16, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-			if(inf.pipe.mp == 0.026)
-			{
-				lotid = 369;	//mpl_troinik_1({r1: 26, r2: 16, r3: 20, m1: 0.096,m2: 0.047});
-				
-				if(inf.typePt2 == 'bok'){ lotid = 372; }	//mpl_troinik_1({r1: 26, r2: 20, r3: 16, m1: 0.096,m2: 0.047});			
-			}
-			if(inf.pipe.mp == 0.032){ lotid = 380; }	//mpl_troinik_1({r1: 32, r2: 20, r3: 26, m1: 0.096,m2: 0.047});
-		}
+		var lotid = inf.list[inf.typePipe].obj.tr1[ind];
 		o.troin_1 = await loadObjServer({lotid: lotid, notArray: true});
-		o.troin_2 = await loadObjServer({lotid: lotid, notArray: true});													
+		o.troin_2 = await loadObjServer({lotid: lotid, notArray: true});	
 	}
-	else if(inf.typePt == 'dv')
-	{
-		o.troin_1 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});
-		o.troin_2 = mpl_troinik_1({"r1":"26","r2":"16","r3":"26","m1":0.096,"m2":0.047,"name":"Тройник 26x16x26"});		
-	}
-	
-	
 
-	
 	
 	return o;
 }

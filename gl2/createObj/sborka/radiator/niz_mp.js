@@ -5,16 +5,21 @@ function paramSborkaRad_Odnotrub_Niz_Mp()
 {
 	var inf = {};
 	
-	inf.list = {};
-	inf.list.mp = [0.016, 0.020];
-	inf.list.pp = [0.020, 0.025];
+	inf.list = {mp: {}, pp: {}};
+	inf.list.mp.t = [0.016, 0.020];
+	inf.list.pp.t = [0.020, 0.025];
+	inf.list.mp.pipe = {};
+	inf.list.mp.pipe.m1 = [0.016, 0.020];	// трубы к радиаторам
+	inf.list.mp.obj = {};
+	inf.list.mp.obj.pr1 = [332, 334];	// мп перехожник от рад к трубе
+
 	
 	inf.typePt = 'od';
 	inf.typePt2 = 'niz';
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp[0], pp: inf.list.pp[0]};
+	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
 	inf.termoreg = true;
@@ -34,16 +39,24 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 {
 	var inf = {};
 	
-	inf.list = {};
-	inf.list.mp = [0.020, 0.026, 0.032];
-	inf.list.pp = [0.025, 0.032, 0.040];
+	inf.list = {mp: {}, pp: {}};
+	inf.list.mp.t = [0.020, 0.026, 0.032];
+	inf.list.pp.t = [0.025, 0.032, 0.040];
+	inf.list.mp.pipe = {};
+	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.020];	// трубы к радиаторам
+	inf.list.mp.pipe.b1 = [0.016, 0.020, 0.026];	// труба байпас
+	inf.list.mp.pipe.m2 = [0.020, 0.026, 0.032];	// трубы от тройников
+	inf.list.mp.obj = {};
+	inf.list.mp.obj.pr1 = [332, 332, 334];	// мп перехожник от рад к трубе
+	inf.list.mp.obj.tr1 = [364, 369, 380];	// тройник для байпаса	
+
 	
 	inf.typePt = 'od_bay';
 	inf.typePt2 = 'niz';
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp[1], pp: inf.list.pp[1]};
+	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
 	inf.termoreg = true;
@@ -63,16 +76,22 @@ function paramSborkaRad_Dvuhtrub_Niz_Mp()
 {
 	var inf = {};
 	
-	inf.list = {};
-	inf.list.mp = [0.020, 0.026, 0.032];
-	inf.list.pp = [0.025, 0.032, 0.040];
+	inf.list = {mp: {}, pp: {}};
+	inf.list.mp.t = [0.020, 0.026, 0.032];
+	inf.list.pp.t = [0.025, 0.032, 0.040];
+	inf.list.mp.pipe = {};
+	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.016];	// трубы к радиаторам
+	inf.list.mp.pipe.m2 = [0.020, 0.026, 0.032];	// трубы от тройников
+	inf.list.mp.obj = {};
+	inf.list.mp.obj.pr1 = [332, 332, 332];	// мп перехожник от рад к трубе
+	inf.list.mp.obj.tr1 = [365, 368, 374];	// тройник для маг.труб	
 	
 	inf.typePt = 'dv';
 	inf.typePt2 = 'niz';
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp[1], pp: inf.list.pp[1]};
+	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
 	inf.termoreg = true;
