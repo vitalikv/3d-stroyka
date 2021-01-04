@@ -131,62 +131,78 @@ async function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 	
 	var dp = {};
 	dp.rad = (inf.side == 'right') ? [2,1,0,3] : [1,2,3,0];
-	var o = await getObjectsSborkaRad_1(cdm, dp);
 	
-	var o1 = {};
+	
+	var q = {};
 	
 	if(inf.side == 'right')
 	{		
-		o1.r_vozd = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.r_per1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.reg_kran_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.mpl_pereh_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.r_vozd = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.r_per1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.reg_kran_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.mpl_pereh_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 		
-		o1.troin_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.troin_1 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 	}
 	else
 	{
-		o1.r_zagl = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.r_per2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.reg_kran_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
-		o1.mpl_pereh_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.r_zagl = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.r_per2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.reg_kran_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.mpl_pereh_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 		
-		o1.troin_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
+		q.troin_2 = {q: new THREE.Quaternion(0, -1, 0, 0)};
 	}
+	
+	dp.q = q;
+	
+	var o = await getObjectsSborkaRad_1(cdm, dp);
 	
 	// поворачиваем объекты, как они должны стоять	
 	// получаем мировые значяения разъемов
 	// устанвливаем раъемы		
 	var arrR = (inf.side == 'right') ? [2,1,0,3] : [1,2,3,0];
-	setPathRad_1({q1: o1, arrR: arrR, result: o});	
+	setPathRad_1({q1: q, arrR: arrR, result: o});	
 	
 	
 
 	// трубы магистральные
+	var d = baypasTube(cdm);
+	
 	var mirror_1 = {x: (inf.side == 'right') ? true : false};
 	var mirror_2 = {x: (inf.side == 'right') ? false : true};
 
-	var d = baypasTube(cdm);
+	if(inf.typePt == 'od')
+	{ 
+		var ti1 = {type: 1, lengthX: 0.2, color: 15688453, diameter: d.mag, mirror: mirror_1};
+		var ti2 = {type: 1, lengthX: 0.2, color: 505069, diameter: d.mag, mirror: mirror_2};
+	}
+	
+	if(inf.typePt == 'od_bay')
+	{ 
+		var ti1 = {type: 2, color: 15688453, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_1};
+		var ti2 = {type: 2, color: 505069, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2};
+	}
+	
+	if(inf.typePt == 'dv')
+	{ 
+		var ti1 = {type: 2, color: 15688453, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_1 };
+		var ti2 = {type: 2, color: 505069, diameter: d.jr, startY: inf.pipe_level - 0.05, endY: 0.00, mirror: mirror_2 };
+	}	
+	
+	o.tube1 = getTubeToSborka_1(ti1);
+	o.tube2 = getTubeToSborka_1(ti2);	
+	
+	setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
+	setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
+	
 	
 	if(inf.typePt == 'od')
 	{
-		o.tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: d.mag, mirror: mirror_1});
-		o.tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: d.mag, mirror: mirror_2});	
-		
-		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
-		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
 	}
 	
 	if(inf.typePt == 'od_bay')
 	{
-		o.tube1 = getTubeToSborka_1({type: 2, color: 15688453, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_1});
-		o.tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2});	
-		
-		// --- устанвливаем трубы	
-		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
-		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
-		
-		
 		// байпас	
 		var pos1 = o.tube1.userData.wf_tube.point[0].position;
 		var pos2 = o.tube2.userData.wf_tube.point[0].position;
@@ -218,14 +234,6 @@ async function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 	
 	if(inf.typePt == 'dv')
 	{	
-		o.tube1 = getTubeToSborka_1({type: 2, color: 15688453, diameter: d.jr, startY: inf.pipe_level, endY: 0.00, mirror: mirror_1 });
-		o.tube2 = getTubeToSborka_1({type: 2, color: 505069, diameter: d.jr, startY: inf.pipe_level - 0.05, endY: 0.00, mirror: mirror_2 });	
-		
-		// --- устанвливаем трубы	
-		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
-		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
-		
-		
 		// байпас
 		var pos1 = o.tube1.userData.wf_tube.point[0].position;
 		var pos2 = o.tube2.userData.wf_tube.point[0].position;
@@ -255,6 +263,7 @@ async function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
+
 
 	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
 }

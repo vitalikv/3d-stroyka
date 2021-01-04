@@ -221,7 +221,7 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 
 
 // получаем объекты для сборки радиатора
-async function getObjectsSborkaRad_1(cdm)
+async function getObjectsSborkaRad_1(cdm, dp)
 {
 	var inf = cdm.inf;
 	
@@ -298,7 +298,26 @@ async function getObjectsSborkaRad_1(cdm)
 		o.troin_1 = await loadObjServer({lotid: lotid, notArray: true});
 		o.troin_2 = await loadObjServer({lotid: lotid, notArray: true});	
 	}
+	
+	// поворачиваем объекты и узнаем world position у разъемов этих объектов
+	if(dp.q)
+	{
+		for(var index in dp.q)  
+		{ 
+			var obj = o[index];
+			if(!obj) continue;
+			console.log(index, dp.q[index].q); 
+			obj.quaternion.copy(dp.q[index].q);
+		}
 
+		for(var index in o)  
+		{ 
+			var obj = o[index];
+			if(!obj) continue;
+			
+			getRazyem({obj: obj});
+		}		
+	}
 	
 	return o;
 }
@@ -387,25 +406,6 @@ function setPathRad_1(cdm)
 
 	if(cdm.q1)
 	{
-
-		for(var index in cdm.q1)  
-		{ 
-			var obj = cdm.result[index];
-			if(!obj) continue;
-			 
-			obj.quaternion.copy(cdm.q1[index].q);
-		}
-
-
-		var posJ = {};
-		for(var index in cdm.result)  
-		{ 
-			var obj = cdm.result[index];
-			if(!obj) continue;
-			
-			posJ[index] = getRazyem({obj: obj});
-		}		
-
 		var arrR = cdm.arrR;
 		
 		r_zagl.position.copy( rad.userData.jp[arrR[0]].clone().sub(r_zagl.userData.jp[0]) );		
