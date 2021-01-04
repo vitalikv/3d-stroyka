@@ -240,23 +240,17 @@ async function getObjectsSborkaRad_1(cdm)
 	
 	var o = {};
 	
+	var vt1 = [];
 	if(inf.typeRad == 'st')
 	{
 		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});
 		
-		//------- заглушки для ал.радиатора
 		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
 		o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
 	}
 	else
 	{
-		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });
-		
-		//------- заглушки для ал.радиатора
-		//o.r_per1 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		//o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-		//o.r_per2 = al_zagl_radiator_1({ "r1":"1","r2":"1/2", type: 'prh',"name":"перех.радиаторный 1/2" });
-		//o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });	
+		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });	
 
 		o.r_per1 = await loadObjServer({lotid: 18, notArray: true});
 		o.r_vozd = await loadObjServer({lotid: 21, notArray: true});	
@@ -266,32 +260,25 @@ async function getObjectsSborkaRad_1(cdm)
 
 	
 	//------- регулировочные краны
+	var kran1 = [null, null];
 	if(inf.termoreg)
 	{
-		//o.reg_kran_1 = reg_kran_primoy_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"termoreg":true,"name":"Клапан с терморегулятором 1/2"});
-		o.reg_kran_1 = await loadObjServer({lotid: 144, notArray: true});
+		kran1[0] = 144;
 	}
 	
 	if(inf.kran == 'regulator')
 	{
-		//if(!o.reg_kran_1) o.reg_kran_1 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });			
-		//o.reg_kran_2 = reg_kran_primoy_1({ "r1":"1/2","r2":"3/4","m1":0.055,"m2":0.02,"name":"Кран регулировочный 1/2" });
-		
-		if(!o.reg_kran_1) o.reg_kran_1 = await loadObjServer({lotid: 142, notArray: true});
-		o.reg_kran_2 = await loadObjServer({lotid: 142, notArray: true});		
+		if(!kran1[0]) kran1[0] = 142;
+		kran1[1] = 142;	
 	}
 	else if(inf.kran == 'sharov')
 	{
-		//if(!o.reg_kran_1) o.reg_kran_1 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});	
-		//o.reg_kran_2 = shar_kran_sgon_1({"r1":"1/2","r2":"3/4","m1":0.055,"m2":0.026,"t1":0.053,"name":"Шаровой кран с полусгоном 1/2"});
-		
-		if(!o.reg_kran_1) o.reg_kran_1 = await loadObjServer({lotid: 441, notArray: true});
-		o.reg_kran_2 = await loadObjServer({lotid: 441, notArray: true});		
+		if(!kran1[0]) kran1[0] = 441;
+		kran1[1] = 441;	
 	}
-	else if(inf.kran == 'none')
-	{
-		// не создаем краны
-	}
+	
+	if(kran1[0]) o.reg_kran_1 = await loadObjServer({lotid: kran1[0], notArray: true});
+	if(kran1[1]) o.reg_kran_2 = await loadObjServer({lotid: kran1[1], notArray: true});
 	
 	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]); 	
 	
@@ -400,22 +387,16 @@ function setPathRad_1(cdm)
 
 	if(cdm.q1)
 	{
-		var arrO = [];		
-		
+
 		for(var index in cdm.q1)  
 		{ 
 			var obj = cdm.result[index];
 			if(!obj) continue;
-			
-			//console.log(7777, index, cdm.q1[index]); 
 			 
 			obj.quaternion.copy(cdm.q1[index].q);
 		}
-	}
-	
-	
-	if(cdm.posJ1)
-	{
+
+
 		var posJ = {};
 		for(var index in cdm.result)  
 		{ 
@@ -423,95 +404,58 @@ function setPathRad_1(cdm)
 			if(!obj) continue;
 			
 			posJ[index] = getRazyem({obj: obj});
-		}
+		}		
 
-		return posJ;
-	}
-	
-
-	if(cdm.pos0)
-	{
-		var posJ = cdm.posJ;
 		var arrR = cdm.arrR;
 		
-		r_zagl.position.copy( posJ.rad[arrR[0]].clone().sub(posJ.r_zagl[0]) );		
-		r_vozd.position.copy( posJ.rad[arrR[1]].clone().sub(posJ.r_vozd[0]) );
+		r_zagl.position.copy( rad.userData.jp[arrR[0]].clone().sub(r_zagl.userData.jp[0]) );		
+		r_vozd.position.copy( rad.userData.jp[arrR[1]].clone().sub(r_vozd.userData.jp[0]) );
+		
+		var vt1 = rad.userData.jp[arrR[2]].clone();
+		var vt2 = rad.userData.jp[arrR[3]].clone();
 		
 		if(r_per1) 
 		{ 
-			r_per1.position.copy( posJ.rad[arrR[2]].clone().sub(posJ.r_per1[0]) );
-			posSubAdd_1({o: r_per1, arr: posJ.r_per1});
-		}
-		else
-		{
-			posJ.r_per1 = [];
-			posJ.r_per1[1] = posJ.rad[arrR[2]].clone();
+			posSubAdd_1({o: r_per1, jp: 0, pos: rad.userData.jp[arrR[2]]});
+			vt1 = r_per1.userData.jp[1].clone();
 		}
 		
 		if(r_per2) 
 		{ 
-			r_per2.position.copy( posJ.rad[arrR[3]].clone().sub(posJ.r_per2[0]) );
-			posSubAdd_1({o: r_per2, arr: posJ.r_per2});
-		}
-		else
-		{
-			posJ.r_per2 = [];
-			posJ.r_per2[1] = posJ.rad[arrR[3]].clone();
-		}		
-	}
+			posSubAdd_1({o: r_per2, jp: 0, pos: rad.userData.jp[arrR[3]]});
+			vt2 = r_per2.userData.jp[1].clone();
+		}	
 
-	
-	if(cdm.pos1)
-	{
-		var posJ = cdm.posJ;
 		
 		if(reg_kran_1) 
 		{
-			reg_kran_1.position.copy( posJ.r_per2[1].clone().sub(posJ.reg_kran_1[1]) );
-			posSubAdd_1({o: reg_kran_1, arr: posJ.reg_kran_1});
-		}
-		else
-		{
-			posJ.reg_kran_1 = [];
-			posJ.reg_kran_1[0] = posJ.r_per2[1].clone();			
+			posSubAdd_1({o: reg_kran_1, jp: 1, pos: vt2});
+			vt2 = reg_kran_1.userData.jp[0].clone();
 		}
 		
 		if(reg_kran_2) 
 		{
-			reg_kran_2.position.copy( posJ.r_per1[1].clone().sub(posJ.reg_kran_2[1]) );
-			posSubAdd_1({o: reg_kran_2, arr: posJ.reg_kran_2});
+			posSubAdd_1({o: reg_kran_2, jp: 1, pos: vt1});
+			vt1 = reg_kran_2.userData.jp[0].clone();
 		}
-		else
-		{
-			posJ.reg_kran_2 = [];
-			posJ.reg_kran_2[0] = posJ.r_per1[1].clone();
-		}
+		
+		posSubAdd_1({o: mpl_pereh_1, jp: 1, pos: vt2});
+		posSubAdd_1({o: mpl_pereh_2, jp: 1, pos: vt1});
+	}
+	
 
-		mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]) );
-		mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]) );
-		
-		posSubAdd_1({o: mpl_pereh_1, arr: posJ.mpl_pereh_1});
-		posSubAdd_1({o: mpl_pereh_2, arr: posJ.mpl_pereh_2});
-	}
-	
-	
-	if(cdm.troin1)
-	{
-		//mpl_pereh_1.position.copy( posJ.reg_kran_1[0].clone().sub(posJ.mpl_pereh_1[1]) );
-		//mpl_pereh_2.position.copy( posJ.reg_kran_2[0].clone().sub(posJ.mpl_pereh_2[1]) );
-		
-		//posSubAdd_1({o: mpl_pereh_1, arr: posJ.mpl_pereh_1});
-		//posSubAdd_1({o: mpl_pereh_2, arr: posJ.mpl_pereh_2});		
-	}
 	
 	function posSubAdd_1(cdm)
 	{
-		var arr = cdm.arr;
 		var o = cdm.o;	
+		var jp = o.userData.jp[cdm.jp];
+		var pos = cdm.pos;
 		
-		for(var i = 0; i < arr.length; i++)
+		o.position.copy( pos.clone().sub(jp) );
+		
+		for(var i = 0; i < o.userData.jp.length; i++)
 		{
-			arr[i].add(o.position);
+			o.userData.jp[i].add(o.position);
 		}
 	}	
 

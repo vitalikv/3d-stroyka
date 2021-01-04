@@ -248,6 +248,7 @@ function getRazyem(cdm)
 	var centerPoint = getCenterPointFromObj_1( obj );
 	
 	var arr = [];
+	
 	for(var i = 0; i < centerPoint.length; i++)
 	{	
 		if(arrNum.length > 0)
@@ -262,9 +263,9 @@ function getRazyem(cdm)
 		}
 		
 		arr[arr.length] = obj.localToWorld( centerPoint[i].position.clone() );
-	}	
+	}
 
-	return arr;
+	obj.userData.jp = arr;
 }
 
 

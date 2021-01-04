@@ -116,9 +116,6 @@ async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		
 	var o = await getObjectsSborkaRad_1(cdm);
 	
-	var arrO = setPathRad_1({arrO1: true, result: o});
-		
-	
 	var o1 = {};
 	
 	var tr_rev = false;
@@ -174,36 +171,27 @@ async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		}
 	}
 	
-	setPathRad_1({q1: o1, result: o});	// поворачиваем объекты, как они должны стоять 	
-
-	
-	// --- получаем мировые значяения разъемов
-	var posJ = setPathRad_1({posJ1: true, result: o});		
-
-	// --- устанвливаем раъемы	
+	// поворачиваем объекты, как они должны стоять	
+	// получаем мировые значяения разъемов
+	// устанвливаем раъемы		
 	var arrR = (inf.side == 'right') ? [0,1,3,2] : [3,2,0,1];
-	setPathRad_1({pos0: true, posJ: posJ, arrR: arrR, result: o});		
+	setPathRad_1({q1: o1, arrR: arrR, result: o});		
 
-	
-	setPathRad_1({pos1: true, posJ: posJ, result: o});
 	
 	var d = baypasTube(cdm);
 	
 	if(inf.typePt == 'od')
 	{
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
+		o.tube1 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 15688453, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
+		o.tube2 = getTubeToSborka_1({type: 1, lengthX: 0.2, color: 505069, diameter: d.mag, mirror: {x: (inf.side == 'right') ? true : false} });
 		
 		// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
-		var x1 = posJ.mpl_pereh_1[0].x - posJ.mpl_pereh_2[0].x;
-		var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
-		updateTubeWF({tube: tube1});	
+		var x1 = o.mpl_pereh_1.userData.jp[0].x - o.mpl_pereh_2.userData.jp[0].x;
+		var point = o.tube1.userData.wf_tube.point[0].position.x -= x1;		
+		updateTubeWF({tube: o.tube1});	
 		
-		setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
-		setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
-		
-		arrO[arrO.length] = tube1;
-		arrO[arrO.length] = tube2;			
+		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
+		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });		
 	}
 	
 	if(inf.typePt == 'od_bay')
@@ -211,124 +199,112 @@ async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 		//------- трубы
 		var mirror_1 = {x: (inf.side == 'right') ? true : false};
 		var mirror_2 = {x: (inf.side == 'right') ? false : true};	
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: mirror_1 });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: d.jr, mirror: mirror_1 });
-		arrO[arrO.length] = tube1;
-		arrO[arrO.length] = tube2;
+		o.tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: mirror_1 });
+		o.tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: d.jr, mirror: mirror_1 });
 		
 		// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
-		var x1 = posJ.mpl_pereh_1[0].x - posJ.mpl_pereh_2[0].x;
-		var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
-		updateTubeWF({tube: tube1});	
+		var x1 = o.mpl_pereh_1.userData.jp[0].x - o.mpl_pereh_2.userData.jp[0].x;
+		var point = o.tube1.userData.wf_tube.point[0].position.x -= x1;		
+		updateTubeWF({tube: o.tube1});	
 
 		// --- устанвливаем трубы	
-		setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
-		setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
+		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
+		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
 
 		
 		// байпас
-		var pos1 = tube1.userData.wf_tube.point[0].position;
-		var pos2 = tube2.userData.wf_tube.point[0].position;
+		var pos1 = o.tube1.userData.wf_tube.point[0].position;
+		var pos2 = o.tube2.userData.wf_tube.point[0].position;
 
 		if(tr_rev)
 		{
-			var p1 = posJ.troin_2[0].clone();
-			var p2 = posJ.troin_2[2].clone();
-			posJ.troin_2[0] = p2;
-			posJ.troin_2[2] = p1;
+			var p1 = o.troin_2.userData.jp[0].clone();
+			var p2 = o.troin_2.userData.jp[2].clone();
+			o.troin_2.userData.jp[0] = p2;
+			o.troin_2.userData.jp[2] = p1;
 			
-			var p1 = posJ.troin_1[0].clone();
-			var p2 = posJ.troin_1[2].clone();
-			posJ.troin_1[0] = p2;
-			posJ.troin_1[2] = p1;			
+			var p1 = o.troin_1.userData.jp[0].clone();
+			var p2 = o.troin_1.userData.jp[2].clone();
+			o.troin_1.userData.jp[0] = p2;
+			o.troin_1.userData.jp[2] = p1;			
 		}
 		
-		o.troin_1.position.copy( pos1.clone().sub(posJ.troin_1[2]) );
-		o.troin_2.position.copy( pos2.clone().sub(posJ.troin_2[2]) );
+		o.troin_1.position.copy( pos1.clone().sub(o.troin_1.userData.jp[2]) );
+		o.troin_2.position.copy( pos2.clone().sub(o.troin_2.userData.jp[2]) );
 		
-		posJ.troin_1 = getRazyem({obj: o.troin_1});
-		posJ.troin_2 = getRazyem({obj: o.troin_2});	
+		getRazyem({obj: o.troin_1});
+		getRazyem({obj: o.troin_2});	
 
 		if(tr_rev)
 		{
-			var p1 = posJ.troin_2[0].clone();
-			var p2 = posJ.troin_2[2].clone();
-			posJ.troin_2[0] = p2;
-			posJ.troin_2[2] = p1;
+			var p1 = o.troin_2.userData.jp[0].clone();
+			var p2 = o.troin_2.userData.jp[2].clone();
+			o.troin_2.userData.jp[0] = p2;
+			o.troin_2.userData.jp[2] = p1;
 			
-			var p1 = posJ.troin_1[0].clone();
-			var p2 = posJ.troin_1[2].clone();
-			posJ.troin_1[0] = p2;
-			posJ.troin_1[2] = p1;			
+			var p1 = o.troin_1.userData.jp[0].clone();
+			var p2 = o.troin_1.userData.jp[2].clone();
+			o.troin_1.userData.jp[0] = p2;
+			o.troin_1.userData.jp[2] = p1;			
 		}		
 		
 		// труба байпаса
 		var point3 = [];
-		point3[point3.length] = {pos: posJ.troin_1[1].clone()};
-		point3[point3.length] = {pos: posJ.troin_2[1].clone()};
-		var tube3 = crTubeWF({point: point3, diameter: d.bay, color: 15688453, pVisible: false});
-		setPosTube({tube: tube3, startPos: posJ.troin_1[1] });
+		point3[point3.length] = {pos: o.troin_1.userData.jp[1].clone()};
+		point3[point3.length] = {pos: o.troin_2.userData.jp[1].clone()};
+		o.tube3 = crTubeWF({point: point3, diameter: d.bay, color: 15688453, pVisible: false});
+		setPosTube({tube: o.tube3, startPos: o.troin_1.userData.jp[1] });
 
 		
 		// трубы магистральные
-		var tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.mag, mirror: mirror_2});
-		var tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: d.mag, mirror: mirror_2});
+		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.mag, mirror: mirror_2});
+		o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: d.mag, mirror: mirror_2});
 
-		setPosTube({tube: tube4, startPos: posJ.troin_1[0] });
-		setPosTube({tube: tube5, startPos: posJ.troin_2[0] });
-
-		arrO[arrO.length] = tube3;		
-		arrO[arrO.length] = tube4;
-		arrO[arrO.length] = tube5;		
+		setPosTube({tube: o.tube4, startPos: o.troin_1.userData.jp[0] });
+		setPosTube({tube: o.tube5, startPos: o.troin_2.userData.jp[0] });		
 	}
 	
 	if(inf.typePt == 'dv')
 	{
 		//------- трубы
-		var tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
-		var tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1 + 0.1, color: 505069, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
-		arrO[arrO.length] = tube1;
-		arrO[arrO.length] = tube2;
+		o.tube1 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
+		o.tube2 = getTubeToSborka_1({type: 1, lengthX: 0.1 + 0.1, color: 505069, diameter: d.jr, mirror: {x: (inf.side == 'right') ? true : false} });
 		
 		// из-за терморегулятора, меняется место установки трубы, подгоняем длину трубы, чтобы концы были на одном уровне
-		var x1 = posJ.mpl_pereh_1[0].x - posJ.mpl_pereh_2[0].x;
-		var point = tube1.userData.wf_tube.point[0].position.x -= x1;		
-		updateTubeWF({tube: tube1});	
+		var x1 = o.mpl_pereh_1.userData.jp[0].x - o.mpl_pereh_2.userData.jp[0].x;
+		var point = o.tube1.userData.wf_tube.point[0].position.x -= x1;		
+		updateTubeWF({tube: o.tube1});	
 
 		// --- устанвливаем трубы	
-		setPosTube({tube: tube1, lastP: true, startPos: posJ.mpl_pereh_1[0] });
-		setPosTube({tube: tube2, lastP: true, startPos: posJ.mpl_pereh_2[0] });
+		setPosTube({tube: o.tube1, lastP: true, startPos: o.mpl_pereh_1.userData.jp[0] });
+		setPosTube({tube: o.tube2, lastP: true, startPos: o.mpl_pereh_2.userData.jp[0] });
 		
 		
 		// байпас	
-		var pos1 = tube1.userData.wf_tube.point[0].position;
-		var pos2 = tube2.userData.wf_tube.point[0].position;
+		var pos1 = o.tube1.userData.wf_tube.point[0].position;
+		var pos2 = o.tube2.userData.wf_tube.point[0].position;
 		
-		o.troin_1.position.copy( pos1.clone().sub(posJ.troin_1[1]) );
-		o.troin_2.position.copy( pos2.clone().sub(posJ.troin_2[1]) );
+		o.troin_1.position.copy( pos1.clone().sub(o.troin_1.userData.jp[1]) );
+		o.troin_2.position.copy( pos2.clone().sub(o.troin_2.userData.jp[1]) );
 		
-		posJ.troin_1 = getRazyem({obj: o.troin_1});
-		posJ.troin_2 = getRazyem({obj: o.troin_2});
+		getRazyem({obj: o.troin_1});
+		getRazyem({obj: o.troin_2});
 		
 		// трубы магистральные
-		var lengthY = Math.abs(posJ.troin_1[0].y - posJ.troin_2[2].y) + 0.1; 
+		var lengthY = Math.abs(o.troin_1.userData.jp[0].y - o.troin_2.userData.jp[2].y) + 0.1; 
 		
-		var tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: d.mag, mirror: {y: true} });
-		var tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: d.mag, mirror: {y: false} });	
-		var tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: d.mag, mirror: {y: false} });
-		var tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: d.mag, mirror: {y: true} });
+		o.tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: d.mag, mirror: {y: true} });
+		o.tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: d.mag, mirror: {y: false} });	
+		o.tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: d.mag, mirror: {y: false} });
+		o.tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: d.mag, mirror: {y: true} });
 
-		setPosTube({tube: tube3, startPos: posJ.troin_1[2] });	
-		setPosTube({tube: tube4, startPos: posJ.troin_2[2] });	
-		setPosTube({tube: tube5, startPos: posJ.troin_1[0] });
-		setPosTube({tube: tube6, startPos: posJ.troin_2[0] });
-
-		arrO[arrO.length] = tube3;
-		arrO[arrO.length] = tube4;		
-		arrO[arrO.length] = tube5;
-		arrO[arrO.length] = tube6;			
+		setPosTube({tube: o.tube3, startPos: o.troin_1.userData.jp[2] });	
+		setPosTube({tube: o.tube4, startPos: o.troin_2.userData.jp[2] });	
+		setPosTube({tube: o.tube5, startPos: o.troin_1.userData.jp[0] });
+		setPosTube({tube: o.tube6, startPos: o.troin_2.userData.jp[0] });		
 	}
 	
+	var arrO = setPathRad_1({arrO1: true, result: o});
 
 	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
