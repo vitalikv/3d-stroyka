@@ -91,6 +91,12 @@ function getTubeToSborka_1(cdm)
 		var arrP_1 = getPointTubeCurve_1({size: 0.02, count: 2, startY: startY, endY: endY, type: 3});	
 	}
 	
+	// простая прямая труба
+	if(cdm.type == 'point')
+	{
+		var arrP_1 = cdm.point;	
+	}	
+	
 	// зеркалим трубу
 	if(cdm.mirror)
 	{   
@@ -108,6 +114,10 @@ function getTubeToSborka_1(cdm)
 	
 	var tube = crTubeWF({"point": point1, "diameter": diameter, "color": color, pVisible: false});
 	
+	if(cdm.startPos)
+	{
+		setPosTube({tube: tube, startPos: cdm.startPos, lastP: cdm.lastP });
+	}	
 	
 	return tube;
 }

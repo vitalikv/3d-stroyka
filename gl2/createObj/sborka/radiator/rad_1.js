@@ -218,10 +218,7 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 }
 
 
-
-
-// получаем объекты для сборки радиатора
-async function getObjectsSborkaRad_1(cdm, dp)
+function changeParamSbrRad_1(cdm)
 {
 	var inf = cdm.inf;
 	
@@ -237,6 +234,12 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	if(cdm.kran) { inf.kran = cdm.kran; }
 	if(cdm.termoreg !== undefined) { inf.termoreg = cdm.termoreg; }
 	if(cdm.pipe_level !== undefined) { inf.pipe_level = cdm.pipe_level; }	
+}
+
+// получаем объекты для сборки радиатора
+async function getObjectsSborkaRad_1(cdm, dp)
+{
+	var inf = cdm.inf;
 	
 	var o = {};
 	
@@ -319,16 +322,80 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		}		
 	}
 	
+	
+	// устанавливаем фитинги
+	if(1==1)
+	{
+		var arrR = dp.rad;
+		
+		o.r_zagl.position.copy( o.rad.userData.jp[arrR[0]].clone().sub(o.r_zagl.userData.jp[0]) );		
+		o.r_vozd.position.copy( o.rad.userData.jp[arrR[1]].clone().sub(o.r_vozd.userData.jp[0]) );
+		
+		var vt1 = o.rad.userData.jp[arrR[2]].clone();
+		var vt2 = o.rad.userData.jp[arrR[3]].clone();
+		
+		if(o.r_per1) 
+		{ 
+			posSubAdd_1({o: o.r_per1, jp: 0, pos: vt1});
+			vt1 = o.r_per1.userData.jp[1].clone();
+		}		
+		if(o.r_per2) 
+		{ 
+			posSubAdd_1({o: o.r_per2, jp: 0, pos: vt2});
+			vt2 = o.r_per2.userData.jp[1].clone();
+		}	
+
+		
+		if(o.reg_kran_1) 
+		{
+			posSubAdd_1({o: o.reg_kran_1, jp: 1, pos: vt2});
+			vt2 = o.reg_kran_1.userData.jp[0].clone();
+		}		
+		if(o.reg_kran_2) 
+		{
+			posSubAdd_1({o: o.reg_kran_2, jp: 1, pos: vt1});
+			vt1 = o.reg_kran_2.userData.jp[0].clone();
+		}
+		
+		posSubAdd_1({o: o.mpl_pereh_1, jp: 1, pos: vt2});
+		posSubAdd_1({o: o.mpl_pereh_2, jp: 1, pos: vt1});
+	}
+		
+	
+	// создаем трубы
+	if(1==2)
+	{
+		var m1 = dp.pipe.m1;
+		o.tube1 = getTubeToSborka_1(m1.tube1);
+		o.tube2 = getTubeToSborka_1(m1.tube2);				
+	}
+	
 	return o;
 }
 
 
+// подгоняем объект к выбранной позиции (cdm.pos)
+function posSubAdd_1(cdm)
+{
+	var o = cdm.o;	
+	var jp = o.userData.jp[cdm.jp];
+	var pos = cdm.pos;
+	
+	o.position.copy( pos.clone().sub(jp) );
+	
+	for(var i = 0; i < o.userData.jp.length; i++)
+	{
+		o.userData.jp[i].add(o.position);
+	}
+}
 
 
 
 // добавляем сборку радиатора в сцену
 async function addSborkaRadiatorToScene_1(cdm)
-{
+{ 
+	if(camera == cameraView) return;
+ 
 	var inf = await actionFnSborkaRad_1(cdm);	
 	if(!inf) return;
 	
@@ -375,18 +442,6 @@ async function actionFnSborkaRad_1(cdm)
 
 function setPathRad_1(cdm)
 {
-	var rad = cdm.result.rad;
-	var r_per1 = cdm.result.r_per1;	//cdm.result.r_per1 = null; 	
-	var r_per2 = cdm.result.r_per2; //cdm.result.r_per2 = null;
-	var r_vozd = cdm.result.r_vozd;
-	var r_zagl = cdm.result.r_zagl;
-	var reg_kran_1 = cdm.result.reg_kran_1;
-	var reg_kran_2 = cdm.result.reg_kran_2;
-	var mpl_pereh_1 = cdm.result.mpl_pereh_1;
-	var mpl_pereh_2 = cdm.result.mpl_pereh_2;
-
-	var troin_1 = cdm.result.troin_1;
-	var troin_2 = cdm.result.troin_2;
 	
 	if(cdm.arrO1)
 	{
@@ -403,62 +458,28 @@ function setPathRad_1(cdm)
 		return arrO;
 	}
 	
-
-	if(cdm.q1)
+	// меняем местами позиции 
+	if(cdm.changeJ)
 	{
-		var arrR = cdm.arrR;
+		var o = cdm.changeJ;
+		var arr = cdm.arr;
 		
-		r_zagl.position.copy( rad.userData.jp[arrR[0]].clone().sub(r_zagl.userData.jp[0]) );		
-		r_vozd.position.copy( rad.userData.jp[arrR[1]].clone().sub(r_vozd.userData.jp[0]) );
+		var p1 = o.userData.jp[arr.p1].clone();
+		var p2 = o.userData.jp[arr.p2].clone();
 		
-		var vt1 = rad.userData.jp[arrR[2]].clone();
-		var vt2 = rad.userData.jp[arrR[3]].clone();
+		o.userData.jp[arr.p1] = p2;
+		o.userData.jp[arr.p2] = p1;		
+	}
 		
-		if(r_per1) 
+	
+	if(cdm.delete)
+	{
+		for(var index in cdm.result) 
 		{ 
-			posSubAdd_1({o: r_per1, jp: 0, pos: rad.userData.jp[arrR[2]]});
-			vt1 = r_per1.userData.jp[1].clone();
+			delete cdm.result[index];
 		}
-		
-		if(r_per2) 
-		{ 
-			posSubAdd_1({o: r_per2, jp: 0, pos: rad.userData.jp[arrR[3]]});
-			vt2 = r_per2.userData.jp[1].clone();
-		}	
-
-		
-		if(reg_kran_1) 
-		{
-			posSubAdd_1({o: reg_kran_1, jp: 1, pos: vt2});
-			vt2 = reg_kran_1.userData.jp[0].clone();
-		}
-		
-		if(reg_kran_2) 
-		{
-			posSubAdd_1({o: reg_kran_2, jp: 1, pos: vt1});
-			vt1 = reg_kran_2.userData.jp[0].clone();
-		}
-		
-		posSubAdd_1({o: mpl_pereh_1, jp: 1, pos: vt2});
-		posSubAdd_1({o: mpl_pereh_2, jp: 1, pos: vt1});
 	}
 	
-
-	
-	function posSubAdd_1(cdm)
-	{
-		var o = cdm.o;	
-		var jp = o.userData.jp[cdm.jp];
-		var pos = cdm.pos;
-		
-		o.position.copy( pos.clone().sub(jp) );
-		
-		for(var i = 0; i < o.userData.jp.length; i++)
-		{
-			o.userData.jp[i].add(o.position);
-		}
-	}	
-
 }
 
 
