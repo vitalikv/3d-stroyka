@@ -104,6 +104,14 @@ function getTubeToSborka_1(cdm)
 		if(cdm.mirror.y) for(var i = 0; i < arrP_1.length; i++) { arrP_1[i].y *= -1; } 
 	}
 	
+	// меняем местами начало и конец трубы
+	if(cdm.convert)
+	{
+		var arrP_2 = [];
+		for(var i = arrP_1.length - 1; i >= 0; i--) { arrP_2[arrP_2.length] = arrP_1[i]; }
+		arrP_1 = arrP_2;
+		arrP_2 = [];
+	}
 	
 	for(var i = 0; i < arrP_1.length; i++) { point1[point1.length] = {pos: arrP_1[i]}; }
 	
@@ -142,7 +150,7 @@ function getPointTubeCurve_1(cdm)
 		
 		var arrP_2 = getCircle({count: count, size: size, r1: Math.PI/2, offsetR: Math.PI, offsetX: size*2, offsetY: 0});
 		arrP_2.push(arrP_2[arrP_2.length-1].clone());
-		arrP_2[arrP_2.length-1].x += 0.025;	
+		arrP_2[arrP_2.length-1].x += 0.055;	
 
 		arrP_2.unshift(arrP_2[0].clone());
 		arrP_2[0].y -= endY - size - startY;

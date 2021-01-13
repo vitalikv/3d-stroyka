@@ -283,15 +283,19 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	if(kran1[0]) o.reg_kran_1 = await loadObjServer({lotid: kran1[0], notArray: true});
 	if(kran1[1]) o.reg_kran_2 = await loadObjServer({lotid: kran1[1], notArray: true});
 	
-	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]); 	
+	// [0.016, 0.020, 0.026].findIndex(item => item == 0.020);
+	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]);	// получаем index, трубы которая выбрана  	
 	
 	
 	//------- металлопластиковые переходники	
 	if(inf.list[inf.typePipe].obj.pr1)
 	{
 		var lotid = inf.list[inf.typePipe].obj.pr1[ind];
-		o.mpl_pereh_1 = await loadObjServer({lotid: lotid, notArray: true});
-		o.mpl_pereh_2 = await loadObjServer({lotid: lotid, notArray: true});		
+		if(!Array.isArray(lotid)){ var lotid1 = lotid; var lotid2 = lotid; }
+		else { var lotid1 = lotid[0]; var lotid2 = lotid[1]; }
+		
+		o.mpl_pereh_1 = await loadObjServer({lotid: lotid1, notArray: true});
+		o.mpl_pereh_2 = await loadObjServer({lotid: lotid2, notArray: true});		
 	}
 	
 	
@@ -302,16 +306,29 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		o.troin_2 = await loadObjServer({lotid: lotid, notArray: true});	
 	}
 	
+	if(inf.list[inf.typePipe].obj.ug1)
+	{
+		var lotid = inf.list[inf.typePipe].obj.ug1[ind];
+		o.ugol_1 = await loadObjServer({lotid: lotid, notArray: true});
+		o.ugol_2 = await loadObjServer({lotid: lotid, notArray: true});	
+	}	
+	
 	// поворачиваем объекты и узнаем world position у разъемов этих объектов
 	if(dp.q)
 	{
 		for(var index in dp.q)  
 		{ 
 			var obj = o[index];
-			if(!obj) continue;
-			console.log(index, dp.q[index].q); 
+			if(!obj) continue;		
 			obj.quaternion.copy(dp.q[index].q);
 		}
+				
+		for(var index in dp.qP)  
+		{ 
+			var obj = o[index];
+			if(!obj) continue;			
+			if(dp.qP[index]){ obj.userData.qP = dp.qP[index]; }			
+		}		
 
 		for(var index in o)  
 		{ 
@@ -319,9 +336,14 @@ async function getObjectsSborkaRad_1(cdm, dp)
 			if(!obj) continue;
 			
 			getRazyem({obj: obj});
+			
+			// меняем местами позиции разъемов
+			if(obj.userData.qP){ setPathRad_1({changeJ: obj, arr: obj.userData.qP }); }
 		}		
 	}
-	
+
+	var vt1 = new THREE.Vector3();
+	var vt2 = new THREE.Vector3();	
 	
 	// устанавливаем фитинги
 	if(1==1)
@@ -331,8 +353,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		o.r_zagl.position.copy( o.rad.userData.jp[arrR[0]].clone().sub(o.r_zagl.userData.jp[0]) );		
 		o.r_vozd.position.copy( o.rad.userData.jp[arrR[1]].clone().sub(o.r_vozd.userData.jp[0]) );
 		
-		var vt1 = o.rad.userData.jp[arrR[2]].clone();
-		var vt2 = o.rad.userData.jp[arrR[3]].clone();
+		vt1 = o.rad.userData.jp[arrR[2]].clone();
+		vt2 = o.rad.userData.jp[arrR[3]].clone();
 		
 		if(o.r_per1) 
 		{ 
@@ -359,16 +381,188 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		
 		posSubAdd_1({o: o.mpl_pereh_1, jp: 1, pos: vt2});
 		posSubAdd_1({o: o.mpl_pereh_2, jp: 1, pos: vt1});
+		
+		vt1 = o.mpl_pereh_2.userData.jp[0];
+		vt2 = o.mpl_pereh_1.userData.jp[0];		
 	}
 		
+
+	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]); 	
+	var m1 = inf.list[inf.typePipe].pipe.m1[ind];
+	if(inf.list[inf.typePipe].pipe.b1) var b1 = inf.list[inf.typePipe].pipe.b1[ind];
+	if(inf.list[inf.typePipe].pipe.m2) var m2 = inf.list[inf.typePipe].pipe.m2[ind];
+	
+	var mirror_1 = {x: (inf.side == 'right') ? true : false};
+	var mirror_2 = {x: (inf.side == 'right') ? false : true};
+
 	
 	// создаем трубы
-	if(1==2)
+	if(inf.typePipe == 'mp')
 	{
-		var m1 = dp.pipe.m1;
-		o.tube1 = getTubeToSborka_1(m1.tube1);
-		o.tube2 = getTubeToSborka_1(m1.tube2);				
+		if(inf.typePt2 == 'verh')
+		{
+			var y1 = o.rad.userData.jp[1].y - o.rad.userData.jp[0].y;
+			
+			if(inf.typePt == 'od')
+			{ 
+				var ti1 = {type: 3, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
+				var ti2 = {type: 1, lengthX: 0.2, color: 505069, diameter: m1, mirror: mirror_2};
+			}
+			
+			if(inf.typePt == 'od_bay')
+			{ 
+				var ti1 = {type: 2, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
+				var ti2 = {type: 2, color: 505069, diameter: m1, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2};
+			}
+			
+			if(inf.typePt == 'dv')
+			{ 
+				var ti1 = {type: 2, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
+				var ti2 = {type: 2, color: 505069, diameter: m1, startY: inf.pipe_level - 0.05, endY: 0.00, mirror: mirror_2};
+			}			
+		}
 	}
+	
+	if(inf.typePipe == 'pp' || inf.typePipe == 'mp')
+	{
+		if(inf.typePt2 == 'niz')
+		{
+			if(inf.typePt == 'od')
+			{ 
+				var ti1 = {type: 1, lengthX: 0.2, color: 15688453, diameter: m1, mirror: mirror_1};
+				var ti2 = {type: 1, lengthX: 0.2, color: 505069, diameter: m1, mirror: mirror_2};
+			}			
+			
+			if(inf.typePt == 'od_bay')
+			{
+				var ti1 = {type: 1, lengthY: 0.05, color: 15688453, diameter: m1 };
+				var ti2 = {type: 1, lengthY: 0.05, color: 505069, diameter: m1 };							
+			}
+			
+			if(inf.typePt == 'dv')
+			{
+				var ti1 = {type: 1, lengthY: 0.05, color: 15688453, diameter: m1 };
+				var ti2 = {type: 1, lengthY: 0.1, color: 505069, diameter: m1 };							
+			}						
+		}
+		if(inf.typePt2 == 'verh')
+		{
+			var y1 = o.rad.userData.jp[1].y - o.rad.userData.jp[0].y;
+			
+			if(inf.typePt == 'od' && inf.typePipe == 'pp')
+			{ 
+				var ti1 = {type: 1, lengthY: 0.05 + y1, color: 15688453, diameter: m1 };
+				var ti2 = {type: 1, lengthY: 0.05, color: 505069, diameter: m1 };
+			}
+			if(inf.typePt == 'od' && inf.typePipe == 'mp')
+			{ 
+				var ti1 = {type: 2, color: 15688453, diameter: m1, endY: y1+0.05, mirror: {x: !mirror_1.x, y: true}, convert: true};
+				var ti2 = {type: 2, color: 505069, diameter: m1, endY: 0.05, mirror: {x: !mirror_2.x, y: true}, convert: true};
+			}			
+			
+			if(inf.typePt == 'od_bay')
+			{
+				var ti1 = {type: 1, lengthY: 0.05 + y1, color: 15688453, diameter: m1 };
+				var ti2 = {type: 1, lengthY: 0.05, color: 505069, diameter: m1 };							
+			}			
+			
+			if(inf.typePt == 'dv')
+			{
+				var ti1 = {type: 1, lengthY: 0.05 + y1, color: 15688453, diameter: m1 };
+				var ti2 = {type: 1, lengthY: 0.1, color: 505069, diameter: m1 };							
+			}			
+			
+		}		
+		else if(inf.typePt2 == 'bok')
+		{
+			var lengthX_1 = 0.1;
+			var lengthX_2 = 0.1;
+			
+			if(inf.typePt == 'od'){ lengthX_1 = 0.2; lengthX_2 = 0.2; }
+			if(inf.typePt == 'dv'){ lengthX_2 = 0.2; }
+			
+			var x1 = Math.abs(o.mpl_pereh_1.userData.jp[0].x - o.mpl_pereh_2.userData.jp[0].x);	
+			
+			var ti1 = {type: 1, lengthX: lengthX_1 - x1, color: 15688453, diameter: m1, mirror: mirror_1 };
+			var ti2 = {type: 1, lengthX: lengthX_2, color: 505069, diameter: m1, mirror: mirror_1 };
+		}			
+	}
+	
+	ti1.startPos = vt2;
+	ti2.startPos = vt1;
+	ti1.lastP = true;
+	ti2.lastP = true;	
+	
+	o.tube1 = getTubeToSborka_1(ti1);
+	o.tube2 = getTubeToSborka_1(ti2);	
+
+
+	if(inf.typePipe == 'pp' && inf.typePt2 == 'verh' && inf.typePt == 'od')
+	{
+		if(o.ugol_1) { posSubAdd_1({o: o.ugol_1, jp: 0, pos: o.tube1.userData.wf_tube.point[0].position}); }
+		if(o.ugol_2) { posSubAdd_1({o: o.ugol_2, jp: 0, pos: o.tube2.userData.wf_tube.point[0].position}); }
+		
+		// трубы магистральные
+		o.tube3 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m1, mirror: mirror_2, startPos: o.ugol_1.userData.jp[1]});
+		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m1, mirror: mirror_1, startPos: o.ugol_2.userData.jp[1]});		
+	}
+
+	// подключаем тройники к трубе
+	var nJp = 1;
+	if(inf.typePt == 'od_bay' && inf.typePt2 == 'bok') { nJp = 2; }
+	if(o.troin_1) { posSubAdd_1({o: o.troin_1, jp: nJp, pos: o.tube1.userData.wf_tube.point[0].position}); }
+	if(o.troin_2) { posSubAdd_1({o: o.troin_2, jp: nJp, pos: o.tube2.userData.wf_tube.point[0].position}); }	
+	
+	
+	if(inf.typePt == 'od_bay')
+	{
+		// труба байпаса
+		var nJp = 2;
+		if(inf.typePt2 == 'bok') { nJp = 1; }		
+		var p1 = [o.troin_1.userData.jp[nJp].clone(), o.troin_2.userData.jp[nJp].clone()];		
+		o.tube3 = getTubeToSborka_1({type: 'point', point: p1, color: 15688453, diameter: b1, startPos: o.troin_1.userData.jp[nJp]});
+		
+		// трубы магистральные
+		var mirror_3 = (inf.typePt2 == 'bok') ? mirror_2 : mirror_1;
+		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0]});
+		o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_3, startPos: o.troin_2.userData.jp[0]});	
+	}
+	
+	
+	if(inf.typePt == 'dv')
+	{
+		// трубы магистральные
+		if(inf.typePt2 == 'niz')
+		{	
+			var lengthX = Math.abs(o.troin_1.userData.jp[0].x - o.troin_2.userData.jp[2].x) + 0.1;
+			
+			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2] });
+			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2] });	
+			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0] });
+			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0] });			
+		}
+
+		if(inf.typePt2 == 'verh')
+		{	
+			var lengthX = Math.abs(o.troin_1.userData.jp[0].x - o.troin_2.userData.jp[2].x) + 0.1; 
+			
+			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2]});	
+			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2]});
+			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0]});
+			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0]});	
+		}
+
+		if(inf.typePt2 == 'bok')
+		{	
+			var lengthY = Math.abs(o.troin_1.userData.jp[0].y - o.troin_2.userData.jp[2].y) + 0.1; 
+			
+			o.tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: m2, mirror: {y: true}, startPos: o.troin_1.userData.jp[2] });
+			o.tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: m2, mirror: {y: false}, startPos: o.troin_2.userData.jp[2] });	
+			o.tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: m2, mirror: {y: false}, startPos: o.troin_1.userData.jp[0] });
+			o.tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: m2, mirror: {y: true}, startPos: o.troin_2.userData.jp[0] });	
+		}			
+	}
+		
 	
 	return o;
 }
@@ -468,7 +662,9 @@ function setPathRad_1(cdm)
 		var p2 = o.userData.jp[arr.p2].clone();
 		
 		o.userData.jp[arr.p1] = p2;
-		o.userData.jp[arr.p2] = p1;		
+		o.userData.jp[arr.p2] = p1;	
+
+console.log(4444, o.userData.qP);		
 	}
 		
 	
@@ -476,6 +672,7 @@ function setPathRad_1(cdm)
 	{
 		for(var index in cdm.result) 
 		{ 
+			delete cdm.result[index].userData.jp;
 			delete cdm.result[index];
 		}
 	}
