@@ -4,12 +4,26 @@
 // кликнули на obj, wd (показываем нужное меню и заполняем input или скрываем меню)
 function activeObjRightPanelUI_1(cdm) 
 {	
-	$('[nameId="wrap_object_1"]').hide();	
+	var el = document.querySelector('[nameId="wrap_object_1"]');
+
+	var bl_object_3d = document.querySelector('[nameId="bl_object_3d"]');
+	var elButt_1 = document.querySelector('[nameId="pr_list_button_for_obj"]');
+	var elButt_2 = document.querySelector('[nameId="pr_list_button_center_point"]');
+	var elButt_3 = document.querySelector('[nameId="block_gizmo"]');
+	var elButt_4 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
+	var elButt_5 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');		
 	
-	$('[nameId="bl_object_3d"]').hide();
+	el.style.display = 'none';
+	bl_object_3d.style.display = 'none';
+	elButt_1.style.display = 'none';
+	elButt_2.style.display = 'none';
+	elButt_3.style.display = 'none';
+	elButt_4.style.display = 'none';
+	elButt_5.style.display = 'none';
+
 	$('[nameId="rp_bl_wf_tube"]').hide();
-	$('[nameId="rp_bl_wf_point"]').hide();
-	$('[nameId="block_gizmo"]').hide();
+	//$('[nameId="rp_bl_wf_point"]').hide();	
+	
 	
 	if(!cdm) { cdm = {}; }  
 	
@@ -19,38 +33,33 @@ function activeObjRightPanelUI_1(cdm)
 	
 	if(obj.userData.tag == 'wf_point')
 	{
-		$('[nameId="bl_object_3d"]').show();
-		$('[nameId="rp_bl_wf_point"]').show();
-		$('[nameId="pr_list_button_for_obj"]').show();
+		elButt_4.style.display = 'block';
+		elButt_5.style.display = 'block';
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
-		$('[nameId="bl_object_3d"]').show();
 		$('[nameId="rp_bl_wf_tube"]').show();
-		$('[nameId="pr_list_button_for_obj"]').show();
+		elButt_1.style.display = 'block';
 	}			
 	else if(obj.userData.tag == 'obj')
-	{		     
-		$('[nameId="bl_object_3d"]').show();
-		$('[nameId="pr_list_button_center_point"]').hide();
-		$('[nameId="pr_list_button_for_obj"]').show();
-		$('[nameId="block_gizmo"]').show();
+	{	
+		elButt_1.style.display = 'block';
+		elButt_3.style.display = 'block';
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
 	{ 
-		$('[nameId="bl_object_3d"]').show();
-		$('[nameId="pr_list_button_for_obj"]').hide();
-		$('[nameId="pr_list_button_center_point"]').show();
-		$('[nameId="block_gizmo"]').show();
+		elButt_2.style.display = 'block';
+		elButt_3.style.display = 'block';
 	}
 	else
 	{
 		return;
 	}
 	
-	$('[nameId="wrap_object_1"]').show(); 	
+	bl_object_3d.style.display = 'block';
+	el.style.display = 'block';
 	
 }
 

@@ -85,8 +85,8 @@ $('[nameId="button_add_plane"]').mousedown(function (e) { createSubstrate(); e.s
 $('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }); 
 
 
-
-
+$('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
+$('[nameId="button_active_align_wf_point2"]').mousedown(function () { switchAlignPoint_1({active: true, type: 'move'}); }); 
 $('[nameId="button_active_join_element"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
 $('[nameId="button_deactive_join_element"]').mousedown(function () { switchAlignPoint_1({active: false}); });
 
@@ -96,13 +96,8 @@ $('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAd
 $('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
 $('[nameId="join_element"]').mousedown(function () { alignPointToPoint_1(); });
 
-$('[nameId="button_active_align_wf_point"]').mousedown(function () { switchAlignPoint_1(); }); 
-$('[nameId="button_deactive_align_wf_point"]').mousedown(function () { switchAlignPoint_1({active: false}); });
-$('[nameId="button_done_align_wf_point"]').mousedown(function () { alignPointToPoint_1(); });
 
-$('[nameId="button_active_join_wf_point"]').mousedown(function () { switchJoinWfPoint(); });
-$('[nameId="button_deactive_join_wf_point"]').mousedown(function () { switchJoinWfPoint({active: false}); });
-$('[nameId="button1 button_gradient_1"]').mousedown(function () {  }); 
+
 
 
 

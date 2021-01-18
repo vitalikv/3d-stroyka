@@ -212,9 +212,9 @@ function moveFullTube_2(cdm)
 		point[i].position.add( offset );
 	}
 	
-	tube.position.add( offset );
+	//tube.position.add( offset );
 
-	//updateTubeWF({tube: tube});
+	updateTubeWF({tube: tube});
 }
 
 

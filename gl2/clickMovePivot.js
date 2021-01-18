@@ -229,7 +229,7 @@ function movePivot( event )
 		
 		if(obj.userData.tag == 'wf_point')
 		{
-			obj.userData.wf_point.tube.visible = false;	
+			//obj.userData.wf_point.tube.visible = false;	
 		}
 	}			
 	
@@ -269,15 +269,21 @@ function movePivot_2(cdm)
 
 		updateTubeWF({tube: obj.userData.wf_point.tube});
 
-		showWF_point_UI(obj);
+		showWF_point_UI({point: obj});
 	}
 	else 
 	{
 		for(let i = 0; i < arrO.length; i++)
 		{
-			arrO[i].position.add( pos2 );			
+			if(arrO[i].userData.wf_tube) continue;
+			
+			arrO[i].position.add( pos2 );
 		}
-		 
+		
+		for(let i = 0; i < arrO.length; i++)
+		{
+			if(arrO[i].userData.wf_tube) updateTubeWF({tube: arrO[i]});
+		}			
 	}	
 
 	upMenuPosObjPop(obj);
@@ -289,25 +295,7 @@ function clickPivotUp()
 	if(!clickO.actMove) return;
 	
 	var obj = infProject.tools.pivot.userData.pivot.obj;	
-	if(!obj) return;
-		
-	if(obj.userData.tag == 'wf_point')
-	{
-		updateTubeWF({tube: obj.userData.wf_point.tube});
-		obj.userData.wf_point.tube.visible = true;		
-	}	
-
-	var arrO = infProject.tools.pivot.userData.pivot.arrO;
-	if(arrO)
-	{
-		for(var i = 0; i < arrO.length; i++)
-		{
-			if(!arrO[i].userData.wf_tube) continue;
-
-			arrO[i].position.set( 0,0,0 );
-			updateTubeWF({tube: arrO[i]});			
-		}		
-	}		
+	if(!obj) return;	
 
 	
 	setClickLastObj({obj: obj});

@@ -17,43 +17,48 @@ function switchAlignPoint_1(cdm)
 		infProject.list.alignP.active = !infProject.list.alignP.active;
 	}
 	
+	infProject.list.alignP.type = '';
+	
 	// скрываем точки у второго объекта
 	clearListObjUI();		
 	
 	if(infProject.list.alignP.active)	// вкл
 	{
 		infProject.list.alignP.p1 = clickO.last_obj;
+		if(cdm.type) { infProject.list.alignP.type = cdm.type; }
+		
+		infProject.elem.bl_rp_obj_group.style.display = 'none';
+		$('[nameId="rp_wrap_obj_align"]').show();
 		
 		if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 		{
-			$('[nameId="rp_wrap_obj_align"]').show();
-			infProject.elem.bl_rp_obj_group.style.display = 'none';
 			$('[nameId="pr_list_button_for_obj"]').hide();
 			$('[nameId="pr_list_button_center_point"]').hide();
 		}
 		
 		if(infProject.list.alignP.p1.userData.tag == 'wf_point')
 		{
-			$('[nameId="pr_list_button_for_tube_point"]').hide();
-			$('[nameId="rp_wrap_align_wf_point"]').show();					
+			document.querySelector('[nameId="pr_list_button_for_tube_point1"]').style.display = 'none';
+			document.querySelector('[nameId="pr_list_button_for_tube_point2"]').style.display = 'none';				
 		}
 	}		
 	else		// выкл
 	{
 		if(infProject.list.alignP.p1)
 		{
+			infProject.elem.bl_rp_obj_group.style.display = 'block';
+			$('[nameId="rp_wrap_obj_align"]').hide();
+			
 			if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
 			{
-				$('[nameId="rp_wrap_obj_align"]').hide();
-				infProject.elem.bl_rp_obj_group.style.display = 'block';
 				$('[nameId="pr_list_button_for_obj"]').hide();
 				$('[nameId="pr_list_button_center_point"]').show();				
 			}
 			
 			if(infProject.list.alignP.p1.userData.tag == 'wf_point')
 			{
-				$('[nameId="rp_wrap_align_wf_point"]').hide();
-				$('[nameId="pr_list_button_for_tube_point"]').show();						
+				document.querySelector('[nameId="pr_list_button_for_tube_point1"]').style.display = 'block';
+				document.querySelector('[nameId="pr_list_button_for_tube_point2"]').style.display = 'block';							
 			}			
 		}
 		
@@ -117,9 +122,8 @@ function showJoinPoint_2(cdm)
 	}	
 	
 	 
-	if(infProject.list.alignP.p1.userData.tag == 'wf_point') { var nameId = "rp_list_align_wf_point"; }
-	if(infProject.list.alignP.p1.userData.tag == 'joinPoint') { var nameId = "rp_obj_align"; }
 	
+	var container = document.querySelector('[nameId="rp_obj_align"]');
 	
 	// добваляем разъемы выделенного объекта в список UI
 	for(var i = 0; i < arr.length; i++)
@@ -127,19 +131,30 @@ function showJoinPoint_2(cdm)
 		if(obj.userData.tag == 'obj') var nameRus = arr[i].userData.centerPoint.nameRus;
 		if(obj.userData.tag == 'wf_tube') var nameRus = 'точка';
 		
-		var str = 
+		var html = 
 		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
 		<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
 		</div>';					
 
-		var el = $(str).appendTo('[nameId="'+nameId+'"]');
+		//var el = $(str).appendTo('[nameId="'+nameId+'"]');
+		
+		var div = document.createElement('div');
+		div.innerHTML = html;
+		var el = div.firstChild;		
+		
+		container.append(el);
 
 		var n = infProject.list.alignP.arr2.length;	
 		infProject.list.alignP.arr2[n] = {};
 		infProject.list.alignP.arr2[n].el = el;
 		infProject.list.alignP.arr2[n].o = arr[i]; 				
 		
-		el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });		
+		
+		//el.on('mousedown', function(){ clickItemCenterObjUI_2({el: $(this)}) });	
+		(function(el) 
+		{
+			el.onmousedown = function(e){ clickItemCenterObjUI_2({el: el}); e.stopPropagation(); };	
+		}(el));
 	}	
 	
 	
@@ -182,7 +197,7 @@ function clickItemCenterObjUI_2(cdm)
 	// снимаем старые выдиления в UI 
 	for(var i = 0; i < arr.length; i++)
 	{
-		arr[i].el.css('background-color', '#ffffff');
+		arr[i].el.style.backgroundColor = '#ffffff';
 		
 		if(arr[i].o.userData.tag == 'joinPoint') arr[i].o.material = infProject.material.pointObj.default;
 		if(arr[i].o.userData.tag == 'wf_point') arr[i].o.material = infProject.material.pointTube.default;		
@@ -193,7 +208,7 @@ function clickItemCenterObjUI_2(cdm)
 	{
 		for(var i = 0; i < arr.length; i++)
 		{
-			if(arr[i].el[0] == cdm.el[0]){ obj = arr[i].o; break; } 
+			if(arr[i].el == cdm.el){ obj = arr[i].o; break; } 
 		}
 
 		item = cdm.el;
@@ -219,9 +234,7 @@ function clickItemCenterObjUI_2(cdm)
 	
 	
 	// выделяем новый пункт на который кликнули UI
-	item.css('background-color', infProject.listColor.activeItem_1);
-	var value = item.attr('uuid');
-	
+	item.style.backgroundColor = infProject.listColor.activeItem_1;
 	
 	if(obj.userData.tag == 'joinPoint') obj.material = infProject.material.pointObj.active;
 	if(obj.userData.tag == 'wf_point')	obj.material = infProject.material.pointTube.active;
@@ -247,7 +260,11 @@ function alignPointToPoint_1()
 	if(!o1) return;
 	if(!o2) return;
 
-	if(o1.userData.tag == 'wf_point'){ alignTubePointToPoint(); }
+	if(o1.userData.tag == 'wf_point')
+	{ 
+		if(joint.type == 'move'){ alignObjPointToTubePoint(); }
+		else { alignTubePointToPoint(); } 
+	}
 	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'wf_point'){ alignObjPointToTubePoint(); }
 	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'joinPoint'){ alignObjPointToObjPoint(); }
 
@@ -268,9 +285,9 @@ function alignTubePointToPoint()
 	o1.position.copy(pos1);	
 	
 	updateTubeWF({tube: o1.userData.wf_point.tube});	
-	o1.userData.wf_point.tube.visible = true;	
+	//o1.userData.wf_point.tube.visible = true;	
 
-	showWF_point_UI( o1 ); 	// обновляем меню длины трубы UI
+	showWF_point_UI({point: o1}); 	// обновляем меню длины трубы UI
 	
 	infProject.tools.pivot.position.copy(o1.position);
 }
@@ -287,16 +304,11 @@ function alignObjPointToTubePoint()
 	var o2 = infProject.list.alignP.p2;		// объект не трогаем, остается на месте
 	
 	
-	var obj_1 = getParentObj({obj: o1});
+	if(o1.userData.tag == 'wf_point'){ var obj_1 = o1.userData.wf_point.tube; }
+	else { var obj_1 = getParentObj({obj: o1}); }
 	
-	if(obj_1.userData.obj3D.group && infProject.settings.active.group)		// объект имеет группу и выдилин как группа	
-	{
-		var arr_2 = getObjsFromGroup_1({obj: obj_1});  
-	}
-	else	// объект без группы или объект с группой, но выдилен как отдельный объект
-	{
-		var arr_2 = [obj_1];
-	}
+	
+	var arr_2 = getObjsFromGroup_1({obj: obj_1});
 
 	var pos1 = o1.getWorldPosition(new THREE.Vector3());		
 	var pos2 = o2.getWorldPosition(new THREE.Vector3());
@@ -305,7 +317,18 @@ function alignObjPointToTubePoint()
 	
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].position.add(pos);		
+		if(arr_2[i].userData.wf_tube)
+		{
+			var point = arr_2[i].userData.wf_tube.point;
+			
+			for(var i2 = 0; i2 < point.length; i2++){ point[i2].position.add(pos); }
+			
+			updateTubeWF({tube: arr_2[i]});
+		}
+		else
+		{
+			arr_2[i].position.add(pos);
+		}
 	}		
 	
 	obj_1.updateMatrixWorld();
@@ -377,9 +400,21 @@ function alignObjPointToObjPoint(cdm)
 	var pos2 = o1.getWorldPosition(new THREE.Vector3());
 	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
 	
+	
 	for(var i = 0; i < arr_2.length; i++)
 	{
-		arr_2[i].position.add(pos);		
+		if(arr_2[i].userData.wf_tube)
+		{
+			var point = arr_2[i].userData.wf_tube.point;
+			
+			for(var i2 = 0; i2 < point.length; i2++){ point[i2].position.add(pos); }
+			
+			updateTubeWF({tube: arr_2[i]});
+		}
+		else
+		{
+			arr_2[i].position.add(pos);
+		}
 	}			
 	
 	

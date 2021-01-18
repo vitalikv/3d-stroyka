@@ -2,8 +2,9 @@
 
 
 // при выделении точки, обновляем меню длины трубы UI
-function showWF_point_UI(point)
+function showWF_point_UI(cdm)
 {
+	var point = cdm.point;
 	var tube = point.userData.wf_point.tube;
 	
 	infProject.elem.rp_obj_name.value = point.userData.wf_point.nameRus;	
@@ -11,23 +12,24 @@ function showWF_point_UI(point)
 	upInfoTubeUI({tube: tube, size: true});
 	
 	// если точка является началом или концом трубы, то показываем кнопку
+	if(cdm.butt)
 	{
 		var show = false;
 		
 		if(tube.userData.wf_tube.point[0] == point){ show = true; }
 		if(tube.userData.wf_tube.point[tube.userData.wf_tube.point.length - 1] == point){ show = true; }
 		
-		var elem_1 = document.querySelector('[nameId="button_active_join_wf_point"]');
-		var elem_2 = document.querySelector('[nameId="button_active_align_wf_point"]');
+		var elem_1 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
+		var elem_2 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');
 		
 		if(show)
 		{
-			//elem_1.style.display = "block";
+			elem_1.style.display = "block";
 			elem_2.style.display = "block";
 		}
 		else
 		{
-			//elem_1.style.display = "none";
+			elem_1.style.display = "none";
 			elem_2.style.display = "none";
 		}
 	}
@@ -77,44 +79,6 @@ function upInfoTubeUI(cdm)
 	}	
 }
 
-
-
-
-// вкл/выкл возможность выделение объектов для соединения труб
-function switchJoinWfPoint(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	var elemBlock = document.querySelector('[nameId="pr_list_button_for_tube_point"]');
-	var elemList = document.querySelector('[nameId="rp_wrap_join_wf_point"]');	
-	
-	var active = false;
-	
-	if(cdm.active !== undefined) 
-	{
-		active = cdm.active;
-	}	
-	else
-	{
-		if(elemList.style.display == "none"){ active = true; }
-		else { active = false; }
-	}
-	
-	// очищаем список и убираем выделения с разъемов
-	//clearListWfPointUI();		
-	
-	if(active)	// вкл
-	{	
-		elemBlock.style.display = 'none';
-		elemList.style.display = 'block';
-	}		
-	else	// выкл
-	{		
-		elemList.style.display = 'none';
-		elemBlock.style.display = 'block';	 	
-	}	
-		
-}
 
 
 

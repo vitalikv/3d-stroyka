@@ -85,11 +85,12 @@ function clickWFPoint_3D(cdm)
 	// показываем точки у труб
 	showHideTubePoint({tube: obj.userData.wf_point.tube, visible: true});	
 	
-	showWF_point_UI( obj );
+	activeObjRightPanelUI_1({obj: obj});
+	showWF_point_UI({point: obj, butt: true});
 	
 	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
 	
-	activeObjRightPanelUI_1({obj: obj});
+	
 	
 	setClickLastObj({obj: obj});
 }
@@ -199,7 +200,8 @@ function crTubeWF(cdm)
 		for(var i = 0; i < point.length; i++)
 		{
 			point[i].userData.wf_point.line.o = line;
-		}		
+		}
+		//line.visible = false;
 	}	
 	
 	return tube;
@@ -455,7 +457,6 @@ function deClickTube(cdm)
 		
 		
 		switchAlignPoint_1({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
-		switchJoinWfPoint({active: false});
 		
 		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку		
 		
