@@ -125,6 +125,7 @@
 	<script src="<?=$path?>createObj/radiator/al_radiator.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/sgon.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/nippel.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>createObj/st/zaglushka.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/troinik.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/ugol.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/st/mufta.js?<?=$vrs?>"></script>

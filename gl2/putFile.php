@@ -48,6 +48,7 @@ createObj/radiator/st_radiator.js
 createObj/radiator/al_radiator.js
 createObj/st/sgon.js
 createObj/st/nippel.js
+createObj/st/zaglushka.js
 createObj/st/troinik.js
 createObj/st/ugol.js
 createObj/st/mufta.js
@@ -121,6 +122,7 @@ $nameStop[] = 'blockKeyCode';
 $nameStop[] = 'setImgCompSubstrate';
 $nameStop[] = 'createTubeWF_1';
 $nameStop[] = 'al_zagl_radiator_1';
+$nameStop[] = 'rad_vozduhotvod_1';
 $nameStop[] = 'al_radiator_1';
 $nameStop[] = 'st_radiator_1';
 $nameStop[] = 'reg_kran_primoy_1';
@@ -134,6 +136,7 @@ $nameStop[] = 'st_troinik_1';
 $nameStop[] = 'st_ugol_90_1';
 $nameStop[] = 'st_ugol_45_1';
 $nameStop[] = 'st_nippel_1';
+$nameStop[] = 'st_zagl_nr';
 $nameStop[] = 'st_mufta_1';
 $nameStop[] = 'pl_ugol_90_1';
 $nameStop[] = 'pl_ugol_45_1';

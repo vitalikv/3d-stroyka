@@ -15,7 +15,7 @@ $params = trim($_POST['params']);
 
 if($id == 0)
 {
-	$sql = "INSERT INTO list_obj_2 (name, type, params) VALUES (:name, :type, :params)";
+	$sql = "INSERT INTO list_obj_3 (name, type, params) VALUES (:name, :type, :params)";
 
 	$r = $db->prepare($sql);
 	$r->bindValue(':name', $name);

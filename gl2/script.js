@@ -298,7 +298,7 @@ infProject.settings.active.tube = null;
 infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры
 infProject.settings.BD = {};
 infProject.settings.BD.table = {};
-infProject.settings.BD.table.list_obj = 'list_obj_2';
+infProject.settings.BD.table.list_obj = 'list_obj_3';
 infProject.start = true; 
 
 infProject.ui = {}

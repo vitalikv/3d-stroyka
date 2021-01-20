@@ -26,7 +26,7 @@ async function addObjInCatalogUI_1(cdm)
 		var response = await fetch(url);
 		var json = await response.json();		
 	}
-	
+	console.log(json);
 
 	var container = document.body.querySelector('[list_ui="catalog"]');
 	

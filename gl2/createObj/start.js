@@ -61,7 +61,7 @@ async function saveObjSql_2(cdm)
 	var type = (type) ? JSON.stringify( type ) : null;	
 	var params = (params) ? JSON.stringify( params ) : null;	
 	
-	//list_obj_2
+	//list_obj_3
 	var url = infProject.path+'admin/obj/saveObjSql_2.php';	
 	
 	var response = await fetch(url, 
@@ -738,9 +738,38 @@ async function cr_obj_cat()
 		var n = await fc_cr_obj({funcName: 'shar_kran_sgon_1', arr: arr, startPos: startPos, n: n, cat: 'shar_kran_sgon_1'});		
 	}
 		
+	// стальная заглушка
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.022 };
+		arr[arr.length] = { r1: '3/4', m1: 0.022 };
+		arr[arr.length] = { r1: '1', m1: 0.034 };
+		arr[arr.length] = { r1: '1 1/4', m1: 0.035 };
+		arr[arr.length] = { r1: '1 1/2', m1: 0.038 };
+		arr[arr.length] = { r1: '2', m1: 0.039 };		
+		
+		await fc_cr_obj({funcName: 'st_zagl_nr', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 3+0.0), n: 0, cat: 'st_zagl_nr'});		
+	}
 	
+	// воздухоотводчик для радиатора 1/2
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', type: 'vsd' };
+		
+		await fc_cr_obj({funcName: 'rad_vozduhotvod_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 3+0.0), cat: 'rad_fiting_1'});		
+	}
 
-	
+	// заглушка для радиаторов
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '1/2', m1: 0.022 };
+		arr[arr.length] = { r1: '3/4', m1: 0.022 };	
+		
+		await fc_cr_obj({funcName: 'st_zagl_nr', arr: arr, startPos: new THREE.Vector3(-0.2, 1, 3+0.0), n: 0, cat: 'rad_fiting_1'});		
+	}	
 	
 	//createTestObj();	
 }

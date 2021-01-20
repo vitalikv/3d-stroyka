@@ -10,7 +10,7 @@ function st_radiator_1(cdm)
 
 	
 	// доп. расчеты 
-	var x_1 = 0.015;			// длина резьбы
+	var x_1 = 0.005;			// длина резьбы
 	var s1 = 0.02;				// толщина окантовки радиатора
 	var s2 = 0.02;				// толщина окантовки ребра (грани)
 	var s3 = 0.01;				// глубина ребра
@@ -278,9 +278,9 @@ function st_radiator_1(cdm)
 	
 	var arrP = [];
 	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
-	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
 	arrP[arrP.length] = { pos: poM3.pos, rot: new THREE.Vector3(0, 0, 0), name: name1 };
-	arrP[arrP.length] = { pos: poM4.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM4.pos, rot: new THREE.Vector3(0, 0, 0), name: name1 };
 	
 	
 	for ( var i = 0; i < arrP.length; i++ )

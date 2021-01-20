@@ -100,8 +100,8 @@ async function addItemAdminPanel_1(cdm)
 		admin_panel.bd_obj.arr[i] = { elem: elem, lotid: o.lotid, name: o.name, cat: o.cat };
 	}
 	
-	//addItemAdminPanel_2();			// выводим список в виде каталога 
-	addItemAdminPanel_3();
+	//addItemAdminPanel_2();		// выводим только группы и подгруппы (без объектов)
+	addItemAdminPanel_3();			// выводим группы/подгруппы/объекты
 }
 
 

@@ -248,8 +248,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	{
 		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});
 		
-		o.r_vozd = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'vsd' ,"name":"воздухоотв.радиаторный" });	
-		o.r_zagl = al_zagl_radiator_1({ "r1":"1","r2":0, type: 'zgl', "name":"заглушка радиаторная" });		
+		o.r_vozd = await loadObjServer({lotid: 451, notArray: true});	
+		o.r_zagl = await loadObjServer({lotid: 452, notArray: true});		
 	}
 	else
 	{

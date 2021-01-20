@@ -60,7 +60,7 @@ async function loadObjServer(cdm)
 	{ 
 		return addObjInScene(inf, cdm); 
 	}		
-	else if(inf.params)		// обращаемся к BD list_obj_2
+	else if(inf.params)		// обращаемся к BD list_obj_3
 	{ 
 		if(inf.params.fc)
 		{

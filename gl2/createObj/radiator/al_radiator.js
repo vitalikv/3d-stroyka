@@ -478,3 +478,110 @@ function al_zagl_radiator_1(cdm)
 
 
 
+// воздухоотводчик радиаторный
+function rad_vozduhotvod_1(cdm)   
+{	
+	var d1 = sizeRezba({size: cdm.r1, side: 'n'});
+	
+	if(cdm.r2)
+	{
+		var d2 = sizeRezba({size: cdm.r2, side: 'n'});
+	}
+	else
+	{
+		var d2 = {n: 0, v: 0};
+	}
+	
+	var m1 = cdm.m1;
+	
+	// доп. расчеты 
+	var x_1 = 0.008;	
+	var x_2 = 0.005;	
+	var x_3 = 0.003;
+	
+	var geom = new THREE.Geometry();	
+
+	// резьба (н)
+	{
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n, diameter_vn: d1.v, ind: [1, 0, 0, 0] };
+		inf.pos = { x: -x_1/2, y: 0, z: 0 };
+		var poM1 = crFormSleeve_1(inf);	
+	}	
+
+	// труба центральная часть
+	if(1==2)
+	{
+		var inf = { g: geom, dlina: x_3, diameter_nr: d1.n+0.003, diameter_vn: d2.v };
+		inf.pos = { x: 0, y: 0, z: 0 };
+		crFormSleeve_1(inf);		
+	}		
+
+	// гайка
+	{		
+		var inf = { g: geom, dlina: x_2, diameter_nr: d1.n*0.3+d1.n, diameter_vn: 0, edge_nr: 6, ind: [2, 0, 0, 0] };
+		inf.pos = { x: x_2/2, y: 0, z: 0 };
+		crFormSleeve_1(inf); 		
+	}	
+
+	
+	// воздухоотводчик
+	if(cdm.type == 'vsd')
+	{
+		var vsd = {};
+		vsd.w1 = 0.001;
+		vsd.d1 = 0.02;
+		vsd.y1 = 0.016;
+		vsd.x1 = 0.007;
+		vsd.t1 = 0.004;	// толщина бабочки
+		
+		var inf = { g: geom, dlina: vsd.w1, diameter_nr: vsd.d1, diameter_vn: 0, ind: [3, 3, 3, 3] };
+		inf.pos = { x: (x_2 + vsd.w1/2), y: 0, z: 0 };
+		crFormSleeve_1(inf); 
+		
+		var p = [];
+		p[0] = new THREE.Vector2 ( 0, -vsd.y1/2 );
+		p[1] = new THREE.Vector2 ( 0, vsd.y1/2 );
+		p[2] = new THREE.Vector2 ( vsd.x1, vsd.y1/2 );
+		p[3] = new THREE.Vector2 ( vsd.x1/2, 0 );
+		p[4] = new THREE.Vector2 ( vsd.x1, -vsd.y1/2 );
+		
+		var inf = {p: p, w1: vsd.t1};
+		inf.pos = { x: x_2 + vsd.w1, y: 0, z: -vsd.t1/2 };	
+	
+		var gShape = arr_form_1(inf);
+		geom.merge(gShape, gShape.matrix, 0);		
+	}
+	
+
+
+	var mat = [];
+	mat[0] = infProject.material.white_1;
+	mat[1] = infProject.material.rezba_1;
+	mat[2] = infProject.material.white_1_edge;
+	mat[3] = infProject.material.metal_1;
+	
+	
+	var group = new THREE.Mesh(geom, mat);		
+	var obj = getBoundObject_1({obj: group});
+	
+	var name1 = cdm.r1+'(н)';
+	
+	var arrP = [];
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+
+	
+	for ( var i = 0; i < arrP.length; i++ )
+	{
+		arrP[i].obj = obj;
+		arrP[i].id = i;
+		cr_CenterPoint(arrP[i]);
+	}	
+
+	cdm.name = 'воздухоотв.радиаторный 1/2';	
+	
+	assignObjParams(obj, cdm);
+
+	return obj;
+}
+
+
