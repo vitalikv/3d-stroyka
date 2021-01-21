@@ -265,14 +265,7 @@ function moveGizmo( event )
 		}
 		
 		
-		for(var i = 0; i < arr.length; i++)
-		{
-			arr[i].position.sub(gizmo.userData.gizmo.active.startPos);
-			arr[i].position.applyAxisAngle(dir, rotY - gizmo.userData.gizmo.active.rotY); // rotate the POSITION
-			arr[i].position.add(gizmo.userData.gizmo.active.startPos);				
-			
-			arr[i].rotateOnWorldAxis(dir, rotY - gizmo.userData.gizmo.active.rotY);								
-		}		
+		rotateOffsetArrObj_1({arr: arr, pos: gizmo.userData.gizmo.active.startPos, dir: dir, rotRad: rotY - gizmo.userData.gizmo.active.rotY});
 	}
 	
 			
@@ -301,20 +294,7 @@ function clickGizmoUp()
 	
 	var obj = infProject.tools.gizmo.userData.gizmo.obj;
 	
-	if(!obj) return;
-	
-	var arrO = infProject.tools.gizmo.userData.gizmo.arrO;
-	if(arrO)
-	{
-		for(var i = 0; i < arrO.length; i++)
-		{
-			if(!arrO[i].userData.wf_tube) continue;
-
-			arrO[i].position.set( 0,0,0 );
-			arrO[i].rotation.set( 0,0,0 );
-			updateTubeWF({tube: arrO[i]});			
-		}		
-	}		
+	if(!obj) return;		
 	
 	setClickLastObj({obj: infProject.tools.gizmo.userData.gizmo.obj});
 }
@@ -368,7 +348,7 @@ function setRotationGizmo(cdm)
 	}		
 	
 
-	var arr = arrObjFromGroup({obj: obj, wf_point: true});
+	var arr = arrObjFromGroup({obj: obj});
 
 	
 	
@@ -403,27 +383,8 @@ function setRotationGizmo(cdm)
 			var dir = new THREE.Vector3( 0, 1, 0 );
 		}
 		
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			arr[i].position.sub(startPos);
-			arr[i].position.applyAxisAngle(dir, rotY); // rotate the POSITION
-			arr[i].position.add(startPos);				
-			
-			arr[i].rotateOnWorldAxis(dir, rotY);								
-		}		
-	}
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].updateMatrixWorld();
-		
-		if(!arr[i].userData.wf_tube) continue;
-
-		arr[i].position.set( 0,0,0 );
-		arr[i].rotation.set( 0,0,0 );
-		updateTubeWF({tube: arr[i]});		
-	}	
+		rotateOffsetArrObj_1({arr: arr, pos: startPos, dir: dir, rotRad: rotY});
+	}		
 	
 	
 	if(camera == camera3D)
@@ -475,41 +436,12 @@ function resetRotateObj(cdm)
 		var diff_2 = obj.quaternion.clone().inverse();
 	}	
 	
-	var arr_2 = arrObjFromGroup({obj: obj, wf_point: true});
-	
-	// поворачиваем объекты в нужном направлении 
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
-		arr_2[i].updateMatrixWorld();		
-	}			
-	
-
-	// вращаем position объектов, относительно точки-соединителя
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].position.sub(pos);
-		arr_2[i].position.applyQuaternion(diff_2); 	
-		arr_2[i].position.add(pos);
-	}
-	
+	rotateOffsetArrObj_2({obj: obj, pos: pos, diff_2: diff_2});
 
 	
 	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
 	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
-	
-	
-	
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].updateMatrixWorld();
 		
-		if(!arr_2[i].userData.wf_tube) continue;
-
-		arr_2[i].position.set( 0,0,0 );
-		arr_2[i].rotation.set( 0,0,0 );
-		updateTubeWF({tube: arr_2[i]});		
-	}	
 	
 	if(obj.userData.tag == 'joinPoint')		// разъем
 	{		
@@ -589,35 +521,8 @@ function inputChangeRot()
 	}	
 
 	
-	var arr_2 = arrObjFromGroup({obj: obj, wf_point: true});
-	
-	// поворачиваем объекты в нужном направлении 
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
-		arr_2[i].updateMatrixWorld();		
-	}			
-	
-
-	// вращаем position объектов, относительно точки-соединителя
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].position.sub(pos);
-		arr_2[i].position.applyQuaternion(diff_2); 	
-		arr_2[i].position.add(pos);
-	}	
-	
-	
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].updateMatrixWorld();
-		
-		if(!arr_2[i].userData.wf_tube) continue;
-
-		arr_2[i].position.set( 0,0,0 );
-		arr_2[i].rotation.set( 0,0,0 );
-		updateTubeWF({tube: arr_2[i]});			
-	}
+	rotateOffsetArrObj_2({obj: obj, pos: pos, diff_2: diff_2});
+			
 
 
 	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
@@ -645,6 +550,95 @@ function inputChangeRot()
 	renderCamera();
 }
 
+
+// вращаем массив объектов на заданное значение (способ №1)
+function rotateOffsetArrObj_1(cdm)
+{
+	let arr = cdm.arr;
+	let pos = cdm.pos;
+	let dir = cdm.dir;
+	let rotRad = cdm.rotRad;
+	
+	
+	for(let i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.wf_tube)
+		{
+			let point = arr[i].userData.wf_tube.point;
+			
+			for(let i2 = 0; i2 < point.length; i2++)
+			{
+				point[i2].position.sub(pos);
+				point[i2].position.applyAxisAngle(dir, rotRad); // rotate the POSITION
+				point[i2].position.add(pos);								
+			}
+			
+			updateTubeWF({tube: arr[i]});								
+		}
+		else
+		{
+			arr[i].position.sub(pos);
+			arr[i].position.applyAxisAngle(dir, rotRad); // rotate the POSITION
+			arr[i].position.add(pos);				
+			
+			arr[i].rotateOnWorldAxis(dir, rotRad);				
+		}
+		
+		arr[i].updateMatrixWorld();
+	}	
+	
+}
+
+// вращаем массив объектов на заданное значение (способ №2)
+function rotateOffsetArrObj_2(cdm)
+{
+	let obj = cdm.obj;
+	let pos = cdm.pos;
+	let diff_2 = cdm.diff_2;
+	
+	let arr_2 = arrObjFromGroup({obj: obj});
+	
+	for(let i = 0; i < arr_2.length; i++)
+	{
+		if(arr_2[i].userData.wf_tube) 
+		{
+			let point = arr_2[i].userData.wf_tube.point;
+			
+			for(let i2 = 0; i2 < point.length; i2++)
+			{
+				// поворачиваем объекты в нужном направлении
+				//point[i2].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+				//point[i2].updateMatrixWorld();
+
+				// вращаем position объектов, относительно точки-соединителя
+				point[i2].position.sub(pos);
+				point[i2].position.applyQuaternion(diff_2); 	
+				point[i2].position.add(pos);
+
+				// обновляем MatrixWorld
+				//point[i2].updateMatrixWorld();							
+			}
+			
+			updateTubeWF({tube: arr_2[i]});			
+		}
+		else
+		{
+			// поворачиваем объекты в нужном направлении
+			arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
+			arr_2[i].updateMatrixWorld();
+
+			// вращаем position объектов, относительно точки-соединителя
+			arr_2[i].position.sub(pos);
+			arr_2[i].position.applyQuaternion(diff_2); 	
+			arr_2[i].position.add(pos);
+
+			// обновляем MatrixWorld
+			arr_2[i].updateMatrixWorld();			
+		}
+	}
+			
+		
+}
 
 
 

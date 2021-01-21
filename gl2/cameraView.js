@@ -29,7 +29,7 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 		var inf = await actionFnSborkaRad_1(cdm);	
 		if(!inf) return;
 		
-		for(var i = 0; i < inf.arr2.length; i++) { inf.arr2[i].position.y += 2000; }			
+		moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, 2000, 0)});			
 
 		var obj = inf.arr1[0];
 		

@@ -273,20 +273,34 @@ function movePivot_2(cdm)
 	}
 	else 
 	{
-		for(let i = 0; i < arrO.length; i++)
-		{
-			if(arrO[i].userData.wf_tube) continue;
-			
-			arrO[i].position.add( pos2 );
-		}
-		
-		for(let i = 0; i < arrO.length; i++)
-		{
-			if(arrO[i].userData.wf_tube) updateTubeWF({tube: arrO[i]});
-		}			
+		moveOffsetArrObj({arrO: arrO, offset: pos2});			
 	}	
 
 	upMenuPosObjPop(obj);
+}
+
+
+// перемещаем массив объектов на заданное расстояние
+function moveOffsetArrObj(cdm)
+{
+	let arrO = cdm.arrO;
+	let offset = cdm.offset;
+	
+	for(let i = 0; i < arrO.length; i++)
+	{
+		if(arrO[i].userData.wf_tube)
+		{
+			let point = arrO[i].userData.wf_tube.point;
+			
+			for(let i2 = 0; i2 < point.length; i2++){ point[i2].position.add(offset); }
+			
+			updateTubeWF({tube: arrO[i]});
+		}
+		else
+		{
+			arrO[i].position.add(offset);
+		}		
+	}	
 }
 
 
@@ -391,17 +405,9 @@ function inputChangePos()
 	gizmo.position.add(pos2);
 	clippingGizmo360( obj );
 	
-	let arrO = arrObjFromGroup({obj: obj, wf_point: true});
+	let arrO = arrObjFromGroup({obj: obj});
 	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});
-	
-	
-	for(let i = 0; i < arrO.length; i++)
-	{
-		if(!arrO[i].userData.wf_tube) continue;
-
-		arrO[i].position.set( 0,0,0 );
-		updateTubeWF({tube: arrO[i]});			
-	}	
+		
 
 	renderCamera();
 }

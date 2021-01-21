@@ -213,7 +213,7 @@ async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	
 	setPathRad_1({delete: true, result: o});
 	
-	return { arr1: arrO, arr2: getArrWithPointTube({arr: arrO}) };
+	return { arr1: arrO };
 }
 
 

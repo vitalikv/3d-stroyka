@@ -37,29 +37,6 @@ function joinSborkaToGroup(cdm)
 }
 
 
-// создаем массив в которм помимо объектов и труб, есть точки труб
-function getArrWithPointTube(cdm)
-{
-	var arr = cdm.arr;
-	var arr2 = [];
-	
-	for(var i = 0; i < arr.length; i++)
-	{	
-		arr2[arr2.length] = arr[i];
-		
-		if(!arr[i].userData.wf_tube) continue;
-
-		var point = arr[i].userData.wf_tube.point;	
-		
-		for(var i2 = 0; i2 < point.length; i2++)
-		{
-			arr2[arr2.length] = point[i2];
-		}			
-	}
-
-	return arr2;
-}
-
 
 
 // получаем трубу по заданным параметрам

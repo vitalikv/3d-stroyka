@@ -98,26 +98,6 @@ function arrObjFromGroup(cdm)
 	var arr = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект		
 	
 	
-	// получаем точки у труб, если есть трубы
-	if(cdm.wf_point)
-	{
-		var arr2 = [];
-		
-		for(var i = 0; i < arr.length; i++)
-		{		
-			if(!arr[i].userData.wf_tube) continue;
-
-			var point = arr[i].userData.wf_tube.point;	
-			
-			for(let i2 = 0; i2 < point.length; i2++)
-			{
-				arr2[arr2.length] = point[i2];
-			}			
-		}
-
-		var arr = [...new Set([...arr ,...arr2])];		
-	}
-	
 	return arr;
 }
 

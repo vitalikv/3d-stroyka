@@ -68,7 +68,7 @@ function setPivotGizmo(cdm)
 		var pivot = infProject.tools.pivot;	
 		pivot.visible = true;	
 		pivot.userData.pivot.obj = obj;
-		pivot.userData.pivot.arrO = arrObjFromGroup({obj: obj, wf_point: true});
+		pivot.userData.pivot.arrO = arrObjFromGroup({obj: obj});
 		pivot.position.copy(pos);
 		pivot.quaternion.copy(qt);
 		
@@ -93,7 +93,7 @@ function setPivotGizmo(cdm)
 		
 		gizmo.visible = true;
 		gizmo.userData.gizmo.obj = obj;
-		gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj, wf_point: true});
+		gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj});
 		
 		if(camera == cameraTop)
 		{
