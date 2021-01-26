@@ -168,7 +168,7 @@ function crTubeWF(cdm)
 	
 	var inf = tubeGeometry({point: point, diameter: diameter});
 	
-	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: true, side: THREE.DoubleSide, lightMap: lightMap_1, depthTest: true, transparent: true }));	
+	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: false, side: THREE.DoubleSide, lightMap: lightMap_1, depthTest: true, transparent: true }));	
 	tube.userData.tag = 'wf_tube';		
 	tube.userData.wf_tube = {};
 	tube.userData.wf_tube.line = null;
@@ -201,7 +201,7 @@ function crTubeWF(cdm)
 		{
 			point[i].userData.wf_point.line.o = line;
 		}
-		//line.visible = false;
+		line.visible = false;
 	}	
 	
 	return tube;

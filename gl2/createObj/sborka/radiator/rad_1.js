@@ -196,7 +196,7 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	// при клике добавляем объект в сцену	
 	(function() 
 	{
-		elem.onmousedown = function(e){ addSborkaRadiatorToScene_1({addScene: true, inf: cdm}); e.stopPropagation(); };	
+		elem.onmousedown = function(e){ clickInterface({button: 'add_group_obj', value: cdm}); e.stopPropagation(); }	  
 	}());
 
 	// назначаем событие при клике на лупу UI
@@ -398,33 +398,7 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	var mirror_2 = {x: (inf.side == 'right') ? false : true};
 
 	
-	// создаем трубы
-	if(inf.typePipe == 'mp')
-	{
-		if(inf.typePt2 == 'verh')
-		{
-			var y1 = o.rad.userData.jp[1].y - o.rad.userData.jp[0].y;
-			
-			if(inf.typePt == 'od')
-			{ 
-				var ti1 = {type: 3, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
-				var ti2 = {type: 1, lengthX: 0.2, color: 505069, diameter: m1, mirror: mirror_2};
-			}
-			
-			if(inf.typePt == 'od_bay')
-			{ 
-				var ti1 = {type: 2, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
-				var ti2 = {type: 2, color: 505069, diameter: m1, startY: inf.pipe_level, endY: 0.00, mirror: mirror_2};
-			}
-			
-			if(inf.typePt == 'dv')
-			{ 
-				var ti1 = {type: 2, color: 15688453, diameter: m1, startY: inf.pipe_level, endY: y1, mirror: mirror_1};
-				var ti2 = {type: 2, color: 505069, diameter: m1, startY: inf.pipe_level - 0.05, endY: 0.00, mirror: mirror_2};
-			}			
-		}
-	}
-	
+	// создаем трубы	
 	if(inf.typePipe == 'pp' || inf.typePipe == 'mp')
 	{
 		if(inf.typePt2 == 'niz')

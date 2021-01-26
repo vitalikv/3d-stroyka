@@ -270,28 +270,16 @@ infProject.list.obj_scene_ui = [];
 infProject.list.alignP =  { active: false, type: '', p1: null, p2: null, arr2: [] };	// режим соединения деталей/труб
 infProject.list.mergeO = {active: false, o1: [], o2: [], el: []};	// режим группировки объектов
 infProject.list.sborka = {};
-infProject.list.sborka.radiator = {};
-infProject.list.sborka.radiator.odnotrub = {};
-infProject.list.sborka.radiator.odnotrub.niz = {};
-infProject.list.sborka.radiator.odnotrub.verh = {};
-infProject.list.sborka.radiator.odnotrub.bok = {};
-infProject.list.sborka.radiator.odnotrub.verh_bay = {};
-infProject.list.sborka.radiator.odnotrub.niz_bay = {};
-infProject.list.sborka.radiator.odnotrub.bok_bay = {};
-infProject.list.sborka.radiator.odnotrub.niz.mp = paramSborkaRad_Odnotrub_Niz_Mp();
-infProject.list.sborka.radiator.odnotrub.verh.mp = paramSborkaRad_Odnotrub_Verh_Mp();
-infProject.list.sborka.radiator.odnotrub.bok.mp = paramSborkaRad_Odnotrub_Bok_Mp();
-infProject.list.sborka.radiator.odnotrub.verh_bay.mp = paramSborkaRad_Odnotrub_Verh_Bay_Mp();
-infProject.list.sborka.radiator.odnotrub.niz_bay.mp = paramSborkaRad_Odnotrub_Niz_Bay_Mp();
-infProject.list.sborka.radiator.odnotrub.bok_bay.mp = paramSborkaRad_Odnotrub_Bok_Bay_Mp();
-
-infProject.list.sborka.radiator.dvuhtrub = {};
-infProject.list.sborka.radiator.dvuhtrub.verh = {};
-infProject.list.sborka.radiator.dvuhtrub.niz = {};
-infProject.list.sborka.radiator.dvuhtrub.bok = {};
-infProject.list.sborka.radiator.dvuhtrub.verh.mp = paramSborkaRad_Dvuhtrub_Verh_Mp(); 
-infProject.list.sborka.radiator.dvuhtrub.niz.mp = paramSborkaRad_Dvuhtrub_Niz_Mp();
-infProject.list.sborka.radiator.dvuhtrub.bok.mp = paramSborkaRad_Dvuhtrub_Bok_Mp();
+infProject.list.sborka.radiator = [{}, {}, {}];
+infProject.list.sborka.radiator[0].niz = paramSborkaRad_Odnotrub_Niz_Mp();
+infProject.list.sborka.radiator[0].verh = paramSborkaRad_Odnotrub_Verh_Mp();
+infProject.list.sborka.radiator[0].bok = paramSborkaRad_Odnotrub_Bok_Mp();
+infProject.list.sborka.radiator[1].niz = paramSborkaRad_Odnotrub_Niz_Bay_Mp();
+infProject.list.sborka.radiator[1].verh = paramSborkaRad_Odnotrub_Verh_Bay_Mp();
+infProject.list.sborka.radiator[1].bok = paramSborkaRad_Odnotrub_Bok_Bay_Mp();
+infProject.list.sborka.radiator[2].niz = paramSborkaRad_Dvuhtrub_Niz_Mp();
+infProject.list.sborka.radiator[2].verh = paramSborkaRad_Dvuhtrub_Verh_Mp();
+infProject.list.sborka.radiator[2].bok = paramSborkaRad_Dvuhtrub_Bok_Mp();
 
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.settings.active.tube = null;
@@ -1223,6 +1211,10 @@ function clickButton( event )
 		else if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
+		}
+		else if(clickO.button == 'add_group_obj')
+		{
+			addSborkaRadiatorToScene_1({addScene: true, inf: clickO.options});
 		}		
 	}
 	else if(camera == camera3D)
@@ -1230,7 +1222,11 @@ function clickButton( event )
 		if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
-		}		
+		}
+		else if(clickO.button == 'add_group_obj')
+		{
+			addSborkaRadiatorToScene_1({addScene: true, inf: clickO.options});
+		}			
 	}
 	
 	clickO.buttonAct = clickO.button;
@@ -1266,9 +1262,14 @@ function clickInterface(cdm)
 		}		
 		else if(cdm.button == 'add_lotid')
 		{
-			clickO.button = 'add_lotid'; 
+			clickO.button = cdm.button; 
 			clickO.options = cdm.value;					
-		}					
+		}
+		else if(cdm.button == 'add_group_obj')
+		{
+			clickO.button = cdm.button; 
+			clickO.options = cdm.value;					
+		}		
 	}
 
 }	

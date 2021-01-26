@@ -26,7 +26,7 @@ async function addObjInCatalogUI_1(cdm)
 		var response = await fetch(url);
 		var json = await response.json();		
 	}
-	console.log(json);
+	
 
 	var container = document.body.querySelector('[list_ui="catalog"]');
 	
@@ -49,17 +49,17 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.niz_bay.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.niz.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].niz);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].niz);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].niz);
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh.mp);	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.verh_bay.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.verh.mp);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].verh);	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].verh);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].verh);
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.odnotrub.bok_bay.mp);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator.dvuhtrub.bok.mp);	
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].bok);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].bok);
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].bok);	
 	
 	
 	// находим дочерние объекты 

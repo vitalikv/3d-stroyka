@@ -47,6 +47,7 @@ function onDocumentMouseDown( event )
 	if (window.location.hostname == '3d-stroyka'){}
 	else if (window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai'){}
 	else if (window.location.hostname == 'test'){}
+	else if (window.location.hostname == 'hh'){}
 	else if (window.location.hostname == '3d-rooms.ru'){}
 	else { return; }
  
