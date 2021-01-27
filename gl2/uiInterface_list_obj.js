@@ -129,8 +129,15 @@ function crtGroupItemListObjUI_1(cdm)
 		{
 			if(o2.userData.tag == 'obj')
 			{
-				if(o2.userData.obj3D.lotid == obj.userData.obj3D.lotid){ equally = true; }
-			}				
+				if(obj.userData.obj3D.lotid)	// у добавляемого объекта есть lotid
+				{
+					if(o2.userData.obj3D.lotid == obj.userData.obj3D.lotid){ equally = true; }
+				}
+				else	// у добавляемого объекта нет lotid (радиаторы из сборки)(временное решение, потом удалить)
+				{
+					if(o2.userData.obj3D.nameRus == obj.userData.obj3D.nameRus){ equally = true; } 
+				}				
+			}
 		}
 		else if(obj.userData.tag == 'wf_tube')
 		{

@@ -248,14 +248,18 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	var vt1 = [];
 	if(inf.typeRad == 'st')
 	{
-		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});
+		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});		
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
+		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
 		
 		o.r_vozd = await loadObjServer({lotid: 451, notArray: notArray});	
 		o.r_zagl = await loadObjServer({lotid: 452, notArray: notArray});		
 	}
 	else
 	{
-		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });	
+		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
+		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
 
 		o.r_per1 = await loadObjServer({lotid: 18, notArray: notArray});
 		o.r_vozd = await loadObjServer({lotid: 21, notArray: notArray});	
@@ -467,7 +471,9 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	ti1.startPos = vt2;
 	ti2.startPos = vt1;
 	ti1.lastP = true;
-	ti2.lastP = true;	
+	ti2.lastP = true;
+	ti1.notArray = notArray;
+	ti2.notArray = notArray;
 	
 	o.tube1 = getTubeToSborka_1(ti1);
 	o.tube2 = getTubeToSborka_1(ti2);	
@@ -479,8 +485,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		if(o.ugol_2) { posSubAdd_1({o: o.ugol_2, jp: 0, pos: o.tube2.userData.wf_tube.point[0].position}); }
 		
 		// трубы магистральные
-		o.tube3 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m1, mirror: mirror_2, startPos: o.ugol_1.userData.jp[1]});
-		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m1, mirror: mirror_1, startPos: o.ugol_2.userData.jp[1]});		
+		o.tube3 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m1, mirror: mirror_2, startPos: o.ugol_1.userData.jp[1], notArray: notArray});
+		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m1, mirror: mirror_1, startPos: o.ugol_2.userData.jp[1], notArray: notArray});		
 	}
 
 	// подключаем тройники к трубе
@@ -496,12 +502,12 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		var nJp = 2;
 		if(inf.typePt2 == 'bok') { nJp = 1; }		
 		var p1 = [o.troin_1.userData.jp[nJp].clone(), o.troin_2.userData.jp[nJp].clone()];		
-		o.tube3 = getTubeToSborka_1({type: 'point', point: p1, color: 15688453, diameter: b1, startPos: o.troin_1.userData.jp[nJp]});
+		o.tube3 = getTubeToSborka_1({type: 'point', point: p1, color: 15688453, diameter: b1, startPos: o.troin_1.userData.jp[nJp], notArray: notArray});
 		
 		// трубы магистральные
 		var mirror_3 = (inf.typePt2 == 'bok') ? mirror_2 : mirror_1;
-		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0]});
-		o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_3, startPos: o.troin_2.userData.jp[0]});	
+		o.tube4 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0], notArray: notArray});
+		o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_3, startPos: o.troin_2.userData.jp[0], notArray: notArray});	
 	}
 	
 	
@@ -512,30 +518,30 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		{	
 			var lengthX = Math.abs(o.troin_1.userData.jp[0].x - o.troin_2.userData.jp[2].x) + 0.1;
 			
-			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2] });
-			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2] });	
-			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0] });
-			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0] });			
+			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2], notArray: notArray });
+			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2], notArray: notArray });	
+			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0], notArray: notArray });
+			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0], notArray: notArray });			
 		}
 
 		if(inf.typePt2 == 'verh')
 		{	
 			var lengthX = Math.abs(o.troin_1.userData.jp[0].x - o.troin_2.userData.jp[2].x) + 0.1; 
 			
-			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2]});	
-			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2]});
-			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0]});
-			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0]});	
+			o.tube3 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 15688453, diameter: m2, mirror: mirror_1, startPos: o.troin_1.userData.jp[2], notArray: notArray});	
+			o.tube4 = getTubeToSborka_1({type: 1, lengthX: lengthX, color: 505069, diameter: m2, mirror: mirror_2, startPos: o.troin_2.userData.jp[2], notArray: notArray});
+			o.tube5 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m2, mirror: mirror_2, startPos: o.troin_1.userData.jp[0], notArray: notArray});
+			o.tube6 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 505069, diameter: m2, mirror: mirror_1, startPos: o.troin_2.userData.jp[0], notArray: notArray});	
 		}
 
 		if(inf.typePt2 == 'bok')
 		{	
 			var lengthY = Math.abs(o.troin_1.userData.jp[0].y - o.troin_2.userData.jp[2].y) + 0.1; 
 			
-			o.tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: m2, mirror: {y: true}, startPos: o.troin_1.userData.jp[2] });
-			o.tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: m2, mirror: {y: false}, startPos: o.troin_2.userData.jp[2] });	
-			o.tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: m2, mirror: {y: false}, startPos: o.troin_1.userData.jp[0] });
-			o.tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: m2, mirror: {y: true}, startPos: o.troin_2.userData.jp[0] });	
+			o.tube3 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 15688453, diameter: m2, mirror: {y: true}, startPos: o.troin_1.userData.jp[2], notArray: notArray });
+			o.tube4 = getTubeToSborka_1({type: 1, lengthY: lengthY, color: 505069, diameter: m2, mirror: {y: false}, startPos: o.troin_2.userData.jp[2], notArray: notArray });	
+			o.tube5 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 15688453, diameter: m2, mirror: {y: false}, startPos: o.troin_1.userData.jp[0], notArray: notArray });
+			o.tube6 = getTubeToSborka_1({type: 1, lengthY: 0.1, color: 505069, diameter: m2, mirror: {y: true}, startPos: o.troin_2.userData.jp[0], notArray: notArray });	
 		}			
 	}
 		

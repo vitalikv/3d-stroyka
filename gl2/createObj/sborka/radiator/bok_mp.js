@@ -208,7 +208,6 @@ async function crSborkaRad_Odnotrub_Bok_Mp(cdm)
 	
 	var arrO = setPathRad_1({arrO1: true, result: o});
 
-	addArrObjToArray({arr: arrO});	// добавляем объекты и трубы в массив
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
 	
 	setPathRad_1({delete: true, result: o});

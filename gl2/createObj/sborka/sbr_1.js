@@ -1,28 +1,5 @@
 
 
-// добавляем объекты и трубы в массив
-function addArrObjToArray(cdm)
-{
-	var arr = cdm.arr;	
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		var exist = false;
-		if(arr[i].userData.tag == 'obj')
-		{
-			for(var i2 = 0; i2 < infProject.scene.array.obj.length; i2++)
-			{
-				if(infProject.scene.array.obj[i2] == arr[i]) { exist = true; break; }
-			}
-			if(!exist) { infProject.scene.array.obj[infProject.scene.array.obj.length] = arr[i]; }
-		}
-		if(arr[i].userData.tag == 'wf_tube')
-		{
-			infProject.scene.array.tube[infProject.scene.array.tube.length] = arr[i];
-		}				
-	}	
-}
-
 
 
 
@@ -102,6 +79,14 @@ function getTubeToSborka_1(cdm)
 	if(cdm.startPos)
 	{
 		setPosTube({tube: tube, startPos: cdm.startPos, lastP: cdm.lastP });
+	}
+
+
+	infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;
+	
+	if(!cdm.notArray)
+	{		
+		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
 	}	
 	
 	return tube;
