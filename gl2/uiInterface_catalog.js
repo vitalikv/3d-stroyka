@@ -120,14 +120,18 @@ async function addObjInCatalogUI_1(cdm)
 					</svg>\
 				</div>\
 			</div>';				
-				
+			
+			var valueId = '';
+			
+			if(json.valueId == 'sborka_rad_1') { valueId = 'valueId="sborka_rad_1"'; }
+			
 			var html = 
 			'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
 				<div class="flex_1 relative_1" style="margin: auto;">\
 					'+str_button+'\
 					<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+json.name+'</div>\
 				</div>\
-				<div nameId="groupItem" style="display: none;">\
+				<div nameId="groupItem" '+valueId+' style="display: none;">\
 					'+groupItem+'\
 				</div>\
 			</div>';
