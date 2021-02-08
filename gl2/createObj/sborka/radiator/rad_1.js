@@ -251,8 +251,9 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	{
 		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});		
 		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
+		scene.add( o.rad );
 		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
-		
+//return o;		
 		o.r_vozd = await loadObjServer({lotid: 451, notArray: notArray});	
 		o.r_zagl = await loadObjServer({lotid: 452, notArray: notArray});		
 	}
@@ -260,8 +261,9 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	{
 		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });
 		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
+		scene.add( o.rad );
 		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
-
+//return o;
 		o.r_per1 = await loadObjServer({lotid: 18, notArray: notArray});
 		o.r_vozd = await loadObjServer({lotid: 21, notArray: notArray});	
 		o.r_per2 = await loadObjServer({lotid: 18, notArray: notArray});

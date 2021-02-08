@@ -90,95 +90,7 @@ function st_radiator_1(cdm)
 		var g12 = new THREE.PlaneGeometry( sizeY, s1 );
 		g12.rotateZ(Math.PI/2);
 		g12.translate(size.x/2 - s1/2, 0, -size.z/2);		
-	}
-	
-	
-	// грань фронтальной стороны
-	{
-		var edge1 = [];
-		
-		// оконтовка
-		edge1[0] = new THREE.PlaneGeometry( w1, s2 );
-		edge1[0].translate(0, -h1/2+s2/2, size.z/2);
-		
-		edge1[1] = new THREE.PlaneGeometry( w1, s2 );
-		edge1[1].translate(0, h1/2-s2/2, size.z/2);		
-
-		edge1[2] = new THREE.PlaneGeometry( h1, s2 );
-		edge1[2].rotateZ(Math.PI/2);
-		edge1[2].translate(-w1/2+s2/2, 0, size.z/2);
-
-		edge1[3] = new THREE.PlaneGeometry( h1, s2 );
-		edge1[3].rotateZ(Math.PI/2);
-		edge1[3].translate(w1/2-s2/2, 0, size.z/2);
-
-		// внутренние стенки
-		edge1[4] = new THREE.PlaneGeometry( w2, s3 );
-		edge1[4].rotateX(Math.PI/2);
-		edge1[4].translate(0, -h1/2+s2, size.z/2 - s3/2);
-		
-		edge1[5] = new THREE.PlaneGeometry( w2, s3 );
-		edge1[5].rotateX(Math.PI/2);
-		edge1[5].translate(0, h1/2-s2, size.z/2 - s3/2);		
-
-		edge1[6] = new THREE.PlaneGeometry( h2, s3 );
-		edge1[6].rotateZ(Math.PI/2);
-		edge1[6].rotateY(Math.PI/2);
-		edge1[6].translate(-w1/2+s2, 0, size.z/2 - s3/2);
-
-		edge1[7] = new THREE.PlaneGeometry( h2, s3 );
-		edge1[7].rotateZ(Math.PI/2);
-		edge1[7].rotateY(Math.PI/2);
-		edge1[7].translate(w1/2-s2, 0, size.z/2 - s3/2);
-
-		// внутренние ребро
-		edge1[8] = new THREE.PlaneGeometry( w2, h2 );
-		edge1[8].translate(0, 0, size.z/2 - s3);		
-	}
-	
-	// грань задней стороны
-	{
-		var edge2 = [];
-		
-		// оконтовка
-		edge2[0] = new THREE.PlaneGeometry( w1, s2 );
-		edge2[0].translate(0, -h1/2+s2/2, -size.z/2);
-		
-		edge2[1] = new THREE.PlaneGeometry( w1, s2 );
-		edge2[1].translate(0, h1/2-s2/2, -size.z/2);		
-
-		edge2[2] = new THREE.PlaneGeometry( h1, s2 );
-		edge2[2].rotateZ(Math.PI/2);
-		edge2[2].translate(-w1/2+s2/2, 0, -size.z/2);
-
-		edge2[3] = new THREE.PlaneGeometry( h1, s2 );
-		edge2[3].rotateZ(Math.PI/2);
-		edge2[3].translate(w1/2-s2/2, 0, -size.z/2);
-
-		// внутренние стенки
-		edge2[4] = new THREE.PlaneGeometry( w2, s3 );
-		edge2[4].rotateX(Math.PI/2);
-		edge2[4].translate(0, -h1/2+s2, -size.z/2 + s3/2);
-		
-		edge2[5] = new THREE.PlaneGeometry( w2, s3 );
-		edge2[5].rotateX(Math.PI/2);
-		edge2[5].translate(0, h1/2-s2, -size.z/2 + s3/2);		
-
-		edge2[6] = new THREE.PlaneGeometry( h2, s3 );
-		edge2[6].rotateZ(Math.PI/2);
-		edge2[6].rotateY(Math.PI/2);
-		edge2[6].translate(-w1/2+s2, 0, -size.z/2 + s3/2);
-
-		edge2[7] = new THREE.PlaneGeometry( h2, s3 );
-		edge2[7].rotateZ(Math.PI/2);
-		edge2[7].rotateY(Math.PI/2);
-		edge2[7].translate(w1/2-s2, 0, -size.z/2 + s3/2);
-
-		// внутренние ребро
-		edge2[8] = new THREE.PlaneGeometry( w2, h2 );
-		edge2[8].translate(0, 0, -size.z/2 + s3);		
 	}	
-	
 
 	
 	geom.merge(g1, g1.matrix, 1);
@@ -196,49 +108,81 @@ function st_radiator_1(cdm)
 	geom.merge(g12, g12.matrix, 1);
 
 
-	// устанавливаем 1 ребро с фронтальной стороны в начало 
-	for ( var i = 0; i < edge1.length; i++ )
+	function crRebro(cdm)
 	{
-		edge1[i].translate(-size.x/2 + s1 + w1/2, 0, 0);
+		var group = cdm.group;
+		var mat = cdm.mat;
 		
-		if(i > 3 && 8 > i) geom.merge(edge1[i], edge1[i].matrix, 2);
-		else geom.merge(edge1[i], edge1[i].matrix, 1);	
-	}
-	
-	// копируем и заполняем ребрами фронтальную часть
-	for ( var i = 0; i < count - 1; i++ )
-	{
-		for ( var i2 = 0; i2 < edge1.length; i2++ )
+		// создаем кусочки геометрий для одной грани радиатора, которые потом объединим в одну геометрию
 		{
-			var gClone = edge1[i2].clone();
-			gClone.translate(w1 * (i+1), 0, 0);
+			var edge1 = [];
 			
-			if(i2 > 3 && 8 > i2) geom.merge(gClone, gClone.matrix, 2);
-			else geom.merge(gClone, gClone.matrix, 1);	
-		}		
-	}
-	
+			// оконтовка
+			edge1[0] = new THREE.PlaneGeometry( w1, s2 );
+			edge1[0].translate(0, -h1/2+s2/2, size.z/2);
+			
+			edge1[1] = new THREE.PlaneGeometry( w1, s2 );
+			edge1[1].translate(0, h1/2-s2/2, size.z/2);		
 
-	// устанавливаем 1 ребро с задней стороны в начало 
-	for ( var i = 0; i < edge2.length; i++ )
-	{
-		edge2[i].translate(-size.x/2 + s1 + w1/2, 0, 0);
-		
-		if(i > 3 && 8 > i) geom.merge(edge2[i], edge2[i].matrix, 2);
-		else geom.merge(edge2[i], edge2[i].matrix, 1);	
-	}
-	
-	// копируем и заполняем ребрами заднюю часть
-	for ( var i = 0; i < count - 1; i++ )
-	{
-		for ( var i2 = 0; i2 < edge2.length; i2++ )
-		{
-			var gClone = edge2[i2].clone();
-			gClone.translate(w1 * (i+1), 0, 0);
+			edge1[2] = new THREE.PlaneGeometry( h1, s2 );
+			edge1[2].rotateZ(Math.PI/2);
+			edge1[2].translate(-w1/2+s2/2, 0, size.z/2);
+
+			edge1[3] = new THREE.PlaneGeometry( h1, s2 );
+			edge1[3].rotateZ(Math.PI/2);
+			edge1[3].translate(w1/2-s2/2, 0, size.z/2);
+
+			// внутренние стенки
+			edge1[4] = new THREE.PlaneGeometry( w2, s3 );
+			edge1[4].rotateX(Math.PI/2);
+			edge1[4].translate(0, -h1/2+s2, size.z/2 - s3/2);
 			
-			if(i2 > 3 && 8 > i2) geom.merge(gClone, gClone.matrix, 2);
-			else geom.merge(gClone, gClone.matrix, 1);	
-		}		
+			edge1[5] = new THREE.PlaneGeometry( w2, s3 );
+			edge1[5].rotateX(Math.PI/2);
+			edge1[5].translate(0, h1/2-s2, size.z/2 - s3/2);		
+
+			edge1[6] = new THREE.PlaneGeometry( h2, s3 );
+			edge1[6].rotateZ(Math.PI/2);
+			edge1[6].rotateY(Math.PI/2);
+			edge1[6].translate(-w1/2+s2, 0, size.z/2 - s3/2);
+
+			edge1[7] = new THREE.PlaneGeometry( h2, s3 );
+			edge1[7].rotateZ(Math.PI/2);
+			edge1[7].rotateY(Math.PI/2);
+			edge1[7].translate(w1/2-s2, 0, size.z/2 - s3/2);
+
+			// внутренние ребро
+			edge1[8] = new THREE.PlaneGeometry( w2, h2 );
+			edge1[8].translate(0, 0, size.z/2 - s3);		
+		}
+		
+		
+		var g1 = new THREE.Geometry();
+		
+		// собираем ребро в одну геометрию 
+		for ( var i = 0; i < edge1.length; i++ )
+		{
+			edge1[i].translate(-size.x/2 + s1 + w1/2, 0, 0);
+			
+			if(i > 3 && 8 > i) g1.merge(edge1[i], edge1[i].matrix, 2);
+			else g1.merge(edge1[i], edge1[i].matrix, 1);	
+		}
+		
+		var g2 = g1.clone();
+		g2.rotateY(-Math.PI);
+		
+		// копируем и заполняем ребрами фронтальную часть
+		for ( var i = 0; i < count; i++ )
+		{
+			var o = new THREE.Mesh(g1, mat);
+			o.position.x += w1 * i;
+			group[group.length] = o;
+
+			var o = new THREE.Mesh(g2, mat);
+			o.position.x -= w1 * i;
+			group[group.length] = o;			
+		}
+		
 	}
 
 
@@ -271,7 +215,12 @@ function st_radiator_1(cdm)
 	mat[2] = infProject.material.white_2;
 	mat[3] = infProject.material.rezba_1;
 	
-	var group = new THREE.Mesh(geom, mat);		
+	var group = [];
+	
+	crRebro({group: group, mat: mat});	// создаем и добавляем грани для радиатора
+	
+	group[group.length] = new THREE.Mesh(geom, mat);
+	
 	var obj = getBoundObject_1({obj: group});
 	
 	var name1 = cdm.r1+'(в)';

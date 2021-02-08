@@ -10,7 +10,7 @@ function joinSborkaToGroup(cdm)
 	
 	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
 	
-	for(var i = 0; i < arr.length; i++) { scene.add( arr[i] ); }		
+	//for(var i = 0; i < arr.length; i++) { scene.add( arr[i] ); }		
 }
 
 

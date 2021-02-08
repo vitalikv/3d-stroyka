@@ -284,6 +284,12 @@ function al_radiator_1(cdm)
 	}
 
 
+	var mat = [];
+	mat[0] = infProject.material.white_1;
+	mat[1] = infProject.material.rezba_1;	
+	
+	var group = [new THREE.Mesh(geom, mat)];	
+	
 	// добавляем секции
 	if(count > 1)
 	{
@@ -294,11 +300,15 @@ function al_radiator_1(cdm)
 		
 		for ( var i = 0; i < count-1; i++ )
 		{
-			var geom2 = geom.clone();
+			//var geom2 = geom.clone();
 			
-			geom2.translate(x * (i+1), 0, 0);
+			//geom2.translate(x * (i+1), 0, 0);
 			
-			arr[arr.length] = geom2;
+			//arr[arr.length] = geom2;
+			
+			var objCopy = new THREE.Mesh(geom, mat);
+			objCopy.position.x += x * (i+1);
+			group[group.length] = objCopy;
 			
 			poM3.pos.x += x;
 			poM4.pos.x += x;
@@ -306,18 +316,13 @@ function al_radiator_1(cdm)
 
 		for ( var i = 0; i < arr.length; i++ )
 		{
-			geom.merge(arr[i], arr[i].matrix);
+			//geom.merge(arr[i], arr[i].matrix);
 		}
 		
 	}	
 	
 	
-	var mat = [];
-	mat[0] = infProject.material.white_1;
-	mat[1] = infProject.material.rezba_1;
 	
-	
-	var group = new THREE.Mesh(geom, mat);		
 	var obj = getBoundObject_1({obj: group});
 	
 	var name1 = cdm.r1;

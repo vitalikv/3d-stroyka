@@ -13,17 +13,25 @@ function getBoundObject_1(cdm)
 	
 	if(!obj) return;
 	
+	var arrObj = [];
+	
+	if(!Array.isArray(obj)) { arrObj = [obj]; }
+	else { arrObj = obj; }
+	
 	var arr = [];
 	
-	obj.updateMatrixWorld(true);
-	
-	obj.traverse(function(child) 
+	for ( var i = 0; i < arrObj.length; i++ )
 	{
-		if (child instanceof THREE.Mesh)
+		arrObj[i].updateMatrixWorld(true);
+		
+		arrObj[i].traverse(function(child) 
 		{
-			if(child.geometry) { arr[arr.length] = child; }
-		}
-	});	
+			if (child instanceof THREE.Mesh)
+			{
+				if(child.geometry) { arr[arr.length] = child; }
+			}
+		});			
+	}
 
 	//scene.updateMatrixWorld();
 	
@@ -82,8 +90,8 @@ function getBoundObject_1(cdm)
 	var box = new THREE.Mesh( geometry, infProject.material.box_1 ); 	
 	//box.position.copy(centP);	
 	
-	obj.position.set(0, 0, 0);
-	obj.rotation.set(0, 0, 0);
+	//obj.position.set(0, 0, 0);
+	//obj.rotation.set(0, 0, 0);
 	
 	//box.position.copy(obj.position);
 	//box.rotation.copy(obj.rotation);
@@ -92,7 +100,11 @@ function getBoundObject_1(cdm)
 	box.geometry.computeBoundingBox();	
 	box.geometry.computeBoundingSphere();	
 	
-	box.add(obj);
+	for ( var i = 0; i < arrObj.length; i++ )
+	{
+		box.add(arrObj[i]);
+	}
+	
 	
 	return box;	
 }
