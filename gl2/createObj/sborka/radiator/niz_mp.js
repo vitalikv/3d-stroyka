@@ -73,7 +73,7 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
+	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
 	inf.termoreg = true;
@@ -115,7 +115,7 @@ function paramSborkaRad_Dvuhtrub_Niz_Mp()
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
+	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
 	inf.termoreg = true;

@@ -22,12 +22,12 @@ function paramSborkaRad_Odnotrub_Verh_Mp()
 	inf.typePt = 'od';
 	inf.typePt2 = 'verh';
 	inf.typeRad = 'al';
-	inf.typePipe = 'pp';
+	inf.typePipe = 'mp';
 	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
 	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
-	inf.side = 'right';
-	inf.kran = 'sharov';
-	inf.termoreg = false;
+	inf.side = 'left';
+	inf.kran = 'regulator';
+	inf.termoreg = true;
 	inf.pipe_level = 0;
 
 	
@@ -73,7 +73,7 @@ function paramSborkaRad_Odnotrub_Verh_Bay_Mp()
 	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
-	inf.termoreg = false;
+	inf.termoreg = true;
 	inf.pipe_level = -0.05;
 	
 	inf.ui = {};
@@ -112,10 +112,10 @@ function paramSborkaRad_Dvuhtrub_Verh_Mp()
 	inf.typeRad = 'al';
 	inf.typePipe = 'mp';
 	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
-	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
+	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'regulator';
-	inf.termoreg = false;
+	inf.termoreg = true;
 	inf.pipe_level = -0.05;
 	
 	inf.ui = {};

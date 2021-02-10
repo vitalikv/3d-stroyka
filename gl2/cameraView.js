@@ -13,7 +13,7 @@ async function activeCameraView(cdm)
 	{
 		cameraView.userData.cameraView.lastCam = camera;
 	}
-	
+	cameraView.position.y = 2000;
 	camera = cameraView;
 	renderPass.camera = cameraView;
 	outlinePass.renderCamera = cameraView;
