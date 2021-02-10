@@ -23,17 +23,17 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	if(cdm.inf.typeRad == 'al')
 	{
 		var arr = [];
-		arr[arr.length] = {value: 1, text: '1 секция', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 1}} }; 
-		arr[arr.length] = {value: 2, text: '2 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 2}} };
-		arr[arr.length] = {value: 3, text: '3 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 3}} };
-		arr[arr.length] = {value: 4, text: '4 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 4}} }; 
-		arr[arr.length] = {value: 5, text: '5 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 5}} };
-		arr[arr.length] = {value: 6, text: '6 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 6}} };
-		arr[arr.length] = {value: 7, text: '7 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 7}} };
-		arr[arr.length] = {value: 8, text: '8 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 8}} };
-		arr[arr.length] = {value: 9, text: '9 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 9}} };
-		arr[arr.length] = {value: 10, text: '10 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alX: 10}} };
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.x});
+		arr[arr.length] = {value: 1, text: '1 секция', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 1}} }; 
+		arr[arr.length] = {value: 2, text: '2 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 2}} };
+		arr[arr.length] = {value: 3, text: '3 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 3}} };
+		arr[arr.length] = {value: 4, text: '4 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 4}} }; 
+		arr[arr.length] = {value: 5, text: '5 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 5}} };
+		arr[arr.length] = {value: 6, text: '6 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 6}} };
+		arr[arr.length] = {value: 7, text: '7 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 7}} };
+		arr[arr.length] = {value: 8, text: '8 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 8}} };
+		arr[arr.length] = {value: 9, text: '9 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 9}} };
+		arr[arr.length] = {value: 10, text: '10 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 10}} };
+		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.count});
 
 
 		var arr = [];
@@ -212,8 +212,8 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	
 	
 	
-	//var container = document.body.querySelector('[list_ui="catalog"]');
-	var container = document.body.querySelector('[valueId="sborka_rad_1"]');
+	var container = document.body.querySelector('[list_ui="catalog"]');
+	//var container = document.body.querySelector('[valueId="sborka_rad_1"]');
 	
 	container.append(elem);
 }
@@ -227,7 +227,7 @@ function changeParamSbrRad_1(cdm)
 	if(cdm.typeRad) { inf.typeRad = cdm.typeRad; }
 	if(cdm.stX) { inf.rad.st.x = cdm.stX; }
 	if(cdm.stY) { inf.rad.st.y = cdm.stY; }
-	if(cdm.alX) { inf.rad.al.x = cdm.alX; }
+	if(cdm.alCount) { inf.rad.al.count = cdm.alCount; }
 	if(cdm.alY) { inf.rad.al.y = cdm.alY; }	
 	if(cdm.pipePp) { inf.pipe.pp = cdm.pipePp; }
 	if(cdm.pipeMp) { inf.pipe.mp = cdm.pipeMp; }
@@ -247,29 +247,67 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	var notArray = (cdm.addScene) ? false : true;
 	
 	var vt1 = [];
-	if(inf.typeRad == 'st')
+	
+	var radLotId = getRadLotId(inf);
+	
+	if(radLotId)
 	{
-		o.rad = st_radiator_1({"size":{"x": inf.rad.st.x,"y": inf.rad.st.y,"z":0.07},"r1":"1/2"});		
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
-		scene.add( o.rad );
-		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
-//return o;		
+		o.rad = await loadObjServer({lotid: radLotId, notArray: notArray});
+	}
+	else
+	{
+		return o;
+	}
+	
+	//return o;
+
+	if(inf.typeRad == 'st')
+	{		
 		o.r_vozd = await loadObjServer({lotid: 451, notArray: notArray});	
 		o.r_zagl = await loadObjServer({lotid: 452, notArray: notArray});		
 	}
 	else
 	{
-		o.rad = al_radiator_1({"count": inf.rad.al.x,"size":{"x":0.08,"y": inf.rad.al.y,"z":0.08},"r1":"1" });
-		infProject.scene.array.obj[infProject.scene.array.obj.length] = o.rad;
-		scene.add( o.rad );
-		if(!notArray) updateListObjUI_1({o: o.rad, type: 'add'}); 	// добавляем в список материалов
-//return o;
 		o.r_per1 = await loadObjServer({lotid: 18, notArray: notArray});
 		o.r_vozd = await loadObjServer({lotid: 21, notArray: notArray});	
 		o.r_per2 = await loadObjServer({lotid: 18, notArray: notArray});
 		o.r_zagl = await loadObjServer({lotid: 20, notArray: notArray});				
 	}
 
+
+
+	function getRadLotId(inf)
+	{
+		
+		var lotId = null;
+		
+		if(inf.typeRad == 'st')
+		{
+			var x = inf.rad.st.x;
+			var y = inf.rad.st.y;	
+			var arr = [0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.2, 1.4, 1.6, 1.8, 2];
+			
+			if(y == 0.3){ for(var i = 0; i < arr.length; i++){ if(arr[i] == x) { lotId = 82 + i; break; } } }
+			if(y == 0.4){ for(var i = 0; i < arr.length; i++){ if(arr[i] == x) { lotId = 94 + i; break; } } }
+			if(y == 0.5){ for(var i = 0; i < arr.length; i++){ if(arr[i] == x) { lotId = 106 + i; break; } } }
+			if(y == 0.6){ for(var i = 0; i < arr.length; i++){ if(arr[i] == x) { lotId = 118 + i; break; } } }
+			if(y == 0.9){ for(var i = 0; i < arr.length; i++){ if(arr[i] == x) { lotId = 130 + i; break; } } }		
+		}
+		else if(inf.typeRad == 'al')
+		{
+			var count = inf.rad.al.count;
+			var y = inf.rad.al.y;
+			
+			if(y == 0.2){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 22 + i; break; } } }
+			if(y == 0.35){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 32 + i; break; } } }
+			if(y == 0.5){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 42 + i; break; } } }
+			if(y == 0.6){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 52 + i; break; } } }
+			if(y == 0.7){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 62 + i; break; } } }
+			if(y == 0.8){ for(var i = 0; i < 10; i++){ if(i+1 == count) { lotId = 72 + i; break; } } }
+		}
+		
+		return lotId;
+	}
 	
 	//------- регулировочные краны
 	var kran1 = [null, null];

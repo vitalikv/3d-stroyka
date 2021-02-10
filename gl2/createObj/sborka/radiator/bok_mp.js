@@ -23,7 +23,7 @@ function paramSborkaRad_Odnotrub_Bok_Mp()
 	inf.typePt2 = 'bok';
 	inf.typeRad = 'st';
 	inf.typePipe = 'pp';
-	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
 	inf.pipe = {mp: inf.list.mp.t[0], pp: inf.list.pp.t[0]};
 	inf.side = 'left';
 	inf.kran = 'none';
@@ -68,7 +68,7 @@ function paramSborkaRad_Odnotrub_Bok_Bay_Mp()
 	inf.typePt2 = 'bok';
 	inf.typeRad = 'al';
 	inf.typePipe = 'pp';
-	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
 	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
 	inf.side = 'right';
 	inf.kran = 'sharov';
@@ -110,7 +110,7 @@ function paramSborkaRad_Dvuhtrub_Bok_Mp()
 	inf.typePt2 = 'bok';
 	inf.typeRad = 'al';
 	inf.typePipe = 'pp';
-	inf.rad = {al: {x: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
+	inf.rad = {al: {count: 7, y: 0.5}, st: {x: 0.8, y: 0.5}};
 	inf.pipe = {mp: inf.list.mp.t[1], pp: inf.list.pp.t[1]};
 	inf.side = 'right';
 	inf.kran = 'sharov';
