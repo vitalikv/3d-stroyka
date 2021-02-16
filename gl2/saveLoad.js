@@ -615,7 +615,7 @@ function saveWindows(wall)
 }
 
 
-function saveFile(cdm) 
+async function saveFile(cdm) 
 { 
 	
 	var json = JSON.stringify( getJsonGeometry() );
@@ -623,18 +623,20 @@ function saveFile(cdm)
 	if(cdm.json)
 	{
 		// сохраняем в папку
-		$.ajax
-		({
-			url: infProject.path+'saveJson.php',
-			type: 'POST',
-			data: {myarray: json},
-			dataType: 'json',
-			success: function(json)
-			{ 			
-				console.log(json); 
-			},
-			error: function(json){ console.log(json);  }
-		});			
+		var url = infProject.path+'saveJson.php';			
+		
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'myarray='+encodeURIComponent(json),
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});
+		var json = await response.json();
+
+		console.log(json);
 	}
 	
 	
@@ -657,43 +659,26 @@ function saveFile(cdm)
 		});			
 	}
 	
-	
-	if(1==2)
-	{
-		var csv = JSON.stringify( txt );	
-		var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
-		
-		var link = document.createElement('a');
-		document.body.appendChild(link);
-		link.href = csvData;
-		link.target = '_blank';
-		link.download = 'filename.json';
-		link.click();			
-	}
 }
 
 
 
 
 
-function loadFile(cdm) 
+async function loadFile(cdm) 
 {
 	if(cdm.id == 0) { resetScene(); return; }	 
 	
 	
 	if(cdm.json)	// загрузка json из папки
 	{
-		$.ajax
-		({
-			url: infProject.path+'t/fileJson.json',
-			type: 'POST',
-			dataType: 'json',
-			success: function(json)
-			{ 
-				resetScene();
-				loadFilePL(json); 	// загрузка json
-			},
-		});			
+		
+		var url = infProject.path+'t/fileJson.json';					
+		var response = await fetch(url);
+		var json = await response.json();		
+
+		resetScene();
+		loadFilePL(json); 	// загрузка json		
 	}
 	else	// загрузка json из бд
 	{

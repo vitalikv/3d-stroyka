@@ -27,8 +27,7 @@
     <script src="<?=$path?>js/three.min.js?<?=$vrs?>"></script>
     <script src="<?=$path?>js/jquery.js"></script>
     <script src="<?=$path?>js/ThreeCSG.js"></script>       
-	<script src="<?=$path?>js/OBJLoader.js"></script>
-	<script src="<?=$path?>js/MTLLoader.js"></script>   
+  
 	
 	<script src="<?=$path?>js/dp/EffectComposer.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/dp/CopyShader.js?<?=$vrs?>"></script>
@@ -36,8 +35,14 @@
 	<script src="<?=$path?>js/dp/ShaderPass.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/dp/OutlinePass.js?<?=$vrs?>"></script>
 	
+
+	
+	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) {?> 
+	<script src="<?=$path?>js/OBJLoader.js"></script>
+	<script src="<?=$path?>js/MTLLoader.js"></script> 	
 	<script src="<?=$path?>js/loader/inflate.min.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>js/loader/FBXLoader.js?<?=$vrs?>"></script>
+	<?}?>	
 	
 	
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) 
@@ -67,12 +72,13 @@
 				
 				<noindex>		
 				
-
+				<? require_once("include/modal_window_3.php"); ?>
+				
 				<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) 
 				{ 
 					//require_once("include/modal_window_2.php");
 					require_once("include/bottom_panel_1.php");
-					require_once("include/modal_window_3.php");
+					
 				} ?>					
 				
 				<div class="help">
