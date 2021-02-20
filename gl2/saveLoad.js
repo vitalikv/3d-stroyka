@@ -640,7 +640,7 @@ async function saveFile(cdm)
 	}
 	
 	
-	if(cdm.id)
+	if(cdm.id !== undefined)
 	{
 		// сохраняем в бд
 		$.ajax

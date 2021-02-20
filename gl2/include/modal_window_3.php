@@ -2,7 +2,7 @@
 <style type="text/css">
 .background_main_menu 
 {
-	display: block;
+	display: none;
 	left: 0;
 	right: 0;
 	top: 0;
@@ -313,47 +313,10 @@
 
 <script>
 $(document).ready(function(){
-	$('[nameId="background_main_menu"]').mousedown(function () 
-	{	 
-		$('[nameId="background_main_menu"]').css({"display":"none"}); 
-	});
 
-				
-	$('[nameId="button_close_main_menu"]').mousedown(function () 
-	{  
-		$('[nameId="background_main_menu"]').css({"display":"none"}); 
-	});
-	
-	$('[nameId="window_main_menu"]').mousedown(function (e) { e.stopPropagation(); });
 		
 		
 
-	$('[nameId="button_check_reg_1"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });
-	$('[nameId="button_check_reg_2"]').mousedown(function () { changeMainMenuRegistMenuUI({el: this}); });	
-	
-	
-	// переключаем в главном меню в форме регистрация кнопки: вход/регистрация
-	function changeMainMenuRegistMenuUI(cdm)
-	{
-		var inf_block = $('[nameId="info_reg_1"]');
-		var inf_str_1 = $('[nameId="info_reg_1_1"]');
-		var inf_str_2 = $('[nameId="info_reg_1_2"]');
-		
-		inf_block.hide();
-		inf_str_1.hide();
-		inf_str_2.hide();		
-	
-		if(cdm.el.attributes.nameId.value == "button_check_reg_1") 
-		{
-			$('[nameId="act_reg_1"]').text('Войти');
-			$('[nameId="act_reg_1"]').attr("b_type", "reg_1"); 
-		}
-		if(cdm.el.attributes.nameId.value == "button_check_reg_2") 
-		{
-			$('[nameId="act_reg_1"]').text('Зарегистрироваться');
-			$('[nameId="act_reg_1"]').attr("b_type", "reg_2");
-		}	
-	}
 
 
 	
@@ -505,68 +468,9 @@ function checkRegDataIU()
 });	
 
 
-// получаем с сервера список проектов принадлежащих пользователю
-function getListProject(cdm)
-{  
-	$.ajax
-	({
-		type: "POST",					
-		url: infProject.path+'components/loadListProject.php',
-		data: {"id": cdm.id },
-		dataType: 'json',
-		success: function(data)
-		{  
-			var html_load = '';
-			var html_save = '';
-			
-			for(var i = 0; i < 2; i++)
-			{
-				if(data[i]) continue;
-				
-				data[i] = {id: 0, name: 'Пустой проект'}
-			}
-			
-			for(var i = 0; i < data.length; i++)
-			{				
-				if(data[i].preview) 
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1"><img src="'+data[i].preview+'"></div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1"><img src="'+data[i].preview+'"></div>';
-				}
-				else
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">'+data[i].name+'</div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">'+data[i].name+'</div>';					
-				}
-			}
-			
-			$('[nameId="wm_list_save"]').html(html_save);
-			$('[nameId="wm_list_load"]').html(html_load);
-	
-			
-			$('[nameId="save_pr_1"]').on('mousedown', function(){ clickButtonSaveProjectUI(this); });
-			$('[nameId="load_pr_1"]').on('mousedown', function(){ clickButtonLoadProjectUI(this); });
-		}
-	});	
-}
-
-// кликнули на кнопку сохранить проекта
-function clickButtonSaveProjectUI(el)
-{
-	saveFile({id: el.attributes.projectid.value, upUI: true}); 
-	
-	$('[nameId="background_main_menu"]').hide();
-}
 
 
 
-// кликнули на кнопку загрузки проекта
-function clickButtonLoadProjectUI(el)
-{
-	loadFile({id: el.attributes.projectid.value}); 
-	
-	$('[nameId="background_main_menu"]').hide();
-}
  
 </script>
 
@@ -601,7 +505,7 @@ function clickButtonLoadProjectUI(el)
 							</div>
 							<div class="window_main_menu_content_1_column">
 								
-								<div wwm_1="button_load_1" list_ui="window_main_menu_content" style="display: none;"> 
+								<div wwm_1="button_load_1" style="display: none;"> 
 									<div class="window_main_menu_content_1_h1">
 										Загрузить
 									</div>
@@ -610,7 +514,7 @@ function clickButtonLoadProjectUI(el)
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться. 
 										
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
+												<div class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>	
@@ -618,7 +522,7 @@ function clickButtonLoadProjectUI(el)
 									</div>
 								</div>
 								
-								<div wwm_1="button_save_1" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_save_1" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Сохранить
 									</div>
@@ -627,7 +531,7 @@ function clickButtonLoadProjectUI(el)
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="button_main_menu_reg_1">
+												<div class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>											
@@ -635,7 +539,7 @@ function clickButtonLoadProjectUI(el)
 									</div>
 								</div>
 								
-								<div wwm_1="button_main_menu_reg_1" list_ui="window_main_menu_content" style="display: block;">
+								<div wwm_1="button_main_menu_reg_1" style="display: block;">
 								
 									<div nameId="reg_content_1" style="display: none;">
 									
@@ -706,7 +610,7 @@ function clickButtonLoadProjectUI(el)
 								
 								</div>								
 								
-								<div wwm_1="button_help" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_help" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Полезная информация
 									</div>								
@@ -729,7 +633,7 @@ function clickButtonLoadProjectUI(el)
 									</div>		
 								</div>
 
-								<div wwm_1="button_contact" list_ui="window_main_menu_content" style="display: none;">
+								<div wwm_1="button_contact" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
 										Контакты
 									</div>								

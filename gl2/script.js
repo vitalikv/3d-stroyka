@@ -290,7 +290,6 @@ infProject.settings.BD.table.list_obj = 'list_obj_3';
 infProject.start = true; 
 
 infProject.ui = {}
-infProject.ui.main_menu = [];
 infProject.ui.right_menu = {active: ''};
 infProject.ui.div = {};
 infProject.ui.div.msDiv_1 = document.querySelector('[nameId="msDiv_1"]');

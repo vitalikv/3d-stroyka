@@ -55,9 +55,9 @@
 			
 		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
 			<div class="go_home align_items" nameId="butt_main_menu">
-				<a href="/" class="go_home_txt">
-					Главная
-				</a>
+				<div class="go_home_txt">
+					Меню
+				</div>
 			</div>
 			<div class="title_1"><h1><?=$h1?></h1></div>			
 		</div>	
@@ -172,6 +172,7 @@
 	<script src="<?=$path?>uiInterface_plane.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_list_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_catalog.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>uiInterface_user_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
 	 
        		
