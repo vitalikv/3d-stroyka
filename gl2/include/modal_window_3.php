@@ -311,168 +311,7 @@
 </style>
 
 
-<script>
-$(document).ready(function(){
 
-		
-		
-
-
-
-	
-
-$('[nameId="act_reg_1"]').mousedown(function () { checkRegDataIU(); });
-
-
-// вход/регистрация пользователя (проверка правильности ввода данных почта/пароль)
-function checkRegDataIU()
-{
-	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
-	var pattern_2 = /^[a-z0-9]{4,20}$/i;
-	var mail = $('[nameId="input_reg_mail"]');
-	var pass = $('[nameId="input_reg_pass"]');
-	
-	var inf_block = $('[nameId="info_reg_1"]');
-	var inf_str_1 = $('[nameId="info_reg_1_1"]');
-	var inf_str_2 = $('[nameId="info_reg_1_2"]');
-	
-	inf_block.hide();
-	inf_str_1.hide();
-	inf_str_2.hide();
-	
-	var flag_1 = false;
-	var flag_2 = false;
-	
-	mail.val(mail.val().trim());	// удаляем пробелы  
-	pass.val(pass.val().trim());	// удаляем пробелы 
-	
-	// проверка почты
-	if(mail.val() != '')
-	{
-		if(pattern_1.test(mail.val()))
-		{
-			flag_1 = true;
-		}
-		else
-		{
-			inf_str_1.show();
-			inf_str_1.text('Не верно указанна почта');			
-		}
-	}
-	else
-	{		
-		inf_str_1.show();
-		inf_str_1.text('Укажите e-mail');
-	}
-	
-	
-	// проверка пароля
-	if(pass.val() != '')
-	{
-		if(pattern_2.test(pass.val()))
-		{
-			flag_2 = true;
-		}
-		else
-		{
-			inf_str_2.show();
-			inf_str_2.html('Не верно указан пароль<br>(Только цифры и латинские буквы от 4 до 20 знаков)');			
-		}
-	}		
-	else
-	{		
-		inf_str_2.show();
-		inf_str_2.text('Укажите пароль');
-	}
-	
-	
-	// данные введены верно
-	if(flag_1 && flag_2)
-	{ 
-		inf_block.hide();
-		
-		//console.log();
-		var type = $('[nameId="act_reg_1"]').attr("b_type");
-		
-		$.ajax
-		({
-			type: "POST",					
-			url: infProject.path+'components/regUser.php',
-			data: {"type": type, "mail": mail.val(), "pass": pass.val()},
-			dataType: 'json',
-			success: function(data)
-			{  
-				if(type=='reg_1')	// авторизация пользователя
-				{
-					if(data.success)
-					{
-						infProject.user.id = data.info.id;
-						infProject.user.mail = data.info.mail;
-						infProject.user.pass = data.info.pass;
-
-						$('[nameId="reg_content_1"]').show();
-						$('[nameId="reg_content_2"]').hide();
-
-						getListProject({id: infProject.user.id});
-					}
-					else
-					{
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.html(data.err.desc);
-							
-							inf_block.show();
-							inf_str_1.show();
-							inf_str_1.show();
-							inf_str_2.hide();													
-						}
-					}
-				}
-				else if(type=='reg_2')	// регистрация нового пользователя
-				{
-					if(data.success)
-					{
-						inf_str_1.html("на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)");
-						//inf_str_1.html("Вы успешно зарегистрировались");						
-						
-						inf_block.show();
-						inf_str_1.show();
-						inf_str_1.show();
-						inf_str_2.hide();												
-					}
-					else
-					{						
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.html(data.err.desc);
-							
-							inf_block.show();
-							inf_str_1.show();
-							inf_str_1.show();
-							inf_str_2.hide();													
-						}						
-					}
-				}				
-			}
-		});		
-	}
-	else	// данные введены НЕ верно
-	{  
-		inf_block.show();
-	}
-};
-
-	
-});	
-
-
-
-
-
- 
-</script>
 
 
 <div class="background_main_menu" nameId="background_main_menu" ui_1="">
@@ -579,13 +418,13 @@ function checkRegDataIU()
 													<div class="window_main_menu_form_reg_block_1_label">
 														почта
 													</div>											
-													<input class="input_form_reg" type="text" nameId="input_reg_mail" value="">
+													<input class="input_form_reg" type="text" nameId="input_reg_mail" value="mail@mail.ru">
 												</div>
 												<div class="window_main_menu_form_reg_block_1_1">
 													<div class="window_main_menu_form_reg_block_1_label">
 														пароль
 													</div>											
-													<input class="input_form_reg" type="text" nameId="input_reg_pass" value="">
+													<input class="input_form_reg" type="text" nameId="input_reg_pass" value="1111">
 												</div>
 												
 												<div class="window_main_menu_form_reg_block_1_1">

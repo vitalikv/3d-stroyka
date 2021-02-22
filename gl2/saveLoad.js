@@ -92,6 +92,8 @@ function resetScene()
 	var group = infProject.scene.array.group;
 	var substrate = infProject.scene.substrate.floor;
 	
+	hideMenuObjUI_2D();		// снимаем выделение с выбранного объекта 
+	
 	for ( var i = 0; i < wall.length; i++ )
 	{ 
 		scene.remove(wall[i].label[0]); 
@@ -188,11 +190,9 @@ function resetScene()
 
 	
 	// удаляем список материалов UI
-	for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
-	{
-		infProject.list.obj_scene_ui[i].el.remove();
-	}
-	
+	var container = document.body.querySelector('[list_ui="wf"]');
+	container.innerHTML = '';	
+	//for(var i = 0; i < infProject.list.obj_scene_ui.length; i++){ //infProject.list.obj_scene_ui[i].el.remove(); }	
 	infProject.list.obj_scene_ui = [];
 		 
 	
@@ -640,23 +640,26 @@ async function saveFile(cdm)
 	}
 	
 	
-	if(cdm.id !== undefined)
+	if(cdm.id)
 	{
 		// сохраняем в бд
-		$.ajax
-		({
-			url: infProject.path+'components/saveSql.php',
-			type: 'POST',
-			data: {json: json, id: cdm.id, user_id: infProject.user.id, preview: null},
-			dataType: 'json',
-			success: function(json)
-			{ 			
-				console.log(json);
-				
-				if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов
-			},
-			error: function(json){ console.log(json); }
-		});			
+		var url = infProject.path+'components/saveSql.php';			
+		
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview=&json='+encodeURIComponent(json),
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});
+		var json = await response.json();
+		
+		console.log(json);
+		
+		if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов		
+		
 	}
 	
 }
@@ -682,18 +685,21 @@ async function loadFile(cdm)
 	}
 	else	// загрузка json из бд
 	{
-		$.ajax
-		({
-			url: infProject.path+'components/loadSql.php',
-			type: 'POST',
-			data: {id: cdm.id},
-			dataType: 'json',
-			success: function(json)
-			{ 
-				resetScene();
-				loadFilePL(json); 	// загрузка json
-			},
-		});		
+		var url = infProject.path+'components/loadSql.php';			
+		
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'id='+cdm.id,
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});
+		var json = await response.json();
+		
+		resetScene();
+		loadFilePL(json); 	// загрузка json		
 		
 	}
 	
@@ -900,6 +906,7 @@ async function loadObjInBase(cdm)
 	});
 	var json = await response.json();
 
+	document.querySelector('[nameId="menu_loader_slider_UI"]').style.display = 'block';
 	
 	for ( var i = 0; i < json.length; i++ )
 	{		
@@ -913,7 +920,7 @@ async function loadObjInBase(cdm)
 
 				var rat = (Math.round((infProject.project.load.furn.length/infProject.project.file.furn.length)*100)) + '%';
 				
-				$('[nameId="txt_loader_slider_UI"]').text(rat);
+				document.querySelector('[nameId="txt_loader_slider_UI"]').innerText = rat;
 			}
 		}
 	}
@@ -939,7 +946,7 @@ function readyProject(cdm)
 	
 	console.log('READY', countId);
 	
-	$('[nameId="menu_loader_slider_UI"]').hide();
+	document.querySelector('[nameId="menu_loader_slider_UI"]').style.display = 'none';
 	
 	cr_obj_cat();
 	

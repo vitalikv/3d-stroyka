@@ -115,63 +115,69 @@ function changeMainMenuRegistMenuUI(cdm)
 
 
 // получаем с сервера список проектов принадлежащих пользователю
-function getListProject(cdm)
-{  
-	$.ajax
-	({
-		type: "POST",					
-		url: infProject.path+'components/loadListProject.php',
-		data: {"id": cdm.id },
-		dataType: 'json',
-		success: function(data)
-		{  
-			var html_load = '';
-			var html_save = '';
-			
-			for(var i = 0; i < 2; i++)
-			{
-				if(data[i]) continue;
-				
-				data[i] = {id: 0, name: 'Пустой проект'}
-			}
-			
-			for(var i = 0; i < data.length; i++)
-			{				
-				if(data[i].preview) 
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1"><img src="'+data[i].preview+'"></div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1"><img src="'+data[i].preview+'"></div>';
-				}
-				else
-				{
-					html_save += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="save_pr_1">'+data[i].name+'</div>';
-					html_load += '<div class="window_main_menu_content_block_1" projectId="'+data[i].id+'" nameId="load_pr_1">'+data[i].name+'</div>';					
-				}
-			}
+async function getListProject(cdm)
+{ 
 
-			var b_load = document.querySelector('[nameId="wm_list_load"]');
-			var b_save = document.querySelector('[nameId="wm_list_save"]');
-			
-			b_load.innerHTML = html_load;
-			b_save.innerHTML = html_save;
-
-			var arrLoadEl = b_load.querySelectorAll('[nameId="load_pr_1"]');
-			var arrSaveEl = b_save.querySelectorAll('[nameId="save_pr_1"]');
-		
-			arrLoadEl.forEach(function(el) 
-			{
-				el.addEventListener('mousedown', function(e) { clickButtonLoadProjectUI(this); });
-			});	
-
-			arrSaveEl.forEach(function(el) 
-			{
-				el.addEventListener('mousedown', function(e) { clickButtonSaveProjectUI(this); });
-			});				
-			
-			//b_load.querySelector('[nameId="load_pr_1"]').onmousedown = function(e){ clickButtonLoadProjectUI(this); }
-			//b_save.querySelector('[nameId="save_pr_1"]').onmousedown = function(e){ clickButtonSaveProjectUI(this); }
-		}
+	var url = infProject.path+'components/loadListProject.php';			
+	
+	var response = await fetch(url, 
+	{
+		method: 'POST',
+		body: 'id='+cdm.id,
+		headers: 
+		{	
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+		},				
 	});	
+
+	if(!response.ok) return;
+	var json = await response.json();
+	
+	
+	var html_load = '';
+	var html_save = '';
+	
+	for(var i = 0; i < 2; i++)
+	{
+		if(json[i]) continue;
+		
+		json[i] = {id: 0, name: 'Пустой проект'}
+	}
+	
+	for(var i = 0; i < json.length; i++)
+	{				
+		if(json[i].preview) 
+		{
+			html_save += '<div class="window_main_menu_content_block_1" projectId="'+json[i].id+'" nameId="save_pr_1"><img src="'+json[i].preview+'"></div>';
+			html_load += '<div class="window_main_menu_content_block_1" projectId="'+json[i].id+'" nameId="load_pr_1"><img src="'+json[i].preview+'"></div>';
+		}
+		else
+		{
+			html_save += '<div class="window_main_menu_content_block_1" projectId="'+json[i].id+'" nameId="save_pr_1">'+json[i].name+'</div>';
+			html_load += '<div class="window_main_menu_content_block_1" projectId="'+json[i].id+'" nameId="load_pr_1">'+json[i].name+'</div>';					
+		}
+	}
+
+	var b_load = document.querySelector('[nameId="wm_list_load"]');
+	var b_save = document.querySelector('[nameId="wm_list_save"]');
+	
+	b_load.innerHTML = html_load;
+	b_save.innerHTML = html_save;
+
+	var arrLoadEl = b_load.querySelectorAll('[nameId="load_pr_1"]');
+	var arrSaveEl = b_save.querySelectorAll('[nameId="save_pr_1"]');
+
+	arrLoadEl.forEach(function(el) 
+	{
+		el.addEventListener('mousedown', function(e) { clickButtonLoadProjectUI(this); });
+	});	
+
+	arrSaveEl.forEach(function(el) 
+	{
+		el.addEventListener('mousedown', function(e) { clickButtonSaveProjectUI(this); });
+	});		
+	
+
 }
 
 
@@ -193,5 +199,155 @@ function clickButtonLoadProjectUI(el)
 	
 	infProject.elem.mainMenu.g.style.display = 'none';
 }
+
+
+
+
+document.querySelector('[nameId="act_reg_1"]').onmousedown = function(e){ checkRegDataIU(); }
+
+// вход/регистрация пользователя (проверка правильности ввода данных почта/пароль)
+async function checkRegDataIU()
+{
+	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	var pattern_2 = /^[a-z0-9]{4,20}$/i;
+	var mail = document.querySelector('[nameId="input_reg_mail"]');
+	var pass = document.querySelector('[nameId="input_reg_pass"]');
+	
+	var inf_block = document.querySelector('[nameId="info_reg_1"]');
+	var inf_str_1 = document.querySelector('[nameId="info_reg_1_1"]');
+	var inf_str_2 = document.querySelector('[nameId="info_reg_1_2"]');
+	
+	inf_block.style.display = 'none';
+	inf_str_1.style.display = 'none';
+	inf_str_2.style.display = 'none';
+	
+	var flag_1 = false;
+	var flag_2 = false;
+	
+	mail.value = mail.value.trim();	// удаляем пробелы  
+	pass.value = pass.value.trim();	// удаляем пробелы 
+	
+	// проверка почты
+	if(mail.value != '')
+	{
+		if(pattern_1.test(mail.value))
+		{
+			flag_1 = true;
+		}
+		else
+		{
+			inf_str_1.style.display = 'block';
+			inf_str_1.innerText = 'Не верно указанна почта';			
+		}
+	}
+	else
+	{		
+		inf_str_1.style.display = 'block';
+		inf_str_1.innerText = 'Укажите e-mail';
+	}
+	
+	
+	// проверка пароля
+	if(pass.value != '')
+	{
+		if(pattern_2.test(pass.value))
+		{
+			flag_2 = true;
+		}
+		else
+		{
+			inf_str_2.style.display = 'block';
+			inf_str_2.innerHTML = 'Не верно указан пароль<br>(Только цифры и латинские буквы от 4 до 20 знаков)';			
+		}
+	}		
+	else
+	{		
+		inf_str_2.style.display = 'block';
+		inf_str_2.innerText = 'Укажите пароль';
+	}
+	
+	
+	// данные введены верно
+	if(flag_1 && flag_2)
+	{ 
+		inf_block.style.display = 'none';
+		
+		//console.log();
+		var type = document.querySelector('[nameId="act_reg_1"]').getAttribute("b_type");
+		
+		
+		$.ajax
+		({
+			type: "POST",					
+			url: infProject.path+'components/regUser.php',
+			data: {"type": type, "mail": mail.value, "pass": pass.value},
+			dataType: 'json',
+			success: function(data)
+			{  
+				if(type=='reg_1')	// авторизация пользователя
+				{
+					if(data.success)
+					{
+						infProject.user.id = data.info.id;
+						infProject.user.mail = data.info.mail;
+						infProject.user.pass = data.info.pass;
+
+						document.querySelector('[nameId="reg_content_1"]').style.display = 'block';
+						document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
+
+						getListProject({id: infProject.user.id});
+					}
+					else
+					{
+						if(data.err.desc)
+						{
+							console.log(data.err.desc);
+							inf_str_1.innerHTML = data.err.desc;
+							
+							inf_block.style.display = 'block';
+							inf_str_1.style.display = 'block';
+							inf_str_1.style.display = 'block';
+							inf_str_2.style.display = 'none';													
+						}
+					}
+				}
+				else if(type=='reg_2')	// регистрация нового пользователя
+				{
+					if(data.success)
+					{
+						inf_str_1.innerHTML = "на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)";
+						//inf_str_1.innerHTML = "Вы успешно зарегистрировались";						
+						
+						inf_block.style.display = 'block';
+						inf_str_1.style.display = 'block';
+						inf_str_1.style.display = 'block';
+						inf_str_2.style.display = 'none';												
+					}
+					else
+					{						
+						if(data.err.desc)
+						{
+							console.log(data.err.desc);
+							inf_str_1.innerHTML = data.err.desc;
+							
+							inf_block.style.display = 'block';
+							inf_str_1.style.display = 'block';
+							inf_str_1.style.display = 'block';
+							inf_str_2.style.display = 'none';													
+						}						
+					}
+				}				
+			}
+		});		
+	}
+	else	// данные введены НЕ верно
+	{  
+		inf_block.style.display = 'block';
+	}
+};
+
+	
+
+
 
 

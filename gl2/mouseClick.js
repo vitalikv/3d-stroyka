@@ -130,7 +130,6 @@ function clickRayHit(event)
 		}
 		 
 		if(rayhit) return rayhit;			
-
 	}	
 		
 	
@@ -267,6 +266,20 @@ function clickRayHit(event)
 		}	
 	}
 	
+	// проверяем если объект находится за подложкой, то отменяем выделение
+	if(rayhit)
+	{
+		var floor = infProject.scene.substrate.floor;
+		var fs = floor.map(o => o.plane);
+		var fs = fs.filter(o => o.material.opacity > 0.65);
+		
+		var ray = rayIntersect( event, fs, 'arr' );
+		
+		if(ray.length > 0)
+		{
+			if(ray[0].distance < rayhit.distance) { rayhit = null; }
+		}
+	}
 	
 	return rayhit;
 }
