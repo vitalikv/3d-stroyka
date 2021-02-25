@@ -62,6 +62,8 @@
 			<div class="title_1"><h1><?=$h1?></h1></div>			
 		</div>	
 		
+		<noindex>
+		
 		<div class="flex_1 height100">
 			
 			<div nameId="msDiv_1" style="display: none; position: absolute; left: 50%; top: 50%; border:solid 1px #b3b3b3; background: #fff; padding: 5px 10px; font-family: arial,sans-serif; font-size: 15px; color: #666;">
@@ -70,7 +72,7 @@
 			<div nameId="mainDiv_1" style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>			
 				
-				<noindex>		
+						
 				
 				<? require_once("include/modal_window_3.php"); ?>
 				
@@ -87,13 +89,16 @@
 						<div style="padding-left:10px;">видеоинструкция</div>
 					</a>	
 				</div>
-				</noindex>
+				
 			</div>
+			
 			
 			<? require_once("include/right_panel_1.php"); ?>
 			
 		</div>
-	
+		
+		</noindex>
+		
 	</div>
 	
 	

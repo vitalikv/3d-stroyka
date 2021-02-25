@@ -33,6 +33,9 @@ infProject.elem.mainMenu.m4 = document.querySelector('[nameId="button_load_1"]')
 infProject.elem.mainMenu.m5 = document.querySelector('[nameId="button_save_1"]');
 infProject.elem.mainMenu.m6 = document.querySelector('[nameId="button_help"]');
 infProject.elem.mainMenu.m7 = document.querySelector('[nameId="button_contact"]');
+infProject.elem.mainMenu.m8 = document.querySelector('[nameId="button_reset_pass_1"]');
+infProject.elem.mainMenu.m_bs = document.querySelector('[nameId="bl_inf_regin_s"]');
+infProject.elem.mainMenu.m_bl = document.querySelector('[nameId="bl_inf_regin_l"]');
 
 // контейнеры разделов
 infProject.elem.mainMenu.b3 = document.querySelector('[wwm_1="button_main_menu_reg_1"]');
@@ -40,6 +43,7 @@ infProject.elem.mainMenu.b4 = document.querySelector('[wwm_1="button_load_1"]');
 infProject.elem.mainMenu.b5 = document.querySelector('[wwm_1="button_save_1"]');
 infProject.elem.mainMenu.b6 = document.querySelector('[wwm_1="button_help"]');
 infProject.elem.mainMenu.b7 = document.querySelector('[wwm_1="button_contact"]');
+infProject.elem.mainMenu.b8 = document.querySelector('[wwm_1="button_reset_pass_1"]');
 
 
 // переключаем кнопки разделов
@@ -49,8 +53,9 @@ infProject.elem.mainMenu.m4.onmousedown = function(e){ changeMainMenuUI({el: thi
 infProject.elem.mainMenu.m5.onmousedown = function(e){ changeMainMenuUI({el: this}); } 
 infProject.elem.mainMenu.m6.onmousedown = function(e){ changeMainMenuUI({el: this}); } 
 infProject.elem.mainMenu.m7.onmousedown = function(e){ changeMainMenuUI({el: this}); } 
-	
-
+infProject.elem.mainMenu.m8.onmousedown = function(e){ changeMainMenuUI({el: this}); } 	
+infProject.elem.mainMenu.m_bs.onmousedown = function(e){ changeMainMenuUI({el: this}); }
+infProject.elem.mainMenu.m_bl.onmousedown = function(e){ changeMainMenuUI({el: this}); }
 
 
 // переключаем разделы
@@ -58,11 +63,14 @@ function changeMainMenuUI(cdm)
 {
 	var q = [];
 	
-	q[q.length] = infProject.elem.mainMenu.m3;
-	q[q.length] = infProject.elem.mainMenu.m4;
-	q[q.length] = infProject.elem.mainMenu.m5;
-	q[q.length] = infProject.elem.mainMenu.m6;
-	q[q.length] = infProject.elem.mainMenu.m7;
+	q[q.length] = { butt: infProject.elem.mainMenu.m3, wrap: infProject.elem.mainMenu.b3 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m4, wrap: infProject.elem.mainMenu.b4 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m5, wrap: infProject.elem.mainMenu.b5 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m6, wrap: infProject.elem.mainMenu.b6 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m7, wrap: infProject.elem.mainMenu.b7 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m8, wrap: infProject.elem.mainMenu.b8 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m_bs, wrap: infProject.elem.mainMenu.b3 };
+	q[q.length] = { butt: infProject.elem.mainMenu.m_bl, wrap: infProject.elem.mainMenu.b3 };
 	
 	var b = [];
 	
@@ -71,14 +79,18 @@ function changeMainMenuUI(cdm)
 	b[b.length] = infProject.elem.mainMenu.b5;
 	b[b.length] = infProject.elem.mainMenu.b6;
 	b[b.length] = infProject.elem.mainMenu.b7;
+	b[b.length] = infProject.elem.mainMenu.b8;
 	
-	
+	for ( var i = 0; i < b.length; i++ )
+	{
+		b[i].style.display = 'none';	
+	}
+
+
 	for ( var i = 0; i < q.length; i++ )
 	{
-		if(q[i] == cdm.el) { b[i].style.display = 'block'; continue; }  		
-	
-		b[i].style.display = 'none';	
-	}	
+		if(q[i].butt == cdm.el) { q[i].wrap.style.display = 'block'; break; }  			
+	}		
 }
 
 
@@ -143,7 +155,7 @@ async function getListProject(cdm)
 		
 		json[i] = {id: 0, name: 'Пустой проект'}
 	}
-	
+	console.log(9999, json);
 	for(var i = 0; i < json.length; i++)
 	{				
 		if(json[i].preview) 
@@ -275,70 +287,72 @@ async function checkRegDataIU()
 		//console.log();
 		var type = document.querySelector('[nameId="act_reg_1"]').getAttribute("b_type");
 		
-		
-		$.ajax
-		({
-			type: "POST",					
-			url: infProject.path+'components/regUser.php',
-			data: {"type": type, "mail": mail.value, "pass": pass.value},
-			dataType: 'json',
-			success: function(data)
-			{  
-				if(type=='reg_1')	// авторизация пользователя
-				{
-					if(data.success)
-					{
-						infProject.user.id = data.info.id;
-						infProject.user.mail = data.info.mail;
-						infProject.user.pass = data.info.pass;
+	
+		var url = infProject.path+'components/regUser.php';					
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: 'type='+type+'&mail='+mail.value+'&pass='+pass.value,
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});	
+		if(!response.ok) return;
+		var data = await response.json();
+	
+	
+		if(type=='reg_1')	// авторизация пользователя
+		{
+			if(data.success)
+			{
+				infProject.user.id = data.info.id;
+				infProject.user.mail = data.info.mail;
+				infProject.user.pass = data.info.pass;
 
-						document.querySelector('[nameId="reg_content_1"]').style.display = 'block';
-						document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
+				document.querySelector('[nameId="reg_content_1"]').style.display = 'block';
+				document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 
-						getListProject({id: infProject.user.id});
-					}
-					else
-					{
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.innerHTML = data.err.desc;
-							
-							inf_block.style.display = 'block';
-							inf_str_1.style.display = 'block';
-							inf_str_1.style.display = 'block';
-							inf_str_2.style.display = 'none';													
-						}
-					}
-				}
-				else if(type=='reg_2')	// регистрация нового пользователя
-				{
-					if(data.success)
-					{
-						inf_str_1.innerHTML = "на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)";
-						//inf_str_1.innerHTML = "Вы успешно зарегистрировались";						
-						
-						inf_block.style.display = 'block';
-						inf_str_1.style.display = 'block';
-						inf_str_1.style.display = 'block';
-						inf_str_2.style.display = 'none';												
-					}
-					else
-					{						
-						if(data.err.desc)
-						{
-							console.log(data.err.desc);
-							inf_str_1.innerHTML = data.err.desc;
-							
-							inf_block.style.display = 'block';
-							inf_str_1.style.display = 'block';
-							inf_str_1.style.display = 'block';
-							inf_str_2.style.display = 'none';													
-						}						
-					}
-				}				
+				getListProject({id: infProject.user.id});
 			}
-		});		
+			else
+			{
+				if(data.err.desc)
+				{
+					console.log(data.err.desc);
+					inf_str_1.innerHTML = data.err.desc;
+					
+					inf_block.style.display = 'block';
+					inf_str_1.style.display = 'block';
+					inf_str_2.style.display = 'none';													
+				}
+			}
+		}
+		else if(type=='reg_2')	// регистрация нового пользователя
+		{
+			if(data.success)
+			{
+				inf_str_1.innerHTML = "на вашу почту отправлено письмо<br>зайдите в вашу почту и подтвердите регистрацию<br>(если письмо не пришло посмотрите в папке спам)";
+				//inf_str_1.innerHTML = "Вы успешно зарегистрировались";						
+				
+				inf_block.style.display = 'block';
+				inf_str_1.style.display = 'block';
+				inf_str_2.style.display = 'none';												
+			}
+			else
+			{						
+				if(data.err.desc)
+				{
+					console.log(data.err.desc);
+					inf_str_1.innerHTML = data.err.desc;
+					
+					inf_block.style.display = 'block';
+					inf_str_1.style.display = 'block';
+					inf_str_2.style.display = 'none';													
+				}						
+			}
+		}				
+	
 	}
 	else	// данные введены НЕ верно
 	{  
@@ -347,6 +361,100 @@ async function checkRegDataIU()
 };
 
 	
+
+document.querySelector('[nameId="act_reset_pass"]').onmousedown = function(e){ resetPassRegIU(); }
+
+// сброс пароля
+async function resetPassRegIU()
+{
+	var pattern_1 = /^[a-z0-9_-]+@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/i;
+	var mail = document.querySelector('[nameId="input_reset_pass"]');
+	
+	var inf_block = document.querySelector('[nameId="info_reset_pass_1"]');
+	var inf_str_1 = document.querySelector('[nameId="info_reset_pass_1_1"]');
+	
+	inf_block.style.display = 'none';
+	inf_str_1.style.display = 'none';
+	
+	var flag_1 = false;
+	var flag_2 = false;
+	
+	mail.value = mail.value.trim();	// удаляем пробелы  
+	
+	// проверка почты
+	if(mail.value != '')
+	{
+		if(pattern_1.test(mail.value))
+		{
+			flag_1 = true;
+		}
+		else
+		{
+			inf_str_1.style.display = 'block';
+			inf_str_1.innerText = 'Не верно указанна почта';			
+		}
+	}
+	else
+	{		
+		inf_str_1.style.display = 'block';
+		inf_str_1.innerText = 'Укажите e-mail';
+	}
+		
+	
+	// данные введены верно
+	if(flag_1)
+	{ 
+		inf_block.style.display = 'none';
+		
+		var url = infProject.path+'components/resetPass_1.php';					
+		var response = await fetch(url, 
+		{
+			method: 'POST',
+			body: '&mail='+mail.value,
+			headers: 
+			{	
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 
+			},				
+		});	
+		if(!response.ok) return;
+		var data = await response.json();
+		
+		if(data.success)
+		{
+			inf_str_1.innerHTML = "на вашу почту отправлено письмо<br>зайдите в вашу почту чтобы восстановить пароль<br>(если письмо не пришло посмотрите в папке спам)";
+			//inf_str_1.innerHTML = "Вы успешно зарегистрировались";						
+			
+			inf_block.style.display = 'block';
+			inf_str_1.style.display = 'block';												
+		}
+		else
+		{						
+			if(data.err.desc)
+			{
+				console.log(data.err.desc);
+				inf_str_1.innerHTML = data.err.desc;
+				
+				inf_block.style.display = 'block';
+				inf_str_1.style.display = 'block';												
+			}						
+		}				
+		
+	}
+	else	// данные введены НЕ верно
+	{  
+		inf_block.style.display = 'block';
+	}
+};
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -238,7 +238,7 @@
 	width: auto;
 	height: 20px; 
 	margin: 10px;
-	margin-top: 50px;
+	margin-top: 40px;
 	text-decoration:none; 
 	text-align:center; 
 	padding:11px 11px; 
@@ -281,6 +281,17 @@
 }
 
 
+.button_reset_pass_1
+{
+	margin: auto;
+	width: 200px;
+	text-align: center;
+	font-size: 14px;
+	color: #666;
+	font-family: arial,sans-serif;
+	cursor: pointer;
+	text-decoration: underline;	
+}
 
 
 @media screen and (max-width:850px), screen and (max-device-width:850px) 
@@ -353,7 +364,7 @@
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться. 
 										
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1">
+												<div nameId="bl_inf_regin_l" class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>	
@@ -370,7 +381,7 @@
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
 											<div style="max-width: 350px; margin: auto;">
-												<div class="window_main_menu_button_reg_1 button_gradient_1">
+												<div nameId="bl_inf_regin_s" class="window_main_menu_button_reg_1 button_gradient_1">
 													Авторизоваться
 												</div>	
 											</div>											
@@ -418,13 +429,13 @@
 													<div class="window_main_menu_form_reg_block_1_label">
 														почта
 													</div>											
-													<input class="input_form_reg" type="text" nameId="input_reg_mail" value="mail@mail.ru">
+													<input class="input_form_reg" type="text" nameId="input_reg_mail" value="">
 												</div>
 												<div class="window_main_menu_form_reg_block_1_1">
 													<div class="window_main_menu_form_reg_block_1_label">
 														пароль
 													</div>											
-													<input class="input_form_reg" type="text" nameId="input_reg_pass" value="1111">
+													<input class="input_form_reg" type="text" nameId="input_reg_pass" value="">
 												</div>
 												
 												<div class="window_main_menu_form_reg_block_1_1">
@@ -433,9 +444,13 @@
 															Почта указана
 														</div>
 														<div nameId="info_reg_1_2" style="display: none;">
-															Пароль указана
+															Пароль указан
 														</div>													
 													</div>
+												</div>
+
+												<div class="button_reset_pass_1" nameId="button_reset_pass_1">
+													забыли пароль ?
 												</div>
 												
 												<div class="window_main_menu_button_reg_1 button_gradient_1" b_type="reg_1" nameId="act_reg_1">
@@ -444,10 +459,55 @@
 											</div>																					
 										</div>
 										
-									</div>								
+									</div>																								
+								</div>	
+
+
+
+
+
+								<div wwm_1="button_reset_pass_1" style="display: none;">								
 								
+									<div nameId="reset_pass_content_2" style="display: block;">
+									
+										<div class="window_main_menu_content_1_h1">
+											Восстановление пароля
+										</div>
+										<div class="window_main_menu_form_reg">
+											<div class="window_main_menu_form_reg_block_1">
+												
+												<div style="height: 30px;"></div>
+												
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div class="window_main_menu_form_reg_block_1_label">
+														почта
+													</div>											
+													<input class="input_form_reg" type="text" nameId="input_reset_pass" value="">
+												</div>	
+
+												<div class="window_main_menu_form_reg_block_1_1">
+													<div nameId="info_reset_pass_1" class="wm_reg_12 wm_reg_border_1 wm_reg_text_1" style="display: none;">
+														<div nameId="info_reset_pass_1_1" style="display: none;">
+															Почта указана
+														</div>												
+													</div>
+												</div>												
+												
+												<div class="window_main_menu_button_reg_1 button_gradient_1" nameId="act_reset_pass">
+													Восстановить
+												</div>
+											</div>																					
+										</div>
+										
+									</div>	
+									
+								</div>
+
+
+
+
+
 								
-								</div>								
 								
 								<div wwm_1="button_help" style="display: none;">
 									<div class="window_main_menu_content_1_h1">
@@ -478,7 +538,7 @@
 									</div>								
 									<div class="inf_contact button_gradient_1">
 										<div class="inf_contact_text">
-											otoplenie-doma@mail.ru
+											otoplenie-doma-2@mail.ru
 										</div>
 									</div>		
 								</div>								

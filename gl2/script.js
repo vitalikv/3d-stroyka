@@ -1353,20 +1353,25 @@ function quaternionDirection(dir1)
  
 
 // screenshot
-function saveAsImage() 
+function saveAsImage(cdm) 
 { 
+	if(!cdm) { cdm = {}; }
+	
 	try 
-	{		
+	{	
+		if(cdm.preview) { renderer.setSize( 300, 300 * (w_h/w_w) ); }
 		renderer.antialias = true;
 		renderer.render( scene, camera );
 		
 		var strMime = "image/png"; 
 		var imgData = renderer.domElement.toDataURL(strMime);	
 
+		if(cdm.preview) { renderer.setSize( w_w, w_h ); }
 		renderer.antialias = false;
 		renderer.render( scene, camera );
  
-		openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.png");
+		if(cdm.preview) { return imgData; }
+		else { openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.png"); }		
 	} 
 	catch (e) 
 	{
