@@ -473,46 +473,6 @@ function inputWidthOneWall(cdm)
 
 
 
-
-// изменение высоты всех стен при переключении камеры cameraTop/camera3D 
-function changeAllHeightWall_1(cdm)
-{  
-	if(infProject.scene.array.wall.length == 0) return;
-	
-	var wall = infProject.scene.array.wall[0];
-	
-	var height = cdm.height;
-	
-	var height = checkNumberInput({ value: height, unit: 1, limit: {min: 0.1, max: 5} });
-	
-	if(!height) 
-	{
-		return;
-	}		
-	
-	clickMovePoint_BSP( infProject.scene.array.wall );
-	
-	for ( var i = 0; i < infProject.scene.array.wall.length; i++ )
-	{
-		var v = infProject.scene.array.wall[i].geometry.vertices;
-		
-		v[1].y = height.num;
-		v[3].y = height.num;
-		v[5].y = height.num;
-		v[7].y = height.num;
-		v[9].y = height.num;
-		v[11].y = height.num;
-		infProject.scene.array.wall[i].geometry.verticesNeedUpdate = true;
-		infProject.scene.array.wall[i].geometry.elementsNeedUpdate = true;
-		
-		infProject.scene.array.wall[i].userData.wall.height_1 = Math.round(height.num * 100) / 100;
-	}
-	
-	upLabelPlan_1( infProject.scene.array.wall );
-	clickPointUP_BSP( infProject.scene.array.wall );
-	
-	renderCamera();
-}
 	
 	
 

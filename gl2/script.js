@@ -186,7 +186,6 @@ infProject.project = null;
 infProject.scene.array = resetPop.infProjectSceneArray();
 infProject.scene.substrate = { ruler: [], floor: [], active: null };
 infProject.scene.substrate.ruler = createToolRulerSubstrate();  
-//infProject.scene.substrate.floor[0] = createSubstrate({ pos: {y: 0} });
 infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
 infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
 infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
@@ -1186,28 +1185,8 @@ function clickButton( event )
 	if(intersects.length == 0) return;	
 	
 	if(camera == cameraTop)
-	{ 
-		if(clickO.button == 'create_wall')
-		{
-			clickO.obj = null; 
-			resetClickLastObj({});
-			
-			var point = createPoint( intersects[0].point, 0 );
-			point.position.y = 0;
-			point.userData.point.type = clickO.button; 
-			clickO.move = point;
-
-			if(point.userData.point.type == 'create_zone') { point.userData.point.type = 'create_wall'; }				
-		}
-		else if(clickO.button == 'create_wd_2')
-		{
-			createEmptyFormWD_1({type:'door'});
-		}
-		else if(clickO.button == 'create_wd_3')
-		{
-			createEmptyFormWD_1({type:'window'});
-		}			
-		else if(clickO.button == 'add_lotid')
+	{ 		
+		if(clickO.button == 'add_lotid')
 		{
 			loadObjServer({lotid: clickO.options, cursor: true});
 		}
@@ -1246,20 +1225,8 @@ function clickInterface(cdm)
 	if(cdm)
 	{		
 		deActiveSelected();	
-		
-		if(cdm.button == 'point_1')
-		{
-			clickO.button = 'create_wall';
-		}
-		else if(cdm.button == 'create_wd_2')
-		{
-			clickO.button = 'create_wd_2';
-		}
-		else if(cdm.button == 'create_wd_3')
-		{
-			clickO.button = 'create_wd_3';
-		}		
-		else if(cdm.button == 'add_lotid')
+				
+		if(cdm.button == 'add_lotid')
 		{
 			clickO.button = cdm.button; 
 			clickO.options = cdm.value;					
@@ -1519,7 +1486,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'input_rotate_substrate')
 			{
-				setRotateSubstrate({angle: $('[nameId="input_rotate_substrate"]').val(), set: true});
+				setRotateSubstrate({angle: document.querySelector('[nameId="input_rotate_substrate"]').value, set: true});
 			}
 			else if(infProject.activeInput == 'input_size_substrate')
 			{
@@ -1527,7 +1494,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'rp_height_plane')
 			{
-				setPlanePositionY({value: $('[nameId="rp_height_plane"]').val()});
+				setPlanePositionY({ value: document.querySelector('[nameId="rp_height_plane"]').value });
 			}
 			else if(infProject.activeInput == 'rp_floor_name')
 			{
@@ -1539,7 +1506,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'rp_planeHeight_posY')
 			{
-				setPlaneHeightPositionY({value: $('[nameId="rp_planeHeight_posY"]').val()}); 
+				setPlaneHeightPositionY({ value: document.querySelector('[nameId="rp_planeHeight_posY"]').value }); 
 			}
 			else if(infProject.activeInput == 'object_pos_X' || infProject.activeInput == 'object_pos_Y' || infProject.activeInput == 'object_pos_Z')
 			{

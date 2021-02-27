@@ -261,7 +261,7 @@
 							</label>
 
 							<div class="prew_substrate" style="margin: auto;">
-								<img src="#" id="upload-img" alt=""/>
+								<img src="#" nameId="rp_floor_img" alt=""/>
 							</div>
 							
 							<div>
@@ -295,7 +295,7 @@
 									</div>
 								</div>
 								<div class="flex_1 align_items" style="width: auto;">
-									<input type="text" nameId="input_size_substrate" style="width: 90%; margin:5px 5px;" value=0>
+									<input type="text" nameId="input_size_substrate" style="width: 90%; margin:5px 5px;" value=1>
 								</div>
 							</div>
 							

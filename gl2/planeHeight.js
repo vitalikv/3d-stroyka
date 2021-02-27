@@ -75,6 +75,7 @@ function setPlaneHeightPositionY(cdm)
 	if(!cdm) cdm = {};
 
 	var plane = infProject.tools.heightPl;	
+	var input_height = document.querySelector('[nameId="rp_planeHeight_posY"]');
 	
 	if(cdm.value !== undefined)
 	{
@@ -82,21 +83,19 @@ function setPlaneHeightPositionY(cdm)
 		
 		if(!value)
 		{
-			$('[nameId="rp_planeHeight_posY"]').val( Math.round(plane.position.y*100)/100 );
-			
+			input_height.value = Math.round(plane.position.y*100)/100;			
 			return;			
 		}
 	}
 	else
 	{
-		$('[nameId="rp_planeHeight_posY"]').val( Math.round(plane.position.y*100)/100 );
-		
+		input_height.value = Math.round(plane.position.y*100)/100;		
 		return;
 	}	
 	
 	plane.position.y = Math.round(value.num*100)/100;	
 
-	$('[nameId="rp_planeHeight_posY"]').val( plane.position.y );	
+	input_height.value = plane.position.y;	
 	
 	renderCamera();		
 }

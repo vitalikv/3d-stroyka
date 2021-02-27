@@ -12,6 +12,7 @@ function activeObjRightPanelUI_1(cdm)
 	var elButt_3 = document.querySelector('[nameId="block_gizmo"]');
 	var elButt_4 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
 	var elButt_5 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');		
+	var elButt_6 = document.querySelector('[nameId="rp_bl_wf_tube"]');
 	
 	el.style.display = 'none';
 	bl_object_3d.style.display = 'none';
@@ -20,9 +21,7 @@ function activeObjRightPanelUI_1(cdm)
 	elButt_3.style.display = 'none';
 	elButt_4.style.display = 'none';
 	elButt_5.style.display = 'none';
-
-	$('[nameId="rp_bl_wf_tube"]').hide();
-	//$('[nameId="rp_bl_wf_point"]').hide();	
+	elButt_6.style.display = 'none';		
 	
 	
 	if(!cdm) { cdm = {}; }  
@@ -38,7 +37,7 @@ function activeObjRightPanelUI_1(cdm)
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
-		$('[nameId="rp_bl_wf_tube"]').show();
+		elButt_6.style.display = 'block';
 		elButt_1.style.display = 'block';
 	}			
 	else if(obj.userData.tag == 'obj')

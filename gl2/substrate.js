@@ -350,7 +350,7 @@ function renameFloor(cdm)
 		{ 
 			var el = infProject.tools.plane.el[i]; 
 
-			var el_2 = el[0].querySelector('[nameId="rp_floor_txt_name"]');
+			var el_2 = el.querySelector('[nameId="rp_floor_txt_name"]');
 			el_2.innerText = name;
 			
 			break; 
@@ -368,17 +368,16 @@ function setPlanePositionY(cdm)
 	if(!plane) return;
 	
 	var value = checkNumberInput({ value: cdm.value, unit: 1 });
-	 
+	var input_height = document.querySelector('[nameId="rp_height_plane"]');
+	
 	if(!value) 
 	{
-		$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y*100)/100 );
-		
+		input_height.value = Math.round(plane.position.y*100)/100;		
 		return;
 	}	
 	
 	plane.position.y = Math.round(value.num*100)/100;	
-
-	$('[nameId="rp_height_plane"]').val( plane.position.y );
+	input_height.value = plane.position.y;
 	
 	var ruler = infProject.scene.substrate.ruler;
 	ruler[0].position.y = plane.position.y + 0.01;
@@ -751,12 +750,13 @@ function updateSizeSubstrate(cdm)
 // изменяем размер плана в соответствии с его реальным размером
 function assignSizeSubstrate()
 {
-	var size = $('[nameId="input_size_substrate"]').val();
+	var input_size = document.querySelector('[nameId="input_size_substrate"]');
+	var size = input_size.value;
 	var value = checkNumberInput({ value: size, unit: 1, abs: true, limit: {min: 0.01, max: 1000} });
 	
 	if(!value) 
 	{
-		$('[nameid="input_size_substrate"]').val(0);
+		input_size.value = 1;
 		
 		return;
 	}	
@@ -797,7 +797,7 @@ function assignSizeSubstrate()
 		setPosRotLineRulerSubstrate({ruler: ruler});
 	}
 	
-	$('[nameId="input_size_substrate"]').val( value.num );
+	input_size.value = value.num;
 	
 	setPositionPointSubstrate({plane: plane});
 	
@@ -815,12 +815,12 @@ function setRotateSubstrate(cdm)
 	if(!plane) return;
 	
 	var value = checkNumberInput({ value: cdm.angle, unit: 1 });
+	
+	var input_rotate = document.querySelector('[nameId="input_rotate_substrate"]');
 	 
 	if(!value) 
 	{
-		var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
-		$('[nameId="input_rotate_substrate"]').val( rot );
-		
+		input_rotate.value = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));		
 		return;
 	}	
 	
@@ -833,10 +833,7 @@ function setRotateSubstrate(cdm)
 		plane.rotation.y -= THREE.Math.degToRad(value.num);
 	}	
 	
-	//var rot = new THREE.Euler().setFromQuaternion(plane.quaternion);
-	var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
-
-	$('[nameId="input_rotate_substrate"]').val( rot );
+	input_rotate.value = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
 	
 	setPositionPointSubstrate({plane: plane});
 	
@@ -857,7 +854,7 @@ function setTransparencySubstrate(cdm)
 	plane.material.opacity = value/100;
 	plane.material.needsUpdate = true; 					
 	
-	$('[nameId="input_transparency_substrate"]').val(value);
+	document.querySelector('[nameId="input_transparency_substrate"]').value = value;
 	
 	renderCamera();	
 }

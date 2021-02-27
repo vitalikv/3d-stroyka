@@ -4,38 +4,6 @@ $(document).ready(function(){
 //$('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });		
 
 
-var elemStop = document.querySelectorAll('[ui_1=""]');
-
-elemStop.forEach(function(el) 
-{
-	el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-	el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
-	el.addEventListener('mouseup', function(e) { e.stopPropagation(); });
-});
-
-var elemStop = document.querySelectorAll('[data-action="top_panel_1"]');
-
-elemStop.forEach(function(el) 
-{
-	el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-	el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
-	el.addEventListener('mouseup', function(e) { e.stopPropagation(); });
-});
-
-
-
-
-
-
-  
- 
-
-$('[nameId="showHideWall_1"]').on('mousedown', function(e) { showHideWallHeight_1(); });
-
-
-
-$('[nameId="button_add_plane"]').mousedown(function (e) { createSubstrate(); e.stopPropagation(); }); 
-$('[nameId="button_delete_plane"]').mousedown(function () { deleteSubstrate(); }); 
 
 
 $('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
@@ -61,24 +29,6 @@ $('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({
 $('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
  	
 
-
- 
-
-$('[data-action="wall"]').mousedown(function () { clickInterface({button:'point_1'}); });  
-$('[data-action="create_wd_2"]').mousedown(function () { clickInterface({button:'create_wd_2'}); });
-$('[data-action="create_wd_3"]').mousedown(function () { clickInterface({button:'create_wd_3'}); });
-$('[data-action="grid_show_1"]').mousedown(function () { clickInterface({button:'grid_show_1'}); });
-$('[data-action="grid_move_1"]').mousedown(function () { clickInterface({button:'grid_move_1'}); });
-$('[data-action="grid_link_1"]').mousedown(function () { clickInterface({button:'grid_link_1'}); });
- 				
-
-
-
-$('[link_form]').mousedown(function () 
-{ 
-	createForm({form : 'shape'+$(this).attr("link_form")}); 
-	$('[data-action="modal"]').css({"display":"none"}); 
-}); 
 
 
 
@@ -120,53 +70,37 @@ $('[data-action="modal_window_close_1"]').mousedown(function ()
 
 
 
-//----------------- правая панель
-
-
-
-
-
-$('[nameId="rp_show_hide_planeHeight"]').mousedown(function () { showHidePlaneHeight(); });
-
-//  substrate
-$('#load_substrate_1').change(readURL);	
-$('[nameId="assign_size_substrate"]').mousedown(function () { assignSizeSubstrate(); });
-
-
-$('[nameId="input_rotate_substrate_45"]').mousedown(function () { setRotateSubstrate({angle: 45}); });
-$('[nameId="input_rotate_substrate_90"]').mousedown(function () { setRotateSubstrate({angle: 90}); });
-
-
-$('[nameId="input_transparency_substrate"]').on("input", function() { setTransparencySubstrate({value: $(this).val()}); }); 
-
-
-// загрузка img  с компьютера
-function readURL(e) 
-{
-	if (this.files[0]) 
-	{		
-		if (this.files[0].type == "image/png" || this.files[0].type == "image/jpeg")
-		{
-			var reader = new FileReader();
-			reader.onload = function (e) 
-			{
-				$('#upload-img').attr('src', e.target.result);						
-				
-				setImgCompSubstrate({image: e.target.result});					
-			}				
-
-			reader.readAsDataURL(this.files[0]);  					
-		}				
-	}
-}	 
-//  substrate
-
-
-
-
-//----------------- правая панель
 
 });
+
+
+
+
+//----------------- блокируем действия ->
+
+var elemStop = document.querySelectorAll('[ui_1=""]');
+
+elemStop.forEach(function(el) 
+{
+	el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+	el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
+	el.addEventListener('mouseup', function(e) { e.stopPropagation(); });
+});
+
+var elemStop = document.querySelectorAll('[data-action="top_panel_1"]');
+
+elemStop.forEach(function(el) 
+{
+	el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+	el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
+	el.addEventListener('mouseup', function(e) { e.stopPropagation(); });
+});
+
+//----------------- блокируем действия <-
+
+
+
+
 
 //----------------- верхняя панель ->
 
@@ -184,6 +118,45 @@ infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraV
 //----------------- верхняя панель <-
 
 
+
+
+
+
+//----------------- substrate ->
+
+
+document.querySelector('#load_substrate_1').addEventListener( 'change', readURL, false );
+document.querySelector('[nameId="assign_size_substrate"]').onmousedown = function(){ assignSizeSubstrate(); }
+
+document.querySelector('[nameId="input_rotate_substrate_45"]').onmousedown = function () { setRotateSubstrate({angle: 45}); }
+document.querySelector('[nameId="input_rotate_substrate_90"]').onmousedown = function () { setRotateSubstrate({angle: 90}); }
+
+document.querySelector('[nameId="input_transparency_substrate"]').oninput = function () { setTransparencySubstrate({value: this.value}); }
+
+document.querySelector('[nameId="button_delete_plane"]').onmousedown = function () { deleteSubstrate(); }
+
+
+
+// загрузка img  с компьютера
+function readURL(e) 
+{
+	if (this.files[0]) 
+	{		
+		if (this.files[0].type == "image/png" || this.files[0].type == "image/jpeg")
+		{
+			var reader = new FileReader();
+			reader.onload = function (e) 
+			{
+				document.querySelector('[nameId="rp_floor_img"]').setAttribute('src', e.target.result);						
+				
+				setImgCompSubstrate({image: e.target.result});					
+			}				
+
+			reader.readAsDataURL(this.files[0]);  					
+		}				
+	}
+}	 
+//----------------- substrate <-
 
 
 
@@ -376,11 +349,18 @@ function changeRightMenuUI_2(cdm)
 
 
 var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
-elem.addEventListener('mousedown', function() { switchAddPointOnTube(); });
+elem.addEventListener('mousedown', function() { switchAddPointOnTube(); })
 
 
 
-document.querySelector('[nameId="save_list_obj"]').onmousedown = function(){ saveListTxt(); };
+document.querySelector('[nameId="save_list_obj"]').onmousedown = function(){ saveListTxt(); }
+
+
+
+
+// раздел каталог, нижняя кнопка показывает/скрывает сетку
+document.querySelector('[nameId="rp_show_hide_planeHeight"]').onmousedown = function(){ showHidePlaneHeight(); }
+
 
 //----------------- правая панель <-
 

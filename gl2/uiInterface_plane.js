@@ -6,13 +6,20 @@ function startPlanElemPlus(cdm)
 	var nameId = "rp_plane_3";
 	
 	// добавляем в список 	
-	var str = 
+	var html = 
 	'<div class="flex_1 right_panel_1_1_list_item" nameId="button_add_plane">\
 	<div class="right_panel_1_1_list_item_text"> + </div>\
 	</div>';	
 	
-	$('[nameId="'+nameId+'"]').append(str); 
-	var el = $($('[nameId="'+nameId+'"]')[0].children[$('[nameId="'+nameId+'"]')[0].children.length - 1]);	
+	
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;	
+	
+	var container = document.querySelector('[nameId="rp_plane_3"]');
+	container.append(elem);	
+
+	elem.onmousedown = function(e){ createSubstrate(); e.stopPropagation(); };
 }
 
 
@@ -25,32 +32,34 @@ function addPlaneListUI(cdm)
 	var plane = cdm.plane;
 	var n = infProject.scene.substrate.floor.length - 1;
 	
-	{
-		var str = 
-		'<div class="right_panel_1_1_list_item" uuid="'+plane.uuid+'">\
-			<div class="flex_1">\
-				<div class="right_panel_1_1_list_item_text" nameId="rp_floor_txt_name">'+plane.userData.substrate.nameRus+'</div>\
-				<div class="image_wrap" nameId="butt_img_substrate_1" style="position: absolute; width: 35px; height: 20px; right: 30px;">\
-					<img src="'+infProject.path+'img/f4.png">\
-				</div>\
+	var html = 
+	'<div class="right_panel_1_1_list_item" uuid="'+plane.uuid+'">\
+		<div class="flex_1">\
+			<div class="right_panel_1_1_list_item_text" nameId="rp_floor_txt_name">'+plane.userData.substrate.nameRus+'</div>\
+			<div class="image_wrap" nameId="butt_img_substrate_1" style="position: absolute; width: 35px; height: 20px; right: 30px;">\
+				<img src="'+infProject.path+'img/f4.png">\
 			</div>\
-		</div>';		
-		
-		var el = $(str).appendTo('[nameId="rp_plane_2"]');
-		
-		var n = infProject.tools.plane.o1.length;	
-		infProject.tools.plane.o1[n] = plane;
-		infProject.tools.plane.el[n] = el;
-		
-		el.on('mousedown', function(e){ clickItemFloorUI({el: $(this), type: "general"}); e.stopPropagation(); });
-		
-		//var el_2 = $(el[0].children[0].children[1]);
-		var el_2 = $(el[0].querySelector('[nameId="butt_img_substrate_1"]'));
-		el_2.on('mousedown', function(e){ clickItemFloorUI({el: el, type: "img"}); e.stopPropagation(); });		
-	}	
+		</div>\
+	</div>';
+
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;		
 	
+	var container = document.querySelector('[nameId="rp_plane_2"]');
+	container.append(elem);
 	
-	clickItemFloorUI({el: el, type: "general"});
+	var n = infProject.tools.plane.o1.length;	
+	infProject.tools.plane.o1[n] = plane;
+	infProject.tools.plane.el[n] = elem;
+	
+
+	elem.onmousedown = function(e){ clickItemFloorUI({el: elem, type: "general"}); e.stopPropagation(); };
+
+	var el_2 = elem.querySelector('[nameId="butt_img_substrate_1"]');		
+	el_2.onmousedown = function(e){ clickItemFloorUI({el: elem, type: "img"}); e.stopPropagation(); };
+	
+	clickItemFloorUI({el: elem, type: "general"});
 	
 	renderCamera();
 }
@@ -70,29 +79,35 @@ function clickItemFloorUI(cdm)
 	var el_wrap = document.querySelector('[nameId="block_substrate_wrap"]');
 	var el_b1 = document.querySelector('[nameId="block_substrate_1"]');
 	var el_b2 = document.querySelector('[nameId="block_substrate_2"]');
+	var slider = document.querySelector('[nameId="input_transparency_substrate"]');
+	var input_rotate = document.querySelector('[nameId="input_rotate_substrate"]');
+	var input_height = document.querySelector('[nameId="rp_height_plane"]');
+	var input_floor_name = document.querySelector('[nameId="rp_floor_name"]');
+	var src_floor = document.querySelector('[nameId="rp_floor_img"]');
 	
 	el_wrap.style.display = 'none';
 	el_b1.style.display = 'none';
 	el_b2.style.display = 'none';
 
 
-	$('[nameId="input_transparency_substrate"]').val(100);
-	$('[nameId="input_rotate_substrate"]').val( 0 );
-	$('#upload-img').attr('src', infProject.path+'img/f0.png');
-	$('[nameId="rp_height_plane"]').val( 0 );
-	$('[nameId="rp_floor_name"]').val('Название');	
+	// сбрасываем нстройки по default 
+	slider.value = 100;
+	input_rotate.value = 0;
+	input_height.value = 0;
+	input_floor_name.value = 'Название';
+	src_floor.setAttribute('src', infProject.path+'img/f0.png');
 	
 	// снимаем старые выдиления в UI 
 	for(var i = 0; i < infProject.tools.plane.el.length; i++)
 	{
-		infProject.tools.plane.el[i].css('background-color', '#ffffff');
+		infProject.tools.plane.el[i].style.backgroundColor = '#ffffff';
 	}	
 	
 	if(cdm.el)		// кликнули на пункт в меню
 	{
 		for(var i = 0; i < infProject.tools.plane.el.length; i++)
 		{
-			if(infProject.tools.plane.el[i][0] == cdm.el[0]){ plane = infProject.tools.plane.o1[i]; break; } 
+			if(infProject.tools.plane.el[i] == cdm.el){ plane = infProject.tools.plane.o1[i]; break; } 
 		}		
 		
 		item = cdm.el;
@@ -107,21 +122,17 @@ function clickItemFloorUI(cdm)
 
 	if(texture)
 	{ 
-		$('#upload-img').attr('src', texture.image.src);
+		src_floor.setAttribute('src', texture.image.src);
 	}	
 	
-	$('[nameId="input_transparency_substrate"]').val(plane.material.opacity*100);
-	
-	var rot = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
-	$('[nameId="input_rotate_substrate"]').val( rot );
-
-	$('[nameId="rp_height_plane"]').val( Math.round(plane.position.y*100)/100 );  
+	slider.value = plane.material.opacity * 100;	
+	input_rotate.value = Math.abs(Math.round( THREE.Math.radToDeg(plane.rotation.y) ));
+	input_height.value = Math.round(plane.position.y*100)/100;
+	input_floor_name.value = plane.userData.substrate.nameRus;
 	
 	// выделяем новый пункт на который кликнули 
-	item.css('background-color', infProject.listColor.activeItem_1);
-	var value = item.attr('uuid');	
-	
-	$('[nameId="rp_floor_name"]').val(plane.userData.substrate.nameRus);
+	item.style.backgroundColor = infProject.listColor.activeItem_1;
+		
 	
 	infProject.scene.substrate.active = plane;
 	setStartPositionRulerSubstrate();
