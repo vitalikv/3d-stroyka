@@ -648,7 +648,7 @@ async function saveFile(cdm)
 		var response = await fetch(url, 
 		{
 			method: 'POST',
-			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview='+saveAsImage({preview: true})+'&json='+encodeURIComponent(json),
+			body: 'id='+cdm.id+'&user_id='+infProject.user.id+'&preview='+encodeURIComponent(saveAsImage({preview: true}))+'&json='+encodeURIComponent(json),
 			headers: 
 			{	
 				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' 

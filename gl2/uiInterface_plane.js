@@ -66,11 +66,16 @@ function clickItemFloorUI(cdm)
 	
 	showHideSubstrate_1({point: false, ruler: false});
 	infProject.scene.substrate.active = null;
+
+	var el_wrap = document.querySelector('[nameId="block_substrate_wrap"]');
+	var el_b1 = document.querySelector('[nameId="block_substrate_1"]');
+	var el_b2 = document.querySelector('[nameId="block_substrate_2"]');
 	
-	$('[nameId="block_substrate_wrap"]').hide();
-	$('[nameId="block_substrate_1"]').hide();
-	$('[nameId="block_substrate_2"]').hide();
-	
+	el_wrap.style.display = 'none';
+	el_b1.style.display = 'none';
+	el_b2.style.display = 'none';
+
+
 	$('[nameId="input_transparency_substrate"]').val(100);
 	$('[nameId="input_rotate_substrate"]').val( 0 );
 	$('#upload-img').attr('src', infProject.path+'img/f0.png');
@@ -122,9 +127,10 @@ function clickItemFloorUI(cdm)
 	setStartPositionRulerSubstrate();
 	
 	
-	if(cdm.type == "general") { $('[nameId="block_substrate_1"]').show(); showHideSubstrate_1({point: true, ruler: false}); }
-	if(cdm.type == "img") { $('[nameId="block_substrate_2"]').show(); showHideSubstrate_1({point: true, ruler: true}); }
-	$('[nameId="block_substrate_wrap"]').show();
+	if(cdm.type == "general") { el_b1.style.display = ''; showHideSubstrate_1({point: true, ruler: false}); }
+	if(cdm.type == "img") { el_b2.style.display = ''; showHideSubstrate_1({point: true, ruler: true}); }
+	
+	el_wrap.style.display = '';
 }
 
 

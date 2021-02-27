@@ -102,11 +102,11 @@
 	align-items: center; /* Выравнивание текста по вертикали */
 	justify-content: center; /* Выравнивание текста по горизонтали */
 	
+	position: relative;
+	
 	margin: 35px auto;
-	padding: 10px 0;
-	width: 45%;	
-	max-width: 350px;
-	height: 250px;
+	width: 300px;	
+	height: 280px;
 	
 	font-family: arial,sans-serif;
 	font-size: 18px;
@@ -115,7 +115,33 @@
 	text-align:  center;	
 	
 	border: 1px solid #b3b3b3; 
-	border-radius: 10px;
+	border-radius: 6px;
+	background-color:#f1f1f1;
+	cursor: pointer;
+}
+
+
+.window_main_menu_content_block_2
+{
+	display: flex; /* Флексы */
+	align-items: center; /* Выравнивание текста по вертикали */
+	justify-content: center; /* Выравнивание текста по горизонтали */
+	
+	position: relative;
+	
+	margin: 35px auto;
+	padding: 10px;
+	width: 300px;	
+	height: auto;
+	
+	font-family: arial,sans-serif;
+	font-size: 18px;
+	color: #666;
+	text-decoration: none;
+	text-align:  center;	
+	
+	border: 1px solid #b3b3b3; 
+	border-radius: 6px;
 	background-color:#f1f1f1;
 	cursor: pointer;
 }
@@ -251,6 +277,12 @@
 	color:#737373; 
 
 	cursor: pointer;
+}
+
+.inf_butt_youtube_1
+{
+	position: relative;
+	width: 50px;	
 }
 
 .inf_contact
@@ -515,18 +547,23 @@
 									</div>								
 									<div class="modal_wind_2" style="margin: 30px;">
 										Приветствуем.<br> 
-										Здесь вы сможете нарисовать и подсчитать количество труб для водяных полов в онлайн режиме. 
-										Эта программа создана, чтобы простой человек без специальных знаний мог быстро спроектировать теплый пол для загородного или частного дома.
+										Здесь вы сможете спроектировать систему отопления в 3D. Для большего представлении о возможности программы, предлагаем ознакомится с видео. 
 									</div>
 									<div class="modal_wind_2" style="margin: 70px 30px 30px 30px;">
-										Посмотрите короткое видео, как пользоваться программой:
+										<div style="text-align:center;">Посмотрите видео, как пользоваться программой:</div>
 
 										<div class="flex_1">
-											<a href="https://www.youtube.com/watch?v=rqCZYTKqfIE" class="button_youtube_1 button_gradient_1" target="_blank">
-												<img src="<?=$path?>/img/you_1.jpg">
+											<a href="https://youtu.be/kFdMB4p7gbU" class="window_main_menu_content_block_2" target="_blank">
+												<img src="<?=$path?>/img/you_1.jpg" style="width: 100%;">
+												<div style="position: absolute;">
+													<img src="<?=$path?>/img/button_youtube.png" class="inf_butt_youtube_1">
+												</div>
 											</a>					
-											<a href="https://www.youtube.com/watch?v=DQl4HWaDiKc" class="button_youtube_1 button_gradient_1" target="_blank">
-												<img src="<?=$path?>/img/you_2.jpg">
+											<a href="https://youtu.be/Sg86NEGOj7I" class="window_main_menu_content_block_2" target="_blank">
+												<img src="<?=$path?>/img/you_2.jpg" style="width: 100%;">
+												<div style="position: absolute;">
+													<img src="<?=$path?>/img/button_youtube.png" class="inf_butt_youtube_1">
+												</div>												
 											</a>											
 										</div>					
 									</div>		
