@@ -150,8 +150,11 @@ async function getListProject(cdm)
 	var html_save = '';
 	
 	var arr = [];
+	var count = 1;
 	
-	for(var i = 0; i < 1; i++)
+	if(infProject.user.status){ if(infProject.user.status == 'admin'){ count = 5; } }
+	
+	for(var i = 0; i < count; i++)
 	{
 		if(json[i]) { arr[arr.length] = json[i]; }
 		else { arr[arr.length] = {id: 0, name: 'Пустой проект'}; }	
@@ -321,7 +324,8 @@ async function checkRegDataIU()
 				infProject.user.id = data.info.id;
 				infProject.user.mail = data.info.mail;
 				infProject.user.pass = data.info.pass;
-
+				infProject.user.status = data.info.status;
+				
 				document.querySelector('[nameId="reg_content_1"]').style.display = 'block';
 				document.querySelector('[nameId="reg_content_2"]').style.display = 'none';
 

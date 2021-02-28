@@ -51,7 +51,7 @@
 		require_once("admin/obj/menu_fbx.php");
 	} ?>
 	
-	<div class="frame">
+	<div class="frame" nameId="frameG">
 			
 		<div class="flex_1 top_panel_1 button_gradient_1" data-action ='top_panel_1'>
 			<div class="go_home align_items" nameId="butt_main_menu">

@@ -93,6 +93,10 @@
 {
 	display: -webkit-box;
 	display: flex;	
+	
+	position: absolute;
+	right: 0;
+	left: 0;	
 }
 
 
@@ -385,7 +389,7 @@
 								<div class="window_main_menu_content_1_item" nameId="button_help">Видеоинструкция</div>
 								<div class="window_main_menu_content_1_item" nameId="button_contact">Контакты</div>
 							</div>
-							<div class="window_main_menu_content_1_column">
+							<div class="window_main_menu_content_1_column" style="position: relative;">
 								
 								<div wwm_1="button_load_1" style="display: none;"> 
 									<div class="window_main_menu_content_1_h1">

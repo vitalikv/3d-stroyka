@@ -115,7 +115,10 @@ function createSubstrate(cdm)
 {
 	if(!cdm) { cdm = {}; }
 	
-	if(infProject.scene.substrate.floor.length > 4) return;	
+	var count = 3;
+	if(infProject.user.status){ if(infProject.user.status == 'admin'){ count = 5; } }
+	
+	if(infProject.scene.substrate.floor.length >= count) return;	
 	
 	var material = new THREE.MeshPhongMaterial({ color: 0xcccccc, transparent: true, opacity: 1, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1, lightMap : lightMap_1 });
 	var obj = new THREE.Mesh( createGeometryCube(5, 0.005, 5), material );
@@ -158,20 +161,21 @@ function createSubstrate(cdm)
 	var n = infProject.scene.substrate.floor.length;
 	infProject.scene.substrate.floor[n] = {plane: obj, point: p};
 	
-	if(cdm.scale)	// размер подложки
+	if(cdm.scale)	// подложка загружается из сохраненного проекта (не меняем размер подложки)
 	{
 		updateSizeSubstrate({obj: obj, size: {x: cdm.scale.x/2, z: cdm.scale.z/2}});
-		
-		if(cdm.img)		// есть сохраненные изображения
-		{
-			setImgCompSubstrate({obj: obj, image: cdm.img, no_size: true});
+		obj.material.userData.imgUser = true;
+	console.log(555, material.userData);	
+		if(cdm.img)		 // с изображением
+		{			
+			setImgCompSubstrate({obj: obj, image: cdm.img});
 		}
-		else
+		else	// без изображения
 		{
 			setImgUrlSubstrate({obj: obj, img: 'img/lightMap_1.png', scale: cdm.scale});
 		}		
 	}
-	else
+	else	// новая подложка созданная из интрефейса
 	{
 		setImgUrlSubstrate({obj: obj, img: 'img/lightMap_1.png'});
 	}
@@ -391,6 +395,97 @@ function setPlanePositionY(cdm)
 
 
 
+// загрузка img  с компьютера
+function readURL(e) 
+{
+	if (this.files[0]) 
+	{	
+		var success = true;
+		var err = {size: null, type: null};
+		var sizeImg = 500;
+		
+		if(infProject.user.status) { if(infProject.user.status == 'admin'){ sizeImg = 1000; } }	
+		
+		if(this.files[0].type == "image/png" || this.files[0].type == "image/jpeg"){}
+		else { err.type = 'изображение должно быть формата png или jpeg'; success = false; }
+		
+		if(bytesToSize(this.files[0].size) < sizeImg){}
+		else { err.type = 'изображение должно быть меньше 200кб'; success = false; }
+
+		if(success)
+		{			
+			var reader = new FileReader();
+			reader.onload = function (e) 
+			{
+				document.querySelector('[nameId="rp_floor_img"]').setAttribute('src', e.target.result);										
+				setImgCompSubstrate({image: e.target.result});					
+			}				
+			reader.readAsDataURL(this.files[0]);  					
+		}
+		else
+		{
+			var arrTxt = [];
+			
+			if(err.size) { arrTxt[arrTxt.length] = err.size; }
+			if(err.type) { arrTxt[arrTxt.length] = err.type; }
+			
+			crElWarning_1({title: 'ошибка', arrTxt: arrTxt});
+		}
+		
+	}
+}	
+
+// конвертируем размер из байтов в KB
+function bytesToSize(bytes) 
+{
+   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+   if (bytes == 0) return '0 Byte';
+   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+   return Math.round(bytes / Math.pow(1024, i), 2);
+}
+
+
+// создаем сообщение с предупреждением 
+function crElWarning_1(cdm)
+{
+	var arrTxt = cdm.arrTxt;
+	var title = (cdm.title) ? cdm.title : null;
+	var txt = '';
+	
+	if(title)
+	{
+		title = '<div style="font-size: 18px; font-family: arial,sans-serif; color: #222; text-align: center; padding: 10px 30px;">'+title+'</div>';
+	}
+	
+	for (var i = 0; i < arrTxt.length; i++)
+	{
+		txt += '<div style="font-size: 14px; font-family: arial,sans-serif; color: #666; text-align: center; padding: 10px 30px;">'+arrTxt[i]+'</div>';
+	}
+	
+	var html = 
+	`<div style="position: fixed; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.5); z-index: 100;">
+		<div style="display: flex; align-items: center; justify-content: center; width: 400px; height: 200px; background: #fff; border-radius: 6px; cursor: pointer;">
+			<div>
+				${title}
+				${txt}
+			</div>
+		</div>
+	</div>`;
+	
+	
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;	
+
+	var container = document.querySelector('[nameId="frameG"]');
+	container.append(elem);
+
+	elem.onmousedown = function(e){ elem.remove(); e.stopPropagation(); };
+}
+
+
+
+
 // устанавливаем текстуру по ссылке
 function setImgUrlSubstrate(cdm)
 {
@@ -443,7 +538,7 @@ function setImgUrlSubstrate(cdm)
 		
 		material.map = texture; 
 		material.lightMap = lightMap_1;
-		material.needsUpdate = true; 					
+		material.needsUpdate = true; 
 		
 		renderCamera();
 	});			
@@ -460,6 +555,7 @@ function setImgCompSubstrate(cdm)
 	
 	var obj = (cdm.obj) ? cdm.obj : infProject.scene.substrate.active;	
 	if(!obj) return;
+	 
 
 	image.onload = function() 
 	{
@@ -474,7 +570,7 @@ function setImgCompSubstrate(cdm)
 		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();		
 			
 		
-		if(cdm.no_size)
+		if(material.userData.imgUser)	// не меняем размер подложки
 		{
 			var x = (Math.abs(obj.geometry.boundingBox.max.x) + Math.abs(obj.geometry.boundingBox.min.x));
 			var z = (Math.abs(obj.geometry.boundingBox.max.z) + Math.abs(obj.geometry.boundingBox.min.z));				
@@ -504,10 +600,18 @@ function setImgCompSubstrate(cdm)
 		material.map = texture; 
 		material.lightMap = lightMap_1;
 		material.needsUpdate = true; 					
-		//console.log(image);		
+				
 		//setTransparencySubstrate({value: 100});
 		
 		obj.userData.substrate.img = true; 
+		
+		// получаем размеры img в кб
+		if(1==2)
+		{
+			var base64str = image.src.substr(22);
+			var decoded = atob(base64str);	
+			console.log(image, bytesToSize(decoded.length));				
+		}
 		
 		renderCamera();
 	};

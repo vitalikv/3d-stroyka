@@ -532,7 +532,10 @@ function getJsonGeometry()
 		
 		subs[i].nameRus = plane.userData.substrate.nameRus;
 		
-		if(plane.userData.substrate.img)
+		var saveImg = false;
+		if(infProject.user.status) { if(infProject.user.status == 'admin'){ saveImg = true; } }
+		
+		if(plane.userData.substrate.img && saveImg)
 		{ 
 			subs[i].img = plane.material.map.image.src;
 		}

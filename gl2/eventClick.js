@@ -137,25 +137,7 @@ document.querySelector('[nameId="button_delete_plane"]').onmousedown = function 
 
 
 
-// загрузка img  с компьютера
-function readURL(e) 
-{
-	if (this.files[0]) 
-	{		
-		if (this.files[0].type == "image/png" || this.files[0].type == "image/jpeg")
-		{
-			var reader = new FileReader();
-			reader.onload = function (e) 
-			{
-				document.querySelector('[nameId="rp_floor_img"]').setAttribute('src', e.target.result);						
-				
-				setImgCompSubstrate({image: e.target.result});					
-			}				
-
-			reader.readAsDataURL(this.files[0]);  					
-		}				
-	}
-}	 
+ 
 //----------------- substrate <-
 
 

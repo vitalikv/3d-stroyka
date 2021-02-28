@@ -57,6 +57,7 @@ $infProject['user'] = [];
 $infProject['user']['id'] = null;
 $infProject['user']['mail'] = null;
 $infProject['user']['pass'] = null;
+$infProject['user']['status'] = null;
 
 $infProject['settings']['project'] = '';
 $infProject['settings']['height'] = 2.5;
