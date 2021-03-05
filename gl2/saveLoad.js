@@ -532,6 +532,7 @@ function getJsonGeometry()
 		
 		subs[i].nameRus = plane.userData.substrate.nameRus;
 		
+		// если есть права админа, то можно сохранить img в БД
 		var saveImg = false;
 		if(infProject.user.status) { if(infProject.user.status == 'admin'){ saveImg = true; } }
 		
@@ -620,6 +621,28 @@ function saveWindows(wall)
 
 async function saveFile(cdm) 
 { 
+	var lengthTube = infProject.user.sum.tube;
+	var countObj = infProject.user.sum.obj;
+	
+	var success = true;
+	var err = {obj: null, tube: null};
+	
+	var limit = { obj: 200, tube: 150 }
+	if(countObj > limit.obj) { err.obj = 'лимит на кол-во объектов: '+limit.obj+'шт'; success = false; }
+	if(lengthTube > limit.tube) { err.tube = 'лимит на общую длину труб: '+limit.tube+'м'; success = false; }
+	
+	if(!success)
+	{
+		var html = `<div style="color: #ff0000; margin-bottom: 10px;">Проект НЕ сохранен</div>`;
+		
+		if(err.tube){ html += `<div style="color: #ff0000;">${err.tube}</div>`; }
+		if(err.obj){ html += `<div style="color: #ff0000;">${err.obj}</div>`; }		
+		
+		var el_err_inf = document.querySelector('[nameId="wm_save_inf_project_err"]');
+		el_err_inf.innerHTML = html;
+		
+		return false;
+	}
 	
 	var json = JSON.stringify( getJsonGeometry() );
 	
@@ -640,6 +663,8 @@ async function saveFile(cdm)
 		var json = await response.json();
 
 		console.log(json);
+		
+		return true;
 	}
 	
 	
@@ -647,7 +672,7 @@ async function saveFile(cdm)
 	{
 		// сохраняем в бд
 		var url = infProject.path+'components/saveSql.php';			
-		
+		 
 		var response = await fetch(url, 
 		{
 			method: 'POST',
@@ -663,6 +688,7 @@ async function saveFile(cdm)
 		
 		if(cdm.upUI) { getListProject({id: infProject.user.id}); }		// обновляем меню сохрание проектов		
 		
+		return true;
 	}
 	
 }

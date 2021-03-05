@@ -100,6 +100,24 @@
 }
 
 
+.wm_save_inf_project
+{
+	display: flex;
+	flex-direction: column;
+	-webkit-flex-direction: column;	
+	align-items: center;
+	justify-content: center;
+	margin: 35px auto 0 auto;
+	width: 300px;
+	height: 180px;
+	font-family: arial,sans-serif;
+	font-size: 18px;
+	color: #666;
+	text-decoration: none;
+	text-align: center;
+}
+
+
 .window_main_menu_content_block_1
 {
 	display: flex; /* Флексы */
@@ -120,6 +138,7 @@
 	
 	border: 1px solid #b3b3b3; 
 	border-radius: 6px;
+	box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #fff;
 	background-color:#f1f1f1;
 	cursor: pointer;
 }
@@ -146,6 +165,7 @@
 	
 	border: 1px solid #b3b3b3; 
 	border-radius: 6px;
+	box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #fff;
 	background-color:#f1f1f1;
 	cursor: pointer;
 }
@@ -412,7 +432,7 @@
 									<div class="window_main_menu_content_1_h1">
 										Сохранить
 									</div>
-									<div class="window_main_menu_content_1_wrap_1" nameId="wm_list_save">
+									<div nameId="wm_list_save">
 										<div class="wm_reg_13 wm_reg_border_1 wm_reg_text_1">
 											Чтобы  сохранить или загрузить проект, вам нужно авторизоваться.
 
@@ -422,6 +442,13 @@
 												</div>	
 											</div>											
 										</div>										
+									</div>
+									
+									<div class="wm_save_inf_project" nameId="wm_save_inf_project" style="display: none;">
+										<div style="margin-bottom: 10px;">В вашем проекте:</div>
+										<div nameId="wm_save_inf_project_b1"></div>
+										<div nameId="wm_save_inf_project_b2"></div>
+										<div nameId="wm_save_inf_project_err" style="margin-top: 20px;"></div>
 									</div>
 								</div>
 								

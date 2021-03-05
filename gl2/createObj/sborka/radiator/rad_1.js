@@ -212,8 +212,8 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	
 	
 	
-	var container = document.body.querySelector('[list_ui="catalog"]');
-	//var container = document.body.querySelector('[valueId="sborka_rad_1"]');
+	//var container = document.body.querySelector('[list_ui="catalog"]');
+	var container = document.body.querySelector('[valueId="sborka_rad_1"]');
 	
 	container.append(elem);
 }

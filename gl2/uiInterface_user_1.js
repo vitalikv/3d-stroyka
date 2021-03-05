@@ -23,7 +23,7 @@ infProject.elem.mainMenu.wind.onmousedown = function(e){ e.stopPropagation(); }
 
 // открываем меню 
 infProject.elem.mainMenu.m1 = document.querySelector('[nameId="butt_main_menu"]');
-infProject.elem.mainMenu.m1.onmousedown = function(e){ infProject.elem.mainMenu.g.style.display = 'block'; } 
+infProject.elem.mainMenu.m1.onmousedown = function(e){ infProject.elem.mainMenu.g.style.display = 'block'; getCountObjTube(); } 
 
 
 // кнопки разделов
@@ -181,8 +181,8 @@ async function getListProject(cdm)
 		}
 
 
-		html_save += `<div class="window_main_menu_content_block_1" projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
-		html_load += `<div class="window_main_menu_content_block_1" projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
+		html_save += `<div class="window_main_menu_content_block_1" style='background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
+		html_load += `<div class="window_main_menu_content_block_1" style='background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
 	}
 
 	var b_load = document.querySelector('[nameId="wm_list_load"]');
@@ -204,15 +204,17 @@ async function getListProject(cdm)
 		el.addEventListener('mousedown', function(e) { clickButtonSaveProjectUI(this); });
 	});		
 	
-
+	document.querySelector('[nameId="wm_save_inf_project"]').style.display = '';
 }
 
 
 
 // кликнули на кнопку сохранить проекта
-function clickButtonSaveProjectUI(el)
+async function clickButtonSaveProjectUI(el)
 {
-	saveFile({id: el.attributes.projectid.value, upUI: true}); 
+	var result = await saveFile({id: el.attributes.projectid.value, upUI: true}); 
+	
+	if(!result) return;
 	
 	infProject.elem.mainMenu.g.style.display = 'none';
 }
@@ -465,7 +467,30 @@ async function resetPassRegIU()
 
 
 
-
+function getCountObjTube()
+{
+	var lengthTube = 0;	
+	
+	for ( var i = 0; i < infProject.scene.array.tube.length; i++ )
+	{
+		var tube = infProject.scene.array.tube[i];		
+		lengthTube += tube.userData.wf_tube.length;		
+	}
+	
+	var countObj = infProject.scene.array.obj.length;
+	
+	
+	document.querySelector('[nameId="wm_save_inf_project_b1"]').innerText = 'общая длина труб: '+lengthTube+'м';
+	document.querySelector('[nameId="wm_save_inf_project_b2"]').innerText = 'количество объектов: '+countObj+'шт';
+	
+	infProject.user.sum.tube = lengthTube;
+	infProject.user.sum.obj = countObj;
+	
+	console.log('tube: '+lengthTube+'m', 'obj: '+ countObj);
+	
+	document.querySelector('[nameId="wm_save_inf_project_err"]').innerHTML = '';
+		
+}
 
 
 
