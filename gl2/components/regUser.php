@@ -7,7 +7,7 @@ $type = trim($_POST['type']);
 $mail = trim($_POST['mail']); 
 $pass = trim($_POST['pass']); 
 $date = date("Y-m-d-G-i");
-
+$time = time();
 
 
 // проверка mail на правильность
@@ -85,13 +85,15 @@ if($type == 'reg_2')
 	}
 	else		// mail в базе нет, можно записывть нового пользователя  
 	{
-		$sql = "INSERT INTO user (pass, mail, date, token) VALUES ( :pass, :mail, :date, :token)";
+		$sql = "INSERT INTO user (pass, mail, date, token, status, date_cr) VALUES ( :pass, :mail, :date, :token, :status, :date_cr)";
 
 		$r = $db->prepare($sql);
 		$r->bindValue(':pass', $pass);
 		$r->bindValue(':mail', $mail);
 		$r->bindValue(':date', $date);
 		$r->bindValue(':token', $token);
+		$r->bindValue(':status', 'user');
+		$r->bindValue(':date_cr', $time);
 		$r->execute();
 
 		$count = $r->rowCount();
@@ -126,7 +128,7 @@ function sendMess($inf)
 	//$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai";
 	$mail_form = "Content-type:text/html; Charset=utf-8\r\nFrom:mail@".$_SERVER['HTTP_HOST'];
 	
-	$arrayTo = array($inf['mail'].', otoplenie-doma@mail-2.ru');
+	$arrayTo = array($inf['mail'].', otoplenie-doma-2@mail.ru');
 	$email = implode(",", $arrayTo);
 	
 	$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];

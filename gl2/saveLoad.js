@@ -627,7 +627,9 @@ async function saveFile(cdm)
 	var success = true;
 	var err = {obj: null, tube: null};
 	
-	var limit = { obj: 200, tube: 150 }
+	var limit = { obj: 200, tube: 150 };
+	if(infProject.user.status){ if(infProject.user.status == 'admin'){ limit = { obj: 2000, tube: 1500 }; } }
+	
 	if(countObj > limit.obj) { err.obj = 'лимит на кол-во объектов: '+limit.obj+'шт'; success = false; }
 	if(lengthTube > limit.tube) { err.tube = 'лимит на общую длину труб: '+limit.tube+'м'; success = false; }
 	

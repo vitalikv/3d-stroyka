@@ -252,7 +252,7 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	
 	if(radLotId)
 	{
-		o.rad = await loadObjServer({lotid: radLotId, notArray: notArray});
+		o.rad = await loadObjServer({lotid: radLotId, pos: pos0, notArray: notArray});
 	}
 	else
 	{
@@ -260,18 +260,19 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	}
 	
 	//return o;
-
+	var pos0 = new THREE.Vector3();
+	
 	if(inf.typeRad == 'st')
 	{		
-		o.r_vozd = await loadObjServer({lotid: 451, notArray: notArray});	
-		o.r_zagl = await loadObjServer({lotid: 452, notArray: notArray});		
+		o.r_vozd = await loadObjServer({lotid: 451, pos: pos0, notArray: notArray});	
+		o.r_zagl = await loadObjServer({lotid: 452, pos: pos0, notArray: notArray});		
 	}
 	else
 	{
-		o.r_per1 = await loadObjServer({lotid: 18, notArray: notArray});
-		o.r_vozd = await loadObjServer({lotid: 21, notArray: notArray});	
-		o.r_per2 = await loadObjServer({lotid: 18, notArray: notArray});
-		o.r_zagl = await loadObjServer({lotid: 20, notArray: notArray});				
+		o.r_per1 = await loadObjServer({lotid: 18, pos: pos0, notArray: notArray});
+		o.r_vozd = await loadObjServer({lotid: 21, pos: pos0, notArray: notArray});	
+		o.r_per2 = await loadObjServer({lotid: 18, pos: pos0, notArray: notArray});
+		o.r_zagl = await loadObjServer({lotid: 20, pos: pos0, notArray: notArray});				
 	}
 
 
@@ -327,8 +328,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		kran1[1] = 441;	
 	}
 	
-	if(kran1[0]) o.reg_kran_1 = await loadObjServer({lotid: kran1[0], notArray: notArray});
-	if(kran1[1]) o.reg_kran_2 = await loadObjServer({lotid: kran1[1], notArray: notArray});
+	if(kran1[0]) o.reg_kran_1 = await loadObjServer({lotid: kran1[0], pos: pos0, notArray: notArray});
+	if(kran1[1]) o.reg_kran_2 = await loadObjServer({lotid: kran1[1], pos: pos0, notArray: notArray});
 	
 	// [0.016, 0.020, 0.026].findIndex(item => item == 0.020);
 	var ind = inf.list[inf.typePipe].t.findIndex(item => item == inf.pipe[inf.typePipe]);	// получаем index, трубы которая выбрана  	
@@ -341,23 +342,23 @@ async function getObjectsSborkaRad_1(cdm, dp)
 		if(!Array.isArray(lotid)){ var lotid1 = lotid; var lotid2 = lotid; }
 		else { var lotid1 = lotid[0]; var lotid2 = lotid[1]; }
 		
-		o.mpl_pereh_1 = await loadObjServer({lotid: lotid1, notArray: notArray});
-		o.mpl_pereh_2 = await loadObjServer({lotid: lotid2, notArray: notArray});		
+		o.mpl_pereh_1 = await loadObjServer({lotid: lotid1, pos: pos0, notArray: notArray});
+		o.mpl_pereh_2 = await loadObjServer({lotid: lotid2, pos: pos0, notArray: notArray});		
 	}
 	
 	
 	if(inf.list[inf.typePipe].obj.tr1)
 	{
 		var lotid = inf.list[inf.typePipe].obj.tr1[ind];
-		o.troin_1 = await loadObjServer({lotid: lotid, notArray: notArray});
-		o.troin_2 = await loadObjServer({lotid: lotid, notArray: notArray});	
+		o.troin_1 = await loadObjServer({lotid: lotid, pos: pos0, notArray: notArray});
+		o.troin_2 = await loadObjServer({lotid: lotid, pos: pos0, notArray: notArray});	
 	}
 	
 	if(inf.list[inf.typePipe].obj.ug1)
 	{
 		var lotid = inf.list[inf.typePipe].obj.ug1[ind];
-		o.ugol_1 = await loadObjServer({lotid: lotid, notArray: notArray});
-		o.ugol_2 = await loadObjServer({lotid: lotid, notArray: notArray});	
+		o.ugol_1 = await loadObjServer({lotid: lotid, pos: pos0, notArray: notArray});
+		o.ugol_2 = await loadObjServer({lotid: lotid, pos: pos0, notArray: notArray});	
 	}	
 	
 	// поворачиваем объекты и узнаем world position у разъемов этих объектов
