@@ -123,6 +123,8 @@
 	display: flex; /* Флексы */
 	align-items: center; /* Выравнивание текста по вертикали */
 	justify-content: center; /* Выравнивание текста по горизонтали */
+	flex-direction: column;
+	-webkit-flex-direction: column;	
 	
 	position: relative;
 	

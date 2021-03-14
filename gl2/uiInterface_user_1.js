@@ -167,16 +167,16 @@ async function getListProject(cdm)
 		
 		if(arr[i].preview) 
 		{
-			src_1 = `
-			<img src="${arr[i].preview}"> 
-			<div style='position: absolute; top: 4px;'>${arr[i].name}</div>
-			<div style='position: absolute; bottom: 4px;'>сохранить</div>
+			src_1 = `			 
+			<div style='margin: auto;'>${arr[i].name}</div>
+			<img src="${arr[i].preview}" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;">
+			<div style='margin: auto;'>сохранить</div>
 			`;
 			
 			src_2 = `
-			<img src="${arr[i].preview}"> 
-			<div style='position: absolute; top: 4px;'>${arr[i].name}</div>
-			<div style='position: absolute; bottom: 4px;'>загрузить</div>
+			<div style='margin: auto;'>${arr[i].name}</div>
+			<img src="${arr[i].preview}" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;"> 			
+			<div style='margin: auto;'>загрузить</div>
 			`;			
 		}
 
@@ -184,6 +184,7 @@ async function getListProject(cdm)
 		html_save += `<div class="window_main_menu_content_block_1" style='background: #f0ebd1;' projectId="${arr[i].id}" nameId="save_pr_1">${src_1}</div>`;	
 		html_load += `<div class="window_main_menu_content_block_1" style='background: #d1d9f0;' projectId="${arr[i].id}" nameId="load_pr_1">${src_2}</div>`;
 	}
+	
 
 	var b_load = document.querySelector('[nameId="wm_list_load"]');
 	var b_save = document.querySelector('[nameId="wm_list_save"]');
@@ -202,7 +203,25 @@ async function getListProject(cdm)
 	arrSaveEl.forEach(function(el) 
 	{
 		el.addEventListener('mousedown', function(e) { clickButtonSaveProjectUI(this); });
-	});		
+	});	
+
+
+	var html = 
+	`<a href="https://youtu.be/fLNu1nxrKp8" class="window_main_menu_content_block_1" style="background: #fff;" target="_blank">
+		<div style="margin: auto;">видео</div>
+		<img src="${infProject.path}img/you_3.jpg" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;">
+		<img src="${infProject.path}img/button_youtube.png" style="position: absolute; width: 50px;">
+		<div style="margin: auto;">сохранение/загрузка проекта</div>	
+	</a>`;
+	
+
+
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;	
+	
+	b_save.style.display = 'flex';
+	b_save.append(elem);		
 	
 	document.querySelector('[nameId="wm_save_inf_project"]').style.display = '';
 }
