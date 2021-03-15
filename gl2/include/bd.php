@@ -74,7 +74,8 @@ $infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 $infProject['scene'] = [ 'tool' => [] ];
 $infProject['scene']['load'] = '';
 $infProject['elem']['test'] = '';
-
+$infProject['sleshUrl']['http'] = 'http://';
+$infProject['sleshUrl']['https'] = 'https://';
 
 
 if($url == '/redactor/heating')

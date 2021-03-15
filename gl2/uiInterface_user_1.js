@@ -207,7 +207,7 @@ async function getListProject(cdm)
 
 
 	var html = 
-	`<a href="https://youtu.be/fLNu1nxrKp8" class="window_main_menu_content_block_1" style="background: #fff;" target="_blank">
+	`<a href="${infProject.sleshUrl.https}youtu.be/fLNu1nxrKp8" class="window_main_menu_content_block_1" style="background: #fff;" target="_blank">
 		<div style="margin: auto;">видео</div>
 		<img src="${infProject.path}img/you_3.jpg" style="display: block; width: 100%; margin: auto; -o-object-fit: contain; object-fit: contain;">
 		<img src="${infProject.path}img/button_youtube.png" style="position: absolute; width: 50px;">
