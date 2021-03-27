@@ -15,7 +15,7 @@ function activeElemProject_1()
 }
 
 
-// кликнули на кнопку
+// собираем настройки для вывода списка
 function settingListUsers(cdm)
 {
 	if(!cdm) cdm = {};
@@ -92,7 +92,7 @@ console.log(json);
 	var listItem = json.list;
 	
 	
-
+	// показываем список
 	var container_1 = document.body.querySelector('[nameId="userList"]');
 	container_1.innerHTML = '';
 	
@@ -118,6 +118,7 @@ console.log(json);
 	}		
 
 
+	// постраничная навигация
 	var container_2 = document.body.querySelector('[nameId="listPage"]');
 	container_2.innerHTML = '';
 	

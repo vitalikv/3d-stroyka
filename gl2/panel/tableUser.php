@@ -56,7 +56,7 @@
 					LIMIT
 				</div>
 
-				<input type="text" nameId="intLimitItem" value="10" style="width: 98px; height: 24px; font-size: 12px; text-align: center; color: #4A4A4A; border:solid 1px #b3b3b3;">
+				<input type="text" nameId="intLimitItem" value="30" style="width: 98px; height: 24px; font-size: 12px; text-align: center; color: #4A4A4A; border:solid 1px #b3b3b3;">
 
 			</div>			
 			
