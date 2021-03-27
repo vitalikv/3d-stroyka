@@ -1,20 +1,25 @@
 
 
-getListUsers({});
+
+settingListUsers();
 activeElemProject_1();
 
 
 function activeElemProject_1()
 {
-	let el = document.querySelector('[nameId="butCountProject"]');
+	let el_1 = document.querySelector('[nameId="butCountProject"]');	
+	el_1.onmousedown = function(e){ settingListUsers(); e.stopPropagation(); }
 	
-	el.onmousedown = function(e){ clickButtCountProject(); e.stopPropagation(); };
+	let el_2 = document.querySelector('[nameId="currentPage"]');
+	el_2.onchange = function(e){ settingListUsers({ currentPage: el_2.value.trim() }); e.stopPropagation(); }
 }
 
 
 // кликнули на кнопку
-function clickButtCountProject()
+function settingListUsers(cdm)
 {
+	if(!cdm) cdm = {};
+	
 	let el_int = document.querySelector('[nameId="intCountProject"]');
 	let el_list = document.querySelector('[nameId="typeCountProject"]');
 	
@@ -22,10 +27,11 @@ function clickButtCountProject()
 	let type = el_list[ind].value;
 	
 	let count = el_int.value.trim();
-	if(!isNumeric(count)) { console.log('err', count); return; }
+	if(!isNumeric(count)) { console.log('err HAVING COUNT', count); return; }
 	
 	let query1 = 'HAVING COUNT(p.user_id)'+' '+type+' '+count;
 	
+	//-------------
 	
 	let el_sort_1 = document.querySelector('[nameId="sortTable_1"]');
 	let el_sort_2 = document.querySelector('[nameId="sortTable_2"]');
@@ -34,19 +40,34 @@ function clickButtCountProject()
 	let s2 = el_sort_2[el_sort_2.selectedIndex].value.trim();
 	
 	let query2 = 'ORDER BY '+s1+' '+s2;
+
+	//-------------
 	
+	let currentPage = 1;
+	if(cdm.currentPage) { currentPage = cdm.currentPage; }
+	//else { currentPage = document.querySelector('[nameId="currentPage"]').value.trim(); }
+	document.querySelector('[nameId="currentPage"]').value = currentPage;
 	
-	console.log(query2);
+	let el_limitItem = document.querySelector('[nameId="intLimitItem"]');
+	let limitItem = el_limitItem.value.trim();
 	
-	var container = document.body.querySelector('[nameId="userList"]');
-	container.innerHTML = '';
+	if(!isNumeric(currentPage)) { console.log('err currentPage', currentPage); return; }
+	if(!isNumeric(limitItem)) { console.log('err limitItem', limitItem); return; }
 	
-	getListUsers({having: query1, order: query2});
+	var limitStart = currentPage * limitItem - limitItem;
+	
+	let query3 = 'LIMIT '+limitStart+', '+limitItem;
+	
+	//-------------
+	
+	console.log(query1, query2, query3);
+	
+	renderListUsers({having: query1, order: query2, limit: query3});
 }
 
 
 // выводим список 
-async function getListUsers(cdm) 
+async function renderListUsers(cdm) 
 {
 	if(!cdm) { cdm = {}; }
 	
@@ -56,10 +77,9 @@ async function getListUsers(cdm)
 	var query = 'table='+table+'&select_list=id, mail, pass, date';
 	
 	if(cdm.having) { query += '&having='+cdm.having; }
-	if(cdm.order) { query += '&order='+cdm.order; }
+	if(cdm.order) { query += '&order='+cdm.order; }	
+	if(cdm.limit) { query += '&limit='+cdm.limit; }
 	
-	query += '&limitStart=5';
-	query += '&limitEnd=4';
 	
 	var response = await fetch(url, 
 	{
@@ -69,16 +89,17 @@ async function getListUsers(cdm)
 	});
 	var json = await response.json();		
 console.log(json);
-	json = json.list;
+	var listItem = json.list;
 	
 	
 
-	var container = document.body.querySelector('[nameId="userList"]');
+	var container_1 = document.body.querySelector('[nameId="userList"]');
+	container_1.innerHTML = '';
 	
 	
-	for(var i = 0; i < json.length; i++)
+	for(var i = 0; i < listItem.length; i++)
 	{
-		var j = json[i];		
+		var j = listItem[i];		
 		
 		var html = 
 		'<div style="display: flex; margin: 10px;">\
@@ -93,10 +114,51 @@ console.log(json);
 		div.innerHTML = html;
 		var elem = div.firstChild;		
 			
-		container.append(elem);
+		container_1.append(elem);
 	}		
 
+
+	var container_2 = document.body.querySelector('[nameId="listPage"]');
+	container_2.innerHTML = '';
 	
+	if(json.pageCount)
+	{
+		if(json.pageCount > 1)
+		{
+			var currentPage = document.querySelector('[nameId="currentPage"]').value.trim();
+			
+			for(var i = 0; i < json.pageCount; i++)
+			{	
+				var bg = (i == currentPage - 1) ? '#557997' : '#269CFF';
+				
+				var html = 
+				'<div style="display: flex; width: 40px; height: 40px; margin: 0 5px; align-items: center; background: '+bg+'; border-radius: 4px; cursor: pointer;">\
+					<div style="margin: auto; font-size: 12px; text-align: center; color: #fff;">\
+						'+(i+1)+'\
+					</div>\
+				</div>';
+
+				var div = document.createElement('div');
+				div.innerHTML = html;
+				var elem = div.firstChild;
+				
+				
+				(function(i) 
+				{					
+					
+					elem.onmousedown = function(e)
+					{ 
+						settingListUsers({currentPage: i+1});
+						e.stopPropagation(); 
+					};	
+					
+				}(i));
+
+				container_2.append(elem);
+			}
+			
+		}
+	}
 	
 	
 	// находим дочерние объекты 

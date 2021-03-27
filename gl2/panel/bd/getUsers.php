@@ -16,14 +16,17 @@ $where = '';
 $limit = '';
 
 
-if($_POST['limitStart'] && $_POST['limitEnd'])
-{	
-	$limit = "LIMIT {$_POST['limitStart']}, {$_POST['limitEnd']}";
-}
+if(isset($_POST['limit'])) { $limit = $_POST['limit']; }
 
 
 
-$sql = "SELECT * FROM {$table}";
+$sql = "SELECT u.id AS id
+FROM user u
+LEFT JOIN project p ON u.id = p.user_id 
+{$where}
+GROUP BY u.id
+{$having}
+{$order}";
 $r2 = $db->prepare($sql);
 $r2->execute();
 $count = $r2->rowCount();
@@ -41,9 +44,20 @@ $r = $db->prepare($sql);
 $r->execute();
 $data = $r->fetchAll(PDO::FETCH_ASSOC);
 
+
 $result = [];
 $result['list'] = $data;
 $result['total'] = $count;
+
+
+
+if(!empty($limit))
+{
+	$limitItem = explode(",", $limit)[1]; 
+	$limitItem = trim($limitItem);
+	$result['pageCount'] = ceil($count / $limitItem);
+}
+
 
 
 

@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			
-			<div style="display: flex; height: 36px; margin: 12px 10px; align-items: center; border:solid 1px #b3b3b3;">
+			<div style="display: flex; height: 36px; margin: 12px 10px; align-items: center;">
 
 				<input type="text" nameId="intCountProject" value="0" style="width: 70px; height: 24px; font-size: 12px; text-align: center; color: #4A4A4A; border:solid 1px #b3b3b3;">
 
@@ -36,7 +36,7 @@
 
 			</div>
 			
-			<div style="display: flex; height: 36px; margin: 12px 10px; align-items: center; border:solid 1px #b3b3b3;">
+			<div style="display: flex; height: 36px; margin: 12px 10px; align-items: center;">
 
 				<select nameId="sortTable_1" style="width: 76px; height: 28px; margin: 0 auto 0 0; text-align: center; font-size: 12px; color: #4A4A4A; border:solid 1px #b3b3b3;">
 					<option value="id" selected="">id</option>
@@ -48,11 +48,21 @@
 					<option value="DESC">убывание</option>
 				</select>
 
+			</div>
+
+			<div style="display: flex; height: 36px; margin: 12px 10px; align-items: center; border:solid 1px #b3b3b3;">
+
+				<div style="margin: auto; text-decoration: none; font-size: 12px; text-align: center; color: #000;">
+					LIMIT
+				</div>
+
+				<input type="text" nameId="intLimitItem" value="10" style="width: 98px; height: 24px; font-size: 12px; text-align: center; color: #4A4A4A; border:solid 1px #b3b3b3;">
+
 			</div>			
 			
 		</div>
 		
-		<div style="margin-top: 55px;">
+		<div nameId="blockUsers" style="margin-top: 55px;">
 			<div style="display: flex; border:solid 1px #b3b3b3;">
 				<div style="width: 40px; margin: 0 5px; border-right:solid 1px #b3b3b3;">id</div>
 				<div style="width: 200px; margin: 0 5px; border-right:solid 1px #b3b3b3;">mail</div>
@@ -63,7 +73,13 @@
 			
 			<div style="border:solid 1px #b3b3b3;" nameId="userList">
 			
-			</div>	
+			</div>
+			
+			<div style="display: flex; margin: 40px auto;" nameId="listPage">
+			
+			</div>			
+
+			<input type="text" nameId="currentPage" value="1" style="width: 98px; height: 24px; font-size: 12px; text-align: center; color: #4A4A4A; border:solid 1px #b3b3b3;">			
 		</div>	
 		
 	</div>
