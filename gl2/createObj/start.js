@@ -81,12 +81,27 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
-	if(1==2)
+	if(1==1)
 	{
 		var arr = [];
-		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', r3: '1', m1: 0.169, m2: 0.035 };	
+		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 2, m1: 0.095, m2: 0.036 };	
+		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
+		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };		
+		arr[arr.length] = { side: 'n', r1: '1', r2: '1/2', count: 2, m1: 0.095, m2: 0.036 };	
+		arr[arr.length] = { side: 'n', r1: '1', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
+		arr[arr.length] = { side: 'n', r1: '1', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };
+		arr[arr.length] = { side: 'n', r1: '1', r2: '3/4', count: 2, m1: 0.095, m2: 0.036 };	
+		arr[arr.length] = { side: 'n', r1: '1', r2: '3/4', count: 3, m1: 0.132, m2: 0.036 };
+		arr[arr.length] = { side: 'n', r1: '1', r2: '3/4', count: 4, m1: 0.169, m2: 0.036 };
+
+		arr[arr.length] = { side: 'v', r1: '3/4', r2: '1/2', count: 2, m1: 0.095, m2: 0.036 };	
+		arr[arr.length] = { side: 'v', r1: '3/4', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
+		arr[arr.length] = { side: 'v', r1: '3/4', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };		
+		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', count: 2, m1: 0.095, m2: 0.036 };	
+		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
+		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };
 		
-		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(-0.6, 1, 3+0.0), cat: 'st_collector_1'});		
+		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), cat: 'st_collector_1'});		
 	}
 	
 	
@@ -771,7 +786,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_zagl_nr', arr: arr, startPos: new THREE.Vector3(-0.2, 1, 3+0.0), n: 0, cat: 'rad_fiting_1'});		
 	}	
 	
-	//createTestObj();	
+		
 }
 
 

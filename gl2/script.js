@@ -199,7 +199,7 @@ infProject.material.pointObj = {};
 infProject.material.pointObj.default = new THREE.MeshLambertMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
 infProject.material.pointObj.active = new THREE.MeshLambertMaterial({color: 0xff0000, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1});
 
-infProject.material.box_1 = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false }); 
+infProject.material.box_1 = new THREE.MeshStandardMaterial({ color: 0xcccccc, transparent: true, opacity: 0.7, depthTest: false, visible: false }); 
 
 infProject.material.black_1 = new THREE.MeshPhongMaterial({ color: 0x222222, lightMap: lightMap_1, side: THREE.DoubleSide });
 

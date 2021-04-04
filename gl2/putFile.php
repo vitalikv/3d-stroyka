@@ -70,7 +70,6 @@ createObj/kotel/filtr.js
 createObj/kotel/kotel_1.js
 createObj/calculation_1.js
 createObj/calculation_2.js
-createObj/start.js
 ui/select_list_1.js
 ui/slider_2mov.js
 createObj/sborka/sbr_1.js
@@ -158,6 +157,9 @@ $nameStop[] = 'shar_kran_n_1';
 $nameStop[] = 'shar_kran_v_1';
 $nameStop[] = 'shar_kran_v_n_1';
 $nameStop[] = 'shar_kran_sgon_1';
+$nameStop[] = 'st_collector_1';
+
+
 
 for ($i = 0; $i < count($arrF); $i++)
 {	

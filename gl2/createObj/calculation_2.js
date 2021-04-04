@@ -452,7 +452,7 @@ function assignObjParams(obj, cdm)
 	obj.userData.obj3D = {};
 	obj.userData.obj3D.lotid = 0;	
 	obj.userData.obj3D.nameRus = cdm.name; 
-	obj.material.visible = false;	
+	//obj.material.visible = false;	
 	
 }
 
