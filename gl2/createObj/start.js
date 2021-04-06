@@ -84,6 +84,29 @@ async function cr_obj_cat()
 	if(1==1)
 	{
 		var arr = [];
+		var color = [infProject.material.red_1, infProject.material.blue_1]
+		
+		for(var i = 0; i < color.length; i++)
+		{
+			arr[arr.length] = { r1: '3/4', r2: '1/2', count: 2, m1: 0.095, m2: 0.036, color: color[i] };		
+			arr[arr.length] = { r1: '3/4', r2: '1/2', count: 3, m1: 0.132, m2: 0.036, color: color[i] };
+			arr[arr.length] = { r1: '3/4', r2: '1/2', count: 4, m1: 0.169, m2: 0.036, color: color[i] };
+
+			arr[arr.length] = { r1: '1', r2: '1/2', count: 2, m1: 0.095, m2: 0.036, color: color[i] };		
+			arr[arr.length] = { r1: '1', r2: '1/2', count: 3, m1: 0.132, m2: 0.036, color: color[i] };
+			arr[arr.length] = { r1: '1', r2: '1/2', count: 4, m1: 0.169, m2: 0.036, color: color[i] };
+			
+			arr[arr.length] = { r1: '1', r2: '3/4', count: 2, m1: 0.095, m2: 0.036, color: color[i] };		
+			arr[arr.length] = { r1: '1', r2: '3/4', count: 3, m1: 0.132, m2: 0.036, color: color[i] };					
+		}
+		
+		await fc_cr_obj({funcName: 'st_collector_2', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), cat: 'st_collector_2'});		
+	}
+	
+	
+	if(1==2)
+	{
+		var arr = [];
 		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 2, m1: 0.095, m2: 0.036 };	
 		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
 		arr[arr.length] = { side: 'n', r1: '3/4', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };		

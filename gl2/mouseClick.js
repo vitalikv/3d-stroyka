@@ -251,7 +251,13 @@ function clickRayHit(event)
 			
 			for (var i = 0; i < ray.length; i++)
 			{
-				if(ray[i].object.userData.obj3D) continue;
+				//if(ray[i].object.userData.obj3D) continue;
+				
+				// если у объекта ОДИН материал и он невидемый, то пропускаем
+				if(!Array.isArray(ray[i].object.material)) 
+				{
+					if(!ray[i].object.material.visible) continue;
+				}							
 				
 				rayhit = ray[i]; console.log(i, rayhit );
 				break;
@@ -292,6 +298,7 @@ function getParentObj(cdm)
 {
 	var obj = cdm.obj;	
 	var next = true;
+
 	
 	while(next) 
 	{

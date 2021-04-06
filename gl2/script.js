@@ -247,6 +247,8 @@ infProject.material.red_1 = new THREE.MeshPhongMaterial({ color: 0xbf2502, light
 infProject.material.red_1_edge = infProject.material.red_1.clone();
 infProject.material.red_1_edge.flatShading = true;
 
+infProject.material.blue_1 = new THREE.MeshPhongMaterial({ color: 0x3e65f0, lightMap: lightMap_1, side: THREE.DoubleSide });
+
 infProject.material.manometr_1 = null;
  
 
