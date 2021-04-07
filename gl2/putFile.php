@@ -64,6 +64,7 @@ createObj/mpl/perehod.js
 createObj/mpl/ugol.js
 createObj/kran/shar_kran.js
 createObj/kran/reg_kran.js
+createObj/kotel/zr_nasos.js
 createObj/kotel/rash_bak.js
 createObj/kotel/gr_bez.js
 createObj/kotel/filtr.js
@@ -126,6 +127,7 @@ $nameStop[] = 'rad_vozduhotvod_1';
 $nameStop[] = 'al_radiator_1';
 $nameStop[] = 'st_radiator_1';
 $nameStop[] = 'reg_kran_primoy_1';
+$nameStop[] = 'cr_zr_nasos_1';
 $nameStop[] = 'cr_rash_bak_1';
 $nameStop[] = 'cr_kotel_1';
 $nameStop[] = 'gr_bez_1';

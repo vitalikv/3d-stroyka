@@ -84,6 +84,17 @@ async function cr_obj_cat()
 	if(1==1)
 	{
 		var arr = [];
+		arr[arr.length] = { r1: '1' };
+		arr[arr.length] = { r1: '1 1/4' };
+		arr[arr.length] = { r1: '1 1/2' };
+		arr[arr.length] = { r1: '2' };
+		
+		await fc_cr_obj({funcName: 'cr_zr_nasos_1', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), step: 0.35, cat: 'zr_nasos_1'});		
+	}
+	
+	if(1==2)
+	{
+		var arr = [];
 		var color = [infProject.material.red_1, infProject.material.blue_1]
 		
 		for(var i = 0; i < color.length; i++)

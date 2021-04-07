@@ -1,12 +1,10 @@
 
 
 
-$(document).ready(function()
-{
-	
-// загрузка obj --->
 
-$('#load_obj_1').change(readURL_2);
+
+document.body.querySelector('#load_obj_1').addEventListener( 'change', readURL_2, false );
+
 
 function readURL_2(e) 
 {
@@ -22,17 +20,15 @@ function readURL_2(e)
 	};
 };
 
+var el_1 = document.body.querySelector('[nameId="butt_main_load_obj"]');
+var el_2 = document.body.querySelector('[nameId="button_close_main_load_obj"]');
+var el_3 = document.body.querySelector('[nameId="butt_load_obj_2"]');
+var el_4 = document.body.querySelector('[nameId="window_main_load_obj"]');
+var el_5 = document.body.querySelector('[nameId="input_link_obj_1"]');
 
-$('[nameId="butt_main_load_obj"]').mousedown(function () { $('[nameId="window_main_load_obj"]').css({"display":"block"}); });
-
-$('[nameId="button_close_main_load_obj"]').mousedown(function () { $('[nameId="window_main_load_obj"]').css({"display":"none"}); });
-
-$('[nameId="butt_load_obj_2"]').mousedown(function () { loadUrlFile(); });
-
-// <--- загрузка obj
-
-
-});	
+el_1.onmousedown = function() { el_4.style.display = 'block'; }
+el_2.onmousedown = function() { el_4.style.display = 'none'; }
+el_3.onmousedown = function() { loadUrlFile(); }
 
 
 
@@ -43,7 +39,7 @@ function loadInputFile(cdm)
 	var obj = loader.parse( cdm.data );		
 	setParamObj({obj: obj});			
 
-	$('[nameId="window_main_load_obj"]').css({"display":"none"});
+	el_4.style.display = 'none';
 	
 	blockKeyCode({block: false});
 }
@@ -52,10 +48,10 @@ function loadInputFile(cdm)
 // загрузка fbx объекта по url
 function loadUrlFile()
 {	
-	var url = $('[nameId="input_link_obj_1"]').val(); 
+	var url = el_5.value; 
 	var url = url.trim();
 	
-	// /import/furn_1.fbx 
+	// /gl2/import/nasos_1.FBX 
 	
 	var loader = new THREE.FBXLoader();
 	loader.load( url, function ( obj ) 						
@@ -63,8 +59,7 @@ function loadUrlFile()
 		setParamObj({obj: obj});
 	});			
 
-
-	$('[nameId="window_main_load_obj"]').css({"display":"none"});
+	el_4.style.display = 'none';
 }
 
 
@@ -102,7 +97,8 @@ function setParamObj(cdm)
 		{
 			if ( child.isMesh ) 
 			{ 
-				//console.log(child.name);
+				var boundingBox = child.geometry.boundingBox;
+				console.log(child.name, boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
 				
 				if(new RegExp( '_est_' ,'i').test( child.name ))
 				{
