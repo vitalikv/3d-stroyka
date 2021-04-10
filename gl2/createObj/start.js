@@ -81,6 +81,7 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
+	// насос цирк
 	if(1==1)
 	{
 		var arr = [];
@@ -92,6 +93,23 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'cr_zr_nasos_1', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), step: 0.35, cat: 'zr_nasos_1'});		
 	}
 	
+	// гайка для насоса
+	if(1==1)
+	{
+		var arr = [];
+		arr[arr.length] = { r1: '1', r2: '3/4', m1: 0.039 };	
+		arr[arr.length] = { r1: '1 1/4', r2: '3/4', m1: 0.041 };		
+		arr[arr.length] = { r1: '1 1/4', r2: '1', m1: 0.042 };	
+		arr[arr.length] = { r1: '1 1/2', r2: '1', m1: 0.043 };
+		arr[arr.length] = { r1: '1 1/2', r2: '1 1/4', m1: 0.043 };
+		arr[arr.length] = { r1: '2', r2: '1', m1: 0.048 };
+		arr[arr.length] = { r1: '2', r2: '1 1/4', m1: 0.048 };
+		arr[arr.length] = { r1: '2', r2: '1 1/2', m1: 0.048 };	
+		
+		await fc_cr_obj({funcName: 'cr_gaika_nasos_1', arr: arr, startPos: new THREE.Vector3(-0.5, 0, 3+0.0), n: 0, cat: 'gaika_nasos_1'});		
+	}
+	
+	// коллектор 1
 	if(1==2)
 	{
 		var arr = [];
@@ -111,10 +129,10 @@ async function cr_obj_cat()
 			arr[arr.length] = { r1: '1', r2: '3/4', count: 3, m1: 0.132, m2: 0.036, color: color[i] };					
 		}
 		
-		await fc_cr_obj({funcName: 'st_collector_2', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), cat: 'st_collector_2'});		
+		await fc_cr_obj({funcName: 'st_collector_2', arr: arr, startPos: new THREE.Vector3(0.5, 0, 3+0.0), cat: 'st_collector_2'});		
 	}
 	
-	
+	// коллектор 2 (с кранами)
 	if(1==2)
 	{
 		var arr = [];
@@ -135,7 +153,7 @@ async function cr_obj_cat()
 		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', count: 3, m1: 0.132, m2: 0.036 };
 		arr[arr.length] = { side: 'v', r1: '1', r2: '1/2', count: 4, m1: 0.169, m2: 0.036 };
 		
-		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(0, 0, 3+0.0), cat: 'st_collector_1'});		
+		await fc_cr_obj({funcName: 'st_collector_1', arr: arr, startPos: new THREE.Vector3(1, 0, 3+0.0), cat: 'st_collector_1'});		
 	}
 	
 	

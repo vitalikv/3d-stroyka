@@ -3,7 +3,7 @@
 
 
 
-// расширительный бак
+// цирк. насос
 function cr_zr_nasos_1(cdm)
 {		
 	var d1 = sizeRezba({size: cdm.r1, side: 'n'});
@@ -115,8 +115,85 @@ function cr_zr_nasos_1(cdm)
 
 
 
+// гайки для насоса
+function cr_gaika_nasos_1(cdm)
+{
+	var d1 = sizeRezba({size: cdm.r1, side: 'v'});		// левый разъем
+	var d2 = sizeRezba({size: cdm.r2, side: 'v'});		// правый	
+		
+	var m1 = cdm.m1;	
+	
+	// доп. расчеты 
+	var x_1 = 0.015 * d1.n*20;
+	var x_2 = 0.015 * d2.n*20;
 
+	if(x_1 < 0.012) { x_1 = 0.012; }
+	if(x_2 < 0.012) { x_2 = 0.012; }
+	
+	var x_4 = 0.001;
+	
+	var d_nr = (d1.n > d2.n) ? d1.v : d2.v;
+	var d_vn = (d1.v < d2.v) ? d1.v : d2.v;
+	d_vn -= 0.001;
+	
+	var w21 = 0.236 * d1.n;	// толщина гайки
+	var w22 = 0.236 * d2.n;	// толщина гайки
+	
+	
+	var geom = new THREE.Geometry();	
+	
+	// кольцо(гайка)
+	{		
+		var inf = { g: geom, dlina: x_1, diameter_nr: d1.n + w21, diameter_vn: d1.v, edge_nr: 6, ind: [2, 1, 2, 2] };
+		inf.pos = { x: -x_1/2, y: 0, z: 0 };
+		var poM1 = crFormSleeve_1(inf);		
+	}		
+	
+	// центр
+	{
+		var inf = { g: geom, dlina: x_4, diameter_nr: d_nr, diameter_vn: d_vn };
+		inf.pos = { x: -x_4/2, y: 0, z: 0 };
+		crFormSleeve_1(inf);		
+	}	
+	
+	// кольцо(гайка)
+	{
+		var inf = { g: geom, dlina: x_2, diameter_nr: d2.n + w22, diameter_vn: d2.v, edge_nr: 6, ind: [2, 1, 2, 2] };
+		inf.pos = { x: x_2/2, y: 0, z: 0 };
+		var poM2 = crFormSleeve_1(inf);		
+	}	
+	
 
+	var mat = [];
+	mat[0] = infProject.material.metal_1;
+	mat[1] = infProject.material.rezba_1;
+	mat[2] = infProject.material.metal_1_edge;
+	
+	var group = new THREE.Mesh(geom, mat);		
+	var obj = getBoundObject_1({obj: group});
+	
+	var name1 = cdm.r1+'(в)';
+	var name2 = cdm.r2+'(в)';
+	
+	var arrP = [];
+	arrP[arrP.length] = { pos: poM1.pos, rot: new THREE.Vector3(0, Math.PI, 0), name: name1 };
+	arrP[arrP.length] = { pos: poM2.pos, rot: new THREE.Vector3(0, 0, 0), name: name2 };
+
+	
+	for ( var i = 0; i < arrP.length; i++ )
+	{
+		arrP[i].obj = obj;
+		arrP[i].id = i;
+		cr_CenterPoint(arrP[i]);
+	}	
+
+	
+	cdm.name = 'Гайка для насоса '+name1+'х'+name2;
+	
+	assignObjParams(obj, cdm);
+
+	return obj;	
+}
 
 
 

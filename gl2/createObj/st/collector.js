@@ -56,7 +56,7 @@ function st_collector_1(cdm)
 			var poM1 = crFormSleeve_1(inf);					
 			
 			var w21 = 0.236 * d1.n;	// толщина гайки
-			var inf = { g: geom, dlina: w1, diameter_nr: d1.n + w21, diameter_vn: d1.v + kf, edge_nr: 6 };	// гайка/кольцо
+			var inf = { g: geom, dlina: w1, diameter_nr: d1.n + w21, diameter_vn: d1.v + kf, edge_nr: 6, ind: [2, 2, 2, 2] };	// гайка/кольцо
 			inf.pos = { x: -(s1 + w1/2), y: 0, z: 0 };
 			crFormSleeve_1(inf);
 			
@@ -112,7 +112,7 @@ function st_collector_1(cdm)
 	var mat = [];
 	mat[0] = infProject.material.metal_1;
 	mat[1] = infProject.material.rezba_1;
-	
+	mat[2] = infProject.material.metal_1_edge;
 	
 	var group = [];
 	
@@ -233,7 +233,7 @@ function st_collector_2(cdm)
 			var poM1 = crFormSleeve_1(inf);					
 			
 			var w21 = 0.236 * d1.n;	// толщина гайки
-			var inf = { g: geom, dlina: w1, diameter_nr: d1.n + w21, diameter_vn: d1.v + kf, edge_nr: 6 };	// гайка/кольцо
+			var inf = { g: geom, dlina: w1, diameter_nr: d1.n + w21, diameter_vn: d1.v + kf, edge_nr: 6, ind: [2, 2, 2, 2] };	// гайка/кольцо
 			inf.pos = { x: -(s1 + w1/2), y: 0, z: 0 };
 			crFormSleeve_1(inf);
 			
@@ -325,7 +325,7 @@ function st_collector_2(cdm)
 	var mat = [];
 	mat[0] = infProject.material.metal_1;
 	mat[1] = infProject.material.rezba_1;
-	
+	mat[2] = infProject.material.metal_1_edge;
 	
 	var group = [];
 	
