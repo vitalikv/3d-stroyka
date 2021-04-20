@@ -75,12 +75,10 @@ async function addObjInCatalogUI_1(cdm)
 			</div>';
 			
 			var html = 
-			'<div>\
-				<div class="right_panel_1_1_list_item">\
-					<div class="flex_1 relative_1">\
-						<div class="right_panel_1_1_list_item_text">'+json.name+'</div>\
-						'+str_button+'\
-					</div>\
+			'<div class="right_panel_1_1_list_item">\
+				<div class="flex_1 relative_1">\
+					<div class="right_panel_1_1_list_item_text">'+json.name.toLowerCase() +'</div>\
+					'+str_button+'\
 				</div>\
 			</div>';			
 			
@@ -94,7 +92,12 @@ async function addObjInCatalogUI_1(cdm)
 			var n = json.id;
 			(function(n) 
 			{
-				elem.onmousedown = function(e){ clickInterface({button: 'add_lotid', value: n}); e.stopPropagation(); };	
+				elem.onmousedown = function(e)
+				{ 
+					clickItemFocusUI_1({el: elem});
+					clickInterface({button: 'add_lotid', value: n}); 
+					e.stopPropagation(); 
+				};	
 			}(n));
 
 			// назначаем событие при клике на лупу UI
@@ -103,6 +106,7 @@ async function addObjInCatalogUI_1(cdm)
 			{
 				elem_2.onmousedown = function(e)
 				{ 
+					clickItemFocusUI_1({el: elem});
 					activeCameraView({lotid: n});
 					e.stopPropagation();
 				};	
@@ -113,12 +117,10 @@ async function addObjInCatalogUI_1(cdm)
 			var groupItem = '';
 
 			var str_button = 
-			'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
-				<div>\
-					<svg height="100%" width="100%" viewBox="0 0 100 100">\
-						<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-					</svg>\
-				</div>\
+			'<div nameId="shCp_1" class="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
+				<svg height="100%" width="100%" viewBox="0 0 100 100">\
+					<polygon points="0,0 100,0 50,100" style="stroke:#000000;stroke-width:4" />\
+				</svg>\
 			</div>';				
 			
 			var valueId = '';
@@ -166,6 +168,17 @@ async function addObjInCatalogUI_1(cdm)
 }
 
 
+// кликнули на item catalog, выделфем этот пункт меню
+function clickItemFocusUI_1(cdm) 
+{
+	let elNew = cdm.el;
+	let el = infProject.ui.cat_item_active;
+	
+	if(el) el.style.backgroundColor = '#ffffff';
+	
+	elNew.style.backgroundColor = infProject.listColor.activeItem_1;
+	infProject.ui.cat_item_active = elNew;
+}
 
 
 
@@ -189,42 +202,6 @@ function clickRtekUI_2(cdm)
 
 
 
-
-
-if(1==2)
-{
-
-	// добавляем группы в каталог
-	function addGroupInCatalogUI_x1()
-	{	
-		var groupItem = [];
-		
-		groupItem[0] = {nameId: 'catalog_group_item_kran_1', nameRus: 'краны'};
-		groupItem[1] = {nameId: 'catalog_group_item_radiator', nameRus: 'радиаторы'};
-		groupItem[2] = {nameId: 'catalog_group_item_collector', nameRus: 'коллектора'};
-		groupItem[3] = {nameId: 'catalog_group_item_mt_plas', nameRus: 'металлопластик'};
-		groupItem[4] = {nameId: 'catalog_group_item_pliprop', nameRus: 'полипропилен'};
-		groupItem[5] = {nameId: 'catalog_group_item_metall', nameRus: 'металл'};
-			
-	}
-
-	function addGroupInCatalogUI_x2()
-	{	
-		var groupItem = [];
-		
-		groupItem[0] = {parentName: 'catalog_group_item_collector', nameId: 'catalog_group_item_collector_1', nameRus: 'коллектора'};
-		groupItem[1] = {parentName: 'catalog_group_item_mt_plas', nameId: 'catalog_group_item_mp_troinik_press_1', nameRus: 'тройники (пресс)'};
-		groupItem[2] = {parentName: 'catalog_group_item_mt_plas', nameId: 'catalog_group_item_mp_ugol_press_1', nameRus: 'угол (пресс)'};
-		groupItem[3] = {parentName: 'catalog_group_item_radiator', nameId: 'catalog_group_item_radiator_al_1', nameRus: 'алюминиевые'};
-		groupItem[4] = {parentName: 'catalog_group_item_radiator', nameId: 'catalog_group_item_radiator_st_1', nameRus: 'стальные'};
-		groupItem[5] = {parentName: 'catalog_group_item_kran_1', nameId: 'catalog_group_item_kran_sharov_1', nameRus: 'шаровые'};
-		groupItem[6] = {parentName: 'catalog_group_item_kran_1', nameId: 'catalog_group_item_kran_regul_1', nameRus: 'регулеровачные'};
-			
-	}
-
-
-	
-}
 
 
 

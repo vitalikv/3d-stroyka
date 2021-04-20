@@ -294,6 +294,7 @@ infProject.ui = {}
 infProject.ui.right_menu = {active: ''};
 infProject.ui.div = {};
 infProject.ui.div.msDiv_1 = document.querySelector('[nameId="msDiv_1"]');
+infProject.ui.cat_item_active = null;
 
 console.log(canvas, infProject.ui.div.msDiv_1);
  
@@ -370,8 +371,6 @@ if(1==1)
 
 
 startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
-//addGroupInCatalogUI_1();									// создаем список групп для каталога
-//addGroupInCatalogUI_2();
 addObjInCatalogUI_1();										// каталог UI
  
 //changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена

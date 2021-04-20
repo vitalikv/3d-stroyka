@@ -1226,9 +1226,17 @@ canvas
 }
 
 
+/** 21 **/
+.shCp_1 svg polygon
+{
+	fill: #fff;
+}
 
-
-
+.shCp_1 svg polygon:hover
+{
+	fill: #ccc;
+}
+/** 21 **/
 
 
 @media screen and (max-width:850px), screen and (max-device-width:850px) 

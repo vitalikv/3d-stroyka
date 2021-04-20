@@ -178,12 +178,10 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	</div>';
 	
 	var html = 
-	'<div>\
-		<div class="right_panel_1_1_list_item">\
-			<div class="flex_1 relative_1">\
-				<div class="right_panel_1_1_list_item_text">'+cdm.ui.catalog.name+'</div>\
-				'+str_button+'\
-			</div>\
+	'<div class="right_panel_1_1_list_item">\
+		<div class="flex_1 relative_1">\
+			<div class="right_panel_1_1_list_item_text">'+cdm.ui.catalog.name+'</div>\
+			'+str_button+'\
 		</div>\
 	</div>';			
 	
@@ -196,7 +194,12 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	// при клике добавляем объект в сцену	
 	(function() 
 	{
-		elem.onmousedown = function(e){ clickInterface({button: 'add_group_obj', value: cdm}); e.stopPropagation(); }	  
+		elem.onmousedown = function(e)
+		{ 
+			clickItemFocusUI_1({el: elem});
+			clickInterface({button: 'add_group_obj', value: cdm}); 
+			e.stopPropagation(); 
+		}	  
 	}());
 
 	// назначаем событие при клике на лупу UI
@@ -205,6 +208,7 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	{
 		elem_2.onmousedown = function(e)
 		{ 
+			clickItemFocusUI_1({el: elem});
 			activeCameraView({sborka: true, inf: cdm});
 			e.stopPropagation();
 		};	
