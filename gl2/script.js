@@ -1627,6 +1627,20 @@ function isCheckExsistFunction(functionToCheck)
 }
 
 
+// пауза в миллесекундах
+async function sleepPause(milliseconds) 
+{
+	const date = Date.now();
+	let currentDate = null;
+	do 
+	{
+		currentDate = Date.now();
+	} 
+	while (currentDate - date < milliseconds);
+}
+
+
+
 var docReady = false;
 
 $(document).ready(function () 

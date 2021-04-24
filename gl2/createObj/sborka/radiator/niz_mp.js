@@ -65,8 +65,6 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 	inf.list.pp.obj.pr1 = [250, 250, 284];	// пп перехожник от рад к трубе	
 	inf.list.pp.obj.tr1 = [300, 303, 380];	// тройник для байпаса
 	
-	//{'rad[0]'->'[1]rp1[0]'->'[0]kran[1]'->'[0]pr1[1]'->'[0]tube1[1]'->'[1]tr1[2]'->'[0]tube2'}
-	//{'tr1[2]'->'[1]tube3'}
 		
 	inf.typePt = 'od_bay';
 	inf.typePt2 = 'niz';

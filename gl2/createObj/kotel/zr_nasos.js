@@ -197,6 +197,39 @@ function cr_gaika_nasos_1(cdm)
 
 
 
- 
+function crSborka_zr_nasos_1(cdm) 
+{
+	var obj = cr_zr_nasos_1({ r1: '1 1/2' });
+	
+	
+	
+	scene.add( obj );				
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+	
+	var obj_2 = cr_gaika_nasos_1({ r1: '1', r2: '3/4', m1: 0.039 });
+	obj_2.rotation.y = Math.PI;
+	
+	var obj_3 = cr_gaika_nasos_1({ r1: '1', r2: '3/4', m1: 0.039 });
+	
+	scene.add( obj_2 );				
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj_2;
+
+	scene.add( obj_3 );				
+	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj_3;	
+	
+	getRazyem({obj: obj});	
+	getRazyem({obj: obj_2});
+	getRazyem({obj: obj_3});
+	
+	console.log(22222, obj, obj_2, obj_3);
+	
+	
+	
+	var posOffset = new THREE.Vector3().subVectors( obj.userData.jp[0], obj_2.userData.jp[0] );	
+	obj_2.position.add( posOffset );
+	
+	var posOffset = new THREE.Vector3().subVectors( obj.userData.jp[1], obj_3.userData.jp[0] );	
+	obj_3.position.add( posOffset );	
+}
 
 

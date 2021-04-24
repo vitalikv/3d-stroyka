@@ -22,10 +22,13 @@ async function activeCameraView(cdm)
 	infProject.elem.butt_camera_2D.style.display = 'none';
 	infProject.elem.butt_camera_3D.style.display = 'none';	
 	
+	renderCamera();
 console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 	
 	if(cdm.sborka)
 	{
+		//sleepPause(2000);
+		
 		var inf = await actionFnSborkaRad_1(cdm);	
 		if(!inf) return;
 		

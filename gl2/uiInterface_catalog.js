@@ -119,7 +119,7 @@ async function addObjInCatalogUI_1(cdm)
 			var str_button = 
 			'<div nameId="shCp_1" class="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
 				<svg height="100%" width="100%" viewBox="0 0 100 100">\
-					<polygon points="0,0 100,0 50,100" style="stroke:#000000;stroke-width:4" />\
+					<polygon points="0,0 100,0 50,100" style="stroke:#000000; stroke-width:4" />\
 				</svg>\
 			</div>';				
 			
