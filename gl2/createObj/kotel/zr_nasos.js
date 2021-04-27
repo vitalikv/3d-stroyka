@@ -22,10 +22,16 @@ function cr_zr_nasos_1(cdm)
 	crFormSleeve_1(inf);	
 	
 	// цилиндр насоса (черный)
-	var inf = { g: geom, dlina: z2, diameter_nr: 0.077, diameter_vn: 0.00001, ind: [1, 1, 1, 1] };
+	var inf = { g: geom, dlina: z2, diameter_nr: 0.077, diameter_vn: 0.02, ind: [1, 1, 1, 1] };
 	inf.pos = { x: 0, y: 0, z: (z1 + z2)/2 };
 	inf.rot = { x: 0, y: Math.PI/2, z: 0 };
-	crFormSleeve_1(inf);		
+	crFormSleeve_1(inf);
+
+	// цилиндр насоса (металл)
+	var inf = { g: geom, dlina: z2, diameter_nr: 0.02, diameter_vn: 0.00001, ind: [2, 2, 2, 2] };
+	inf.pos = { x: 0, y: 0, z: (z1 + z2)/2 - 0.001 };
+	inf.rot = { x: 0, y: Math.PI/2, z: 0 };
+	crFormSleeve_1(inf);	
 
 	// задняя часть box	(красная)
 	var arrP = [[0.5, -0.35], [0.5, 0.35], [0.35, 0.5], [-0.35, 0.5], [-0.5, 0.35], [-0.5, -0.35], [-0.35, -0.5], [0.35, -0.5]];
@@ -221,15 +227,24 @@ function crSborka_zr_nasos_1(cdm)
 	getRazyem({obj: obj_2});
 	getRazyem({obj: obj_3});
 	
-	console.log(22222, obj, obj_2, obj_3);
-	
-	
+	//console.log(22222, obj, obj_2, obj_3);
+
 	
 	var posOffset = new THREE.Vector3().subVectors( obj.userData.jp[0], obj_2.userData.jp[0] );	
 	obj_2.position.add( posOffset );
 	
 	var posOffset = new THREE.Vector3().subVectors( obj.userData.jp[1], obj_3.userData.jp[0] );	
-	obj_3.position.add( posOffset );	
+	obj_3.position.add( posOffset );
+
+	//---------
+	
+	var arrO = [obj, obj_2, obj_3];
+	
+	console.log(22222, arrO);
+	
+	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
+	
+	return { arr1: arrO }; 
 }
 
 

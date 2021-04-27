@@ -251,7 +251,72 @@ function getRazyem(cdm)
 
 
 
+// добавляем сборку радиатора в сцену
+async function addSborkaToScene_1(cdm)
+{ 
+	if(camera == cameraView) return;
+ 
+	var inf = await actionFnSborka_1(cdm);	
+	if(!inf) return;
+	
+	var obj = inf.arr1[0];
+	clickO.move = obj; 
+	clickO.arrO = inf.arr1;
+	
+	planeMath.position.y = infProject.tools.heightPl.position.y; 
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.updateMatrixWorld(); 		
+	
+	// устанавливаем высоту над полом
+	clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
+	clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
+	clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
 
+	var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
+	
+	
+	moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, -offsetY, 0)}); 
+	
+	
+	planeMath.position.y -= offsetY; 
+	planeMath.updateMatrixWorld();
+
+	
+	renderCamera();	
+}
+
+
+
+
+// находим нужную ф-цию и создаем/обновляем сборку 
+async function actionFnSborka_1(cdm)
+{
+	var inf = null;
+	
+	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); console.log(window[cdm.inf.fc]); }
+	
+	if(camera == cameraView) { showHideSettingsRadiator_1(cdm); }
+	
+	return inf;
+}
+
+
+// скрываем/показываем список select (с настройками) для сборки 
+function showHideSettingsRadiator_1(cdm)
+{
+	if(!cdm) cdm = {};	
+	
+	var el = document.querySelector('[nameId="list_sborka_1"]');
+	el.innerHTML = '';
+	
+
+	if(cdm.inf && cdm.inf.list)
+	{ 
+		var ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf});
+		el.append(ui.el);		
+	}
+	
+}
 
 
 

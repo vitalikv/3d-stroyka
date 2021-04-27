@@ -149,23 +149,7 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 }	
 
 
-// скрываем список select для сборки радитора
-function showHideSettingsRadiator_1(cdm)
-{
-	if(!cdm) cdm = {};	
-	
-	var el = document.querySelector('[nameId="sborka_rad_1"]');
-	el.innerHTML = '';
-	
 
-	if(cdm.inf)
-	{
-		var ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf});
-		el.append(ui.el);		
-	}
-	
-	//console.log(22, document.querySelector('[listSborkaRad]'));
-}
 
 
 
@@ -216,8 +200,13 @@ function addElemItemSborkaRadiator_UI_1(cdm)
 	
 	
 	
-	//var container = document.body.querySelector('[list_ui="catalog"]');
+	//var container = document.body.querySelector('[list_ui="catalog"]');	
 	var container = document.body.querySelector('[valueId="sborka_rad_1"]');
+	
+	if(cdm.ui.catalog.parent)
+	{
+		var container = document.body.querySelector(cdm.ui.catalog.parent);
+	}
 	
 	container.append(elem);
 }
@@ -613,51 +602,11 @@ function posSubAdd_1(cdm)
 
 
 
-// добавляем сборку радиатора в сцену
-async function addSborkaRadiatorToScene_1(cdm)
-{ 
-	if(camera == cameraView) return;
- 
-	var inf = await actionFnSborkaRad_1(cdm);	
-	if(!inf) return;
-	
-	var obj = inf.arr1[0];
-	clickO.move = obj; 
-	clickO.arrO = inf.arr1;
-	
-	planeMath.position.y = infProject.tools.heightPl.position.y; 
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
-	planeMath.updateMatrixWorld(); 		
-	
-	// устанавливаем высоту над полом
-	clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
-	clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
-	clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
-
-	var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
-	
-	
-	moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, -offsetY, 0)}); 
-	
-	
-	planeMath.position.y -= offsetY; 
-	planeMath.updateMatrixWorld();
-
-	
-	renderCamera();	
-}
 
 
 
-// находим нужную ф-цию и создаем/обновляем сборку радитора
-async function actionFnSborkaRad_1(cdm)
-{
-	var inf = null;
-	
-	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); }
-	
-	return inf;
-}
+
+
 
 
 

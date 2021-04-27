@@ -1185,7 +1185,7 @@ function clickButton( event )
 	
 	if(intersects.length == 0) return;	
 	
-	if(camera == cameraTop)
+	if(camera == cameraTop || camera == camera3D)
 	{ 		
 		if(clickO.button == 'add_lotid')
 		{
@@ -1193,19 +1193,8 @@ function clickButton( event )
 		}
 		else if(clickO.button == 'add_group_obj')
 		{
-			addSborkaRadiatorToScene_1({addScene: true, inf: clickO.options});
+			addSborkaToScene_1({addScene: true, inf: clickO.options});
 		}		
-	}
-	else if(camera == camera3D)
-	{
-		if(clickO.button == 'add_lotid')
-		{
-			loadObjServer({lotid: clickO.options, cursor: true});
-		}
-		else if(clickO.button == 'add_group_obj')
-		{
-			addSborkaRadiatorToScene_1({addScene: true, inf: clickO.options});
-		}			
 	}
 	
 	clickO.buttonAct = clickO.button;

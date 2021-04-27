@@ -29,14 +29,12 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 	{
 		//sleepPause(2000);
 		
-		var inf = await actionFnSborkaRad_1(cdm);	
+		var inf = await actionFnSborka_1(cdm);	
 		if(!inf) return;
 		
 		moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, 2000, 0)});			
 
 		var obj = inf.arr1[0];
-		
-		showHideSettingsRadiator_1(cdm);
 	}
 	else
 	{

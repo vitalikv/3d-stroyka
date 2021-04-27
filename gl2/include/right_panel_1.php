@@ -317,7 +317,7 @@
 		<div nameId="wrap_object">
 			<div class="flex_column_1" nameId="wrap_sborka_1">
 
-				<div nameId="sborka_rad_1" style="position: relative;"></div>								
+				<div nameId="list_sborka_1" style="position: relative;"></div>								
 				
 			</div>
 			
