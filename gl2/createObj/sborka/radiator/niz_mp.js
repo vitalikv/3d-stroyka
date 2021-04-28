@@ -6,6 +6,7 @@ function paramSborkaRad_Odnotrub_Niz_Mp()
 	var inf = {};
 	
 	inf.list = {mp: {}, pp: {}};
+	inf.list.nameFc = 'sborkaRadiator';
 	inf.list.mp.t = [0.016, 0.020];	
 	inf.list.mp.pipe = {};
 	inf.list.mp.pipe.m1 = [0.016, 0.020];	// трубы к радиаторам
@@ -46,6 +47,7 @@ function paramSborkaRad_Odnotrub_Niz_Bay_Mp()
 	var inf = {};
 	
 	inf.list = {mp: {}, pp: {}};
+	inf.list.nameFc = 'sborkaRadiator';
 	inf.list.mp.t = [0.020, 0.026];
 	inf.list.mp.pipe = {};
 	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.020];	// трубы к радиаторам
@@ -92,6 +94,7 @@ function paramSborkaRad_Dvuhtrub_Niz_Mp()
 	var inf = {};
 	
 	inf.list = {mp: {}, pp: {}};
+	inf.list.nameFc = 'sborkaRadiator';
 	inf.list.mp.t = [0.020, 0.026, 0.032];	
 	inf.list.mp.pipe = {};
 	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.016];	// трубы к радиаторам

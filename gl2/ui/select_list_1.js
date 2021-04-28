@@ -11,7 +11,9 @@ class SelectList_1
 		this.el = null;
 		this.selectId = null;
 		this.arrList = cdm.arrList;
-
+		this.fc = cdm.fc;
+		this.inf = cdm.inf;
+		
 		this.render();
 		this.setup();
 		
@@ -136,6 +138,7 @@ class SelectList_1
 		}
 	}
 
+	// при создании списка назначаем события для каждого item
 	setup()
 	{
 		this.clickHandler = this.clickHandler.bind(this);
@@ -205,15 +208,17 @@ class SelectList_1
 		this.isOpen ? this.close() : this.open();
 	}
 	
+	// открываем список
 	open()
 	{
 		//this.el_input.style.borderBottom = 'none';
 		this.el_list.style.display = '';
 		
 		this.close_2 = this.close_2.bind(this);
-		document.addEventListener('click', this.close_2);		
+		document.addEventListener('click', this.close_2);	// если кликнем куда-то не в список, то закрываем список	
 	}
 	
+	// закрываем список
 	close()
 	{
 		//this.el_input.style.borderBottom = '1px solid #b3b3b3';
@@ -222,17 +227,29 @@ class SelectList_1
 		document.removeEventListener('click', this.close_2);
 	}
 	
+	// кликнули куда-то в другое место (закрываем список)
 	close_2(event) 
 	{
-		if (!this.el.contains(event.target)) this.close();
+		if (!this.el.contains(event.target)) { this.close(); }
 	}	
 	
+	// выполняем ф-цию, если выбрали новый item
 	activeFc()
 	{		
-		if(this.arrList[this.selectId].fc)
+		if(this.arrList[this.selectId].fc && 1==2)
 		{
 			window[this.arrList[this.selectId].fc.name](this.arrList[this.selectId].fc.params);
 		}
+		
+		if(this.fc == 'aCamView')
+		{
+			let params = {};
+			params = this.arrList[this.selectId].ps;
+			params.sborka = true;
+			params.inf = this.inf;
+			
+			activeCameraView(params);
+		}		
 	}	
 }
 

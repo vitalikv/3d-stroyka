@@ -282,6 +282,10 @@ infProject.list.sborka.radiator[2].niz = paramSborkaRad_Dvuhtrub_Niz_Mp();
 infProject.list.sborka.radiator[2].verh = paramSborkaRad_Dvuhtrub_Verh_Mp();
 infProject.list.sborka.radiator[2].bok = paramSborkaRad_Dvuhtrub_Bok_Mp();
 
+infProject.list.sborka.zr_nasos = [];
+infProject.list.sborka.zr_nasos[0] = paramSborka_Zr_Nasos_1();
+
+
 infProject.settings.active = { pg: 'pivot', group: true };
 infProject.settings.active.tube = null;
 infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры

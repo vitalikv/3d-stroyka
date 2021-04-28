@@ -293,7 +293,7 @@ async function actionFnSborka_1(cdm)
 {
 	var inf = null;
 	
-	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); console.log(window[cdm.inf.fc]); }
+	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); }
 	
 	if(camera == cameraView) { showHideSettingsRadiator_1(cdm); }
 	
@@ -312,8 +312,12 @@ function showHideSettingsRadiator_1(cdm)
 
 	if(cdm.inf && cdm.inf.list)
 	{ 
-		var ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf});
-		el.append(ui.el);		
+		var ui = null;
+		
+		if(cdm.inf.list.nameFc == 'sborkaRadiator'){ ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf}); }
+		if(cdm.inf.list.nameFc == 'sborkaZrNasos'){ ui = settingSborkaZrNasosMenuUI_1({inf: cdm.inf}); }
+		
+		if(ui) { el.append(ui.el); }		
 	}
 	
 }

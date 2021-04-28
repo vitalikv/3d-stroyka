@@ -15,35 +15,35 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	
 
 	var arr = [];
-	arr[arr.length] = {value: 'al', text: 'алюминиевый радиатор', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typeRad: 'al'}} }; 
-	arr[arr.length] = {value: 'st', text: 'стальной радиатор', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typeRad: 'st'}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.typeRad});	
+	arr[arr.length] = {value: 'al', text: 'алюминиевый радиатор', ps: {typeRad: 'al'} }; 
+	arr[arr.length] = {value: 'st', text: 'стальной радиатор', ps: {typeRad: 'st'} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.typeRad, inf: cdm.inf});	
 	idd.el.style.marginTop = '5px';
 	
 	if(cdm.inf.typeRad == 'al')
 	{
 		var arr = [];
-		arr[arr.length] = {value: 1, text: '1 секция', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 1}} }; 
-		arr[arr.length] = {value: 2, text: '2 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 2}} };
-		arr[arr.length] = {value: 3, text: '3 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 3}} };
-		arr[arr.length] = {value: 4, text: '4 секции', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 4}} }; 
-		arr[arr.length] = {value: 5, text: '5 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 5}} };
-		arr[arr.length] = {value: 6, text: '6 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 6}} };
-		arr[arr.length] = {value: 7, text: '7 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 7}} };
-		arr[arr.length] = {value: 8, text: '8 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 8}} };
-		arr[arr.length] = {value: 9, text: '9 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 9}} };
-		arr[arr.length] = {value: 10, text: '10 секций', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alCount: 10}} };
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.count});
+		arr[arr.length] = {value: 1, text: '1 секция', ps: {alCount: 1} }; 
+		arr[arr.length] = {value: 2, text: '2 секции', ps: {alCount: 2} };
+		arr[arr.length] = {value: 3, text: '3 секции', ps: {alCount: 3} };
+		arr[arr.length] = {value: 4, text: '4 секции', ps: {alCount: 4} }; 
+		arr[arr.length] = {value: 5, text: '5 секций', ps: {alCount: 5} };
+		arr[arr.length] = {value: 6, text: '6 секций', ps: {alCount: 6} };
+		arr[arr.length] = {value: 7, text: '7 секций', ps: {alCount: 7} };
+		arr[arr.length] = {value: 8, text: '8 секций', ps: {alCount: 8} };
+		arr[arr.length] = {value: 9, text: '9 секций', ps: {alCount: 9} };
+		arr[arr.length] = {value: 10, text: '10 секций', ps: {alCount: 10} };
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.rad.al.count, inf: cdm.inf});
 
 
 		var arr = [];
-		arr[arr.length] = {value: 0.2, text: 'h 200', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.2}} }; 
-		arr[arr.length] = {value: 0.35, text: 'h 350', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.35}} };
-		arr[arr.length] = {value: 0.5, text: 'h 500', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.5}} };
-		arr[arr.length] = {value: 0.6, text: 'h 600', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.6}} }; 
-		arr[arr.length] = {value: 0.7, text: 'h 700', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.7}} };
-		arr[arr.length] = {value: 0.8, text: 'h 800', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, alY: 0.8}} };
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.al.y});		
+		arr[arr.length] = {value: 0.2, text: 'h 200', ps: {alY: 0.2} }; 
+		arr[arr.length] = {value: 0.35, text: 'h 350', ps: {alY: 0.35} };
+		arr[arr.length] = {value: 0.5, text: 'h 500', ps: {alY: 0.5} };
+		arr[arr.length] = {value: 0.6, text: 'h 600', ps: {alY: 0.6} }; 
+		arr[arr.length] = {value: 0.7, text: 'h 700', ps: {alY: 0.7} };
+		arr[arr.length] = {value: 0.8, text: 'h 800', ps: {alY: 0.8} };
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.rad.al.y, inf: cdm.inf});		
 	}
 
 
@@ -54,9 +54,9 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
-			arr[arr.length] = {value: arr2[i], text: 'длина '+arr2[i]+'м', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, stX: arr2[i]}} };
+			arr[arr.length] = {value: arr2[i], text: 'длина '+arr2[i]+'м', ps: {stX: arr2[i]} };
 		}		
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.st.x});
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.rad.st.x, inf: cdm.inf});
 
 
 		var arr = [];
@@ -64,9 +64,9 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
-			arr[arr.length] = {value: arr2[i], text: 'h '+(arr2[i]*1000), fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, stY: arr2[i]}} };
+			arr[arr.length] = {value: arr2[i], text: 'h '+(arr2[i]*1000), ps: {stY: arr2[i]} };
 		}		
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.rad.st.y});		
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.rad.st.y, inf: cdm.inf});		
 	}	
 	
 	
@@ -80,9 +80,9 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 	el.append(elText);	
 
 	var arr = [];
-	arr[arr.length] = {value: 'mp', text: 'металлопластиковые трубы', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typePipe: 'mp'}} }; 
-	arr[arr.length] = {value: 'pp', text: 'полипропиленовые трубы', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, typePipe: 'pp'}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.typePipe});
+	arr[arr.length] = {value: 'mp', text: 'металлопластиковые трубы', ps: {typePipe: 'mp'} }; 
+	arr[arr.length] = {value: 'pp', text: 'полипропиленовые трубы', ps: {typePipe: 'pp'} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.typePipe, inf: cdm.inf});
 	idd.el.style.marginTop = '5px';
 	
 	
@@ -93,10 +93,10 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
-			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, pipeMp: arr2[i]}} };
+			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', ps: {pipeMp: arr2[i]} };
 		}
 
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.pipe.mp});			
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.pipe.mp, inf: cdm.inf});			
 	}
 	
 	if(cdm.inf.typePipe == 'pp')
@@ -106,16 +106,16 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 		
 		for(var i = 0; i < arr2.length; i++)
 		{
-			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, pipePp: arr2[i]}} };
+			arr[arr.length] = {value: arr2[i], text: (arr2[i]*1000)+ ' (магистральная труба)', ps: {pipePp: arr2[i]} };
 		}
 
-		var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.pipe.pp});			
+		var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.pipe.pp, inf: cdm.inf});			
 	}	
 	
 	var arr = [];
-	arr[arr.length] = {value: 'left', text: 'подключение слева', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, side: 'left'}} }; 
-	arr[arr.length] = {value: 'right', text: 'подключение справа', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, side: 'right'}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.side});
+	arr[arr.length] = {value: 'left', text: 'подключение слева', ps: {side: 'left'} }; 
+	arr[arr.length] = {value: 'right', text: 'подключение справа', ps: {side: 'right'} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.side, inf: cdm.inf});
 
 
 	var elBroder = document.createElement('div');
@@ -129,17 +129,17 @@ function settingSborkaRadiatorMenuUI_1(cdm)
 
 	
 	var arr = [];
-	arr[arr.length] = {value: 'none', text: 'без кранов', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'none'}} }; 
-	arr[arr.length] = {value: 'regulator', text: 'регулировочные краны', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'regulator'}} };
-	arr[arr.length] = {value: 'sharov', text: 'шаровые краны', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, kran: 'sharov'}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.kran});
+	arr[arr.length] = {value: 'none', text: 'без кранов', ps: {kran: 'none'} }; 
+	arr[arr.length] = {value: 'regulator', text: 'регулировочные краны', ps: {kran: 'regulator'} };
+	arr[arr.length] = {value: 'sharov', text: 'шаровые краны', ps: {kran: 'sharov'} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.kran, inf: cdm.inf});
 	idd.el.style.marginTop = '5px';
 	
 	
 	var arr = [];
-	arr[arr.length] = {value: false, text: 'без терморегулятора', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, termoreg: false}} }; 
-	arr[arr.length] = {value: true, text: 'с терморегулятором', fc: {name: 'activeCameraView', params: {sborka: true, inf: cdm.inf, termoreg: true}} };
-	var idd = new SelectList_1(el, {arrList: arr, selectItem: cdm.inf.termoreg});
+	arr[arr.length] = {value: false, text: 'без терморегулятора', ps: {termoreg: false} }; 
+	arr[arr.length] = {value: true, text: 'с терморегулятором', ps: {termoreg: true} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.termoreg, inf: cdm.inf});
 			
 	
 	//el.style.display = '';

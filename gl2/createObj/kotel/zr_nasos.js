@@ -248,3 +248,58 @@ function crSborka_zr_nasos_1(cdm)
 }
 
 
+
+function settingSborkaZrNasosMenuUI_1(cdm)
+{
+	//var el = document.querySelector('[nameId="'+cdm.nameId+'"]');
+	var el = document.createElement('div');
+	el.setAttribute('listSborkaNasos', '');
+	
+	var elText = document.createElement('div');
+	elText.innerText = 'насос';
+	elText.style.cssText = `margin-top: 10px; font-family: arial,sans-serif; font-size: 18px; color: #666; text-decoration: none; text-align: center;`;
+	el.append(elText);
+	
+	
+	var arr = [];
+	arr[arr.length] = {value: '1', text: 'цир. насос 1', ps: {nasos: '1'} }; 
+	arr[arr.length] = {value: '1 1/4', text: 'цир. насос 1 1/4', ps: {nasos: '1 1/4'} };
+	arr[arr.length] = {value: '1 1/2', text: 'цир. насос 1 1/2', ps: {nasos: '1 1/2'} };
+	arr[arr.length] = {value: '2', text: 'цир. насос 2', ps: {nasos: '2'} };
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.params.nasos, inf: cdm.inf});	
+	idd.el.style.marginTop = '5px';	
+	
+	
+	return { el: el };
+}
+
+
+function paramSborka_Zr_Nasos_1()
+{
+	var inf = {};
+	
+	inf.list = {mp: {}, pp: {}};
+	inf.list.nameFc = 'sborkaZrNasos';
+	inf.list.mp.t = [0.020, 0.026, 0.032];	
+	inf.list.mp.pipe = {};
+	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.016];	// трубы к радиаторам
+	inf.list.mp.pipe.m2 = [0.020, 0.026, 0.032];	// трубы от тройников
+	inf.list.mp.obj = {};
+	inf.list.mp.obj.pr1 = [409, 409, 409];	// мп перехожник от рад к трубе
+	inf.list.mp.obj.tr1 = [365, 368, 374];	// тройник для маг.труб	
+		
+	
+	inf.params = {};
+	inf.params.nasos = '1';
+	inf.params.perehod = '1';
+		
+	
+	inf.fc = 'crSborka_zr_nasos_1';
+	
+	inf.ui = {};
+	inf.ui.catalog = {name: 'цир. насос', parent: '[list_ui="catalog"]'};	
+
+	return inf;
+}
+
+

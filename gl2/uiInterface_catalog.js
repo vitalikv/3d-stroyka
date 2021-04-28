@@ -61,7 +61,7 @@ async function addObjInCatalogUI_1(cdm)
 	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].bok);
 	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].bok);
 
-	addElemItemSborkaRadiator_UI_1({ ui: {catalog: {name:'test', parent: '[list_ui="catalog"]'}}, fc: 'crSborka_zr_nasos_1' });
+	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.zr_nasos[0]);
 	
 	
 	// находим дочерние объекты 
