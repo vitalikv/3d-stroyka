@@ -1636,117 +1636,17 @@ async function sleepPause(milliseconds)
 
 var docReady = false;
 
-$(document).ready(function () 
-{ 
+document.addEventListener("DOMContentLoaded", init);
+
+function init()
+{
 	docReady = true; 
 			 
 	  
-	loadFile({json: true}); 
-	
-	if(1==2)
-	{
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'export/rad_al_secziy_500_.fbx', function ( objects ) 
-		{ console.log(222, objects);
-			
-			for ( var i = 0; i < objects.children.length; i++ )
-			{
-				var obj = objects.children[i];
-				obj.position.set(i*0.3,0,0);
-
-				obj.userData.tag = 'obj';
-				obj.userData.id = countId; countId++;
-				obj.userData.obj3D = {};
-				obj.userData.obj3D.lotid = 1; 
-				infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-								
-			
-				obj.traverse( function ( child ) {
-					if ( child.isMesh ) 
-					{ console.log(child.name);
-						child.castShadow = true;
-						child.receiveShadow = true;
-					}
-				} );
-				scene.add( obj );
-				
-				if(i==0 && 1==2)
-				{
-					var txt = obj.toJSON();
-					//console.log(csv);
-					var csv = JSON.stringify( txt );	
-					var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);	
-					
-					var link = document.createElement('a');
-					document.body.appendChild(link);
-					link.href = csvData;
-					link.target = '_blank';
-					link.download = 'filename.json';
-					link.click();			
-				}				
-				
-			}
-		});
-		
-	}
-		
-		
-	if(1==2)
-	{
-		new THREE.ObjectLoader().load
-		(
-			infProject.path+'export/filename.json',
-			
-			function ( obj )
-			{
-				infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-				
-				//obj.rotation.set(0,0,0);
-
-				scene.add( obj );		
-			}
-		);	
-		
-	}
-	
-	
-	if(1==2)	
-	{
-		
-		var loader = new THREE.FBXLoader();
-		loader.load( infProject.path+'export/kran3.bin', function ( objects ) 
-		{ console.log(222, objects);
-			
-			var obj = objects.children[0];
-			obj.position.set(3,0,0);
-
-			obj.userData.tag = 'obj';
-			obj.userData.id = countId; countId++;
-			obj.userData.obj3D = {};
-			obj.userData.obj3D.lotid = 1; 
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-
-			scene.add( obj );
-		});		
-		
-		
-		var oReq = new XMLHttpRequest();
-		oReq.open("POST", infProject.path+'export/kran3.bin', true);
-		oReq.onload = function (oEvent) 
-		{
-			console.log(444, oReq.response);
-
-			var obj = new THREE.FBXLoader().parse(oReq.response)
-			scene.add( obj ); 
-		};
-		oReq.send();						
-		
-	}	
+	loadFile({json: true}); 	
+}
 
 
-
-	
-});
 
 
 

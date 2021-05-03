@@ -205,7 +205,15 @@ function cr_gaika_nasos_1(cdm)
 
 function crSborka_zr_nasos_1(cdm) 
 {
-	var obj = cr_zr_nasos_1({ r1: '1 1/2' });
+	if(!cdm) cdm = {};
+	
+	console.log(cdm);
+	var inf = cdm.inf;
+	
+	if(cdm.nasos) { inf.params.nasos = cdm.nasos; }
+	
+	
+	var obj = cr_zr_nasos_1({ r1: inf.params.nasos });
 	
 	
 	

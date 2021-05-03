@@ -261,7 +261,7 @@
 							</label>
 
 							<div class="prew_substrate" style="margin: auto;">
-								<img src="#" nameId="rp_floor_img" alt=""/>
+								<img src="" nameId="rp_floor_img" alt=""/>
 							</div>
 							
 							<div>

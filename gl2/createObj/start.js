@@ -81,7 +81,7 @@ async function saveObjSql_2(cdm)
 async function cr_obj_cat()
 {
 
-	crSborka_zr_nasos_1(); 	// сборка цирк. насоса 
+	//crSborka_zr_nasos_1(); 	// сборка цирк. насоса 
 
 	// насос цирк
 	if(1==2)
