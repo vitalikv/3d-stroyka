@@ -135,7 +135,7 @@ function paramSborkaRad_Dvuhtrub_Niz_Mp()
 async function crSborkaRad_Odnotrub_Niz_Mp(cdm)
 {
 	changeParamSbrRad_1(cdm);
-	
+
 	var inf = cdm.inf;
 	
 	var dp = {};

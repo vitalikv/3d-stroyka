@@ -308,7 +308,6 @@ function showHideSettingsRadiator_1(cdm)
 	
 	var el = document.querySelector('[nameId="list_sborka_1"]');
 	el.innerHTML = '';
-	
 
 	if(cdm.inf && cdm.inf.list)
 	{ 

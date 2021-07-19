@@ -124,14 +124,6 @@ class SelectList_1
 			transition: 0.15s background ease-in;
 			`;
 
-			this.el_items[i].addEventListener("mouseover", function(e) 
-			{
-				//e.target.style.background = "#eee";
-			});
-			this.el_items[i].addEventListener("mouseout", function(e) 
-			{
-				//e.target.style.background = "#ffffff";
-			});	
 
 			this.el_items[i].userData = {};
 			this.el_items[i].userData.value = this.arrList[i].value;
@@ -141,14 +133,14 @@ class SelectList_1
 	// при создании списка назначаем события для каждого item
 	setup()
 	{
-		this.clickHandler = this.clickHandler.bind(this);
-		this.el_input.addEventListener('click', this.clickHandler);
+		let clickHandler = this.clickHandler.bind(this);
+		this.el_input.onmousedown = function(e){ clickHandler(e); }
 		
-		this.clickItems = this.clickItems.bind(this);
+		let clickItems = this.clickItems.bind(this);
 		
 		for (let i = 0; i < this.el_items.length; i++)
-		{
-			this.el_items[i].addEventListener('mouseup', this.clickItems);			
+		{		
+			this.el_items[i].onmousedown = function(e){ clickItems(e); }			
 		}
 	}
 

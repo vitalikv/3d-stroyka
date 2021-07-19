@@ -207,10 +207,53 @@ function crSborka_zr_nasos_1(cdm)
 {
 	if(!cdm) cdm = {};
 	
-	console.log(cdm);
 	var inf = cdm.inf;
 	
 	if(cdm.nasos) { inf.params.nasos = cdm.nasos; }
+	
+	for(var i = 0; i < cdm.inf.list.sb.length; i++)
+	{
+		if(cdm.inf.params.nasos == cdm.inf.list.sb[i].n)
+		{
+			cdm.inf.list.id = i;
+			break;
+		}
+	}
+	
+	
+	if(cdm.perehod) { inf.params.perehod = cdm.perehod; }
+	else { inf.params.perehod = inf.list.sb[inf.list.id].p.arr[inf.list.sb[inf.list.id].p.id]; }	
+
+	
+	if(1==1)
+	{
+		var listPereh = cdm.inf.list.sb[cdm.inf.list.id].p.arr;		
+		
+		for(var i = 0; i < listPereh.length; i++)
+		{
+			if(cdm.inf.params.perehod == listPereh[i])
+			{
+				cdm.inf.list.sb[cdm.inf.list.id].p.id = i;
+				break;
+			}
+		}				
+	}	
+	
+	
+	
+	{
+		var perehod = { r1: '1', r2: '3/4', m1: 0.039 };
+		
+		if(inf.params.perehod == '1x3/4') { perehod = { r1: '1', r2: '3/4', m1: 0.039 }; }	
+		if(inf.params.perehod == '1 1/4x3/4') { perehod = { r1: '1 1/4', r2: '3/4', m1: 0.041 }; }		
+		if(inf.params.perehod == '1 1/4x1') { perehod = { r1: '1 1/4', r2: '1', m1: 0.042 }; }	
+		if(inf.params.perehod == '1 1/2x1') { perehod = { r1: '1 1/2', r2: '1', m1: 0.043 }; }
+		if(inf.params.perehod == '1 1/2x1 1/4') { perehod = { r1: '1 1/2', r2: '1 1/4', m1: 0.043 }; }
+		if(inf.params.perehod == '2x1') { perehod = { r1: '2', r2: '1', m1: 0.048 }; }
+		if(inf.params.perehod == '2x1 1/4') { perehod = { r1: '2', r2: '1 1/4', m1: 0.048 }; }
+		if(inf.params.perehod == '2x1 1/2') { perehod = { r1: '2', r2: '1 1/2', m1: 0.048 }; }			
+	}
+	
 	
 	
 	var obj = cr_zr_nasos_1({ r1: inf.params.nasos });
@@ -220,10 +263,10 @@ function crSborka_zr_nasos_1(cdm)
 	scene.add( obj );				
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
 	
-	var obj_2 = cr_gaika_nasos_1({ r1: '1', r2: '3/4', m1: 0.039 });
+	var obj_2 = cr_gaika_nasos_1(perehod);		// { r1: inf.params.perehod, r2: '3/4', m1: 0.039 }
 	obj_2.rotation.y = Math.PI;
 	
-	var obj_3 = cr_gaika_nasos_1({ r1: '1', r2: '3/4', m1: 0.039 });
+	var obj_3 = cr_gaika_nasos_1(perehod);
 	
 	scene.add( obj_2 );				
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj_2;
@@ -246,9 +289,7 @@ function crSborka_zr_nasos_1(cdm)
 
 	//---------
 	
-	var arrO = [obj, obj_2, obj_3];
-	
-	console.log(22222, arrO);
+	var arrO = [obj, obj_2, obj_3];	
 	
 	joinSborkaToGroup({arr: arrO});	// объекты объединяем в группу и добавляем в сцену
 	
@@ -269,13 +310,38 @@ function settingSborkaZrNasosMenuUI_1(cdm)
 	el.append(elText);
 	
 	
+	
+	
 	var arr = [];
-	arr[arr.length] = {value: '1', text: 'цир. насос 1', ps: {nasos: '1'} }; 
+	arr[arr.length] = {value: '1', text: 'цир. насос 1', ps: {nasos: '1' } }; 
 	arr[arr.length] = {value: '1 1/4', text: 'цир. насос 1 1/4', ps: {nasos: '1 1/4'} };
 	arr[arr.length] = {value: '1 1/2', text: 'цир. насос 1 1/2', ps: {nasos: '1 1/2'} };
 	arr[arr.length] = {value: '2', text: 'цир. насос 2', ps: {nasos: '2'} };
 	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.params.nasos, inf: cdm.inf});	
 	idd.el.style.marginTop = '5px';	
+	
+	
+	
+	var arr = [];
+	var listPereh = cdm.inf.list.sb[cdm.inf.list.id].p.arr;
+	
+	for(var i = 0; i < listPereh.length; i++)
+	{
+		arr[arr.length] = {value: listPereh[i], text: `гайка для насоса ${listPereh[i]}`, ps: {perehod: listPereh[i] } };	
+	}
+	
+	//arr[arr.length] = {value: '1x3/4', text: 'гайка для насоса 1x3/4', ps: {perehod: '1x3/4' } };	
+	//arr[arr.length] = {value: '1 1/4x3/4', text: 'гайка для насоса 1 1/4x3/4', ps: {perehod: '1 1/4x3/4' } };		
+	//arr[arr.length] = {value: '1 1/4x1', text: 'гайка для насоса 1 1/4x1', ps: {perehod: '1 1/4x1' } };	
+	//arr[arr.length] = {value: '1 1/2x1', text: 'гайка для насоса 1 1/2x1', ps: {perehod: '1 1/2x1' } };
+	//arr[arr.length] = {value: '1 1/2x1 1/4', text: 'гайка для насоса 1 1/2x1 1/4', ps: {perehod: '1 1/2x1 1/4' } };
+	//arr[arr.length] = {value: '2x1', text: 'гайка для насоса 2x1', ps: {perehod: '2x1' } };
+	//arr[arr.length] = {value: '2x1 1/4', text: 'гайка для насоса 2x1 1/4', ps: {perehod: '2x1 1/4' } };
+	//arr[arr.length] = {value: '2x1 1/2', text: 'гайка для насоса 2x1 1/2', ps: {perehod: '2x1 1/2' } };		
+	
+	
+	var idd = new SelectList_1(el, {arrList: arr, fc: 'aCamView', selectItem: cdm.inf.params.perehod, inf: cdm.inf});	
+	idd.el.style.marginTop = '5px';		
 	
 	
 	return { el: el };
@@ -286,20 +352,18 @@ function paramSborka_Zr_Nasos_1()
 {
 	var inf = {};
 	
-	inf.list = {mp: {}, pp: {}};
+	inf.list = {};
 	inf.list.nameFc = 'sborkaZrNasos';
-	inf.list.mp.t = [0.020, 0.026, 0.032];	
-	inf.list.mp.pipe = {};
-	inf.list.mp.pipe.m1 = [0.016, 0.016, 0.016];	// трубы к радиаторам
-	inf.list.mp.pipe.m2 = [0.020, 0.026, 0.032];	// трубы от тройников
-	inf.list.mp.obj = {};
-	inf.list.mp.obj.pr1 = [409, 409, 409];	// мп перехожник от рад к трубе
-	inf.list.mp.obj.tr1 = [365, 368, 374];	// тройник для маг.труб	
-		
+	inf.list.sb = [];
+	inf.list.sb[0] = {n: '1', p: {id: 0, arr: ['1x3/4']}};
+	inf.list.sb[1] = {n: '1 1/4', p: {id: 0, arr: ['1 1/4x3/4', '1 1/4x1']}};
+	inf.list.sb[2] = {n: '1 1/2', p: {id: 0, arr: ['1 1/2x1', '1 1/2x1 1/4']}};
+	inf.list.sb[3] = {n: '2', p: {id: 0, arr: ['2x1', '2x1 1/4', '2x1 1/2']}};
+	inf.list.id = 2;
 	
 	inf.params = {};
-	inf.params.nasos = '1';
-	inf.params.perehod = '1';
+	inf.params.nasos = inf.list.sb[inf.list.id].n;
+	inf.params.perehod = inf.list.sb[inf.list.id].p.arr[inf.list.sb[inf.list.id].p.id];
 		
 	
 	inf.fc = 'crSborka_zr_nasos_1';
