@@ -49,19 +49,19 @@ async function addObjInCatalogUI_1(cdm)
 		}		
 	}
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].niz);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].niz);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].niz);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[0].niz);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[1].niz);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[2].niz);
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].verh);	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].verh);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].verh);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[0].verh);	
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[1].verh);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[2].verh);
 	
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[0].bok);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[1].bok);
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.radiator[2].bok);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[0].bok);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[1].bok);
+	addElemItemSborka_UI_1(infProject.list.sborka.radiator[2].bok);
 
-	addElemItemSborkaRadiator_UI_1(infProject.list.sborka.zr_nasos[0]);
+	addElemItemSborka_UI_1(infProject.list.sborka.zr_nasos[0]);
 	
 	
 	// находим дочерние объекты 
@@ -168,6 +168,68 @@ async function addObjInCatalogUI_1(cdm)
 		return json;
 	}	
 }
+
+
+
+// добавляем item сборки в UI catalog
+function addElemItemSborka_UI_1(cdm)
+{	
+	var str_button = 
+	'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 20px; height: 20px;">\
+		<img src="'+infProject.path+'/img/look.png" style="display: block; height: 95%; margin: auto; -o-object-fit: contain; object-fit: contain;">\
+	</div>';
+	
+	var html = 
+	'<div class="right_panel_1_1_list_item">\
+		<div class="flex_1 relative_1">\
+			<div class="right_panel_1_1_list_item_text">'+cdm.ui.catalog.name+'</div>\
+			'+str_button+'\
+		</div>\
+	</div>';			
+	
+	var div = document.createElement('div');
+	div.innerHTML = html;
+	var elem = div.firstChild;
+	
+	//json.elem = elem;
+
+	// при клике добавляем объект в сцену	
+	(function() 
+	{
+		elem.onmousedown = function(e)
+		{ 
+			clickItemFocusUI_1({el: elem});
+			clickInterface({button: 'add_group_obj', value: cdm}); 
+			e.stopPropagation(); 
+		}	  
+	}());
+
+	// назначаем событие при клике на лупу UI
+	var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
+	(function() 
+	{
+		elem_2.onmousedown = function(e)
+		{ 
+			clickItemFocusUI_1({el: elem});
+			activeCameraView({sborka: true, inf: cdm});
+			e.stopPropagation();
+		};	
+	}());			
+	
+	
+	
+	//var container = document.body.querySelector('[list_ui="catalog"]');	
+	var container = document.body.querySelector('[valueId="sborka_rad_1"]');
+	
+	if(cdm.ui.catalog.parent)
+	{
+		var container = document.body.querySelector(cdm.ui.catalog.parent);
+	}
+	
+	container.append(elem);
+}
+
+
 
 
 // кликнули на item catalog, выделфем этот пункт меню

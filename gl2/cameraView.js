@@ -221,7 +221,7 @@ arr[i] = undefined;
 	
 	cameraView.userData.cameraView.arrO = [];
 	
-	showHideSettingsRadiator_1();
+	addDeleteElemSettingSborka_UI_1();
 
 	renderCamera();
 }

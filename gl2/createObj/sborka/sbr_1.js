@@ -295,14 +295,16 @@ async function actionFnSborka_1(cdm)
 	
 	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); }
 	
-	if(camera == cameraView) { showHideSettingsRadiator_1(cdm); }
+	if(camera == cameraView) { addDeleteElemSettingSborka_UI_1(cdm); }
 	
 	return inf;
 }
 
 
+
+
 // скрываем/показываем список select (с настройками) для сборки 
-function showHideSettingsRadiator_1(cdm)
+function addDeleteElemSettingSborka_UI_1(cdm)
 {
 	if(!cdm) cdm = {};	
 	

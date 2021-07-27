@@ -111,7 +111,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'cr_gaika_nasos_1', arr: arr, startPos: new THREE.Vector3(-0.5, 0, 3+0.0), n: 0, cat: 'gaika_nasos_1'});		
 	}
 	
-	// коллектор 1
+	// коллектор 2 (с кранами)
 	if(1==2)
 	{
 		var arr = [];
@@ -134,7 +134,7 @@ async function cr_obj_cat()
 		await fc_cr_obj({funcName: 'st_collector_2', arr: arr, startPos: new THREE.Vector3(0.5, 0, 3+0.0), cat: 'st_collector_2'});		
 	}
 	
-	// коллектор 2 (с кранами)
+	// коллектор 1
 	if(1==2)
 	{
 		var arr = [];
