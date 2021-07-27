@@ -308,7 +308,10 @@ function addDeleteElemSettingSborka_UI_1(cdm)
 {
 	if(!cdm) cdm = {};	
 	
-	var el = document.querySelector('[nameId="list_sborka_1"]');
+	var el_block = document.querySelector('[nameId="wrap_sborka_1"]');
+	el_block.style.display = 'none';
+	
+	var el = el_block.querySelector('[nameId="list_sborka_1"]');
 	el.innerHTML = '';
 
 	if(cdm.inf && cdm.inf.list)
@@ -318,7 +321,8 @@ function addDeleteElemSettingSborka_UI_1(cdm)
 		if(cdm.inf.list.nameFc == 'sborkaRadiator'){ ui = settingSborkaRadiatorMenuUI_1({inf: cdm.inf}); }
 		if(cdm.inf.list.nameFc == 'sborkaZrNasos'){ ui = settingSborkaZrNasosMenuUI_1({inf: cdm.inf}); }
 		
-		if(ui) { el.append(ui.el); }		
+		if(ui) { el.append(ui.el); }
+		el_block.style.display = '';
 	}
 	
 }

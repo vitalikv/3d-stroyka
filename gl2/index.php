@@ -69,6 +69,7 @@
 			<div nameId="msDiv_1" style="display: none; position: absolute; left: 50%; top: 50%; border:solid 1px #b3b3b3; background: #fff; padding: 5px 10px; font-family: arial,sans-serif; font-size: 15px; color: #666;">
 				
 			</div>
+			
 			<div nameId="mainDiv_1" style="flex-grow:1; position: relative;">
 				<? require_once("include/top_1.php"); ?>			
 				
@@ -83,6 +84,7 @@
 					
 				} ?>					
 				
+			
 				<div class="help">
 					<a href="https://youtu.be/kFdMB4p7gbU" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
 						<img src="<?=$path?>/img/button_youtube.png">
@@ -90,6 +92,10 @@
 					</a>	
 				</div>
 				
+			</div>
+
+			<div nameId="wrap_sborka_1" style="display: none; width: 280px; position: absolute; background: #f1f1f1; border: 1px solid #ccc;">
+				<div nameId="list_sborka_1" style="position: relative;"></div>												
 			</div>
 			
 			

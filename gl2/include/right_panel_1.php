@@ -315,11 +315,7 @@
 		
 		
 		<div nameId="wrap_object">
-			<div class="flex_column_1" nameId="wrap_sborka_1">
 
-				<div nameId="list_sborka_1" style="position: relative;"></div>								
-				
-			</div>
 			
 			<div class="flex_column_1" nameId="wrap_object_1" style="display: none; overflow: auto;">
 				<div class="right_panel_1_1_h">Объект</div>
