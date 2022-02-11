@@ -26,7 +26,7 @@ scene.background = new THREE.Color( 0xffffff );
 
 //----------- cameraTop
 var cameraTop = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
-cameraTop.position.set(0, 10, 0);
+cameraTop.position.set(0, 30, 0);
 cameraTop.lookAt(scene.position);
 cameraTop.zoom = infProject.settings.camera.zoom;
 cameraTop.updateMatrixWorld();

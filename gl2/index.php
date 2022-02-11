@@ -257,6 +257,7 @@
 	<? if($_SERVER['SERVER_NAME']=='3d-stroyka' && $interface['rtc']) {?> 
 	<script src="<?=$path?>admin/catalog/admin_catalog.js?<?=$vrs?>"></script> 
 	<script src="<?=$path?>admin/obj/adminLoadObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>admin/obj/adminLoadHouse.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>admin/obj/adminClickObj.js?<?=$vrs?>"></script>
 	<?}?>
 

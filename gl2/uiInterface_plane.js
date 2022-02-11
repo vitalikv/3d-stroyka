@@ -36,7 +36,7 @@ function addPlaneListUI(cdm)
 	'<div class="right_panel_1_1_list_item" uuid="'+plane.uuid+'">\
 		<div class="flex_1">\
 			<div class="right_panel_1_1_list_item_text" nameId="rp_floor_txt_name">'+plane.userData.substrate.nameRus+'</div>\
-			<div class="image_wrap" nameId="butt_img_substrate_1" style="position: absolute; width: 35px; height: 20px; right: 30px;">\
+			<div class="image_wrap" nameId="butt_img_substrate_1" style="position: relative; width: 35px; height: 20px; right: 0px;">\
 				<img src="'+infProject.path+'img/f4.png">\
 			</div>\
 		</div>\

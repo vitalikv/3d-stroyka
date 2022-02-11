@@ -6,8 +6,7 @@
 {
 	position: relative;
 	margin: auto;
-	width: 300px;
-	height: 100px;	
+	width: 500px;	
 	
 	background: white;
 	border-radius: 8px;
@@ -19,13 +18,6 @@
 	flex-direction: column;	
 	
 	z-index: 2;
-}
-
-
-.window_main_load_obj
-{
-	width: 500px;
-	height: 250px;		
 }
 
 
@@ -70,12 +62,20 @@
 	<div class="modal_window_close" nameId="button_close_main_load_obj">
 		+
 	</div>
-	<div style="width: 80%; height: 160px; margin: auto; padding-top: 30px;">
+	<div style="width: 80%; margin: auto; padding-top: 30px; padding-bottom: 30px;">
 
 		<input name="file" type="file" id="load_obj_1" class="input_load_substrate">
+		<input name="file" type="file" id="load_house_1" class="input_load_substrate">
+		
 		<label for="load_obj_1" class="button1 button_gradient_1" style="margin: auto;">
-			загрузить с вашего компьютера
+			загрузить объект с компьютера
 		</label>
+		
+		<br><br>
+		
+		<label for="load_house_1" class="button1 button_gradient_1" style="margin: auto;">
+			загрузить дом с компьютера
+		</label>		
 
 		<div style="font-size: 20px; font-family: arial,sans-serif; color: #666; margin: 10px auto; text-align:center;">
 			или
