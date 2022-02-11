@@ -5,11 +5,11 @@
 function activeObjRightPanelUI_1(cdm) 
 {	
 	var el = document.querySelector('[nameId="wrap_object_1"]');
-
+console.log(7777777, cdm);
 	var bl_object_3d = document.querySelector('[nameId="bl_object_3d"]');
 	var elButt_1 = document.querySelector('[nameId="pr_list_button_for_obj"]');
 	var elButt_2 = document.querySelector('[nameId="pr_list_button_center_point"]');
-	var elButt_3 = document.querySelector('[nameId="block_gizmo"]');
+	var elButt_3 = document.querySelector('[nameId="block_pos"]');
 	var elButt_4 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
 	var elButt_5 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');		
 	var elButt_6 = document.querySelector('[nameId="rp_bl_wf_tube"]');
@@ -34,11 +34,13 @@ function activeObjRightPanelUI_1(cdm)
 	{
 		elButt_4.style.display = 'block';
 		elButt_5.style.display = 'block';
+		elButt_3.style.display = 'block';
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
 		elButt_6.style.display = 'block';
 		elButt_1.style.display = 'block';
+		elButt_3.style.display = 'block';
 	}			
 	else if(obj.userData.tag == 'obj')
 	{	
@@ -330,20 +332,6 @@ function clickRtekUI_1(cdm)
 
 
 
-
-
-
-
-// кликнули на Checkbox группа (выбираем все объекты или снимаем выделения, кроме объекта, на котором стоит pivot)
-function clickCheckboxgroup_1(cdm)
-{
-	infProject.settings.active.group = !infProject.settings.active.group;
-	
-	if(infProject.settings.active.group) { $('[nameId="box_input_checked_group"]').show(); }
-	else { $('[nameId="box_input_checked_group"]').hide(); }
-
-	clickItemObjNameUI({button: true});						 
-}
 
 
 

@@ -86,17 +86,75 @@
 				
 			
 				<div class="help">
-					<a href="https://youtu.be/kFdMB4p7gbU" class="button_youtube button_gradient_1" data-action ='top_panel_1' target="_blank">
+					<a href="https://youtu.be/kFdMB4p7gbU" class="button1 button_gradient_1" data-action ='top_panel_1' target="_blank">
 						<img src="<?=$path?>/img/button_youtube.png">
 						<div style="padding-left:10px;">видеоинструкция</div>
 					</a>	
 				</div>
 				
+				
+				
+				
+					<div nameId="block_pos" class="block_pos" ui_1="">
+						<div style="display: flex;">
+							<div style="display: flex; align-items: center;">
+								<div class="button1 button_gradient_1" nameId="select_pivot">
+									<img src="<?=$path?>/img/move_1.png">
+								</div>	
+								
+								<div class="flex_1 input_rotate">
+									<input type="text" nameId="object_pos_X" value="0">
+									<input type="text" nameId="object_pos_Y" value="0">
+									<input type="text" nameId="object_pos_Z" value="0">
+								</div>	
+							</div>
+							
+							<div style="display: flex; align-items: center;">
+								<div class="button1 button_gradient_1" nameId="select_gizmo">
+									<img src="<?=$path?>/img/rotate_1.png">	
+								</div>	
+
+								<div class="flex_1 input_rotate">
+									<input type="text" nameId="object_rotate_X" value="0">
+									<input type="text" nameId="object_rotate_Y" value="0">
+									<input type="text" nameId="object_rotate_Z" value="0">
+								</div>	
+
+								<div class="flex_1">
+									<div style="width: 20px; height: 2px; background: rgb(247, 72, 72);"></div>
+									<div style="width: 20px; height: 2px; background: rgb(17, 255, 0);"></div>
+									<div style="width: 20px; height: 2px; background: rgb(72, 116, 247);"></div>
+								</div>
+								
+								<div class="flex_1">
+									<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m">-90</div>
+									<div class="button1 button_gradient_1" nameId="obj_rotate_X_90">90</div>
+									
+									<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m">-90</div>
+									<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90">90</div>
+									
+									<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m">-90</div>
+									<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90">90</div>
+								</div>						
+							
+								<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
+									сбросить	
+								</div>											
+							</div>
+							
+						</div>
+					</div>					
+				
+				
+				
+				
+				
 			</div>
 
 			<div nameId="wrap_sborka_1" style="display: none; width: 280px; position: absolute; background: #f1f1f1; border: 1px solid #ccc;">
 				<div nameId="list_sborka_1" style="position: relative;"></div>												
-			</div>
+			</div>			
+					
 			
 			
 			<? require_once("include/right_panel_1.php"); ?>

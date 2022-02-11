@@ -1,75 +1,34 @@
-$(document).ready(function(){
+$(document).ready(function()
+{
 
-//$('[data-action="top_panel_1"]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });
-//$('[ui_1=""]').on('mousedown wheel DOMMouseScroll mousewheel mousemove touchstart touchend touchmove', function (e) { e.stopPropagation(); });		
+	$('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
+	$('[nameId="button_active_align_wf_point2"]').mousedown(function () { switchAlignPoint_1({active: true, type: 'move'}); }); 
+	$('[nameId="button_active_join_element"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
+	$('[nameId="button_deactive_join_element"]').mousedown(function () { switchAlignPoint_1({active: false}); });
 
+	$('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: true}); });
+	$('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: false}); }); 
+	  
+	$('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
+	$('[nameId="join_element"]').mousedown(function () { alignPointToPoint_1(); });
 
-
-
-$('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
-$('[nameId="button_active_align_wf_point2"]').mousedown(function () { switchAlignPoint_1({active: true, type: 'move'}); }); 
-$('[nameId="button_active_join_element"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
-$('[nameId="button_deactive_join_element"]').mousedown(function () { switchAlignPoint_1({active: false}); });
-
-$('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: true}); });
-$('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: false}); }); 
-  
-$('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
-$('[nameId="join_element"]').mousedown(function () { alignPointToPoint_1(); });
+	$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 
 
 
-
-
-
-
-
-$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
-
-$('[nameId="box_input_group"]').mousedown(function () { clickCheckboxgroup_1(); });
- 	
-
-
-
-
-
-
-$('input').on('focus keyup change', function () 
-{ 
-	infProject.activeInput = $(this).data('action');
-	if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
-	if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }
-	console.log(infProject.activeInput);
-	if(infProject.activeInput) { blockKeyCode({block: true}); }
-});
-$('input').blur(function () 
-{ 
-	infProject.activeInput = ''; 
-	blockKeyCode({block: false});
-});	
-
-
- 
-
-
-$('[data-action="modal_window"]').mousedown(function (e) { e.stopPropagation(); });		
-
-
-
-
-$('[data-action="modal_1"]').mousedown(function () 
-{	 
-	$('[data-action="modal_1"]').css({"display":"none"}); 
-});
-
-			
-$('[data-action="modal_window_close_1"]').mousedown(function () 
-{  
-	$('[data-action="modal_1"]').css({"display":"none"}); 
-});
-
-
-
+	$('input').on('focus keyup change', function () 
+	{ 
+		infProject.activeInput = $(this).data('action');
+		if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
+		if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }
+		console.log(infProject.activeInput);
+		if(infProject.activeInput) { blockKeyCode({block: true}); }
+	});
+	$('input').blur(function () 
+	{ 
+		infProject.activeInput = ''; 
+		blockKeyCode({block: false});
+	});	
 
 });
 
@@ -173,13 +132,7 @@ infProject.elem.wrap_list_obj = document.querySelector('[nameId="wrap_list_obj"]
 infProject.elem.wrap_object = document.querySelector('[nameId="wrap_object"]');
 infProject.elem.wrap_plan = document.querySelector('[nameId="wrap_plan"]');
 
-// кнопки вкладок для объекта перемещение/параметры 
-infProject.elem.button_obj_tool_pivot = document.querySelector('[nameId="button_obj_tool_pivot"]');
-infProject.elem.button_obj_properties = document.querySelector('[nameId="button_obj_properties"]');
 
-// вкладки для объекта перемещение/параметры 
-infProject.elem.rp_bl_obj_tool_pivot = document.querySelector('[nameId="rp_bl_obj_tool_pivot"]');
-infProject.elem.rp_bl_obj_properties = document.querySelector('[nameId="rp_bl_obj_properties"]');
 
 // вкладка со списком объектов в группе 
 infProject.elem.bl_rp_obj_group = document.querySelector('[nameId="bl_rp_obj_group"]');
@@ -195,8 +148,7 @@ infProject.elem.button_wrap_list_obj.onmousedown = function(e){ changeRightMenuU
 infProject.elem.button_wrap_object.onmousedown = function(e){ changeRightMenuUI_1({el: this}); };
 infProject.elem.button_wrap_plan.onmousedown = function(e){ changeRightMenuUI_1({el: this}); };
 
-infProject.elem.button_obj_tool_pivot.onmousedown = function(e){ changeRightMenuUI_2({el: this}); };
-infProject.elem.button_obj_properties.onmousedown = function(e){ changeRightMenuUI_2({el: this}); };
+
 
 infProject.elem.button_show_panel_catalog.onmousedown = function(e){ showHideCatalogMenuUI({show: true}); e.stopPropagation(); };
 infProject.elem.button_catalog_close.onmousedown = function(e){ showHideCatalogMenuUI({show: false}); e.stopPropagation(); };
@@ -302,31 +254,6 @@ function changeRightMenuUI_1(cdm)
 document.querySelector('[nameId="rp_plane_1"]').onmousedown = function(e){ clickItemFloorUI(); };
 
 
-// переключаем вкладку для объекта перемещение/параметры 
-function changeRightMenuUI_2(cdm)
-{
-	infProject.elem.rp_bl_obj_tool_pivot.style.display = 'none';
-	infProject.elem.rp_bl_obj_properties.style.display = 'none';	
-	
-	var name = '';
-	
-	if(cdm.el) { name = cdm.el.attributes.nameId.value; }
-	else if(cdm.name) { name = cdm.name; }
-	else if(cdm.current) { name = infProject.ui.right_menu.active; }
-	
-	
-	if(name == "button_obj_tool_pivot") 
-	{
-		infProject.elem.rp_bl_obj_tool_pivot.style.display = '';
-	}
-	if(name == "button_obj_properties") 
-	{
-		infProject.elem.rp_bl_obj_properties.style.display = '';
-	}
-	
-	switchAlignPoint_1({active: false});
-	activeObjRightPanelUI_1({obj: clickO.last_obj});
-}
 
 
 

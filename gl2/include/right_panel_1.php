@@ -328,83 +328,9 @@
 					</div>
 							
 
-					<div class="flex_1 bottom_line_1">
-						<div class="flex_1 relative_1">			
-							<div class="right_panel_1_item_2_block" nameId="button_obj_tool_pivot">
-								<div class="right_panel_1_item_block_text">
-									позиционирование
-								</div>	
-							</div>
-							<div class="right_panel_1_item_2_block" nameId="button_obj_properties">
-								<div class="right_panel_1_item_block_text">
-									параметры
-								</div>	
-							</div>							
-						</div>
-					</div>
-
-
-
-					<div nameId="rp_bl_obj_tool_pivot">
-					
-						<div class="flex_1 w_1">
-							<?if(1==2){?>
-							<select name="fruit">
-							<option value ="none">Глобально</option>
-							<option value ="guava">Локально</option>
-							</select>
-							<?}?>							
-						</div>
-
-						<div class="button1 button_gradient_1" nameId="select_pivot" style="margin: 30px 0 10px 0;">
-							перемещение 
-						</div>	
-						
-						<div class="flex_1 input_rotate">
-							<input type="text" nameId="object_pos_X" value="0">
-							<input type="text" nameId="object_pos_Y" value="0">
-							<input type="text" nameId="object_pos_Z" value="0">
-						</div>	
-
-						
-						<div nameId="block_gizmo">
-							<div class="button1 button_gradient_1" nameId="select_gizmo" style="margin: 40px 0 10px 0;">
-								вращение	
-							</div>	
-
-							<div class="flex_1 input_rotate">
-								<input type="text" nameId="object_rotate_X" value="0">
-								<input type="text" nameId="object_rotate_Y" value="0">
-								<input type="text" nameId="object_rotate_Z" value="0">
-							</div>	
-
-							<div class="flex_1" style="margin: 0px 0 20px 0;">
-								<div style="width: 100%; height: 2px; background: rgb(247, 72, 72);"></div>
-								<div style="width: 100%; height: 2px; background: rgb(17, 255, 0);"></div>
-								<div style="width: 100%; height: 2px; background: rgb(72, 116, 247);"></div>
-							</div>
-							
-							<div class="flex_1" style="margin: 0px 0 20px 0;">
-								<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m">-90</div>
-								<div class="button1 button_gradient_1" nameId="obj_rotate_X_90">90</div>
-								
-								<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m">-90</div>
-								<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90">90</div>
-								
-								<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m">-90</div>
-								<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90">90</div>
-							</div>						
-						
-							<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
-								сбросить	
-							</div>											
-						</div>
-						
-					
-					</div>
 					
 					
-					<div nameId="rp_bl_obj_properties">	
+					<div>	
 					
 						<div nameId="rp_wrap_obj_align" style="display: none;">
 						
@@ -438,16 +364,7 @@
 
 						<div nameId="bl_object_3d" style="display: none;">
 							
-							<div nameId="bl_rp_obj_group"> 
-							
-								<div class="flex_1" style="display: none;">
-									<div class="flex_1 align_items block_rp_1">
-										<div class="checkbox_1" nameId="box_input_group">
-											<div class="checkbox_1_checked" nameId="box_input_checked_group"></div>						
-										</div>
-										<div class="block_rp_text">Группа</div>						
-									</div>															
-								</div>
+							<div nameId="bl_rp_obj_group"> 							
 								
 								<div class="right_panel_1_1_list" nameId="rp_obj_group">
 									
