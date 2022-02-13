@@ -34,7 +34,7 @@ function loadModelHouse(e)
 };
 
 
-
+var houseObj = null;
 
 // добавляем объект в сцену
 function setParamHouse(cdm)
@@ -44,13 +44,15 @@ function setParamHouse(cdm)
 	var obj = getBoundObject_1({obj: obj});
 	
 	//var obj = obj.children[0];		
-	obj.position.set(0, 1, 0); 	
+	obj.position.set(0, 0, 0); 	
 
 	planeMath.position.y = 1; 
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.rotation.set(0, 0, 0);
 	planeMath.updateMatrixWorld(); 	
  
 	obj.userData.tag = 'obj';
+	obj.userData.house = true;
+	
 	obj.userData.obj3D = {};
 	obj.userData.obj3D.lotid = 0;
 	obj.userData.obj3D.nameRus = 'дом';
@@ -61,131 +63,93 @@ function setParamHouse(cdm)
 	obj.userData.obj3D.ur.pos = new THREE.Vector3();
 	obj.userData.obj3D.ur.q = new THREE.Quaternion();	
 			
+	
 	if(1==1)
 	{
-		var id = 0;
+		var list = [];
+		list[0] = {alias: '_level1_', name: 'этаж 1', arr:[]};
+		list[1] = {alias: '_pol2_', name: 'пол 2 этажа', arr:[]};
+		list[2] = {alias: '_level2_', name: 'этаж 2', arr:[]};
+		list[3] = {alias: '_roof1_', name: 'крыша', arr:[]};
 		
+		var boundingBox = obj.geometry.boundingBox;
+		console.log('size', boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
+			
 		obj.traverse( function ( child ) 
-		{
+		{				
 			if ( child.isMesh ) 
 			{ 
-				var boundingBox = child.geometry.boundingBox;
-				console.log(child.name, boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
-				
 				if( child.material )
 				{
-					console.log(child.material);
-					
-					child.material.lightMap = lightMap_1;
-					child.material.needsUpdate = true;
+					var materialArray = [];
+					if (child.material instanceof Array) { materialArray = child.material; }
+					else { materialArray = [child.material]; }
+
+					materialArray.forEach(function (mtrl, idx) 
+					{
+						mtrl.lightMap = lightMap_1;
+						mtrl.lightMap.needsUpdate = true;
+						mtrl.needsUpdate = true;
+					});					
+					console.log(child.name);
 				}
 				
-				child.userData.house = {};
-				child.userData.house.nameRus = child.name;
-				addHouseListUI({obj: child});
 				
-				if(new RegExp( '_est_' ,'i').test( child.name ))
+				// находим объекты с алиасами этажей и добавляем в свой массив 
+				for(var i = 0; i < list.length; i++)
 				{
-					//console.log(8888888, child.name, child.rotation.x, child.rotation.y, child.rotation.z);
-					
-					child.visible = false;						
-					
-					var material = new THREE.MeshPhongMaterial({ color: 0x00ff00, transparent: true, opacity: 1, depthTest: false, lightMap: lightMap_1 });
-					
-					var geometry = infProject.geometry.centerPoint;
-					
-					var cube = new THREE.Mesh( geometry, material );
-					cube.position.copy(child.position);
-					cube.quaternion.copy(child.quaternion);
-					cube.visible = false;
-					cube.renderOrder = 1;
-					//cube.rotation.y += 1;
-					//var axesHelper = new THREE.AxesHelper( 0.2 );
-					//child.add( axesHelper );							
-					
-					cube.userData.tag = 'joinPoint';
-					cube.userData.id = id;  id++;
-					cube.userData.centerPoint = { join: null };						 
-					cube.userData.centerPoint.nameRus = child.name;
-					
-					obj.add( cube );				
-				}
+					if(new RegExp( list[i].alias ,'i').test( child.name ))
+					{
+						list[i].arr.push(child);
+					}
+				}				
 			}
-		});		
+		});	
+
+		// отобржаем название и кол-во этажей в UI
+		list.forEach(function (item, idx) 
+		{
+			addHouseListUI_2({name: item.name, arr: item.arr});
+		});			
 	}
 	
-	//obj.material.visible = false;		
+	//obj.material.visible = false;
 	
 	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-
+	
+	houseObj = obj;
+	
 	scene.add( obj );	
-	console.log(obj);
-	//clickO.move = obj;
-	
-	
+	console.log(obj);	
+
 	
 	renderCamera();	
 }
 
 
-
-// добавляем этажи дома в список "план" UI
-function addHouseListUI(cdm)
+function saveHouseFBX() 
 {
-	if(!cdm) return;				
-	if(!cdm.obj) return;	
+	var obj = houseObj;
+	var pos = obj.position.clone();
+	var rot = obj.rotation.clone();
 	
-	var obj = cdm.obj;
+	obj.position.set(0, 0, 0);
+	obj.rotation.set(0, 0, 0);
+	obj.updateMatrixWorld();
 	
-	var html = 
-	'<div class="right_panel_1_1_list_item" uuid="'+obj.uuid+'">\
-		<div class="flex_1">\
-			<div class="right_panel_1_1_list_item_text" nameId="rp_floor_txt_name">'+obj.userData.house.nameRus+'</div>\
-			<div class="image_wrap" nameId="view_show" style="position: relative; width: 20px; height: 20px; right: 5px;">\
-				<img src="'+infProject.path+'img/view_show.png">\
-			</div>\
-			<div class="image_wrap" nameId="view_hide" style="display: none; position: relative; width: 20px; height: 20px; right: 5px;">\
-				<img src="'+infProject.path+'img/view_hide.png">\
-			</div>\
-		</div>\
-	</div>';
+	renderCamera();
+	
+	let data = JSON.stringify(obj);
 
-	var div = document.createElement('div');
-	div.innerHTML = html;
-	var elem = div.firstChild;		
-	
-	var container = document.querySelector('[nameId="rp_plane_2"]');
-	container.append(elem);	
-	
-	var el_show = elem.querySelector('[nameId="view_show"]');
-	var el_hide = elem.querySelector('[nameId="view_hide"]');
-	
-	el_show.onmousedown = function(e)
-	{ 
-		obj.visible = false;
-		renderCamera();
-		
-		el_show.style.display = 'none';
-		el_hide.style.display = ''; 
-		e.stopPropagation(); 
-	};
-	
-	el_hide.onmousedown = function(e)
-	{ 
-		obj.visible = true;
-		renderCamera();
-		
-		el_show.style.display = '';
-		el_hide.style.display = 'none'; 
-		e.stopPropagation(); 
-	};	
-	
-	//elem.onmousedown = function(e){ clickItemFloorUI({el: elem, type: "general"}); e.stopPropagation(); };
+	let csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(data);
 
-	var el_2 = elem.querySelector('[nameId="butt_img_substrate_1"]');		
-	//el_2.onmousedown = function(e){ clickItemFloorUI({el: elem, type: "img"}); e.stopPropagation(); };
-	
-	//clickItemFloorUI({el: elem, type: "general"});
+	let link = document.createElement('a');
+	document.body.appendChild(link);
+	link.href = csvData;
+	link.target = '_blank';
+	link.download = 'file.json';
+	link.click();
+	document.body.removeChild(link);
 }
 
 

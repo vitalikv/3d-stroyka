@@ -258,7 +258,7 @@ function clickRayHit(event)
 					if(!ray[i].object.material.visible) continue;
 				}							
 				
-				rayhit = ray[i]; console.log(i, rayhit );
+				rayhit = ray[i]; 
 				break;
 			}
 			
