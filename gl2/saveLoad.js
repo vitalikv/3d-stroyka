@@ -35,6 +35,7 @@ var resetPop =
 		array.lineGrid = { limit : false };
 		array.base = (infProject.start)? infProject.scene.array.base : [];	// массив клонируемых объектов
 		array.group = [];
+		array.house = null;
 		
 		return array;
 	},
@@ -91,6 +92,7 @@ function resetScene()
 	var obj = infProject.scene.array.obj;
 	var group = infProject.scene.array.group;
 	var substrate = infProject.scene.substrate.floor;
+	var house = infProject.scene.array.house;
 	
 	hideMenuObjUI_2D();		// снимаем выделение с выбранного объекта 
 	
@@ -187,7 +189,18 @@ function resetScene()
 			scene.remove(substrate[i].point[i2]);			
 		}
 	}
+	
+	if(house)
+	{
+		disposeNode(house);
+		scene.remove(house);
+		
+		// удаляем список этажей UI
+		var arrEl = document.querySelector('[nameId="rp_plane_2"]').children;		
+		for(var i = arrEl.length - 1; i > -1; i--){ arrEl[i].remove(); }
+	}
 
+	
 	
 	// удаляем список материалов UI
 	var container = document.body.querySelector('[list_ui="wf"]');
@@ -231,7 +244,6 @@ function resetScene()
 	infProject.scene.substrate.floor = [];
 	infProject.scene.substrate.active = null;
 	
-
 	
 	console.log(renderer.info.memory);
 }
@@ -268,30 +280,48 @@ function getAllChildObect(cdm)
 
 
 // очищаем объект из памяти
-function disposeNode(node) 
-{
-	if (node.geometry) { node.geometry.dispose(); }
+function disposeNode(obj) 
+{	
+	var arr = [obj];
 	
-	if (node.material) 
+	obj.traverse(function(child) 
 	{
-		var materialArray = [];
-		
-		if(node.material instanceof Array) { materialArray = node.material; }
-		else { materialArray = [node.material]; }
-		
-		materialArray.forEach(function (mtrl, idx) 
-		{
-			if (mtrl.map) mtrl.map.dispose();
-			if (mtrl.lightMap) mtrl.lightMap.dispose();
-			if (mtrl.bumpMap) mtrl.bumpMap.dispose();
-			if (mtrl.normalMap) mtrl.normalMap.dispose();
-			if (mtrl.specularMap) mtrl.specularMap.dispose();
-			if (mtrl.envMap) mtrl.envMap.dispose();
-			mtrl.dispose();
-		});
+		if(child.isMesh) arr[arr.length] = child;
+	});
+	
+	for ( var i = 0; i < arr.length; i++ )
+	{
+		clearM(arr[i]);
 	}
 	
-	renderer.renderLists.dispose();
+	
+	function clearM(node)
+	{
+		if (node.geometry) { node.geometry.dispose(); }
+		
+		if (node.material) 
+		{
+			var materialArray = [];
+			
+			if(node.material instanceof Array) { materialArray = node.material; }
+			else { materialArray = [node.material]; }
+			
+			materialArray.forEach(function (mtrl, idx) 
+			{
+				if (mtrl.map) mtrl.map.dispose();
+				if (mtrl.lightMap) mtrl.lightMap.dispose();
+				if (mtrl.bumpMap) mtrl.bumpMap.dispose();
+				if (mtrl.normalMap) mtrl.normalMap.dispose();
+				if (mtrl.specularMap) mtrl.specularMap.dispose();
+				if (mtrl.envMap) mtrl.envMap.dispose();
+				mtrl.dispose();
+			});
+		}
+		
+		renderer.renderLists.dispose();		
+	}
+	
+	getConsoleRendererInfo();
 }
 
 

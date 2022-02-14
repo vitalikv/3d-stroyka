@@ -31,6 +31,8 @@ async function loadHouse()
 	var obj = new THREE.ObjectLoader().parse( json[0].model );
 	scene.add( obj );
 	
+	infProject.scene.array.house = obj;
+	
 	console.log(obj);
 	
 	if(1==1)
@@ -49,7 +51,7 @@ async function loadHouse()
 		{				
 			if ( child.isMesh ) 
 			{ 
-				console.log(child.name);
+				//console.log(child.name);
 				
 				var materialArray = [];
 				if (child.material instanceof Array) { materialArray = child.material; }

@@ -137,6 +137,9 @@ function saveHouseFBX()
 	obj.rotation.set(0, 0, 0);
 	obj.updateMatrixWorld();
 	
+	delete obj.userData.obj3D;
+	delete obj.userData.house;	
+	
 	renderCamera();
 	
 	let data = JSON.stringify(obj);
