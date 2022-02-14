@@ -30,7 +30,7 @@ $interface['rtc'] = 0;
 	
 
 
-if($url == '/calculator/warm_floor')	
+if($url == '/redactor/view')	
 { 
 	$title = 'Test';
 	$h1 = '----';

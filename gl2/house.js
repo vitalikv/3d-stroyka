@@ -49,7 +49,20 @@ async function loadHouse()
 		{				
 			if ( child.isMesh ) 
 			{ 
-				console.log(child.name);				
+				console.log(child.name);
+				
+				var materialArray = [];
+				if (child.material instanceof Array) { materialArray = child.material; }
+				else { materialArray = [child.material]; }
+
+				materialArray.forEach(function (mtrl, idx) 
+				{
+					if(mtrl.map && mtrl.map.image)
+					{
+						mtrl.map.image.onload = function(e){ renderCamera(); }
+					}
+					
+				});	
 				
 				// находим объекты с алиасами этажей и добавляем в свой массив 
 				for(var i = 0; i < list.length; i++)
