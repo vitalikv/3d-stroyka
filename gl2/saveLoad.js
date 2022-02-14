@@ -35,7 +35,7 @@ var resetPop =
 		array.lineGrid = { limit : false };
 		array.base = (infProject.start)? infProject.scene.array.base : [];	// массив клонируемых объектов
 		array.group = [];
-		array.house = null;
+		array.house = [];
 		
 		return array;
 	},
@@ -170,8 +170,7 @@ function resetScene()
 	
 	for ( var i = 0; i < obj.length; i++ )
 	{ 		
-		scene.remove(obj[i]);
-		
+		scene.remove(obj[i]);		
 		disposeNode(obj[i]);
 	}	
 	
@@ -190,17 +189,19 @@ function resetScene()
 		}
 	}
 	
-	if(house)
+	if(house.length > 0)
 	{
-		disposeNode(house);
-		scene.remove(house);
-		
+		for ( var i = 0; i < house.length; i++ )
+		{
+			disposeNode(house[i]);
+			scene.remove(house[i]);		
+		}
+
 		// удаляем список этажей UI
 		var arrEl = document.querySelector('[nameId="rp_plane_2"]').children;		
-		for(var i = arrEl.length - 1; i > -1; i--){ arrEl[i].remove(); }
+		for(var i = arrEl.length - 1; i > -1; i--){ arrEl[i].remove(); }		
 	}
 
-	
 	
 	// удаляем список материалов UI
 	var container = document.body.querySelector('[list_ui="wf"]');
@@ -320,8 +321,6 @@ function disposeNode(obj)
 		
 		renderer.renderLists.dispose();		
 	}
-	
-	getConsoleRendererInfo();
 }
 
 
@@ -351,6 +350,7 @@ function getJsonGeometry()
 	var group = [];
 	var pipe = [];
 	var subs = [];
+	var house = [];
 	
 	var wall = infProject.scene.array.wall;
 	//var point = infProject.scene.array.point;
@@ -572,6 +572,14 @@ function getJsonGeometry()
 		}
 	}
 
+	for ( var i = 0; i < infProject.scene.array.house.length; i++ )
+	{
+		var o = infProject.scene.array.house[i];
+		house[i] = {};
+		house[i].id = o.userData.house.lotId;
+		house[i].pos = o.position;
+		house[i].rot = o.rotation;
+	}
 	
 	json.floors[0].points = points;
 	json.floors[0].walls = walls;
@@ -580,6 +588,7 @@ function getJsonGeometry()
 	json.group = group;
 	json.pipe = pipe;
 	json.subs = subs;
+	json.house = house;
 	
 	
 	return json;
@@ -786,6 +795,7 @@ async function loadFilePL(arr)
 	var furn = (arr.furn) ? arr.furn : [];
 	var pipe = (arr.pipe) ? arr.pipe : [];
 	var subs = (arr.subs) ? arr.subs : [];
+	var house = (arr.house) ? arr.house : [];
 			
 	var wall = [];
 	
@@ -917,6 +927,16 @@ async function loadFilePL(arr)
 		group[i2].obj = { id: arrId };
 		
 		createGroupObj_1(group[i2]);
+	}
+	
+	for ( var i2 = 0; i2 < house.length; i2++ )
+	{
+		let inf = {};
+		inf.id = house[i].id;
+		if(house[i].pos) inf.pos = new THREE.Vector3(house[i].pos.x, house[i].pos.y, house[i].pos.z);
+		if(house[i].rot) inf.rot = new THREE.Vector3(house[i].rot.x, house[i].rot.y, house[i].rot.z);
+		
+		await loadHouse(inf);
 	}
 	
 	readyProject();

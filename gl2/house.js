@@ -9,16 +9,19 @@
 
 
 
-loadHouse();
+//loadHouse({id: 1});
 
 
-async function loadHouse()
+async function loadHouse(cdm)
 {
 	//var response = await fetch(infProject.path+'components_2/getObjSql.php?id='+lotid, { method: 'GET' });
 	
-	var url = infProject.path+'components_2/getListObjSql.php';
-	var lotid = 1;
+	var lotid = cdm.id;
+	var pos = cdm.pos;	
+	var rot = cdm.rot;
 	
+	var url = infProject.path+'components_2/getObjSql.php';
+
 	var response = await fetch(url, 
 	{
 		method: 'POST',
@@ -26,14 +29,24 @@ async function loadHouse()
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },				
 	});
 	var json = await response.json();
-
+	if(json.error) return null;
 	
-	var obj = new THREE.ObjectLoader().parse( json[0].model );
+	
+	var obj = new THREE.ObjectLoader().parse( json.model );
+	
+	obj.userData.house = {};
+	obj.userData.house.lotId = lotid;
+
+	if(pos) obj.position.set(0, 0, 0);
+	if(rot) obj.rotation.set(0, 0, 0);
+	obj.updateMatrixWorld();
+	
 	scene.add( obj );
 	
-	infProject.scene.array.house = obj;
+	infProject.scene.array.house.push(obj);
 	
-	console.log(obj);
+	
+	//console.log(cdm, json.model);
 	
 	if(1==1)
 	{
