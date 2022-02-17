@@ -50,27 +50,31 @@ function setParamHouse(cdm)
 	planeMath.rotation.set(0, 0, 0);
 	planeMath.updateMatrixWorld(); 	
  
-	obj.userData.tag = 'obj';
-	obj.userData.house = true;
-	
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = 0;
-	obj.userData.obj3D.nameRus = 'дом';
-	obj.userData.obj3D.typeGroup = '';
-	obj.userData.obj3D.helper = null;
-	
-	obj.userData.obj3D.ur = {};
-	obj.userData.obj3D.ur.pos = new THREE.Vector3();
-	obj.userData.obj3D.ur.q = new THREE.Quaternion();	
+	if(1==2)
+	{
+		obj.userData.tag = 'obj';	
+		obj.userData.obj3D = {};
+		obj.userData.obj3D.lotid = 0;
+		obj.userData.obj3D.nameRus = 'дом';
+		obj.userData.obj3D.typeGroup = '';
+		obj.userData.obj3D.helper = null;
+		
+		obj.userData.obj3D.ur = {};
+		obj.userData.obj3D.ur.pos = new THREE.Vector3();
+		obj.userData.obj3D.ur.q = new THREE.Quaternion();
+		
+		infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;		
+	}	
 			
 	
 	if(1==1)
 	{
 		var list = [];
-		list[0] = {alias: '_level1_', name: 'этаж 1', arr:[]};
-		list[1] = {alias: '_pol2_', name: 'пол 2 этажа', arr:[]};
-		list[2] = {alias: '_level2_', name: 'этаж 2', arr:[]};
-		list[3] = {alias: '_roof1_', name: 'крыша', arr:[]};
+		list[0] = {alias: '_m1_', name: 'стены 1 этажа', arr:[]};
+		list[1] = {alias: '_m2_', name: 'пол 2 этажа', arr:[]};
+		list[2] = {alias: '_m3_', name: 'стены 2 этажа', arr:[]};
+		list[3] = {alias: '_m4_', name: 'стены 2 этажа', arr:[]};
+		list[4] = {alias: '_m5_', name: 'крыша', arr:[]};
 		
 		var boundingBox = obj.geometry.boundingBox;
 		console.log('size', boundingBox.max.x - boundingBox.min.x, boundingBox.max.y - boundingBox.min.y, boundingBox.max.z - boundingBox.min.z);
@@ -100,6 +104,8 @@ function setParamHouse(cdm)
 				{
 					if(new RegExp( list[i].alias ,'i').test( child.name ))
 					{
+						child.userData.level = i;
+						child.userData.nameRus = list[i].name;
 						list[i].arr.push(child);
 					}
 				}				
@@ -114,8 +120,7 @@ function setParamHouse(cdm)
 	}
 	
 	//obj.material.visible = false;
-	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
+
 	
 	houseObj = obj;
 	
@@ -137,8 +142,7 @@ function saveHouseFBX()
 	obj.rotation.set(0, 0, 0);
 	obj.updateMatrixWorld();
 	
-	delete obj.userData.obj3D;
-	delete obj.userData.house;	
+	//delete obj.userData.obj3D;	
 	
 	renderCamera();
 	

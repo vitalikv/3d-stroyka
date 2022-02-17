@@ -50,11 +50,7 @@ async function loadHouse(cdm)
 	
 	if(1==1)
 	{
-		var list = [];
-		list[0] = {alias: '_level1_', name: 'этаж 1', arr:[]};
-		list[1] = {alias: '_pol2_', name: 'пол 2 этажа', arr:[]};
-		list[2] = {alias: '_level2_', name: 'этаж 2', arr:[]};
-		list[3] = {alias: '_roof1_', name: 'крыша', arr:[]};
+		var groupLevel = [];
 		
 		obj.geometry.computeBoundingBox();
 		var boundingBox = obj.geometry.boundingBox;
@@ -79,21 +75,24 @@ async function loadHouse(cdm)
 					
 				});	
 				
-				// находим объекты с алиасами этажей и добавляем в свой массив 
-				for(var i = 0; i < list.length; i++)
+				if(child.userData.nameRus)
 				{
-					if(new RegExp( list[i].alias ,'i').test( child.name ))
-					{
-						list[i].arr.push(child);
-					}
+					let n = child.userData.level;
+					
+					if(!groupLevel[n]) { groupLevel[n] = {name: child.userData.nameRus, arr: []}; }
+					
+					groupLevel[n].arr.push(child);
 				}				
 			}
 		});
 
 		// отобржаем название и кол-во этажей в UI
-		list.forEach(function (item, idx) 
+		groupLevel.forEach(function (item, idx) 
 		{
-			addHouseListUI_2({name: item.name, arr: item.arr});
+			if(item.arr.length > 0)
+			{
+				addHouseListUI_2({name: item.name, arr: item.arr});
+			}			
 		});			
 	}	
 	
