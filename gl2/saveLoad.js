@@ -160,9 +160,6 @@ function resetScene()
 			disposeNode(tube[i].userData.wf_tube.point[i2]);
 			scene.remove(tube[i].userData.wf_tube.point[i2]);		
 		}
-		
-		disposeNode(tube[i].userData.wf_tube.line);
-		scene.remove(tube[i].userData.wf_tube.line); 
 	
 		disposeNode(tube[i]);
 		scene.remove(tube[i]);		

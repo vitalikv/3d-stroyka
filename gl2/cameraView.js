@@ -186,7 +186,6 @@ function deleteObjCameraView()
 			if(arr[i].userData.wf_tube)
 			{
 				var tube = arr[i];
-				var line = tube.userData.wf_tube.line;
 				
 				for ( var i2 = tube.userData.wf_tube.point.length - 1; i2 > -1; i2-- )
 				{
@@ -195,10 +194,7 @@ function deleteObjCameraView()
 				}
 				
 				disposeNode(tube);
-				scene.remove(tube); 
-				
-				disposeNode(line);
-				scene.remove(line); 			
+				scene.remove(tube);  			
 			}
 			else if(arr[i].userData.obj3D)
 			{		

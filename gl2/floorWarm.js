@@ -17,7 +17,6 @@ function createPointWF(cdm)
 	point.userData.tag = 'wf_point';
 	point.userData.wf_point = {};
 	point.userData.wf_point.nameRus = 'точка';
-	point.userData.wf_point.line = { o : (!cdm.line) ? null : cdm.line }
 	point.userData.wf_point.tube = null;
 	
 	if(cdm.visible != undefined) point.visible = cdm.visible;
@@ -102,10 +101,7 @@ function clickWFPoint_3D(cdm)
 function addPointOnTube(cdm)
 {
 	var ray = cdm.ray;			  
-	var tube = ray.object;
-
-	var line = tube.userData.wf_tube.line;	
-	
+	var tube = ray.object;		
 	
 	var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
 	var p1 = result.p1;
@@ -113,21 +109,9 @@ function addPointOnTube(cdm)
 	
 	var arrP = tube.userData.wf_tube.point;  
 	
-	var newPoint = createPointWF({ pos: pos, line: line });
+	var newPoint = createPointWF({ pos: pos });
 	
-	for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p1) { arrP.splice(i+1, 0, newPoint); break; } }
-	
-	
-	// обновляем geometry линии
-	var geometry = new THREE.Geometry();
-	
-	for(var i = 0; i < arrP.length; i++)
-	{
-		geometry.vertices[i] = arrP[i].position;
-	}
-	
-	disposeNode(line);
-	line.geometry = geometry;	
+	for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p1) { arrP.splice(i+1, 0, newPoint); break; } }	
 	
 	updateTubeWF({tube: tube});	
 }
@@ -180,7 +164,6 @@ function crTubeWF(cdm)
 	var tube = new THREE.Mesh( inf.geometry, new THREE.MeshLambertMaterial({ color: color, wireframe: false, side: THREE.DoubleSide, lightMap: lightMap_1, depthTest: true, transparent: true }));	
 	tube.userData.tag = 'wf_tube';		
 	tube.userData.wf_tube = {};
-	tube.userData.wf_tube.line = null;
 	tube.userData.wf_tube.point = point;
 	tube.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
 	tube.userData.wf_tube.length = Math.round(inf.length * 100)/100;
@@ -191,27 +174,7 @@ function crTubeWF(cdm)
 	else { tube.userData.id = countId; countId++; }	
 	
 	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }		
-	
-	// line
-	{
-		var geometry = new THREE.Geometry();
 		
-		for(var i = 0; i < point.length; i++)
-		{
-			geometry.vertices.push(point[i].position); 
-		}		
-		
-		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: tube.material.color, linewidth: 2 }) );
-		scene.add( line );
-		
-		tube.userData.wf_tube.line = line;
-		
-		for(var i = 0; i < point.length; i++)
-		{
-			point[i].userData.wf_point.line.o = line;
-		}
-		line.visible = false;
-	}	
 	
 	return tube;
 }
@@ -233,11 +196,6 @@ function updateTubeWF(cdm)
 	
 	tube.geometry.dispose();
 	tube.geometry = inf.geometry;
-	
-	var line = tube.userData.wf_tube.line;
-	line.geometry.dispose();
-	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;
 	
 	if(cdm.color)
 	{
@@ -327,11 +285,6 @@ function changeColorTube(cdm)
 	
 	if(!tube) return;	
 	if(tube.userData.tag != 'wf_tube') return;		 
-	
-	var line = tube.userData.wf_tube.line;
-	
-	line.material.color = new THREE.Color(cdm.value);
-	line.material.needsUpdate = true;	
 	
 	tube.material.color = new THREE.Color(cdm.value); 
 	tube.material.needsUpdate = true;	

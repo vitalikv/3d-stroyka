@@ -24,8 +24,7 @@ function deletePointWF(obj)
 	//arr_wf.point.pop();	// удаляем последнее значение в массиве
 	
 	hideMenuObjUI_2D();
-	
-	var line = obj.userData.wf_point.line.o;	
+		
 	var tube = obj.userData.wf_point.tube;
 	
 	// если у трубы 2 точки, то удаляем трубу
@@ -44,10 +43,7 @@ function deletePointWF(obj)
 			geometry.vertices[i] = tube.userData.wf_tube.point[i].position;
 		}
 		
-		disposeNode(line);
 		disposeNode(tube);
-		
-		line.geometry = geometry;
 		updateTubeWF({tube: tube});
 		
 		disposeNode(obj);
@@ -95,7 +91,6 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 		if(arr[i].userData.wf_tube)
 		{
 			var tube = arr[i];
-			var line = tube.userData.wf_tube.line;
 			
 			deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
 			
@@ -106,10 +101,7 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 			}
 			
 			disposeNode(tube);
-			scene.remove(tube); 
-			
-			disposeNode(line);
-			scene.remove(line); 			
+			scene.remove(tube);  			
 		}
 		else if(arr[i].userData.obj3D)
 		{
@@ -134,10 +126,7 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 
 // удалить трубу
 function deleteLineWF(tube)
-{
-	
-	var line = tube.userData.wf_tube.line;
-	
+{	
 	updateListObjUI_1({type: 'delete', o: tube});
 	deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
 	
@@ -148,10 +137,7 @@ function deleteLineWF(tube)
 	}
 	
 	disposeNode(tube);
-	scene.remove(tube); 
-	
-	disposeNode(line);
-	scene.remove(line); 
+	scene.remove(tube);  
 }
 
 
