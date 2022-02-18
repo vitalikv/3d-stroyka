@@ -216,36 +216,12 @@ function clickRayHit(event)
 		}
 	}
 
-	if(!infProject.scene.block.click.controll_wd && !rayhit)
+	if(!rayhit)
 	{
-		var ray = rayIntersect( event, arrSize.cube, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }	
+		var ray = rayIntersect( event, infProject.scene.array.wtgrid, 'arr' );
+		if(ray.length > 0) { rayhit = ray[0]; }					
 	}
-	
-	if(!infProject.scene.block.click.door && !rayhit)
-	{
-		var ray = rayIntersect( event, infProject.scene.array.door, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
-	}
-	
-	if(!infProject.scene.block.click.window && !rayhit)
-	{
-		var ray = rayIntersect( event, infProject.scene.array.window, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
-	}
-	
-	if(!infProject.scene.block.click.point && !rayhit)
-	{
-		var ray = rayIntersect( event, infProject.scene.array.point, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
-	}
-
-	if(!infProject.scene.block.click.wall && !rayhit)
-	{
-		var ray = rayIntersect( event, infProject.scene.array.wall, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }		
-	}
-
+		
 	
 	if(!infProject.scene.block.click.obj)
 	{
@@ -387,6 +363,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == camera3D ) { clickToggleGp( rayhit ); }
+		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 	}
 	else if(cdm.type == 'up')
 	{		

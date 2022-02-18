@@ -374,10 +374,10 @@
 									
 									<div class="flex_1">
 										<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;">
-											сгруппировать	
+											объединить в группу	
 										</div>
 										<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;">
-											отделить	
+											убрать из группы	
 										</div>															
 									</div>
 									

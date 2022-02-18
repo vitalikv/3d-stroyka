@@ -28,6 +28,10 @@ function setPivotGizmo(cdm)
 	else if(obj.userData.tag == 'wf_tube')		// труба
 	{ 
 		var pos = cdm.pos; 
+	}
+	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
+	{ 
+		var pos = obj.position;  
 	}	
 	else			
 	{
@@ -152,6 +156,7 @@ function switchPivotGizmo(cdm)
 
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }	
 	
 	infProject.settings.active.pg = cdm.mode;	

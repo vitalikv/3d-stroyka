@@ -339,7 +339,11 @@ function upMenuPosObjPop(obj)
 	else if(obj.userData.tag == 'wf_point')		// точка трубы
 	{ 
 		pos = obj.position; 
-	}	
+	}
+	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
+	{ 
+		pos = obj.position; 
+	}		
 	else
 	{
 		pos = new THREE.Vector3();
@@ -356,13 +360,14 @@ function upMenuPosObjPop(obj)
 // меняем положение объекта через input
 function inputChangePos()
 {
-	let obj = clickO.last_obj;
+	let obj = infProject.tools.pivot.userData.pivot.obj;  
 	if(!obj) return;
 
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
 	else if(obj.userData.tag == 'wf_tube'){}
 	else if(obj.userData.tag == 'wf_point'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }
 	
 	let x = document.querySelector('[nameId="object_pos_X"]').value;
@@ -394,6 +399,7 @@ function inputChangePos()
 	else if(obj.userData.tag == 'joinPoint'){ pos1 = obj.getWorldPosition(new THREE.Vector3()); }
 	else if(obj.userData.tag == 'wf_tube'){ pos1 = pivot.position; }
 	else if(obj.userData.tag == 'wf_point'){ pos1 = obj.position; }
+	else { pos1 = obj.position; }
 	
 	x = x.num;
 	y = y.num;

@@ -35,6 +35,7 @@ var resetPop =
 		array.lineGrid = { limit : false };
 		array.base = (infProject.start)? infProject.scene.array.base : [];	// массив клонируемых объектов
 		array.group = [];
+		array.wtgrid = [];
 		array.house = [];
 		
 		return array;

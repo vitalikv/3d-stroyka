@@ -374,15 +374,6 @@ if(1==1)
 
 
 
-startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
-addObjInCatalogUI_1();										// каталог UI
- 
-//changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена
-changeRightMenuUI_1({name: 'button_wrap_object'});
-//changeRightMenuUI_1({name: 'button_wrap_catalog'});
-startPlanElemPlus({});										// добавляем в список +, для добавления этажа
-
-setPlaneHeightPositionY({ value: 0.4 });
 
  
 //----------- start
@@ -1638,9 +1629,22 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init()
 {
+	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
+	addObjInCatalogUI_1();										// каталог UI
+	 
+	//changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена
+	changeRightMenuUI_1({name: 'button_wrap_object'});
+	//changeRightMenuUI_1({name: 'button_wrap_catalog'});
+	startPlanElemPlus({});										// добавляем в список +, для добавления этажа
+
+	setPlaneHeightPositionY({ value: 0.4 });
+
+	crEventButtonWarmTube({container: mainDiv_1});
+	crEventButtonWarmTubeGrid({container: mainDiv_1});	
+	
+	
 	docReady = true; 
-			 
-	  
+
 	loadFile({json: true}); 	
 }
 

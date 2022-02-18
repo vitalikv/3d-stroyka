@@ -327,6 +327,7 @@ function setRotationGizmo(cdm)
 	
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }	
 	
 	var axis = cdm.axis;
@@ -421,6 +422,7 @@ function resetRotateObj(cdm)
 	
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }
 		
 	
@@ -467,11 +469,12 @@ function resetRotateObj(cdm)
 // меняем положение объекта через input
 function inputChangeRot()
 {
-	let obj = clickO.last_obj;
+	let obj = infProject.tools.gizmo.userData.gizmo.obj;  
 	if(!obj) return;
 
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }
 	
 	let x = document.querySelector('[nameId="object_rotate_X"]').value;

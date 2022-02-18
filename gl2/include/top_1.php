@@ -10,6 +10,7 @@
 		<div class="button1-wrap-1">
 			<div nameId="screenshot" class="button1 button_gradient_1"><img src="<?=$path?>/img/screenshot.png"></div>
 			<div nameId="warmtube" class="button1 button_gradient_1">т.пол</div>
+			<div nameId="gridT" class="button1 button_gradient_1">плита</div>
 		</div>	
 
 		

@@ -54,6 +54,10 @@ console.log(7777777, cdm);
 		elButt_2.style.display = 'block';
 		elButt_3.style.display = 'block';
 	}
+	else if(obj.userData.tag == 'wtGrid')
+	{ 
+		elButt_3.style.display = 'block';
+	}	
 	else
 	{
 		return;

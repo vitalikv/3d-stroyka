@@ -254,6 +254,7 @@
 	 
        		
 	<script src="<?=$path?>warmTube.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>warmTubeGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	
 	<script src="<?=$path?>ui/slider_2mov.js?<?=$vrs?>"></script> 
