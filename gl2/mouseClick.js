@@ -11,6 +11,13 @@ var vk_click = '';
 var lastMouseTime = new Date().getTime();
 var moveMouse = null;
 
+var onfM = {};
+onfM.stop = false;
+
+function setMouseStop(value) 
+{
+	onfM.stop = value;
+}
 
 function mouseDownRight()
 {
@@ -42,7 +49,7 @@ function mouseDownRight()
 
 function onDocumentMouseDown( event ) 
 {
-	//event.preventDefault();
+	if(onfM.stop) return;
 
 	if (window.location.hostname == '3d-stroyka'){}
 	else if (window.location.hostname == 'xn------6cdcklga3agac0adveeerahel6btn3c.xn--p1ai'){}

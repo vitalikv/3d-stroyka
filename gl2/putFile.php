@@ -79,6 +79,7 @@ createObj/sborka/radiator/niz_mp.js
 createObj/sborka/radiator/verh_mp.js
 createObj/sborka/radiator/bok_mp.js
 house.js
+warmTube.js
 ';
 
 

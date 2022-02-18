@@ -155,13 +155,22 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 function crTubeWF(cdm)
 {
 	var p = cdm.point;
+	var pointObj = cdm.pointObj;
 	
 	var point = [];
-	for ( var i = 0; i < p.length; i++ )
+	
+	if(pointObj)
 	{
-		p[i].visible = cdm.pVisible;
-		point[point.length] = createPointWF(p[i]); 
-	}	
+		point = pointObj;
+	}
+	else
+	{		
+		for ( var i = 0; i < p.length; i++ )
+		{
+			p[i].visible = cdm.pVisible;  
+			point[point.length] = createPointWF(p[i]);  
+		}			
+	}
 	
 	var color = (cdm.color) ? cdm.color : new THREE.Color(infProject.listColor.lineTube2D);	
 	var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
@@ -189,7 +198,7 @@ function crTubeWF(cdm)
 		
 		for(var i = 0; i < point.length; i++)
 		{
-			geometry.vertices.push(point[i].position);
+			geometry.vertices.push(point[i].position); 
 		}		
 		
 		var line = new THREE.Line( geometry, new THREE.LineBasicMaterial({color: tube.material.color, linewidth: 2 }) );
@@ -226,9 +235,10 @@ function updateTubeWF(cdm)
 	tube.geometry = inf.geometry;
 	
 	var line = tube.userData.wf_tube.line;
+	line.geometry.dispose();
 	line.geometry.verticesNeedUpdate = true; 
-	line.geometry.elementsNeedUpdate = true;		
-
+	line.geometry.elementsNeedUpdate = true;
+	
 	if(cdm.color)
 	{
 		

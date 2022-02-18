@@ -109,6 +109,12 @@ function addHouseListUI_2(cdm)
 	var name = cdm.name;
 	var arr = cdm.arr;
 	
+	for(var i = 0; i < arr.length; i++)
+	{
+		arr[i].visible = false;
+	}
+	
+	
 	var html = 
 	'<div class="right_panel_1_1_list_item">\
 		<div class="flex_1">\

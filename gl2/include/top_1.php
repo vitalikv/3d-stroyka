@@ -8,7 +8,8 @@
 	<div class="toolbar" data-action ='top_panel_1'>
 
 		<div class="button1-wrap-1">
-			<div nameId='screenshot' class="button1 button_gradient_1"><img src="<?=$path?>/img/screenshot.png"></div>
+			<div nameId="screenshot" class="button1 button_gradient_1"><img src="<?=$path?>/img/screenshot.png"></div>
+			<div nameId="warmtube" class="button1 button_gradient_1">т.пол</div>
 		</div>	
 
 		

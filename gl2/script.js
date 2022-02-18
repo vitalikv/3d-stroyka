@@ -382,7 +382,7 @@ changeRightMenuUI_1({name: 'button_wrap_object'});
 //changeRightMenuUI_1({name: 'button_wrap_catalog'});
 startPlanElemPlus({});										// добавляем в список +, для добавления этажа
 
-setPlaneHeightPositionY();
+setPlaneHeightPositionY({ value: 0.4 });
 
  
 //----------- start
