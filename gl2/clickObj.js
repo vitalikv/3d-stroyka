@@ -181,6 +181,7 @@ function deClickObj(cdm)
 	
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
+	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }
 
 	if(clickO.rayhit)
@@ -223,11 +224,14 @@ function deClickObj(cdm)
 	{ 
 		hidePivotGizmo(obj);
 
-		switchSelectAddObjGroup({active: false});
-		switchAlignPoint_1({active: false});
   
 		// скрываем разъемы
+		if(obj.userData.tag == 'obj' || obj.userData.tag == 'joinPoint')
 		{
+			switchSelectAddObjGroup({active: false});
+			switchAlignPoint_1({active: false});
+
+			
 			var arr = [];
 			
 			if(obj.userData.tag == 'joinPoint')
@@ -277,40 +281,41 @@ function deClickObj(cdm)
 				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
 			}
 		}
-
-		return false;
-	}
-	
-	
-	// кликнули на другой разъем 
-	function checkObjPoint_1(cdm)
-	{
-		var obj = cdm.obj;
-		var arr = infProject.list.alignP.arr2;
 		
-		for(var i = 0; i < arr.length; i++)
-		{ 
-			if(arr[i].o == obj) return true;
+		// кликнули на другой разъем 
+		function checkObjPoint_1(cdm)
+		{
+			var obj = cdm.obj;
+			var arr = infProject.list.alignP.arr2;
+			
+			for(var i = 0; i < arr.length; i++)
+			{ 
+				if(arr[i].o == obj) return true;
+			}
+
+			return false;
 		}
+		
+		
+		// провереям что клинули на другой объект, а не на тот у которого активированна точка
+		function checkWFPoint_2(cdm)
+		{
+			var obj = cdm.obj;
+			var obj3D_1 = cdm.obj3D;
+			
+			if(obj.userData.tag != 'joinPoint') return true;		// точка была НЕ активированна (отбой) 
+			
+			var obj3D_2 = getParentObj({obj: obj});
+			
+			if(obj3D_1 == obj3D_2) return false;
+
+			return true;	// клинули на другой объект
+		}				
 
 		return false;
 	}
 	
 	
-	// провереям что клинули на другой объект, а не на тот у которого активированна точка
-	function checkWFPoint_2(cdm)
-	{
-		var obj = cdm.obj;
-		var obj3D_1 = cdm.obj3D;
-		
-		if(obj.userData.tag != 'joinPoint') return true;		// точка была НЕ активированна (отбой) 
-		
-		var obj3D_2 = getParentObj({obj: obj});
-		
-		if(obj3D_1 == obj3D_2) return false;
-
-		return true;	// клинули на другой объект
-	}		
 	
 
 }

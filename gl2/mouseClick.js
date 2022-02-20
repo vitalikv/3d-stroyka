@@ -372,7 +372,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'joinPoint' && camera == camera3D) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'wf_tube' && camera == camera3D ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }
-		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }		
+		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
+		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 	}		
 }
 
@@ -547,6 +548,7 @@ function hideMenuObjUI_2D(cdm)
 		else if(tag == 'wf_point') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
+		else if(tag == 'wtGrid') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 	}
 	
 	if(flag) 

@@ -79,6 +79,8 @@ function crEventButtonWarmTubeGrid(params)
 		{
 			let obj = params.obj;
 			
+			hideMenuObjUI_2D();
+			
 			infProject.scene.array.wtgrid.push(obj);
 			
 			outlineAddObj(obj);
@@ -115,14 +117,18 @@ function crEventButtonWarmTubeGrid(params)
 		// кликнули на сетку теплого пола
 		function clickObj(params)
 		{
+			setClickLastObj({obj: obj});
+			activeObjRightPanelUI_1({obj: obj});
 			outlineAddObj(obj);			
-			setPivotGizmo({obj: obj});	
-
+			setPivotGizmo({obj: obj});				
+			
 			renderCamera();
 		}
 	
 		function deleteObj()
 		{
+			hideMenuObjUI_2D();
+			
 			deleteValueFromArrya({arr: infProject.scene.array.wtgrid, o: obj});
 			
 			disposeNode(obj);
