@@ -57,10 +57,10 @@ function crEventButtonWarmTubeGrid(params)
 	}
 	
 
-	// создаем сетку/плоскость теплого пола
+	// создаем плоскость и сетку теплого пола
 	function crFird(params)
 	{
-		let obj = new THREE.Mesh( createGeometryCube(2, 0.005, 2), matG );
+		let obj = new THREE.Mesh( createGeometryCube(2.8, 0.005, 4.7), matG );
 		
 		obj.userData.tag = 'wtGrid';
 		obj.userData.wtGrid = {};
@@ -167,8 +167,6 @@ function crEventButtonWarmTubeGrid(params)
 			Object.assign(arr[1].userData.wtPointGrid, {x: arr[0], z: arr[2], p2: arr[3]});
 			Object.assign(arr[2].userData.wtPointGrid, {x: arr[3], z: arr[1], p2: arr[0]});
 			Object.assign(arr[3].userData.wtPointGrid, {x: arr[2], z: arr[0], p2: arr[1]});
-
-console.log(arr[0].userData.wtPointGrid);			
 
 			// кликнули точку, подготавляем к перемещению
 			function clickObj(params)
@@ -287,6 +285,51 @@ console.log(arr[0].userData.wtPointGrid);
 		}
 		
 
+		crGridLine({obj: obj});
+		
+		// создаем сетку для пола
+		function crGridLine(params)
+		{
+			let obj = params.obj;
+			
+			obj.geometry.computeBoundingBox();
+			
+			let x = obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x;
+			let z = obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z;
+			let size = 0.5;				
+			
+			let countX = Math.floor(x/size);
+			let countZ = Math.floor(z/size);
+			
+			let ofssetX = (countX * size) / 2;
+			let ofssetZ = (countZ * size) / 2;
+			
+			// длина линии, центр по середине				
+			let geomZ = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3( -ofssetX, 0, 0 ), new THREE.Vector3( ofssetX, 0, 0 )]);
+			let geomX = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3( -ofssetZ, 0, 0 ), new THREE.Vector3( ofssetZ, 0, 0 )]);
+			let material = new THREE.LineBasicMaterial({ color: 0xffffff });
+
+
+			for ( let i = 0; i <= countX; i ++ ) 
+			{
+				let lineX = new THREE.Line( geomX, material );
+				lineX.position.x = ( i * size ) - ofssetX;
+				lineX.rotation.y = 90 * Math.PI / 180;
+				obj.add( lineX );
+				
+				lineX.position.y = 0.01;
+				//console.log(( i * size ) - (count * size) / 2);
+			}
+
+			for ( let i = 0; i <= countZ; i ++ ) 
+			{
+				let lineZ = new THREE.Line( geomZ, material );
+				lineZ.position.z = ( i * size ) - ofssetZ;
+				obj.add( lineZ );
+				
+				lineZ.position.y = 0.01;
+			}				
+		}
 		
 		// устанавливаем точки по краям подложки 
 		function setPointPos(cdm)
