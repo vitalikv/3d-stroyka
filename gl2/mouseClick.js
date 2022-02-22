@@ -218,8 +218,25 @@ function clickRayHit(event)
 
 	if(!rayhit)
 	{
-		var ray = rayIntersect( event, infProject.scene.array.wtgrid, 'arr' );
-		if(ray.length > 0) { rayhit = ray[0]; }					
+		var actO = null;
+		var arrO = infProject.scene.array.wtgrid;
+		
+		for (var i = 0; i < arrO.length; i++)
+		{
+			if(arrO[i].userData.wtGrid.active) { actO = arrO[i]; break; }
+		}
+		
+		if(actO)
+		{
+			var ray = rayIntersect( event, actO.userData.wtGrid.point.arrO, 'arr' );
+			if(ray.length > 0) { rayhit = ray[0]; }								
+		}
+		
+		if(!rayhit)
+		{
+			var ray = rayIntersect( event, arrO, 'arr' );
+			if(ray.length > 0) { rayhit = ray[0]; }								
+		}
 	}
 		
 	
@@ -364,6 +381,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == camera3D ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
+		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.wtPointGrid.f.clickObj({obj: obj, pos: rayhit.point}); }
+		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
 	}
 	else if(cdm.type == 'up')
 	{		
@@ -380,6 +399,8 @@ function clickMouseActive(cdm)
 
 function onDocumentMouseMove( event ) 
 { 
+	if(onfM.stop) return;
+	
 	if(event.changedTouches)
 	{
 		event.clientX = event.changedTouches[0].clientX;
@@ -435,7 +456,8 @@ function onDocumentMouseMove( event )
 
 function onDocumentMouseUp( event )  
 {
-
+	if(onfM.stop) return;
+	
 	if(!long_click) 
 	{ 
 		clickMouseActive({type: 'up'}); 

@@ -831,6 +831,7 @@ function updateSizeSubstrate(cdm)
 	var obj = cdm.obj; 
 	var size = cdm.size;
 	
+	obj.geometry.dispose();
 	var v = obj.geometry.vertices; 		
 	v[0].x = v[1].x = v[6].x = v[7].x = -size.x;
 	v[3].x = v[2].x = v[5].x = v[4].x = size.x;
