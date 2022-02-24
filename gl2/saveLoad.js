@@ -285,7 +285,7 @@ function disposeNode(obj)
 	
 	obj.traverse(function(child) 
 	{
-		if(child.isMesh) arr[arr.length] = child;
+		if(child.isMesh  || child.isLine) arr[arr.length] = child;
 	});
 	
 	for ( var i = 0; i < arr.length; i++ )

@@ -228,7 +228,7 @@ function clickRayHit(event)
 		
 		if(actO)
 		{
-			var ray = rayIntersect( event, actO.userData.wtGrid.point.arrO, 'arr' );
+			var ray = rayIntersect( event, actO.userData.wtGrid.arrP, 'arr' );
 			if(ray.length > 0) { rayhit = ray[0]; }								
 		}
 		
@@ -381,7 +381,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == camera3D ) { clickToggleGp( rayhit ); }
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
-		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.wtPointGrid.f.clickObj({obj: obj, pos: rayhit.point}); }
+		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
 	}
 	else if(cdm.type == 'up')

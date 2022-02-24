@@ -93,7 +93,7 @@ function arrObjFromGroup(cdm)
 	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
 	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
 	else if(obj.userData.wf_point) { var obj = cdm.obj.userData.wf_point.tube; }
-	else if(obj.userData.wtGrid) { return [obj]; }
+	else if(obj.userData.tag == 'wtGrid') { return [obj]; }
 	else { return arr; }
 
 	var arr = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект		
