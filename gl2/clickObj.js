@@ -181,7 +181,6 @@ function deClickObj(cdm)
 	
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
-	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }
 
 	if(clickO.rayhit)

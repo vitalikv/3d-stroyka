@@ -570,7 +570,7 @@ function hideMenuObjUI_2D(cdm)
 		else if(tag == 'wf_point') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
-		else if(tag == 'wtGrid') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
+		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
 	}
 	
 	if(flag) 

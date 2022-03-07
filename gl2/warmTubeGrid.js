@@ -326,11 +326,13 @@ function crEventButtonWarmTubeGrid(params)
 		
 		if(type == 'addObjButton') { addObjButton({obj: params.obj}); }
 		if(type == 'clickObj') { clickObj(); }
+		if(type == 'moveObj') { moveObj({obj: params.obj, offset: params.offset}); }
 		if(type == 'deleteObj') { deleteObj(); }
 		if(type == 'updateShapePlane') { updateShapePlane({size: params.size}); }
 		if(type == 'setPointPos') { setPointPos(); }
 		if(type == 'setPointVisible') { setPointVisible({show: params.show}); }
 		if(type == 'upShapeGrid') { upShapeGrid({obj: params.obj}); }
+		if(type == 'deActiveObj') { deActiveObj({moment: params.moment, camera: params.camera, rayhit: params.rayhit}); }
 		
 		
 		// добавляем объект в сцену через кнопку, назначаем чтобы двигался за мышкой
@@ -387,6 +389,21 @@ function crEventButtonWarmTubeGrid(params)
 			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: true});
 		
 			renderCamera();
+		}
+		
+		function moveObj(params)
+		{
+			let plane = params.obj;
+			let offset = params.offset;
+			
+			plane.position.add(offset);
+			
+			let point = plane.userData.wtGrid.arrP;
+			
+			for (let i = 0; i < point.length; i++)
+			{
+				point[i].position.add(offset);			
+			}			
 		}
 	
 		function deleteObj()
@@ -512,6 +529,43 @@ function crEventButtonWarmTubeGrid(params)
 				grid.add( lineZ );
 			}			
 		}	
+	
+		
+		// деактивируем объект
+		function deActiveObj(params)
+		{
+			let moment = params.moment;
+			let camera = params.camera;
+			let rayhit = params.rayhit;
+			
+			let check = false;
+			
+			if(moment == 'down' && camera == cameraTop) { check = true; }
+			else if(moment == 'up' && camera == camera3D) { check = true; }
+			else if(moment == ''){}
+			else { return; }
+			
+			
+			if(check && rayhit)
+			{
+				let newObj = rayhit.object;
+				
+				if(newObj.userData.tag == 'pivot') return;
+				if(newObj.userData.tag == 'gizmo') return;
+				if(newObj.userData.tag == 'wtPointGrid')
+				{
+					if(newObj.userData.plane == obj) return;
+				}
+			}
+			
+			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: false});
+			
+			hidePivotGizmo(obj);
+			activeObjRightPanelUI_1();		// скрываем UI			
+			outlineRemoveObj();					
+			resetClickLastObj({});				
+		}
+	
 	}	
 	
 }

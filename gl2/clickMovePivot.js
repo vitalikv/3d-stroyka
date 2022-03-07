@@ -271,9 +271,13 @@ function movePivot_2(cdm)
 
 		showWF_point_UI({point: obj});
 	}
+	else if(obj.userData.tag == 'wtGrid') 
+	{ 
+		obj.userData.propObj({type: 'moveObj', obj: obj, offset: pos2}); 
+	}
 	else 
 	{
-		moveOffsetArrObj({arrO: arrO, offset: pos2});			
+		moveOffsetArrObj({arrO: arrO, offset: pos2});				
 	}	
 
 	upMenuPosObjPop(obj);
