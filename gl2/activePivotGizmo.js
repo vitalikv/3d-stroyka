@@ -69,23 +69,7 @@ function setPivotGizmo(cdm)
 	// показываем pivot
 	if(type == 'pivot')
 	{
-		var pivot = infProject.tools.pivot;	
-		pivot.visible = true;	
-		pivot.userData.pivot.obj = obj;
-		pivot.userData.pivot.arrO = arrObjFromGroup({obj: obj});
-		pivot.position.copy(pos);
-		pivot.quaternion.copy(qt);
-		
-		if(camera == cameraTop)
-		{
-			pivot.children[1].visible = false;
-			pivot.children[7].visible = false;
-		}
-		else
-		{
-			pivot.children[1].visible = true;
-			pivot.children[7].visible = true;
-		}
+		infProject.tools.pivot.userData.propPivot({type: 'setPivot', obj: obj, pos: pos, qt: qt});
 	}
 	
 	// показываем gizmo

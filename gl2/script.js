@@ -257,7 +257,14 @@ infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 infProject.geometry.labelFloor = createGeometryPlan(1.0 * kof_rd, 0.25 * kof_rd);
 infProject.geometry.wf_point = new THREE.SphereGeometry( 0.015, 16, 16 );
 infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
-infProject.tools = { pivot: createPivot(), gizmo: createGizmo360(), cutWall: [], point: createToolPoint(), axis: createLineAxis() }
+
+infProject.tools = {};
+infProject.tools.pivot = null;
+infProject.tools.gizmo = createGizmo360();
+infProject.tools.cutWall = [];
+infProject.tools.point = createToolPoint();
+infProject.tools.axis = createLineAxis();
+
 //infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   
 infProject.tools.plane = {o1: [], el: []};
 infProject.tools.heightPl = createPlaneHeight();		// плоскость высоты
@@ -1629,6 +1636,8 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init()
 {
+	crPivot({container: mainDiv_1});
+	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI
 	 

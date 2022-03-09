@@ -366,7 +366,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate' && camera == cameraTop ) { clickSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
-		else if( tag == 'pivot' ) { clickPivot( rayhit ); }
+		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
 		else if( tag == 'gizmo' ) { clickGizmo( rayhit ); }  		
 		else if( tag == 'wall' && camera == cameraTop ) { clickWall_2D( rayhit ); }
 		else if( tag == 'point' && camera == cameraTop ) { clickPoint( rayhit ); }

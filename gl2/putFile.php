@@ -27,6 +27,7 @@ saveLoad.js
 script.js
 floorWarm.js
 clickMovePivot.js
+toolPivot.js
 clickObj.js
 clickMoveGizmo.js
 activePivotGizmo.js
