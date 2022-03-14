@@ -277,12 +277,12 @@ function crEventButtonWarmTubeGrid(params)
 			if(1 == 1)
 			{
 				obj.updateMatrixWorld();
-				var posLoc = obj.worldToLocal( pos.clone() );	
-				var posX = obj.localToWorld( new THREE.Vector3(posLoc.x, 0, 0) );
-				var posX = new THREE.Vector3().subVectors( posX, obj.position );
+				let posLoc = obj.worldToLocal( pos.clone() );	
+				let posX = obj.localToWorld( new THREE.Vector3(posLoc.x, 0, 0) );
+				posX = new THREE.Vector3().subVectors( posX, obj.position );
 				
-				var posZ = obj.localToWorld( new THREE.Vector3(0, 0, posLoc.z) ); 
-				var posZ = new THREE.Vector3().subVectors( posZ, obj.position );	
+				let posZ = obj.localToWorld( new THREE.Vector3(0, 0, posLoc.z) ); 
+				posZ = new THREE.Vector3().subVectors( posZ, obj.position );	
 
 				obj.userData.x.position.add( posX );
 				obj.userData.z.position.add( posZ );
@@ -290,29 +290,32 @@ function crEventButtonWarmTubeGrid(params)
 			
 			
 			
-			var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+			let pos2 = new THREE.Vector3().subVectors( pos, obj.position );
 			obj.position.add( pos2 );
 
 			
 			// по положению точек изменяем форму плоскости 
 			if(1 == 1)
 			{
-				var plane = obj.userData.plane;		
-				var point = plane.userData.wtGrid.arrP;
+				let plane = obj.userData.plane;		
+				let point = plane.userData.wtGrid.arrP;
 				
 				plane.updateMatrixWorld();			
-				var ps1 = plane.worldToLocal( point[0].position.clone() );
-				var ps2 = plane.worldToLocal( point[1].position.clone() );
-				var ps3 = plane.worldToLocal( point[2].position.clone() );
-				var ps4 = plane.worldToLocal( point[3].position.clone() );
+				let ps1 = plane.worldToLocal( point[0].position.clone() );
+				let ps2 = plane.worldToLocal( point[1].position.clone() );
+				let ps3 = plane.worldToLocal( point[2].position.clone() );
+				let ps4 = plane.worldToLocal( point[3].position.clone() );
 				
-				var x = new THREE.Vector3().subVectors( ps3, ps1 ).x;
-				var z = new THREE.Vector3().subVectors( ps2, ps1 ).z;
+				let x = new THREE.Vector3().subVectors( ps3, ps1 ).x;
+				let z = new THREE.Vector3().subVectors( ps2, ps1 ).z;
 				
 				plane.userData.propObj({type: 'updateShapePlane', obj: plane, size: {x: x, z: z}});	
 				plane.userData.propObj({type: 'upShapeGrid', obj: plane});
 				
-				plane.position.add( pos2.clone().divideScalar( 2 ) );
+				let offset = pos2.clone().divideScalar( 2 );
+				
+				plane.position.add( offset );
+				infProject.tools.pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
 			}
 		}		
 	}

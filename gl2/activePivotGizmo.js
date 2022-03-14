@@ -100,7 +100,7 @@ function setPivotGizmo(cdm)
 	}	
 	
 	
-	upMenuPosObjPop(obj);
+	
 	upMenuRotateObjPop(obj);
 	
 	setScalePivotGizmo();
@@ -114,16 +114,11 @@ function hidePivotGizmo(obj)
 	if(!obj) return;
 	if(!obj.userData.tag) return;	
 	
-	var pivot = infProject.tools.pivot;
-	var gizmo = infProject.tools.gizmo;
+	infProject.tools.pivot.userData.propPivot({type: 'hide'});
+	var gizmo = infProject.tools.gizmo;	
 	
-	pivot.visible = false;
 	gizmo.visible = false;
-	
-	pivot.userData.pivot.obj = null;
 	gizmo.userData.gizmo.obj = null;
-	
-	pivot.userData.pivot.arrO = [];
 	gizmo.userData.gizmo.arrO = [];
 
 	renderCamera();
@@ -185,50 +180,21 @@ function getObjFromPivotGizmo(cdm)
 // масштаб Pivot/Gizmo
 function setScalePivotGizmo()
 {
-	var pivot = infProject.tools.pivot;
+	//infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
 	var gizmo = infProject.tools.gizmo;
 	
-	var pVis = false;
-	var gVis = false;
-
-	
-	if(pivot.visible) { pVis = true; }
-	if(gizmo.visible) { gVis = true; }	
-	if(!pVis && !gVis) { return; }
-	
-	var obj = null;
-	
-	if(pVis) obj = pivot.userData.pivot.obj;
-	if(gVis) obj = gizmo.userData.gizmo.obj;
-	if(!obj) return;
+	if(!gizmo.visible) return;	
 	
 	if(camera == cameraTop)
 	{		
 		var scale = 1/camera.zoom;	
-		
-		if(pVis) pivot.scale.set( scale,scale,scale );
-		if(gVis) gizmo.scale.set( scale,scale,scale );
 	}
 	else
-	{
-		if(obj.userData.tag == 'joinPoint')		// разъем
-		{
-			var dist = camera.position.distanceTo(obj.getWorldPosition(new THREE.Vector3())); 
-		}
-		else if(obj.userData.tag == 'wf_tube')		// труба
-		{
-			var dist = camera.position.distanceTo(pivot.position); 
-		}			
-		else			// группа или объект
-		{
-			var dist = camera.position.distanceTo(obj.position); 
-		}			
-		
-		var scale = dist/6;	
-		
-		if(pVis) pivot.scale.set( scale,scale,scale );
-		if(gVis) gizmo.scale.set( scale,scale,scale );		
+	{				
+		var scale = camera.position.distanceTo(gizmo.position)/6;	 		
 	}
+
+	gizmo.scale.set( scale,scale,scale );
 }
 
 

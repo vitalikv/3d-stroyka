@@ -30,8 +30,6 @@ function movePivot_2(cdm)
 	{
 		moveOffsetArrObj({arrO: arrO, offset: pos2});				
 	}	
-
-	upMenuPosObjPop(obj);
 }
 
 
@@ -58,56 +56,6 @@ function moveOffsetArrObj(cdm)
 	}	
 }
 
-
-function clickPivotUp()
-{
-
-	
-	var obj = infProject.tools.pivot.userData.pivot.obj;	
-	if(!obj) return;	
-
-	
-	setClickLastObj({obj: obj});
-}
-
-
-
-// обновляем pos UI
-function upMenuPosObjPop(obj) 
-{	
-	let pos = obj.position;
-	
-	if(obj.userData.tag == 'obj')		// группа или объект
-	{ 
-		obj.updateMatrixWorld();
-		pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
-	}	
-	else if(obj.userData.tag == 'joinPoint')		// разъем
-	{
-		obj.parent.updateMatrixWorld();
-		pos = obj.getWorldPosition(new THREE.Vector3());
-	}
-	else if(obj.userData.tag == 'wf_tube')
-	{
-		pos = infProject.tools.pivot.position;
-	}
-	else if(obj.userData.tag == 'wf_point')		// точка трубы
-	{ 
-		pos = obj.position; 
-	}
-	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
-	{ 
-		pos = obj.position; 
-	}		
-	else
-	{
-		pos = new THREE.Vector3();
-	}
-	
-	document.querySelector('[nameId="object_pos_X"]').value = Math.round(pos.x*100)/100;
-	document.querySelector('[nameId="object_pos_Y"]').value = Math.round(pos.y*100)/100;
-	document.querySelector('[nameId="object_pos_Z"]').value = Math.round(pos.z*100)/100;		
-}
 
 
 
@@ -142,7 +90,7 @@ function inputChangePos()
 	// не числовое значение
 	if(stop)
 	{		
-		upMenuPosObjPop(obj);
+		infProject.tools.pivot.userData.propPivot({type: 'updatePosUI'});
 		return;
 	}	
 	

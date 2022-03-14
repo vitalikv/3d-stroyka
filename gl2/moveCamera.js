@@ -253,6 +253,8 @@ function onDocumentMouseWheel( event )
 		zoomCameraView(delta, 1);
 	}	
 	
+	infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
+	
 	renderCamera();
 }
 
@@ -506,6 +508,8 @@ function cameraZoomTopLoop()
 		if ( zoomLoop == 'zoomIn' ) { cameraZoom3D( -0.3, 0.3 ); flag = true; }
 	}
 	
+	
+	
 	if(flag) { renderCamera(); }
 }
 
@@ -666,6 +670,7 @@ function fitCameraToObject(cdm)
 	
 	camera.updateProjectionMatrix();
 	
+	infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
 	scaleToolsMoveCamera();
 	
 	renderCamera();

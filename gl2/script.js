@@ -1500,7 +1500,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'object_pos_X' || infProject.activeInput == 'object_pos_Y' || infProject.activeInput == 'object_pos_Z')
 			{
-				inputChangePos(); 
+				infProject.tools.pivot.userData.propPivot({type: 'inputPosPivot'});
 			}
 			else if(infProject.activeInput == 'object_rotate_X' || infProject.activeInput == 'object_rotate_Y' || infProject.activeInput == 'object_rotate_Z')
 			{

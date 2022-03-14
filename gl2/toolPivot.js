@@ -5,6 +5,14 @@ function crPivot(params)
 	let container = params.container;
 	
 	let pivot = crObj();
+	
+	let ui = {};
+	ui.pos = {};
+	ui.pos.x = document.querySelector('[nameId="object_pos_X"]');
+	ui.pos.y = document.querySelector('[nameId="object_pos_Y"]');
+	ui.pos.z = document.querySelector('[nameId="object_pos_Z"]');
+	
+
 
 	function crObj() 
 	{
@@ -12,7 +20,6 @@ function crPivot(params)
 		pivot.userData.startPos = new THREE.Vector3();
 		pivot.userData.dir = new THREE.Vector3();
 		pivot.userData.pivot = {};
-		pivot.userData.pivot.active = { axis: '', qt: new THREE.Quaternion() };
 		pivot.userData.pivot.obj = null;
 		pivot.userData.pivot.arrO = [];		// группа объектов			
 		pivot.userData.propPivot = propPivot;
@@ -257,8 +264,13 @@ function crPivot(params)
 	{
 		let type = params.type;			
 		
-		if(type == 'setPivot') { setPivot({obj: params.obj, pos: params.pos, qt: params.qt}); }	
-		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
+		if(type == 'setPivot') { setPivot({obj: params.obj, pos: params.pos, qt: params.qt}); }
+		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }		
+		if(type == 'offsetPivot') { offsetPivot({offset: params.offset}); }
+		if(type == 'updateScale') { updateScale(); }
+		if(type == 'hide') { hide(); }
+		if(type == 'inputPosPivot') { inputPosPivot(); }
+		if(type == 'updatePosUI') { updatePosUI(); }
 		
 
 		// установить и показать Pivot
@@ -278,6 +290,9 @@ function crPivot(params)
 			{
 				if(pivot.children[i].userData.axis == 'y') pivot.children[i].visible = (camera == cameraTop) ? false : true;
 			}
+			
+			pivot.userData.propPivot({type: 'updatePosUI'});
+			pivot.userData.propPivot({type: 'updateScale'});
 		}
 
 		
@@ -320,8 +335,7 @@ function crPivot(params)
 			
 			let obj = rayhit.object;  			
 			
-			let axis = obj.userData.axis;
-			pivot.userData.pivot.active.axis = axis;	
+			let axis = obj.userData.axis;	
 			
 			pivot.updateMatrixWorld();
 			pivot.userData.startPos = rayhit.point.clone();
@@ -366,50 +380,98 @@ function crPivot(params)
 
 			
 			let offset = new THREE.Vector3().subVectors( pos, pivot.userData.startPos );
-			pivot.position.add( offset );
-			pivot.userData.startPos.add( offset );
+			
+			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
 			
 			movePivot_2({obj: obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
 		}
 		
+		
+		function offsetPivot(params)
+		{
+			let offset = params.offset;
+			pivot.position.add( offset );
+			pivot.userData.startPos.add( offset );
+			
+			pivot.userData.propPivot({type: 'updatePosUI'});
+			pivot.userData.propPivot({type: 'updateScale'});
+		}			
 		
 		// прекращаем действия с pivot
 		function endPivot(params)
 		{
 			
 		}
+		
+		
+		function updateScale() 
+		{
+			if (!pivot.visible) return;
+			
+			let scale = 1;
+			
+			if(camera == cameraTop) { scale = 1 / cameraTop.zoom; }
+			if(camera == camera3D) { scale = camera3D.position.distanceTo(pivot.position) / 6; }			
+			
+			pivot.scale.set(scale, scale, scale);
+		}
+
+
+		function hide() 
+		{
+			pivot.visible = false;
+			pivot.userData.pivot.obj = null;
+			pivot.userData.pivot.arrO = [];
+		}
+
+
+		// меняем положение объекта через input
+		function inputPosPivot()
+		{
+			if (!pivot.visible) return;
+			
+			
+			let x = ui.pos.x.value;
+			let y = ui.pos.y.value;
+			let z = ui.pos.z.value;
+
+			x = checkNumberInput({ value: x, unit: 1 });
+			y = checkNumberInput({ value: y, unit: 1 });
+			z = checkNumberInput({ value: z, unit: 1 });
+			
+			// не числовое значение
+			if(!x || !y || !z)
+			{		
+				pivot.userData.propPivot({type: 'updatePosUI'});
+				return;
+			}	
+			
+				
+			let offset = new THREE.Vector3(x.num, y.num, z.num).sub(pivot.position);
+			
+			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
+						
+			movePivot_2({obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
+				
+
+			renderCamera();
+		}		
+
+
+		// обновляем меню позиция
+		function updatePosUI()
+		{
+			let pos = pivot.position;
+			
+			ui.pos.x.value = Math.round(pos.x * 100) / 100;
+			ui.pos.y.value = Math.round(pos.y * 100) / 100;
+			ui.pos.z.value = Math.round(pos.z * 100) / 100;				
+		}
+		
+		
 	}
 	
-	
-	function addEvent22() 
-	{
-		let obj = this.obj;
-
-		MOVEPOINT.startPoint({ obj: obj, clickPos: this.obj.position });
-
-		Build.canvas.onmousemove = (e) => 
-		{
-			MOUSEE.setStop(true);
-			MOVEPOINT.movePoint({ obj: obj, event: e });
-		};
-
-		Build.canvas.onmousedown = (e) => 
-		{
-			Build.canvas.onmousemove = null;
-			Build.canvas.onmousedown = null;
-
-			MOUSEE.setStop(false);
-
-			if (e.button == 2) 
-			{
-				this.deleteObj();
-			} 
-			else 
-			{
-				MOVEPOINT.endPoint({ obj: obj, tool: true });
-			}
-		};
-	}
+	 
 
 }
 
