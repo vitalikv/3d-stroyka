@@ -79,51 +79,6 @@ function createGizmo360()
 
 
 
-// прячем текстуру если она находится за плоскостью 
-function clippingGizmo360( obj ) 
-{
-	var plane = new THREE.Plane();	
-	
-	if(camera == cameraTop)
-	{
-		plane = new THREE.Plane(new THREE.Vector3(0,1,0), 100);
-		infProject.tools.gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);		
-	}
-	else
-	{
-		var group = new THREE.Group();
-
-		if(obj.userData.tag == 'joinPoint')	// разъем
-		{
-			group.position.copy(obj.getWorldPosition(new THREE.Vector3()));   
-		}		
-		else	//  группа или объект
-		{
-			group.position.copy( obj.localToWorld( obj.geometry.boundingSphere.center.clone() ) );
-		}
-		
-		group.lookAt(camera.position);
-		group.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
-		group.updateMatrixWorld();
-		
-		
-		//var dir = new THREE.Vector3().subVectors( camera.position, objPop.position ).normalize();
-		//var qt = quaternionDirection(dir.clone());
-		//var mx = new THREE.Matrix4().compose(objPop.position, qt, new THREE.Vector3(1,1,1));
-		//plane.applyMatrix4(mx);	
-		plane.applyMatrix4(group.matrixWorld);	
-		
-		infProject.tools.gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);
-		infProject.tools.gizmo.children[1].children[0].material.clippingPlanes[0].copy(plane);
-		infProject.tools.gizmo.children[2].children[0].material.clippingPlanes[0].copy(plane);	
-		
-		//showHelperNormal(objPop)		
-	}
-
-}
-
-
-
 
 
 // кликнули на gizmo
@@ -457,7 +412,7 @@ function resetRotateObj(cdm)
 	}
 	
 	upMenuRotateObjPop( obj );
-	clippingGizmo360( obj );
+	infProject.tools.gizmo.userData.propGizmo({type: 'clippingGizmo'});
 
 	renderCamera();
 }
@@ -547,7 +502,7 @@ function inputChangeRot()
 	}
 	
 	upMenuRotateObjPop( obj );
-	clippingGizmo360( obj );	
+	infProject.tools.gizmo.userData.propGizmo({type: 'clippingGizmo'});	
 
 
 	renderCamera();

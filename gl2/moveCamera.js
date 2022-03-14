@@ -199,11 +199,7 @@ function cameraMove3D( event )
 		camera.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 
 		camera.position.add( inf.targetPos );  
-		camera.lookAt( inf.targetPos );			
-		
-		var gizmo = infProject.tools.gizmo;		
-		if(gizmo.visible) clippingGizmo360(gizmo.userData.gizmo.obj);
-		
+		camera.lookAt( inf.targetPos );					
 	}
 	else if(inf.click == 'right')    
 	{
@@ -213,7 +209,7 @@ function cameraMove3D( event )
 		inf.targetPos.add( offset );
 	}
 		
-	
+	infProject.tools.gizmo.userData.propGizmo({type: 'clippingGizmo'});
 }
 
 
@@ -254,6 +250,7 @@ function onDocumentMouseWheel( event )
 	}	
 	
 	infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
+	infProject.tools.gizmo.userData.propGizmo({type: 'updateScale'});
 	
 	renderCamera();
 }
@@ -671,6 +668,7 @@ function fitCameraToObject(cdm)
 	camera.updateProjectionMatrix();
 	
 	infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
+	infProject.tools.gizmo.userData.propGizmo({type: 'updateScale'});
 	scaleToolsMoveCamera();
 	
 	renderCamera();
@@ -682,7 +680,6 @@ function scaleToolsMoveCamera()
 {
 	setScaleTubePoint(); 
 	setScaleJoinPoint();
-	setScalePivotGizmo();
 
 
 	// вкл режим выровнить (нажата кнопка выровнить) и показаны точки 2-ого объекта

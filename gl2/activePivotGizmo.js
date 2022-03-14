@@ -64,46 +64,11 @@ function setPivotGizmo(cdm)
 	else if(obj.userData.tag == 'wf_tube') { type = 'pivot'; }		// труба
 	else { type = infProject.settings.active.pg; }					// объекты
 	
-	
-	
-	// показываем pivot
-	if(type == 'pivot')
-	{
-		infProject.tools.pivot.userData.propPivot({type: 'setPivot', obj: obj, pos: pos, qt: qt});
-	}
-	
-	// показываем gizmo
-	if(type == 'gizmo')
-	{
-		var gizmo = infProject.tools.gizmo;
-					
-		gizmo.position.copy( pos );
 		
-		gizmo.visible = true;
-		gizmo.userData.gizmo.obj = obj;
-		gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj});
-		
-		if(camera == cameraTop)
-		{
-			gizmo.children[1].visible = false;
-			gizmo.children[2].visible = false;
-		}
-		else
-		{
-			gizmo.children[1].visible = true;
-			gizmo.children[2].visible = true;			
-		}
+	
+	if(type == 'pivot') infProject.tools.pivot.userData.propPivot({type: 'setPivot', obj: obj, pos: pos, qt: qt});	// показываем pivot		
+	if(type == 'gizmo') infProject.tools.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, pos: pos, qt: qt});	// показываем gizmo				
 
-		gizmo.quaternion.copy( qt );
-		
-		clippingGizmo360(obj); 		
-	}	
-	
-	
-	
-	upMenuRotateObjPop(obj);
-	
-	setScalePivotGizmo();
 }
 
 
@@ -115,11 +80,7 @@ function hidePivotGizmo(obj)
 	if(!obj.userData.tag) return;	
 	
 	infProject.tools.pivot.userData.propPivot({type: 'hide'});
-	var gizmo = infProject.tools.gizmo;	
-	
-	gizmo.visible = false;
-	gizmo.userData.gizmo.obj = null;
-	gizmo.userData.gizmo.arrO = [];
+	infProject.tools.gizmo.userData.propGizmo({type: 'hide'});
 
 	renderCamera();
 }
@@ -138,20 +99,14 @@ function switchPivotGizmo(cdm)
 	else if(obj.userData.tag == 'wtGrid'){}
 	else { return; }	
 	
+	
+	infProject.tools.pivot.userData.propPivot({type: 'hide'});
+	infProject.tools.gizmo.userData.propGizmo({type: 'hide'});	
+	
+	
 	infProject.settings.active.pg = cdm.mode;	
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
 	
-	infProject.tools.pivot.visible = false;
-	infProject.tools.gizmo.visible = false;
-	
-	if(infProject.settings.active.pg == 'pivot'){ infProject.tools.pivot.visible = true; }	
-	if(infProject.settings.active.pg == 'gizmo'){ infProject.tools.gizmo.visible = true; }		
-
-	infProject.tools.pivot.userData.pivot.obj = null;
-	infProject.tools.gizmo.userData.gizmo.obj = null;
-	
-	infProject.tools.pivot.userData.pivot.arrO = [];
-	infProject.tools.gizmo.userData.gizmo.arrO = [];
 
 	clickObject3D( obj ); 
 
@@ -177,24 +132,6 @@ function getObjFromPivotGizmo(cdm)
 
 
 
-// масштаб Pivot/Gizmo
-function setScalePivotGizmo()
-{
-	//infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
-	var gizmo = infProject.tools.gizmo;
-	
-	if(!gizmo.visible) return;	
-	
-	if(camera == cameraTop)
-	{		
-		var scale = 1/camera.zoom;	
-	}
-	else
-	{				
-		var scale = camera.position.distanceTo(gizmo.position)/6;	 		
-	}
 
-	gizmo.scale.set( scale,scale,scale );
-}
 
 

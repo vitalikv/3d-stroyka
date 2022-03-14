@@ -180,6 +180,7 @@
 	<script src="<?=$path?>clickMoveGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMovePivot.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolPivot.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>toolGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activePivotGizmo.js?<?=$vrs?>"></script>
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
     <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>

@@ -260,7 +260,7 @@ infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(create
 
 infProject.tools = {};
 infProject.tools.pivot = null;
-infProject.tools.gizmo = createGizmo360();
+infProject.tools.gizmo = null;
 infProject.tools.cutWall = [];
 infProject.tools.point = createToolPoint();
 infProject.tools.axis = createLineAxis();
@@ -1637,6 +1637,7 @@ document.addEventListener("DOMContentLoaded", init);
 function init()
 {
 	crPivot({container: mainDiv_1});
+	crGizmo({container: mainDiv_1});
 	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI

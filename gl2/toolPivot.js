@@ -168,13 +168,13 @@ function crPivot(params)
 		
 		function crCircle()
 		{
-			var count = 48;
-			var circle = [];
-			var g = (Math.PI * 2) / count;
+			let count = 48;
+			let circle = [];
+			let g = (Math.PI * 2) / count;
 			
-			for ( var i = 0; i < count; i++ )
+			for ( let i = 0; i < count; i++ )
 			{
-				var angle = g * i;
+				let angle = g * i;
 				circle[i] = new THREE.Vector3();
 				circle[i].x = Math.sin(angle);
 				circle[i].z = Math.cos(angle);
