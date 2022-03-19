@@ -316,8 +316,8 @@ function crPivot(params)
 				
 				setMouseStop(false);
 				
-				let obj = infProject.tools.pivot.userData.pivot.obj;	
-				if(!obj) setClickLastObj({obj: obj});	
+				//let obj = infProject.tools.pivot.userData.pivot.obj;	
+				//if(!obj) setClickLastObj({obj: obj});	
 
 				
 				stopCameraTop();
@@ -337,7 +337,7 @@ function crPivot(params)
 			
 			let axis = obj.userData.axis;	
 			
-			pivot.updateMatrixWorld();
+			//pivot.updateMatrixWorld();
 			pivot.userData.startPos = rayhit.point.clone();
 			pivot.userData.dir = null;				
 				
@@ -356,7 +356,7 @@ function crPivot(params)
 			
 			planeMath.position.copy( rayhit.point );
 			
-			setClickLastObj({obj: infProject.tools.pivot.userData.pivot.obj});
+			setClickLastObj({obj: pivot.userData.pivot.obj});
 		} 		
 	
 	
@@ -428,7 +428,7 @@ function crPivot(params)
 		// меняем положение объекта через input
 		function inputPosPivot()
 		{
-			if (!pivot.visible) return;
+			//if (!pivot.visible) return;
 			
 			
 			let x = ui.pos.x.value;

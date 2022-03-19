@@ -18,7 +18,6 @@ function crGizmo(params)
 	{
 		let gizmo = new THREE.Group();
 		gizmo.userData.startPos = new THREE.Vector3();
-		gizmo.userData.dir = new THREE.Vector3();
 		gizmo.userData.gizmo = {};
 		gizmo.userData.gizmo.obj = null;
 		gizmo.userData.gizmo.arrO = [];		// группа объектов			
@@ -105,15 +104,16 @@ function crGizmo(params)
 		
 		if(type == 'clippingGizmo') { clippingGizmo(); }		
 		if(type == 'setGizmo') { setGizmo({obj: params.obj, pos: params.pos, qt: params.qt}); }
+		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
 		if(type == 'updateScale') { updateScale(); }
 		if(type == 'hide') { hide(); }
+		if(type == 'inputRotGizmo') { inputRotGizmo(); }
 		if(type == 'updateGizmoRotUI') { updateGizmoRotUI(); }
 		
-		
-		
-		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }		
+
+				
 		if(type == 'offsetPivot') { offsetPivot({offset: params.offset}); }				
-		if(type == 'inputPosPivot') { inputPosPivot(); }
+		
 		
 
 
@@ -163,8 +163,7 @@ function crGizmo(params)
 			
 			let visible = (camera == cameraTop) ? false : true;			
 			gizmo.children[1].visible = visible;
-			gizmo.children[2].visible = visible;			
-	
+			gizmo.children[2].visible = visible;				
 			
 			
 			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
@@ -173,6 +172,97 @@ function crGizmo(params)
 		}
 
 
+		function addEvent(params)
+		{
+			startGizmo(params);
+			
+			setMouseStop(true);
+			
+			container.onmousemove = (e) => 
+			{
+				moveGizmo({event: e});		
+				
+				renderCamera();
+			};
+
+			container.onmouseup = (e) => 
+			{
+				container.onmousemove = null;
+				container.onmouseup = null;
+				
+				setMouseStop(false);
+				
+				//let obj = infProject.tools.pivot.userData.pivot.obj;	
+				//if(!obj) setClickLastObj({obj: obj});	
+
+				
+				stopCameraTop();
+				stopCamera3D();
+				stopCameraView();
+
+				renderCamera();
+			};			
+		}
+
+
+		// подготавливаем gizmo
+		function startGizmo(params)
+		{
+			let rayhit = params.rayhit;
+			
+			let obj = rayhit.object;  									
+			
+			planeMath.quaternion.copy( obj.getWorldQuaternion(new THREE.Quaternion()) );
+			planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2, 0, 0)));			
+			planeMath.position.copy( gizmo.position );
+			
+			planeMath.updateMatrixWorld();			
+			let dir = planeMath.worldToLocal(rayhit.point.clone());
+			gizmo.userData.rotY = Math.atan2(dir.x, dir.y);			
+			gizmo.userData.dir = new THREE.Vector3().subVectors(planeMath.localToWorld( new THREE.Vector3( 0, 0, -1 ) ), planeMath.position).normalize();
+			
+			gizmo.userData.startPos = gizmo.userData.gizmo.obj.localToWorld( gizmo.userData.gizmo.obj.geometry.boundingSphere.center.clone() );
+			
+			setClickLastObj({obj: gizmo.userData.gizmo.obj});
+		} 
+
+
+		// перемещение gizmo
+		function moveGizmo(params)
+		{
+			let event = params.event;
+			
+			let rayhit = rayIntersect( event, planeMath, 'one' ); 			
+			if(rayhit.length == 0) return;
+			
+			//pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
+			
+			
+			let dir = planeMath.worldToLocal(rayhit[0].point.clone());
+			let rotY = Math.atan2(dir.x, dir.y);
+
+			let pos = gizmo.userData.startPos;
+			let arrO = gizmo.userData.gizmo.arrO;
+			
+			for (let i = 0; i < arrO.length; i++)
+			{
+				arrO[i].position.sub(pos);
+				arrO[i].position.applyAxisAngle(gizmo.userData.dir, rotY - gizmo.userData.rotY);
+				arrO[i].position.add(pos);
+
+				arrO[i].rotateOnWorldAxis(gizmo.userData.dir, rotY - gizmo.userData.rotY);				
+			}
+			
+			gizmo.rotateOnWorldAxis(gizmo.userData.dir, rotY - gizmo.userData.rotY);
+
+
+			gizmo.userData.rotY = rotY;	
+
+			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
+		}
+		
+				
+		
 		function updateScale() 
 		{
 			if (!gizmo.visible) return;
@@ -192,111 +282,9 @@ function crGizmo(params)
 			gizmo.userData.gizmo.obj = null;
 			gizmo.userData.gizmo.arrO = [];
 		}		
-		
-		
-		// обновляем меню позиция
-		function updateGizmoRotUI()
-		{
-			let rot = gizmo.rotation;
 			
-			ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
-			ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
-			ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));				
-		}
-		
-		
-		
-		function addEvent(params)
-		{
-			startPivot(params);
-			
-			setMouseStop(true);
-			
-			container.onmousemove = (e) => 
-			{
-				movePivot({event: e});		
-				
-				renderCamera();
-			};
-
-			container.onmouseup = (e) => 
-			{
-				container.onmousemove = null;
-				container.onmouseup = null;
-				
-				setMouseStop(false);
-				
-				let obj = infProject.tools.pivot.userData.pivot.obj;	
-				if(!obj) setClickLastObj({obj: obj});	
-
-				
-				stopCameraTop();
-				stopCamera3D();
-				stopCameraView();
-
-				renderCamera();
-			};			
-		}
-
-		// подготавливаем pivot
-		function startPivot(params)
-		{
-			let rayhit = params.rayhit;
-			
-			let obj = rayhit.object;  			
-			
-			let axis = obj.userData.axis;	
-			
-			pivot.updateMatrixWorld();
-			pivot.userData.startPos = rayhit.point.clone();
-			pivot.userData.dir = null;				
-				
-			
-			if(axis == 'xz' || axis == 'center')
-			{ 
-				planeMath.rotation.set( Math.PI/2, 0, 0 ); 
-			}		 
-			else
-			{				
-				pivot.userData.dir = new THREE.Vector3().subVectors(pivot.position, obj.getWorldPosition(new THREE.Vector3())).normalize();
-				planeMath.quaternion.copy( quaternionDirection( pivot.userData.dir ) ); 
-				planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2, 0, 0)));
-			}
-			
-			
-			planeMath.position.copy( rayhit.point );
-			
-			setClickLastObj({obj: infProject.tools.pivot.userData.pivot.obj});
-		} 		
 	
-	
-		// перемещение pivot
-		function movePivot(params)
-		{
-			let event = params.event;
-			
-			let rayhit = rayIntersect( event, planeMath, 'one' ); 			
-			if(rayhit.length == 0) return;
-			
-			let obj = pivot.userData.pivot.obj;
-			let pos = rayhit[0].point;
-					
-			
-			if(pivot.userData.dir)
-			{
-				let dist = pivot.userData.dir.dot(new THREE.Vector3().subVectors(pos, pivot.userData.startPos));
-				pos = pivot.userData.startPos.clone().add(new THREE.Vector3().addScaledVector(pivot.userData.dir, dist));				
-			}		
 
-			
-			let offset = new THREE.Vector3().subVectors( pos, pivot.userData.startPos );
-			
-			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
-			
-			movePivot_2({obj: obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
-		}
-		
-		
 		function offsetPivot(params)
 		{
 			let offset = params.offset;
@@ -308,8 +296,8 @@ function crGizmo(params)
 			pivot.userData.propPivot({type: 'updateScale'});
 		}			
 		
-		// прекращаем действия с pivot
-		function endPivot(params)
+		// прекращаем действия с gizmo
+		function endGizmo(params)
 		{
 			
 		}
@@ -318,14 +306,14 @@ function crGizmo(params)
 
 
 		// меняем положение объекта через input
-		function inputPosPivot()
+		function inputRotGizmo()
 		{
-			if (!pivot.visible) return;
+			//if (!gizmo.visible) return;
 			
 			
-			let x = ui.pos.x.value;
-			let y = ui.pos.y.value;
-			let z = ui.pos.z.value;
+			let x = ui.rot.x.value;
+			let y = ui.rot.y.value;
+			let z = ui.rot.z.value;
 
 			x = checkNumberInput({ value: x, unit: 1 });
 			y = checkNumberInput({ value: y, unit: 1 });
@@ -350,12 +338,17 @@ function crGizmo(params)
 		}		
 
 
-
-		
+		// обновляем меню позиция
+		function updateGizmoRotUI()
+		{
+			let rot = gizmo.rotation;
+			
+			ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
+			ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
+			ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));				
+		}		
 		
 	}
-	
-	 
 
 }
 
