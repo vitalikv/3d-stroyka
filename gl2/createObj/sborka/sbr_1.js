@@ -260,8 +260,9 @@ async function addSborkaToScene_1(cdm)
 	if(!inf) return;
 	
 	var obj = inf.arr1[0];
+	var arrO = arrObjFromGroup({obj: obj});
 	clickO.move = obj; 
-	clickO.arrO = inf.arr1;
+	clickO.arrO = arrO;
 	
 	planeMath.position.y = infProject.tools.heightPl.position.y; 
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
@@ -275,7 +276,7 @@ async function addSborkaToScene_1(cdm)
 	var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
 	
 	
-	moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, -offsetY, 0)}); 
+	moveOffsetArrObj({arrO: arrO, offset: new THREE.Vector3(0, -offsetY, 0)}); 
 	
 	
 	planeMath.position.y -= offsetY; 

@@ -5,7 +5,8 @@
 function activeObjRightPanelUI_1(cdm) 
 {	
 	var el = document.querySelector('[nameId="wrap_object_1"]');
-console.log(7777777, cdm);
+	
+
 	var bl_object_3d = document.querySelector('[nameId="bl_object_3d"]');
 	var elButt_1 = document.querySelector('[nameId="pr_list_button_for_obj"]');
 	var elButt_2 = document.querySelector('[nameId="pr_list_button_center_point"]');
@@ -194,7 +195,11 @@ function clickObjUI(cdm)
 					<div nameId="groupItem" style="display: none;">\
 					</div>\
 				</div>';			
-			}			
+			}
+			else
+			{
+				return;
+			}
 
 					
 			var div = document.createElement('div');
@@ -343,9 +348,11 @@ function clickRtekUI_1(cdm)
 function clearItemSelectedObjUI()
 {
 	var list = infProject.list.rp_ui.arr;
-	
+	console.log(788, list);
 	for(var i = 0; i < list.length; i++)
 	{
+		if(!list[i]) continue;
+		if(!list[i].el) continue;
 		list[i].el.remove();
 		
 		for(var i2 = 0; i2 < list[i].p.length; i2++)

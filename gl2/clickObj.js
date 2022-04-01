@@ -26,25 +26,9 @@ function moveObjFromCatalog( event )
 	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );		
 	var pos2 = new THREE.Vector3().subVectors( pos, obj.position ); 
 
-	var arrO = clickO.arrO;
+	var arrO = clickO.arrO; 
 
-	for(var i = 0; i < arrO.length; i++)
-	{
-		if(arrO[i].userData.wf_tube)
-		{
-			var point = arrO[i].userData.wf_tube.point;
-			
-			for(var i2 = 0; i2 < point.length; i2++){ point[i2].position.add( pos2 ); }
-			
-			updateTubeWF({tube: arrO[i]});
-		}
-		else
-		{
-			arrO[i].position.add( pos2 );  
-		}
-	}
-	
-		
+	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});	
 }
 
 

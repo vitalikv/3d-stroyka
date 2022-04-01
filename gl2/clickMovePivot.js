@@ -41,18 +41,7 @@ function moveOffsetArrObj(cdm)
 	
 	for(let i = 0; i < arrO.length; i++)
 	{
-		if(arrO[i].userData.wf_tube)
-		{
-			let point = arrO[i].userData.wf_tube.point;
-			
-			for(let i2 = 0; i2 < point.length; i2++){ point[i2].position.add(offset); }
-			
-			updateTubeWF({tube: arrO[i]});
-		}
-		else
-		{
-			arrO[i].position.add(offset);
-		}		
+		arrO[i].position.add(offset);		
 	}	
 }
 

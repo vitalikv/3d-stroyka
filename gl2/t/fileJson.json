@@ -1,1 +1,1 @@
-{"floors":[{"points":[],"walls":[],"rooms":[],"height":2.5,"version":"1"}],"furn":[],"group":[],"pipe":[],"subs":[]}
+{"floors":[{"points":[],"walls":[],"rooms":[],"height":2.5,"version":"1"}],"furn":[],"group":[],"pipe":[{"id":5,"diameter":0.026,"color":152306,"point":[{"id":3,"pos":{"x":-0.9372623574144485,"y":0.4,"z":-0.10562159747148148}},{"id":4,"pos":{"x":0.06273764258555153,"y":0.4,"z":-0.10562159747148148}}]}],"subs":[],"house":[]}

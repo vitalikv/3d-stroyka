@@ -157,7 +157,9 @@ function crGizmo(params)
 			
 			gizmo.visible = true;	
 			gizmo.userData.gizmo.obj = obj;
-			gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj});
+			gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj});			
+			
+			
 			gizmo.position.copy(pos);
 			gizmo.quaternion.copy(qt);
 			

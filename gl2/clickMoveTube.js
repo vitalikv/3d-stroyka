@@ -126,7 +126,9 @@ function clickTubeWF(cdm)
 			}			
 		}
 		
-		setPivotGizmo({obj: tube, pos: pos});
+		tube.userData.wf_tube.posPivotGizmo = pos;
+		
+		setPivotGizmo({obj: tube});
 	}
 }
 

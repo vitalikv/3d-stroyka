@@ -188,6 +188,8 @@ function crTubeWF(cdm)
 function updateTubeWF(cdm)
 {
 	var tube = cdm.tube;
+	tube.position.set(0, 0, 0);
+	tube.rotation.set(0, 0, 0);
 	
 	var point = (cdm.point) ? cdm.point : tube.userData.wf_tube.point;	
 	var diameter = (cdm.diameter) ? cdm.diameter : tube.userData.wf_tube.diameter;
@@ -196,6 +198,7 @@ function updateTubeWF(cdm)
 	
 	tube.geometry.dispose();
 	tube.geometry = inf.geometry;
+
 	
 	if(cdm.color)
 	{
@@ -315,6 +318,7 @@ function deClickTube(cdm)
 			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
 		}
 		
 		if(cdm.moment == 'up' && camera == camera3D)
@@ -322,6 +326,7 @@ function deClickTube(cdm)
 			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
 			
 			if(clickO.rayhit.object.userData.tag == 'pivot') return;
+			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
 		}		
 	}	
 	

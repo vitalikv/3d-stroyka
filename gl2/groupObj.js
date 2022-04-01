@@ -78,6 +78,17 @@ function getObjsFromGroup_1( cdm )
 			var arr = obj.userData.wf_tube.group.userData.groupObj.child;			
 		}		
 	}
+
+	arr = [...arr];
+
+	let arr2 = [];
+	for(var i = 0; i < arr.length; i++)
+	{
+		if(arr[i].userData.wf_tube) arr2.push(...arr[i].userData.wf_tube.point);
+	}	
+	if(arr2.length > 0) arr.push(...arr2);
+	
+	
 	
 	return arr;	
 }
@@ -97,7 +108,6 @@ function arrObjFromGroup(cdm)
 	else { return arr; }
 
 	var arr = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект		
-	
 	
 	return arr;
 }

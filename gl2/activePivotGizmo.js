@@ -27,7 +27,7 @@ function setPivotGizmo(cdm)
 	}
 	else if(obj.userData.tag == 'wf_tube')		// труба
 	{ 
-		var pos = cdm.pos; 
+		var pos = obj.userData.wf_tube.posPivotGizmo; 
 	}
 	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
 	{ 
@@ -61,7 +61,7 @@ function setPivotGizmo(cdm)
 	
 	var type = 'pivot';
 	if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
-	else if(obj.userData.tag == 'wf_tube') { type = 'pivot'; }		// труба
+	//else if(obj.userData.tag == 'wf_tube') { type = 'pivot'; }		// труба
 	else { type = infProject.settings.active.pg; }					// объекты
 	
 		
@@ -97,6 +97,7 @@ function switchPivotGizmo(cdm)
 	if(obj.userData.tag == 'obj'){}
 	else if(obj.userData.tag == 'joinPoint'){}
 	else if(obj.userData.tag == 'wtGrid'){}
+	else if(obj.userData.tag == 'wf_tube'){}
 	else { return; }	
 	
 	

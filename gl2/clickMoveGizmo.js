@@ -520,27 +520,11 @@ function rotateOffsetArrObj_1(cdm)
 	
 	for(let i = 0; i < arr.length; i++)
 	{
-		if(arr[i].userData.wf_tube)
-		{
-			let point = arr[i].userData.wf_tube.point;
-			
-			for(let i2 = 0; i2 < point.length; i2++)
-			{
-				point[i2].position.sub(pos);
-				point[i2].position.applyAxisAngle(dir, rotRad); // rotate the POSITION
-				point[i2].position.add(pos);								
-			}
-			
-			updateTubeWF({tube: arr[i]});								
-		}
-		else
-		{
-			arr[i].position.sub(pos);
-			arr[i].position.applyAxisAngle(dir, rotRad); // rotate the POSITION
-			arr[i].position.add(pos);				
-			
-			arr[i].rotateOnWorldAxis(dir, rotRad);				
-		}
+		arr[i].position.sub(pos);
+		arr[i].position.applyAxisAngle(dir, rotRad); // rotate the POSITION
+		arr[i].position.add(pos);				
+		
+		arr[i].rotateOnWorldAxis(dir, rotRad);	
 		
 		arr[i].updateMatrixWorld();
 	}	
