@@ -242,6 +242,11 @@ function crGizmo(params)
 			
 			let dir = planeMath.worldToLocal(rayhit[0].point.clone());
 			let rotY = Math.atan2(dir.x, dir.y);
+			
+			gizmo.rotateOnWorldAxis(gizmo.userData.dir, rotY - gizmo.userData.rotY);
+			
+
+			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});			
 
 			let pos = gizmo.userData.startPos;
 			let arrO = gizmo.userData.gizmo.arrO;
@@ -255,12 +260,7 @@ function crGizmo(params)
 				arrO[i].rotateOnWorldAxis(gizmo.userData.dir, rotY - gizmo.userData.rotY);				
 			}
 			
-			gizmo.rotateOnWorldAxis(gizmo.userData.dir, rotY - gizmo.userData.rotY);
-
-
 			gizmo.userData.rotY = rotY;	
-
-			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
 		}
 		
 				
@@ -333,7 +333,7 @@ function crGizmo(params)
 			
 			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
 						
-			movePivot_2({obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
+			//movePivot_2({obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
 				
 
 			renderCamera();

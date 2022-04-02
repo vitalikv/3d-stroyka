@@ -275,9 +275,8 @@ async function addSborkaToScene_1(cdm)
 
 	var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
 	
-	
-	moveOffsetArrObj({arrO: arrO, offset: new THREE.Vector3(0, -offsetY, 0)}); 
-	
+
+	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', arrO: arrO, offset: new THREE.Vector3(0, -offsetY, 0)});
 	
 	planeMath.position.y -= offsetY; 
 	planeMath.updateMatrixWorld();

@@ -243,16 +243,7 @@ function moveGizmo( event )
 
 
 
-function clickGizmoUp()
-{
-	if(!clickO.actMove) return;
-	
-	var obj = infProject.tools.gizmo.userData.gizmo.obj;
-	
-	if(!obj) return;		
-	
-	setClickLastObj({obj: infProject.tools.gizmo.userData.gizmo.obj});
-}
+
 
 
 // обновляем в меню rotate

@@ -265,7 +265,8 @@ function crPivot(params)
 		let type = params.type;			
 		
 		if(type == 'setPivot') { setPivot({obj: params.obj, pos: params.pos, qt: params.qt}); }
-		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }		
+		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
+		if(type == 'moveObjs') { moveObjs({obj: params.obj, arrO: params.arrO, offset: params.offset}); }		
 		if(type == 'offsetPivot') { offsetPivot({offset: params.offset}); }
 		if(type == 'updateScale') { updateScale(); }
 		if(type == 'hide') { hide(); }
@@ -381,9 +382,8 @@ function crPivot(params)
 			
 			let offset = new THREE.Vector3().subVectors( pos, pivot.userData.startPos );
 			
-			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
-			
-			movePivot_2({obj: obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
+			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});			
+			pivot.userData.propPivot({type: 'moveObjs', obj: obj, arrO: pivot.userData.pivot.arrO, offset: offset});
 		}
 		
 		
@@ -396,6 +396,37 @@ function crPivot(params)
 			pivot.userData.propPivot({type: 'updatePosUI'});
 			pivot.userData.propPivot({type: 'updateScale'});
 		}			
+
+
+		// перемещение объектов
+		function moveObjs(params)
+		{
+			let obj = params.obj;
+			let arrO = params.arrO;			
+			let offset = params.offset;
+			
+			
+			if(obj && obj.userData.tag == 'wf_point')		// точка трубы
+			{
+				obj.position.add(offset);	
+
+				updateTubeWF({tube: obj.userData.wf_point.tube});
+
+				showWF_point_UI({point: obj});
+			}
+			else if(obj && obj.userData.tag == 'wtGrid') 
+			{ 
+				obj.userData.propObj({type: 'moveObj', obj: obj, offset: offset}); 
+			}
+			else 
+			{
+				for(let i = 0; i < arrO.length; i++)
+				{
+					arrO[i].position.add(offset);		
+				}				
+			}	
+		}
+
 		
 		// прекращаем действия с pivot
 		function endPivot(params)
@@ -450,9 +481,7 @@ function crPivot(params)
 			let offset = new THREE.Vector3(x.num, y.num, z.num).sub(pivot.position);
 			
 			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
-						
-			movePivot_2({obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, pos2: offset});
-				
+			pivot.userData.propPivot({type: 'moveObjs', obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, offset: offset});	
 
 			renderCamera();
 		}		

@@ -32,7 +32,7 @@ console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, 
 		var inf = await actionFnSborka_1(cdm);	
 		if(!inf) return;
 		
-		moveOffsetArrObj({arrO: inf.arr1, offset: new THREE.Vector3(0, 2000, 0)});			
+		infProject.tools.pivot.userData.propPivot({type: 'moveObjs', arrO: inf.arr1, offset: new THREE.Vector3(0, 2000, 0)});		
 
 		var obj = inf.arr1[0];
 	}

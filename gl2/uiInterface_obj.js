@@ -119,7 +119,7 @@ function clickObjUI(cdm)
 		for(var i = 0; i < arrO.length; i++)
 		{
 			var num = infProject.list.rp_ui.arr.length;
-			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: null, p: [], p_vis: false };
+			
 			
 			var tag = arrO[i].userData.tag;		
 			
@@ -198,10 +198,11 @@ function clickObjUI(cdm)
 			}
 			else
 			{
-				return;
+				continue;
 			}
 
-					
+			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: null, p: [], p_vis: false };
+			
 			var div = document.createElement('div');
 			div.innerHTML = html;
 			let elem = div.firstChild;
@@ -348,7 +349,7 @@ function clickRtekUI_1(cdm)
 function clearItemSelectedObjUI()
 {
 	var list = infProject.list.rp_ui.arr;
-	console.log(788, list);
+	console.log(788, list); 
 	for(var i = 0; i < list.length; i++)
 	{
 		if(!list[i]) continue;

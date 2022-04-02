@@ -483,7 +483,7 @@ function onDocumentMouseUp( event )
 		else if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
 		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
 		//else if(tag == 'pivot') { clickPivotUp(); }
-		else if(tag == 'gizmo') { clickGizmoUp(); }
+		//else if(tag == 'gizmo') { clickGizmoUp(); }
 		else if(tag == 'wf_tube') { clickMouseUpTube(obj); }
 		
 		if(tag == 'free_dw') {  }

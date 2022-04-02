@@ -5,30 +5,21 @@
 // перемещение объекта после того как загрузили из каталога 
 function moveObjFromCatalog( event )
 {	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
+	let intersects = rayIntersect( event, planeMath, 'one' ); 	
 	if(intersects.length == 0) return;
 	
-	var obj = clickO.move;	
+	let obj = clickO.move;		
+	
+	if(clickO.arrO.length == 0) clickO.arrO = [obj];
+	if(!clickO.actMove) clickO.actMove = true;	
 	
 	
-	if(clickO.arrO.length == 0)
-	{
-		clickO.arrO = [obj];
-	}	
-	
-	
-	if(!clickO.actMove)
-	{
-		clickO.actMove = true;
-	}		
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );		
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position ); 
+	let pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );		
+	let offset = new THREE.Vector3().subVectors( pos, obj.position ); 
 
-	var arrO = clickO.arrO; 
+	let arrO = clickO.arrO; 
 
-	movePivot_2({obj: obj, arrO: arrO, pos2: pos2});	
+	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', obj: obj, arrO: arrO, offset: offset});
 }
 
 

@@ -26,7 +26,6 @@ label.js
 saveLoad.js
 script.js
 floorWarm.js
-clickMovePivot.js
 toolPivot.js
 toolGizmo.js
 clickObj.js
