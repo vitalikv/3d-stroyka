@@ -126,7 +126,8 @@ function clickTubeWF(cdm)
 			}			
 		}
 		
-		tube.userData.wf_tube.posPivotGizmo = pos;
+		tube.updateMatrixWorld();						
+		tube.userData.wf_tube.posPivotGizmo = tube.worldToLocal( pos.clone() );
 		
 		setPivotGizmo({obj: tube});
 	}

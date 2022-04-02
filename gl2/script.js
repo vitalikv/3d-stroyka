@@ -1506,7 +1506,7 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'object_rotate_X' || infProject.activeInput == 'object_rotate_Y' || infProject.activeInput == 'object_rotate_Z')
 			{
-				inputChangeRot(); 
+				infProject.tools.gizmo.userData.propGizmo({type: 'inputRotGizmo'});
 			}			
 		}		
 		 

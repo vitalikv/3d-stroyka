@@ -1,37 +1,49 @@
 
 
+function groupPivotGizmo()
+{
+	let group = {};
+	group.type = 'pivot';
+	group.pos = new THREE.Vector3();
+	group.qt = new THREE.Quaternion();
 
+	//group.propGizmo = propGizmo;
+}
 
 
 // ставим pivot/gizmo
-function setPivotGizmo(cdm)
+function setPivotGizmo(params)
 {
-	var obj = cdm.obj;	
+	let obj = params.obj;	
 	if(!obj) return;		
 	
+	let type = 'pivot';
+	let pos = new THREE.Vector3();
+	let qt = new THREE.Quaternion();
 	
-	// Position
+	
 	if(obj.userData.tag == 'obj')		// группа или объект
 	{ 
 		obj.updateMatrixWorld();
-		var pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
+		pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
 	}		
 	else if(obj.userData.tag == 'joinPoint')		// разъем
 	{ 
-		var pos = obj.getWorldPosition(new THREE.Vector3());  
+		pos = obj.getWorldPosition(new THREE.Vector3());  
 		activeJoinPoint({obj: obj});
 	}
 	else if(obj.userData.tag == 'wf_point')		// точка трубы
 	{ 
-		var pos = obj.position; 
+		pos = obj.position; 
 	}
 	else if(obj.userData.tag == 'wf_tube')		// труба
 	{ 
-		var pos = obj.userData.wf_tube.posPivotGizmo; 
+		obj.updateMatrixWorld();			
+		pos = obj.localToWorld( obj.userData.wf_tube.posPivotGizmo.clone() );					
 	}
 	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
 	{ 
-		var pos = obj.position;  
+		pos = obj.position;  
 	}	
 	else			
 	{
@@ -39,30 +51,19 @@ function setPivotGizmo(cdm)
 	}	 
 	
 	
-	// Quaternion
-	if(camera == cameraTop)		// глобальный gizmo
-	{ 
-		var qt = new THREE.Quaternion(); 
-	} 	
-	else						// локальный gizmo
+	
+	if(camera == cameraTop)	qt = new THREE.Quaternion();
+
+	if(camera == camera3D)				
 	{
-		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube')		// точка трубы или труба
-		{
-			var qt = new THREE.Quaternion();
-		}
-		else		// объекты
-		{
-			if(obj.userData.tag == 'joinPoint') { var qt = obj.getWorldQuaternion(new THREE.Quaternion()); }		// разъем
-			else { var qt = obj.quaternion.clone(); }			// группа или объект					
-		}		
+		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube') qt = new THREE.Quaternion();		// точка трубы или труба
+		else if(obj.userData.tag == 'joinPoint') { qt = obj.getWorldQuaternion(new THREE.Quaternion()); }		// разъем		
+		else { qt = obj.quaternion.clone(); }			// группа или объект	
 	}
+
 	
-	
-	
-	var type = 'pivot';
-	if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
-	//else if(obj.userData.tag == 'wf_tube') { type = 'pivot'; }		// труба
-	else { type = infProject.settings.active.pg; }					// объекты
+	if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы	
+	else { type = infProject.settings.active.pg; }					
 	
 		
 	
@@ -109,7 +110,7 @@ function switchPivotGizmo(cdm)
 	if(cdm.group !== undefined) { infProject.settings.active.group = cdm.group; }
 	
 
-	clickObject3D( obj ); 
+	setPivotGizmo({obj: obj}); 
 
 	renderCamera();
 }

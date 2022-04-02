@@ -7,12 +7,17 @@ function crPivot(params)
 	let pivot = crObj();
 	
 	let ui = {};
+	
 	ui.pos = {};
 	ui.pos.x = document.querySelector('[nameId="object_pos_X"]');
 	ui.pos.y = document.querySelector('[nameId="object_pos_Y"]');
 	ui.pos.z = document.querySelector('[nameId="object_pos_Z"]');
 	
-
+	ui.rot = {};
+	ui.rot.x = document.querySelector('[nameId="object_rotate_X"]');
+	ui.rot.y = document.querySelector('[nameId="object_rotate_Y"]');
+	ui.rot.z = document.querySelector('[nameId="object_rotate_Z"]');
+	
 
 	function crObj() 
 	{
@@ -271,7 +276,8 @@ function crPivot(params)
 		if(type == 'updateScale') { updateScale(); }
 		if(type == 'hide') { hide(); }
 		if(type == 'inputPosPivot') { inputPosPivot(); }
-		if(type == 'updatePosUI') { updatePosUI(); }
+		if(type == 'updatePivotPosUI') { updatePivotPosUI(); }
+		if(type == 'updatePivotRotUI') { updatePivotRotUI(); }
 		
 
 		// установить и показать Pivot
@@ -292,7 +298,8 @@ function crPivot(params)
 				if(pivot.children[i].userData.axis == 'y') pivot.children[i].visible = (camera == cameraTop) ? false : true;
 			}
 			
-			pivot.userData.propPivot({type: 'updatePosUI'});
+			pivot.userData.propPivot({type: 'updatePivotPosUI'});
+			pivot.userData.propPivot({type: 'updatePivotRotUI'});
 			pivot.userData.propPivot({type: 'updateScale'});
 		}
 
@@ -393,7 +400,7 @@ function crPivot(params)
 			pivot.position.add( offset );
 			pivot.userData.startPos.add( offset );
 			
-			pivot.userData.propPivot({type: 'updatePosUI'});
+			pivot.userData.propPivot({type: 'updatePivotPosUI'});
 			pivot.userData.propPivot({type: 'updateScale'});
 		}			
 
@@ -473,7 +480,7 @@ function crPivot(params)
 			// не числовое значение
 			if(!x || !y || !z)
 			{		
-				pivot.userData.propPivot({type: 'updatePosUI'});
+				pivot.userData.propPivot({type: 'updatePivotPosUI'});
 				return;
 			}	
 			
@@ -488,7 +495,7 @@ function crPivot(params)
 
 
 		// обновляем меню позиция
-		function updatePosUI()
+		function updatePivotPosUI()
 		{
 			let pos = pivot.position;
 			
@@ -497,7 +504,15 @@ function crPivot(params)
 			ui.pos.z.value = Math.round(pos.z * 100) / 100;				
 		}
 		
-		
+		// обновляем меню поворота
+		function updatePivotRotUI()
+		{
+			let rot = pivot.rotation;
+			
+			ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
+			ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
+			ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));				
+		}		
 	}
 	
 	 

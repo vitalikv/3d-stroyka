@@ -159,14 +159,7 @@ infProject.elem.button_catalog_close.onmousedown = function(e){ showHideCatalogM
 document.querySelector('[nameId="select_pivot"]').onmousedown = function(e){ switchPivotGizmo({mode:'pivot'}); e.stopPropagation(); };
 document.querySelector('[nameId="select_gizmo"]').onmousedown = function(e){ switchPivotGizmo({mode:'gizmo'}); e.stopPropagation(); };
 
-document.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: 90}); e.stopPropagation(); };
-document.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: -90}); e.stopPropagation(); };
-document.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: 90}); e.stopPropagation(); };
-document.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: -90}); e.stopPropagation(); };
-document.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: 90}); e.stopPropagation(); };
-document.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: -90}); e.stopPropagation(); };
 
-document.querySelector('[nameId="obj_rotate_reset"]').onmousedown = function(e){ resetRotateObj(); e.stopPropagation(); };
 
 
 // скрываем/показываем правое меню UI
