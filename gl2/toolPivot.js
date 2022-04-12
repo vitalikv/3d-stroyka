@@ -269,7 +269,7 @@ function crPivot(params)
 	{
 		let type = params.type;			
 		
-		if(type == 'setPivot') { setPivot({obj: params.obj, pos: params.pos, qt: params.qt}); }
+		if(type == 'setPivot') { setPivot({obj: params.obj, arrO: params.arrO, pos: params.pos, qt: params.qt}); }
 		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
 		if(type == 'moveObjs') { moveObjs({obj: params.obj, arrO: params.arrO, offset: params.offset}); }		
 		if(type == 'offsetPivot') { offsetPivot({offset: params.offset}); }
@@ -284,12 +284,13 @@ function crPivot(params)
 		function setPivot(params)
 		{
 			let obj = params.obj;
+			let arrO = params.arrO;
 			let pos = params.pos;
 			let qt = params.qt;
 			
 			pivot.visible = true;	
 			pivot.userData.pivot.obj = obj;
-			pivot.userData.pivot.arrO = arrObjFromGroup({obj: obj});
+			pivot.userData.pivot.arrO = arrO;
 			pivot.position.copy(pos);
 			pivot.quaternion.copy(qt);
 			
@@ -395,7 +396,7 @@ function crPivot(params)
 		
 		
 		function offsetPivot(params)
-		{
+		{ console.log(pivot.position.clone(), params.offset);
 			let offset = params.offset;
 			pivot.position.add( offset );
 			pivot.userData.startPos.add( offset );
@@ -467,7 +468,7 @@ function crPivot(params)
 		function inputPosPivot()
 		{
 			//if (!pivot.visible) return;
-			
+			getPosRotPivotGizmo();
 			
 			let x = ui.pos.x.value;
 			let y = ui.pos.y.value;

@@ -18,7 +18,7 @@ function switchSelectAddObjGroup(cdm)
 	}		
 	
 	
-	var obj = getObjFromPivotGizmo();
+	var obj = infProject.tools.pg.obj;
 	
 	if(obj) { outlineAddObj(obj); }
 	else { outlineRemoveObj(); }

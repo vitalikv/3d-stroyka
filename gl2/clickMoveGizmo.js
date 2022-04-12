@@ -268,7 +268,21 @@ function upMenuRotateObjPop(obj)
 // вращаем объект по кнопки на заданный угол
 function setRotationGizmo(cdm)
 {	
-	var obj = getObjFromPivotGizmo();		
+	var obj = getObjFromPivotGizmo();	
+
+	// получаем активный объект
+	function getObjFromPivotGizmo(cdm)
+	{
+		var obj = null;
+		var pivot = infProject.tools.pivot;
+		var gizmo = infProject.tools.gizmo;	
+		
+		if(pivot.visible){ obj = pivot.userData.pivot.obj; }	
+		if(gizmo.visible){ obj = gizmo.userData.gizmo.obj; }
+		
+		return obj;	
+	}
+	
 	if(!obj) return;
 	
 	if(obj.userData.tag == 'obj'){}

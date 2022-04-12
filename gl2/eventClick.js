@@ -154,12 +154,6 @@ infProject.elem.button_show_panel_catalog.onmousedown = function(e){ showHideCat
 infProject.elem.button_catalog_close.onmousedown = function(e){ showHideCatalogMenuUI({show: false}); e.stopPropagation(); };
 
 
-// вкладка перемещение/вращение
-
-document.querySelector('[nameId="select_pivot"]').onmousedown = function(e){ switchPivotGizmo({mode:'pivot'}); e.stopPropagation(); };
-document.querySelector('[nameId="select_gizmo"]').onmousedown = function(e){ switchPivotGizmo({mode:'gizmo'}); e.stopPropagation(); };
-
-
 
 
 // скрываем/показываем правое меню UI

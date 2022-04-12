@@ -120,7 +120,7 @@ function crGizmo(params)
 		let type = params.type;			
 		
 		if(type == 'clippingGizmo') { clippingGizmo(); }		
-		if(type == 'setGizmo') { setGizmo({obj: params.obj, pos: params.pos, qt: params.qt}); }
+		if(type == 'setGizmo') { setGizmo({obj: params.obj, arrO: params.arrO, pos: params.pos, qt: params.qt}); }
 		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
 		if(type == 'rotObjs') { rotObjs({pos: params.pos, arrO: params.arrO, q_Old: params.q_Old, rotY_Old: params.rotY_Old}); }
 		if(type == 'updateScale') { updateScale(); }
@@ -168,12 +168,13 @@ function crGizmo(params)
 		function setGizmo(params)
 		{
 			let obj = params.obj;
+			let arrO = params.arrO;
 			let pos = params.pos;
 			let qt = params.qt;
 			
 			gizmo.visible = true;	
 			gizmo.userData.gizmo.obj = obj;
-			gizmo.userData.gizmo.arrO = arrObjFromGroup({obj: obj});			
+			gizmo.userData.gizmo.arrO = arrO;			
 			
 			
 			gizmo.position.copy(pos);

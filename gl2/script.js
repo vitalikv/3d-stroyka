@@ -259,6 +259,7 @@ infProject.geometry.wf_point = new THREE.SphereGeometry( 0.015, 16, 16 );
 infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
 
 infProject.tools = {};
+infProject.tools.pg = null;
 infProject.tools.pivot = null;
 infProject.tools.gizmo = null;
 infProject.tools.cutWall = [];
@@ -1640,6 +1641,7 @@ function init()
 {
 	crPivot({container: mainDiv_1});
 	crGizmo({container: mainDiv_1});
+	infProject.tools.pg = new ToolPG();
 	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI

@@ -563,7 +563,7 @@ function crEventButtonWarmTubeGrid(params)
 			
 			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: false});
 			
-			hidePivotGizmo(obj);
+			infProject.tools.pg.hide();
 			activeObjRightPanelUI_1();		// скрываем UI			
 			outlineRemoveObj();					
 			resetClickLastObj({});				

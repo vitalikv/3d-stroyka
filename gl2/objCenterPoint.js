@@ -52,10 +52,7 @@ function showHideJP(cdm)
 {
 	if(!cdm) { cdm = {} }			
 
-	var obj = null;
-	
-	if(infProject.settings.active.pg == 'pivot'){ var obj = infProject.tools.pivot.userData.pivot.obj; }	
-	if(infProject.settings.active.pg == 'gizmo'){ var obj = infProject.tools.gizmo.userData.gizmo.obj; } 	
+	var obj = infProject.tools.pg.obj;
 	
 	if(!obj) return;
 	

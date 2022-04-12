@@ -395,7 +395,7 @@ function clickItemObjNameUI(cdm)
 	
 	if(cdm.button)
 	{
-		var obj = getObjFromPivotGizmo();
+		var obj = infProject.tools.pg.obj;
 		if(obj) cdm.obj = obj; 
 	}	
 	

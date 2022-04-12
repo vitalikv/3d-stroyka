@@ -196,7 +196,7 @@ function deClickObj(cdm)
 	
 	function deClickObj_1()
 	{ 
-		hidePivotGizmo(obj);
+		infProject.tools.pg.hide();
 
   
 		// скрываем разъемы

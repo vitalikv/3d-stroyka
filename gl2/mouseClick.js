@@ -514,11 +514,7 @@ function onDocumentMouseUp( event )
 
 function setClickLastObj(cdm)
 {
-	//console.log(2, 'setClick', { tag: cdm.obj.userData.tag, id: cdm.obj.userData.id } );
-	console.trace();
 	clickO.last_obj = cdm.obj;
-	
-	consoleInfo( clickO.last_obj );
 }
 
 
