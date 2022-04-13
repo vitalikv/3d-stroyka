@@ -27,7 +27,16 @@ class ToolPG
 	initButton()
 	{
 		document.querySelector('[nameId="select_pivot"]').onmousedown = (e) => { this.toggleTool({type:'pivot'}); e.stopPropagation(); };
-		document.querySelector('[nameId="select_gizmo"]').onmousedown = (e) => { this.toggleTool({type:'gizmo'}); e.stopPropagation(); };		
+		document.querySelector('[nameId="select_gizmo"]').onmousedown = (e) => { this.toggleTool({type:'gizmo'}); e.stopPropagation(); };
+
+		document.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: -45}); e.stopPropagation(); };
+		document.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: 45}); e.stopPropagation(); };
+		document.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: -45}); e.stopPropagation(); };
+		document.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: 45}); e.stopPropagation(); };
+		document.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: -45}); e.stopPropagation(); };
+		document.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: 45}); e.stopPropagation(); };
+		
+		document.querySelector('[nameId="obj_rotate_reset"]').onmousedown = (e) => { this.resetRot(); e.stopPropagation(); };
 	}
 	
 	getPosRotUI()
@@ -43,7 +52,7 @@ class ToolPG
 		this.ui.rot.z = document.querySelector('[nameId="object_rotate_Z"]');		
 	}
 
-	setPos(params) 
+	calcPos(params) 
 	{
 		let obj = params.obj;
 		let pos = new THREE.Vector3();
@@ -75,7 +84,7 @@ class ToolPG
 		this.pos = pos;
 	}
 	
-	setRot(params) 
+	calcRot(params) 
 	{
 		let obj = params.obj;
 		let qt = new THREE.Quaternion();
@@ -108,9 +117,13 @@ class ToolPG
 		this.hide();
 		
 		this.obj = obj;
-		this.arrO = arrObjFromGroup({obj: obj});  
-		this.setPos({obj: obj});
-		this.setRot({obj: obj});
+		this.arrO = arrObjFromGroup({obj: obj});
+		
+		this.calcPos({obj: obj});
+		this.calcRot({obj: obj});
+		
+		this.setPosUI();
+		this.setRotUI();
 			
 		let type = this.type;	
 		if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
@@ -151,6 +164,136 @@ class ToolPG
 		renderCamera();
 	}
 	
+
+	// назначаем pos после измениния/перемещения 
+	setPos(params)
+	{
+		this.pos = params.pos;
+		this.setPosUI();
+	}
+	
+	
+	// назначаем qt после измениния/вращения
+	setRot(params)
+	{
+		this.qt = params.qt;
+		this.setRotUI();
+	}
+		
+		
+	
+	// вставили в input значения position и нажали Enter
+	applyPosUI()
+	{
+		let x = this.ui.pos.x.value;
+		let y = this.ui.pos.y.value;
+		let z = this.ui.pos.z.value;
+
+		x = checkNumberInput({ value: x, unit: 1 });
+		y = checkNumberInput({ value: y, unit: 1 });
+		z = checkNumberInput({ value: z, unit: 1 });
+		
+		// не числовое значение
+		if(!x || !y || !z)
+		{		
+			this.setPosUI();
+			return;
+		}
+			
+		let pos = new THREE.Vector3(x.num, y.num, z.num);
+		let offset = pos.clone().sub(this.pos);
+		
+		this.pivot.userData.propPivot({type: 'setPosPivot', pos: pos});
+		this.gizmo.userData.propGizmo({type: 'setPosGizmo', pos: pos});
+		this.pivot.userData.propPivot({type: 'moveObjs', obj: this.obj, arrO: this.arrO, offset: offset});		
+		
+		this.pos = pos;		
+		
+		this.setPosUI();
+		
+		renderCamera();
+	}
+	
+	
+	// вставили в input значения rotation и нажали Enter
+	applyRotUI()
+	{
+		let x = this.ui.rot.x.value;
+		let y = this.ui.rot.y.value;
+		let z = this.ui.rot.z.value;
+
+		x = checkNumberInput({ value: x, unit: 1 });
+		y = checkNumberInput({ value: y, unit: 1 });
+		z = checkNumberInput({ value: z, unit: 1 });
+		
+		// не числовое значение
+		if(!x || !y || !z)
+		{		
+			this.setRotUI();
+			return;
+		}
+						
+		x = THREE.Math.degToRad(x.num);
+		y = THREE.Math.degToRad(y.num);
+		z = THREE.Math.degToRad(z.num);		
+		
+		
+		let q_New = new THREE.Quaternion().setFromEuler(new THREE.Euler().set(x, y, z))
+		let q_Offset = q_New.clone().multiply(this.qt.clone().inverse());		
+				
+		this.pivot.userData.propPivot({type: 'setRotPivot', qt: q_New});
+		this.gizmo.userData.propGizmo({type: 'setRotGizmo', qt: q_New});
+		this.gizmo.userData.propGizmo({type: 'rotObjs', pos: this.pos, arrO: this.arrO, q_Offset: q_Offset});	
+		
+		this.qt = q_New;
+
+		this.setRotUI();	
+		
+		renderCamera();
+	}
+	
+	
+	// вставляем в input position
+	setPosUI()
+	{
+		let pos = this.pos;
+		
+		this.ui.pos.x.value = Math.round(pos.x * 100) / 100;
+		this.ui.pos.y.value = Math.round(pos.y * 100) / 100;
+		this.ui.pos.z.value = Math.round(pos.z * 100) / 100;			
+	}	
+	
+	// вставляем в input rotation
+	setRotUI()
+	{
+		let qt = this.qt;
+		let rot = new THREE.Euler().setFromQuaternion(qt);
+		
+		this.ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
+		this.ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
+		this.ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));		
+	}
+	
+	
+	// поворот на заданный угол по одной из оси
+	setAngleRotUI(params)
+	{
+		let angle = params.angle;
+		let axis = params.axis;
+		
+		this.ui.rot[axis].value = Number(this.ui.rot[axis].value) + angle;		
+		
+		this.applyRotUI();
+	}
+	
+	resetRot()
+	{
+		this.ui.rot.x.value = 0;
+		this.ui.rot.y.value = 0;
+		this.ui.rot.z.value = 0;
+		
+		this.applyRotUI();
+	}
 	
 	// скрываем Pivot/Gizmo
 	hide()
@@ -236,45 +379,6 @@ function setPivotGizmo(params)
 
 
 
-
-
-
-
-
-
-
-function getPosRotPivotGizmo()
-{
-	let pos = new THREE.Vector3();
-	let qt = new THREE.Quaternion();
-	let arrO = [];
-	
-	let pivot = infProject.tools.pivot;
-	let gizmo = infProject.tools.gizmo;	
-	
-	
-	if(pivot.visible)
-	{ 
-		pos = pivot.position.clone(); 
-		qt = pivot.quaternion.clone();
-		arrO = pivot.userData.pivot.arrO;		
-	}
-	
-	if(gizmo.visible)
-	{ 
-		pos = gizmo.position.clone(); 
-		qt = gizmo.quaternion.clone();
-		arrO = gizmo.userData.gizmo.arrO;		
-	}
-	
-	pivot.position.copy(pos);
-	pivot.quaternion.copy(qt);
-	pivot.userData.pivot.arrO = arrO;
-
-	gizmo.position.copy(pos);
-	gizmo.quaternion.copy(qt);
-	gizmo.userData.gizmo.arrO = arrO;	
-}
 
 
 

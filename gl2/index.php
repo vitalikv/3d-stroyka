@@ -177,7 +177,6 @@
 	
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>clickMoveGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolPivot.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activePivotGizmo.js?<?=$vrs?>"></script>

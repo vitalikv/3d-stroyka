@@ -1503,11 +1503,11 @@ document.body.addEventListener("keydown", function (e)
 			}
 			else if(infProject.activeInput == 'object_pos_X' || infProject.activeInput == 'object_pos_Y' || infProject.activeInput == 'object_pos_Z')
 			{
-				infProject.tools.pivot.userData.propPivot({type: 'inputPosPivot'});
+				infProject.tools.pg.applyPosUI(); 
 			}
 			else if(infProject.activeInput == 'object_rotate_X' || infProject.activeInput == 'object_rotate_Y' || infProject.activeInput == 'object_rotate_Z')
 			{
-				infProject.tools.gizmo.userData.propGizmo({type: 'inputRotGizmo'});
+				infProject.tools.pg.applyRotUI(); 
 			}			
 		}		
 		 

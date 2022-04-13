@@ -5,32 +5,7 @@ function crGizmo(params)
 	let container = params.container;
 	
 	let gizmo = crObj();
-	eventButton();
-	
-	let ui = {};
-	
-	ui.rot = {};
-	ui.rot.x = document.querySelector('[nameId="object_rotate_X"]');
-	ui.rot.y = document.querySelector('[nameId="object_rotate_Y"]');
-	ui.rot.z = document.querySelector('[nameId="object_rotate_Z"]');
-	
-	ui.pos = {};
-	ui.pos.x = document.querySelector('[nameId="object_pos_X"]');
-	ui.pos.y = document.querySelector('[nameId="object_pos_Y"]');
-	ui.pos.z = document.querySelector('[nameId="object_pos_Z"]');
-	
-	
-	function eventButton()
-	{
-		document.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: 90}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'x', angle: -90}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: 90}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'y', angle: -90}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: 90}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = function(e){ setRotationGizmo({axis: 'z', angle: -90}); e.stopPropagation(); };
 
-		document.querySelector('[nameId="obj_rotate_reset"]').onmousedown = function(e){ gizmo.userData.propGizmo({type: 'resetRot'}); e.stopPropagation(); };		
-	}
 
 	function crObj() 
 	{
@@ -122,14 +97,12 @@ function crGizmo(params)
 		if(type == 'clippingGizmo') { clippingGizmo(); }		
 		if(type == 'setGizmo') { setGizmo({obj: params.obj, arrO: params.arrO, pos: params.pos, qt: params.qt}); }
 		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
-		if(type == 'rotObjs') { rotObjs({pos: params.pos, arrO: params.arrO, q_Old: params.q_Old, rotY_Old: params.rotY_Old}); }
+		if(type == 'rotObjs') { rotObjs({pos: params.pos, arrO: params.arrO, q_Offset: params.q_Offset, rotY_Old: params.rotY_Old}); }
+		if(type == 'setPosGizmo') { setPosGizmo({pos: params.pos}); }
+		if(type == 'setRotGizmo') { setRotGizmo({qt: params.qt}); }
 		if(type == 'updateScale') { updateScale(); }
 		if(type == 'hide') { hide(); }
-		if(type == 'inputRotGizmo') { inputRotGizmo(); }
-		if(type == 'resetRot') { resetRot(); }
-		if(type == 'updateGizmoRotUI') { updateGizmoRotUI(); }
-		if(type == 'updateGizmoPosUI') { updateGizmoPosUI(); }	
-		
+		if(type == 'resetRot') { resetRot(); }			
 		
 
 
@@ -183,10 +156,8 @@ function crGizmo(params)
 			let visible = (camera == cameraTop) ? false : true;			
 			gizmo.children[1].visible = visible;
 			gizmo.children[2].visible = visible;				
+				
 			
-			
-			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
-			gizmo.userData.propGizmo({type: 'updateGizmoPosUI'});
 			gizmo.userData.propGizmo({type: 'updateScale'});
 			gizmo.userData.propGizmo({type: 'clippingGizmo'});
 		}
@@ -264,11 +235,81 @@ function crGizmo(params)
 			gizmo.quaternion.copy(q.clone().multiply(gizmo.quaternion));
 			gizmo.userData.rotY = rotY;
 			
-			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});							
-			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: gizmo.userData.gizmo.arrO, rotY_Old: rotY_Old});	
+										
+			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: gizmo.userData.gizmo.arrO, rotY_Old: rotY_Old});
+
+			infProject.tools.pg.setRot({qt: gizmo.quaternion});
 		}
 		
+		
+		// вращаем объекты
+		function rotObjs(params)
+		{
+			let pos = params.pos;
+			let arrO = params.arrO;
+			let rotY_Old = params.rotY_Old;
+			let q_Offset = params.q_Offset;
+			
+			
+			if(rotY_Old)		// вращение по оси
+			{
+				let dir = gizmo.userData.dir;
+				let rotY = gizmo.userData.rotY;
 				
+				for (let i = 0; i < arrO.length; i++)
+				{
+					arrO[i].position.sub(pos);
+					arrO[i].position.applyAxisAngle(dir, rotY - rotY_Old);
+					arrO[i].position.add(pos);
+
+					arrO[i].rotateOnWorldAxis(dir, rotY - rotY_Old);				
+				}
+			}
+			else if(q_Offset) 		// вращение по quaternion
+			{				
+				for (let i = 0; i < arrO.length; i++)
+				{
+					arrO[i].position.sub(pos);
+					arrO[i].position.applyQuaternion(q_Offset);
+					arrO[i].position.add(pos);
+
+					arrO[i].quaternion.copy(q_Offset.clone().multiply(arrO[i].quaternion));		// q_Offset разницу умнажаем, чтобы получить то же угол	
+					//arrO[i].updateMatrixWorld();					
+				}			
+			}	
+		}		
+		
+
+		// прекращаем действия с gizmo
+		function endGizmo(params)
+		{
+			
+		}
+		
+		
+		// установить position Gizmo, когда меняем через input
+		function setPosGizmo(params)
+		{
+			if (!gizmo.visible) return;
+			
+			let pos = params.pos;
+			
+			gizmo.position.copy(pos);			
+			gizmo.userData.propGizmo({type: 'updateScale'});
+			gizmo.userData.propGizmo({type: 'clippingGizmo'});
+		}
+		
+		
+		// установить rotation Gizmo, когда меняем через input
+		function setRotGizmo(params)
+		{
+			if (!gizmo.visible) return;
+			
+			let qt = params.qt;
+			
+			gizmo.quaternion.copy(qt);			
+		}		
+		
 		
 		function updateScale() 
 		{
@@ -292,120 +333,12 @@ function crGizmo(params)
 			
 
 
-		// вращаем объекты
-		function rotObjs(params)
-		{
-			let pos = params.pos;
-			let arrO = params.arrO;
-			let rotY_Old = params.rotY_Old;
-			let q_Old = params.q_Old;
-			
-			
-			if(rotY_Old)		// вращение по оси
-			{
-				let dir = gizmo.userData.dir;
-				let rotY = gizmo.userData.rotY;
-				
-				for (let i = 0; i < arrO.length; i++)
-				{
-					arrO[i].position.sub(pos);
-					arrO[i].position.applyAxisAngle(dir, rotY - rotY_Old);
-					arrO[i].position.add(pos);
-
-					arrO[i].rotateOnWorldAxis(dir, rotY - rotY_Old);				
-				}
-			}
-			else if(q_Old) 		// вращение по quaternion
-			{
-				let q_Offset = gizmo.quaternion.clone().multiply(q_Old.clone().inverse());
-				
-				for (let i = 0; i < arrO.length; i++)
-				{
-					arrO[i].position.sub(pos);
-					arrO[i].position.applyQuaternion(q_Offset);
-					arrO[i].position.add(pos);
-
-					arrO[i].quaternion.copy(q_Offset.clone().multiply(arrO[i].quaternion));		// q_Offset разницу умнажаем, чтобы получить то же угол	
-					//arrO[i].updateMatrixWorld();					
-				}			
-			}	
-		}		
-		
-		// прекращаем действия с gizmo
-		function endGizmo(params)
-		{
-			
-		}
-		
-		
-
-
-		// меняем положение объекта через input
-		function inputRotGizmo()
-		{
-			//if (!gizmo.visible) return;
-			
-			
-			let x = ui.rot.x.value;
-			let y = ui.rot.y.value;
-			let z = ui.rot.z.value;
-
-			x = checkNumberInput({ value: x, unit: 1 });
-			y = checkNumberInput({ value: y, unit: 1 });
-			z = checkNumberInput({ value: z, unit: 1 });
-			
-			// не числовое значение
-			if(!x || !y || !z)
-			{		
-				gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
-				return;
-			}	
-			
-			x = THREE.Math.degToRad(x.num);
-			y = THREE.Math.degToRad(y.num);
-			z = THREE.Math.degToRad(z.num);				
-			
-			let q_Old = gizmo.quaternion.clone();
-			
-			let rot = new THREE.Euler().set(x, y, z);
-			let q = new THREE.Quaternion().setFromEuler(rot)
-			gizmo.quaternion.copy(q);
-			
-			gizmo.userData.propGizmo({type: 'updateGizmoRotUI'});
-			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: gizmo.userData.gizmo.arrO, q_Old: q_Old});
-
-			renderCamera();
-		}		
-
-		
 		// сбрасываем rotation
 		function resetRot()
 		{
 			ui.rot.x.value = 0;
 			ui.rot.y.value = 0;
 			ui.rot.z.value = 0;
-			
-			gizmo.userData.propGizmo({type: 'inputRotGizmo'});
-		}
-
-		// обновляем меню поворота
-		function updateGizmoRotUI()
-		{
-			let rot = gizmo.rotation;
-			
-			ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
-			ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
-			ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));				
-		}
-
-		// обновляем меню позиция
-		function updateGizmoPosUI()
-		{
-			let pos = gizmo.position;
-			
-			ui.pos.x.value = Math.round(pos.x * 100) / 100;
-			ui.pos.y.value = Math.round(pos.y * 100) / 100;
-			ui.pos.z.value = Math.round(pos.z * 100) / 100;				
 		}		
 		
 	}

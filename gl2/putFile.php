@@ -29,7 +29,6 @@ floorWarm.js
 toolPivot.js
 toolGizmo.js
 clickObj.js
-clickMoveGizmo.js
 activePivotGizmo.js
 scaleBox.js
 loadObj.js

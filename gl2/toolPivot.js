@@ -273,11 +273,10 @@ function crPivot(params)
 		if(type == 'addEvent') { addEvent({rayhit: params.rayhit}); }
 		if(type == 'moveObjs') { moveObjs({obj: params.obj, arrO: params.arrO, offset: params.offset}); }		
 		if(type == 'offsetPivot') { offsetPivot({offset: params.offset}); }
+		if(type == 'setPosPivot') { setPosPivot({pos: params.pos}); }
+		if(type == 'setRotPivot') { setRotPivot({qt: params.qt}); }
 		if(type == 'updateScale') { updateScale(); }
 		if(type == 'hide') { hide(); }
-		if(type == 'inputPosPivot') { inputPosPivot(); }
-		if(type == 'updatePivotPosUI') { updatePivotPosUI(); }
-		if(type == 'updatePivotRotUI') { updatePivotRotUI(); }
 		
 
 		// установить и показать Pivot
@@ -299,8 +298,6 @@ function crPivot(params)
 				if(pivot.children[i].userData.axis == 'y') pivot.children[i].visible = (camera == cameraTop) ? false : true;
 			}
 			
-			pivot.userData.propPivot({type: 'updatePivotPosUI'});
-			pivot.userData.propPivot({type: 'updatePivotRotUI'});
 			pivot.userData.propPivot({type: 'updateScale'});
 		}
 
@@ -392,16 +389,17 @@ function crPivot(params)
 			
 			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});			
 			pivot.userData.propPivot({type: 'moveObjs', obj: obj, arrO: pivot.userData.pivot.arrO, offset: offset});
+			
+			infProject.tools.pg.setPos({pos: pivot.position});
 		}
 		
 		
 		function offsetPivot(params)
-		{ console.log(pivot.position.clone(), params.offset);
+		{ 
 			let offset = params.offset;
 			pivot.position.add( offset );
 			pivot.userData.startPos.add( offset );
 			
-			pivot.userData.propPivot({type: 'updatePivotPosUI'});
 			pivot.userData.propPivot({type: 'updateScale'});
 		}			
 
@@ -441,7 +439,29 @@ function crPivot(params)
 		{
 			
 		}
+
+
+		// установить position Pivot, когда меняем через input
+		function setPosPivot(params)
+		{
+			if (!pivot.visible) return;
+			
+			let pos = params.pos;
+			
+			pivot.position.copy(pos);			
+			pivot.userData.propPivot({type: 'updateScale'});
+		}
 		
+		// установить rotation Pivot, когда меняем через input
+		function setRotPivot(params)
+		{
+			if (!pivot.visible) return;
+			
+			let qt = params.qt;
+			
+			pivot.quaternion.copy(qt);			
+		}
+
 		
 		function updateScale() 
 		{
@@ -462,58 +482,7 @@ function crPivot(params)
 			pivot.userData.pivot.obj = null;
 			pivot.userData.pivot.arrO = [];
 		}
-
-
-		// меняем положение объекта через input
-		function inputPosPivot()
-		{
-			//if (!pivot.visible) return;
-			getPosRotPivotGizmo();
-			
-			let x = ui.pos.x.value;
-			let y = ui.pos.y.value;
-			let z = ui.pos.z.value;
-
-			x = checkNumberInput({ value: x, unit: 1 });
-			y = checkNumberInput({ value: y, unit: 1 });
-			z = checkNumberInput({ value: z, unit: 1 });
-			
-			// не числовое значение
-			if(!x || !y || !z)
-			{		
-				pivot.userData.propPivot({type: 'updatePivotPosUI'});
-				return;
-			}	
-			
 				
-			let offset = new THREE.Vector3(x.num, y.num, z.num).sub(pivot.position);
-			
-			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});
-			pivot.userData.propPivot({type: 'moveObjs', obj: pivot.userData.pivot.obj, arrO: pivot.userData.pivot.arrO, offset: offset});	
-
-			renderCamera();
-		}		
-
-
-		// обновляем меню позиция
-		function updatePivotPosUI()
-		{
-			let pos = pivot.position;
-			
-			ui.pos.x.value = Math.round(pos.x * 100) / 100;
-			ui.pos.y.value = Math.round(pos.y * 100) / 100;
-			ui.pos.z.value = Math.round(pos.z * 100) / 100;				
-		}
-		
-		// обновляем меню поворота
-		function updatePivotRotUI()
-		{
-			let rot = pivot.rotation;
-			
-			ui.rot.x.value = Math.round(THREE.Math.radToDeg(rot.x));
-			ui.rot.y.value = Math.round(THREE.Math.radToDeg(rot.y));
-			ui.rot.z.value = Math.round(THREE.Math.radToDeg(rot.z));				
-		}		
 	}
 	
 	 
