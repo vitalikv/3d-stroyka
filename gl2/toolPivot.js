@@ -334,7 +334,7 @@ function crPivot(params)
 			};			
 		}
 
-		// подготавливаем pivot
+		// кликнули на pivot
 		function startPivot(params)
 		{
 			let rayhit = params.rayhit;

@@ -232,12 +232,15 @@ class ToolPG
 			this.setRotUI();
 			return;
 		}
-						
+		
+		if(x.num == 180 && z.num == 180) { x.num = 0; z.num = 0; console.log(180); }
+		if(x.num == -180 && z.num == -180) { x.num = 0; z.num = 0; console.log(-180); }
+		console.log('vv', x.num, z.num);
 		x = THREE.Math.degToRad(x.num);
 		y = THREE.Math.degToRad(y.num);
 		z = THREE.Math.degToRad(z.num);		
 		
-		
+		console.log(Math.round(THREE.Math.radToDeg(x)), Math.round(THREE.Math.radToDeg(y)), Math.round(THREE.Math.radToDeg(z)));
 		let q_New = new THREE.Quaternion().setFromEuler(new THREE.Euler().set(x, y, z))
 		let q_Offset = q_New.clone().multiply(this.qt.clone().inverse());		
 				
@@ -303,6 +306,8 @@ class ToolPG
 		this.pivot.userData.propPivot({type: 'hide'});
 		this.gizmo.userData.propGizmo({type: 'hide'});
 
+		resetClickLastObj({});
+		
 		renderCamera();		
 	}
 }

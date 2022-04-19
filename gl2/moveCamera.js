@@ -264,68 +264,6 @@ function cameraZoomTop( delta )
 		camera.zoom = delta;
 		camera.updateProjectionMatrix();		
 	}
-
-
-	infProject.tools.axis[0].scale.set(1,1/delta,1/delta); 
-	infProject.tools.axis[1].scale.set(1,1/delta,1/delta); 
-
-	var k = 0.085 / delta;
-
-	var n = 0;
-	var circle = infProject.geometry.circle;
-	var v = infProject.tools.point.geometry.vertices;
-	
-	for ( var i = 0; i < circle.length; i++ )
-	{
-		v[ n ] = new THREE.Vector3().addScaledVector( circle[ i ].clone().normalize(), 0.1 / delta );
-		v[ n ].y = 0;
-		n++;
-
-		v[ n ] = new THREE.Vector3();
-		v[ n ].y = 0;
-		n++;
-
-		v[ n ] = v[ n - 2 ].clone();
-		v[ n ].y = height_wall + 0.01;
-		n++;
-
-		v[ n ] = new THREE.Vector3();
-		v[ n ].y = height_wall + 0.01;
-		n++;
-	}
-	
-	infProject.tools.point.geometry.verticesNeedUpdate = true;
-	infProject.tools.point.geometry.elementsNeedUpdate = true;
-		
-
-	// zoom label
-	var k = 1 / delta;
-	if(k <= infProject.settings.camera.limitZoom) 
-	{
-		k *= kof_rd;
-
-		var n1 = 0.25 * k *2;
-		var n2 = 0.125 * k *2;		
-		var v1 = infProject.geometry.labelWall.vertices;
-		v1[ 0 ].x = v1[ 1 ].x = -n1;
-		v1[ 2 ].x = v1[ 3 ].x = n1;
-		v1[ 1 ].z = v1[ 2 ].z = n2;
-		v1[ 0 ].z = v1[ 3 ].z = -n2;
-		infProject.geometry.labelWall.verticesNeedUpdate = true;
-		infProject.geometry.labelWall.elementsNeedUpdate = true;
-		upLabelPlan_1( obj_line, true );
-
-
-		var n1 = 1 * k;
-		var n2 = 0.25 * k;
-		var v = infProject.geometry.labelFloor.vertices;
-		v[ 0 ].x = v[ 1 ].x = -n1;
-		v[ 2 ].x = v[ 3 ].x = n1;
-		v[ 1 ].z = v[ 2 ].z = n2;
-		v[ 0 ].z = v[ 3 ].z = -n2;
-		infProject.geometry.labelFloor.verticesNeedUpdate = true;
-		infProject.geometry.labelFloor.elementsNeedUpdate = true;
-	}
 	
 	scaleToolsMoveCamera();
 }
@@ -513,34 +451,8 @@ function cameraZoomTopLoop()
 
 
 
-// центрируем камеру cameraTop
-function centerCamera2D()
-{
-	if ( camera != cameraTop ) return;
-
-	var pos = new THREE.Vector3();
-
-	if ( obj_point.length > 0 )
-	{
-		for ( var i = 0; i < obj_point.length; i++ ) { pos.add( obj_point[ i ].position ); }
-		pos.divideScalar( obj_point.length );
-	}
-}
 
 
-function centerCamera3D()
-{
-	if ( camera != camera3D ) return;
-
-	var pos = new THREE.Vector3();
-
-	if ( obj_point.length > 0 )
-	{
-		for ( var i = 0; i < obj_point.length; i++ ) { pos.add( obj_point[ i ].position ); }
-		pos.divideScalar( obj_point.length );
-	}
-
-}
 
 
 

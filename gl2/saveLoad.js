@@ -30,8 +30,7 @@ var resetPop =
 	
 	infProjectSceneArray : function()
 	{
-		var array = { point : obj_point, wall : obj_line, window : [], door : [], room : room, ceiling : ceiling, obj : [], tube : [] };
-		array.fundament = [];
+		var array = { obj : [], tube : [] };
 		array.lineGrid = { limit : false };
 		array.base = (infProject.start)? infProject.scene.array.base : [];	// массив клонируемых объектов
 		array.group = [];
@@ -85,10 +84,6 @@ function resetScene()
 {	
 	console.log(renderer.info.memory);
 	
-	var wall = infProject.scene.array.wall;
-	var point = infProject.scene.array.point;
-	var window = infProject.scene.array.window;
-	var door = infProject.scene.array.door;
 	var tube = infProject.scene.array.tube;
 	var obj = infProject.scene.array.obj;
 	var group = infProject.scene.array.group;
@@ -97,62 +92,6 @@ function resetScene()
 	
 	hideMenuObjUI_2D();		// снимаем выделение с выбранного объекта 
 	
-	for ( var i = 0; i < wall.length; i++ )
-	{ 
-		scene.remove(wall[i].label[0]); 
-		scene.remove(wall[i].label[1]);
-		if(wall[i].userData.wall.outline) { scene.remove(wall[i].userData.wall.outline); }
-		if(wall[i].userData.wall.zone) { disposeNode(wall[i].userData.wall.zone.label); scene.remove(wall[i].userData.wall.zone.label); }
-
-		for(var i2 = wall[i].userData.wall.brick.arr.length - 1; i2 > -1; i2--)
-		{
-			var block = wall[i].userData.wall.brick.arr[i2];
-			scene.remove(block);			
-		}			
-		
-		wall[i].label = [];
-		wall[i].userData.wall.p = [];
-		wall[i].userData.wall.outline = null;
-		wall[i].userData.wall.zone = null;
-		wall[i].userData.wall.brick.arr = [];
-		
-		scene.remove(wall[i]);
-
-		disposeNode(wall[i]);
-		disposeNode(wall[i].label[0]);
-		disposeNode(wall[i].label[1]);		
-	}
-	
-	for ( var i = 0; i < point.length; i++ )
-	{ 
-		disposeNode(point[i]);
-		scene.remove(point[i]); 
-	}	
-	
-	for ( var i = 0; i < window.length; i++ )
-	{ 
-		disposeNode(window[i]); 
-		scene.remove(window[i]); 
-	}
-	
-	for ( var i = 0; i < door.length; i++ )
-	{ 
-		disposeNode(door[i]); 
-		scene.remove(door[i]); 
-	}	
-	
-	
-	for ( var i = 0; i < room.length; i++ )
-	{		
-		disposeNode(room[i]);
-		disposeNode(room[i].label);
-		disposeNode(ceiling[i]);
-		
-		scene.remove(room[i].label); 
-		if(room[i].userData.room.outline) { scene.remove(room[i].userData.room.outline); }
-		scene.remove(room[i]); 
-		scene.remove(ceiling[i]);	
-	}
 
 	for ( var i = 0; i < tube.length; i++ )
 	{		
@@ -210,31 +149,9 @@ function resetScene()
 	
 	// удаляем список объектов UI
 	clearItemSelectedObjUI();			
-	
-	
-	obj_point = [];
-	obj_line = [];
-	room = [];
-	ceiling = [];
-	arrWallFront = [];
-	
+
 
 	countId = 2;
-	
-	// прячем размеры и линейки
-	var line = arrSize.format_1.line;
-	var label = arrSize.format_1.label;
-	var cube = arrSize.cube;
-	var cutoff = arrSize.cutoff;
-	for ( var i = 0; i < line.length; i++ ) { line[i].visible = false; }
-	for ( var i = 0; i < label.length; i++ ) { label[i].visible = false; }
-	for ( var i = 0; i < cube.length; i++ ) { cube[i].visible = false; }
-	for ( var i = 0; i < cutoff.length; i++ ) { cutoff[i].visible = false; }
-	
-	var line = arrSize.format_2.line;
-	var label = arrSize.format_2.label;
-	for ( var i = 0; i < line.length; i++ ) { line[i].visible = false; }
-	for ( var i = 0; i < label.length; i++ ) { label[i].visible = false; }
 	
 	
 	clickO = resetPop.clickO();
@@ -327,141 +244,13 @@ function disposeNode(obj)
 
 function getJsonGeometry()
 {
-	var json = 
-	{
-		floors : 
-		[
-			{ 
-				points : [],
-				walls : [],	
-				rooms : [],
-				height : height_wall,
-				version : '1'
-			}			
-		]
-	};	
-	
-	var points = [];
-	var walls = [];
-	var rooms = [];
+	var json = {};	
+
 	var furn = [];
 	var group = [];
 	var pipe = [];
 	var subs = [];
 	var house = [];
-	
-	var wall = infProject.scene.array.wall;
-	//var point = infProject.scene.array.point;
-	
-	for ( var i = 0; i < wall.length; i++ )
-	{			
-		var p = wall[i].userData.wall.p;
-		
-		for ( var i2 = 0; i2 < p.length; i2++ )  
-		{
-			var flag = true;
-			for ( var i3 = 0; i3 < points.length; i3++ ) { if(p[i2].userData.id == points[i3].id){ flag = false; break; } }
-			
-			if(flag) 
-			{  
-				var m = points.length;
-				points[m] = {};
-				points[m].id = p[i2].userData.id;
-				points[m].pos = new THREE.Vector3(p[i2].position.x, p[i2].position.y, -p[i2].position.z); 
-			}
-		}
-	}	
-	
-	
-	
-	for ( var i = 0; i < wall.length; i++ )
-	{ 
-		var p = wall[i].userData.wall.p;
-		
-		walls[i] = { }; 
-		
-		walls[i].id = wall[i].userData.id;
-		walls[i].pointStart = p[0].userData.id;
-		walls[i].pointEnd = p[1].userData.id;
-		walls[i].width = wall[i].userData.wall.width; 
-		walls[i].height = wall[i].userData.wall.height_1; 
-
-
-		var x1 = p[1].position.z - p[0].position.z;
-		var z1 = p[0].position.x - p[1].position.x;	
-		var dir = new THREE.Vector3(z1, 0, -x1).normalize();						// перпендикуляр стены  (перевернуты x и y)
-		dir.multiplyScalar( wall[i].userData.wall.offsetZ );
-		walls[i].startShift = new THREE.Vector3(dir.z, 0, dir.x);
-				
-		var wd = saveWindows(wall[i]);		
-		walls[i].windows = wd.windows;
-		walls[i].doors = wd.doors;
-		
-
-		walls[i].colors = [];
-		var mat = wall[i].userData.material;
-		var arr = [{containerID : 'wall3d_'+wall[i].userData.id+'_p2', num : 1}, {containerID : 'wall3d_'+wall[i].userData.id+'_p1', num : 2}];				
-		
-		for ( var i2 = 0; i2 < arr.length; i2++ )
-		{
-			walls[i].colors[i2] = {  };		
-			walls[i].colors[i2].containerID = arr[i2].containerID;
-			walls[i].colors[i2].lot = { id : mat[arr[i2].num].lotid };
-
-			var color = { r : Number(mat[arr[i2].num].color.r), g : Number(mat[arr[i2].num].color.g), b : Number(mat[arr[i2].num].color.b), a : 1 };
-			
-			walls[i].colors[i2].matMod = { colorsets : [{ color : color }] };
-
-			walls[i].colors[i2].matMod.texScal = mat[arr[i2].num].scale;
-			
-			walls[i].colors[i2].matMod.mapingRotate = 0; 
-			
-			var map = wall[i].material[arr[i2].num].map;
-			if(map) 
-			{
-				walls[i].colors[i2].matMod.texOffset = map.offset;
-				walls[i].colors[i2].matMod.mapingRotate = THREE.Math.radToDeg( map.rotation ); 				 
-			}
-		}		
-	}	
-
-
-	for ( var i = 0; i < room.length; i++ )
-	{
-		rooms[i] = { pointid : [] };
-		
-		rooms[i].id = room[i].userData.id;  
-		rooms[i].name = 'Room';	
-		
-		rooms[i].pointid = [];
-		var s = 0; for ( var i2 = room[i].p.length - 1; i2 >= 1; i2-- ) { rooms[i].pointid[s] = room[i].p[i2].userData.id; s++; }  
-		
-		
-		rooms[i].colors = [];
-		var arr = [{containerID : 'floor', obj : room[i]}, {containerID : 'ceil', obj : ceiling[i]}];				
-		
-		for ( var i2 = 0; i2 < arr.length; i2++ )
-		{
-			rooms[i].colors[i2] = {  };		
-			rooms[i].colors[i2].containerID = arr[i2].containerID;
-			rooms[i].colors[i2].lot = { id : arr[i2].obj.userData.material.lotid };
-
-			var color = { r : Number(arr[i2].obj.material.color.r), g : Number(arr[i2].obj.material.color.g), b : Number(arr[i2].obj.material.color.b), a : 1 };
-			
-			rooms[i].colors[i2].matMod = { colorsets : [{ color : color }] };
-
-			rooms[i].colors[i2].matMod.texScal = arr[i2].obj.userData.material.scale;
-
-			rooms[i].colors[i2].matMod.mapingRotate = 0; 
-			
-			var map = arr[i2].obj.material.map;
-			if(map) 
-			{
-				rooms[i].colors[i2].matMod.texOffset = map.offset;
-				rooms[i].colors[i2].matMod.mapingRotate = THREE.Math.radToDeg( map.rotation ); 
-			}			
-		}	
-	}
 	
 
 	
@@ -579,9 +368,6 @@ function getJsonGeometry()
 		house[i].rot = o.rotation;
 	}
 	
-	json.floors[0].points = points;
-	json.floors[0].walls = walls;
-	json.floors[0].rooms = rooms;
 	json.furn = furn;
 	json.group = group;
 	json.pipe = pipe;
@@ -594,66 +380,6 @@ function getJsonGeometry()
 
 
 
-
-
-// сохраняем окна/двери
-function saveWindows(wall)
-{
-	var windows = [], doors = [];
-	
-	var arrO = wall.userData.wall.arrO;
-
-	var o = [[], []];
-
-	for ( var i2 = 0; i2 < arrO.length; i2++ ) 
-	{
-		if(arrO[i2].userData.tag == 'window') { o[0][o[0].length] = arrO[i2]; }
-		else if(arrO[i2].userData.tag == 'door') { o[1][o[1].length] = arrO[i2]; }		
-	}
-
-	var p = wall.userData.wall.p;
-
-	for ( var i = 0; i < o.length; i++ )
-	{
-		for ( var i2 = 0; i2 < o[i].length; i2++ )
-		{ 
-			var wd = o[i][i2];
-			var v = wd.geometry.vertices;
-		
-			wd.updateMatrixWorld();
-			wd.geometry.computeBoundingBox();
-			wd.geometry.computeBoundingSphere();
-			var dX = wd.geometry.boundingBox.max.x - wd.geometry.boundingBox.min.x;
-			var dY = wd.geometry.boundingBox.max.y - wd.geometry.boundingBox.min.y;
-			var center = wd.geometry.boundingSphere.center;
-		
-		
-			var v7 = wd.localToWorld( center.clone() );			
-			var qt1 = quaternionDirection( new THREE.Vector3().subVectors( p[1].position, p[0].position ).normalize() );
-			var x = localTransformPoint(new THREE.Vector3().subVectors( v7, p[0].position ), qt1).z; 
-			
-			x = x / p[1].position.distanceTo( p[0].position );		// процентное соотношение от начала стены
-			
-			var y = wall.worldToLocal( wd.localToWorld(new THREE.Vector3(0, wd.geometry.boundingBox.min.y, 0)) ).y;
-			
-			
-			var arr = {};
-			
-			arr.id = wd.userData.id;						// id
-			arr.lotid  = wd.userData.door.lotid;					// lotid  
-			arr.width = dX;									// width
-			arr.height = dY;								// height		
-			arr.startPointDist = x;							// pos_start
-			arr.over_floor = y;								// over_floor		
-			//arr.options = '';
-			
-			if(wd.userData.tag == 'window') { windows[windows.length] = arr; }
-			else if(wd.userData.tag == 'door') { doors[doors.length] = arr; }			
-		}		
-	}
-
-	return { windows : windows, doors : doors };
-}
 
 
 async function saveFile(cdm) 
@@ -787,116 +513,14 @@ async function loadFilePL(arr)
 	
 	infProject.project = { file: arr, load: { furn: [] } };
 		
-	var point = arr.floors[0].points;
-	var walls = arr.floors[0].walls;
-	var rooms = arr.floors[0].rooms;
 	var furn = (arr.furn) ? arr.furn : [];
 	var pipe = (arr.pipe) ? arr.pipe : [];
 	var subs = (arr.subs) ? arr.subs : [];
 	var house = (arr.house) ? arr.house : [];
 			
-	var wall = [];
-	
-	for ( var i = 0; i < walls.length; i++ )
-	{
-		wall[i] = { };
-		
-		
-		wall[i].id = walls[i].id;		
-		wall[i].width = walls[i].width;
-		wall[i].offsetV = new THREE.Vector3(walls[i].startShift.z, 0, walls[i].startShift.x);   		
-		wall[i].height = walls[i].height;			
-		
-		wall[i].points = [];
-		wall[i].points[0] = { id : walls[i].pointStart, pos : new THREE.Vector3() };
-		wall[i].points[1] = { id : walls[i].pointEnd, pos : new THREE.Vector3() };
-								
-		for ( var i2 = 0; i2 < point.length; i2++ ) 			 
-		{  	
-			if(wall[i].points[0].id == point[i2].id) { wall[i].points[0].pos = new THREE.Vector3(point[i2].pos.x, 0, -point[i2].pos.z); }
-			if(wall[i].points[1].id == point[i2].id) { wall[i].points[1].pos = new THREE.Vector3(point[i2].pos.x, 0, -point[i2].pos.z); }
-		}
-		
-
-		var arrO = [];
-		
-		if(walls[i].doors) for ( var i2 = 0; i2 < walls[i].doors.length; i2++ ) { arrO[arrO.length] = walls[i].doors[i2]; arrO[arrO.length - 1].type = 'door'; }
-		if(walls[i].windows) for ( var i2 = 0; i2 < walls[i].windows.length; i2++ ) { arrO[arrO.length] = walls[i].windows[i2]; arrO[arrO.length - 1].type = 'window'; }
-		
-		wall[i].arrO = [];
-		
-		
-		for ( var i2 = 0; i2 < arrO.length; i2++ )
-		{					
-			wall[i].arrO[i2] = {  }
-			
-			wall[i].arrO[i2].id = arrO[i2].id;
-			wall[i].arrO[i2].pos = new THREE.Vector3(arrO[i2].startPointDist, arrO[i2].over_floor, 0);
-			wall[i].arrO[i2].size = new THREE.Vector2(arrO[i2].width, arrO[i2].height);
-			wall[i].arrO[i2].type = arrO[i2].type;
-		} 	
-	}
-	
-
 
 	//-------------
 	 
-
-	// создаем и устанавливаем все стены (без окон/дверей)
-	var arrW = [];
-	
-	for ( var i = 0; i < wall.length; i++ )
-	{ 
-		var point1 = findObjFromId( 'point', wall[i].points[0].id );
-		var point2 = findObjFromId( 'point', wall[i].points[1].id );	
-		
-		if(point1 == null) { point1 = createPoint( wall[i].points[0].pos, wall[i].points[0].id ); }
-		if(point2 == null) { point2 = createPoint( wall[i].points[1].pos, wall[i].points[1].id ); }
-	
-
-		var dir = new THREE.Vector3().subVectors( point2.position, point1.position ).normalize();
-		var offsetZ = localTransformPoint(wall[i].offsetV, quaternionDirection(dir)).z;
-		var inf = { id : wall[i].id, offsetZ : -offsetZ, height : wall[i].height, load : true };
-		
-		var obj = createOneWall3( point1, point2, wall[i].width, inf ); 		
-		
-		obj.updateMatrixWorld();
-		arrW[arrW.length] = obj;
-	}	
-	 
-	
-	for ( var i = 0; i < obj_point.length; i++ ) { upLineYY_2(obj_point[i], obj_point[i].p, obj_point[i].w, obj_point[i].start); }
-	
-	upLabelPlan_1(infProject.scene.array.wall);	// размеры стен
-
-	detectRoomZone();
-	
-
-	
-	// устанавливаем окна/двери
-	for ( var i = 0; i < wall.length; i++ )
-	{ 
-		var obj = arrW[i];
-		
-		var point1 = obj.userData.wall.p[0];
-		var point2 = obj.userData.wall.p[1];		
-		
-		for ( var i2 = 0; i2 < wall[i].arrO.length; i2++ )
-		{			
-			wall[i].arrO[i2].pos.x = point1.position.distanceTo( point2.position ) * wall[i].arrO[i2].pos.x;
-			
-			var intP = obj.localToWorld( wall[i].arrO[i2].pos.clone() );  						
-
-			var inf = { status : 'load', id : wall[i].arrO[i2].id, pos : intP, wall : obj, type : wall[i].arrO[i2].type };	 		
-			if(wall[i].arrO[i2].size) { inf.size = wall[i].arrO[i2].size; }				
-						
-			createEmptyFormWD_1(inf);
-		}		
-	}
-	// устанавливаем окна/двери
-	
-			
-
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
@@ -1029,8 +653,7 @@ function readyProject(cdm)
 	
 	if( isCheckExsistFunction(window['cr_obj_cat']) ) { cr_obj_cat(); } 
 	
-	changeCamera(cameraTop);
-	centerCamera2D();	
+	changeCamera(cameraTop);	
 }
 
 

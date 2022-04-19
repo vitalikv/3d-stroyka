@@ -231,7 +231,7 @@ function deClickObj(cdm)
 		
 		outlineRemoveObj();		
 		
-		resetClickLastObj({});			
+					
 	}
 		
 	

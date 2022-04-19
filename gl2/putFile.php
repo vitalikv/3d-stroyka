@@ -3,26 +3,15 @@
 
 
 
-$list = 'meshBSP.js
-eventClick.js 	
-calculationArea.js
+$list = 'eventClick.js 	
 crossWall.js
-addPoint.js
-addWD.js
 mouseClick.js
 changeCamera.js
 cameraView.js
 moveCamera.js
-clickChangeWD.js
 clickMovePoint.js
-clickMoveWall.js
-clickMoveWD.js
 deleteObj.js
-copyObj.js
-floor.js
-detectZone.js
-inputWall.js
-label.js  	   
+copyObj.js 	   
 saveLoad.js
 script.js
 floorWarm.js

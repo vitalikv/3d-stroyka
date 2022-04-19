@@ -32,17 +32,13 @@ function changeCamera(cam)
 		infProject.elem.butt_camera_3D.style.display = '';
 	}
 	else if(camera == camera3D)
-	{	
-		blockActiveObj({visible_1: true, visible_2: true});
-		
+	{			
 		cameraZoomTop( cameraTop.zoom );
 		
 		changeRightMenuUI_1({current: true});		
 		infProject.elem.butt_camera_2D.style.display = '';
 	}
 	
-	infProject.tools.axis[0].visible = false;
-	infProject.tools.axis[1].visible = false;	
 
 	clickO = resetPop.clickO();
 	
@@ -64,33 +60,7 @@ function showHideArrObj(arr, visible)
 
 
 
-// блокируем/разблокируем объекты
-function blockActiveObj(cdm)
-{
-	var visible_1 = cdm.visible_1;
-	var visible_2 = cdm.visible_2;
-	
-	//infProject.scene.block.click.tube = visible_2;
-	//infProject.scene.block.hover.tube = visible_2;
-	
-	infProject.scene.block.click.wall = visible_1;
-	infProject.scene.block.hover.wall = visible_1;
 
-	infProject.scene.block.click.point = visible_1;
-	infProject.scene.block.hover.point = visible_1;
-
-	infProject.scene.block.click.window = visible_1;
-	infProject.scene.block.hover.window = visible_1;
-
-	infProject.scene.block.click.door = visible_1;
-	infProject.scene.block.hover.door = visible_1;
-
-	infProject.scene.block.click.room = visible_1;
-	infProject.scene.block.hover.room = visible_1;
-
-	infProject.scene.block.click.controll_wd = visible_1;
-	infProject.scene.block.hover.controll_wd = visible_1;	
-}
 
 
 

@@ -172,8 +172,6 @@
 	
 	
 	
-	<script src="<?=$path?>meshBSP.js"></script> 	
-    <script src="<?=$path?>calculationArea.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
@@ -181,22 +179,15 @@
 	<script src="<?=$path?>toolGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activePivotGizmo.js?<?=$vrs?>"></script>
     <script src="<?=$path?>crossWall.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>addPoint.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>addWD.js?<?=$vrs?>"></script>
     <script src="<?=$path?>mouseClick.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>changeCamera.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>cameraView.js?<?=$vrs?>"></script>
     <script src="<?=$path?>moveCamera.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>clickChangeWD.js?<?=$vrs?>"></script>
     <script src="<?=$path?>clickMovePoint.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>clickMoveWall.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>clickMoveWD.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMoveTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>alignPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>copyObj.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>floor.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>detectZone.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>mergeObjToGroup.js?<?=$vrs?>"></script>
@@ -240,9 +231,7 @@
 	<script src="<?=$path?>house.js?<?=$vrs?>"></script>	
 	
 	<script src="<?=$path?>planeHeight.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>inputWall.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>label.js?<?=$vrs?>"></script>  	    
+	<script src="<?=$path?>substrate.js?<?=$vrs?>"></script>	    
     <script src="<?=$path?>saveLoad.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_wf.js?<?=$vrs?>"></script>

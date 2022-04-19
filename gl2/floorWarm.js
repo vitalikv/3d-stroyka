@@ -410,27 +410,18 @@ function deClickTube(cdm)
 		if(obj.userData.wf_tube) { var tube = obj; }		
 		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }		
 		
-		// скрываем точки у трубы
-		showHideTubePoint({tube: tube, visible: false});
 		
-		// скрываем pivot
-		if(obj.userData.tag == 'wf_point' || obj.userData.tag == 'wf_tube')
-		{
-			var pivot = infProject.tools.pivot;
-			
-			pivot.visible = false;
-			pivot.userData.pivot.obj = null; 
-			pivot.userData.pivot.arrO = [];
-		}
 		
+		
+		
+		infProject.tools.pg.hide();		// скрываем pivot	
+		showHideTubePoint({tube: tube, visible: false});	// скрываем точки у трубы
 		
 		switchAlignPoint_1({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
 		
 		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку		
 		
-		activeObjRightPanelUI_1();		// скрываем UI
-		
-		resetClickLastObj({});		
+		activeObjRightPanelUI_1();		// скрываем UI	
 	}
 }
 

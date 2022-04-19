@@ -101,8 +101,7 @@ function crGizmo(params)
 		if(type == 'setPosGizmo') { setPosGizmo({pos: params.pos}); }
 		if(type == 'setRotGizmo') { setRotGizmo({qt: params.qt}); }
 		if(type == 'updateScale') { updateScale(); }
-		if(type == 'hide') { hide(); }
-		if(type == 'resetRot') { resetRot(); }			
+		if(type == 'hide') { hide(); }		
 		
 
 
@@ -196,7 +195,7 @@ function crGizmo(params)
 		}
 
 
-		// подготавливаем gizmo
+		// кликнули на gizmo
 		function startGizmo(params)
 		{
 			let rayhit = params.rayhit;
@@ -330,16 +329,7 @@ function crGizmo(params)
 			gizmo.userData.gizmo.obj = null;
 			gizmo.userData.gizmo.arrO = [];
 		}		
-			
-
-
-		// сбрасываем rotation
-		function resetRot()
-		{
-			ui.rot.x.value = 0;
-			ui.rot.y.value = 0;
-			ui.rot.z.value = 0;
-		}		
+					
 		
 	}
 

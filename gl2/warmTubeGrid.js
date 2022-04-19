@@ -207,6 +207,9 @@ function crEventButtonWarmTubeGrid(params)
 		function clickObj(params)
 		{	
 			let obj = params.obj;
+			
+			setClickLastObj({obj: obj.userData.plane});
+			
 			let pos = params.pos; 				
 			let offset = new THREE.Vector3().subVectors( obj.position, pos );
 
@@ -229,7 +232,6 @@ function crEventButtonWarmTubeGrid(params)
 				
 				setMouseStop(false);
 				
-				resetClickLastObj();
 				stopCameraTop();
 				stopCamera3D();
 				stopCameraView();
@@ -565,8 +567,7 @@ function crEventButtonWarmTubeGrid(params)
 			
 			infProject.tools.pg.hide();
 			activeObjRightPanelUI_1();		// скрываем UI			
-			outlineRemoveObj();					
-			resetClickLastObj({});				
+			outlineRemoveObj();								
 		}
 	
 	}	

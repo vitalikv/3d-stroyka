@@ -169,13 +169,6 @@ var kof_rd = 1;
 
 var countId = 2;
 var camera = cameraTop;
-var height_wall = infProject.settings.height;
-var width_wall = infProject.settings.wall.width;
-var obj_point = [];
-var obj_line = [];
-var room = [];
-var ceiling = [];
-var arrWallFront = [];
 var lightMap_1 = new THREE.TextureLoader().load(infProject.path+'/img/lightMap_1.png');
 
 infProject.texture = [];
@@ -262,9 +255,8 @@ infProject.tools = {};
 infProject.tools.pg = null;
 infProject.tools.pivot = null;
 infProject.tools.gizmo = null;
-infProject.tools.cutWall = [];
-infProject.tools.point = createToolPoint();
-infProject.tools.axis = createLineAxis();
+
+
 
 //infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   
 infProject.tools.plane = {o1: [], el: []};
@@ -317,16 +309,6 @@ console.log(infProject);
 
 
 
-// cutoff боковые отсечки для линеек
-// format_1 линейки для отображения длины/высоты стены в режиме cameraWall
-// format_2 линейки для окон/мебели
-// format_3 нижние размеры между мебелью в режиме cameraWall 
-// cube контроллеры для изменения ширины/длины wd
-var arrSize = { cutoff : createRulerCutoff(), format_1 : {}, format_2 : {}, format_3 : {line : [], label : []}, cube : createControllWD() };
-var labelGeometry_1 = createGeometryPlan2(0.25 * kof_rd, 0.125 * kof_rd); 
-arrSize.format_1 = { line : createRulerWin({count : 6, color : 0xcccccc, material : 'standart'}), label : createLabelCameraWall({ count : 2, text : 0, size : 50, ratio : {x:256*2, y:256}, border : 'white', geometry : labelGeometry_1 }) };
-arrSize.format_2 = { line : createRulerWin({count : 6, color : 0x000000}), label : createLabelCameraWall({ count : 6, text : 0, size : 50, ratio : {x:256*2, y:256}, border : 'border line', geometry : labelGeometry_1 }) };
-arrSize.numberTexture = { line : createRulerWin({count : 6, color : 0x000000, material : 'standart'}), label : createLabelCameraWall({ count : 6, text : [1,2,3,4,5,6], materialTop : 'no', size : 85, ratio : {x:256, y:256}, geometry : createGeometryPlan(0.25, 0.25) }) };
 
 
 
@@ -336,12 +318,6 @@ var mouse = new THREE.Vector2();
 var offset = new THREE.Vector3();
   
   
- 
- 
-if(infProject.settings.calc.fundament == 'svai') 
-{
-	
-}
 
 
 
@@ -530,42 +506,6 @@ function createGeometryPlan(x, y)
 
 
 
-function createGeometryPlan2(x, y)
-{
-	var geometry = new THREE.Geometry();
-	var vertices = [
-				new THREE.Vector3(-x,-y,0),
-				new THREE.Vector3(-x,y,0),
-				new THREE.Vector3(x,y,0),
-				new THREE.Vector3(x,-y,0),
-			];
-
-	var faces = [
-				new THREE.Face3(0,3,2),
-				new THREE.Face3(2,1,0),
-			];
-	var uvs1 = [
-				new THREE.Vector2(0,0),
-				new THREE.Vector2(1,0),
-				new THREE.Vector2(1,1),
-			];
-	var uvs2 = [
-				new THREE.Vector2(1,1),
-				new THREE.Vector2(0,1),
-				new THREE.Vector2(0,0),
-			];			
-	geometry.vertices = vertices;
-	geometry.faces = faces;
-	geometry.faceVertexUvs[0] = [uvs1, uvs2];
-	geometry.computeFaceNormals();
-	
-	geometry.uvsNeedUpdate = true;
-	
-	return geometry;
-}
-
-
-
 function createGeometryCube(x, y, z, cdm)
 {
 	var geometry = new THREE.Geometry();
@@ -712,120 +652,6 @@ function createGeometryWD(x, y, z)
 
 
 
-function createGeometryWall(x, y, z, pr_offsetZ)
-{
-	var geometry = new THREE.Geometry();
-	
-	var h1 = 0;
-	
-	if(1==1)
-	{
-		var z1 = z / 2 + pr_offsetZ / 2;
-		var z2 = -z / 2 + pr_offsetZ / 2;  		
-	}
-	else
-	{
-		var z1 = z / 2 + pr_offsetZ;
-		var z2 = -z / 2 + pr_offsetZ;  		
-	}
-		
-	var vertices = [
-				new THREE.Vector3(0,h1,z1),
-				new THREE.Vector3(0,y,z1),
-				new THREE.Vector3(0,h1,0),
-				new THREE.Vector3(0,y,0),
-				new THREE.Vector3(0,h1,z2),
-				new THREE.Vector3(0,y,z2),								
-								
-				new THREE.Vector3(x,h1,z1),
-				new THREE.Vector3(x,y,z1),
-				new THREE.Vector3(x,h1,0),
-				new THREE.Vector3(x,y,0),
-				new THREE.Vector3(x,h1,z2),
-				new THREE.Vector3(x,y,z2),						
-			];	
-			
-	var faces = [
-				new THREE.Face3(0,6,7),
-				new THREE.Face3(7,1,0),
-				new THREE.Face3(4,5,11),
-				new THREE.Face3(11,10,4),				
-				new THREE.Face3(1,7,9),
-				new THREE.Face3(9,3,1),					
-				new THREE.Face3(9,11,5),
-				new THREE.Face3(5,3,9),				
-				new THREE.Face3(6,8,9),
-				new THREE.Face3(9,7,6),				
-				new THREE.Face3(8,10,11),
-				new THREE.Face3(11,9,8),
-				
-				new THREE.Face3(0,1,3),
-				new THREE.Face3(3,2,0),	
-
-				new THREE.Face3(2,3,5),
-				new THREE.Face3(5,4,2),	
-
-				new THREE.Face3(0,2,8),
-				new THREE.Face3(8,6,0),
-
-				new THREE.Face3(2,4,10),
-				new THREE.Face3(10,8,2),					
-			];
-	
-	var uvs1 = [
-				new THREE.Vector2(0,0),
-				new THREE.Vector2(1,0),
-				new THREE.Vector2(1,1),
-			];
-	var uvs2 = [
-				new THREE.Vector2(1,1),
-				new THREE.Vector2(0,1),
-				new THREE.Vector2(0,0),
-			];					
-
-
-			
-	geometry.vertices = vertices;
-	geometry.faces = faces;
-	geometry.faceVertexUvs[0] = [uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2, uvs1, uvs2];
-	geometry.computeFaceNormals();	
-	geometry.uvsNeedUpdate = true;	
-	
-	geometry.faces[0].materialIndex = 1;
-	geometry.faces[1].materialIndex = 1;	
-	geometry.faces[2].materialIndex = 2;
-	geometry.faces[3].materialIndex = 2;	
-	geometry.faces[4].materialIndex = 3;
-	geometry.faces[5].materialIndex = 3;
-	geometry.faces[6].materialIndex = 3;
-	geometry.faces[7].materialIndex = 3;
-	
-	return geometry;
-}
-
-
-
-function createLineAxis() 
-{
-	var axis = [];
-	
-	var geometry = createGeometryCube(0.5, 0.02, 0.02);		
-	var v = geometry.vertices;	
-	v[3].x = v[2].x = v[5].x = v[4].x = 500;
-	v[0].x = v[1].x = v[6].x = v[7].x = -500;	
-	
-	var material = new THREE.MeshLambertMaterial( { color : 0xff0000, transparent: true, depthTest: false, lightMap : lightMap_1 } );
-	
-	for(var i = 0; i < 2; i++)
-	{
-		axis[i] = new THREE.Mesh( geometry, material );
-		axis[i].renderOrder = 2;
-		axis[i].visible = false;
-		scene.add( axis[i] );				
-	}		
-	
-	return axis;
-}
 
 
 // vertex для Gizmo
@@ -896,215 +722,6 @@ function createCircleSpline()
 }
 
 
-function createToolPoint()
-{	
-	var n = 0;
-	var v = [];
-	var circle = infProject.geometry.circle;
-	
-	for ( var i = 0; i < circle.length; i++ )
-	{
-		v[n] = new THREE.Vector3().addScaledVector( circle[i].clone().normalize(), 0.1 );
-		v[n].y = 0;		
-		n++;		
-		
-		v[n] = new THREE.Vector3();
-		v[n].y = 0;
-		n++;
-		
-		v[n] = v[n - 2].clone();
-		v[n].y = height_wall + 0.01;
-		n++;	
-		
-		v[n] = new THREE.Vector3();
-		v[n].y = height_wall + 0.01;
-		n++;		
-	}	
-
-	
-	var obj = new THREE.Mesh( createGeometryCircle(v), new THREE.MeshLambertMaterial( { color : 0x333333, wireframe:false } ) ); 
-	obj.userData.tag = 'tool_point';
-	obj.renderOrder = 1;
-	obj.position.set(0,0,0);
-	obj.visible = false;	
-	scene.add( obj );
-	
-	return obj;
-}
-
-
-
-
-
-
-function createPoint( pos, id )
-{
-	var point = obj_point[obj_point.length] = new THREE.Mesh( infProject.tools.point.geometry, new THREE.MeshLambertMaterial( { color : 0x333333, transparent: true, opacity: 0.6, depthTest: false, lightMap : lightMap_1 } ) ); 
-	point.position.copy( pos );		
-
-	point.renderOrder = 1;
-	
-	point.w = [];
-	point.p = [];
-	point.start = [];		
-	point.zone = [];
-	point.zoneP = [];
-	
-	
-	if(id == 0) { id = countId; countId++; }	
-	point.userData.id = id;	
-	point.userData.tag = 'point';
-	point.userData.point = {};
-	point.userData.point.color = point.material.color.clone();
-	point.userData.point.cross = null;
-	point.userData.point.type = null;
-	point.userData.point.last = { pos : pos.clone(), cdm : '', cross : null };
-	
-	point.visible = (camera == cameraTop) ? true : false;
-	
-	scene.add( point );	
-	
-	return point;
-}
-
-
-  
-
-
-
-
-function createOneWall3( point1, point2, width, cdm ) 
-{
-	var offsetZ = (cdm.offsetZ) ? cdm.offsetZ : 0;  
-	var height = (cdm.height) ? cdm.height : height_wall; 
-	
-	var p1 = point1.position;
-	var p2 = point2.position;	
-	var d = p1.distanceTo( p2 );
-	
-	var color = [0x7d7d7d, 0x696969]; 
-	
-	
-	if(infProject.settings.project == 'warm_floor' && infProject.settings.wall.color) 
-	{  
-		if(infProject.settings.wall.color.front) color[0] = infProject.settings.wall.color.front; 
-		if(infProject.settings.wall.color.top) color[1] = infProject.settings.wall.color.top; 
-	}	
-	
-	var material = new THREE.MeshLambertMaterial({ color : color[0], lightMap : lightMap_1 });
-	
-	var materials = [ material.clone(), material.clone(), material.clone(), new THREE.MeshLambertMaterial( { color: color[1], lightMap : lightMap_1 } ) ];
-
-	if(cdm.color)
-	{
-		for( var i = 0; i < cdm.color.length; i++ )
-		{
-			for( var i2 = 0; i2 < materials.length; i2++ )
-			{
-				if(cdm.color[i].index == i2) { materials[i2].color = new THREE.Color( cdm.color[i].o ); break; }
-			}
-		}
-	}
-
-	
-	var geometry = createGeometryWall(d, height, width, offsetZ);	
-	var wall = obj_line[obj_line.length] = new THREE.Mesh( geometry, materials ); 
- 	
-	
-	wall.label = [];
-	wall.label[0] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : infProject.geometry.labelWall, opacity : 0.5 })[0];	
-	wall.label[0].visible = false;
-	
-	wall.label[1] = createLabelCameraWall({ count : 1, text : 0, size : 85, ratio : {x:256*2, y:256}, geometry : infProject.geometry.labelWall, opacity : 0.5 })[0]; 
-	wall.label[1].visible = false;
-	
-	if(infProject.settings.wall.label == 'outside' || infProject.settings.wall.label == 'inside') 
-	{
-		wall.label[0].visible = true;
-	}
-	else if(infProject.settings.wall.label == 'double') 
-	{
-		wall.label[0].visible = true;
-		wall.label[1].visible = true;
-	}
-	
-	
-	wall.position.copy( p1 );
-	
-	// --------------
-	if(!cdm.id) { cdm.id = countId; countId++; }
-	
-	wall.userData.tag = 'wall';
-	wall.userData.id = cdm.id;
-	
-	wall.userData.wall = {};				
-	wall.userData.wall.p = [];
-	wall.userData.wall.p[0] = point1;
-	wall.userData.wall.p[1] = point2;	
-	wall.userData.wall.width = Math.round(width * 100) / 100;
-	wall.userData.wall.height_0 = -0.1;
-	wall.userData.wall.height_1 = Math.round(height * 100) / 100;		
-	wall.userData.wall.offsetZ = Math.round(offsetZ * 100) / 100;
-	wall.userData.wall.outline = null;
-	wall.userData.wall.zone = null; 
-	wall.userData.wall.arrO = [];
-	wall.userData.wall.last = { pos : new THREE.Vector3(), rot : new THREE.Vector3() }; 
-	wall.userData.wall.area = { top : 0 }; 
-	//wall.userData.wall.active = { click: true, hover: true };
-	
-	wall.userData.wall.brick = { arr : [] };
-	wall.userData.wall.room = { side : 0, side2 : [null,null,null] };
-	
-	var v = wall.geometry.vertices;
-	wall.userData.wall.v = [];
-	
-	for ( var i = 0; i < v.length; i++ ) { wall.userData.wall.v[i] = v[i].clone(); }
-	
-	wall.userData.material = [];
-	wall.userData.material[0] = { color : wall.material[0].color, scale : new THREE.Vector2(1,1), };	// top
-	wall.userData.material[1] = { color : wall.material[1].color, scale : new THREE.Vector2(1,1), };	// left
-	wall.userData.material[2] = { color : wall.material[2].color, scale : new THREE.Vector2(1,1), };	// right
-	wall.userData.material[3] = { color : wall.material[3].color, scale : new THREE.Vector2(1,1), };
-	// --------------
-
-	
-	upUvs_1( wall );
-	
-	if(cdm.texture)
-	{ 
-		var m = cdm.texture;
-		
-		for ( var i = 0; i < m.length; i++ )
-		{
-			setTexture({obj:wall, material:m[i]});
-		}	
-	}
-	
-	//console.log(wall);
-	
-	var dir = new THREE.Vector3().subVectors( p1, p2 ).normalize();
-	var angleDeg = Math.atan2(dir.x, dir.z);
-	wall.rotation.set(0, angleDeg + Math.PI / 2, 0);
-	
-	
-	var n = point1.w.length;		
-	point1.w[n] = wall;
-	point1.p[n] = point2;
-	point1.start[n] = 0;	
-
-	
-	var n = point2.w.length;		
-	point2.w[n] = wall;
-	point2.p[n] = point1;
-	point2.start[n] = 1;
-		
-
-	
-	scene.add( wall );
-		
-	return wall;
-}
-
 
  
 
@@ -1120,46 +737,6 @@ function rayIntersect( event, obj, t, recursive )
 	
 	return intersects;
 }
-
-
-
-
-// устанавливаем текстуру
-function setTexture(cdm)
-{
-	//if(!cdm.img) return;
-	
-	var img = infProject.path+cdm.material.img;
-	var material = (cdm.material.index) ? cdm.obj.material[cdm.material.index] : cdm.obj.material;
-	
-	new THREE.TextureLoader().load(img, function ( image )  
-	{
-		material.color = new THREE.Color( 0xffffff );
-		var texture = image;			
-		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-		
-		if(cdm.repeat)
-		{
-			texture.repeat.x = cdm.repeat.x;
-			texture.repeat.y = cdm.repeat.y;			
-		}
-		else
-		{
-			texture.repeat.x = 1;
-			texture.repeat.y = 1;			
-		}
-		
-		texture.needsUpdate = true;
-		
-		material.map = texture; 
-		material.lightMap = lightMap_1;
-		material.needsUpdate = true; 					
-		
-		renderCamera();
-	});			
-}
-
 
 
 
@@ -1365,13 +942,6 @@ var openFileImage = function (strData, filename)
 
 
 
-	
-	
- 
-function setUnits()
-{
-	 
-}
 
 
 
@@ -1457,16 +1027,8 @@ document.body.addEventListener("keydown", function (e)
 		if(e.keyCode == 13)
 		{ 
 			console.log(infProject.activeInput);
-			 
-			if(infProject.activeInput == 'input-width') { changeWidthWall( $('[data-action="input-width"]').val() ); }
-			if(infProject.activeInput == 'wall_1') { inputChangeWall_1({}); }	 		
-			if(infProject.activeInput == 'wd_1') { inputWidthHeightWD(clickO.last_obj); }
-			if(infProject.activeInput == 'size_wall_width_1') 
-			{ 
-				var width = $('[nameid="size_wall_width_1"]').val();
-				
-				inputWidthOneWall({wall:clickO.last_obj, width:{value: width}, offset:'wallRedBlueArrow'}); 
-			}
+			  		
+
 			if(infProject.activeInput == 'size_tube_diameter_2')
 			{
 				var size = $('[nameid="size_tube_diameter_2"]').val();
