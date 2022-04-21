@@ -70,6 +70,7 @@ createObj/sborka/radiator/bok_mp.js
 house.js
 warmTube.js
 warmTubeGrid.js
+crTube.js
 ';
 
 

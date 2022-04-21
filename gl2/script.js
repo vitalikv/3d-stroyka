@@ -1221,7 +1221,10 @@ function init()
 	
 	docReady = true; 
 
-	loadFile({json: true}); 	
+	loadFile({json: true}); 
+
+
+
 }
 
 

@@ -136,7 +136,7 @@ function crGizmo(params)
 
 		}		
 
-		// установить и показать Pivot
+		// установить и показать Gizmo
 		function setGizmo(params)
 		{
 			let obj = params.obj;
@@ -159,6 +159,8 @@ function crGizmo(params)
 			
 			gizmo.userData.propGizmo({type: 'updateScale'});
 			gizmo.userData.propGizmo({type: 'clippingGizmo'});
+			
+			setClickLastObj({obj: obj});
 		}
 
 
@@ -181,10 +183,6 @@ function crGizmo(params)
 				container.onmouseup = null;
 				
 				setMouseStop(false);
-				
-				//let obj = infProject.tools.pivot.userData.pivot.obj;	
-				//if(!obj) setClickLastObj({obj: obj});	
-
 				
 				stopCameraTop();
 				stopCamera3D();
@@ -210,8 +208,6 @@ function crGizmo(params)
 			let dir = planeMath.worldToLocal(rayhit.point.clone());
 			gizmo.userData.rotY = Math.atan2(dir.x, dir.y);			
 			gizmo.userData.dir = new THREE.Vector3().subVectors(planeMath.localToWorld( new THREE.Vector3( 0, 0, -1 ) ), planeMath.position).normalize();
-			
-			setClickLastObj({obj: gizmo.userData.gizmo.obj});
 		} 
 
 

@@ -299,6 +299,8 @@ function crPivot(params)
 			}
 			
 			pivot.userData.propPivot({type: 'updateScale'});
+			
+			setClickLastObj({obj: obj});
 		}
 
 		
@@ -321,10 +323,6 @@ function crPivot(params)
 				container.onmouseup = null;
 				
 				setMouseStop(false);
-				
-				//let obj = infProject.tools.pivot.userData.pivot.obj;	
-				//if(!obj) setClickLastObj({obj: obj});	
-
 				
 				stopCameraTop();
 				stopCamera3D();
@@ -357,12 +355,9 @@ function crPivot(params)
 				pivot.userData.dir = new THREE.Vector3().subVectors(pivot.position, obj.getWorldPosition(new THREE.Vector3())).normalize();
 				planeMath.quaternion.copy( quaternionDirection( pivot.userData.dir ) ); 
 				planeMath.quaternion.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI/2, 0, 0)));
-			}
-			
+			}			
 			
 			planeMath.position.copy( rayhit.point );
-			
-			setClickLastObj({obj: pivot.userData.pivot.obj});
 		} 		
 	
 	

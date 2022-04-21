@@ -75,11 +75,15 @@ class ToolPG
 		{ 
 			obj.updateMatrixWorld();			
 			pos = obj.localToWorld( obj.userData.wf_tube.posPivotGizmo.clone() );					
-		}
+		}		
 		else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
 		{ 
 			pos = obj.position;  
-		}	
+		}
+		else
+		{
+			return;
+		}
 
 		this.pos = pos;
 	}
@@ -316,70 +320,7 @@ class ToolPG
 // ставим pivot/gizmo
 function setPivotGizmo(params)
 {
-	infProject.tools.pg.activeTool({obj: params.obj});
-	return;
-	
-	let obj = params.obj;	
-	if(!obj) return;		
-	
-	let type = 'pivot';
-	let pos = new THREE.Vector3();
-	let qt = new THREE.Quaternion();
-	
-	
-	if(obj.userData.tag == 'obj')		// группа или объект
-	{ 
-		obj.updateMatrixWorld();
-		pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );	
-	}		
-	else if(obj.userData.tag == 'joinPoint')		// разъем
-	{ 
-		pos = obj.getWorldPosition(new THREE.Vector3());  
-		activeJoinPoint({obj: obj});
-	}
-	else if(obj.userData.tag == 'wf_point')		// точка трубы
-	{ 
-		pos = obj.position; 
-	}
-	else if(obj.userData.tag == 'wf_tube')		// труба
-	{ 
-		obj.updateMatrixWorld();			
-		pos = obj.localToWorld( obj.userData.wf_tube.posPivotGizmo.clone() );					
-	}
-	else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
-	{ 
-		pos = obj.position;  
-	}	
-	else			
-	{
-		return;		
-	}	 
-		
-	
-	if(camera == cameraTop)	
-	{		
-		if(!obj.geometry.boundingBox) obj.geometry.computeBoundingBox();
-		let bound = obj.geometry.boundingBox;
-		
-		obj.updateMatrixWorld();
-		let v1 = new THREE.Vector3(bound.min.x, 0, 0).applyMatrix4( obj.matrixWorld );
-		let v2 = new THREE.Vector3(bound.max.x, 0, 0).applyMatrix4( obj.matrixWorld );
-		
-		let dir = v2.clone().sub(v1).normalize();
-		let rotY = Math.atan2(dir.x, dir.z);
-		
-		qt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), rotY - Math.PI/2);
-	}
-	
-	if(camera == camera3D) qt = obj.getWorldQuaternion(new THREE.Quaternion());				
-
-	
-	if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы	
-	else { type = infProject.settings.active.pg; }						
-		
-	
-	if(type == 'pivot') infProject.tools.pivot.userData.propPivot({type: 'setPivot', obj: obj, pos: pos, qt: qt});	// показываем pivot		
-	if(type == 'gizmo') infProject.tools.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, pos: pos, qt: qt});	// показываем gizmo				
+	infProject.tools.pg.activeTool({obj: params.obj});			
 }
 
 

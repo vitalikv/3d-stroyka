@@ -43,11 +43,7 @@ var resetPop =
 	listColor : function()
 	{	
 		var array = {};
-		
-		array.door2D = 'rgb(166, 151, 99)';
-		array.window2D = 'rgb(122, 160, 195)';
-		array.active2D = 'rgb(255, 55, 0)';
-		array.hover2D = 'rgb(69, 165, 58)';
+
 		array.lineTube2D = 0x0252f2;
 		array.activeItem_1 = 'rgb(167, 207, 242)';
 
@@ -565,7 +561,9 @@ async function loadFilePL(arr)
 	
 	cameraZoomTop( camera.zoom );
 	
-
+	var pointFFF = new MyTube({diameter: 0.09, mat: 0x00ff00}); 
+	pointFFF.setPos({pos: new THREE.Vector3(-1, 0, -1)});
+	console.log(555, pointFFF);	
 	renderCamera();
 	
 	//getSkeleton_1(room); 
@@ -652,6 +650,8 @@ function readyProject(cdm)
 	document.querySelector('[nameId="menu_loader_slider_UI"]').style.display = 'none';
 	
 	if( isCheckExsistFunction(window['cr_obj_cat']) ) { cr_obj_cat(); } 
+	
+	
 	
 	changeCamera(cameraTop);	
 }

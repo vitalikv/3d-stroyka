@@ -367,6 +367,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
+		else if( tag == 'new_tube' && camera == cameraTop ) { obj.setPivotGizmo({rayhit: rayhit});}	
 	}
 	else if(cdm.type == 'up')
 	{		

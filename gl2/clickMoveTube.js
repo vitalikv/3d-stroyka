@@ -129,7 +129,7 @@ function clickTubeWF(cdm)
 		tube.updateMatrixWorld();						
 		tube.userData.wf_tube.posPivotGizmo = tube.worldToLocal( pos.clone() );
 		
-		setPivotGizmo({obj: tube});
+		infProject.tools.pg.activeTool({obj: tube});
 	}
 }
 
