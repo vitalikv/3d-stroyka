@@ -30,25 +30,29 @@ function createPointWF(cdm)
 
 
 // пускаем луч, определяем кликнули ли на точку, если активирована труба или точка
-function clickRayhitPointWF(cdm)
+function clickRayhitPointWF(params)
 {  
-	var event = cdm.event;
-	var rayhit = null;	
-	var tube = null;
+	let event = params.event;
+	let obj = params.obj;
 	
-	if(clickO.last_obj)
-	{
-		if(clickO.last_obj.userData.tag == 'wf_tube'){ tube = clickO.last_obj; }
-		if(clickO.last_obj.userData.tag == 'wf_point'){ tube = clickO.last_obj.userData.wf_point.tube; }
-	}
+	if(!obj) return;
+	
+	let tube = null;
+	let rayhit = null;
+	
+	
+	if(obj.userData.tag == 'wf_tube'){ tube = obj; }
+	if(obj.userData.tag == 'new_tube'){ tube = obj; }
+	if(obj.userData.tag == 'wf_point'){ tube = obj.userData.wf_point.tube; }
+
 		
 	if(tube)
 	{			
-		var ray = rayIntersect( event, tube.userData.wf_tube.point, 'arr' );  
-		if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }		
+		let ray = rayIntersect( event, tube.userData.wf_tube.point, 'arr' );  
+		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
 	}	
 
-	return null;
+	return rayhit;
 }
 
 

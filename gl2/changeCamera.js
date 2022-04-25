@@ -17,13 +17,6 @@ function changeCamera(cam)
 	infProject.elem.butt_close_cameraView.style.display = 'none';
 	
 	
-	var tube = infProject.scene.array.tube;
-	
-	for ( var i = 0; i < tube.length; i++ )
-	{
-		showHideTubePoint({tube: tube[i], visible: false});
-	}	
-	
 	if(camera == cameraTop)
 	{						
 		cameraZoomTop( camera.zoom );

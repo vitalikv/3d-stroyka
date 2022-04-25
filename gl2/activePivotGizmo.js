@@ -41,6 +41,8 @@ class ToolPG
 	
 	getPosRotUI()
 	{
+		this.ui.menu = document.querySelector('[nameId="block_pos"]');
+		
 		this.ui.pos = {};
 		this.ui.pos.x = document.querySelector('[nameId="object_pos_X"]');
 		this.ui.pos.y = document.querySelector('[nameId="object_pos_Y"]');
@@ -117,15 +119,19 @@ class ToolPG
 	activeTool(params)
 	{
 		let obj = params.obj;
+		let pos = params.pos;
 		
 		this.hide();
 		
 		this.obj = obj;
 		this.arrO = arrObjFromGroup({obj: obj});
 		
-		this.calcPos({obj: obj});
+		if(pos) { this.pos = pos; }
+		else { this.calcPos({obj: obj}); }
+		
 		this.calcRot({obj: obj});
 		
+		this.ui.menu.style.display = '';
 		this.setPosUI();
 		this.setRotUI();
 			
@@ -147,13 +153,6 @@ class ToolPG
 		let arrO = this.arrO;
 		
 		if(!obj) return;
-
-		if(obj.userData.tag == 'obj'){}
-		else if(obj.userData.tag == 'joinPoint'){}
-		else if(obj.userData.tag == 'wtGrid'){}
-		else if(obj.userData.tag == 'wf_tube'){}
-		else { return; }	
-		
 		
 		this.hide();
 				
@@ -309,7 +308,9 @@ class ToolPG
 		this.arrO = [];
 		this.pivot.userData.propPivot({type: 'hide'});
 		this.gizmo.userData.propGizmo({type: 'hide'});
-
+		
+		this.ui.menu.style.display = 'none';
+		
 		resetClickLastObj({});
 		
 		renderCamera();		

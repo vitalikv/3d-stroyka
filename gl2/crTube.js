@@ -41,7 +41,7 @@ class MyTube extends THREE.Mesh
 				
 		this.position.add(offset);
 		
-		let arrP = this.getArrPoint();
+		let arrP = this.getTubePoints();
 		arrP.forEach((o) => ( o.offsetPos({offset: offset})) );
 	}
 	
@@ -111,18 +111,39 @@ class MyTube extends THREE.Mesh
 		this.userData.wf_tube.point.push(...arr);					
 	}
 	
-	getArrPoint()
+	getTubePoints()
 	{
 		return this.userData.wf_tube.point;					
 	}
 
-	setPivotGizmo(params)
+	// кликнули на трубу
+	clickTube(params)
 	{
+		outlineAddObj(this);
+		this.showHideTubePoints({visible: true});
+		
 		let result = detectPosTubeWF({ray: params.rayhit});	// определяем в какое место трубы кликнули
 		let pos = result.pos;	
 		
-		infProject.tools.pg.pos = pos;
-		infProject.tools.pg.activeTool({obj: this});	
+		infProject.tools.pg.activeTool({obj: this, pos: pos});	
+	}
+	
+	// деактивируем трубу
+	deClickTube()
+	{
+		outlineRemoveObj();
+		this.showHideTubePoints({visible: false});
+		
+		infProject.tools.pg.hide();	
+	}
+
+	// показываем/прячем точки трубы
+	showHideTubePoints(params)
+	{
+		let visible = params.visible;
+		let arr = this.getTubePoints();
+		
+		for ( var i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }	
 	}
 
 	render()

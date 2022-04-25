@@ -182,7 +182,7 @@ function clickRayHit(event)
 	// точки у трубы
 	if(!infProject.scene.block.click.tube && !rayhit)
 	{  
-		var rayhit = clickRayhitPointWF({event: event});
+		var rayhit = clickRayhitPointWF({event: event, obj: clickO.last_obj});
 		if(rayhit) { return rayhit; }		
 	}
 	
@@ -367,7 +367,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
-		else if( tag == 'new_tube' && camera == cameraTop ) { obj.setPivotGizmo({rayhit: rayhit});}	
+		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({rayhit: rayhit}); }	
 	}
 	else if(cdm.type == 'up')
 	{		
@@ -377,6 +377,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'wf_tube' && camera == camera3D ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
+		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({rayhit: rayhit}); }
 	}		
 }
 
@@ -497,6 +498,10 @@ function hideMenuObjUI_2D(cdm)
 	
 	if(obj)
 	{ 
+		if(clickO.rayhit && obj == clickO.rayhit.object) return;		
+		if(clickO.rayhit && clickO.rayhit.object.userData.tag == 'pivot') { return; }
+		if(clickO.rayhit && clickO.rayhit.object.userData.tag == 'gizmo') { return; }
+		
 		var tag = obj.userData.tag;
 		
 		if(tag == 'wf_tube') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
@@ -504,6 +509,7 @@ function hideMenuObjUI_2D(cdm)
 		else if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
+		else if(tag == 'new_tube') { obj.deClickTube(); return; }
 	}
 	
 	if(flag) 
