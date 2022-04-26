@@ -37,18 +37,19 @@ function clickRayhitPointWF(params)
 	
 	if(!obj) return;
 	
-	let tube = null;
+	let arrP = null;
 	let rayhit = null;
 	
 	
-	if(obj.userData.tag == 'wf_tube'){ tube = obj; }
-	if(obj.userData.tag == 'new_tube'){ tube = obj; }
-	if(obj.userData.tag == 'wf_point'){ tube = obj.userData.wf_point.tube; }
+	if(obj.userData.tag == 'wf_tube'){ arrP = obj.userData.wf_tube.point; }	
+	if(obj.userData.tag == 'wf_point'){ arrP = obj.userData.wf_point.tube.userData.wf_tube.point; }
 
+	if(obj.userData.tag == 'new_tube'){ arrP = obj.getTubePoints(); }
+	if(obj.userData.tag == 'new_point'){ arrP = obj.getTubePoints(); }
 		
-	if(tube)
+	if(arrP)
 	{			
-		let ray = rayIntersect( event, tube.userData.wf_tube.point, 'arr' );  
+		let ray = rayIntersect( event, arrP, 'arr' );  
 		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
 	}	
 

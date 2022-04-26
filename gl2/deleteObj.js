@@ -12,6 +12,8 @@ function detectDeleteObj(cdm)
 	if ( tag == 'wf_point' ) { deletePointWF(obj); }
 	else if ( tag == 'obj' || tag == 'wf_tube' ) { deleteObjectPop(obj); }
 	else if ( tag == 'wtGrid' ) { obj.userData.propObj({type: 'deleteObj', obj: obj}); }
+	else if ( tag == 'new_tube' ) { obj.delete(); }
+	else if ( tag == 'new_point' ) { obj.delete(); }
 	
 	renderCamera();
 }

@@ -367,7 +367,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
-		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({rayhit: rayhit}); }	
+		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({rayhit: rayhit}); }
+		else if( tag == 'new_point' && camera == cameraTop ) { obj.clickPointTube({rayhit: rayhit}); }		
 	}
 	else if(cdm.type == 'up')
 	{		
@@ -378,6 +379,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({rayhit: rayhit}); }
+		else if( tag == 'new_point' && camera == camera3D ) { obj.clickPointTube({rayhit: rayhit}); }
 	}		
 }
 
@@ -510,6 +512,7 @@ function hideMenuObjUI_2D(cdm)
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
 		else if(tag == 'new_tube') { obj.deClickTube(); return; }
+		else if(tag == 'new_point') { obj.deClickPointTube(); return; }
 	}
 	
 	if(flag) 
@@ -572,6 +575,7 @@ function detectMouseObj()
 			
 			if(obj.userData.tag == 'obj') { txt = obj.userData.obj3D.nameRus; }
 			else if(obj.userData.tag == 'wf_tube') { txt = obj.userData.wf_tube.nameRus+' ('+obj.userData.wf_tube.length+'м)'; }
+			else if(obj.userData.tag == 'new_tube') { txt = obj.getNameObj(); }
 		}
 		
 		if(txt)

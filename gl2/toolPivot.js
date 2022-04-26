@@ -406,8 +406,12 @@ function crPivot(params)
 			let arrO = params.arrO;			
 			let offset = params.offset;
 			
-			
-			if(obj && obj.userData.tag == 'wf_point')		// точка трубы
+
+			if(obj && obj.userData.tag == 'new_point')		// точка трубы
+			{
+				obj.movePointTube({offset: offset});	
+			}			 
+			else if(obj && obj.userData.tag == 'wf_point')		// точка трубы
 			{
 				obj.position.add(offset);	
 

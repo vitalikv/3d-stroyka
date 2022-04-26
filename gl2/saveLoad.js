@@ -561,10 +561,15 @@ async function loadFilePL(arr)
 	
 	cameraZoomTop( camera.zoom );
 	
-	var pointFFF = new MyTube({diameter: 0.09, mat: 0x00ff00}); 
-	pointFFF.setPos({pos: new THREE.Vector3(-1, 0, -1)});
-	console.log(555, pointFFF);	
-	renderCamera();
+	if(1==1)
+	{
+		let arrP = [new THREE.Vector3(-0.5, 0, 0), new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.5, 0, 0)];
+		let pointFFF = new MyTube({pathPos: arrP, diameter: 0.09, mat: 0x00ff00}); 
+		pointFFF.setPos({pos: new THREE.Vector3(-1, 0, -1)});
+		console.log(555, pointFFF);	
+		//renderCamera();		
+	}
+
 	
 	//getSkeleton_1(room); 
 }

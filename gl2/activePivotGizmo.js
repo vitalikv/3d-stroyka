@@ -82,12 +82,8 @@ class ToolPG
 		{ 
 			pos = obj.position;  
 		}
-		else
-		{
-			return;
-		}
 
-		this.pos = pos;
+		return pos;
 	}
 	
 	calcRot(params) 
@@ -112,29 +108,29 @@ class ToolPG
 		
 		if(camera == camera3D) qt = obj.getWorldQuaternion(new THREE.Quaternion());	
 
-		this.qt = qt;
+		return qt;
 	}
 
 	// показываем Pivot/Gizmo
 	activeTool(params)
 	{
 		let obj = params.obj;
+		let arrO = params.arrO;
 		let pos = params.pos;
 		
 		this.hide();
 		
 		this.obj = obj;
-		this.arrO = arrObjFromGroup({obj: obj});
+		this.arrO = (arrO) ? arrO : arrObjFromGroup({obj: obj});
 		
-		if(pos) { this.pos = pos; }
-		else { this.calcPos({obj: obj}); }
+		this.pos = (pos) ? pos : this.calcPos({obj: obj});		
+		this.qt = this.calcRot({obj: obj});
 		
-		this.calcRot({obj: obj});
 		
-		this.ui.menu.style.display = '';
 		this.setPosUI();
 		this.setRotUI();
-			
+		this.displayMenuUI({visible: ''});
+		
 		let type = this.type;	
 		if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
 		
@@ -309,11 +305,18 @@ class ToolPG
 		this.pivot.userData.propPivot({type: 'hide'});
 		this.gizmo.userData.propGizmo({type: 'hide'});
 		
-		this.ui.menu.style.display = 'none';
+		this.displayMenuUI({visible: 'none'});
 		
 		resetClickLastObj({});
 		
 		renderCamera();		
+	}
+	
+	displayMenuUI(params)
+	{
+		let visible = params.visible;
+		
+		this.ui.menu.style.display = visible;
 	}
 }
 

@@ -19,11 +19,11 @@ class MyTube extends THREE.Mesh
 		
 		this.userData.id = id;			
 		this.userData.tag = 'new_tube';
-		this.userData.wf_tube = {};
-		this.userData.wf_tube.point = [];
-		this.userData.wf_tube.nameRus = '';
-		this.userData.wf_tube.length = 0;
-		this.userData.wf_tube.diameter = 0;	
+		this.userData.point = [];
+		this.userData.nameRus = '';
+		this.userData.length = 0;
+		this.userData.diameter = 0;	
+		this.userData.group = [];	
 		
 		this.tubeGeometry(params);
 		this.tubeMaterial(params);
@@ -45,24 +45,32 @@ class MyTube extends THREE.Mesh
 		arrP.forEach((o) => ( o.offsetPos({offset: offset})) );
 	}
 	
-	// создаем Geometry трубы
+	// создаем/обновляем Geometry трубы
 	tubeGeometry(params = {})
 	{
-		let point = params.point;
-		let diameter = params.diameter;		
-		
-		if(!point) 
+		let pathPos = params.pathPos;
+		let diameter = (params.diameter) ? params.diameter : this.userData.diameter;	
+
+		this.position.set(0, 0, 0);
+		this.rotation.set(0, 0, 0);
+	
+
+		if(pathPos)
 		{
-			let point1 = new PointTube({pos: new THREE.Vector3(-0.5, 0, 0), tube: this}); 
-			let point2 = new PointTube({pos: new THREE.Vector3(0.5, 0, 0), tube: this}); 			
+			let arr = [];		
+			for(let i = 0; i < pathPos.length; i++)
+			{
+				let p = new PointTube({pos: pathPos[i], tube: this});
+				arr.push(p);
+			}
 			
-			point = [point1, point2];
-		}			
-		if(!diameter) diameter = 0.05;
+			this.addArrPoint({arr: arr});			
+		}
 		
+		let arrPT = this.getTubePoints();
 		
 		let arrPos = [];		
-		for(let i = 0; i < point.length; i++) arrPos[i] = point[i].position.clone();
+		for(let i = 0; i < arrPT.length; i++) arrPos[i] = arrPT[i].position.clone();
 	
 		let pipeSpline = new THREE.CatmullRomCurve3(arrPos);
 		pipeSpline.curveType = 'catmullrom';
@@ -80,12 +88,10 @@ class MyTube extends THREE.Mesh
 		geometry.computeFaceNormals();
 		geometry.computeVertexNormals();
 
-
-		this.addArrPoint({arr: point});
 		
-		this.userData.wf_tube.nameRus = 'труба '+ diameter*1000;
-		this.userData.wf_tube.length = Math.round(length * 100)/100;
-		this.userData.wf_tube.diameter = diameter;
+		this.userData.nameRus = 'труба '+ diameter*1000;
+		this.userData.length = Math.round(length * 100)/100;
+		this.userData.diameter = diameter;
 		
 		
 		this.geometry.dispose();
@@ -108,12 +114,24 @@ class MyTube extends THREE.Mesh
 	{
 		let arr = params.arr;
 		
-		this.userData.wf_tube.point.push(...arr);					
+		this.userData.point.push(...arr);					
 	}
 	
 	getTubePoints()
 	{
-		return this.userData.wf_tube.point;					
+		return this.userData.point;					
+	}
+	
+	// название объекта
+	getNameObj(params = {lang: 'ru'})
+	{
+		let lang = params.lang;
+		
+		let txt = '';
+		
+		if(lang == 'ru') txt = this.userData.nameRus+' ('+this.userData.length+'м)';
+		
+		return txt;
 	}
 
 	// кликнули на трубу
@@ -122,11 +140,42 @@ class MyTube extends THREE.Mesh
 		outlineAddObj(this);
 		this.showHideTubePoints({visible: true});
 		
-		let result = detectPosTubeWF({ray: params.rayhit});	// определяем в какое место трубы кликнули
+		let result = this.detectPosTube({clickPos: params.rayhit.point, arrP: this.getTubePoints()});	// определяем в какое место трубы кликнули
 		let pos = result.pos;	
 		
-		infProject.tools.pg.activeTool({obj: this, pos: pos});	
+		let arrO = [this, ...this.getTubePoints()];
+		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});			
 	}
+	
+	
+	// определяем в какое место трубы кликнули
+	detectPosTube(params)
+	{
+		let clickPos = params.clickPos;			  
+		let arrP = params.arrP;
+		
+		let arr = [];
+		
+		for ( let i = 0; i < arrP.length - 1; i++ )
+		{ 
+			let p1 = arrP[i];
+			let p2 = arrP[i + 1];
+			
+			let pos = mathProjectPointOnLine({p: [p1.position, p2.position], rayHit: clickPos});
+			
+			let dist = clickPos.distanceTo(pos);	
+			
+			if(checkPointBoundBoxLine(p1.position, p2.position, pos))
+			{
+				arr[arr.length] = {dist: dist, pos: pos, p1: p1};
+			}
+		} 
+
+		arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
+
+		return {p1: arr[0].p1, pos: arr[0].pos};
+	}
+	
 	
 	// деактивируем трубу
 	deClickTube()
@@ -143,7 +192,31 @@ class MyTube extends THREE.Mesh
 		let visible = params.visible;
 		let arr = this.getTubePoints();
 		
-		for ( var i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }	
+		for ( let i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }	
+	}
+	
+	
+	// удаляем трубу
+	delete()
+	{
+		this.deClickTube();
+		
+		deleteValueFromArrya({arr: infProject.scene.array.tube, o: this});
+		
+		let points = this.getTubePoints();
+		
+		for ( let i = points.length - 1; i > -1; i-- )
+		{
+			points[i].deletePointFromTube();
+		}
+		
+		disposeNode(this);
+		scene.remove(this); 
+
+		this.userData.point = [];
+		this.userData.group = [];
+
+		this.render();
 	}
 
 	render()
@@ -172,10 +245,9 @@ class PointTube extends THREE.Mesh
 		else { id = countId; countId++; }
 		
 		this.userData.id = id;	
-		this.userData.tag = 'wf_point';
-		this.userData.wf_point = {};
-		this.userData.wf_point.nameRus = 'точка';
-		this.userData.wf_point.tube = params.tube ? params.tube : null;
+		this.userData.tag = 'new_point';
+		this.userData.nameRus = 'точка';
+		this.userData.tube = params.tube ? params.tube : null;
 		
 		if(params.visible != undefined) this.visible = params.visible;
 	
@@ -199,6 +271,100 @@ class PointTube extends THREE.Mesh
 		if(!offset) return;
 		
 		this.position.add(offset);
+	}
+
+	// название объекта
+	getNameObj(params = {lang: 'ru'})
+	{
+		let lang = params.lang;
+		
+		let txt = '';
+		
+		if(lang == 'ru') txt = this.userData.nameRus;
+		
+		return txt;
+	}
+
+	// получаем все точки трубы
+	getTubePoints()
+	{
+		let arr = [this];
+		
+		if(this.userData.tube) arr = this.userData.tube.getTubePoints();
+		
+		return arr;					
+	}
+
+
+	// кликнули на точку
+	clickPointTube(params)
+	{
+		let tube = this.userData.tube;
+		tube.showHideTubePoints({visible: true});
+		
+		let arrO = [tube, ...this.getTubePoints()];
+		
+		outlineAddObj(this, {arrO: arrO});	
+		
+		infProject.tools.pg.activeTool({obj: this, pos: this.position, arrO: arrO});			
+	}
+	
+	
+	// перемещение точки
+	movePointTube(params)
+	{
+		let offset = params.offset;
+		
+		this.offsetPos({offset: offset});
+		
+		let tube = this.userData.tube;
+		
+		tube.tubeGeometry();			
+	}	
+
+
+	// деактивируем трубу
+	deClickPointTube()
+	{
+		outlineRemoveObj();
+		let tube = this.userData.tube;
+		tube.showHideTubePoints({visible: false});
+		
+		infProject.tools.pg.hide();	
+	}
+
+
+	// удаляем точку
+	delete()
+	{
+		this.deClickPointTube();
+		
+		let tube = this.userData.tube;
+		
+		this.deletePointFromTube(); 
+		
+		if(tube.getTubePoints().length >= 2) 
+		{ 
+			tube.tubeGeometry(); 
+		}
+		else 
+		{ 
+			tube.delete(); 
+		}
+
+		this.render();
+	}
+	
+	
+	// удаляем точку из трубы
+	deletePointFromTube()
+	{
+		let tube = this.userData.tube;
+		deleteValueFromArrya({arr: tube.userData.point, o: this});
+		this.userData.tube = null;
+
+		disposeNode(this);
+		scene.remove(this); 
 	}	
 
 	render()
