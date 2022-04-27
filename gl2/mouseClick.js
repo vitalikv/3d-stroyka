@@ -367,8 +367,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
-		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({rayhit: rayhit}); }
-		else if( tag == 'new_point' && camera == cameraTop ) { obj.clickPointTube({rayhit: rayhit}); }		
+		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({clickPos: rayhit.point}); }
+		else if( tag == 'new_point' && camera == cameraTop ) { obj.clickPointTube(); }		
 	}
 	else if(cdm.type == 'up')
 	{		
@@ -378,8 +378,8 @@ function clickMouseActive(cdm)
 		else if( tag == 'wf_tube' && camera == camera3D ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
-		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({rayhit: rayhit}); }
-		else if( tag == 'new_point' && camera == camera3D ) { obj.clickPointTube({rayhit: rayhit}); }
+		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({clickPos: rayhit.point}); }
+		else if( tag == 'new_point' && camera == camera3D ) { obj.clickPointTube(); }
 	}		
 }
 

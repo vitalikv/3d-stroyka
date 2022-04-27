@@ -71,6 +71,7 @@ house.js
 warmTube.js
 warmTubeGrid.js
 crTube.js
+crPointTube.js
 ';
 
 

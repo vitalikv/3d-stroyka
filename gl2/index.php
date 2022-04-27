@@ -243,6 +243,7 @@
 	 
     
 	<script src="<?=$path?>crTube.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>crPointTube.js?<?=$vrs?>"></script>
 	
 	<script src="<?=$path?>warmTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>warmTubeGrid.js?<?=$vrs?>"></script>
