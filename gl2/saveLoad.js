@@ -311,19 +311,41 @@ function getJsonGeometry()
 	{
 		var tube = infProject.scene.array.tube[i];
 		
-		var m = pipe.length;
-		pipe[m] = {};
-		pipe[m].id = tube.userData.id;
-		pipe[m].diameter = tube.userData.wf_tube.diameter;
-		pipe[m].color = tube.material.color;
-		
-		pipe[m].point = [];
-		
-		for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
+		if(tube.userData.tag == 'wf_tube')
 		{
-			pipe[m].point[i2] = {};
-			pipe[m].point[i2].id = tube.userData.wf_tube.point[i2].userData.id;
-			pipe[m].point[i2].pos = tube.userData.wf_tube.point[i2].position;
+			var m = pipe.length;
+			pipe[m] = {};
+			pipe[m].id = tube.userData.id;
+			pipe[m].diameter = tube.userData.wf_tube.diameter;
+			pipe[m].color = tube.material.color;
+			
+			pipe[m].point = [];
+			
+			for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
+			{
+				pipe[m].point[i2] = {};
+				pipe[m].point[i2].id = tube.userData.wf_tube.point[i2].userData.id;
+				pipe[m].point[i2].pos = tube.userData.wf_tube.point[i2].position;
+			}			
+		}
+		else if(tube.userData.tag == 'new_tube')
+		{
+			let info = {};
+			info.vers = 2;
+			info.id = tube.userData.id;
+			info.diameter = tube.userData.diameter;
+			info.color = tube.material.color;
+			
+			info.point = [];
+			
+			for ( var i2 = 0; i2 < tube.userData.point.length; i2++ )
+			{
+				info.point[i2] = {};
+				info.point[i2].id = tube.userData.point[i2].userData.id;
+				info.point[i2].pos = tube.userData.point[i2].position;
+			}
+
+			pipe.push(info);
 		}
 	}
 
@@ -520,8 +542,16 @@ async function loadFilePL(arr)
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
-		var tube = crTubeWF({id: pipe[i].id, point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
-		addTubeInScene(tube, {});
+		if(pipe[i].vers)
+		{
+			console.log(111, pipe[i]);
+			new TubeN({id: pipe[i].id, path: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)});		
+		}
+		else
+		{
+			var tube = crTubeWF({id: pipe[i].id, point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
+			addTubeInScene(tube, {});			
+		}
 	}
 
 
@@ -560,18 +590,6 @@ async function loadFilePL(arr)
 	readyProject();
 	
 	cameraZoomTop( camera.zoom );
-	
-	if(1==1)
-	{
-		let arrP = [new THREE.Vector3(-0.5, 0, 0), new THREE.Vector3(0, 0, 0), new THREE.Vector3(0.5, 0, 0)];
-		let pointFFF = new MyTube({pathPos: arrP, diameter: 0.09, mat: 0x00ff00}); 
-		pointFFF.setPos({pos: new THREE.Vector3(-1, 0, -1)});
-		console.log(555, pointFFF);	
-		//renderCamera();		
-	}
-
-	
-	//getSkeleton_1(room); 
 }
 
 

@@ -1,21 +1,19 @@
 
 
 
-class MyTube extends THREE.Mesh
+class TubeN extends THREE.Mesh
 {
 
-	constructor(params)
+	constructor({id, path, diameter, color})
 	{
 		super();
 		
-		this.create(params);
+		this.create({id, path, diameter, color}); 
 	}
 	
-	create(params)
+	create({id, path, diameter, color})
 	{
-		let id = 0;
-		if(params.id) { id = params.id; }
-		else { id = countId; countId++; }
+		if(!id) { id = countId; countId++; }
 		
 		this.userData.id = id;			
 		this.userData.tag = 'new_tube';
@@ -25,8 +23,8 @@ class MyTube extends THREE.Mesh
 		this.userData.diameter = 0;	
 		this.userData.group = [];	
 		
-		this.tubeGeometry(params);
-		this.tubeMaterial(params);
+		this.tubeGeometry({path, diameter});
+		this.tubeMaterial({color});
 	
 		scene.add( this );
 		infProject.scene.array.tube.push( this );
@@ -46,26 +44,25 @@ class MyTube extends THREE.Mesh
 	}
 	
 	// создаем/обновляем Geometry трубы
-	tubeGeometry(params = {})
+	tubeGeometry({path = null, diameter = this.userData.diameter})
 	{
-		let pathPos = params.pathPos;
-		let diameter = (params.diameter) ? params.diameter : this.userData.diameter;	
-
 		this.position.set(0, 0, 0);
 		this.rotation.set(0, 0, 0);
 	
 
-		if(pathPos)
+		if(path)
 		{
 			let arr = [];		
-			for(let i = 0; i < pathPos.length; i++)
+			for(let i = 0; i < path.length; i++)
 			{
-				let p = new PointTube({pos: pathPos[i], tube: this});
-				arr.push(p);
+				let pos = new THREE.Vector3(path[i].pos.x, path[i].pos.y, path[i].pos.z);
+				let point = new PointTube({pos: pos, tube: this, id: path[i].id});
+				arr.push(point);
 			}
 			
 			this.addArrPoint({arr: arr});			
 		}
+		
 		
 		let arrPT = this.getTubePoints();
 		
@@ -98,11 +95,9 @@ class MyTube extends THREE.Mesh
 		this.geometry = geometry;
 	}
 	
-	tubeMaterial(params = {})
-	{
-		let color = params.color;	
-		
-		if(!color) color = new THREE.Color(0x0252f2);			
+	tubeMaterial({color})
+	{		
+		if(!color) color = new THREE.Color(0x0252f2);	 		
 		
 		let material = new THREE.MeshStandardMaterial({ color: color, wireframe: false, side: THREE.DoubleSide, lightMap: lightMap_1 });	
 
@@ -146,7 +141,9 @@ class MyTube extends THREE.Mesh
 		let pos = result.pos;	
 		
 		let arrO = [this, ...this.getTubePoints()];
-		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});			
+		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
+
+		console.log(222, this);
 	}
 	
 	

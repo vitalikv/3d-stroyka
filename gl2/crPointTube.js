@@ -8,24 +8,20 @@ class PointTube extends THREE.Mesh
 		super(infProject.geometry.wf_point, infProject.material.pointTube.default);
 
 		this.create(params);
-		
-		 		
 	}
 	
-	create(params)
+	create({id, tube = null, visible, pos})
 	{
-		let id = 0;
-		if(params.id) { id = params.id; }
-		else { id = countId; countId++; }
+		if(!id) { id = countId; countId++; }
 		
 		this.userData.id = id;	
 		this.userData.tag = 'new_point';
 		this.userData.nameRus = 'точка';
-		this.userData.tube = params.tube ? params.tube : null;
+		this.userData.tube = tube;
 		
-		if(params.visible != undefined) this.visible = params.visible;
+		if(visible != undefined) this.visible = visible;
 	
-		this.setPos(params);
+		this.setPos({pos});
 		
 		scene.add( this );
 		this.render();		
@@ -93,7 +89,7 @@ class PointTube extends THREE.Mesh
 		
 		let tube = this.userData.tube;
 		
-		tube.tubeGeometry();			
+		tube.tubeGeometry({});			
 	}	
 
 
@@ -119,7 +115,7 @@ class PointTube extends THREE.Mesh
 		
 		if(tube.getTubePoints().length >= 2) 
 		{ 
-			tube.tubeGeometry();
+			tube.tubeGeometry({});
 			let pos = this.convertDistToPos({dist: dist, tube: tube});  
 			tube.clickTube({clickPos: pos});
 		}
