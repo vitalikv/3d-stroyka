@@ -95,65 +95,6 @@
 				
 				
 				
-					<div nameId="block_pos" class="block_pos" ui_1="">
-						<div style="display: flex;">
-							<div style="display: flex; align-items: center;">
-								<div class="button1 button_gradient_1" nameId="select_pivot">
-									<img src="<?=$path?>/img/move_1.png">
-								</div>	
-								
-								<div class="flex_1 input_rotate">
-									<input type="text" nameId="object_pos_X" value="0">
-									<input type="text" nameId="object_pos_Y" value="0">
-									<input type="text" nameId="object_pos_Z" value="0">
-								</div>	
-							</div>
-							
-							<div style="display: flex; align-items: center; margin-left: 40px;">
-								<div class="button1 button_gradient_1" nameId="select_gizmo">
-									<img src="<?=$path?>/img/rotate_1.png">	
-								</div>	
-
-								<div class="flex_1 input_rotate">
-									<div class="flex_1" style="position: relative; margin: 0 5px;">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_X_90m" style="position: absolute; left: 0; width: 10px;">-</div>
-										<input type="text" nameId="object_rotate_X" value="0">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_X_90" style="position: absolute; right: 0; width: 10px;">+</div>
-									</div>
-									
-									<div class="flex_1" style="position: relative; margin: 0 5px;">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90m" style="position: absolute; left: 0; width: 10px;">-</div>
-										<input type="text" nameId="object_rotate_Y" value="0">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_Y_90" style="position: absolute; right: 0; width: 10px;">+</div>
-									</div>
-
-									<div class="flex_1" style="position: relative; margin: 0 5px;">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90m" style="position: absolute; left: 0; width: 10px;">-</div>
-										<input type="text" nameId="object_rotate_Z" value="0">
-										<div class="button1 button_gradient_1" nameId="obj_rotate_Z_90" style="position: absolute; right: 0; width: 10px;">+</div>
-									</div>									
-									
-								</div>	
-
-								<div class="flex_1">
-									<div style="width: 20px; height: 2px; background: rgb(247, 72, 72);"></div>
-									<div style="width: 20px; height: 2px; background: rgb(17, 255, 0);"></div>
-									<div style="width: 20px; height: 2px; background: rgb(72, 116, 247);"></div>
-								</div>
-													
-							
-								<div class="button1 button_gradient_1" nameId="obj_rotate_reset">
-									сбросить	
-								</div>											
-							</div>
-							
-						</div>
-					</div>					
-				
-				
-				
-				
-				
 			</div>
 
 			<div nameId="wrap_sborka_1" style="display: none; width: 280px; position: absolute; background: #f1f1f1; border: 1px solid #ccc;">
@@ -242,15 +183,21 @@
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
 	 
     
-	<script src="<?=$path?>crTube.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>crPointTube.js?<?=$vrs?>"></script>
-	
 	<script src="<?=$path?>warmTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>warmTubeGrid.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>crTube.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>crPointTube.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>ui/pivotGizmo.js?<?=$vrs?>"></script> 
+	<script src="<?=$path?>ui/infoBlockObj.js?<?=$vrs?>"></script>	
+	<script src="<?=$path?>sceneInit.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>sceneParams.js?<?=$vrs?>"></script>	
+
+
 	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	
 	<script src="<?=$path?>ui/slider_2mov.js?<?=$vrs?>"></script> 
 	
+
 	
 	<script src="<?=$path?>script.js?<?=$vrs?>"></script> 
 	

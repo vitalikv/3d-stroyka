@@ -4,21 +4,33 @@
 
 class ToolPG 
 {
-	pivot = infProject.tools.pivot;
-	gizmo = infProject.tools.gizmo;
+	pivot = null;
+	gizmo = null;
 	type = 'pivot';
 	obj = null;
 	arrO = [];
 	pos = new THREE.Vector3();
-	qt = new THREE.Quaternion();	
+	qt = new THREE.Quaternion();
+
+	ui_menu = null;
 	ui = {};
 	
 	
 	
 
-	constructor(params = {type: 'pivot'}) 
+	constructor({type = 'pivot', nameAttr}) 
 	{
-		this.type = params.type;
+		let container = document.querySelector(nameAttr);
+		
+		this.ui_menu = new UI_menuPivotGizmo({container: container});
+		
+		crPivot({container: container});
+		crGizmo({container: container});	
+
+		this.pivot = infProject.tools.pivot;
+		this.gizmo = infProject.tools.gizmo;		
+		
+		this.type = type;
 		this.initButton();
 		this.getPosRotUI();		
 	}
@@ -26,17 +38,17 @@ class ToolPG
 	// кнопки переключения Pivot/Gizmo
 	initButton()
 	{
-		document.querySelector('[nameId="select_pivot"]').onmousedown = (e) => { this.toggleTool({type:'pivot'}); e.stopPropagation(); };
-		document.querySelector('[nameId="select_gizmo"]').onmousedown = (e) => { this.toggleTool({type:'gizmo'}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="select_pivot"]').onmousedown = (e) => { this.toggleTool({type:'pivot'}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="select_gizmo"]').onmousedown = (e) => { this.toggleTool({type:'gizmo'}); e.stopPropagation(); };
 
-		document.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: -45}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: 45}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: -45}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: 45}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: -45}); e.stopPropagation(); };
-		document.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: 45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_X_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: -45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_X_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'x', angle: 45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_Y_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: -45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_Y_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'y', angle: 45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_Z_90"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: -45}); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_Z_90m"]').onmousedown = (e) => { this.setAngleRotUI({axis: 'z', angle: 45}); e.stopPropagation(); };
 		
-		document.querySelector('[nameId="obj_rotate_reset"]').onmousedown = (e) => { this.resetRot(); e.stopPropagation(); };
+		this.ui_menu.el.querySelector('[nameId="obj_rotate_reset"]').onmousedown = (e) => { this.resetRot(); e.stopPropagation(); };
 	}
 	
 	getPosRotUI()
@@ -137,14 +149,12 @@ class ToolPG
 		if(type == 'pivot') this.pivot.userData.propPivot({type: 'setPivot', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});		
 		if(type == 'gizmo') this.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});
 
-		renderCamera();		
+		this.render();	
 	}
 	
 	// переключаем Pivot/Gizmo
-	toggleTool(params)
+	toggleTool({type})
 	{
-		let type = params.type;
-		
 		let obj = this.obj;
 		let arrO = this.arrO;
 		
@@ -160,7 +170,9 @@ class ToolPG
 		if(this.type == 'pivot') this.pivot.userData.propPivot({type: 'setPivot', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});		
 		if(this.type == 'gizmo') this.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});
 		
-		renderCamera();
+		this.displayMenuUI({visible: ''});
+		
+		this.render();
 	}
 	
 
@@ -210,7 +222,7 @@ class ToolPG
 		
 		this.setPosUI();
 		
-		renderCamera();
+		this.render();
 	}
 	
 	
@@ -251,7 +263,7 @@ class ToolPG
 
 		this.setRotUI();	
 		
-		renderCamera();
+		this.render();
 	}
 	
 	
@@ -309,7 +321,7 @@ class ToolPG
 		
 		resetClickLastObj({});
 		
-		renderCamera();		
+		this.render();		
 	}
 	
 	displayMenuUI(params)
@@ -317,6 +329,11 @@ class ToolPG
 		let visible = params.visible;
 		
 		this.ui.menu.style.display = visible;
+	}
+	
+	render()
+	{
+		renderCamera();
 	}
 }
 

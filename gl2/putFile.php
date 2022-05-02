@@ -72,6 +72,10 @@ warmTube.js
 warmTubeGrid.js
 crTube.js
 crPointTube.js
+ui/pivotGizmo.js
+ui/infoBlockObj.js
+sceneInit.js
+sceneParams.js
 ';
 
 

@@ -106,8 +106,7 @@ document.querySelector('[nameId="button_delete_plane"]').onmousedown = function 
 
 
 
-document.querySelector('[nameId="button_delete_obj"]').onmousedown = function(e){ detectDeleteObj({obj: clickO.last_obj}); e.stopPropagation(); };
-document.querySelector('[nameId="button_copy_obj"]').onmousedown = function(e){ copyObj(); e.stopPropagation(); };
+
 
 
 
@@ -134,8 +133,6 @@ infProject.elem.wrap_plan = document.querySelector('[nameId="wrap_plan"]');
 
 
 
-// вкладка со списком объектов в группе 
-infProject.elem.bl_rp_obj_group = document.querySelector('[nameId="bl_rp_obj_group"]');
 
 // вкладка со списком объединения в группу
 infProject.elem.rp_wrap_add_group = document.querySelector('[nameId="rp_wrap_add_group"]');
@@ -244,8 +241,7 @@ document.querySelector('[nameId="rp_plane_1"]').onmousedown = function(e){ click
 
 
 
-var elem = document.querySelector('[nameId="butt_add_point_on_tube"]');
-elem.addEventListener('mousedown', function() { switchAddPointOnTube(); })
+
 
 
 

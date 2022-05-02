@@ -5,19 +5,7 @@ function crPivot(params)
 	let container = params.container;
 	
 	let pivot = crObj();
-	
-	let ui = {};
-	
-	ui.pos = {};
-	ui.pos.x = document.querySelector('[nameId="object_pos_X"]');
-	ui.pos.y = document.querySelector('[nameId="object_pos_Y"]');
-	ui.pos.z = document.querySelector('[nameId="object_pos_Z"]');
-	
-	ui.rot = {};
-	ui.rot.x = document.querySelector('[nameId="object_rotate_X"]');
-	ui.rot.y = document.querySelector('[nameId="object_rotate_Y"]');
-	ui.rot.z = document.querySelector('[nameId="object_rotate_Z"]');
-	
+
 
 	function crObj() 
 	{
