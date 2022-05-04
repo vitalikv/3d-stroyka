@@ -4,13 +4,13 @@ $(document).ready(function()
 	$('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
 	$('[nameId="button_active_align_wf_point2"]').mousedown(function () { switchAlignPoint_1({active: true, type: 'move'}); }); 
 	$('[nameId="button_active_join_element"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
-	$('[nameId="button_deactive_join_element"]').mousedown(function () { switchAlignPoint_1({active: false}); });
+	
 
 	$('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: true}); });
-	$('[nameId="button_deactive_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: false}); }); 
+	
 	  
-	$('[nameId="button_add_group"]').mousedown(function () { addObjToGroup(); });  
-	$('[nameId="join_element"]').mousedown(function () { alignPointToPoint_1(); });
+	
+	
 
 	$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
 
@@ -116,8 +116,7 @@ infProject.elem.button_catalog_close = document.querySelector('[nameId="button_c
 infProject.elem.button_show_panel_catalog = document.querySelector('[nameId="button_show_panel_catalog"]');
 infProject.elem.resize_el = document.querySelector('[nameId="right_panel_resize_1"]');
 
-// input название объекта, трубы, точки и т.д.
-infProject.elem.rp_obj_name = document.querySelector('[nameId="rp_obj_name"]');
+
 
 // кнопки вкладок
 infProject.elem.button_wrap_catalog = document.querySelector('[nameId="button_wrap_catalog"]');
@@ -134,10 +133,8 @@ infProject.elem.wrap_plan = document.querySelector('[nameId="wrap_plan"]');
 
 
 
-// вкладка со списком объединения в группу
-infProject.elem.rp_wrap_add_group = document.querySelector('[nameId="rp_wrap_add_group"]');
-// список объединения в группу
-infProject.elem.rp_add_group = document.querySelector('[nameId="rp_add_group"]');
+
+
 
 
 infProject.elem.button_wrap_catalog.onmousedown = function(e){ changeRightMenuUI_1({el: this}); };

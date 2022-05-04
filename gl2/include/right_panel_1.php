@@ -317,54 +317,6 @@
 		<div nameId="wrap_object">
 
 			
-			<div class="flex_column_1" nameId="wrap_object_1" style="display: none; overflow: auto;">
-				<div class="right_panel_1_1_h">Объект</div>
-				
-				
-				<div class="rp_obj">  
-				
-					<div class="rp_obj_name">
-						<input type="text" nameId="rp_obj_name" value="Название">					
-					</div>
-							
-
-					
-					
-					<div nameId="rp_wrap_obj_info">	
-					
-						<div nameId="rp_wrap_obj_align" style="display: none;">
-						
-							<div class="button1 button_gradient_1" nameId="button_deactive_join_element" style="border-color: #ff0000">
-								закрыть	
-							</div>
-						
-							<div class="right_panel_1_1_list" nameId="rp_obj_align">
-								
-							</div>	
-							<div class="button1 button_gradient_1" nameId="join_element">
-								подключить	
-							</div>
-							
-						</div>
-						
-						
-						<div nameId="rp_wrap_add_group" style="display: none;">
-							<div class="button1 button_gradient_1" nameId="button_deactive_add_group" style="border-color: #ff0000">
-								закрыть	
-							</div>							
-							<div class="right_panel_1_1_list" nameId="rp_add_group">
-								
-							</div>
-							<div class="button1 button_gradient_1" nameId="button_add_group">
-								сгруппировать	
-							</div>	
-						</div>
-
-												
-					</div>
-					
-				</div> 
-			</div>	
 		</div>
 
 		

@@ -7,7 +7,6 @@ function activeObjRightPanelUI_1(cdm)
 	var el = document.querySelector('[nameId="wrap_object_1"]');
 	
 
-	var bl_object_3d = document.querySelector('[nameId="bl_object_3d"]');
 	var elButt_1 = document.querySelector('[nameId="pr_list_button_for_obj"]');
 	var elButt_2 = document.querySelector('[nameId="pr_list_button_center_point"]');
 	//var elButt_3 = document.querySelector('[nameId="block_pos"]');
@@ -16,7 +15,6 @@ function activeObjRightPanelUI_1(cdm)
 	var elButt_6 = document.querySelector('[nameId="rp_bl_wf_tube"]');
 	
 	el.style.display = 'none';
-	bl_object_3d.style.display = 'none';
 	elButt_1.style.display = 'none';
 	elButt_2.style.display = 'none';
 	//elButt_3.style.display = 'none';
@@ -64,7 +62,6 @@ function activeObjRightPanelUI_1(cdm)
 		return;
 	}
 	
-	bl_object_3d.style.display = 'block';
 	el.style.display = 'block';
 	
 }

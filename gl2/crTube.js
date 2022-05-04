@@ -31,10 +31,8 @@ class TubeN extends THREE.Mesh
 		this.render();		
 	}
 	
-	setPos(params)
+	setPos({pos})
 	{
-		let pos = params.pos;
-		
 		let offset = pos.clone().sub(this.position);
 				
 		this.position.add(offset);
@@ -105,10 +103,8 @@ class TubeN extends THREE.Mesh
 		this.material = material;
 	}
 
-	addArrPoint(params)
+	addArrPoint({arr})
 	{
-		let arr = params.arr;
-		
 		this.userData.point.push(...arr);					
 	}
 	
@@ -118,10 +114,8 @@ class TubeN extends THREE.Mesh
 	}
 	
 	// название объекта
-	getNameObj(params = {lang: 'ru'})
-	{
-		let lang = params.lang;
-		
+	getNameObj({lang = 'ru'} = {lang: 'ru'})
+	{		
 		let txt = '';
 		
 		if(lang == 'ru') txt = this.userData.nameRus+' ('+this.userData.length+'м)';
@@ -130,10 +124,8 @@ class TubeN extends THREE.Mesh
 	}
 
 	// кликнули на трубу
-	clickTube(params)
+	clickTube({clickPos})
 	{
-		let clickPos = params.clickPos;
-		
 		outlineAddObj(this);
 		this.showHideTubePoints({visible: true});
 		
@@ -143,7 +135,7 @@ class TubeN extends THREE.Mesh
 		let arrO = [this, ...this.getTubePoints()];
 		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
 
-		console.log(222, this);
+		this.ui_menu({type: 'show'});
 	}
 	
 	
@@ -182,6 +174,7 @@ class TubeN extends THREE.Mesh
 		outlineRemoveObj();
 		this.showHideTubePoints({visible: false});
 		
+		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
 	}
 
@@ -218,6 +211,23 @@ class TubeN extends THREE.Mesh
 		this.render();
 	}
 
+
+	ui_menu({type})
+	{
+		if(type == 'show') this.ui_showMenu();
+		if(type == 'hide') this.ui_hideMenu();
+	}
+	
+	ui_showMenu()
+	{
+		infProject.ui.rpanel.InfObj.show();
+	}
+	
+	ui_hideMenu()
+	{
+		infProject.ui.rpanel.InfObj.hide();
+	}	
+	
 	render()
 	{
 		renderCamera();

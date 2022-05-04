@@ -143,6 +143,8 @@ function initSceneParams()
 	infProject.ui.div.msDiv_1 = document.querySelector('[nameId="msDiv_1"]');
 	infProject.ui.cat_item_active = null;
 	
+	infProject.ui.rpanel = {};
+	infProject.ui.rpanel.InfObj = null;
 }
 
 

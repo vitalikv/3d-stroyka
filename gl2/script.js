@@ -543,10 +543,10 @@ function init()
 	renderCamera();	
 	
 	
-	new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
+	infProject.ui.rpanel.InfObj = new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
 	
 
-	infProject.tools.pg = new ToolPG({nameAttr: '[nameId="mainDiv_1"]'});
+	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
 	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI
