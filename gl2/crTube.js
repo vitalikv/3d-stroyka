@@ -220,7 +220,18 @@ class TubeN extends THREE.Mesh
 	
 	ui_showMenu()
 	{
-		infProject.ui.rpanel.InfObj.show();
+		let inf = {};
+		inf.txt = {};
+		inf.show = [];			
+		 
+		inf.txt.nameObj = this.userData.nameRus;
+		inf.txt.tubeDiameter = this.userData.diameter * 1000;
+		
+		inf.show.push('tube');
+		inf.show.push('bobj');
+		
+		infProject.ui.rpanel.InfObj.update({inf: inf.txt});		
+		infProject.ui.rpanel.InfObj.show({inf: inf.show});
 	}
 	
 	ui_hideMenu()

@@ -2,67 +2,42 @@
 
 
 // кликнули на obj, wd (показываем нужное меню и заполняем input или скрываем меню)
-function activeObjRightPanelUI_1(cdm) 
+function activeObjRightPanelUI_1({obj} = {}) 
 {	
-	var el = document.querySelector('[nameId="wrap_object_1"]');
 	
-
-	var elButt_1 = document.querySelector('[nameId="pr_list_button_for_obj"]');
-	var elButt_2 = document.querySelector('[nameId="pr_list_button_center_point"]');
-	//var elButt_3 = document.querySelector('[nameId="block_pos"]');
-	var elButt_4 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
-	var elButt_5 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');		
-	var elButt_6 = document.querySelector('[nameId="rp_bl_wf_tube"]');
+	infProject.ui.rpanel.InfObj.hide();		
 	
-	el.style.display = 'none';
-	elButt_1.style.display = 'none';
-	elButt_2.style.display = 'none';
-	//elButt_3.style.display = 'none';
-	elButt_4.style.display = 'none';
-	elButt_5.style.display = 'none';
-	elButt_6.style.display = 'none';		
-	
-	
-	if(!cdm) { cdm = {}; }  
-	
-	var obj = cdm.obj;
 	
 	if(!obj) return;
 	
 	if(obj.userData.tag == 'wf_point')
 	{
-		elButt_4.style.display = 'block';
-		elButt_5.style.display = 'block';
-		//elButt_3.style.display = 'block';
+		infProject.ui.rpanel.InfObj.show({inf: ['ptube1', 'ptube2']});
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
-		elButt_6.style.display = 'block';
-		elButt_1.style.display = 'block';
-		//elButt_3.style.display = 'block';
+		infProject.ui.rpanel.InfObj.show({inf: ['bobj', 'tube']});
 	}			
 	else if(obj.userData.tag == 'obj')
 	{	
-		elButt_1.style.display = 'block';
-		//elButt_3.style.display = 'block';
+		infProject.ui.rpanel.InfObj.show({inf: ['bobj']});
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
 	{ 
-		elButt_2.style.display = 'block';
-		//elButt_3.style.display = 'block';
+		infProject.ui.rpanel.InfObj.show({inf: ['jpoint']});
 	}
 	else if(obj.userData.tag == 'wtGrid')
 	{ 
-		//elButt_3.style.display = 'block';
+		
 	}	
 	else
 	{
 		return;
 	}
 	
-	el.style.display = 'block';
+	//el.style.display = 'block';
 	
 }
 

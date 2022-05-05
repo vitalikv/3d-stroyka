@@ -76,7 +76,9 @@ class PointTube extends THREE.Mesh
 		
 		outlineAddObj(this, {arrO: arrO});	
 		
-		infProject.tools.pg.activeTool({obj: this, pos: this.position, arrO: arrO});		
+		infProject.tools.pg.activeTool({obj: this, pos: this.position, arrO: arrO});
+
+		this.ui_menu({type: 'show'});
 	}
 	
 	
@@ -100,6 +102,7 @@ class PointTube extends THREE.Mesh
 		let tube = this.userData.tube;
 		tube.showHideTubePoints({visible: false});
 		
+		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
 	}
 
@@ -198,7 +201,32 @@ class PointTube extends THREE.Mesh
 		return pos;
 	}	
 	
-
+	ui_menu({type})
+	{
+		if(type == 'show') this.ui_showMenu();
+		if(type == 'hide') this.ui_hideMenu();
+	}
+	
+	ui_showMenu()
+	{
+		let inf = {};
+		inf.txt = {};
+		inf.show = [];			
+		 
+		inf.txt.nameObj = this.userData.nameRus;
+		
+		inf.show.push('ptube1');
+		inf.show.push('ptube2');
+		
+		infProject.ui.rpanel.InfObj.update({inf: inf.txt});		
+		infProject.ui.rpanel.InfObj.show({inf: inf.show});
+	}
+	
+	ui_hideMenu()
+	{
+		infProject.ui.rpanel.InfObj.hide();
+	}
+	
 	render()
 	{
 		renderCamera();

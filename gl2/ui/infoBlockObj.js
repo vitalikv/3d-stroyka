@@ -4,8 +4,8 @@
 class UI_infoBlockObj
 {
 	el = null;
-	
-	
+	list = {};
+		
 	constructor({nameAttr})
 	{
 		this.el = document.createElement('div');			
@@ -15,7 +15,9 @@ class UI_infoBlockObj
 		this.el_parent = document.querySelector('[nameId="wrap_object"]');
 		this.el_parent.append(this.el);	
 		
-		this.assignEvent();		
+		this.assignEvent();	
+		this.setDivElement();
+		this.setUpdElement();
 	}
 	
 	assignEvent()
@@ -44,6 +46,23 @@ class UI_infoBlockObj
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
 		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 
 	}
+
+	setDivElement()
+	{
+		this.list.div = {};
+		this.list.div.tube = this.el.querySelector('[nameId="rp_bl_wf_tube"]');
+		this.list.div.bobj = this.el.querySelector('[nameId="pr_list_button_for_obj"]');
+		this.list.div.ptube1 = this.el.querySelector('[nameId="pr_list_button_for_tube_point1"]');
+		this.list.div.ptube2 = this.el.querySelector('[nameId="pr_list_button_for_tube_point2"]');
+		this.list.div.jpoint = this.el.querySelector('[nameId="pr_list_button_center_point"]');
+	}
+	
+	setUpdElement()
+	{
+		this.list.upd = {};
+		this.list.upd.nameObj = this.el.querySelector('[nameId="rp_obj_name"]');
+		this.list.upd.tubeDiameter = this.el.querySelector('[nameId="size_tube_diameter_2"]');
+	}
 	
 	html()
 	{
@@ -53,9 +72,7 @@ class UI_infoBlockObj
 							
 			<div class="rp_obj">  
 			
-				<div class="rp_obj_name">
-					<input type="text" nameId="rp_obj_name" value="Название">					
-				</div>													
+				${this.htmlObjName()}													
 
 				<div nameId="bl_object_3d"> 
 					 
@@ -65,46 +82,13 @@ class UI_infoBlockObj
 							 
 						</div> 
 
-						<div nameId="pr_list_button_for_obj" style="display: none;"> 
-							 
-							<div class="flex_1"> 
-								<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;"> 
-									объединить в группу	 
-								</div> 
-								<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;"> 
-									убрать из группы	 
-								</div>															 
-							</div> 
-							 
-							<div class="flex_1"> 
-								<div class="button1 button_gradient_1" nameId="button_copy_obj" style="width: 100%;"> 
-									копировать	 
-								</div> 
-								<div class="button1 button_gradient_1" nameId="button_delete_obj" style="width: 100%;"> 
-									удалить	 
-								</div>								 
-							</div> 
-	 
-							<div nameId="sp_block_drt"> 
-
-							</div>		 
-						</div>								 
+						${this.htmlButtonObj()}
 					 
 					</div> 
 					 
-					<div nameId="pr_list_button_center_point" style="display: none;">  
-						<div class="button1 button_gradient_1" nameId="button_active_join_element"> 
-							подключить 
-						</div>		 										 
-					</div>	 
+					${this.htmlJoinPoint()} 
 
-					<div nameId="pr_list_button_for_tube_point1" style="margin: 10px 0; display: none;">								 
-						<div nameId="button_active_align_wf_point1" class="button1 button_gradient_1">подключить точку</div>			 
-					</div> 
-					 
-					<div nameId="pr_list_button_for_tube_point2" style="margin: 10px 0; display: none;">								 
-						<div nameId="button_active_align_wf_point2" class="button1 button_gradient_1">подключить трубу</div>			 
-					</div>															 
+					${this.htmlButtonPointTube()}															 
 					 
 					${this.htmlTube()}
 					 
@@ -145,6 +129,16 @@ class UI_infoBlockObj
 		return str;
 	}
 	
+
+	htmlObjName()
+	{
+		let str =
+		`<div class="rp_obj_name">
+			<input type="text" nameId="rp_obj_name" value="Название">					
+		</div>`;
+
+		return str;	
+	}
 	
 	htmlTube()
 	{
@@ -170,14 +164,115 @@ class UI_infoBlockObj
 		return str;
 	}
 
-	show()
+	htmlButtonPointTube()
 	{
-		console.log(this.el);
+		let str =
+		`<div nameId="pr_list_button_for_tube_point1" style="margin: 10px 0; display: none;">								 
+			<div nameId="button_active_align_wf_point1" class="button1 button_gradient_1">подключить точку</div>			 
+		</div> 
+		 
+		<div nameId="pr_list_button_for_tube_point2" style="margin: 10px 0; display: none;">								 
+			<div nameId="button_active_align_wf_point2" class="button1 button_gradient_1">подключить трубу</div>			 
+		</div>`;			
+
+		return str;	
+	}
+	
+	htmlButtonObj()
+	{
+		let str =
+		`<div nameId="pr_list_button_for_obj" style="display: none;"> 
+			 
+			<div class="flex_1"> 
+				<div class="button1 button_gradient_1" nameId="button_active_add_group" style="width: 100%;"> 
+					объединить в группу	 
+				</div> 
+				<div class="button1 button_gradient_1" nameId="button_detach_obj_group" style="width: 100%;"> 
+					убрать из группы	 
+				</div>															 
+			</div> 
+			 
+			<div class="flex_1"> 
+				<div class="button1 button_gradient_1" nameId="button_copy_obj" style="width: 100%;"> 
+					копировать	 
+				</div> 
+				<div class="button1 button_gradient_1" nameId="button_delete_obj" style="width: 100%;"> 
+					удалить	 
+				</div>								 
+			</div> 
+
+			<div nameId="sp_block_drt"> 
+
+			</div>		 
+		</div>`;
+
+		return str;	
+	}
+	
+	htmlJoinPoint()
+	{
+		let str =
+		`<div nameId="pr_list_button_center_point" style="display: none;">  
+			<div class="button1 button_gradient_1" nameId="button_active_join_element"> 
+				подключить 
+			</div>		 										 
+		</div>`;
+		
+		return str;	
+	}
+	
+	
+	update({inf})
+	{
+		let list = this.list.upd;
+		
+		for (let key in inf) 
+		{
+			if(list[key]) 
+			{
+				let value = inf[key];
+				if(list[key].nodeName == 'DIV') list[key].innerText = value;
+				if(list[key].nodeName == 'INPUT') list[key].value = value;
+				
+				//console.log(value, key, list[key].nodeName);
+			}
+			
+		}		
+	}
+
+	show({inf})
+	{		
+		this.showDivs({inf: inf});
+		
 		this.el.style.display = '';
+	}
+	
+	showDivs({inf})
+	{
+		let list = this.list.div;
+		
+		for (let i = 0; i < inf.length; i++)
+		{
+			if(list[inf[i]]) 
+			{
+				list[inf[i]].style.display = '';				
+			}				
+		}		
 	}
 	
 	hide()
 	{
+		let list = this.list.div;
+		console.log(list);
+
+		for (let key in list) 
+		{
+			if(list[key]) 
+			{
+				list[key].style.display = 'none';
+			}			
+		}
+		
 		this.el.style.display = 'none';
 	}	
 }
