@@ -12,32 +12,34 @@ function activeObjRightPanelUI_1({obj} = {})
 	
 	if(obj.userData.tag == 'wf_point')
 	{
-		infProject.ui.rpanel.InfObj.show({inf: ['ptube1', 'ptube2']});
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});
 	}	
 	else if(obj.userData.tag == 'wf_tube')
 	{	 
-		infProject.ui.rpanel.InfObj.show({inf: ['bobj', 'tube']});
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});
 	}			
 	else if(obj.userData.tag == 'obj')
 	{	
-		infProject.ui.rpanel.InfObj.show({inf: ['bobj']});
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
 	{ 
-		infProject.ui.rpanel.InfObj.show({inf: ['jpoint']});
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bjpoint']});
 	}
+	else if(obj.userData.tag == 'new_point')
+	{ 
+		obj.ui_menu({type: 'show'});
+	}
+	else if(obj.userData.tag == 'new_tube')
+	{ 
+		obj.ui_menu({type: 'show'});
+	}	
 	else if(obj.userData.tag == 'wtGrid')
 	{ 
 		
 	}	
-	else
-	{
-		return;
-	}
-	
-	//el.style.display = 'block';
 	
 }
 
@@ -86,7 +88,7 @@ function clickObjUI(cdm)
 		// очищаем список объектов UI
 		clearItemSelectedObjUI();	
 		
-		let container = document.body.querySelector('[nameId="rp_obj_group"]');
+		let container = document.body.querySelector('[nameId="list_obj_childs"]');
 		
 		for(var i = 0; i < arrO.length; i++)
 		{

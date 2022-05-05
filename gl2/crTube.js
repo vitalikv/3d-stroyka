@@ -227,6 +227,7 @@ class TubeN extends THREE.Mesh
 		inf.txt.nameObj = this.userData.nameRus;
 		inf.txt.tubeDiameter = this.userData.diameter * 1000;
 		
+		inf.show.push('listobj');
 		inf.show.push('tube');
 		inf.show.push('bobj');
 		

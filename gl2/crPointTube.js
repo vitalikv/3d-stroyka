@@ -215,6 +215,7 @@ class PointTube extends THREE.Mesh
 		 
 		inf.txt.nameObj = this.userData.nameRus;
 		
+		inf.show.push('listobj');
 		inf.show.push('ptube1');
 		inf.show.push('ptube2');
 		

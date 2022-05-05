@@ -22,44 +22,21 @@ function switchAlignPoint_1(cdm)
 	// скрываем точки у второго объекта
 	clearListObjUI();		
 	
+	
+	
 	if(infProject.list.alignP.active)	// вкл
 	{
 		infProject.list.alignP.p1 = clickO.last_obj;
 		if(cdm.type) { infProject.list.alignP.type = cdm.type; }
 		
-		infProject.elem.bl_rp_obj_group.style.display = 'none';
-		$('[nameId="rp_wrap_obj_align"]').show();
-		
-		if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
-		{
-			$('[nameId="pr_list_button_for_obj"]').hide();
-			$('[nameId="pr_list_button_center_point"]').hide();
-		}
-		
-		if(infProject.list.alignP.p1.userData.tag == 'wf_point')
-		{
-			document.querySelector('[nameId="pr_list_button_for_tube_point1"]').style.display = 'none';
-			document.querySelector('[nameId="pr_list_button_for_tube_point2"]').style.display = 'none';				
-		}
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.show({inf: ['jpoint']});
 	}		
 	else		// выкл
 	{
 		if(infProject.list.alignP.p1)
 		{
-			infProject.elem.bl_rp_obj_group.style.display = 'block';
-			$('[nameId="rp_wrap_obj_align"]').hide();
-			
-			if(infProject.list.alignP.p1.userData.tag == 'joinPoint')
-			{
-				$('[nameId="pr_list_button_for_obj"]').hide();
-				$('[nameId="pr_list_button_center_point"]').show();				
-			}
-			
-			if(infProject.list.alignP.p1.userData.tag == 'wf_point')
-			{
-				document.querySelector('[nameId="pr_list_button_for_tube_point1"]').style.display = 'block';
-				document.querySelector('[nameId="pr_list_button_for_tube_point2"]').style.display = 'block';							
-			}			
+			activeObjRightPanelUI_1({obj: infProject.list.alignP.p1});			
 		}
 		
 		infProject.list.alignP.p1 = null;		

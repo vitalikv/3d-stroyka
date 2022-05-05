@@ -74,6 +74,7 @@ crTube.js
 crPointTube.js
 ui/pivotGizmo.js
 ui/infoBlockObj.js
+ui/listObjChilds.js
 sceneInit.js
 sceneParams.js
 ';

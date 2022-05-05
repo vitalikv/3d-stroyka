@@ -15,6 +15,9 @@ class UI_infoBlockObj
 		this.el_parent = document.querySelector('[nameId="wrap_object"]');
 		this.el_parent.append(this.el);	
 		
+		let container = this.el.querySelector('[nameId="list_obj_childs"]');
+		container.setAttribute('nameId2', '333');
+		
 		this.assignEvent();	
 		this.setDivElement();
 		this.setUpdElement();
@@ -32,10 +35,7 @@ class UI_infoBlockObj
 		infProject.elem.rp_obj_name = this.el.querySelector('[nameId="rp_obj_name"]');		
 
 		// вкладка со списком объектов в группе 
-		infProject.elem.bl_rp_obj_group = this.el.querySelector('[nameId="bl_rp_obj_group"]');
-		
-		// вкладка со списком объединения в группу
-		infProject.elem.rp_wrap_add_group = this.el.querySelector('[nameId="rp_wrap_add_group"]');
+		infProject.elem.bl_rp_obj_group = this.el.querySelector('[nameId="bl_rp_obj_group"]');		
 		
 		// список объединения в группу
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
@@ -54,7 +54,11 @@ class UI_infoBlockObj
 		this.list.div.bobj = this.el.querySelector('[nameId="pr_list_button_for_obj"]');
 		this.list.div.ptube1 = this.el.querySelector('[nameId="pr_list_button_for_tube_point1"]');
 		this.list.div.ptube2 = this.el.querySelector('[nameId="pr_list_button_for_tube_point2"]');
-		this.list.div.jpoint = this.el.querySelector('[nameId="pr_list_button_center_point"]');
+		this.list.div.bjpoint = this.el.querySelector('[nameId="pr_list_button_center_point"]');
+		
+		this.list.div.listobj = this.el.querySelector('[nameId="bl_rp_obj_group"]');
+		this.list.div.jgroup = this.el.querySelector('[nameId="rp_wrap_add_group"]');
+		this.list.div.jpoint = this.el.querySelector('[nameId="rp_wrap_obj_align"]');
 	}
 	
 	setUpdElement()
@@ -78,15 +82,14 @@ class UI_infoBlockObj
 					 
 					<div nameId="bl_rp_obj_group"> 							 
 						 
-						<div class="right_panel_1_1_list" nameId="rp_obj_group"> 
+						<div class="right_panel_1_1_list" nameId="list_obj_childs"> 
 							 
 						</div> 
-
-						${this.htmlButtonObj()}
-					 
 					</div> 
-					 
-					${this.htmlJoinPoint()} 
+					
+					${this.htmlButtonObj()}
+					
+					${this.htmlButtonJoinPoint()} 
 
 					${this.htmlButtonPointTube()}															 
 					 
@@ -94,35 +97,9 @@ class UI_infoBlockObj
 					 
 				</div>	 
 				
-				
-				<div nameId="rp_wrap_obj_align" style="display: none;">
-				
-					<div class="button1 button_gradient_1" nameId="button_deactive_join_element" style="border-color: #ff0000">
-						закрыть	
-					</div>
-				
-					<div class="right_panel_1_1_list" nameId="rp_obj_align">
-						
-					</div>	
-					<div class="button1 button_gradient_1" nameId="join_element">
-						подключить	
-					</div>
-					
-				</div>
-				
-				
-				<div nameId="rp_wrap_add_group" style="display: none;">
-					<div class="button1 button_gradient_1" nameId="button_deactive_add_group" style="border-color: #ff0000">
-						закрыть	
-					</div>							
-					<div class="right_panel_1_1_list" nameId="rp_add_group">
-						
-					</div>
-					<div class="button1 button_gradient_1" nameId="button_add_group">
-						сгруппировать	
-					</div>	
-				</div>
-				
+				${this.htmlJoinPoint()}
+								
+				${this.htmlJoinGroup()}				
 			</div> 
 		</div>`;
 		
@@ -209,7 +186,7 @@ class UI_infoBlockObj
 		return str;	
 	}
 	
-	htmlJoinPoint()
+	htmlButtonJoinPoint()
 	{
 		let str =
 		`<div nameId="pr_list_button_center_point" style="display: none;">  
@@ -218,6 +195,42 @@ class UI_infoBlockObj
 			</div>		 										 
 		</div>`;
 		
+		return str;	
+	}
+
+	htmlJoinGroup()
+	{
+		let str =
+		`<div nameId="rp_wrap_add_group" style="display: none;">
+			<div class="button1 button_gradient_1" nameId="button_deactive_add_group" style="border-color: #ff0000">
+				закрыть	
+			</div>
+			
+			<div class="right_panel_1_1_list" nameId="rp_add_group"></div>
+			
+			<div class="button1 button_gradient_1" nameId="button_add_group">
+				сгруппировать	
+			</div>	
+		</div>`;
+
+		return str;	
+	}
+	
+	htmlJoinPoint()
+	{
+		let str =
+		`<div nameId="rp_wrap_obj_align" style="display: none;">
+			<div class="button1 button_gradient_1" nameId="button_deactive_join_element" style="border-color: #ff0000">
+				закрыть	
+			</div>
+
+			<div class="right_panel_1_1_list" nameId="rp_obj_align"></div>
+			
+			<div class="button1 button_gradient_1" nameId="join_element">
+				подключить	
+			</div>			
+		</div>`;
+
 		return str;	
 	}
 	

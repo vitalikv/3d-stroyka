@@ -188,7 +188,8 @@
 	<script src="<?=$path?>crTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>crPointTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/pivotGizmo.js?<?=$vrs?>"></script> 
-	<script src="<?=$path?>ui/infoBlockObj.js?<?=$vrs?>"></script>	
+	<script src="<?=$path?>ui/infoBlockObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>ui/listObjChilds.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>sceneInit.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>sceneParams.js?<?=$vrs?>"></script>	
 

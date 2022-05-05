@@ -26,22 +26,18 @@ function switchSelectAddObjGroup(cdm)
 	
 	if(infProject.list.mergeO.active)	// вкл
 	{
-		infProject.elem.rp_wrap_add_group.style.display = 'block';
-		infProject.list.mergeO.o1 = [];	
-
-		if(obj)
-		{
-			infProject.list.mergeO.o1 = getObjsFromGroup_1({obj: obj});
-		}
 		
-		infProject.elem.bl_rp_obj_group.style.display = 'none';		
+		infProject.list.mergeO.o1 = [];	
+		if(obj) infProject.list.mergeO.o1 = getObjsFromGroup_1({obj: obj});
+		
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.show({inf: ['jgroup']});	
 	}
 	else		// выкл
 	{
 		clearListUI_2({list: infProject.list.mergeO.el});
-		infProject.elem.rp_wrap_add_group.style.display = 'none';
-		
-		infProject.elem.bl_rp_obj_group.style.display = 'block';	
+
+		activeObjRightPanelUI_1({obj: obj});
 		
 		infProject.list.mergeO.o1 = [];
 		infProject.list.mergeO.o2 = [];
