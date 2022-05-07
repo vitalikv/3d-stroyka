@@ -233,6 +233,8 @@ class TubeN extends THREE.Mesh
 		
 		infProject.ui.rpanel.InfObj.update({inf: inf.txt});		
 		infProject.ui.rpanel.InfObj.show({inf: inf.show});
+		
+		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({name: 'test', lengthTube: 220});
 	}
 	
 	ui_hideMenu()

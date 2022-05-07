@@ -15,8 +15,7 @@ class UI_infoBlockObj
 		this.el_parent = document.querySelector('[nameId="wrap_object"]');
 		this.el_parent.append(this.el);	
 		
-		let container = this.el.querySelector('[nameId="list_obj_childs"]');
-		container.setAttribute('nameId2', '333');
+		this.list.listChilds = new UI_listObjChilds({el: this.el.querySelector('[nameId="list_obj_childs"]')});
 		
 		this.assignEvent();	
 		this.setDivElement();
@@ -254,13 +253,15 @@ class UI_infoBlockObj
 	}
 
 	show({inf})
-	{		
-		this.showDivs({inf: inf});
+	{	
+		this.list.listChilds.clear();
+		
+		this.showElems({inf: inf});
 		
 		this.el.style.display = '';
 	}
 	
-	showDivs({inf})
+	showElems({inf})
 	{
 		let list = this.list.div;
 		
@@ -276,7 +277,6 @@ class UI_infoBlockObj
 	hide()
 	{
 		let list = this.list.div;
-		console.log(list);
 
 		for (let key in list) 
 		{
@@ -286,6 +286,7 @@ class UI_infoBlockObj
 			}			
 		}
 		
+		this.list.listChilds.clear();
 		this.el.style.display = 'none';
 	}	
 }

@@ -85,11 +85,10 @@ function clickTubeWF(cdm)
 	
 	setScaleTubePoint();
 	
-	if(cdm.menu_1) { clickObjUI({obj: tube}); }		// обновляем правое меню 
-	
-	showWF_line_UI({tube: tube});
 	
 	activeObjRightPanelUI_1({obj: tube});
+	showWF_line_UI({tube: tube});
+	if(cdm.menu_1) { clickObjUI({obj: tube}); }		// обновляем правое меню 
 	
 	outlineAddObj(tube);
 	
