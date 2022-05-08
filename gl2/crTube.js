@@ -19,7 +19,7 @@ class TubeN extends THREE.Mesh
 		this.userData.tag = 'new_tube';
 		this.userData.point = [];
 		this.userData.nameRus = '';
-		this.userData.length = 0;
+		this.userData.lengthTube = 0;
 		this.userData.diameter = 0;	
 		this.userData.group = [];	
 		
@@ -85,7 +85,7 @@ class TubeN extends THREE.Mesh
 
 		
 		this.userData.nameRus = 'труба '+ diameter*1000;
-		this.userData.length = Math.round(length * 100)/100;
+		this.userData.lengthTube = Math.round(length * 100)/100;
 		this.userData.diameter = diameter;
 		
 		
@@ -118,7 +118,7 @@ class TubeN extends THREE.Mesh
 	{		
 		let txt = '';
 		
-		if(lang == 'ru') txt = this.userData.nameRus+' ('+this.userData.length+'м)';
+		if(lang == 'ru') txt = this.userData.nameRus+' ('+this.userData.lengthTube+'м)';
 		
 		return txt;
 	}
@@ -233,8 +233,39 @@ class TubeN extends THREE.Mesh
 		
 		infProject.ui.rpanel.InfObj.update({inf: inf.txt});		
 		infProject.ui.rpanel.InfObj.show({inf: inf.show});
+		this.ui_crListObj();
 		
-		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({name: 'test', lengthTube: 220});
+	}
+	
+	ui_getObjChilds()
+	{
+		let item = {};
+		item.name = this.userData.nameRus;
+		item.lengthTube = this.userData.lengthTube;
+		item.colorTube = '#' + this.material.color.clone().getHexString();
+		
+		item.childs = [];
+		item.childs[0] = {};
+		item.childs[1] = {};	
+		
+		item.childs[0].name = this.userData.point[0].userData.nameRus;
+		item.childs[1].name = this.userData.point[this.userData.point.length - 1].userData.nameRus;		
+
+		return item;
+	}
+	
+	ui_crListObj()
+	{
+		let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];
+		
+		var arr = arrO.map(o => 
+		{
+			let item = o.ui_getObjChilds();				
+			
+			return item;
+		});
+		
+		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr, {name: 'test'}]});
 	}
 	
 	ui_hideMenu()
