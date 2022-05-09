@@ -80,6 +80,22 @@ class PointTube extends THREE.Mesh
 
 		this.ui_menu({type: 'show'});
 	}
+
+
+	// кликнули на трубу из UI меню
+	clickPointTubeUI()
+	{
+		let tube = this.userData.tube;
+		tube.showHideTubePoints({visible: true});
+		
+		let arrO = [tube, ...this.getTubePoints()];
+		
+		outlineAddObj(this, {arrO: arrO});	
+		
+		infProject.tools.pg.activeTool({obj: this, pos: this.position, arrO: arrO});
+
+		//this.ui_menu({type: 'show'});
+	}	
 	
 	
 	// перемещение точки
@@ -113,13 +129,13 @@ class PointTube extends THREE.Mesh
 		this.deClickPointTube();
 		
 		let tube = this.userData.tube;		
-		let dist = this.getDistPointOnTube();		
+		let dist = tube.getDistPointOnTube();		
 		this.deletePointFromTube(); 
 		
 		if(tube.getTubePoints().length >= 2) 
 		{ 
 			tube.tubeGeometry({});
-			let pos = this.convertDistToPos({dist: dist, tube: tube});  
+			let pos = tube.convertDistToPos({dist: dist});  
 			tube.clickTube({clickPos: pos});
 		}
 		else 
@@ -143,64 +159,7 @@ class PointTube extends THREE.Mesh
 	}
 
 
-	// определяем место трубы (расстоение от 0 до 1), куда посавить pivot после удалении точки
-	getDistPointOnTube()
-	{
-		let arr = this.getTubePoints();
-				
-		let dist1 = 0;
-		for(let i = 0; i < arr.length - 1; i++) 
-		{ 
-			if(arr[0] == this) break;			
-			dist1 += arr[i].position.distanceTo(arr[i + 1].position); 
-			if(arr[i + 1] == this) break;
-		}	
 
-		let dist2 = 0;
-		for(let i = 0; i < arr.length - 1; i++) 
-		{ 
-			dist2 += arr[i].position.distanceTo(arr[i + 1].position); 
-		}
-		
-		let ratio = dist1/dist2;
-		if(ratio == 0) ratio = 0.1;
-		if(ratio == 1) ratio = 0.9;
-		
-		return ratio;
-	}
-	
-
-	// конвертируем расстоение от 0 до 1 => position на трубе
-	convertDistToPos(params)
-	{
-		let dist = params.dist;		
-		let tube = params.tube;
-		
-		let arr = tube.getTubePoints();	
-		let pos = arr[0].position;
-
-		let dist2 = 0;
-		for(let i = 0; i < arr.length - 1; i++) 
-		{ 
-			dist2 += arr[i].position.distanceTo(arr[i + 1].position); 
-		}
-		
-		let dist1 = 0;
-		for(let i = 0; i < arr.length - 1; i++) 
-		{ 
-			dist1 += arr[i].position.distanceTo(arr[i + 1].position); 
-			
-			if(dist <= dist1/dist2) 
-			{
-				//let s = dist1 - dist;
-				pos = arr[i + 1].position.clone().sub(arr[i].position).divideScalar( 2 ).add(arr[i].position);
-				break;
-			}
-		}				
-		
-		return pos;
-	}	
-	
 	ui_menu({type})
 	{
 		if(type == 'show') this.ui_showMenu();

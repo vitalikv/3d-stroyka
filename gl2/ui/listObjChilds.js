@@ -9,13 +9,15 @@ class UI_listObjChilds
 	{
 		this.el = el;
 		this.activeItem = null;
+		this.arr = [];
 	}
 	
 	crListUI({arr})
 	{
+		this.arr = arr;
+		
 		for (let i = 0; i < arr.length; i++)
-		{
-			console.log(222, arr);
+		{			
 			let html = this.html(arr[i]);	
 
 			let elem = document.createElement('div');
@@ -23,17 +25,20 @@ class UI_listObjChilds
 			elem = elem.firstChild;
 
 			this.el.append(elem);
-
-			this.initEvents({elem: elem});
 			
-			if(i == 0) this.selectItem({elem: elem});
+			this.arrAddElem({id: i, elem: elem});
+			
+			this.initEvents({id: i, elem: elem});
 		}
+		
+		this.selectItem({elem: this.arr[0].elem});
+		console.log(222, arr);
 	}
 	
-	html({name, colorTube = null, lengthTube = null, childs = []})
+	html({obj = null, name, colorTube = null, lengthTube = null, childs = []})
 	{
 		let str = 
-		'<div class="right_panel_1_1_list_item" nameId="obj">\
+		'<div class="right_panel_1_1_list_item" nameId="obj" uuid="'+obj.uuid+'">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+this.htmlTr({childs: childs})+'\
 				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
@@ -77,9 +82,9 @@ class UI_listObjChilds
 		{
 			str = 
 			'<div class="right_panel_1_1_list_item_color">\
-				<input type="color" value = "'+colorTube+'" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
+				<input type="color" value="'+colorTube+'" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
 			</div>\
-			<div class="right_panel_1_1_list_item_text" item="value">'+lengthTube+'м</div>';			
+			<div class="right_panel_1_1_list_item_text" nameId="lengthTube">'+lengthTube+'м</div>';			
 		}
 		
 		return str;
@@ -102,7 +107,7 @@ class UI_listObjChilds
 	}
 
 
-	// точки/разъемы объекта
+	// разъемы объекта
 	htmСhilds({childs})
 	{	
 		if(childs.length == 0) return '';
@@ -112,7 +117,7 @@ class UI_listObjChilds
 		for (let i = 0; i < childs.length; i++)
 		{
 			items += 
-			'<div class="flex_1 right_panel_1_1_list_item relative_1" nameId="item">\
+			'<div class="flex_1 right_panel_1_1_list_item relative_1" nameId="item" uuid="'+childs[i].obj.uuid+'">\
 				<div class="right_panel_1_1_list_item_text">'+childs[i].name+'</div>\
 			</div>';			
 		}
@@ -123,26 +128,50 @@ class UI_listObjChilds
 	}
 	
 	
-	initEvents({elem})
+	arrAddElem({id, elem})
 	{
-		this.clickItem({elem: elem});
+		this.arr[id].elem = elem;
+		
+		let lengthTube = elem.querySelector('[nameId="lengthTube"]');
+		if(lengthTube) this.arr[id].elemLengthTube = lengthTube;
+				
+		
+		let arrEl = elem.querySelectorAll('[nameId="item"]');
+		
+		for (let i = 0; i < arrEl.length; i++)
+		{
+			this.arr[id].childs[i].elem = arrEl[i];
+		}
+	}
+	
+	initEvents({elem, id})
+	{
+		this.clickItem({elem: elem, id: id});
 		this.visibleChilds({elem: elem});
 		this.clickInputColor({elem: elem});
 	}
 	
 	
 	// создаем событие -> кликнули на пункт объекта/разъема
-	clickItem({elem})
+	clickItem({elem, id})
 	{
-		let arrEl = elem.querySelectorAll('[nameId="item"]');
-		arrEl = Array.from(arrEl)
-		arrEl.push(elem);
-	
-		for (let i = 0; i < arrEl.length; i++)
+		let item = this.arr[id];
+		
+		let arr = [{elem: item.elem, callF: item.f}];
+		
+		if(item.childs)
 		{
-			arrEl[i].onmousedown = (e) => 
+			for (let i = 0; i < item.childs.length; i++)
 			{
-				this.selectItem({elem: arrEl[i]});
+				arr.push({elem: item.childs[i].elem, callF: item.childs[i].f});
+			};					
+		}
+	
+		for (let i = 0; i < arr.length; i++)
+		{
+			arr[i].elem.onmousedown = (e) => 
+			{
+				this.selectItem({elem: arr[i].elem, callF: arr[i].callF});
 				e.stopPropagation(); 
 			}
 		};		
@@ -183,8 +212,10 @@ class UI_listObjChilds
 	}
 	
 	
-	selectItem({elem})
+	selectItem({elem, callF = null})
 	{
+		if(callF) callF();
+		
 		this.setResetColorItems();
 		this.activeItem = elem;
 		elem.style.backgroundColor = infProject.listColor.activeItem_1;
@@ -220,6 +251,8 @@ class UI_listObjChilds
 	
 	clear()
 	{
+		this.activeItem = null;
+		this.arr = [];
 		this.el.innerHTML = '';
 	}
 	
@@ -227,7 +260,6 @@ class UI_listObjChilds
 	hide()
 	{
 		let list = this.list.div;
-		console.log(list);
 
 		for (let key in list) 
 		{

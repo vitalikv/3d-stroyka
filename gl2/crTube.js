@@ -139,10 +139,24 @@ class TubeN extends THREE.Mesh
 	}
 	
 	
-	// определяем в какое место трубы кликнули
-	detectPosTube(params)
+	// кликнули на трубу из UI меню
+	clickTubeUI()
 	{
-		let clickPos = params.clickPos;			  
+		outlineAddObj(this);
+		this.showHideTubePoints({visible: true});
+		
+		let pos = this.convertDistToPos({dist: 0.5});	
+		
+		let arrO = [this, ...this.getTubePoints()];
+		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
+
+		//this.ui_menu({type: 'show'});
+	}	
+	
+	
+	// определяем в какое место трубы кликнули
+	detectPosTube({clickPos})
+	{		  
 		let arrP = this.getTubePoints();
 		
 		let arr = [];
@@ -165,6 +179,62 @@ class TubeN extends THREE.Mesh
 		arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
 
 		return {p1: arr[0].p1, pos: arr[0].pos};
+	}
+
+
+	// определяем место трубы (расстоение от 0 до 1), куда посавить pivot после удалении точки
+	getDistPointOnTube()
+	{
+		let arr = this.getTubePoints();
+				
+		let dist1 = 0;
+		for(let i = 0; i < arr.length - 1; i++) 
+		{ 
+			if(arr[0] == this) break;			
+			dist1 += arr[i].position.distanceTo(arr[i + 1].position); 
+			if(arr[i + 1] == this) break;
+		}	
+
+		let dist2 = 0;
+		for(let i = 0; i < arr.length - 1; i++) 
+		{ 
+			dist2 += arr[i].position.distanceTo(arr[i + 1].position); 
+		}
+		
+		let ratio = dist1/dist2;
+		if(ratio == 0) ratio = 0.1;
+		if(ratio == 1) ratio = 0.9;
+		
+		return ratio;
+	}
+
+
+	// конвертируем расстоение dist от 0 до 1 => position на трубе
+	convertDistToPos({dist})
+	{
+		let arr = this.getTubePoints();	
+		let pos = arr[0].position;
+
+		let dist2 = 0;
+		for(let i = 0; i < arr.length - 1; i++) 
+		{ 
+			dist2 += arr[i].position.distanceTo(arr[i + 1].position); 
+		}
+		
+		let dist1 = 0;
+		for(let i = 0; i < arr.length - 1; i++) 
+		{ 
+			dist1 += arr[i].position.distanceTo(arr[i + 1].position); 
+			
+			if(dist <= dist1/dist2) 
+			{
+				//let s = dist1 - dist;
+				pos = arr[i + 1].position.clone().sub(arr[i].position).divideScalar( 2 ).add(arr[i].position);
+				break;
+			}
+		}				
+		
+		return pos;
 	}
 	
 	
@@ -240,17 +310,24 @@ class TubeN extends THREE.Mesh
 	ui_getObjChilds()
 	{
 		let item = {};
+		item.obj = this;
 		item.name = this.userData.nameRus;
 		item.lengthTube = this.userData.lengthTube;
 		item.colorTube = '#' + this.material.color.clone().getHexString();
+		item.f = this.clickTubeUI.bind(this);
 		
-		item.childs = [];
-		item.childs[0] = {};
-		item.childs[1] = {};	
+		item.childs = [];	
 		
-		item.childs[0].name = this.userData.point[0].userData.nameRus;
-		item.childs[1].name = this.userData.point[this.userData.point.length - 1].userData.nameRus;		
-
+		let arr = [this.userData.point[0], this.userData.point[this.userData.point.length - 1]];
+		
+		for (let i = 0; i < arr.length; i++)
+		{
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.nameRus;
+			item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
+		}
+		
 		return item;
 	}
 	
@@ -258,14 +335,23 @@ class TubeN extends THREE.Mesh
 	{
 		let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];
 		
-		var arr = arrO.map(o => 
+		let arr = arrO.map(o => 
 		{
 			let item = o.ui_getObjChilds();				
 			
 			return item;
 		});
 		
-		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr, {name: 'test'}]});
+		let arr2 = arrO.map(o => 
+		{
+			let item = o.ui_getObjChilds();				
+			
+			return item;
+		});
+		
+		arr2[0].name = 'ttww';
+		
+		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr2, {name: 'test', obj: this}]});
 	}
 	
 	ui_hideMenu()
