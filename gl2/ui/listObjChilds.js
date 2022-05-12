@@ -31,7 +31,6 @@ class UI_listObjChilds
 			this.initEvents({id: i, elem: elem});
 		}
 		
-		this.selectItem({elem: this.arr[0].elem});
 		console.log(222, arr);
 	}
 	
@@ -212,6 +211,7 @@ class UI_listObjChilds
 	}
 	
 	
+	// кликнули на пункт 
 	selectItem({elem, callF = null})
 	{
 		if(callF) callF();
@@ -220,6 +220,42 @@ class UI_listObjChilds
 		this.activeItem = elem;
 		elem.style.backgroundColor = infProject.listColor.activeItem_1;
 	}
+	
+	
+	// кликнули на объект в сцене
+	selectObjScene({obj})
+	{
+		let arr1 = this.arr;
+		let arr2 = [];
+		
+		for (let i = 0; i < arr1.length; i++)
+		{
+			arr2.push({obj: arr1[i].obj, elem: arr1[i].elem});
+			
+			if(arr1[i].childs)
+			{
+				for (let i2 = 0; i2 < arr1[i].childs.length; i2++)
+				{
+					arr2.push({obj: arr1[i].childs[i2].obj, elem: arr1[i].childs[i2].elem});
+				}				
+			}
+		}			
+		
+		let elem = null;
+		
+		for (let i = 0; i < arr2.length; i++)
+		{
+			if(arr2[i].obj !== obj) continue;
+			elem = arr2[i].elem;
+			break;
+		};
+
+		if(!elem) return;
+			
+		this.setResetColorItems();
+		this.activeItem = elem;
+		elem.style.backgroundColor = infProject.listColor.activeItem_1;
+	}	
 	
 	// сбросить выделение со всех пунктов
 	setResetColorItems()

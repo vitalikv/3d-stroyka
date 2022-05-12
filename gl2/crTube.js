@@ -289,24 +289,14 @@ class TubeN extends THREE.Mesh
 	}
 	
 	ui_showMenu()
-	{
-		let inf = {};
-		inf.txt = {};
-		inf.show = [];			
-		 
-		inf.txt.nameObj = this.userData.nameRus;
-		inf.txt.tubeDiameter = this.userData.diameter * 1000;
-		
-		inf.show.push('listobj');
-		inf.show.push('tube');
-		inf.show.push('bobj');
-		
-		infProject.ui.rpanel.InfObj.update({inf: inf.txt});		
-		infProject.ui.rpanel.InfObj.show({inf: inf.show});
+	{		
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus, tubeDiameter: this.userData.diameter * 1000} });		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});
 		this.ui_crListObj();
-		
+		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});
 	}
 	
+	// получаем данные для UI 
 	ui_getObjChilds()
 	{
 		let item = {};
@@ -331,6 +321,7 @@ class TubeN extends THREE.Mesh
 		return item;
 	}
 	
+	// создаем и показываем список во вкладке "объект"
 	ui_crListObj()
 	{
 		let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];

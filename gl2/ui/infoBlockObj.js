@@ -234,6 +234,7 @@ class UI_infoBlockObj
 	}
 	
 	
+	// вставляем текстовые значения в выбранные div 
 	update({inf})
 	{
 		let list = this.list.upd;
@@ -261,6 +262,7 @@ class UI_infoBlockObj
 		this.el.style.display = '';
 	}
 	
+	// показываем заданные div 
 	showElems({inf})
 	{
 		let list = this.list.div;
@@ -274,6 +276,7 @@ class UI_infoBlockObj
 		}		
 	}
 	
+	// скрываем все div и очищаем список с объектами
 	hide()
 	{
 		let list = this.list.div;
