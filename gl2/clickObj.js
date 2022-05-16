@@ -67,8 +67,8 @@ function clickObject3D( obj, cdm )
 		else { outlineAddObj(obj); } 
 	}
 
-	activeObjRightPanelUI_1({obj: obj});
-	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 										
+	
+	if(cdm.menu_1) { activeObjRightPanelUI_1({obj: obj}); clickObjUI({obj: obj}); }		// обновляем правое меню 										
 	
 	setClickLastObj({obj: obj});
 }

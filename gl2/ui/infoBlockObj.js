@@ -5,7 +5,8 @@ class UI_infoBlockObj
 {
 	el = null;
 	list = {};
-		
+	groupObjs = [];
+	
 	constructor({nameAttr})
 	{
 		this.el = document.createElement('div');			
@@ -15,6 +16,8 @@ class UI_infoBlockObj
 		this.el_parent = document.querySelector('[nameId="wrap_object"]');
 		this.el_parent.append(this.el);	
 		
+		this.list.div = {};
+		this.list.upd = {};
 		this.list.listChilds = new UI_listObjChilds({el: this.el.querySelector('[nameId="list_obj_childs"]')});
 		
 		this.assignEvent();	
@@ -39,16 +42,21 @@ class UI_infoBlockObj
 		// список объединения в группу
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
 		
-		this.el.querySelector('[nameId="butt_add_point_on_tube"]').onmousedown = () => { switchAddPointOnTube(); }	
+		this.el.querySelector('[nameId="butt_add_point_on_tube"]').onmousedown = () => { this.switchAddPointOnTube(); }	
 		this.el.querySelector('[nameId="button_deactive_join_element"]').onmousedown = () => { switchAlignPoint_1({active: false}); }
 		this.el.querySelector('[nameId="join_element"]').onmousedown = () => { alignPointToPoint_1(); }
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
 		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 
+		
+		this.el.querySelector('[nameId="button_active_align_wf_point1"]').onmousedown = () => { switchAlignPoint_1({active: true}); } 
+		this.el.querySelector('[nameId="button_active_align_wf_point2"]').onmousedown = () => { switchAlignPoint_1({active: true, type: 'move'}); } 
+		this.el.querySelector('[nameId="button_active_join_element"]').onmousedown = () => { switchAlignPoint_1({active: true}); }
+		this.el.querySelector('[nameId="button_active_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: true}); }
+		this.el.querySelector('[nameId="button_detach_obj_group"]').onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }		
 	}
 
 	setDivElement()
-	{
-		this.list.div = {};
+	{		
 		this.list.div.tube = this.el.querySelector('[nameId="rp_bl_wf_tube"]');
 		this.list.div.bobj = this.el.querySelector('[nameId="pr_list_button_for_obj"]');
 		this.list.div.ptube1 = this.el.querySelector('[nameId="pr_list_button_for_tube_point1"]');
@@ -61,8 +69,7 @@ class UI_infoBlockObj
 	}
 	
 	setUpdElement()
-	{
-		this.list.upd = {};
+	{		
 		this.list.upd.nameObj = this.el.querySelector('[nameId="rp_obj_name"]');
 		this.list.upd.tubeDiameter = this.el.querySelector('[nameId="size_tube_diameter_2"]');
 	}
@@ -234,6 +241,62 @@ class UI_infoBlockObj
 	}
 	
 	
+	// вкл/выкл возможность добавить точку на трубу при клике на нее
+	switchAddPointOnTube({type} = {})
+	{
+		if(type == 'off')
+		{
+			infProject.settings.active.tube = null;
+			infProject.tools.pivot.visible = true;			
+		}
+		else if(!infProject.settings.active.tube) 
+		{ 
+			infProject.settings.active.tube = 'add_point_wf';
+			infProject.tools.pivot.visible = false;
+		}
+		else 
+		{ 
+			infProject.settings.active.tube = null;
+			infProject.tools.pivot.visible = true;
+		}
+
+		let color = "#b3b3b3";
+		if(infProject.settings.active.tube == 'add_point_wf') color = "#ff0000";	// вкл режим добавления точки на трубу
+			
+		this.el.querySelector('[nameId="butt_add_point_on_tube"]').style.borderColor = color;
+		
+		this.render()
+	}
+	
+	setGroupObjs({arr} = {arr: []})
+	{
+		this.groupObjs = arr;
+	}
+
+	// сравниваем 2 массива (если кликнули, по новому объекту (с группой или без) и он равен, то не стераем список объектов)
+	isEqualListChilds({arr = []})
+	{
+		let objs = this.groupObjs;
+		if(objs.length == 0) return false;
+		
+		let count = 0;
+		
+		for (let i = 0; i < arr.length; i++)
+		{
+			for (let i2 = 0; i2 < objs.length; i2++)
+			{
+				if(arr[i] == objs[i2]) 
+				{
+					count++;
+					break;
+				}								
+			}
+		}
+
+
+		return count == objs.length;
+	}
+	
 	// вставляем текстовые значения в выбранные div 
 	update({inf})
 	{
@@ -255,8 +318,6 @@ class UI_infoBlockObj
 
 	show({inf})
 	{	
-		this.list.listChilds.clear();
-		
 		this.showElems({inf: inf});
 		
 		this.el.style.display = '';
@@ -289,8 +350,13 @@ class UI_infoBlockObj
 			}			
 		}
 		
-		this.list.listChilds.clear();
+		
 		this.el.style.display = 'none';
+	}	
+	
+	render()
+	{
+		renderCamera();
 	}	
 }
 

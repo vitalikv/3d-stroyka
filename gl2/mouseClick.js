@@ -39,7 +39,7 @@ function mouseDownRight()
 
 	if(infProject.settings.active.tube) 
 	{ 
-		switchAddPointOnTube();		// выкл возможность добавлять на трубу точку	 
+		infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку	 
 	}
 	
 	clickO.move = null;	
@@ -493,10 +493,10 @@ function resetClickLastObj(cdm)
 
 function hideMenuObjUI_2D(cdm)
 {
-	var obj = clickO.last_obj;
+	let obj = clickO.last_obj;
 	if(!cdm) { cdm = {type: ''}; }
 	
-	var flag = true;
+	let flag = true;
 	
 	if(obj)
 	{ 
@@ -504,15 +504,16 @@ function hideMenuObjUI_2D(cdm)
 		if(clickO.rayhit && clickO.rayhit.object.userData.tag == 'pivot') { return; }
 		if(clickO.rayhit && clickO.rayhit.object.userData.tag == 'gizmo') { return; }
 		
-		var tag = obj.userData.tag;
+		let newObj = (clickO.rayhit && clickO.rayhit.object) ? clickO.rayhit.object : null;		
+		let tag = obj.userData.tag;
 		
 		if(tag == 'wf_tube') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wf_point') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
-		else if(tag == 'new_tube') { obj.deClickTube(); return; }
-		else if(tag == 'new_point') { obj.deClickPointTube(); return; }
+		else if(tag == 'new_tube') { obj.deClickTube({newObj: newObj}); return; }
+		else if(tag == 'new_point') { obj.deClickPointTube({newObj: newObj}); return; }
 	}
 	
 	if(flag) 

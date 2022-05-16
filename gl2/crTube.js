@@ -21,7 +21,7 @@ class TubeN extends THREE.Mesh
 		this.userData.nameRus = '';
 		this.userData.lengthTube = 0;
 		this.userData.diameter = 0;	
-		this.userData.group = [];	
+		this.userData.group = [this];	
 		
 		this.tubeGeometry({path, diameter});
 		this.tubeMaterial({color});
@@ -238,20 +238,30 @@ class TubeN extends THREE.Mesh
 	}
 	
 	
-	// деактивируем трубу
-	deClickTube()
+	// деактивируем трубу, кликнули на другой объект или в пустоту 
+	deClickTube({newObj} = {newObj: null})
 	{
 		outlineRemoveObj();
 		this.showHideTubePoints({visible: false});
+	
+
+		if(newObj)
+		{
+			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGroup({obj: newObj}) });		
+			if(!equal) infProject.ui.rpanel.InfObj.list.listChilds.clear(); 				
+		}
+		else
+		{
+			infProject.ui.rpanel.InfObj.setGroupObjs();
+		}
 		
 		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
 	}
 
 	// показываем/прячем точки трубы
-	showHideTubePoints(params)
+	showHideTubePoints({visible})
 	{
-		let visible = params.visible;
 		let arr = this.getTubePoints();
 		
 		for ( let i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }	
@@ -289,10 +299,17 @@ class TubeN extends THREE.Mesh
 	}
 	
 	ui_showMenu()
-	{		
+	{	
+		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: this.userData.group});
+		
+		if(!equal)
+		{
+			infProject.ui.rpanel.InfObj.setGroupObjs({arr: this.userData.group});			
+			this.ui_crListObj();			
+		}
+
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus, tubeDiameter: this.userData.diameter * 1000} });		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});
-		this.ui_crListObj();
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});		
 		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});
 	}
 	
@@ -324,25 +341,32 @@ class TubeN extends THREE.Mesh
 	// создаем и показываем список во вкладке "объект"
 	ui_crListObj()
 	{
-		let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];
-		
-		let arr = arrO.map(o => 
+		if(1==2)
 		{
-			let item = o.ui_getObjChilds();				
+			let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];
 			
-			return item;
-		});
-		
-		let arr2 = arrO.map(o => 
+			let arr = arrO.map(o => 
+			{
+				let item = o.ui_getObjChilds();				
+				
+				return item;
+			});
+			
+			let arr2 = arrO.map(o => 
+			{
+				let item = o.ui_getObjChilds();				
+				
+				return item;
+			});
+			
+			arr2[0].name = 'ttww';
+					
+			infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr2, {name: 'test', obj: this}]});			
+		}
+		else
 		{
-			let item = o.ui_getObjChilds();				
-			
-			return item;
-		});
-		
-		arr2[0].name = 'ttww';
-		
-		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr2, {name: 'test', obj: this}]});
+			newCrListObj({obj: this});
+		}
 	}
 	
 	ui_hideMenu()
@@ -356,5 +380,91 @@ class TubeN extends THREE.Mesh
 	}	
 
 }
+
+
+function ddGroup({obj})
+{
+	let arr = [obj];
+	
+	if(obj.userData.obj3D && obj.userData.obj3D.group) arr = obj.userData.obj3D.group.userData.groupObj.child;
+	else if(obj.userData.wf_tube && obj.userData.wf_tube.group) arr = obj.userData.wf_tube.group.userData.groupObj.child;
+	else if(obj.userData.tag == 'new_point') arr = obj.userData.tube.userData.group;
+	else if(obj.userData.tag == 'new_tube') arr = obj.userData.group;
+	else { return []; }
+	
+	return arr;
+}
+
+
+function newCrListObj({obj})
+{
+	let arrO = ddGroup({obj});
+	console.log(111, arrO.length);
+	let arrItem = arrO.map(o => 
+	{
+		let item = {};	
+
+		if(o.userData.obj3D) item = getObj3D({obj: o});
+		else if(o.userData.wf_tube) item = getObjTube({obj: o});
+		else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
+		else if(o.userData.tag == 'new_tube') item = o.ui_getObjChilds();		
+		
+		return item;
+	});	
+	
+	console.log(arrItem);
+	infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
+	
+	function getObj3D({obj})
+	{
+		let item = {};
+		item.obj = obj;
+		item.name = obj.userData.obj3D.nameRus;
+		//item.f = this.clickTubeUI.bind(this);
+		
+		item.childs = [];	
+		
+		let arr = getCenterPointFromObj_1(obj);
+		
+		for (let i = 0; i < arr.length; i++)
+		{
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.centerPoint.nameRus;
+			//item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
+		}
+		
+		return item;
+	}
+
+	function getObjTube({obj})
+	{
+		let item = {};
+		item.obj = obj;
+		item.name = obj.userData.wf_tube.nameRus;
+		item.lengthTube = obj.userData.wf_tube.length;
+		item.colorTube = '#' + obj.material.color.clone().getHexString();		
+		//item.f = this.clickTubeUI.bind(this);
+		
+		item.childs = [];	
+		
+		let arr = [];
+		arr[0] = obj.userData.wf_tube.point[0];
+		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];	
+					
+		for (let i = 0; i < arr.length; i++)
+		{
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.wf_point.nameRus;
+			//item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
+		}
+		
+		return item;
+	}	
+}
+
+
+
 
 

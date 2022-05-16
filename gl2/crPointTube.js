@@ -112,11 +112,18 @@ class PointTube extends THREE.Mesh
 
 
 	// деактивируем трубу
-	deClickPointTube()
+	deClickPointTube({newObj} = {newObj: null})
 	{
 		outlineRemoveObj();
 		let tube = this.userData.tube;
 		tube.showHideTubePoints({visible: false});
+		
+		if(newObj)
+		{
+			
+			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGroup({obj: newObj}) }); console.log(equal, newObj);		
+			if(!equal) infProject.ui.rpanel.InfObj.list.listChilds.clear(); 				
+		}
 		
 		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
@@ -167,12 +174,18 @@ class PointTube extends THREE.Mesh
 	}
 	
 	ui_showMenu()
-	{		
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus}});		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});
-		
+	{	
 		let tube = this.userData.tube;
-		tube.ui_crListObj();
+		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: tube.userData.group});
+		
+		if(!equal)
+		{
+			infProject.ui.rpanel.InfObj.setGroupObjs({arr: tube.userData.group});						
+			tube.ui_crListObj();			
+		}		
+	
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus}});		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
 		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});
 	}
 	

@@ -84,42 +84,6 @@ function upInfoTubeUI(cdm)
 
 
 
-// вкл/выкл возможность добавить точку на трубу при клике на нее
-function switchAddPointOnTube(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	if(cdm.type !== undefined) 
-	{
-		infProject.settings.active.tube = cdm.type;  
-	}	
-	else
-	{
-		if(infProject.settings.active.tube != 'add_point_wf') 
-		{ 
-			infProject.settings.active.tube = 'add_point_wf';
-			infProject.tools.pivot.visible = false;
-		}
-		else 
-		{ 
-			infProject.settings.active.tube = null;
-			infProject.tools.pivot.visible = true;
-		}
-	}
-	
 
-	if(infProject.settings.active.tube == 'add_point_wf')	// вкл режим добавления точки на трубу
-	{
-		var color = "#ff0000";		
-	}
-	else
-	{
-		var color = "#b3b3b3";		
-	}
-		
-	document.querySelector('[nameId="butt_add_point_on_tube"]').style.borderColor = color;
-	
-	renderCamera();
-}
 
 

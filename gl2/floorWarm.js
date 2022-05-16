@@ -424,7 +424,7 @@ function deClickTube(cdm)
 		
 		switchAlignPoint_1({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
 		
-		switchAddPointOnTube({type: null});		// выкл возможность добавлять на трубу точку		
+		infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку		
 		
 		activeObjRightPanelUI_1();		// скрываем UI	
 	}

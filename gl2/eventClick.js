@@ -1,21 +1,5 @@
 $(document).ready(function()
 {
-
-	$('[nameId="button_active_align_wf_point1"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
-	$('[nameId="button_active_align_wf_point2"]').mousedown(function () { switchAlignPoint_1({active: true, type: 'move'}); }); 
-	$('[nameId="button_active_join_element"]').mousedown(function () { switchAlignPoint_1({active: true}); }); 
-	
-
-	$('[nameId="button_active_add_group"]').mousedown(function () { switchSelectAddObjGroup({active: true}); });
-	
-	  
-	
-	
-
-	$('[nameId="button_detach_obj_group"]').mousedown(function () { detachObjGroup({obj: clickO.last_obj, active: true}); });
-
-
-
 	$('input').on('focus keyup change', function () 
 	{ 
 		infProject.activeInput = $(this).data('action');

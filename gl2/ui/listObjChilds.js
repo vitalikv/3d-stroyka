@@ -14,6 +14,8 @@ class UI_listObjChilds
 	
 	crListUI({arr})
 	{
+		this.clear();
+		
 		this.arr = arr;
 		
 		for (let i = 0; i < arr.length; i++)
@@ -148,6 +150,7 @@ class UI_listObjChilds
 		this.clickItem({elem: elem, id: id});
 		this.visibleChilds({elem: elem});
 		this.clickInputColor({elem: elem});
+		this.clickCenterCam({elem: elem, id: id});
 	}
 	
 	
@@ -209,6 +212,14 @@ class UI_listObjChilds
 		input.onmousedown = (e) => e.stopPropagation();
 		input.onchange = (e) => { e.stopPropagation(); };
 	}
+
+
+	// создаем событие -> центрирование камеры на объект
+	clickCenterCam({elem, id})
+	{
+		let button = elem.querySelector('[nameId="sh_select_obj3D"]');
+		button.onmousedown = (e) => { fitCameraToObject({obj: this.arr[id].obj, rot: true}); e.stopPropagation(); };
+	}
 	
 	
 	// кликнули на пункт 
@@ -230,31 +241,42 @@ class UI_listObjChilds
 		
 		for (let i = 0; i < arr1.length; i++)
 		{
-			arr2.push({obj: arr1[i].obj, elem: arr1[i].elem});
+			arr2.push({obj: arr1[i].obj, elem: arr1[i].elem, parent: null});
 			
 			if(arr1[i].childs)
 			{
 				for (let i2 = 0; i2 < arr1[i].childs.length; i2++)
 				{
-					arr2.push({obj: arr1[i].childs[i2].obj, elem: arr1[i].childs[i2].elem});
+					arr2.push({obj: arr1[i].childs[i2].obj, elem: arr1[i].childs[i2].elem, parent: arr1[i].elem});
 				}				
 			}
 		}			
 		
-		let elem = null;
+		let item = {el: null, parent: null};
 		
 		for (let i = 0; i < arr2.length; i++)
 		{
 			if(arr2[i].obj !== obj) continue;
-			elem = arr2[i].elem;
+			
+			item.el = arr2[i].elem;
+			item.parent = arr2[i].parent;
+			
 			break;
 		};
 
-		if(!elem) return;
-			
+		if(!item.el) return;
+		
 		this.setResetColorItems();
-		this.activeItem = elem;
-		elem.style.backgroundColor = infProject.listColor.activeItem_1;
+		this.activeItem = item.el;
+		item.el.style.backgroundColor = infProject.listColor.activeItem_1;
+		
+		
+		if(item.parent)
+		{
+			item.parent.style.backgroundColor = '#ebebeb';			
+			let div = item.parent.querySelector('[nameId="groupItem"]');
+			div.style.display = '';
+		}
 	}	
 	
 	// сбросить выделение со всех пунктов

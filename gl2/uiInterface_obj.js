@@ -22,6 +22,15 @@ function activeObjRightPanelUI_1({obj} = {})
 	{	
 		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});
 		
+		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: obj});		
+		if(!equal)
+		{
+			infProject.ui.rpanel.InfObj.setGroupObjs({arr: ddGroup({obj: obj})});			
+			newCrListObj({obj: obj});			
+		}		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});		
+		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});		
+		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
