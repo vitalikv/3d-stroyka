@@ -91,10 +91,7 @@ function clickWFPoint_3D(cdm)
 	
 	activeObjRightPanelUI_1({obj: obj});
 	showWF_point_UI({point: obj, butt: true});
-	
-	if(cdm.menu_1) { clickObjUI({obj: obj}); }		// обновляем правое меню 
-	
-	
+
 	
 	setClickLastObj({obj: obj});
 }

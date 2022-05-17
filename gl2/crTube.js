@@ -151,6 +151,9 @@ class TubeN extends THREE.Mesh
 		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
 
 		//this.ui_menu({type: 'show'});
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus, tubeDiameter: this.userData.diameter * 1000} });		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});			
 	}	
 	
 	
@@ -379,89 +382,6 @@ class TubeN extends THREE.Mesh
 		renderCamera();
 	}	
 
-}
-
-
-function ddGroup({obj})
-{
-	let arr = [obj];
-	
-	if(obj.userData.obj3D && obj.userData.obj3D.group) arr = obj.userData.obj3D.group.userData.groupObj.child;
-	else if(obj.userData.wf_tube && obj.userData.wf_tube.group) arr = obj.userData.wf_tube.group.userData.groupObj.child;
-	else if(obj.userData.tag == 'new_point') arr = obj.userData.tube.userData.group;
-	else if(obj.userData.tag == 'new_tube') arr = obj.userData.group;
-	else { return []; }
-	
-	return arr;
-}
-
-
-function newCrListObj({obj})
-{
-	let arrO = ddGroup({obj});
-	console.log(111, arrO.length);
-	let arrItem = arrO.map(o => 
-	{
-		let item = {};	
-
-		if(o.userData.obj3D) item = getObj3D({obj: o});
-		else if(o.userData.wf_tube) item = getObjTube({obj: o});
-		else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
-		else if(o.userData.tag == 'new_tube') item = o.ui_getObjChilds();		
-		
-		return item;
-	});	
-	
-	console.log(arrItem);
-	infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
-	
-	function getObj3D({obj})
-	{
-		let item = {};
-		item.obj = obj;
-		item.name = obj.userData.obj3D.nameRus;
-		//item.f = this.clickTubeUI.bind(this);
-		
-		item.childs = [];	
-		
-		let arr = getCenterPointFromObj_1(obj);
-		
-		for (let i = 0; i < arr.length; i++)
-		{
-			item.childs[i] = {};
-			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.centerPoint.nameRus;
-			//item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
-		}
-		
-		return item;
-	}
-
-	function getObjTube({obj})
-	{
-		let item = {};
-		item.obj = obj;
-		item.name = obj.userData.wf_tube.nameRus;
-		item.lengthTube = obj.userData.wf_tube.length;
-		item.colorTube = '#' + obj.material.color.clone().getHexString();		
-		//item.f = this.clickTubeUI.bind(this);
-		
-		item.childs = [];	
-		
-		let arr = [];
-		arr[0] = obj.userData.wf_tube.point[0];
-		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];	
-					
-		for (let i = 0; i < arr.length; i++)
-		{
-			item.childs[i] = {};
-			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.wf_point.nameRus;
-			//item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
-		}
-		
-		return item;
-	}	
 }
 
 

@@ -10,31 +10,36 @@ function activeObjRightPanelUI_1({obj} = {})
 	
 	if(!obj) return;
 	
+	let arrO = ddGroup({obj: obj});
+	let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: arrO});
+	if(!equal)
+	{
+		infProject.ui.rpanel.InfObj.setGroupObjs({arr: arrO});			
+		newCrListObj({obj: obj});			
+	}		
+	infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: obj});	
+	
+	
 	if(obj.userData.tag == 'wf_point')
 	{
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
 		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});
 	}	
 	else if(obj.userData.tag == 'wf_tube')
-	{	 
+	{
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });		
 		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});
 	}			
 	else if(obj.userData.tag == 'obj')
 	{	
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});
-		
-		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: obj});		
-		if(!equal)
-		{
-			infProject.ui.rpanel.InfObj.setGroupObjs({arr: ddGroup({obj: obj})});			
-			newCrListObj({obj: obj});			
-		}		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});		
-		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});		
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.obj3D.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});					
 		
 		if( isCheckExsistFunction(window['getInfObjFromBD']) ) { getInfObjFromBD({obj: obj}); }; 		
 	}
 	else if(obj.userData.tag == 'joinPoint')
 	{ 
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
 		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bjpoint']});
 	}
 	else if(obj.userData.tag == 'new_point')
@@ -55,476 +60,235 @@ function activeObjRightPanelUI_1({obj} = {})
 
 
 
-
-
-
-
-
-
-
-
-// кликнули объект в сцене, создаем/показываем список группы (дочерних объектов) (правом меню UI)
-function clickObjUI(cdm)
+// получаем группу , если у объекта есть группа, иначе получаем выбранный объект
+function ddGroup({obj})
 {
-	if(!cdm) { cdm = {}; }	
-	if(!cdm.obj) return;
+	let arr = [];
 	
-	var obj = cdm.obj;
-	
-	var arrO = arrObjFromGroup({obj: obj});		// получаем все объекты группы, если нет группы -> получаем один объект
-	
-	var flag = true;	// если другая группа или объект, тогда очищаем список и создаем новый
-	
-	if(infProject.list.rp_ui.arr.length == arrO.length)
+	if(obj.userData.obj3D)
 	{
-		var arrO_2 = infProject.list.rp_ui.arr;
-		var num = 0;
-		
-		for(var i = 0; i < arrO.length; i++)
-		{
-			for(var i2 = 0; i2 < arrO_2.length; i2++)
-			{
-				if(arrO[i] == arrO_2[i2].o) { num++; break; }
-			}			
-		}
-		
-		if(arrO.length == num) { flag = false; }
+		arr = (obj.userData.obj3D.group) ? obj.userData.obj3D.group.userData.groupObj.child : [obj];
+	}		
+	else if(obj.userData.wf_tube) 
+	{
+		arr = (obj.userData.wf_tube.group) ? obj.userData.wf_tube.group.userData.groupObj.child : [obj];
+	}
+	else if(obj.userData.tag == 'joinPoint') 
+	{
+		var obj3D = obj.parent;
+		arr = (obj3D.userData.obj3D.group) ? obj3D.userData.obj3D.group.userData.groupObj.child : [obj3D];
+	}	
+	else if(obj.userData.tag == 'wf_point') 
+	{
+		let tube = obj.userData.wf_point.tube;
+		arr = (tube.userData.wf_tube.group) ? tube.userData.wf_tube.group.userData.groupObj.child : [tube];
+	}
+	else if(obj.userData.tag == 'new_point') 
+	{
+		arr = obj.userData.tube.userData.group;
+	}
+	else if(obj.userData.tag == 'new_tube') 
+	{
+		arr = obj.userData.group;
 	}
 	
+	return arr;
+}
+
+
+// подготавливаем список для создания списка объектов
+function newCrListObj({obj})
+{
+	let arrO = ddGroup({obj});
 	
-	if(flag)
+	let arrItem = arrO.map(o => 
 	{
-		// очищаем список объектов UI
-		clearItemSelectedObjUI();	
+		let item = {};	
+
+		if(o.userData.obj3D) item = getObj3D({obj: o});
+		else if(o.userData.wf_tube) item = getObjTube({obj: o});
+		else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
+		else if(o.userData.tag == 'new_tube') item = o.ui_getObjChilds();		
 		
-		let container = document.body.querySelector('[nameId="list_obj_childs"]');
+		return item;
+	});	
+	
+	
+	infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
+	
+	function getObj3D({obj})
+	{
+		let item = {};
+		item.obj = obj;
+		item.name = obj.userData.obj3D.nameRus;
+		item.f = clickItemListRpInfUI.bind(obj);
 		
-		for(var i = 0; i < arrO.length; i++)
+		item.childs = [];	
+		
+		let arr = getCenterPointFromObj_1(obj);
+		
+		for (let i = 0; i < arr.length; i++)
 		{
-			var num = infProject.list.rp_ui.arr.length;
-			
-			
-			var tag = arrO[i].userData.tag;		
-			
-			// кнопка центрирование на объекте
-			var htmlViewObj = 
-			'<div nameId="sh_select_obj3D" style="margin-right: 5px; margin-left: auto; width: 10px; height: 20px;">\
-				<div>\
-					<svg height="100%" width="100%" viewBox="0 0 100 100">\
-						<circle cx="50%" cy="50%" r="40" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-					</svg>\
-				</div>\
-			</div>';
-			
-			
-			// получаем разъемы объекта или точки трубы
-			{
-				var arrP = [];
-							
-				if(tag == 'wf_tube')
-				{
-					arrP[0] = arrO[i].userData.wf_tube.point[0];
-					arrP[1] = arrO[i].userData.wf_tube.point[arrO[i].userData.wf_tube.point.length - 1];				
-				}
-				else if(tag == 'obj')
-				{ 
-					arrP = getCenterPointFromObj_1(arrO[i]); 
-				}
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.centerPoint.nameRus;
+			item.childs[i].f = clickItemListRpInfUI.bind(arr[i]);			
+		}
+		
+		return item;
+	}
 
-				var htmlTr = '';
-				
-				if(arrP.length > 0)
-				{
-					htmlTr = 
-					'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
-						<div>\
-							<svg height="100%" width="100%" viewBox="0 0 100 100">\
-								<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-							</svg>\
-						</div>\
-					</div>';			
-				}				
-			}
-				
+	function getObjTube({obj})
+	{
+		let item = {};
+		item.obj = obj;
+		item.name = obj.userData.wf_tube.nameRus;
+		item.lengthTube = obj.userData.wf_tube.length;
+		item.colorTube = '#' + obj.material.color.clone().getHexString();		
+		item.f = clickItemListRpInfUI.bind(obj);
+		
+		item.childs = [];	
+		
+		let arr = [];
+		arr[0] = obj.userData.wf_tube.point[0];
+		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];	
+					
+		for (let i = 0; i < arr.length; i++)
+		{
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.wf_point.nameRus;
+			item.childs[i].f = clickItemListRpInfUI.bind(arr[i]);			
+		}
+		
+		return item;
+	}	
+}
 
-			if(tag == 'wf_tube')
-			{
-				var htmlTP = '';
+
+// кликнули на пункт из UI меню
+function clickItemListRpInfUI()
+{
+	let obj = this;
+	
+	if(obj.userData.obj3D) { obj3D({obj}); }
+	else if(obj.userData.centerPoint) { objCenterPoint({obj}); }
+	else if(obj.userData.wf_tube) { tube({obj}); }
+	else if(obj.userData.wf_point) { tubePoint({obj}); }
+
+
+	function obj3D({obj})
+	{
+		
+		showHideJP({obj});		
+		
+		let arrO = getObjsFromGroup_1({obj: obj});
+		
+		outlineAddObj(this, {arrO: arrO});	
+		
+		
+		obj.updateMatrixWorld();
+		let pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.obj3D.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});	
+	}
+	
+
+	function objCenterPoint({obj})
+	{
+		activeJoinPoint({obj: obj});
+		showHideJP({obj: obj.parent});		
+		
+		let arrO = getObjsFromGroup_1({obj: obj.parent});
+		
+		outlineAddObj(this, {arrO: arrO});	
+		
+		
+		let pos = obj.getWorldPosition(new THREE.Vector3());  
 				
-				var html = 
-				'<div class="right_panel_1_1_list_item">\
-					<div class="flex_1 relative_1" style="margin: auto;">\
-						'+htmlTr+'\
-						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.wf_tube.nameRus+'</div>\
-						<div class="right_panel_1_1_list_item_color">\
-							<input type="color" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
-						</div>\
-						<div class="right_panel_1_1_list_item_text" item="value">'+arrO[i].userData.wf_tube.length+'м</div>\
-						'+htmlViewObj+'\
-					</div>\
-					<div nameId="groupItem" style="display: none;">\
-					</div>\
-				</div>';
-			} 
-			else if(tag == 'obj')
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bjpoint']});	
+	}	
+	
+	
+	function tube({obj})
+	{
+		showHideTubePoint({tube: obj, visible: true});
+		
+		let arrO = [obj, ...obj.userData.wf_tube.point];
+		
+		outlineAddObj(this, {arrO: arrO});	
+		
+		
+		let pos = new THREE.Vector3();
+		
+		if(1==1)
+		{
+			let p = obj.userData.wf_tube.point;
+			let n = (p.length % 2);	// четное/нечетное, 2=false 3=true
+			pos = p[0].position;
+			
+			if(n)
 			{
-				var html = 
-				'<div class="right_panel_1_1_list_item">\
-					<div class="flex_1 relative_1" style="margin: auto;">\
-						'+htmlTr+'\
-						<div class="right_panel_1_1_list_item_text" nameid="nameItem">'+arrO[i].userData.obj3D.nameRus+'</div>\
-						'+htmlViewObj+'\
-					</div>\
-					<div nameId="groupItem" style="display: none;">\
-					</div>\
-				</div>';			
+				n = (p.length - 1)/2;				
+				pos = p[n].position;
 			}
 			else
 			{
-				continue;
-			}
-
-			infProject.list.rp_ui.arr[num] = { o: arrO[i], el: null, p: [], p_vis: false };
-			
-			var div = document.createElement('div');
-			div.innerHTML = html;
-			let elem = div.firstChild;
-			
-			infProject.list.rp_ui.arr[num].el = elem;
-			
-			// клик на объект в меню
-			container.append(elem);
-			(function() 
-			{  
-				elem.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };	
-			}());			
-			
-			// замена цвета у трубы
-			if(tag == 'wf_tube')
-			{
-				var obj = arrO[i];
-				var colorTube = elem.querySelector('input[type="color"]');
-				colorTube.value = '#'+obj.material.color.clone().getHexString();
-								
-				(function(obj) 
-				{  					
-					colorTube.onmousedown = function(e){ e.stopPropagation(); };
-					colorTube.onchange = function(e){ changeColorTube({ obj: obj, value: this.value }); e.stopPropagation(); };					
-				}(obj));							
-			}
-					
-			
-			// создаем событие по клику на кнопку центрирование на объекте
-			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
-			var obj = arrO[i];
-			(function(obj) 
-			{
-				elem_2.onmousedown = function(e)
-				{ 			
-					fitCameraToObject({obj: obj, rot: true});
-					e.stopPropagation();
-				};	
-			}(obj));				
-			
-
-			
-			// разъемы объекта или точки трубы
-			if(arrP.length > 0)
-			{
-				// создаем событие -> показываем/скрываем список разъемов объекта
-				let id = arrO[i].userData.id; 
-				let el_2 = elem.querySelector('[nameId="shCp_1"]');
-				var container_2 = elem.querySelector('[nameid="groupItem"]');
-
-				(function(container_2, id) 
-				{
-					el_2.onmousedown = function(e){ clickRtekUI_1({elem_2: container_2, id: id}); e.stopPropagation(); };	
-				}(container_2, id));
-
-
-				// создаем html пункты для разъемов и создаем событие по клику на разъем
-				for(var i2 = 0; i2 < arrP.length; i2++)
-				{				
-					//if(!arrCP[i2].userData.centerPoint) continue;
-					var nameRus = '';
-					
-					if(arrP[i2].userData.centerPoint){ nameRus = arrP[i2].userData.centerPoint.nameRus; }
-					else if(arrP[i2].userData.wf_point){ nameRus = arrP[i2].userData.wf_point.nameRus; }
-					else { continue; }
-					
-					var html = 
-					'<div class="flex_1 right_panel_1_1_list_item relative_1">\
-					<div class="right_panel_1_1_list_item_text" nameId="nameItem">'+nameRus+'</div>\
-					</div>';				
-
-					var div = document.createElement('div');
-					div.innerHTML = html;
-					let el_3 = div.firstChild;
-
-					infProject.list.rp_ui.arr[num].p[infProject.list.rp_ui.arr[num].p.length] = { o: arrP[i2], el: el_3 };
-					
-					container_2.append(el_3);
-					el_3.onmousedown = function(e){ clickItemObjNameUI({el: this, clickItem: true}); e.stopPropagation(); };
-				}								
-			}
-		}		
-	}
-	
-	// выделяем в меню
-	clickItemObjNameUI({obj: cdm.obj});		
-}
-
-
-// кликнули на треугольник в меню объекты (показываем/скрываем разъемы этого объекта)
-function clickRtekUI_1(cdm)
-{
-	var display = cdm.elem_2.style.display;
-	
-	var display = (display == 'none') ? 'block' : 'none';
-	
-	cdm.elem_2.style.display = display;
-	
-	var parentEl = cdm.elem_2.parentElement;	
-
-	if(display == 'block') 
-	{ 
-		var flag = false;
-		if(clickO.last_obj)
-		{
-			if(clickO.last_obj.userData.id == cdm.id) { flag = true; }
-		}
-		
-		if(flag) 
-		{
-			parentEl.style.backgroundColor = infProject.listColor.activeItem_1;
-		}
-		else
-		{
-			parentEl.style.backgroundColor = '#ebebeb';
-		}		
-	}
-	else 
-	{ 
-		var flag = false;
-		if(clickO.last_obj)
-		{
-			if(clickO.last_obj.userData.id == cdm.id) { flag = true; }
-		}
-		
-		if(flag) 
-		{
-			parentEl.style.backgroundColor = infProject.listColor.activeItem_1;
-		}
-		else
-		{
-			parentEl.style.backgroundColor = '#ffffff';
-		}
-	}	
-}
-
-
-
-
-
-
-
-// удаляем список объектов UI
-function clearItemSelectedObjUI()
-{
-	var list = infProject.list.rp_ui.arr;
-	console.log(788, list); 
-	for(var i = 0; i < list.length; i++)
-	{
-		if(!list[i]) continue;
-		if(!list[i].el) continue;
-		list[i].el.remove();
-		
-		for(var i2 = 0; i2 < list[i].p.length; i2++)
-		{
-			list[i].p[i2].el.remove();
-		}
-	}		
-
-	infProject.list.rp_ui = { arr: [] };		
-}
-
-
-
-
-
-
-// выбираем группу или объект
-function clickItemObjNameUI(cdm)
-{	
-	var item = null;
-	var obj = null;
-	var list = infProject.list.rp_ui.arr;
-	
-	console.log(cdm);
-	
-	// снимаем старые выдиления
-	{		
-		for(var i = 0; i < list.length; i++)
-		{
-			list[i].el.style.backgroundColor = '#ffffff';
-			
-			for(var i2 = 0; i2 < list[i].p.length; i2++)
-			{
-				list[i].p[i2].el.style.backgroundColor = '#ffffff';
-				list[i].p[i2].o.material = infProject.material.pointObj.default;
-			}
-		}
-	}		
-	
-	if(cdm.button)
-	{
-		var obj = infProject.tools.pg.obj;
-		if(obj) cdm.obj = obj; 
-	}	
-	
-	if(cdm.el)		// кликнули на пункт в меню
-	{
-		for(var i = 0; i < list.length; i++)
-		{
-			if(list[i].el == cdm.el){ obj = list[i].o; break; } 
-			
-			for(var i2 = 0; i2 < list[i].p.length; i2++)
-			{
-				if(list[i].p[i2].el == cdm.el){ obj = list[i].p[i2].o; break; }
+				n = (p.length - p.length/2) - 1;				
+				let pos1 = p[n].position;
+				let pos2 = p[n+1].position;
+				pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
 			}			
-		}		
-		
-		item = cdm.el;
-	}
-	else if(cdm.obj)	// кликнули на объект в сцене
-	{ 
-		for(var i = 0; i < list.length; i++)
-		{
-			if(list[i].o == cdm.obj){ item = list[i].el; break; } 
+
 			
-			for(var i2 = 0; i2 < list[i].p.length; i2++)
-			{
-				if(list[i].p[i2].o == cdm.obj){ item = list[i].p[i2].el; break; }
-			}			
+			obj.updateMatrixWorld();						
+			pos = obj.worldToLocal( pos.clone() );			
 		}
+				
 		
-		obj = cdm.obj;
-	}
-	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
-	{
-		item = list[cdm.item].el;
-		obj = list[cdm.item].o;
-	}
-	else
-	{
-		return;
-	}
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
 
-
-	// кликнули не в сцену на объект, а на пункт в меню (скрываем разъемы старого объекта)
-	if(cdm.clickItem)
-	{
-		hideMenuObjUI_2D();		
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});			
 	}
 	
-	  
-	// делаем цвет всех объектов группы по default и сварачиваем открытые вложения 
-	if(infProject.settings.active.group) 	
-	{ 
-		for(var i = 0; i < list.length; i++)
-		{
-			list[i].el.style.backgroundColor = '#ffffff';
-			
-			var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
-			
-			if(el_1)
-			{
-				el_1.style.display = 'none';
-			}
-		}
-	}
-	
-	if(!item) return;
-	if(!obj) return;
 
-	// меняем цвет у выделеной вкладки
-	item.style.backgroundColor = infProject.listColor.activeItem_1;
-	
-
-	if(obj.userData.obj3D) 
-	{ 
-		infProject.elem.rp_obj_name.value = obj.userData.obj3D.nameRus;  
-	}
-	else if(obj.userData.wf_tube) 
-	{ 
-		infProject.elem.rp_obj_name.value = obj.userData.wf_tube.nameRus;  
-	}
-	else if(obj.userData.wf_point) 
-	{ 
-		infProject.elem.rp_obj_name.value = obj.userData.wf_point.nameRus; 
-
-		var parent = obj.userData.wf_point.tube;
+	function tubePoint({obj})
+	{
+		let tube = obj.userData.wf_point.tube;
 		
-		for(var i = 0; i < list.length; i++)
-		{
-			if(list[i].o == parent)
-			{ 
-				list[i].el.style.backgroundColor = '#ebebeb';
-				
-				var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
-				
-				if(el_1)
-				{
-					el_1.style.display = 'block';
-				}
-				
-				break; 
-			} 					
-		}		
+		showHideTubePoint({tube: tube, visible: true});		
+		
+		let arrO = [tube, ...tube.userData.wf_tube.point];
+		
+		outlineAddObj(this, {arrO: arrO});	
+			
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
 	}	
-	else if(obj.userData.centerPoint)
-	{		
-		infProject.elem.rp_obj_name.value = obj.userData.centerPoint.nameRus;
-		
-		var parent = obj.parent;
-		
-		for(var i = 0; i < list.length; i++)
-		{
-			if(list[i].o == parent)
-			{ 
-				list[i].el.style.backgroundColor = '#ebebeb';
-				
-				var el_1 = list[i].el.querySelector('[nameId="groupItem"]');
-				
-				if(el_1)
-				{
-					el_1.style.display = 'block';
-				}
-				
-				break; 
-			} 					
-		}		
-	}
-	
-	if(!cdm.obj) 
-	{
-		if(obj.userData.obj3D || obj.userData.centerPoint)
-		{
-			clickObject3D(obj, {outline: true});
-		}
-		else if(obj.userData.wf_tube)
-		{
-			clickTubeWF({obj: obj});
-		}
-		else if(obj.userData.wf_point)
-		{
-			clickWFPoint_3D({obj: obj});
-		}		
-	} 
+}	
 
-	showHideJP();
-	renderCamera();
-}
+	
+		
+
+
+
+
+
 
 
 

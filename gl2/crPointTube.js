@@ -95,6 +95,9 @@ class PointTube extends THREE.Mesh
 		infProject.tools.pg.activeTool({obj: this, pos: this.position, arrO: arrO});
 
 		//this.ui_menu({type: 'show'});
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus}});		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
 	}	
 	
 	

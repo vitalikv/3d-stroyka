@@ -47,12 +47,10 @@ function clickFirstCenterPoint(cdm)
 
 
 
-
-function showHideJP(cdm) 
-{
-	if(!cdm) { cdm = {} }			
-
-	var obj = infProject.tools.pg.obj;
+// показываем/скрываем разъемы объекта
+function showHideJP({obj} = {obj: null}) 
+{		
+	if(!obj) obj = infProject.tools.pg.obj;
 	
 	if(!obj) return;
 	
