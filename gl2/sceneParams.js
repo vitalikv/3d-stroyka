@@ -129,7 +129,6 @@ function initSceneParams()
 
 	infProject.settings.active = {};
 	infProject.settings.active.pg = 'pivot';		// 'pivot' 'gizmo'
-	infProject.settings.active.tube = null;
 	infProject.settings.active.group = true;
 	infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры
 	infProject.settings.BD = {};

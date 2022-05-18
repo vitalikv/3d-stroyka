@@ -99,24 +99,7 @@ function clickWFPoint_3D(cdm)
 
 
 
-// при клике добавляем на трубу точку
-function addPointOnTube(cdm)
-{
-	var ray = cdm.ray;			  
-	var tube = ray.object;		
-	
-	var result = detectPosTubeWF({ray: ray});	// определяем в какое место трубы кликнули
-	var p1 = result.p1;
-	var pos = result.pos;	
-	
-	var arrP = tube.userData.wf_tube.point;  
-	
-	var newPoint = createPointWF({ pos: pos });
-	
-	for(var i = 0; i < arrP.length; i++) { if(arrP[i] == p1) { arrP.splice(i+1, 0, newPoint); break; } }	
-	
-	updateTubeWF({tube: tube});	
-}
+
 
 
 
@@ -421,7 +404,7 @@ function deClickTube(cdm)
 		
 		switchAlignPoint_1({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
 		
-		infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку		
+		//infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку		
 		
 		activeObjRightPanelUI_1();		// скрываем UI	
 	}

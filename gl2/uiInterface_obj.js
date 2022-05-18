@@ -184,7 +184,7 @@ function clickItemListRpInfUI()
 		
 		let arrO = getObjsFromGroup_1({obj: obj});
 		
-		outlineAddObj(this, {arrO: arrO});	
+		outlinePass.selectedObjects = arrO;	
 		
 		
 		obj.updateMatrixWorld();
@@ -205,7 +205,7 @@ function clickItemListRpInfUI()
 		
 		let arrO = getObjsFromGroup_1({obj: obj.parent});
 		
-		outlineAddObj(this, {arrO: arrO});	
+		outlinePass.selectedObjects = arrO;	
 		
 		
 		let pos = obj.getWorldPosition(new THREE.Vector3());  
@@ -225,7 +225,7 @@ function clickItemListRpInfUI()
 		
 		let arrO = [obj, ...obj.userData.wf_tube.point];
 		
-		outlineAddObj(this, {arrO: arrO});	
+		outlinePass.selectedObjects = arrO;	
 		
 		
 		let pos = new THREE.Vector3();
@@ -271,8 +271,7 @@ function clickItemListRpInfUI()
 		
 		let arrO = [tube, ...tube.userData.wf_tube.point];
 		
-		outlineAddObj(this, {arrO: arrO});	
-			
+		outlinePass.selectedObjects = arrO;				
 		
 		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
 

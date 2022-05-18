@@ -66,11 +66,6 @@ function clickFirstTubeWF(cdm)
 // кликнули на трубу
 function clickTubeWF(cdm)
 {
-	if(infProject.settings.active.tube == 'add_point_wf')
-	{
-		addPointOnTube(cdm);	// добавляем точку на трубу
-	}
-	
 	var tube = null;
 
 	if(cdm.ray) { tube = cdm.ray.object; }
@@ -92,43 +87,40 @@ function clickTubeWF(cdm)
 	outlineAddObj(tube);
 	
 	
-	// режим "добавить точку на трубу" выкл	
-	if(!infProject.settings.active.tube)
+	if(cdm.ray)
 	{
-		if(cdm.ray)
+		var result = detectPosTubeWF({ray: cdm.ray});	// определяем в какое место трубы кликнули
+		var p1 = result.p1;
+		var pos = result.pos;							
+	}
+	else if(cdm.toolPos)
+	{
+		var pos = cdm.toolPos;
+	}
+	else
+	{
+		var p = tube.userData.wf_tube.point;
+		var n = (p.length % 2);	// четное/нечетное, 2=false 3=true
+		
+		if(n)
 		{
-			var result = detectPosTubeWF({ray: cdm.ray});	// определяем в какое место трубы кликнули
-			var p1 = result.p1;
-			var pos = result.pos;							
-		}
-		else if(cdm.toolPos)
-		{
-			var pos = cdm.toolPos;
+			var n = (p.length - 1)/2;				
+			var pos = p[n].position;
 		}
 		else
 		{
-			var p = tube.userData.wf_tube.point;
-			var n = (p.length % 2);	// четное/нечетное, 2=false 3=true
-			
-			if(n)
-			{
-				var n = (p.length - 1)/2;				
-				var pos = p[n].position;
-			}
-			else
-			{
-				var n = (p.length - p.length/2) - 1;				
-				var pos1 = p[n].position;
-				var pos2 = p[n+1].position;
-				var pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
-			}			
-		}
-		
-		tube.updateMatrixWorld();						
-		tube.userData.wf_tube.posPivotGizmo = tube.worldToLocal( pos.clone() );
-		
-		infProject.tools.pg.activeTool({obj: tube});
+			var n = (p.length - p.length/2) - 1;				
+			var pos1 = p[n].position;
+			var pos2 = p[n+1].position;
+			var pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
+		}			
 	}
+	
+	tube.updateMatrixWorld();						
+	tube.userData.wf_tube.posPivotGizmo = tube.worldToLocal( pos.clone() );
+	
+	infProject.tools.pg.activeTool({obj: tube});
+
 }
 
 // прячем/показываем точки у трубы

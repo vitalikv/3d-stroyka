@@ -23,6 +23,8 @@ class UI_infoBlockObj
 		this.assignEvent();	
 		this.setDivElement();
 		this.setUpdElement();
+		
+		this.f_addPT = new AddPointOnTube({button: this.el.querySelector('[nameId="butt_add_point_on_tube"]')});
 	}
 	
 	assignEvent()
@@ -42,7 +44,7 @@ class UI_infoBlockObj
 		// список объединения в группу
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
 		
-		this.el.querySelector('[nameId="butt_add_point_on_tube"]').onmousedown = () => { this.switchAddPointOnTube(); }	
+		
 		this.el.querySelector('[nameId="button_deactive_join_element"]').onmousedown = () => { switchAlignPoint_1({active: false}); }
 		this.el.querySelector('[nameId="join_element"]').onmousedown = () => { alignPointToPoint_1(); }
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
@@ -241,32 +243,6 @@ class UI_infoBlockObj
 	}
 	
 	
-	// вкл/выкл возможность добавить точку на трубу при клике на нее
-	switchAddPointOnTube({type} = {})
-	{
-		if(type == 'off')
-		{
-			infProject.settings.active.tube = null;
-			infProject.tools.pivot.visible = true;			
-		}
-		else if(!infProject.settings.active.tube) 
-		{ 
-			infProject.settings.active.tube = 'add_point_wf';
-			infProject.tools.pivot.visible = false;
-		}
-		else 
-		{ 
-			infProject.settings.active.tube = null;
-			infProject.tools.pivot.visible = true;
-		}
-
-		let color = "#b3b3b3";
-		if(infProject.settings.active.tube == 'add_point_wf') color = "#ff0000";	// вкл режим добавления точки на трубу
-			
-		this.el.querySelector('[nameId="butt_add_point_on_tube"]').style.borderColor = color;
-		
-		this.render()
-	}
 	
 	setGroupObjs({arr} = {arr: []})
 	{
@@ -360,6 +336,102 @@ class UI_infoBlockObj
 	}	
 }
 
+
+
+class AddPointOnTube
+{	
+	constructor({button})
+	{
+		this.button = button;
+		this.enabled = false;
+		
+		this.clickButton = this.clickButton.bind(this);
+		this.assignEvent();	
+	}
+	
+	assignEvent()
+	{
+		this.button.onmousedown = () => { this.switchEnabled(); }		
+	}
+	
+	clickButton(event)
+	{	
+		if(event.button == 1 || event.button == 2) { this.switchEnabled({type: 'off'}); }
+		else if(event.button == 0) { this.clickOnScene({event}); }
+		
+		console.log(this.button.style.borderColor);		
+	}
+	
+	// вкл/выкл возможность добавить точку на трубу при клике на нее
+	switchEnabled({type} = {})
+	{
+		event.stopPropagation();
+		
+		if(type == 'off') { this.enabled = false; }
+		else { this.enabled = !this.enabled; }
+		
+		
+		if(this.enabled)	// вкл режим добавления точки на трубу
+		{
+			infProject.tools.pivot.visible = false;
+			setMouseStop(true);
+			document.addEventListener( 'mousedown', this.clickButton );
+			this.button.style.borderColor = "#ff0000";
+		}
+		else
+		{
+			infProject.tools.pivot.visible = true;
+			setMouseStop(false);
+			document.removeEventListener( 'mousedown', this.clickButton );
+			this.button.style.borderColor = "#b3b3b3";
+		}
+		
+		
+		this.render();
+	}
+	
+	clickOnScene({event})
+	{
+		let obj = infProject.tools.pg.obj;
+		if(!obj) return;
+		
+		let ray = rayIntersect( event, [obj], 'arr' );
+		if(ray.length == 0) return;
+		
+		obj = ray[0].object;
+		
+		if(obj.userData.tag == 'wf_tube')
+		{			  
+			let result = detectPosTubeWF({ray: ray[0]});	// определяем в какое место трубы кликнули
+			
+			let arrP = obj.userData.wf_tube.point;  			
+			let newPoint = createPointWF({ pos: result.pos });
+			
+			for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }	
+			
+			updateTubeWF({tube: obj});				
+		}
+		if(obj.userData.tag == 'new_tube')
+		{
+			let result = obj.detectPosTube({clickPos: ray[0].point});
+			
+			let arrP = obj.userData.point;
+			let newPoint = new PointTube({pos: result.pos, tube: obj});
+			
+			for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }
+
+			obj.tubeGeometry({});
+		}		
+		
+		this.render();
+	}
+
+
+	render()
+	{
+		renderCamera();
+	}	
+}
 
 
 

@@ -36,11 +36,6 @@ function mouseDownRight()
 
 		clickO = resetPop.clickO();
 	}
-
-	if(infProject.settings.active.tube) 
-	{ 
-		infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку	 
-	}
 	
 	clickO.move = null;	
 }
@@ -102,8 +97,9 @@ function onDocumentMouseDown( event )
 
 function clickRayHit(event)
 { 
-	var rayhit = null;	
+	if(onfM.stop) return;
 	
+	var rayhit = null;	
 	
 	// вкл подложка
 	if(infProject.scene.substrate.active) 
