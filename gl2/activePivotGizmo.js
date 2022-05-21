@@ -308,6 +308,18 @@ class ToolPG
 		
 		this.applyRotUI();
 	}
+
+
+	// скрываем/показываем Pivot/Gizmo (только визуально)
+	visible({value})
+	{
+		let obj = null;
+		if(this.type == 'pivot') obj = this.pivot;
+		if(this.type == 'gizmo') obj = this.gizmo;
+		
+		obj.visible = value;
+	}
+	
 	
 	// скрываем Pivot/Gizmo
 	hide()

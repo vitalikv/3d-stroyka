@@ -42,7 +42,7 @@ class TubeN extends THREE.Mesh
 	}
 	
 	// создаем/обновляем Geometry трубы
-	tubeGeometry({path = null, diameter = this.userData.diameter})
+	tubeGeometry({path = null, diameter = this.userData.diameter} = {})
 	{
 		this.position.set(0, 0, 0);
 		this.rotation.set(0, 0, 0);
@@ -58,7 +58,7 @@ class TubeN extends THREE.Mesh
 				arr.push(point);
 			}
 			
-			this.addArrPoint({arr: arr});			
+			this.userData.point.push(...arr);			
 		}
 		
 		
@@ -103,10 +103,20 @@ class TubeN extends THREE.Mesh
 		this.material = material;
 	}
 
-	addArrPoint({arr})
+	
+	// добавить точку на трубу
+	addPointOnTube({clickPos})
 	{
-		this.userData.point.push(...arr);					
+		let result = this.detectPosTube({clickPos});
+		
+		let arrP = this.getTubePoints();
+		let newPoint = new PointTube({pos: result.pos, tube: this});
+		
+		for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }
+
+		this.tubeGeometry();		
 	}
+	
 	
 	getTubePoints()
 	{

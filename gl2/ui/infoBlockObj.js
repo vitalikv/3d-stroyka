@@ -373,14 +373,14 @@ class AddPointOnTube
 		
 		if(this.enabled)	// вкл режим добавления точки на трубу
 		{
-			infProject.tools.pivot.visible = false;
+			infProject.tools.pg.visible({value: false});
 			setMouseStop(true);
 			document.addEventListener( 'mousedown', this.clickButton );
 			this.button.style.borderColor = "#ff0000";
 		}
 		else
 		{
-			infProject.tools.pivot.visible = true;
+			infProject.tools.pg.visible({value: true});
 			setMouseStop(false);
 			document.removeEventListener( 'mousedown', this.clickButton );
 			this.button.style.borderColor = "#b3b3b3";
@@ -390,6 +390,7 @@ class AddPointOnTube
 		this.render();
 	}
 	
+	// кликаем в сцену, если попадаем на трубу, то добавляем точку
 	clickOnScene({event})
 	{
 		let obj = infProject.tools.pg.obj;
@@ -409,18 +410,15 @@ class AddPointOnTube
 			
 			for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }	
 			
-			updateTubeWF({tube: obj});				
+			updateTubeWF({tube: obj});
+
+			infProject.tools.pg.arrO = arrObjFromGroup({obj: obj});
 		}
 		if(obj.userData.tag == 'new_tube')
 		{
-			let result = obj.detectPosTube({clickPos: ray[0].point});
+			obj.addPointOnTube({clickPos: ray[0].point});
 			
-			let arrP = obj.userData.point;
-			let newPoint = new PointTube({pos: result.pos, tube: obj});
-			
-			for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }
-
-			obj.tubeGeometry({});
+			infProject.tools.pg.arrO = [obj, ...obj.getTubePoints()];		
 		}		
 		
 		this.render();

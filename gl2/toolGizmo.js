@@ -9,10 +9,7 @@ function crGizmo(params)
 
 	function crObj() 
 	{
-		let gizmo = new THREE.Group();
-		gizmo.userData.gizmo = {};
-		gizmo.userData.gizmo.obj = null;
-		gizmo.userData.gizmo.arrO = [];		// группа объектов			
+		let gizmo = new THREE.Group();		
 		gizmo.userData.propGizmo = propGizmo;
 		
 		
@@ -144,10 +141,7 @@ function crGizmo(params)
 			let pos = params.pos;
 			let qt = params.qt;
 			
-			gizmo.visible = true;	
-			gizmo.userData.gizmo.obj = obj;
-			gizmo.userData.gizmo.arrO = arrO;			
-			
+			gizmo.visible = true;					
 			
 			gizmo.position.copy(pos);
 			gizmo.quaternion.copy(qt);
@@ -231,7 +225,7 @@ function crGizmo(params)
 			gizmo.userData.rotY = rotY;
 			
 										
-			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: gizmo.userData.gizmo.arrO, rotY_Old: rotY_Old});
+			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: infProject.tools.pg.arrO, rotY_Old: rotY_Old});
 
 			infProject.tools.pg.setRot({qt: gizmo.quaternion});
 		}
@@ -322,8 +316,6 @@ function crGizmo(params)
 		function hide() 
 		{
 			gizmo.visible = false;
-			gizmo.userData.gizmo.obj = null;
-			gizmo.userData.gizmo.arrO = [];
 		}		
 					
 		

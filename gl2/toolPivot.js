@@ -11,10 +11,7 @@ function crPivot(params)
 	{
 		let pivot = new THREE.Group();
 		pivot.userData.startPos = new THREE.Vector3();
-		pivot.userData.dir = new THREE.Vector3();
-		pivot.userData.pivot = {};
-		pivot.userData.pivot.obj = null;
-		pivot.userData.pivot.arrO = [];		// группа объектов			
+		pivot.userData.dir = new THREE.Vector3();	
 		pivot.userData.propPivot = propPivot;
 		
 		
@@ -276,8 +273,6 @@ function crPivot(params)
 			let qt = params.qt;
 			
 			pivot.visible = true;	
-			pivot.userData.pivot.obj = obj;
-			pivot.userData.pivot.arrO = arrO;
 			pivot.position.copy(pos);
 			pivot.quaternion.copy(qt);
 			
@@ -350,16 +345,12 @@ function crPivot(params)
 	
 	
 		// перемещение pivot
-		function movePivot(params)
+		function movePivot({event})
 		{
-			let event = params.event;
-			
 			let rayhit = rayIntersect( event, planeMath, 'one' ); 			
 			if(rayhit.length == 0) return;
 			
-			let obj = pivot.userData.pivot.obj;
-			let pos = rayhit[0].point;
-					
+			let pos = rayhit[0].point;					
 			
 			if(pivot.userData.dir)
 			{
@@ -371,7 +362,7 @@ function crPivot(params)
 			let offset = new THREE.Vector3().subVectors( pos, pivot.userData.startPos );
 			
 			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});			
-			pivot.userData.propPivot({type: 'moveObjs', obj: obj, arrO: pivot.userData.pivot.arrO, offset: offset});
+			pivot.userData.propPivot({type: 'moveObjs', obj: infProject.tools.pg.obj, arrO: infProject.tools.pg.arrO, offset: offset});
 			
 			infProject.tools.pg.setPos({pos: pivot.position});
 		}
@@ -466,8 +457,6 @@ function crPivot(params)
 		function hide() 
 		{
 			pivot.visible = false;
-			pivot.userData.pivot.obj = null;
-			pivot.userData.pivot.arrO = [];
 		}
 				
 	}

@@ -110,7 +110,7 @@ class PointTube extends THREE.Mesh
 		
 		let tube = this.userData.tube;
 		
-		tube.tubeGeometry({});			
+		tube.tubeGeometry();			
 	}	
 
 
@@ -144,7 +144,7 @@ class PointTube extends THREE.Mesh
 		
 		if(tube.getTubePoints().length >= 2) 
 		{ 
-			tube.tubeGeometry({});
+			tube.tubeGeometry();
 			let pos = tube.convertDistToPos({dist: dist});  
 			tube.clickTube({clickPos: pos});
 		}
