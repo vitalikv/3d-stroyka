@@ -4,21 +4,14 @@
 // создаем трубу из каталога 
 function createTubeWF_1(cdm)
 {
-	var visible = false;
+	let visible = false;
 	
-	if(cdm.type == 'horizontal')
-	{
-		
-	}
-	else if(cdm.type == 'vertical')
-	{
-		visible = (camera == cameraTop) ? true : false;
-	}
+	if(cdm.type == 'vertical') visible = (camera == cameraTop) ? true : false;
 	
 	
-	var diameter = (cdm.diameter) ? cdm.diameter : 0.05;
-	var tube = crTubeWF({point: cdm.point, diameter: diameter, pVisible: visible}); 	 		
-	 
+	let diameter = (cdm.diameter) ? cdm.diameter : 0.05;
+	//let tube = crTubeWF({point: cdm.point, diameter: diameter, pVisible: visible}); 	 		
+	let tube = new TubeN({path: cdm.point, diameter: diameter});
 	
 	return tube;
 }
@@ -27,22 +20,56 @@ function createTubeWF_1(cdm)
 // добавляем новую трубу в сцену
 function addTubeInScene(tube, cdm)
 {
+	if(tube.userData.tag == 'wf_tube')
+	{
+		if(!cdm.notArray)
+		{		
+			updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
+		}
+		
+		if(cdm.cursor)
+		{
+			planeMath.position.y = infProject.tools.heightPl.position.y;  
+			planeMath.rotation.set(-Math.PI/2, 0, 0);
+			planeMath.updateMatrixWorld();
 
-	if(!cdm.notArray)
-	{		
-		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
+			clickO.move = tube;
+		}
+		
+		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;			
 	}
-	
-	if(cdm.cursor)
+	if(tube.userData.tag == 'new_tube')
 	{
 		planeMath.position.y = infProject.tools.heightPl.position.y;  
 		planeMath.rotation.set(-Math.PI/2, 0, 0);
 		planeMath.updateMatrixWorld();
+		
+		setMouseStop(true);
+		
+		mainDiv_1.onmousemove = (event) => 
+		{
+			let intersects = rayIntersect(event, planeMath, 'one');
+			if (intersects.length == 0) return;		
+			
+			tube.setPos({pos: intersects[0].point});			
+			
+			renderCamera();
+		};
 
-		clickO.move = tube;
+		mainDiv_1.onmousedown = () => 
+		{
+			mainDiv_1.onmousemove = null;
+			mainDiv_1.onmousedown = null;
+		
+			let intersects = rayIntersect(event, planeMath, 'one');
+			if (intersects.length > 0) tube.clickTube({clickPos: intersects[0].point});						
+			
+			setMouseStop(false);
+			
+			renderCamera();
+		};			
+
 	}
-	
-	infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;	
 	
 	renderCamera();
 	

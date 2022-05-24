@@ -25,7 +25,7 @@ function createGroupObj_1(cdm)
 			var obj = null;
 			
 			obj = findObjFromId( 'obj', cdm.obj.id[i] );
-			if(!obj) { obj = findObjFromId( 'tube', cdm.obj.id[i] ); console.log(obj);}
+			if(!obj) { obj = findObjFromId( 'tube', cdm.obj.id[i] ); }
 				
 			if(obj) { arr2[arr2.length] = obj; }
 			 

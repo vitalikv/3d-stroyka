@@ -395,6 +395,12 @@ class TubeN extends THREE.Mesh
 }
 
 
+TubeN.prototype.newM = function() 
+{
+    console.log(333, this);
+};
+
+
 
 
 

@@ -66,7 +66,7 @@ async function loadObjServer(cdm)
 		{
 			var obj = window[inf.params.fc.name](inf.params.cdm);
 			
-			if(obj.userData.tag == 'wf_tube')	// если труба, то в кэш сохраняем только параметры
+			if(obj.userData.tag == 'wf_tube' || obj.userData.tag == 'new_tube')	// если труба, то в кэш сохраняем только параметры
 			{				
 				checkAddInf({inf: inf});
 				return addTubeInScene(obj, cdm);
