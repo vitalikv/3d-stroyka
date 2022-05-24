@@ -114,7 +114,9 @@ class TubeN extends THREE.Mesh
 		
 		for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }
 
-		this.tubeGeometry();		
+		this.tubeGeometry();
+
+		return newPoint;
 	}
 	
 	

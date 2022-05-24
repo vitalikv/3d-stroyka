@@ -22,13 +22,14 @@ class UI_infoBlockObj
 		
 		this.assignEvent();	
 		this.setDivElement();
-		this.setUpdElement();
-		
-		this.f_addPT = new AddPointOnTube({button: this.el.querySelector('[nameId="butt_add_point_on_tube"]')});
+		this.setUpdElement();	
 	}
 	
 	assignEvent()
 	{
+		this.el.querySelector('[nameId="butt_add_point_on_tube"]').onmousedown = () => { newAddPointOnTube(); }
+		
+		
 		this.el.querySelector('[nameId="button_delete_obj"]').onmousedown = (e) => { detectDeleteObj({obj: clickO.last_obj}); e.stopPropagation(); };
 		this.el.querySelector('[nameId="button_copy_obj"]').onmousedown = (e) => { copyObj(); e.stopPropagation(); };
 		
@@ -337,98 +338,36 @@ class UI_infoBlockObj
 }
 
 
-
-class AddPointOnTube
+// добавляем точку на трубу после нажатия на кнопку 
+function newAddPointOnTube()
 {	
-	constructor({button})
-	{
-		this.button = button;
-		this.enabled = false;
-		
-		this.clickButton = this.clickButton.bind(this);
-		this.assignEvent();	
-	}
-	
-	assignEvent()
-	{
-		this.button.onmousedown = () => { this.switchEnabled(); }		
-	}
-	
-	clickButton(event)
-	{	
-		if(event.button == 1 || event.button == 2) { this.switchEnabled({type: 'off'}); }
-		else if(event.button == 0) { this.clickOnScene({event}); }
-		
-		console.log(this.button.style.borderColor);		
-	}
-	
-	// вкл/выкл возможность добавить точку на трубу при клике на нее
-	switchEnabled({type} = {})
-	{
-		event.stopPropagation();
-		
-		if(type == 'off') { this.enabled = false; }
-		else { this.enabled = !this.enabled; }
-		
-		
-		if(this.enabled)	// вкл режим добавления точки на трубу
-		{
-			infProject.tools.pg.visible({value: false});
-			setMouseStop(true);
-			document.addEventListener( 'mousedown', this.clickButton );
-			this.button.style.borderColor = "#ff0000";
-		}
-		else
-		{
-			infProject.tools.pg.visible({value: true});
-			setMouseStop(false);
-			document.removeEventListener( 'mousedown', this.clickButton );
-			this.button.style.borderColor = "#b3b3b3";
-		}
-		
-		
-		this.render();
-	}
-	
-	// кликаем в сцену, если попадаем на трубу, то добавляем точку
-	clickOnScene({event})
-	{
-		let obj = infProject.tools.pg.obj;
-		if(!obj) return;
-		
-		let ray = rayIntersect( event, [obj], 'arr' );
-		if(ray.length == 0) return;
-		
-		obj = ray[0].object;
-		
-		if(obj.userData.tag == 'wf_tube')
-		{			  
-			let result = detectPosTubeWF({ray: ray[0]});	// определяем в какое место трубы кликнули
-			
-			let arrP = obj.userData.wf_tube.point;  			
-			let newPoint = createPointWF({ pos: result.pos });
-			
-			for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }	
-			
-			updateTubeWF({tube: obj});
+	let obj = infProject.tools.pg.obj;
 
-			infProject.tools.pg.arrO = arrObjFromGroup({obj: obj});
-		}
-		if(obj.userData.tag == 'new_tube')
-		{
-			obj.addPointOnTube({clickPos: ray[0].point});
-			
-			infProject.tools.pg.arrO = [obj, ...obj.getTubePoints()];		
-		}		
+	if(obj.userData.tag == 'wf_tube')
+	{			  
+		let result = detectPosTubeWF({ray: ray[0]});	// определяем в какое место трубы кликнули
 		
-		this.render();
+		let arrP = obj.userData.wf_tube.point;  			
+		let newPoint = createPointWF({ pos: result.pos });
+		
+		for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }	
+		
+		updateTubeWF({tube: obj});
+
+		infProject.tools.pg.arrO = arrObjFromGroup({obj: obj});
 	}
-
-
-	render()
+	if(obj.userData.tag == 'new_tube')
 	{
-		renderCamera();
-	}	
+		let point = obj.addPointOnTube({clickPos: infProject.tools.pg.pos});
+		
+		infProject.tools.pg.hide();
+		infProject.ui.rpanel.InfObj.hide();
+		
+		point.clickPointTube();	
+	}		
+
+	
+	renderCamera();	
 }
 
 

@@ -82,7 +82,7 @@ class PointTube extends THREE.Mesh
 	}
 
 
-	// кликнули на трубу из UI меню
+	// кликнули на точку из UI меню
 	clickPointTubeUI()
 	{
 		let tube = this.userData.tube;
