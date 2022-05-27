@@ -40,7 +40,7 @@ function activeObjRightPanelUI_1({obj} = {})
 	else if(obj.userData.tag == 'joinPoint')
 	{ 
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bjpoint']});
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1']});
 	}
 	else if(obj.userData.tag == 'new_point')
 	{ 
@@ -61,7 +61,7 @@ function activeObjRightPanelUI_1({obj} = {})
 
 
 // получаем группу , если у объекта есть группа, иначе получаем выбранный объект
-function ddGroup({obj})
+function ddGroup({obj, tubePoint = false})
 {
 	let arr = [];
 	
@@ -75,7 +75,7 @@ function ddGroup({obj})
 	}
 	else if(obj.userData.tag == 'joinPoint') 
 	{
-		var obj3D = obj.parent;
+		let obj3D = obj.parent;
 		arr = (obj3D.userData.obj3D.group) ? obj3D.userData.obj3D.group.userData.groupObj.child : [obj3D];
 	}	
 	else if(obj.userData.tag == 'wf_point') 
@@ -91,6 +91,18 @@ function ddGroup({obj})
 	{
 		arr = obj.userData.group;
 	}
+
+	if(tubePoint)
+	{
+		let arr2 = [];
+		for(let i = 0; i < arr.length; i++)
+		{
+			if(arr[i].userData.tag == 'wf_tube') arr2.push(...arr[i].userData.wf_tube.point);
+			if(arr[i].userData.tag == 'new_tube') arr2.push(...arr[i].userData.point);
+		}		
+		if(arr2.length > 0) arr = [...arr, ...arr2];
+	}	
+	
 	
 	return arr;
 }
@@ -215,7 +227,7 @@ function clickItemListRpInfUI()
 
 		infProject.ui.rpanel.InfObj.hide();
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bjpoint']});	
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1']});	
 	}	
 	
 	

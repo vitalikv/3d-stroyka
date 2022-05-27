@@ -13,11 +13,18 @@ var moveMouse = null;
 
 var onfM = {};
 onfM.stop = false;
+onfM.rayhitStop = false;
 
 function setMouseStop(value) 
 {
 	onfM.stop = value;
 }
+
+function setRayhitStop(value) 
+{
+	onfM.rayhitStop = value;
+}
+
 
 function mouseDownRight()
 {
@@ -97,7 +104,7 @@ function onDocumentMouseDown( event )
 
 function clickRayHit(event)
 { 
-	if(onfM.stop) return;
+	if(onfM.rayhitStop) return;
 	
 	var rayhit = null;	
 	
@@ -337,6 +344,8 @@ function getParentObj(cdm)
 
 function clickMouseActive(cdm)
 {
+	if(onfM.rayhitStop) return;
+	
 	hideMenuObjUI_2D(cdm);
 	
 	if(!clickO.rayhit) return;

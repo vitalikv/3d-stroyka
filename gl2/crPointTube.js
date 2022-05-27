@@ -27,11 +27,8 @@ class PointTube extends THREE.Mesh
 		this.render();		
 	}
 
-	setPos(params)
+	setPos({pos})
 	{
-		let pos = params.pos;		
-		if(!pos) return;
-		
 		this.position.copy(pos);
 	}
 	
@@ -102,14 +99,12 @@ class PointTube extends THREE.Mesh
 	
 	
 	// перемещение точки
-	movePointTube(params)
+	movePointTube({pos, offset})
 	{
-		let offset = params.offset;
+		if(pos) this.position.copy(pos);
+		if(offset) this.offsetPos({offset: offset});
 		
-		this.offsetPos({offset: offset});
-		
-		let tube = this.userData.tube;
-		
+		let tube = this.userData.tube;		
 		tube.tubeGeometry();			
 	}	
 

@@ -31,7 +31,7 @@ class TubeN extends THREE.Mesh
 		this.render();		
 	}
 	
-	setPos({pos})
+	setPosTube({pos})
 	{
 		let offset = pos.clone().sub(this.position);
 				
@@ -56,9 +56,10 @@ class TubeN extends THREE.Mesh
 				let pos = new THREE.Vector3(path[i].pos.x, path[i].pos.y, path[i].pos.z);
 				let point = new PointTube({pos: pos, tube: this, id: path[i].id});
 				arr.push(point);
+				point.visible = false;
 			}
 			
-			this.userData.point.push(...arr);			
+			this.userData.point.push(...arr);		
 		}
 		
 		

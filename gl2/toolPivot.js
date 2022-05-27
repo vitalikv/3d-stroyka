@@ -364,7 +364,7 @@ function crPivot(params)
 			pivot.userData.propPivot({type: 'offsetPivot', offset: offset});			
 			pivot.userData.propPivot({type: 'moveObjs', obj: infProject.tools.pg.obj, arrO: infProject.tools.pg.arrO, offset: offset});
 			
-			infProject.tools.pg.setPos({pos: pivot.position});
+			infProject.tools.pg.setPosPivotGizmo({pos: pivot.position});
 		}
 		
 		

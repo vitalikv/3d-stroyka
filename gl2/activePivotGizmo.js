@@ -177,18 +177,22 @@ class ToolPG
 	
 
 	// назначаем pos после измениния/перемещения 
-	setPos(params)
+	setPosPivotGizmo({pos})
 	{
-		this.pos = params.pos;
+		this.pos = pos;
 		this.setPosUI();
+		this.pivot.position.copy(pos);
+		this.gizmo.position.copy(pos);
 	}
 	
 	
 	// назначаем qt после измениния/вращения
-	setRot(params)
+	setRotPivotGizmo({qt})
 	{
-		this.qt = params.qt;
+		this.qt = qt;
 		this.setRotUI();
+		this.pivot.quaternion.copy(qt);
+		this.gizmo.quaternion.copy(qt);
 	}
 		
 		

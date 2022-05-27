@@ -227,7 +227,7 @@ function crGizmo(params)
 										
 			gizmo.userData.propGizmo({type: 'rotObjs', pos: gizmo.position, arrO: infProject.tools.pg.arrO, rotY_Old: rotY_Old});
 
-			infProject.tools.pg.setRot({qt: gizmo.quaternion});
+			infProject.tools.pg.setRotPivotGizmo({qt: gizmo.quaternion});
 		}
 		
 		

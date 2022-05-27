@@ -45,15 +45,16 @@ class UI_infoBlockObj
 		// список объединения в группу
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
 		
+		let b_open = this.el.querySelector('[nameId="button_active_align_wf_point1"]');
+		let b_close = this.el.querySelector('[nameId="button_deactive_join_element"]');
+		let b_action = this.el.querySelector('[nameId="join_element"]');
+		new JoinConnector({container: mainDiv_1, b_open: b_open, b_close: b_close, b_action: b_action});
 		
-		this.el.querySelector('[nameId="button_deactive_join_element"]').onmousedown = () => { switchAlignPoint_1({active: false}); }
-		this.el.querySelector('[nameId="join_element"]').onmousedown = () => { alignPointToPoint_1(); }
+		
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
-		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 
-		
-		this.el.querySelector('[nameId="button_active_align_wf_point1"]').onmousedown = () => { switchAlignPoint_1({active: true}); } 
+		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 		
+		 
 		this.el.querySelector('[nameId="button_active_align_wf_point2"]').onmousedown = () => { switchAlignPoint_1({active: true, type: 'move'}); } 
-		this.el.querySelector('[nameId="button_active_join_element"]').onmousedown = () => { switchAlignPoint_1({active: true}); }
 		this.el.querySelector('[nameId="button_active_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: true}); }
 		this.el.querySelector('[nameId="button_detach_obj_group"]').onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }		
 	}
@@ -64,7 +65,6 @@ class UI_infoBlockObj
 		this.list.div.bobj = this.el.querySelector('[nameId="pr_list_button_for_obj"]');
 		this.list.div.ptube1 = this.el.querySelector('[nameId="pr_list_button_for_tube_point1"]');
 		this.list.div.ptube2 = this.el.querySelector('[nameId="pr_list_button_for_tube_point2"]');
-		this.list.div.bjpoint = this.el.querySelector('[nameId="pr_list_button_center_point"]');
 		
 		this.list.div.listobj = this.el.querySelector('[nameId="bl_rp_obj_group"]');
 		this.list.div.jgroup = this.el.querySelector('[nameId="rp_wrap_add_group"]');
@@ -96,9 +96,7 @@ class UI_infoBlockObj
 						</div> 
 					</div> 
 					
-					${this.htmlButtonObj()}
-					
-					${this.htmlButtonJoinPoint()} 
+					${this.htmlButtonObj()} 
 
 					${this.htmlButtonPointTube()}															 
 					 
@@ -195,17 +193,6 @@ class UI_infoBlockObj
 		return str;	
 	}
 	
-	htmlButtonJoinPoint()
-	{
-		let str =
-		`<div nameId="pr_list_button_center_point" style="display: none;">  
-			<div class="button1 button_gradient_1" nameId="button_active_join_element"> 
-				подключить 
-			</div>		 										 
-		</div>`;
-		
-		return str;	
-	}
 
 	htmlJoinGroup()
 	{

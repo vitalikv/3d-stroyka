@@ -57,37 +57,28 @@ function createGroupObj_1(cdm)
 
 
 // пролучить все объекты принадлежащие группе 
-function getObjsFromGroup_1( cdm )
+function getObjsFromGroup_1({obj})
 {
-	var obj = cdm.obj;
-	var arr = [ obj ];
+	let arr = [ obj ];
 	
-	if(!infProject.settings.active.group) return arr;
-	
-	if(obj.userData.obj3D)
+	if(obj.userData.obj3D && obj.userData.obj3D.group)
 	{
-		if(obj.userData.obj3D.group)
-		{						
-			var arr = obj.userData.obj3D.group.userData.groupObj.child;			
-		}
+		arr = obj.userData.obj3D.group.userData.groupObj.child;	
 	}
-	else if(obj.userData.wf_tube)
+	else if(obj.userData.wf_tube && obj.userData.wf_tube.group)
 	{
-		if(obj.userData.wf_tube.group)
-		{						
-			var arr = obj.userData.wf_tube.group.userData.groupObj.child;			
-		}		
+		arr = obj.userData.wf_tube.group.userData.groupObj.child;		
 	}
 
-	arr = [...arr];
-
+	arr = [...arr];		// копируем массив, чтобы в оригинальный, не попали новые элементы
+	
+	
 	let arr2 = [];
-	for(var i = 0; i < arr.length; i++)
+	for(let i = 0; i < arr.length; i++)
 	{
 		if(arr[i].userData.wf_tube) arr2.push(...arr[i].userData.wf_tube.point);
 	}	
-	if(arr2.length > 0) arr.push(...arr2);
-	
+	if(arr2.length > 0) arr.push(...arr2);	
 	
 	
 	return arr;	

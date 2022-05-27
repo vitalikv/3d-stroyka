@@ -51,7 +51,7 @@ function addTubeInScene(tube, cdm)
 			let intersects = rayIntersect(event, planeMath, 'one');
 			if (intersects.length == 0) return;		
 			
-			tube.setPos({pos: intersects[0].point});			
+			tube.setPosTube({pos: intersects[0].point});			
 			
 			renderCamera();
 		};
