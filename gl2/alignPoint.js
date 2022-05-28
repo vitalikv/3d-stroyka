@@ -5,13 +5,15 @@
 // присоединие разъема к другому разъему
 class JoinConnector
 {		
-	constructor({container, b_open, b_close, b_action})
+	constructor({container, b_open, b_open2, b_close, b_action})
 	{
 		this.container = container;
 		this.b_open = b_open;
+		this.b_open2 = b_open2;
 		this.b_close = b_close;
 		this.b_action = b_action;
 
+		this.moveTube = false;
 		this.arr = [];
 		this.activePoint = null;
 		
@@ -20,7 +22,8 @@ class JoinConnector
 	
 	assignEvent()
 	{
-		this.b_open.onmousedown = (event) => { this.start(event); }
+		this.b_open.onmousedown = (event) => { this.start(event); this.moveTube = false; }
+		this.b_open2.onmousedown = (event) => { this.start(event); this.moveTube = true; }
 		this.b_close.onmousedown = () => { this.end(); }
 		this.b_action.onmousedown = () => { this.connectObj(); }
 	}
@@ -139,14 +142,13 @@ class JoinConnector
 		
 		if(o1.userData.tag == 'wf_point' || o1.userData.tag == 'new_point')
 		{ 
-			//if(joint.type == 'move'){ alignObjPointToTubePoint(); }
-			//else { alignTubePointToPoint(); } 
-			alignTubePointToPoint({o1, o2});
+			if(this.moveTube){ alignObjPointToObjPoint({o1, o2, qt: false}); }
+			else { alignTubePointToPoint({o1, o2}); } 			
 		}
 		else if(o1.userData.tag == 'joinPoint')
 		{ 
-			if(o2.userData.tag == 'wf_point') alignObjPointToTubePoint({o1, o2}); 
-			if(o2.userData.tag == 'joinPoint') alignObjPointToObjPoint({o1, o2});
+			if(o2.userData.tag == 'wf_point') alignObjPointToObjPoint({o1, o2, qt: false}); 
+			if(o2.userData.tag == 'joinPoint') alignObjPointToObjPoint({o1, o2, qt: true});
 		}
 		
 
@@ -392,28 +394,7 @@ function clickItemCenterObjUI_2(cdm)
 
 
 
-// нажали кнопку выровнить, определяем дальнейшие действия 
-function alignPointToPoint_1()
-{
-	var joint = infProject.list.alignP;	
-	
-	var o1 = infProject.list.alignP.p1;   
-	var o2 = infProject.list.alignP.p2;
 
-	if(!o1) return;
-	if(!o2) return;
-
-	if(o1.userData.tag == 'wf_point')
-	{ 
-		if(joint.type == 'move'){ alignObjPointToTubePoint(); }
-		else { alignTubePointToPoint(); } 
-	}
-	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'wf_point'){ alignObjPointToTubePoint(); }
-	else if(o1.userData.tag == 'joinPoint' && o2.userData.tag == 'joinPoint'){ alignObjPointToObjPoint(); }
-
-	scaleToolsMoveCamera();	
-	renderCamera();	
-}
 
 
 // нажали кнопку подключить, подтягиваем точку трубы к выбранному разъему трубы/объекту
@@ -443,110 +424,57 @@ function alignTubePointToPoint({o1, o2})
 
 
 
-// нажали кнопку подключить, подтягиваем разъем с объектом/группой к выбранному разъему 
-// o1 двигаем и присоединяем   
-// o2 объект не трогаем, остается на месте
-function alignObjPointToTubePoint({o1, o2})
-{ 	
-	let arrO = ddGroup({obj: o1});
 
-	let pos1 = o1.getWorldPosition(new THREE.Vector3());		
-	let pos2 = o2.getWorldPosition(new THREE.Vector3());
-	let pos = new THREE.Vector3().subVectors( pos2, pos1 );
-	
-	for(let i = 0; i < arrO.length; i++)
-	{
-		if(arrO[i].userData.tag == 'wf_tube')
-		{
-			let point = arrO[i].userData.wf_tube.point;			
-			for(let i2 = 0; i2 < point.length; i2++){ point[i2].position.add(pos); }			
-			updateTubeWF({tube: arrO[i]});
-		}
-		else if(arrO[i].userData.tag == 'new_tube')
-		{
-			arrO[i].setPosTube({pos: pos});
-		}		
-		else
-		{
-			arrO[i].position.add(pos);
-		}
-	}		
-	
-	
-	infProject.tools.pg.setPosPivotGizmo({pos: o1.getWorldPosition(new THREE.Vector3())}); 
-	infProject.tools.pg.setRotPivotGizmo({qt: o1.getWorldQuaternion(new THREE.Quaternion())});
-}
 
 
 // нажали кнопку выровнить, подтягиваем разъем с объектом/группой к выбранному разъему 
 // o1 двигаем и присоединяем   
 // o2 объект не трогаем, остается на месте
-function alignObjPointToObjPoint({o1, o2})
+function alignObjPointToObjPoint({o1, o2, qt})
 { 	
-	var obj_1 = getParentObj({obj: o1});	
-	var obj_2 = getParentObj({obj: o2});
-	
-
-	var q2 = o2.getWorldQuaternion(new THREE.Quaternion());
-	var q1 = o1.getWorldQuaternion(new THREE.Quaternion());
-	var q1 = q1.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)));	// разворачиваем на 180 градусов
-	var diff_2 = new THREE.Quaternion().multiplyQuaternions(q2, q1.inverse());					// разница между Quaternions
-	
-	
+console.log(1243);
 	let arr_2 = ddGroup({obj: o1, tubePoint: true});
 	
-	// поворачиваем объекты в нужном направлении 
-	for(var i = 0; i < arr_2.length; i++)
+	if(qt)
 	{
-		arr_2[i].quaternion.premultiply(diff_2);		// diff разницу умнажаем, чтобы получить то же угол	
-		arr_2[i].updateMatrixWorld();		
-	}
+		if(o1.userData.tag == 'joinPoint') o1.parent.updateMatrixWorld();
+		if(o2.userData.tag == 'joinPoint') o2.parent.updateMatrixWorld();	
+		let q1 = o1.getWorldQuaternion(new THREE.Quaternion());
+		let q2 = o2.getWorldQuaternion(new THREE.Quaternion());
+		
+		let q_New = q1.clone().multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.PI, 0)));	// разворачиваем на 180 градусов
+		let q_Offset = new THREE.Quaternion().multiplyQuaternions(q2, q_New.inverse());							// разница между Quaternions
 
-	
-	var pos1 = o2.getWorldPosition(new THREE.Vector3());		
-	var pos2 = o1.getWorldPosition(new THREE.Vector3());
-	
 
-	// вращаем position объектов, относительно точки-соединителя
-	for(var i = 0; i < arr_2.length; i++)
-	{
-		arr_2[i].position.sub(pos2);
-		arr_2[i].position.applyQuaternion(diff_2); 	
-		arr_2[i].position.add(pos2);
+		// перемещаем и вращаем объекты, относительно точки-соединителя
+		for(let i = 0; i < arr_2.length; i++)
+		{
+			//arr_2[i].position.sub(pos2);
+			arr_2[i].position.applyQuaternion(q_Offset); 	
+			//arr_2[i].position.add(pos2);
+			
+			arr_2[i].quaternion.premultiply(q_Offset);		// diff разницу умнажаем, чтобы получить то же угол	
+			arr_2[i].updateMatrixWorld();				
+		}		
 	}
 	
 	// после вращения vector, обновляем положение точки-соединителя
-	obj_1.updateMatrixWorld();
-	var pos2 = o1.getWorldPosition(new THREE.Vector3());
-	var pos = new THREE.Vector3().subVectors( pos1, pos2 );
+	if(o1.userData.tag == 'joinPoint') o1.parent.updateMatrixWorld();
+	if(o2.userData.tag == 'joinPoint') o2.parent.updateMatrixWorld();
+	let pos1 = o1.getWorldPosition(new THREE.Vector3());		
+	let pos2 = o2.getWorldPosition(new THREE.Vector3());
+	let pos = new THREE.Vector3().subVectors( pos2, pos1 );
 	
 	
-	for(var i = 0; i < arr_2.length; i++)
+	for(let i = 0; i < arr_2.length; i++)
 	{
-		if(arr_2[i].userData.wf_tube)
-		{
-			var point = arr_2[i].userData.wf_tube.point;
-			
-			for(var i2 = 0; i2 < point.length; i2++){ point[i2].position.add(pos); }
-			
-			updateTubeWF({tube: arr_2[i]});
-		}
-		else
-		{
-			arr_2[i].position.add(pos);
-		}
+		arr_2[i].position.add(pos);
 	}			
 	
 	
-	obj_1.updateMatrixWorld();
-	var pos = o1.getWorldPosition(new THREE.Vector3());
-	var q = o1.getWorldQuaternion(new THREE.Quaternion());
-	
-	if(infProject.settings.active.pg == 'pivot'){ var tools = infProject.tools.pivot; }	
-	if(infProject.settings.active.pg == 'gizmo'){ var tools = infProject.tools.gizmo; }	
-	
-	tools.position.copy(pos);
-	tools.quaternion.copy(q); 
+	if(o1.userData.tag == 'joinPoint') o1.parent.updateMatrixWorld();
+	infProject.tools.pg.setPosPivotGizmo({pos: o1.getWorldPosition(new THREE.Vector3())}); 
+	infProject.tools.pg.setRotPivotGizmo({qt: o1.getWorldQuaternion(new THREE.Quaternion())});
 }
 
 

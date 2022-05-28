@@ -20,17 +20,14 @@ function showWF_point_UI(cdm)
 		if(tube.userData.wf_tube.point[tube.userData.wf_tube.point.length - 1] == point){ show = true; }
 		
 		var elem_1 = document.querySelector('[nameId="pr_list_button_for_tube_point1"]');
-		var elem_2 = document.querySelector('[nameId="pr_list_button_for_tube_point2"]');
 		
 		if(show)
 		{
 			elem_1.style.display = "block";
-			elem_2.style.display = "block";
 		}
 		else
 		{
 			elem_1.style.display = "none";
-			elem_2.style.display = "none";
 		}
 	}
 }

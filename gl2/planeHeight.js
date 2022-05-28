@@ -119,7 +119,6 @@ function showHidePlaneHeight(cdm)
 	}
 			
 	renderCamera();
-	//if(infProject.list.alignP.active)	// вкл	
 }
 
 

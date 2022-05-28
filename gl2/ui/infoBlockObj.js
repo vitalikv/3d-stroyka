@@ -46,15 +46,15 @@ class UI_infoBlockObj
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
 		
 		let b_open = this.el.querySelector('[nameId="button_active_align_wf_point1"]');
+		let b_open2 = this.el.querySelector('[nameId="button_active_align_wf_point2"]');
 		let b_close = this.el.querySelector('[nameId="button_deactive_join_element"]');
 		let b_action = this.el.querySelector('[nameId="join_element"]');
-		new JoinConnector({container: mainDiv_1, b_open: b_open, b_close: b_close, b_action: b_action});
+		new JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
 		
 		
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
 		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 		
-		 
-		this.el.querySelector('[nameId="button_active_align_wf_point2"]').onmousedown = () => { switchAlignPoint_1({active: true, type: 'move'}); } 
+		  
 		this.el.querySelector('[nameId="button_active_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: true}); }
 		this.el.querySelector('[nameId="button_detach_obj_group"]').onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }		
 	}

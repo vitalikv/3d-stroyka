@@ -66,8 +66,7 @@ function clickFirstWFPoint(cdm)
 	var obj = cdm.obj;
 	var rayhit = cdm.rayhit;
 	
-	if(infProject.list.alignP.active) { clickItemCenterObjUI_2({obj: obj}); }	// вкл кнопка подключить/выронить
-	else { clickWFPoint_3D({ray: rayhit, menu_1: true}); }
+	clickWFPoint_3D({ray: rayhit, menu_1: true});
 }
 
 
@@ -289,60 +288,18 @@ function changeColorTube(cdm)
 
 
 // кликнули на другой объект, деактивируем трубу
-function deClickTube(cdm)  
+function deClickTube({obj, moment})  
 {	
-	var obj = cdm.obj;
-	if(!obj) return;
-	
-
-	if(clickO.rayhit)
-	{  
-		// если выбран тот же самый объект, который хотим скрыть, то не скрываем его
-		if(cdm.moment == 'down' && camera == cameraTop)
-		{
-			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
-			
-			if(clickO.rayhit.object.userData.tag == 'pivot') return;
-			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-		}
-		
-		if(cdm.moment == 'up' && camera == camera3D)
-		{
-			if(clickO.rayhit.object == cdm.obj && !infProject.list.alignP.active) return;
-			
-			if(clickO.rayhit.object.userData.tag == 'pivot') return;
-			if(clickO.rayhit.object.userData.tag == 'gizmo') return;
-		}		
-	}	
-	
-	
-	if(cdm.moment == 'down' && camera == cameraTop && !checkClickTube_1())
-	{
-		deClickTube_1(cdm); 
-	}
-	else if(cdm.moment == 'up' && camera == camera3D && !checkClickTube_1())
-	{
-		deClickTube_1(cdm); 
-	}
-	else if(cdm.moment == '')
-	{  
-		deClickTube_1(cdm);
-	}
+	if(moment == 'down' && camera == cameraTop && !checkClickTube_1()) deClickTube_1({obj});
+	else if(moment == 'up' && camera == camera3D && !checkClickTube_1()) deClickTube_1({obj});
+	else if(moment == '') deClickTube_1({obj});
 	
 	
 	// если была вкл кнопка выровнить, то проверяем куда кликнули
 	function checkClickTube_1()
 	{ 
 		if(clickO.rayhit)
-		{  
-			if(infProject.list.alignP.active) 
-			{ 
-				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
-				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return checkWFPoint_2({obj: obj, tube: clickO.rayhit.object}); }
-				if(clickO.rayhit.object.userData.tag == 'wf_point') { return checkWFPoint_1({obj: clickO.rayhit.object}); }
-				if(clickO.rayhit.object.userData.tag == 'joinPoint') { return true; }
-			}
-			
+		{  			
 			if(infProject.list.mergeO.active)
 			{
 				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
@@ -351,59 +308,21 @@ function deClickTube(cdm)
 		}
 
 		return false;
-	}
-	
-	
-	// провереям что кликнули на другой разъем трубы
-	function checkWFPoint_1(cdm)
-	{
-		var obj = cdm.obj;
-		var arr = infProject.list.alignP.arr2;
-		
-		for(var i = 0; i < arr.length; i++)
-		{
-			if(arr[i].o == obj) return true;
-		}
-
-		return false;
-	}
-
-
-	
-	// провереям что клинули на другую трубу, а не на ту у которой активированна точка
-	function checkWFPoint_2(cdm)
-	{
-		var obj = cdm.obj;
-		var tube1 = cdm.tube;
-		
-		if(obj.userData.tag != 'wf_point') return true;		// точка была НЕ активированна (отбой) 		
-		
-		if(tube1 == obj.userData.wf_point.tube) return false;
-
-		return true;	// клинули на другую трубу
-	}		
-	
+	}	
 	
 	
 	// деактивируем трубу иди точку
-	function deClickTube_1(cdm)
+	function deClickTube_1({obj})
 	{
 		outlineRemoveObj();
 		
-		var obj = cdm.obj;
-		
 		if(obj.userData.wf_tube) { var tube = obj; }		
 		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }		
-		
-		
-		
-		
+
 		
 		infProject.tools.pg.hide();		// скрываем pivot	
 		showHideTubePoint({tube: tube, visible: false});	// скрываем точки у трубы
-		
-		switchAlignPoint_1({active: false});	// вкл/выкл возможность выделение объектов для присоединения точки трубы
-		
+
 		//infProject.ui.rpanel.InfObj.switchAddPointOnTube({type: 'off'});		// выкл возможность добавлять на трубу точку		
 		
 		activeObjRightPanelUI_1();		// скрываем UI	

@@ -591,30 +591,7 @@ function fitCameraToObject(cdm)
 function scaleToolsMoveCamera()
 {
 	setScaleTubePoint(); 
-	setScaleJoinPoint();
-
-
-	// вкл режим выровнить (нажата кнопка выровнить) и показаны точки 2-ого объекта
-	if(infProject.list.alignP.active && infProject.list.alignP.p2)	 
-	{	
-		var arr = [];
-		var arr2 = infProject.list.alignP.arr2;		
-		
-		for ( var i2 = 0; i2 < arr2.length; i2++ )
-		{ 
-			arr[arr.length] = arr2[i2].o;						
-		}			
-
-		if(infProject.list.alignP.p2.userData.tag == 'wf_point') 
-		{
-			setScaleTubePoint({arr: arr}); 
-		}
-		
-		if(infProject.list.alignP.p2.userData.tag == 'joinPoint') 
-		{			
-			setScaleJoinPoint({arr: arr}); 
-		}
-	}	
+	setScaleJoinPoint();	
 }
 
 
