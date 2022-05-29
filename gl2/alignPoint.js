@@ -3,7 +3,7 @@
 
 
 // присоединие разъема к другому разъему
-class JoinConnector
+class Obj_JoinConnector
 {		
 	constructor({container, b_open, b_open2, b_close, b_action})
 	{
@@ -15,7 +15,10 @@ class JoinConnector
 
 		this.moveTube = false;
 		this.arr = [];
+		this.activeObj = null;
 		this.activePoint = null;
+		
+		this.ui_list = new UI_JoinConnector({el: document.querySelector('[nameId="rp_obj_align"]')});		
 		
 		this.assignEvent();	
 	}
@@ -59,6 +62,16 @@ class JoinConnector
 		
 		if(this.arr.length == 0) { this.rayhitObj(); } 
 		else { this.rayhitPoint(); }
+
+		if(this.activeObj)
+		{
+			let arrItem = newCrListObj({arrO: [this.activeObj]});	
+			this.ui_list.crListUI({arr: arrItem});			
+		}
+		else
+		{
+			this.ui_list.clear();
+		}
 		
 		this.render();
 	}
@@ -67,6 +80,7 @@ class JoinConnector
 	// кликаем в сцену, ищем объекты
 	rayhitObj()
 	{
+		this.activeObj = null;
 		this.arr = []; 
 		
 		let ray = rayIntersect( event, [...infProject.scene.array.tube, ...infProject.scene.array.obj], 'arr' );
@@ -107,6 +121,7 @@ class JoinConnector
 		// показываем разъемы
 		for(let i = 0; i < arr.length; i++) arr[i].visible = true;
 
+		this.activeObj = obj;
 		this.arr = arr;		
 	}
 	
@@ -165,6 +180,7 @@ class JoinConnector
 		}
 
 		this.arr = [];
+		this.activeObj = null;
 		this.activePoint = null;
 	}
 
@@ -176,157 +192,260 @@ class JoinConnector
 
 
 
-
-
-
-
-// кликнули на объект в сцене (труба/объект), когда была нажата кнопка выровнить
-// показываем точки-соединители для 2-ого выделенного объекта
-function showJoinPoint_2({obj})
-{ 
-	console.log(999, obj);
-	
-	// скрываем точки у второго объекта
-	//clearListObjUI();	
-	
-	let arr = [];
-	
-	// получаем разъемы, если есть
-	if(obj.userData.tag == 'wf_tube')
-	{		
-		arr[0] = obj.userData.wf_tube.point[0]
-		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];
-	}
-	if(obj.userData.tag == 'new_tube')
-	{		
-		arr[0] = obj.userData.point[0]
-		arr[1] = obj.userData.point[obj.userData.point.length - 1];
-	}	
-	if(obj.userData.tag == 'obj')
-	{
-		arr = getCenterPointFromObj_1( obj );
-	}	
-	
-	 
-	
-	let container = document.querySelector('[nameId="rp_obj_align"]');
-	
-	// добваляем разъемы выделенного объекта в список UI
-	for(let i = 0; i < arr.length; i++)
-	{
-		let nameRus = 'точка';		
-		if(obj.userData.tag == 'obj') nameRus = arr[i].userData.centerPoint.nameRus;
-		if(obj.userData.tag == 'wf_tube') nameRus = 'точка';
-		if(obj.userData.tag == 'new_tube') nameRus = 'точка';
-		
-		let html = 
-		'<div class="flex_1 right_panel_1_1_list_item" uuid="'+arr[i].uuid+'">\
-			<div class="right_panel_1_1_list_item_text">'+nameRus+'</div>\
-		</div>';					
-
-		
-		let div = document.createElement('div');
-		div.innerHTML = html;
-		let el = div.firstChild;		
-		
-		container.append(el);
-
-		let n = infProject.list.alignP.arr2.length;	
-		infProject.list.alignP.arr2[n] = {};
-		infProject.list.alignP.arr2[n].el = el;
-		infProject.list.alignP.arr2[n].o = arr[i]; 				
-		
-		
-			
-		(function(el) 
-		{
-			el.onmousedown = function(e){ clickItemCenterObjUI_2({el: el}); e.stopPropagation(); };	
-		}(el));
-	}	
-	
-	
-	// масштаб точек
-	if(obj.userData.tag == 'wf_tube') { setScaleTubePoint({arr: arr}); }
-	else if(obj.userData.tag == 'new_tube') {  }
-	else if(obj.userData.tag == 'obj') { setScaleJoinPoint({arr: arr}); }
-
-	// показываем точки
-	for(let i = 0; i < arr.length; i++) arr[i].visible = true;
-	
-	if(arr.length > 0) clickItemCenterObjUI_2({item: 0});	
-}
-
-
-
-
-
-
-
-
-// выбираем точку к которой хотим присоединиться 
-function clickItemCenterObjUI_2(cdm)
+class UI_JoinConnector
 {
-	var item = null;
-	var obj = null;
-	
-	var joint = infProject.list.alignP;
-	
-	var arr = infProject.list.alignP.arr2;		
-	
-	if(arr.length == 0) return;	// у объекта нет разъемов
-	
-	
-	// снимаем старые выдиления в UI 
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].el.style.backgroundColor = '#ffffff';
+	el = null;
 		
-		if(arr[i].o.userData.tag == 'joinPoint') arr[i].o.material = infProject.material.pointObj.default;
-		if(arr[i].o.userData.tag == 'wf_point') arr[i].o.material = infProject.material.pointTube.default;		
-	}
-	
-	
-	if(cdm.el)	// кликнули на пункт в меню
+	constructor({el})
 	{
-		for(var i = 0; i < arr.length; i++)
-		{
-			if(arr[i].el == cdm.el){ obj = arr[i].o; break; } 
-		}
-
-		item = cdm.el;
-	}
-	else if(cdm.obj)	// кликнули на объект в сцене
-	{
-		for(var i = 0; i < arr.length; i++)
-		{
-			if(arr[i].o == cdm.obj){ item = arr[i].el; break; } 
-		}
-
-		obj = cdm.obj;
-	}
-	else if(cdm.item !== undefined)	// присылаем номер пункта, который хотим выделить 
-	{
-		item = arr[cdm.item].el;
-		obj = arr[cdm.item].o;
-	}
-	else
-	{
-		return;
+		this.el = el;
+		this.activeItem = null;
+		this.arr = [];
 	}
 	
-	
-	// выделяем новый пункт на который кликнули UI
-	item.style.backgroundColor = infProject.listColor.activeItem_1;
-	
-	if(obj.userData.tag == 'joinPoint') obj.material = infProject.material.pointObj.active;
-	if(obj.userData.tag == 'wf_point')	obj.material = infProject.material.pointTube.active;
+	crListUI({arr})
+	{
+		this.clear();
 		
-	infProject.list.alignP.p2 = obj;
-	
-	setClickLastObj({obj: infProject.list.alignP.p1});
+		this.arr = arr;
+		
+		for (let i = 0; i < arr.length; i++)
+		{			
+			let html = this.html(arr[i]);	
 
-	renderCamera();
+			let elem = document.createElement('div');
+			elem.innerHTML = html;
+			elem = elem.firstChild;
+
+			this.el.append(elem);
+			
+			this.arrAddElem({id: i, elem: elem});
+			
+			this.initEvents({id: i, elem: elem});
+		}
+		
+		console.log(222, arr);
+	}
+	
+	html({obj = null, name, colorTube = null, lengthTube = null, childs = []})
+	{
+		let str = 
+		'<div class="right_panel_1_1_list_item" nameId="obj">\
+			<div class="flex_1 relative_1" style="margin: auto;">\
+				'+this.htmlTr({childs: childs})+'\
+				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
+			</div>\
+			'+this.htmСhilds({childs})+'\
+		</div>';
+
+		return str;
+	}
+
+
+	// треугольник, кликнув на него показываем/скрываем разъемы этого объекта
+	htmlTr({childs})
+	{		
+		let str = '';
+		
+		if(childs.length > 0)
+		{
+			str = 
+			'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
+				<div>\
+					<svg height="100%" width="100%" viewBox="0 0 100 100">\
+						<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+					</svg>\
+				</div>\
+			</div>';				
+		}
+		
+		return str;
+	}
+		
+
+
+	// разъемы объекта
+	htmСhilds({childs})
+	{	
+		if(childs.length == 0) return '';
+
+		let items = '';
+		
+		for (let i = 0; i < childs.length; i++)
+		{
+			items += 
+			'<div class="flex_1 right_panel_1_1_list_item relative_1" nameId="item">\
+				<div class="right_panel_1_1_list_item_text">'+childs[i].name+'</div>\
+			</div>';			
+		}
+					
+		let str = '<div nameId="groupItem" style="display: none;">'+items+'</div>';			
+		
+		return str;
+	}
+	
+	
+	// добавляем в массив elem
+	arrAddElem({id, elem})
+	{
+		this.arr[id].elem = elem;				
+		
+		let arrEl = elem.querySelectorAll('[nameId="item"]');
+		
+		for (let i = 0; i < arrEl.length; i++)
+		{
+			this.arr[id].childs[i].elem = arrEl[i];
+		}
+	}
+	
+	initEvents({elem, id})
+	{
+		this.clickItem({elem: elem, id: id});
+		this.visibleChilds({elem: elem});
+	}
+	
+	
+	// создаем событие -> кликнули на пункт объекта/разъема
+	clickItem({elem, id})
+	{
+		let item = this.arr[id];
+		
+		let arr = [{elem: item.elem, callF: item.f}];
+		
+		if(item.childs)
+		{
+			for (let i = 0; i < item.childs.length; i++)
+			{
+				arr.push({elem: item.childs[i].elem, callF: item.childs[i].f});
+			};					
+		}
+	
+		for (let i = 0; i < arr.length; i++)
+		{
+			arr[i].elem.onmousedown = (e) => 
+			{
+				this.selectItem({elem: arr[i].elem, callF: arr[i].callF});
+				e.stopPropagation(); 
+			}
+		};		
+	}
+	
+	// создаем событие -> показываем/скрываем список разъемов объекта
+	visibleChilds({elem})
+	{
+		let button = elem.querySelector('[nameId="shCp_1"]');
+		if(!button) return;
+		
+		let div = elem.querySelector('[nameId="groupItem"]');
+
+		button.onmousedown = (e) => 
+		{ 
+			div.style.display = (div.style.display == 'none') ? '' : 'none';
+			
+			let color = '#ffffff';
+			
+			if(elem == this.activeItem) color = infProject.listColor.activeItem_1;
+			else if(div.style.display == 'none') color = '#ffffff';
+			else if(div.style.display == '') color = '#ebebeb';
+			
+			elem.style.backgroundColor = color;
+			
+			e.stopPropagation(); 
+		};		
+	}
+	
+	
+	// кликнули на пункт 
+	selectItem({elem, callF = null})
+	{
+		//if(callF) callF();
+		
+		this.setResetColorItems();
+		this.activeItem = elem;
+		elem.style.backgroundColor = infProject.listColor.activeItem_1;
+	}
+	
+	
+	// кликнули на объект в сцене
+	selectObjScene({obj})
+	{
+		let arr1 = this.arr;
+		let arr2 = [];
+		
+		for (let i = 0; i < arr1.length; i++)
+		{
+			arr2.push({obj: arr1[i].obj, elem: arr1[i].elem, parent: null});
+			
+			if(arr1[i].childs)
+			{
+				for (let i2 = 0; i2 < arr1[i].childs.length; i2++)
+				{
+					arr2.push({obj: arr1[i].childs[i2].obj, elem: arr1[i].childs[i2].elem, parent: arr1[i].elem});
+				}				
+			}
+		}			
+		
+		let item = {el: null, parent: null};
+		
+		for (let i = 0; i < arr2.length; i++)
+		{
+			if(arr2[i].obj !== obj) continue;
+			
+			item.el = arr2[i].elem;
+			item.parent = arr2[i].parent;
+			
+			break;
+		};
+
+		if(!item.el) return;
+		
+		this.setResetColorItems();
+		this.activeItem = item.el;
+		item.el.style.backgroundColor = infProject.listColor.activeItem_1;
+		
+		
+		if(item.parent)
+		{
+			item.parent.style.backgroundColor = '#ebebeb';			
+			let div = item.parent.querySelector('[nameId="groupItem"]');
+			div.style.display = '';
+		}
+	}	
+	
+	// сбросить выделение со всех пунктов
+	setResetColorItems()
+	{
+		let objEl = this.el.querySelectorAll('[nameId="obj"]');
+	
+		for (let i = 0; i < objEl.length; i++)
+		{
+			let color = '#ffffff';
+			let div = objEl[i].querySelector('[nameId="groupItem"]');
+			
+			if(div) color = (div.style.display == 'none') ? '#ffffff' : '#ebebeb';
+			
+			objEl[i].style.backgroundColor = color;
+		};
+
+		let childEl = this.el.querySelectorAll('[nameId="item"]');
+	
+		for (let i = 0; i < childEl.length; i++)
+		{			
+			childEl[i].style.backgroundColor = '#ffffff';
+		};		
+	}
+	
+	// очищаем список
+	clear()
+	{
+		this.activeItem = null;
+		this.arr = [];
+		this.el.innerHTML = '';
+	}	
 }
+
+
+
 
 
 
@@ -369,7 +488,6 @@ function alignTubePointToPoint({o1, o2})
 // o2 объект не трогаем, остается на месте
 function alignObjPointToObjPoint({o1, o2, qt})
 { 	
-console.log(1243);
 	let arr_2 = ddGroup({obj: o1, tubePoint: true});
 	
 	if(qt)

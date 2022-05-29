@@ -36,10 +36,10 @@ class UI_listObjChilds
 		console.log(222, arr);
 	}
 	
-	html({obj = null, name, colorTube = null, lengthTube = null, childs = []})
+	html({name, colorTube = null, lengthTube = null, childs = []})
 	{
 		let str = 
-		'<div class="right_panel_1_1_list_item" nameId="obj" uuid="'+obj.uuid+'">\
+		'<div class="right_panel_1_1_list_item" nameId="obj">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+this.htmlTr({childs: childs})+'\
 				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
@@ -118,7 +118,7 @@ class UI_listObjChilds
 		for (let i = 0; i < childs.length; i++)
 		{
 			items += 
-			'<div class="flex_1 right_panel_1_1_list_item relative_1" nameId="item" uuid="'+childs[i].obj.uuid+'">\
+			'<div class="flex_1 right_panel_1_1_list_item relative_1" nameId="item">\
 				<div class="right_panel_1_1_list_item_text">'+childs[i].name+'</div>\
 			</div>';			
 		}
@@ -129,6 +129,7 @@ class UI_listObjChilds
 	}
 	
 	
+	// добавляем в массив elem
 	arrAddElem({id, elem})
 	{
 		this.arr[id].elem = elem;
@@ -302,32 +303,12 @@ class UI_listObjChilds
 		};		
 	}
 	
-	clearItem()
-	{
-		
-	}
-	
+	// очищаем список
 	clear()
 	{
 		this.activeItem = null;
 		this.arr = [];
 		this.el.innerHTML = '';
-	}
-	
-	
-	hide()
-	{
-		let list = this.list.div;
-
-		for (let key in list) 
-		{
-			if(list[key]) 
-			{
-				list[key].style.display = 'none';
-			}			
-		}
-		
-		this.el.style.display = 'none';
 	}	
 }
 

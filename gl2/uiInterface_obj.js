@@ -10,12 +10,13 @@ function activeObjRightPanelUI_1({obj} = {})
 	
 	if(!obj) return;
 	
-	let arrO = ddGroup({obj: obj});
+	let arrO = ddGroup({obj: obj, tubePoint: false});
 	let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: arrO});
 	if(!equal)
 	{
 		infProject.ui.rpanel.InfObj.setGroupObjs({arr: arrO});			
-		newCrListObj({obj: obj});			
+		let arrItem = newCrListObj({arrO: arrO});	
+		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
 	}		
 	infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: obj});	
 	
@@ -111,10 +112,8 @@ function ddGroup({obj, tubePoint = false})
 
 
 // подготавливаем список для создания списка объектов
-function newCrListObj({obj})
-{
-	let arrO = ddGroup({obj});
-	
+function newCrListObj({arrO})
+{	
 	let arrItem = arrO.map(o => 
 	{
 		let item = {};	
@@ -126,9 +125,6 @@ function newCrListObj({obj})
 		
 		return item;
 	});	
-	
-	
-	infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
 	
 	function getObj3D({obj})
 	{
@@ -176,7 +172,9 @@ function newCrListObj({obj})
 		}
 		
 		return item;
-	}	
+	}
+
+	return arrItem;
 }
 
 

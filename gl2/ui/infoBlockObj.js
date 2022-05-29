@@ -50,7 +50,7 @@ class UI_infoBlockObj
 		let b_open2 = this.el.querySelector('[nameId="button_active_align_wf_point2"]');
 		let b_close = this.el.querySelector('[nameId="button_deactive_join_element"]');
 		let b_action = this.el.querySelector('[nameId="join_element"]');
-		this.list.jobj = new JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
+		this.list.jobj = new Obj_JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
 		
 		
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
