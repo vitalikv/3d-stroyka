@@ -310,24 +310,10 @@ class TubeN extends THREE.Mesh
 
 	ui_menu({type})
 	{
-		if(type == 'show') this.ui_showMenu();
-		if(type == 'hide') this.ui_hideMenu();
+		if(type == 'show') activeObjRightPanelUI_1({obj: this});
+		if(type == 'hide') activeObjRightPanelUI_1();
 	}
 	
-	ui_showMenu()
-	{	
-		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: this.userData.group});
-		
-		if(!equal)
-		{
-			infProject.ui.rpanel.InfObj.setGroupObjs({arr: this.userData.group});			
-			this.ui_crListObj();			
-		}
-
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus, tubeDiameter: this.userData.diameter * 1000} });		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});		
-		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});
-	}
 	
 	// получаем данные для UI 
 	ui_getObjChilds()
@@ -353,42 +339,7 @@ class TubeN extends THREE.Mesh
 		
 		return item;
 	}
-	
-	// создаем и показываем список во вкладке "объект"
-	ui_crListObj()
-	{
-		if(1==2)
-		{
-			let arrO = (this.userData.group.length > 0) ? this.userData.group : [this];
-			
-			let arr = arrO.map(o => 
-			{
-				let item = o.ui_getObjChilds();				
-				
-				return item;
-			});
-			
-			let arr2 = arrO.map(o => 
-			{
-				let item = o.ui_getObjChilds();				
-				
-				return item;
-			});
-			
-			arr2[0].name = 'ttww';
-					
-			infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: [...arr, ...arr2, {name: 'test', obj: this}]});			
-		}
-		else
-		{
-			newCrListObj({obj: this});
-		}
-	}
-	
-	ui_hideMenu()
-	{
-		infProject.ui.rpanel.InfObj.hide();
-	}	
+		
 	
 	render()
 	{

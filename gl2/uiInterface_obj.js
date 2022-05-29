@@ -4,9 +4,9 @@
 // кликнули на obj, wd (показываем нужное меню и заполняем input или скрываем меню)
 function activeObjRightPanelUI_1({obj} = {}) 
 {	
-	
+	console.trace(3244, obj);
 	infProject.ui.rpanel.InfObj.hide();		
-	
+	infProject.ui.rpanel.InfObj.list.jobj.end();
 	
 	if(!obj) return;
 	
@@ -44,11 +44,13 @@ function activeObjRightPanelUI_1({obj} = {})
 	}
 	else if(obj.userData.tag == 'new_point')
 	{ 
-		obj.ui_menu({type: 'show'});
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus}});		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});	
 	}
 	else if(obj.userData.tag == 'new_tube')
 	{ 
-		obj.ui_menu({type: 'show'});
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus, tubeDiameter: obj.userData.diameter * 1000} });		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});	
 	}	
 	else if(obj.userData.tag == 'wtGrid')
 	{ 
@@ -304,35 +306,7 @@ function clickItemListRpInfUI()
 
 
 
-// переименовываем название во вкладке "объект"
-function upItemObjNameUI(cdm)
-{
-	var obj = cdm.obj;
-	
-	var arr1 = infProject.list.rp_ui.arr;
-	var arr2 = [];
-	
-	for(var i = 0; i < arr1.length; i++)
-	{
-		arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
-		
-		for(var i2 = 0; i2 < arr1[i].p.length; i2++)
-		{
-			arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
-		}
-	}
-	
-	
-	for(var i = 0; i < arr2.length; i++)
-	{
-		if(arr2[i].o == obj)
-		{
-			var nameItem = arr2[i].el.querySelector('[nameId="nameItem"]');
-			nameItem.innerText = obj.userData.obj3D.nameRus;  
-			break;
-		}
-	}		
-}
+
 
 
 

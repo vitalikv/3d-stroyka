@@ -109,7 +109,6 @@ function initSceneParams()
 	infProject.list.rp_ui = { arr: [] };
 	infProject.list.group_catalog_ui = { arr: [] };
 	infProject.list.obj_scene_ui = [];
-	infProject.list.alignP =  { active: false, type: '', p1: null, p2: null, arr2: [] };	// режим соединения деталей/труб
 	infProject.list.mergeO = {active: false, o1: [], o2: [], el: []};	// режим группировки объектов
 	infProject.list.sborka = {};
 	infProject.list.sborka.radiator = [{}, {}, {}];

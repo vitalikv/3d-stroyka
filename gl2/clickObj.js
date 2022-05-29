@@ -143,6 +143,37 @@ function renameObject(cdm)
 	upItemObjNameUI({obj: obj});	// переименовываем название во вкладке "объект"	
 
 	updateListObjUI_1({o: obj, type: 'update'});	// переименовываем название во вкладке "список"
+	
+	
+	// переименовываем название во вкладке "объект"
+	function upItemObjNameUI(cdm)
+	{
+		var obj = cdm.obj;
+		
+		var arr1 = infProject.list.rp_ui.arr;
+		var arr2 = [];
+		
+		for(var i = 0; i < arr1.length; i++)
+		{
+			arr2[arr2.length] = {o: arr1[i].o, el: arr1[i].el};
+			
+			for(var i2 = 0; i2 < arr1[i].p.length; i2++)
+			{
+				arr2[arr2.length] = {o: arr1[i].p[i2].o, el: arr1[i].p[i2].el};
+			}
+		}
+		
+		
+		for(var i = 0; i < arr2.length; i++)
+		{
+			if(arr2[i].o == obj)
+			{
+				var nameItem = arr2[i].el.querySelector('[nameId="nameItem"]');
+				nameItem.innerText = obj.userData.obj3D.nameRus;  
+				break;
+			}
+		}		
+	}	
 }
 
 
@@ -159,13 +190,12 @@ function deClickObj({obj, moment})
 	
 	function deClickObj_1()
 	{ 
-		infProject.tools.pg.hide();
+		
 
   
 		// скрываем разъемы
 		if(obj.userData.tag == 'obj' || obj.userData.tag == 'joinPoint')
 		{
-			switchSelectAddObjGroup({active: false});
 			
 			var arr = [];
 			
@@ -188,6 +218,7 @@ function deClickObj({obj, moment})
 			}		
 		}	
 		
+		infProject.tools.pg.hide();
 		activeObjRightPanelUI_1();		// скрываем UI
 		
 		outlineRemoveObj();					

@@ -167,30 +167,10 @@ class PointTube extends THREE.Mesh
 
 	ui_menu({type})
 	{
-		if(type == 'show') this.ui_showMenu();
-		if(type == 'hide') this.ui_hideMenu();
+		if(type == 'show') activeObjRightPanelUI_1({obj: this});
+		if(type == 'hide') activeObjRightPanelUI_1();
 	}
 	
-	ui_showMenu()
-	{	
-		let tube = this.userData.tube;
-		let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({arr: tube.userData.group});
-		
-		if(!equal)
-		{
-			infProject.ui.rpanel.InfObj.setGroupObjs({arr: tube.userData.group});						
-			tube.ui_crListObj();			
-		}		
-	
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus}});		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
-		infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: this});
-	}
-	
-	ui_hideMenu()
-	{
-		infProject.ui.rpanel.InfObj.hide();
-	}
 	
 	render()
 	{

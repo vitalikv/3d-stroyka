@@ -36,13 +36,9 @@ function clickRayJoinPoint()
 
 
 // кликнули на разъем, распределяем что делать
-function clickFirstCenterPoint(cdm)
+function clickFirstCenterPoint({obj})
 {
-	var obj = cdm.obj;
-	var rayhit = cdm.rayhit;
-		
-	if(infProject.list.alignP.p2) { clickItemCenterObjUI_2({obj: obj}); }
-	else { clickObject3D(obj, {menu_1: true, outline: true}); }
+	clickObject3D(obj, {menu_1: true, outline: true});
 }
 
 

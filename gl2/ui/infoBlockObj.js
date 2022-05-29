@@ -19,6 +19,7 @@ class UI_infoBlockObj
 		this.list.div = {};
 		this.list.upd = {};
 		this.list.listChilds = new UI_listObjChilds({el: this.el.querySelector('[nameId="list_obj_childs"]')});
+		this.list.jobj = null;
 		
 		this.assignEvent();	
 		this.setDivElement();
@@ -49,7 +50,7 @@ class UI_infoBlockObj
 		let b_open2 = this.el.querySelector('[nameId="button_active_align_wf_point2"]');
 		let b_close = this.el.querySelector('[nameId="button_deactive_join_element"]');
 		let b_action = this.el.querySelector('[nameId="join_element"]');
-		new JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
+		this.list.jobj = new JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
 		
 		
 		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
@@ -59,6 +60,7 @@ class UI_infoBlockObj
 		this.el.querySelector('[nameId="button_detach_obj_group"]').onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }		
 	}
 
+	// elem которые будут скрываться/показываться
 	setDivElement()
 	{		
 		this.list.div.tube = this.el.querySelector('[nameId="rp_bl_wf_tube"]');
@@ -71,6 +73,7 @@ class UI_infoBlockObj
 		this.list.div.jpoint = this.el.querySelector('[nameId="rp_wrap_obj_align"]');
 	}
 	
+	// elem в которые будут вставляться текст
 	setUpdElement()
 	{		
 		this.list.upd.nameObj = this.el.querySelector('[nameId="rp_obj_name"]');

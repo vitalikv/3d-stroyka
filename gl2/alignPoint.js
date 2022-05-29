@@ -24,7 +24,7 @@ class JoinConnector
 	{
 		this.b_open.onmousedown = (event) => { this.start(event); this.moveTube = false; }
 		this.b_open2.onmousedown = (event) => { this.start(event); this.moveTube = true; }
-		this.b_close.onmousedown = () => { this.end(); }
+		this.b_close.onmousedown = () => { this.end(); activeObjRightPanelUI_1({obj: infProject.tools.pg.obj}); }
 		this.b_action.onmousedown = () => { this.connectObj(); }
 	}
 	
@@ -49,16 +49,16 @@ class JoinConnector
 	{
 		this.clearObj();
 		this.container.onmousedown = null;
-		setRayhitStop(false);
-		activeObjRightPanelUI_1({obj: infProject.tools.pg.obj})
+		setRayhitStop(false);		
 	}
 	
 	// кликаем в сцену, если попадаем на трубу/объект, то показываем разъемы
 	clickOnScene({event})
 	{
+		if(event.button != 0) return;
+		
 		if(this.arr.length == 0) { this.rayhitObj(); } 
 		else { this.rayhitPoint(); }
-
 		
 		this.render();
 	}
@@ -178,69 +178,6 @@ class JoinConnector
 
 
 
-// вкл/выкл возможность выделение объектов для присоединения 
-function switchAlignPoint_1(cdm)
-{
-	if(!cdm) cdm = {};
-	
-	if(cdm.active !== undefined) 
-	{
-		infProject.list.alignP.active = cdm.active;
-	}	
-	else
-	{
-		infProject.list.alignP.active = !infProject.list.alignP.active;
-	}
-	
-	infProject.list.alignP.type = '';
-	
-	// скрываем точки у второго объекта
-	clearListObjUI();		
-	
-	
-	
-	if(infProject.list.alignP.active)	// вкл
-	{		
-		infProject.list.alignP.p1 = clickO.last_obj;
-		if(cdm.type) { infProject.list.alignP.type = cdm.type; }
-		
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.show({inf: ['jpoint']});
-	}		
-	else		// выкл
-	{		
-		if(infProject.list.alignP.p1) activeObjRightPanelUI_1({obj: infProject.list.alignP.p1});
-		
-		infProject.list.alignP.p1 = null;		
-	}	
-}
-
-
-// очищаем список и возращаем default материал разъемам
-function clearListObjUI()
-{
-	var arr = infProject.list.alignP.arr2;	
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		arr[i].el.remove();
-		arr[i].o.visible = false;
-		
-		if(arr[i].o.userData.tag == 'joinPoint')
-		{
-			arr[i].o.material = infProject.material.pointObj.default;	 	
-		}
-		
-		if(arr[i].o.userData.tag == 'wf_point')
-		{
-			arr[i].o.material = infProject.material.pointTube.default;	 	
-		}		
-	}	
-	
-	infProject.list.alignP.arr2 = [];	
-	infProject.list.alignP.p2 = null;	
-}
-
 
 
 // кликнули на объект в сцене (труба/объект), когда была нажата кнопка выровнить
@@ -250,7 +187,7 @@ function showJoinPoint_2({obj})
 	console.log(999, obj);
 	
 	// скрываем точки у второго объекта
-	clearListObjUI();	
+	//clearListObjUI();	
 	
 	let arr = [];
 	

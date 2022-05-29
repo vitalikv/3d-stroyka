@@ -164,21 +164,6 @@ function clickRayHit(event)
 			var ray = rayIntersect( event, infProject.tools.wf.plane, 'one' );  
 			if(ray.length > 0) { rayhit = ray[0]; }		
 		}			
-	}
-
-	// точки у трубы, при вкл кнопке присоединить 
-	// разъем у объекта, при вкл кнопке присоединить
-	if(infProject.list.alignP.arr2.length > 0 && !rayhit)
-	{
-		var arr2 = [];
-		var arr = infProject.list.alignP.arr2;	
-		for ( var i = 0; i < arr.length; i++ )
-		{
-			arr2[arr2.length] = arr[i].o;
-		}
-		
-		var ray = rayIntersect( event, arr2, 'arr' );  
-		if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }	
 	}	
 	
 	
