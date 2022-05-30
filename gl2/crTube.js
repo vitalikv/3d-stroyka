@@ -150,25 +150,7 @@ class TubeN extends THREE.Mesh
 
 		this.ui_menu({type: 'show'});
 	}
-	
-	
-	// кликнули на трубу из UI меню
-	clickTubeUI()
-	{
-		outlineAddObj(this);
-		this.showHideTubePoints({visible: true});
-		
-		let pos = this.convertDistToPos({dist: 0.5});	
-		
-		let arrO = [this, ...this.getTubePoints()];
-		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
-
-		//this.ui_menu({type: 'show'});
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: this.userData.nameRus, tubeDiameter: this.userData.diameter * 1000} });		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});			
-	}	
-	
+			
 	
 	// определяем в какое место трубы кликнули
 	detectPosTube({clickPos})
@@ -312,32 +294,6 @@ class TubeN extends THREE.Mesh
 	{
 		if(type == 'show') activeObjRightPanelUI_1({obj: this});
 		if(type == 'hide') activeObjRightPanelUI_1();
-	}
-	
-	
-	// получаем данные для UI 
-	ui_getObjChilds()
-	{
-		let item = {};
-		item.obj = this;
-		item.name = this.userData.nameRus;
-		item.lengthTube = this.userData.lengthTube;
-		item.colorTube = '#' + this.material.color.clone().getHexString();
-		item.f = this.clickTubeUI.bind(this);
-		
-		item.childs = [];	
-		
-		let arr = [this.userData.point[0], this.userData.point[this.userData.point.length - 1]];
-		
-		for (let i = 0; i < arr.length; i++)
-		{
-			item.childs[i] = {};
-			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.nameRus;
-			item.childs[i].f = arr[i].clickPointTubeUI.bind(arr[i]);			
-		}
-		
-		return item;
 	}
 		
 	

@@ -160,13 +160,13 @@ class UI_listObjChilds
 	{
 		let item = this.arr[id];
 		
-		let arr = [{elem: item.elem, callF: item.f}];
+		let arr = [{elem: item.elem, obj: item.obj}];
 		
 		if(item.childs)
 		{
 			for (let i = 0; i < item.childs.length; i++)
 			{
-				arr.push({elem: item.childs[i].elem, callF: item.childs[i].f});
+				arr.push({elem: item.childs[i].elem, obj: item.childs[i].obj});
 			};					
 		}
 	
@@ -174,7 +174,7 @@ class UI_listObjChilds
 		{
 			arr[i].elem.onmousedown = (e) => 
 			{
-				this.selectItem({elem: arr[i].elem, callF: arr[i].callF});
+				this.selectItem({elem: arr[i].elem, obj: arr[i].obj});
 				e.stopPropagation(); 
 			}
 		};		
@@ -224,9 +224,9 @@ class UI_listObjChilds
 	
 	
 	// кликнули на пункт 
-	selectItem({elem, callF = null})
+	selectItem({elem, obj = null})
 	{
-		if(callF) callF();
+		if(obj) clickItemListRpInfUI({obj}); 
 		
 		this.setResetColorItems();
 		this.activeItem = elem;
@@ -314,4 +314,152 @@ class UI_listObjChilds
 
 
 
+// кликнули на пункт из UI меню
+function clickItemListRpInfUI({obj})
+{	
+	if(obj.userData.obj3D) { obj3D({obj}); }
+	else if(obj.userData.centerPoint) { objCenterPoint({obj}); }
+	else if(obj.userData.wf_tube) { tube({obj}); }
+	else if(obj.userData.wf_point) { tubePoint({obj}); }
+	else if(obj.userData.tag == 'new_tube') { newTube({obj}); }
+	else if(obj.userData.tag == 'new_point') { newTubePoint({obj}); }
 
+	function obj3D({obj})
+	{
+		
+		showHideJP({obj});		
+		
+		let arrO = getObjsFromGroup_1({obj: obj});
+		
+		outlinePass.selectedObjects = arrO;	
+		
+		
+		obj.updateMatrixWorld();
+		let pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.obj3D.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});	
+	}
+	
+
+	function objCenterPoint({obj})
+	{
+		activeJoinPoint({obj: obj});
+		showHideJP({obj: obj.parent});		
+		
+		let arrO = getObjsFromGroup_1({obj: obj.parent});
+		
+		outlinePass.selectedObjects = arrO;	
+		
+		
+		let pos = obj.getWorldPosition(new THREE.Vector3());  
+				
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1']});	
+	}	
+	
+	
+	function tube({obj})
+	{
+		showHideTubePoint({tube: obj, visible: true});
+		
+		let arrO = [obj, ...obj.userData.wf_tube.point];
+		
+		outlinePass.selectedObjects = arrO;	
+		
+		
+		let pos = new THREE.Vector3();
+		
+		if(1==1)
+		{
+			let p = obj.userData.wf_tube.point;
+			let n = (p.length % 2);	// четное/нечетное, 2=false 3=true
+			pos = p[0].position;
+			
+			if(n)
+			{
+				n = (p.length - 1)/2;				
+				pos = p[n].position;
+			}
+			else
+			{
+				n = (p.length - p.length/2) - 1;				
+				let pos1 = p[n].position;
+				let pos2 = p[n+1].position;
+				pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
+			}			
+
+			
+			obj.updateMatrixWorld();						
+			pos = obj.worldToLocal( pos.clone() );			
+		}
+				
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});			
+	}
+	
+
+	function tubePoint({obj})
+	{
+		let tube = obj.userData.wf_point.tube;
+		
+		showHideTubePoint({tube: tube, visible: true});		
+		
+		let arrO = [tube, ...tube.userData.wf_tube.point];
+		
+		outlinePass.selectedObjects = arrO;				
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
+	}	
+
+
+	function newTube({obj})
+	{
+		outlineAddObj(obj);
+		obj.showHideTubePoints({visible: true});
+		
+		let pos = obj.convertDistToPos({dist: 0.5});	
+		
+		let arrO = [obj, ...obj.getTubePoints()];
+		infProject.tools.pg.activeTool({obj, pos, arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus, tubeDiameter: obj.userData.diameter * 1000} });		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'tube', 'bobj']});			
+	}
+	
+	
+	function newTubePoint({obj})
+	{
+		let tube = obj.userData.tube;
+		tube.showHideTubePoints({visible: true});
+		
+		let arrO = [tube, ...obj.getTubePoints()];
+		
+		outlineAddObj(obj, {arrO: arrO});	
+		
+		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
+
+		infProject.ui.rpanel.InfObj.hide();
+		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus}});		
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});			
+	}	
+}	
+
+	
+	

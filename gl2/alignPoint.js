@@ -66,11 +66,8 @@ class Obj_JoinConnector
 		if(this.activeObj)
 		{
 			let arrItem = newCrListObj({arrO: [this.activeObj]});	
-			this.ui_list.crListUI({arr: arrItem});			
-		}
-		else
-		{
-			this.ui_list.clear();
+			this.ui_list.crListUI({arr: arrItem});
+			if(this.activePoint) this.ui_list.selectObjScene({obj: this.activePoint});
 		}
 		
 		this.render();
@@ -115,8 +112,6 @@ class Obj_JoinConnector
 		{
 			arr = getCenterPointFromObj_1( obj );
 		}	
-		
-		console.log(777777, obj, arr);
 
 		// показываем разъемы
 		for(let i = 0; i < arr.length; i++) arr[i].visible = true;
@@ -129,8 +124,11 @@ class Obj_JoinConnector
 	// кликаем в сцену, ищем разъемы
 	rayhitPoint()
 	{		
-		this.activePoint = infProject.material.pointTube.default;
-		this.activePoint = null;	
+		if(this.activePoint) 
+		{
+			this.activePoint.material = infProject.material.pointTube.default;
+			this.activePoint = null;
+		}		
 		
 		let ray = rayIntersect( event, this.arr, 'arr' );
 		if(ray.length == 0) 
@@ -170,7 +168,7 @@ class Obj_JoinConnector
 		this.render();
 	}
 
-	
+	// снимаем выдиления с разъемов и очищаем список
 	clearObj()
 	{		
 		for(let i = 0; i < this.arr.length; i++) 
@@ -182,6 +180,10 @@ class Obj_JoinConnector
 		this.arr = [];
 		this.activeObj = null;
 		this.activePoint = null;
+		
+		this.ui_list.clear();
+		
+		this.render();
 	}
 
 	render()
@@ -223,14 +225,12 @@ class UI_JoinConnector
 			
 			this.initEvents({id: i, elem: elem});
 		}
-		
-		console.log(222, arr);
 	}
 	
-	html({obj = null, name, colorTube = null, lengthTube = null, childs = []})
+	html({name, childs = []})
 	{
 		let str = 
-		'<div class="right_panel_1_1_list_item" nameId="obj">\
+		'<div class="right_panel_1_1_list_item" nameId="obj" style="background: #ebebeb;">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+this.htmlTr({childs: childs})+'\
 				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
@@ -279,7 +279,7 @@ class UI_JoinConnector
 			</div>';			
 		}
 					
-		let str = '<div nameId="groupItem" style="display: none;">'+items+'</div>';			
+		let str = '<div nameId="groupItem">'+items+'</div>';			
 		
 		return str;
 	}

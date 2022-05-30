@@ -120,8 +120,8 @@ function newCrListObj({arrO})
 
 		if(o.userData.obj3D) item = getObj3D({obj: o});
 		else if(o.userData.wf_tube) item = getObjTube({obj: o});
-		else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
-		else if(o.userData.tag == 'new_tube') item = o.ui_getObjChilds();		
+		//else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
+		else if(o.userData.tag == 'new_tube') item = getObjNewTube({obj: o});		
 		
 		return item;
 	});	
@@ -131,7 +131,6 @@ function newCrListObj({arrO})
 		let item = {};
 		item.obj = obj;
 		item.name = obj.userData.obj3D.nameRus;
-		item.f = clickItemListRpInfUI.bind(obj);
 		
 		item.childs = [];	
 		
@@ -141,8 +140,7 @@ function newCrListObj({arrO})
 		{
 			item.childs[i] = {};
 			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.centerPoint.nameRus;
-			item.childs[i].f = clickItemListRpInfUI.bind(arr[i]);			
+			item.childs[i].name = arr[i].userData.centerPoint.nameRus;			
 		}
 		
 		return item;
@@ -155,7 +153,6 @@ function newCrListObj({arrO})
 		item.name = obj.userData.wf_tube.nameRus;
 		item.lengthTube = obj.userData.wf_tube.length;
 		item.colorTube = '#' + obj.material.color.clone().getHexString();		
-		item.f = clickItemListRpInfUI.bind(obj);
 		
 		item.childs = [];	
 		
@@ -167,136 +164,40 @@ function newCrListObj({arrO})
 		{
 			item.childs[i] = {};
 			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.wf_point.nameRus;
-			item.childs[i].f = clickItemListRpInfUI.bind(arr[i]);			
+			item.childs[i].name = arr[i].userData.wf_point.nameRus;			
 		}
 		
 		return item;
 	}
 
+
+	function getObjNewTube({obj})
+	{
+		let item = {};
+		item.obj = obj;
+		item.name = obj.userData.nameRus;
+		item.lengthTube = obj.userData.lengthTube;
+		item.colorTube = '#' + obj.material.color.clone().getHexString();
+		
+		item.childs = [];	
+		
+		let arr = [obj.userData.point[0], obj.userData.point[obj.userData.point.length - 1]];
+		
+		for (let i = 0; i < arr.length; i++)
+		{
+			item.childs[i] = {};
+			item.childs[i].obj = arr[i];
+			item.childs[i].name = arr[i].userData.nameRus;			
+		}
+		
+		return item;
+	}
+	
 	return arrItem;
 }
 
 
-// кликнули на пункт из UI меню
-function clickItemListRpInfUI()
-{
-	let obj = this;
 	
-	if(obj.userData.obj3D) { obj3D({obj}); }
-	else if(obj.userData.centerPoint) { objCenterPoint({obj}); }
-	else if(obj.userData.wf_tube) { tube({obj}); }
-	else if(obj.userData.wf_point) { tubePoint({obj}); }
-
-
-	function obj3D({obj})
-	{
-		
-		showHideJP({obj});		
-		
-		let arrO = getObjsFromGroup_1({obj: obj});
-		
-		outlinePass.selectedObjects = arrO;	
-		
-		
-		obj.updateMatrixWorld();
-		let pos = obj.localToWorld( obj.geometry.boundingSphere.center.clone() );			
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.obj3D.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});	
-	}
-	
-
-	function objCenterPoint({obj})
-	{
-		activeJoinPoint({obj: obj});
-		showHideJP({obj: obj.parent});		
-		
-		let arrO = getObjsFromGroup_1({obj: obj.parent});
-		
-		outlinePass.selectedObjects = arrO;	
-		
-		
-		let pos = obj.getWorldPosition(new THREE.Vector3());  
-				
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.centerPoint.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1']});	
-	}	
-	
-	
-	function tube({obj})
-	{
-		showHideTubePoint({tube: obj, visible: true});
-		
-		let arrO = [obj, ...obj.userData.wf_tube.point];
-		
-		outlinePass.selectedObjects = arrO;	
-		
-		
-		let pos = new THREE.Vector3();
-		
-		if(1==1)
-		{
-			let p = obj.userData.wf_tube.point;
-			let n = (p.length % 2);	// четное/нечетное, 2=false 3=true
-			pos = p[0].position;
-			
-			if(n)
-			{
-				n = (p.length - 1)/2;				
-				pos = p[n].position;
-			}
-			else
-			{
-				n = (p.length - p.length/2) - 1;				
-				let pos1 = p[n].position;
-				let pos2 = p[n+1].position;
-				pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
-			}			
-
-			
-			obj.updateMatrixWorld();						
-			pos = obj.worldToLocal( pos.clone() );			
-		}
-				
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});			
-	}
-	
-
-	function tubePoint({obj})
-	{
-		let tube = obj.userData.wf_point.tube;
-		
-		showHideTubePoint({tube: tube, visible: true});		
-		
-		let arrO = [tube, ...tube.userData.wf_tube.point];
-		
-		outlinePass.selectedObjects = arrO;				
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
-	}	
-}	
-
-	
-		
-
-
 
 
 
