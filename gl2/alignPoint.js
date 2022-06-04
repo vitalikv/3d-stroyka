@@ -2,7 +2,7 @@
 
 
 
-// присоединие разъема к другому разъему
+// класс для присоединие разъема к другому разъему
 class Obj_JoinConnector
 {		
 	constructor({container, b_open, b_open2, b_close, b_action})
@@ -15,10 +15,10 @@ class Obj_JoinConnector
 
 		this.moveTube = false;
 		this.arr = [];
-		this.activeObj = null;
-		this.activePoint = null;
+		this.selectObj = null;
+		this.selectPoint = null;
 		
-		this.ui_list = new UI_JoinConnector({el: document.querySelector('[nameId="rp_obj_align"]')});		
+		this.ui_list = new UI_JoinConnector({el: document.querySelector('[nameId="rp_obj_align"]'), classObj: this});		
 		
 		this.assignEvent();	
 	}
@@ -51,6 +51,7 @@ class Obj_JoinConnector
 	end()
 	{
 		this.clearObj();
+		this.ui_list.clear();
 		this.container.onmousedown = null;
 		setRayhitStop(false);		
 	}
@@ -63,11 +64,13 @@ class Obj_JoinConnector
 		if(this.arr.length == 0) { this.rayhitObj(); } 
 		else { this.rayhitPoint(); }
 
-		if(this.activeObj)
+		if(this.selectObj)
 		{
-			let arrItem = newCrListObj({arrO: [this.activeObj]});	
-			this.ui_list.crListUI({arr: arrItem});
-			if(this.activePoint) this.ui_list.selectObjScene({obj: this.activePoint});
+			this.ui_list.crListUI({obj: this.selectObj});
+			
+			let obj = (this.selectPoint) ? this.selectPoint : this.selectObj;
+			
+			this.ui_list.selectObjScene({obj: obj});
 		}
 		
 		this.render();
@@ -77,24 +80,46 @@ class Obj_JoinConnector
 	// кликаем в сцену, ищем объекты
 	rayhitObj()
 	{
-		this.activeObj = null;
-		this.arr = []; 
+		this.clearObj();
 		
 		let ray = rayIntersect( event, [...infProject.scene.array.tube, ...infProject.scene.array.obj], 'arr' );
 		if(ray.length == 0) 
-		{
-			this.clearObj();
+		{			
+			this.ui_list.clear();
 			return;
 		}
 		
 		let obj = ray[0].object;
 		
+		// если кликнули, на главные объект, у которого активирован разъем для присоединения, от ничего не делаем
 		if(infProject.tools.pg.arrO.findIndex(o => o == obj) > -1)
 		{
-			this.clearObj();
+			this.ui_list.clear();
 			return;			
 		}
 		
+		this.activeObj({obj});
+	}
+	
+	
+	// кликаем в сцену, ищем разъемы
+	rayhitPoint()
+	{			
+		let ray = rayIntersect( event, this.arr, 'arr' );
+		if(ray.length == 0) 
+		{
+			this.ui_list.clear();
+			this.rayhitObj();
+			return;
+		}		
+		
+		this.activePoint({obj: ray[0].object});
+	}	
+	
+	
+	// активруем объект/трубу которую выбрали
+	activeObj({obj})
+	{
 		let arr = [];
 		
 		// получаем разъемы, если есть
@@ -116,40 +141,34 @@ class Obj_JoinConnector
 		// показываем разъемы
 		for(let i = 0; i < arr.length; i++) arr[i].visible = true;
 
-		this.activeObj = obj;
-		this.arr = arr;		
+		this.selectObj = obj;
+		this.arr = arr;
+
+		this.render();
 	}
-	
-	
-	// кликаем в сцену, ищем разъемы
-	rayhitPoint()
-	{		
-		if(this.activePoint) 
+
+
+	// активруем разъем который выбрали
+	activePoint({obj})
+	{
+		// сбрасываем прошлый активный разъем
+		if(this.selectPoint) 
 		{
-			this.activePoint.material = infProject.material.pointTube.default;
-			this.activePoint = null;
+			this.selectPoint.material = infProject.material.pointTube.default;
+			this.selectPoint = null;
 		}		
 		
-		let ray = rayIntersect( event, this.arr, 'arr' );
-		if(ray.length == 0) 
-		{
-			this.clearObj();
-			this.rayhitObj();
-			return;
-		}
-		
-		let obj = ray[0].object;
 		obj.material = infProject.material.pointTube.active;
-
-		this.activePoint = obj;			
-	}	
-	
+		this.selectPoint = obj;
+		
+		this.render();
+	}			
 	
 	// нажали кнопку присоединить 
 	connectObj()
 	{
 		let o1 = infProject.tools.pg.obj;
-		let o2 = this.activePoint;
+		let o2 = this.selectPoint;
 		
 		if(!o1 || !o2) return;
 		
@@ -174,14 +193,12 @@ class Obj_JoinConnector
 		for(let i = 0; i < this.arr.length; i++) 
 		{
 			this.arr[i].visible = false;
-			this.arr[i].material = infProject.material.pointObj.default;
+			this.arr[i].material = infProject.material.pointTube.default;
 		}
 
 		this.arr = [];
-		this.activeObj = null;
-		this.activePoint = null;
-		
-		this.ui_list.clear();
+		this.selectObj = null;
+		this.selectPoint = null;
 		
 		this.render();
 	}
@@ -193,22 +210,25 @@ class Obj_JoinConnector
 }	
 
 
-
+// класс для создания списка объектв/разъемов, для присоединения
 class UI_JoinConnector
 {
 	el = null;
 		
-	constructor({el})
+	constructor({el, classObj})
 	{
 		this.el = el;
 		this.activeItem = null;
 		this.arr = [];
+		this.classObj = classObj;
 	}
 	
-	crListUI({arr})
+	crListUI({obj})
 	{
 		this.clear();
-		
+
+		let arr = newCrListObj({arrO: [obj]});	
+			
 		this.arr = arr;
 		
 		for (let i = 0; i < arr.length; i++)
@@ -223,7 +243,7 @@ class UI_JoinConnector
 			
 			this.arrAddElem({id: i, elem: elem});
 			
-			this.initEvents({id: i, elem: elem});
+			this.initEvents({id: i});
 		}
 	}
 	
@@ -298,25 +318,25 @@ class UI_JoinConnector
 		}
 	}
 	
-	initEvents({elem, id})
+	initEvents({id})
 	{
-		this.clickItem({elem: elem, id: id});
-		this.visibleChilds({elem: elem});
+		this.clickItem({id: id});
+		this.visibleChilds({id: id});
 	}
 	
 	
 	// создаем событие -> кликнули на пункт объекта/разъема
-	clickItem({elem, id})
+	clickItem({id})
 	{
 		let item = this.arr[id];
 		
-		let arr = [{elem: item.elem, callF: item.f}];
+		let arr = [{elem: item.elem, obj: item.obj}];
 		
 		if(item.childs)
 		{
 			for (let i = 0; i < item.childs.length; i++)
 			{
-				arr.push({elem: item.childs[i].elem, callF: item.childs[i].f});
+				arr.push({elem: item.childs[i].elem, obj: item.childs[i].obj});
 			};					
 		}
 	
@@ -324,15 +344,17 @@ class UI_JoinConnector
 		{
 			arr[i].elem.onmousedown = (e) => 
 			{
-				this.selectItem({elem: arr[i].elem, callF: arr[i].callF});
+				this.selectItem({elem: arr[i].elem, obj: arr[i].obj});
 				e.stopPropagation(); 
 			}
 		};		
 	}
 	
 	// создаем событие -> показываем/скрываем список разъемов объекта
-	visibleChilds({elem})
+	visibleChilds({id})
 	{
+		let elem = this.arr[id].elem;
+		
 		let button = elem.querySelector('[nameId="shCp_1"]');
 		if(!button) return;
 		
@@ -356,15 +378,39 @@ class UI_JoinConnector
 	
 	
 	// кликнули на пункт 
-	selectItem({elem, callF = null})
+	selectItem({elem, obj})
 	{
-		//if(callF) callF();
+		this.activeObj({obj});
 		
 		this.setResetColorItems();
 		this.activeItem = elem;
 		elem.style.backgroundColor = infProject.listColor.activeItem_1;
 	}
 	
+	
+	// выделаем объект/разъем, после того, как кликнули в списке объектов
+	activeObj({obj})
+	{
+		let f = '';
+		
+		if(obj.userData.tag == 'wf_tube'){ f = 'obj'; }
+		else if(obj.userData.tag == 'new_tube'){ f = 'obj'; }
+		else if(obj.userData.tag == 'obj') { f = 'obj'; }
+		else if(obj.userData.centerPoint) { f = 'point'; }
+		else if(obj.userData.wf_point) { f = 'point'; }
+		else if(obj.userData.tag == 'new_point') { f = 'point'; }
+
+		
+		if(f == 'obj')
+		{
+			this.classObj.clearObj();
+			this.classObj.activeObj({obj});
+		}
+		else if(f == 'point')
+		{
+			this.classObj.activePoint({obj: obj});		
+		}
+	}
 	
 	// кликнули на объект в сцене
 	selectObjScene({obj})
@@ -406,7 +452,7 @@ class UI_JoinConnector
 		
 		if(item.parent)
 		{
-			item.parent.style.backgroundColor = '#ebebeb';			
+			//item.parent.style.backgroundColor = '#ebebeb';			
 			let div = item.parent.querySelector('[nameId="groupItem"]');
 			div.style.display = '';
 		}

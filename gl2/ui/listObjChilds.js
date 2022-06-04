@@ -30,10 +30,8 @@ class UI_listObjChilds
 			
 			this.arrAddElem({id: i, elem: elem});
 			
-			this.initEvents({id: i, elem: elem});
+			this.initEvents({id: i});
 		}
-		
-		console.log(222, arr);
 	}
 	
 	html({name, colorTube = null, lengthTube = null, childs = []})
@@ -146,17 +144,17 @@ class UI_listObjChilds
 		}
 	}
 	
-	initEvents({elem, id})
+	initEvents({id})
 	{
-		this.clickItem({elem: elem, id: id});
-		this.visibleChilds({elem: elem});
-		this.clickInputColor({elem: elem});
-		this.clickCenterCam({elem: elem, id: id});
+		this.clickItem({id});
+		this.visibleChilds({id});
+		this.clickInputColor({id});
+		this.clickCenterCam({id});
 	}
 	
 	
 	// создаем событие -> кликнули на пункт объекта/разъема
-	clickItem({elem, id})
+	clickItem({id})
 	{
 		let item = this.arr[id];
 		
@@ -181,8 +179,9 @@ class UI_listObjChilds
 	}
 	
 	// создаем событие -> показываем/скрываем список разъемов объекта
-	visibleChilds({elem})
+	visibleChilds({id})
 	{
+		let elem = this.arr[id].elem;
 		let button = elem.querySelector('[nameId="shCp_1"]');
 		if(!button) return;
 		
@@ -205,8 +204,9 @@ class UI_listObjChilds
 	}
 
 	// создаем событие -> кликнули на замену цвета трубы
-	clickInputColor({elem})
+	clickInputColor({id})
 	{
+		let elem = this.arr[id].elem;
 		let input = elem.querySelector('input[type="color"]');
 		if(!input) return;
 		
@@ -216,8 +216,9 @@ class UI_listObjChilds
 
 
 	// создаем событие -> центрирование камеры на объект
-	clickCenterCam({elem, id})
+	clickCenterCam({id})
 	{
+		let elem = this.arr[id].elem;
 		let button = elem.querySelector('[nameId="sh_select_obj3D"]');
 		button.onmousedown = (e) => { fitCameraToObject({obj: this.arr[id].obj, rot: true}); e.stopPropagation(); };
 	}
