@@ -542,7 +542,7 @@ function init()
 	animate();
 	renderCamera();	
 	
-	
+	new selectBoxDiv({container: mainDiv_1});
 	infProject.ui.rpanel.InfObj = new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
 	
 

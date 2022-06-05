@@ -192,7 +192,8 @@
 	<script src="<?=$path?>ui/listObjChilds.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>sceneInit.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>sceneParams.js?<?=$vrs?>"></script>	
-
+	<script src="<?=$path?>selectBox.js?<?=$vrs?>"></script>
+	
 
 	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	

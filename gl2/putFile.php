@@ -77,6 +77,7 @@ ui/infoBlockObj.js
 ui/listObjChilds.js
 sceneInit.js
 sceneParams.js
+selectBox.js
 ';
 
 
