@@ -1,5 +1,75 @@
 
 
+function initSelectBox({container})
+{
+	let helper = new SelectBoxDiv({container});
+	let selectionBox = new SelectBoxObj({deep: 20});
+
+	let isMove = false;
+	
+	container.addEventListener('mousedown', function ( event ) 
+	{
+		if(camera == cameraTop || camera == camera3D)
+		{
+			isMove = false;
+
+			let x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
+			selectionBox.startPoint.set(x, y, 0);			
+		}
+	});
+	
+
+	container.addEventListener('mousemove', function ( event ) 
+	{
+		if(camera == cameraTop || camera == camera3D)
+		{
+			if(helper.isDown) isMove = true;
+		}		
+	});
+
+	container.addEventListener('mouseup', function ( event ) 
+	{
+		if(camera == cameraTop || camera == camera3D)
+		{
+			if(isMove)
+			{
+				outlinePass.selectedObjects = [];
+				
+				let x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
+				selectionBox.endPoint.set(x, y, 0);
+
+				outlinePass.selectedObjects = selectionBox.select();
+
+				renderCamera();
+			}
+		}
+	});
+
+
+	document.addEventListener("keydown", function (e) 
+	{ 
+		if(e.keyCode == 46) 
+		{ 
+			let arr = Build.outlinePass.selectedObjects;
+			
+			for ( let i = 0; i < arr.length; i ++ ) 
+			{
+				arr[i].parent.remove(arr[i]);
+				disposeNode(arr[i]);				
+			}
+			
+			console.log(Build.infProg.scene);
+			
+			Build.outlinePass.selectedObjects = [];
+			Build.render();
+		}
+	});	
+}
+
+
+
 
 
 class SelectBoxDiv
@@ -31,30 +101,30 @@ class SelectBoxDiv
 		this.container.addEventListener( 'pointermove', this.onPointerMove.bind(this) );
 		this.container.addEventListener( 'pointerup', this.onPointerUp.bind(this) );
 
-		document.addEventListener('keydown', (e) => { if(e.code == 'ShiftLeft') { this.isKeyDown = true;} })
-		document.addEventListener('keyup', (e) => { if(e.code == 'ShiftLeft') { this.isKeyDown = false; this.onPointerUp(); } })				
+		document.addEventListener('keydown', (e) => { if(e.code == 'ShiftLeft' || e.keyCode == 16) { this.isKeyDown = true;} })
+		document.addEventListener('keyup', (e) => { if(e.code == 'ShiftLeft' || e.keyCode == 16) { this.isKeyDown = false; this.onPointerUp(); } })				
 	}
 
 
-	onPointerDown( event ) 
+	onPointerDown(event) 
 	{
 		if(!this.isKeyDown) return;
 		
 		this.isDown = true;
-		this.onSelectStart( event );
+		this.onSelectStart(event);
 		setMouseStop(true);
 	}	
 	
 	
-	onPointerMove( event ) 
+	onPointerMove(event) 
 	{
 		if(!this.isDown) return;
 		
-		this.onSelectMove( event );
+		this.onSelectMove(event);
 	}
 	
 	
-	onPointerUp() 
+	onPointerUp(event) 
 	{
 		if(!this.isDown) return;
 		
@@ -63,8 +133,8 @@ class SelectBoxDiv
 		setMouseStop(false);
 	}
 	
-	onSelectStart( event ) {
-
+	onSelectStart( event ) 
+	{
 		this.element.style.display = '';
 
 		this.element.style.left = event.clientX + 'px';
@@ -74,11 +144,10 @@ class SelectBoxDiv
 
 		this.startPoint.x = event.clientX;
 		this.startPoint.y = event.clientY;
-
 	}
 
-	onSelectMove( event ) {
-
+	onSelectMove( event ) 
+	{
 		this.pointBottomRight.x = Math.max( this.startPoint.x, event.clientX );
 		this.pointBottomRight.y = Math.max( this.startPoint.y, event.clientY );
 		this.pointTopLeft.x = Math.min( this.startPoint.x, event.clientX );
@@ -90,56 +159,50 @@ class SelectBoxDiv
 		this.element.style.height = ( this.pointBottomRight.y - this.pointTopLeft.y ) + 'px';
 	}
 
-	onSelectOver(event) {
-
+	onSelectOver(event) 
+	{
 		this.element.style.display = 'none';
-		selectBoxFinish(event);
 	}	
 }
 
 
-function selectBoxFinish(event)
-{
-	console.log(3333);
-	
-	let p1 = infProject.selectBoxDiv.startPoint;
-	
-	infProject.selectBoxObj.startPoint.set( ( p1.x / window.innerWidth ) * 2 - 1, -( p1.y / window.innerHeight ) * 2 + 1, 0 );	
-	
-	infProject.selectBoxObj.endPoint.set( ( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0 );
-
-	const allSelected = infProject.selectBoxObj.select();	
-}
 
 
 
 class SelectBoxObj
 {
-	constructor({camera, scene, deep = 3.1}) 
+	constructor({deep = 3.1}) 
 	{
-		this.camera = camera;
-		this.scene = scene;
+		this.camera = null;
 		this.startPoint = new THREE.Vector3();
 		this.endPoint = new THREE.Vector3();
 		this.collection = [];
 		this.instances = {};
 		this.deep = deep;
+		
+		this.planes = [new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane()];
 	}
 	
 	
 	select( startPoint, endPoint ) 
 	{
+		this.camera = camera;
 		this.startPoint = startPoint || this.startPoint;
 		this.endPoint = endPoint || this.endPoint;
 		this.collection = [];
 
 		this.updateFrustum( this.startPoint, this.endPoint );
-		//this.searchChildInFrustum( _frustum, this.scene );
-
+		
+		let arr = [...infProject.scene.array.tube, ...infProject.scene.array.obj];
+		for(let i = 0; i < arr.length; i++)
+		{
+			this.searchChildInFrustum(arr[i]);
+		}		
+		
 		return this.collection;
 	}
 
-
+	// ставим плоскости образующие квадрат, область в которой будут искаться объекты
 	updateFrustum( startPoint, endPoint ) 
 	{
 		startPoint = startPoint || this.startPoint;
@@ -153,81 +216,37 @@ class SelectBoxObj
 		this.camera.updateProjectionMatrix();
 		this.camera.updateMatrixWorld();
 
-		if ( this.camera.isPerspectiveCamera ) 
+		if(this.camera.isPerspectiveCamera) 
 		{
-			let _tmpPoint = new THREE.Vector3();
-			
-			const _vecNear = new THREE.Vector3();
-			const _vecTopLeft = new THREE.Vector3();
-			const _vecTopRight = new THREE.Vector3();
-			const _vecDownRight = new THREE.Vector3();
-			const _vecDownLeft = new THREE.Vector3();
-
-			const _vecFarTopLeft = new THREE.Vector3();
-			const _vecFarTopRight = new THREE.Vector3();
-			const _vecFarDownRight = new THREE.Vector3();
-			const _vecFarDownLeft = new THREE.Vector3();
-
-			const _vectemp1 = new THREE.Vector3();
-			const _vectemp2 = new THREE.Vector3();
-			const _vectemp3 = new THREE.Vector3();			
+			let p1 = new THREE.Vector3( Math.min( startPoint.x, endPoint.x ), Math.max( startPoint.y, endPoint.y ), startPoint.z );
+			let p2 = new THREE.Vector3( Math.max( startPoint.x, endPoint.x ), Math.min( startPoint.y, endPoint.y ), endPoint.z );
 			
 
-
-			_tmpPoint.copy( startPoint );
-			_tmpPoint.x = Math.min( startPoint.x, endPoint.x );
-			_tmpPoint.y = Math.max( startPoint.y, endPoint.y );
-			endPoint.x = Math.max( startPoint.x, endPoint.x );
-			endPoint.y = Math.min( startPoint.y, endPoint.y );
+			let _vecNear = new THREE.Vector3().setFromMatrixPosition( this.camera.matrixWorld );
 			
-			//_tmpPoint.set( Math.min( startPoint.x, endPoint.x ), Math.max( startPoint.y, endPoint.y ), startPoint.z );
-			//endPoint.set( Math.max( startPoint.x, endPoint.x ), Math.min( startPoint.y, endPoint.y ), endPoint.z );
-			
-
-			_vecNear.setFromMatrixPosition( this.camera.matrixWorld );
-			_vecTopLeft.copy( _tmpPoint );
-			_vecTopRight.set( endPoint.x, _tmpPoint.y, 0 );
-			_vecDownRight.copy( endPoint );
-			_vecDownLeft.set( _tmpPoint.x, endPoint.y, 0 );
+			let _vecTopLeft = new THREE.Vector3().copy( p1 );
+			let _vecTopRight = new THREE.Vector3().set( p2.x, p1.y, 0 );
+			let _vecDownRight = new THREE.Vector3().copy( p2 );
+			let _vecDownLeft = new THREE.Vector3().set( p1.x, p2.y, 0 );
 
 			_vecTopLeft.unproject( this.camera );
 			_vecTopRight.unproject( this.camera );
 			_vecDownRight.unproject( this.camera );
 			_vecDownLeft.unproject( this.camera );
 
-let dir = this.camera.getWorldDirection(new THREE.Vector3());
-let dist = dir.multiplyScalar( this.deep );
 
+			let dir = this.camera.getWorldDirection(new THREE.Vector3());
+			let dist = dir.multiplyScalar( this.deep );
 
-
-			_vectemp1.copy( _vecTopRight ).add( dist );
-			_vectemp2.copy( _vecDownRight ).add( dist );
-			_vectemp3.copy( _vecDownLeft ).add( dist );
-			
-
-
-			if(1==2) 
-			{
-				let arrP = [_vecTopLeft, _vecTopRight, _vecDownRight, _vecDownLeft];
-				
-				for(let i = 0; i < arrP.length; i++)
-				{
-					let geometry = new THREE.BoxGeometry(0.01, 0.01, 0.01);
-					let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-					let cube = new THREE.Mesh(geometry, material);
-					cube.position.copy(arrP[i]);
-					this.scene.add(cube);					
-				}
-				
-				console.log(333, arrP);
-			}
+			let _vectemp1 = _vecTopRight.clone().add( dist );
+			let _vectemp2 = _vecDownRight.clone().add( dist );
+			let _vectemp3 = _vecDownLeft.clone().add( dist );			
   
-			console.log(333, this.deep);
 
 			if(1==1)
 			{
-				const planes = [new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane(), new THREE.Plane()];
-
+				let planes = this.planes;
+				
 				planes[ 0 ].setFromCoplanarPoints( _vecNear, _vecTopLeft, _vecTopRight );
 				planes[ 1 ].setFromCoplanarPoints( _vecNear, _vecTopRight, _vecDownRight );
 				planes[ 2 ].setFromCoplanarPoints( _vecDownRight, _vecDownLeft, _vecNear );
@@ -236,30 +255,34 @@ let dist = dir.multiplyScalar( this.deep );
 				planes[ 5 ].setFromCoplanarPoints( _vectemp3, _vectemp2, _vectemp1 );
 				//planes[ 5 ].normal.multiplyScalar( - 1 );	
 
-				for(let i = 0; i < planes.length; i++)
+				// помощник, визуализируем плоскости
+				if(1==1)
 				{
-					let helper = new THREE.PlaneHelper( planes[i], 15, 0xff0000 );
-					this.scene.add(helper);					
-				}				
+					for(let i = 0; i < planes.length; i++)
+					{
+						let helper = new THREE.PlaneHelper( planes[i], 15, 0xff0000 );
+						scene.add(helper);					
+					}									
+				}
 			}
 		} 
-		else if ( this.camera.isOrthographicCamera && 1==2) 
+		else if(this.camera.isOrthographicCamera) 
 		{
 
-			const left = Math.min( startPoint.x, endPoint.x );
-			const top = Math.max( startPoint.y, endPoint.y );
-			const right = Math.max( startPoint.x, endPoint.x );
-			const down = Math.min( startPoint.y, endPoint.y );
+			let left = Math.min( startPoint.x, endPoint.x );
+			let top = Math.max( startPoint.y, endPoint.y );
+			let right = Math.max( startPoint.x, endPoint.x );
+			let down = Math.min( startPoint.y, endPoint.y );			
+			
+			let _vecTopLeft = new THREE.Vector3( left, top, - 1 );
+			let _vecTopRight = new THREE.Vector3( right, top, - 1 );
+			let _vecDownRight = new THREE.Vector3( right, down, - 1 );
+			let _vecDownLeft = new THREE.Vector3( left, down, - 1 );
 
-			_vecTopLeft.set( left, top, - 1 );
-			_vecTopRight.set( right, top, - 1 );
-			_vecDownRight.set( right, down, - 1 );
-			_vecDownLeft.set( left, down, - 1 );
-
-			_vecFarTopLeft.set( left, top, 1 );
-			_vecFarTopRight.set( right, top, 1 );
-			_vecFarDownRight.set( right, down, 1 );
-			_vecFarDownLeft.set( left, down, 1 );
+			let _vecFarTopLeft = new THREE.Vector3( left, top, 1 );
+			let _vecFarTopRight = new THREE.Vector3( right, top, 1 );
+			let _vecFarDownRight = new THREE.Vector3( right, down, 1 );
+			let _vecFarDownLeft = new THREE.Vector3( left, down, 1 );
 
 			_vecTopLeft.unproject( this.camera );
 			_vecTopRight.unproject( this.camera );
@@ -271,17 +294,68 @@ let dist = dir.multiplyScalar( this.deep );
 			_vecFarDownRight.unproject( this.camera );
 			_vecFarDownLeft.unproject( this.camera );
 
-			const planes = _frustum.planes;
+			
+			if(1==1)
+			{
+				let planes = this.planes;
 
-			planes[ 0 ].setFromCoplanarPoints( _vecTopLeft, _vecFarTopLeft, _vecFarTopRight );
-			planes[ 1 ].setFromCoplanarPoints( _vecTopRight, _vecFarTopRight, _vecFarDownRight );
-			planes[ 2 ].setFromCoplanarPoints( _vecFarDownRight, _vecFarDownLeft, _vecDownLeft );
-			planes[ 3 ].setFromCoplanarPoints( _vecFarDownLeft, _vecFarTopLeft, _vecTopLeft );
-			planes[ 4 ].setFromCoplanarPoints( _vecTopRight, _vecDownRight, _vecDownLeft );
-			planes[ 5 ].setFromCoplanarPoints( _vecFarDownRight, _vecFarTopRight, _vecFarTopLeft );
-			planes[ 5 ].normal.multiplyScalar( - 1 );
+				planes[ 0 ].setFromCoplanarPoints( _vecTopLeft, _vecFarTopLeft, _vecFarTopRight );
+				planes[ 1 ].setFromCoplanarPoints( _vecTopRight, _vecFarTopRight, _vecFarDownRight );
+				planes[ 2 ].setFromCoplanarPoints( _vecFarDownRight, _vecFarDownLeft, _vecDownLeft );
+				planes[ 3 ].setFromCoplanarPoints( _vecFarDownLeft, _vecFarTopLeft, _vecTopLeft );
+				planes[ 4 ].setFromCoplanarPoints( _vecTopRight, _vecDownRight, _vecDownLeft );
+				planes[ 5 ].setFromCoplanarPoints( _vecFarDownRight, _vecFarTopRight, _vecFarTopLeft );
+				planes[ 5 ].normal.multiplyScalar( - 1 );
+				
+				
+				// помощник, визуализируем плоскости
+				if(1==2)
+				{
+					for(let i = 0; i < planes.length; i++)
+					{
+						let helper = new THREE.PlaneHelper( planes[i], 15, 0xff0000 );
+						scene.add(helper);					
+					}									
+				}				
+			}
 
 		}
 
+	}	
+	
+	
+	// поиск объектов в выбранной области 
+	searchChildInFrustum(object) 
+	{
+		if(object.isMesh || object.isLine || object.isPoints) 
+		{
+			if(object.geometry.boundingSphere === null) object.geometry.computeBoundingSphere();
+
+			let point = new THREE.Vector3().copy(object.geometry.boundingSphere.center);
+			point.applyMatrix4(object.matrixWorld);
+
+			let planes = this.planes;
+			
+			function containsPoint(point) 
+			{
+				for ( let i = 0; i < planes.length; i ++ ) 
+				{
+					if(planes[i].distanceToPoint(point) < 0) return false;
+				}
+
+				return true;
+			}
+			
+			if(containsPoint(point)) this.collection.push(object);
+		}
+		
+		// дочерние объекты
+		if(1==2 && object.children.length > 0) 
+		{
+			for ( let x = 0; x < object.children.length; x++ ) 
+			{
+				this.searchChildInFrustum(object.children[x]);
+			}
+		}
 	}	
 }

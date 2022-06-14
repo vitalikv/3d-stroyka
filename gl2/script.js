@@ -542,8 +542,7 @@ function init()
 	animate();
 	renderCamera();	
 	
-	infProject.selectBoxDiv = new SelectBoxDiv({container: mainDiv_1});
-	infProject.selectBoxObj = new SelectBoxObj({camera: camera3D, scene: scene, deep: 20});
+	initSelectBox({container: mainDiv_1});
 	
 	infProject.ui.rpanel.InfObj = new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
 	
