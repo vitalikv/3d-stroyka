@@ -9,7 +9,6 @@ mouseClick.js
 changeCamera.js
 cameraView.js
 moveCamera.js
-clickMovePoint.js
 deleteObj.js
 copyObj.js 	   
 saveLoad.js

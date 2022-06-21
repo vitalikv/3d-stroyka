@@ -256,7 +256,7 @@ class SelectBoxObj
 				//planes[ 5 ].normal.multiplyScalar( - 1 );	
 
 				// помощник, визуализируем плоскости
-				if(1==1)
+				if(1==2)
 				{
 					for(let i = 0; i < planes.length; i++)
 					{

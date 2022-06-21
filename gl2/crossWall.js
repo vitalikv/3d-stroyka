@@ -13,30 +13,6 @@ function isNumeric(n)
 
 
 
-// проверка пересеклась ли стена с другой стеной (когда тащим точку)
-function crossLineOnLine_1(point)
-{
-	for ( var i = 0; i < point.w.length; i++ )
-	{
-		for ( var i2 = 0; i2 < obj_line.length; i2++ )
-		{
-			if(point.w[i] == obj_line[i2]) { continue; }
-			
-			if(Math.abs(point.position.y - obj_line[i2].userData.wall.p[0].position.y) > 0.3) continue;		// проверка высоты этажа
-			
-			var p0 = point.w[i].userData.wall.p[0].position;
-			var p1 = point.w[i].userData.wall.p[1].position;
-			var p2 = obj_line[i2].userData.wall.p[0].position;
-			var p3 = obj_line[i2].userData.wall.p[1].position;
-			
-			if(intersectWall_3(p0, p1, p2, p3)) { return true; }	// стены пересеклись
-		}
-	}
-	
-	return false;  // стены не пересеклись
-}
-
-
 
 // точка пересечения двух прямых 2D
 function crossPointTwoLine(a1, a2, b1, b2)

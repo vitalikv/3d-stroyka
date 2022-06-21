@@ -124,7 +124,6 @@
 	<script src="<?=$path?>changeCamera.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>cameraView.js?<?=$vrs?>"></script>
     <script src="<?=$path?>moveCamera.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>clickMovePoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>clickMoveTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>alignPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>

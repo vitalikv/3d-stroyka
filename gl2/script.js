@@ -90,13 +90,24 @@ function recomputeUVs( geometry ) {
 
 
 
+function getMousePosition( event )
+{
+	let rect = renderer.domElement.getBoundingClientRect();
 
- 
+	let x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
+	let y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;	
+	
+	return new THREE.Vector2(x, y);
+}
+
+	
 
 function rayIntersect( event, obj, t, recursive ) 
 {
-	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	let mouse = getMousePosition( event );
+	
+	let raycaster = new THREE.Raycaster();
+	
 	raycaster.setFromCamera( mouse, camera );
 	
 	var intersects = null;
@@ -105,8 +116,7 @@ function rayIntersect( event, obj, t, recursive )
 	
 	return intersects;
 }
-
-
+ 
 
 
 
