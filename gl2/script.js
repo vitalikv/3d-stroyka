@@ -555,7 +555,7 @@ function init()
 	initSelectBox({container: mainDiv_1});
 	
 	infProject.ui.rpanel.InfObj = new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
-	
+	infProject.ui.rpanel.EstList = new UI_estimateListObj({container: document.body.querySelector('[list_ui="wf"]')});
 
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
 	

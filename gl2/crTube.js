@@ -28,7 +28,9 @@ class TubeN extends THREE.Mesh
 	
 		scene.add( this );
 		infProject.scene.array.tube.push( this );
-		this.render();		
+		this.render();	
+
+		this.uiEstimateListObj();
 	}
 	
 	setPosTube({pos})
@@ -295,7 +297,12 @@ class TubeN extends THREE.Mesh
 		if(type == 'show') activeObjRightPanelUI_1({obj: this});
 		if(type == 'hide') activeObjRightPanelUI_1();
 	}
-		
+	
+	// добавляем трубу в список сметы
+	uiEstimateListObj()
+	{
+		infProject.ui.rpanel.EstList.crItem({obj: this}); 
+	}
 	
 	render()
 	{

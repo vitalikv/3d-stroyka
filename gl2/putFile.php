@@ -74,6 +74,7 @@ crPointTube.js
 ui/pivotGizmo.js
 ui/infoBlockObj.js
 ui/listObjChilds.js
+ui/list_obj.js
 sceneInit.js
 sceneParams.js
 selectBox.js
