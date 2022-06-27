@@ -48,7 +48,7 @@ class UI_estimateListObj
 			
 			if(obj.userData.tag == 'obj') name = obj.userData.obj3D.nameRus;
 			if(obj.userData.tag == 'wf_tube') name = 'труба';
-			if(obj.userData.tag == 'new_tube') name = 'труба';
+			if(obj.userData.tag == 'new_tube') name = obj.userData.nameRus;
 			
 			return name;
 		}
@@ -67,9 +67,9 @@ class UI_estimateListObj
 			}
 			
 			if(obj.userData.tag == 'new_tube')
-			{
+			{				
 				lengthTube = obj.userData.lengthTube;
-				colorTube = '#' + obj.material.color.clone().getHexString();				
+				colorTube = '#' + obj.material.color.clone().getHexString();					
 			}				
 
 			

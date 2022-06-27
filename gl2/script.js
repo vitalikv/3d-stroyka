@@ -556,6 +556,7 @@ function init()
 	
 	infProject.ui.rpanel.InfObj = new UI_infoBlockObj({nameAttr: '[nameId="rp_wrap_obj_info"]'});
 	infProject.ui.rpanel.EstList = new UI_estimateListObj({container: document.body.querySelector('[list_ui="wf"]')});
+	new UI_saveEstimateTxt({el: document.body.querySelector('[nameId="save_list_obj"]')});
 
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
 	

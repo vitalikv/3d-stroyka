@@ -224,13 +224,6 @@ document.querySelector('[nameId="rp_plane_1"]').onmousedown = function(e){ click
 
 
 
-
-
-document.querySelector('[nameId="save_list_obj"]').onmousedown = function(){ saveListTxt(); }
-
-
-
-
 // раздел каталог, нижняя кнопка показывает/скрывает сетку
 document.querySelector('[nameId="rp_show_hide_planeHeight"]').onmousedown = function(){ showHidePlaneHeight(); }
 
