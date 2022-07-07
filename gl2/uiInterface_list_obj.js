@@ -80,7 +80,7 @@ function updateListObjUI_1(cdm)
 		
 		upTubeListObjUI({tube: obj});
 		
-		crtGroupItemListObjUI_1({obj: obj, num: num});
+		crtGroupItemListObjUI_1({list: infProject.list.obj_scene_ui, item: infProject.list.obj_scene_ui[num]});
 	}
 	
 	if(cdm.type == 'delete')
@@ -112,43 +112,33 @@ function updateListObjUI_1(cdm)
 
 
 // создаем группу для повторяющих деталей в "списке"
-function crtGroupItemListObjUI_1(cdm)
+function crtGroupItemListObjUI_1({list, item})
 {
-	let obj = cdm.obj;
-	let num = cdm.num;
-		
-	let item = checkSimilarItemListObjUI_1({list: infProject.list.obj_scene_ui, item: infProject.list.obj_scene_ui[num]});
+	let item2 = checkSimilarItemListObjUI_1({list, item});	
 	
-	
-	if(item)
-	{
-		let o2 = item.o;
-		
-		if(!item.parent)
-		{
-			if(o2.userData.tag == 'wf_tube'){ crtGroupItemListObjUI_2({item: item, name: 'трубы '+obj.userData.wf_tube.diameter*1000}); }
-			else { crtGroupItemListObjUI_2({item: item, name: obj.userData.obj3D.nameRus}); }					
-		}
+	if(item2)
+	{		
+		if(!item2.parent) crtGroupItemListObjUI_2({item: item2});
 
 		// добавляем в грппу объект и указываем, что у него есть parent
 		{
-			let parent = item.parent;
+			let parent = item2.parent;
 							
-			let el = infProject.list.obj_scene_ui[num].el;
 			let container_2 = parent.querySelector('[nameId="groupItem"]');
-			container_2.append(el);	
+			container_2.append(item.el);	
 
-			infProject.list.obj_scene_ui[num].parent = parent;
+			item.parent = parent;
 
-			getCountObjInGroup({parent: parent});
+			getCountObjInGroup({list, parent});
 		}
 	}
 
 
 	
 	// если в проекте 2 и более одинаковых объектов, то создаем группу и добавляем в нее первый объект
-	function crtGroupItemListObjUI_2({item, name})
+	function crtGroupItemListObjUI_2({item})
 	{
+		let name = item.el.querySelector('[nameId="nameItem"]').innerText;
 		
 		var groupItem = '';
 		
@@ -257,26 +247,20 @@ function delGroupItemListObjUI_1(cdm)
 		arr[0].parent = null;
 	}
 	
-	getCountObjInGroup({parent: parent});
+	getCountObjInGroup({list: infProject.list.obj_scene_ui, parent});
 }
 
 
 // обновляем текст, который указывает кол-во объектов в группе
-function getCountObjInGroup(cdm)
+function getCountObjInGroup({list, parent})
 {
-	var parent = cdm.parent;
-	
 	if(!parent) return;
 	
-	var count = 0;
-	var list = infProject.list.obj_scene_ui;
+	let count = 0;
 	
-	for(var i = 0; i < list.length; i++)
+	for(let i = 0; i < list.length; i++)
 	{
-		if(list[i].parent == parent)
-		{
-			count++;
-		}
+		if(list[i].parent == parent) count++;
 	}
 	
 	parent.querySelector('[nameId="countItem"]').innerText = '['+count+']';

@@ -120,8 +120,8 @@ class UI_estimateListObj
 	// создаем группу из повторяющихся объектов 
 	groupItem({item})
 	{
-		let inf = checkSimilarItemListObjUI_1({list: this.arr, item});
-		console.log(555, inf);
+		crtGroupItemListObjUI_1({list: this.arr, item});
+		//console.log(555, inf);
 	}
 	
 
