@@ -1,7 +1,7 @@
 
 
 
-
+// список всех объектов в сцене
 class UI_estimateListObj
 {
 	el = null;
@@ -9,10 +9,10 @@ class UI_estimateListObj
 	constructor({container})
 	{
 		this.container = container;
-		this.activeItem = null;
 		this.arr = [];
 	}
 	
+	// создаем пункт
 	crItem({obj})
 	{
 		let html = this.htmlItem({obj});
@@ -21,11 +21,19 @@ class UI_estimateListObj
 		elem.innerHTML = html;
 		elem = elem.firstChild;
 
-		this.container.append(elem);		
+		this.container.append(elem);
+		this.initEvents({elem, obj});
+		
+		this.addItemArr({el: elem, obj});
+		this.groupItem({item: this.arr[this.arr.length - 1]});
 	}
 
+	removeItem({obj})
+	{
+		this.deleteItemArr({obj});
+	}
 
-	// 
+	// собираем Item html 
 	htmlItem({obj})
 	{
 		let name = strName({obj});
@@ -35,7 +43,7 @@ class UI_estimateListObj
 		let html = 
 		'<div class="right_panel_1_1_list_item">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
-				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
+				<div nameId="nameItem" class="right_panel_1_1_list_item_text">'+name+'</div>\
 				'+h_htmlTube+'\
 				'+h_viewObj+'\
 			</div>\
@@ -76,9 +84,7 @@ class UI_estimateListObj
 			if(lengthTube)
 			{
 				str = 
-				'<div class="right_panel_1_1_list_item_color">\
-					<input type="color" value="'+colorTube+'" style="width: 25px; height: 10px; margin: auto; border: none; cursor: pointer;">\
-				</div>\
+				'<div class="right_panel_1_1_list_item_color" item="color" style="background-color: '+colorTube+';"></div>\
 				<div class="right_panel_1_1_list_item_text" nameId="lengthTube">'+lengthTube+'м</div>';			
 			}
 			
@@ -103,4 +109,38 @@ class UI_estimateListObj
 	
 		return html;
 	}	
+
+
+	addItemArr({el, obj})
+	{
+		this.arr.push({el, obj, parent: null});
+	}
+
+
+	// создаем группу из повторяющихся объектов 
+	groupItem({item})
+	{
+		let inf = checkSimilarItemListObjUI_1({list: this.arr, item});
+		console.log(555, inf);
+	}
+	
+
+	deleteItemArr({obj})
+	{
+		let arr = this.arr;
+		
+		for(let i = arr.length - 1; i > -1; i--) { if(arr[i].obj == obj) { arr.splice(i, 1); break; } }
+	}
+	
+	
+	// создаем событие -> центрирование камеры на объект
+	initEvents({elem, obj})
+	{
+		let button = elem.querySelector('[nameId="sh_select_obj3D"]');
+		button.onmousedown = (e) => { fitCameraToObject({obj: obj}); e.stopPropagation(); };
+	}	
+	
+	
 }
+
+

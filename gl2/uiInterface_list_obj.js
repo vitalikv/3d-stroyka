@@ -29,7 +29,7 @@ function updateListObjUI_1(cdm)
 			'<div>\
 				<div class="right_panel_1_1_list_item">\
 					<div class="flex_1 relative_1">\
-						<div class="right_panel_1_1_list_item_text" item="name">труба</div>\
+						<div class="right_panel_1_1_list_item_text" nameId="nameItem">труба</div>\
 						<div class="right_panel_1_1_list_item_color" item="color"></div>\
 						<div class="right_panel_1_1_list_item_text" item="value"></div>\
 						'+str_button+'\
@@ -114,67 +114,40 @@ function updateListObjUI_1(cdm)
 // создаем группу для повторяющих деталей в "списке"
 function crtGroupItemListObjUI_1(cdm)
 {
-	var obj = cdm.obj;
-	var num = cdm.num;
+	let obj = cdm.obj;
+	let num = cdm.num;
+		
+	let item = checkSimilarItemListObjUI_1({list: infProject.list.obj_scene_ui, item: infProject.list.obj_scene_ui[num]});
 	
-	for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
+	
+	if(item)
 	{
-		var o2 = infProject.list.obj_scene_ui[i].o;
+		let o2 = item.o;
 		
-		if(o2 == obj) continue;
-		
-		var equally = false;
-
-		if(obj.userData.tag == 'obj')
+		if(!item.parent)
 		{
-			if(o2.userData.tag == 'obj')
-			{
-				if(obj.userData.obj3D.lotid)	// у добавляемого объекта есть lotid
-				{
-					if(o2.userData.obj3D.lotid == obj.userData.obj3D.lotid){ equally = true; }
-				}
-				else	// у добавляемого объекта нет lotid (радиаторы из сборки)(временное решение, потом удалить)
-				{
-					if(o2.userData.obj3D.nameRus == obj.userData.obj3D.nameRus){ equally = true; } 
-				}				
-			}
+			if(o2.userData.tag == 'wf_tube'){ crtGroupItemListObjUI_2({item: item, name: 'трубы '+obj.userData.wf_tube.diameter*1000}); }
+			else { crtGroupItemListObjUI_2({item: item, name: obj.userData.obj3D.nameRus}); }					
 		}
-		else if(obj.userData.tag == 'wf_tube')
+
+		// добавляем в грппу объект и указываем, что у него есть parent
 		{
-			if(o2.userData.tag == 'wf_tube')			
-			{ 
-				if(o2.userData.wf_tube.diameter == obj.userData.wf_tube.diameter){ equally = true; }
-			}
-		}				
-			
-		if(equally)
-		{
-			if(!infProject.list.obj_scene_ui[i].parent)
-			{
-				if(o2.userData.tag == 'wf_tube'){ crtGroupItemListObjUI_2({num: i, name: 'трубы '+obj.userData.wf_tube.diameter*1000}); }
-				else { crtGroupItemListObjUI_2({num: i, name: obj.userData.obj3D.nameRus}); }					
-			}
+			let parent = item.parent;
+							
+			let el = infProject.list.obj_scene_ui[num].el;
+			let container_2 = parent.querySelector('[nameId="groupItem"]');
+			container_2.append(el);	
 
-			// добавляем в грппу объект и указываем, что у него есть parent
-			{
-				var parent = infProject.list.obj_scene_ui[i].parent;
-								
-				var item = infProject.list.obj_scene_ui[cdm.num].el;
-				var container_2 = parent.querySelector('[nameId="groupItem"]');
-				container_2.append(item);	
+			infProject.list.obj_scene_ui[num].parent = parent;
 
-				infProject.list.obj_scene_ui[num].parent = parent;
-
-				getCountObjInGroup({parent: parent});
-			}
-			
-			break;
+			getCountObjInGroup({parent: parent});
 		}
 	}
 
+
 	
 	// если в проекте 2 и более одинаковых объектов, то создаем группу и добавляем в нее первый объект
-	function crtGroupItemListObjUI_2(cdm)
+	function crtGroupItemListObjUI_2({item, name})
 	{
 		
 		var groupItem = '';
@@ -192,7 +165,7 @@ function crtGroupItemListObjUI_1(cdm)
 		'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+str_button+'\
-				<div class="right_panel_1_1_list_item_text" nameId="nameGroup">'+cdm.name+'</div>\
+				<div class="right_panel_1_1_list_item_text" nameId="nameGroup">'+name+'</div>\
 				<div class="right_panel_1_1_list_item_text" nameId="countItem" style="margin-right: 10px; margin-left: auto;">[1]</div>\
 			</div>\
 			<div nameId="groupItem" style="display: none;">\
@@ -216,17 +189,44 @@ function crtGroupItemListObjUI_1(cdm)
 		}		
 
 		// вставляем в группу item
-		var item = infProject.list.obj_scene_ui[cdm.num].el;
+		var el = item.el;
 		var container_2 = elem.querySelector('[nameId="groupItem"]');
-		container_2.append(item);
+		container_2.append(el);
 		
 		// добавляем группу в "список"
 		var container = document.body.querySelector('[list_ui="wf"]');
 		container.append(elem);	
 
 		// назначаем группы для item
-		infProject.list.obj_scene_ui[cdm.num].parent = elem;
+		item.parent = elem;
 	}	
+}
+
+
+// проверяем повторяется ли деталь в списке
+function checkSimilarItemListObjUI_1({list = null, item})
+{
+	let inf = null;
+	
+	let obj1 = item.o || item.obj;	
+	let name1 = item.el.querySelector('[nameId="nameItem"]').innerText;
+	
+	for(let i = 0; i < list.length; i++)
+	{
+		let obj2 = list[i].o || list[i].obj;
+
+		if(!obj2) continue;	
+		if(obj1 == obj2) continue;				
+
+		let name2 = list[i].el.querySelector('[nameId="nameItem"]').innerText;
+		
+		if(name1 == name2){ inf = list[i]; }				
+			
+		if(inf) break;
+	}
+
+
+	return inf;
 }
 
 
@@ -327,7 +327,7 @@ function upTubeListObjUI(cdm)
 	{
 		q.querySelector('[item="color"]').style.backgroundColor = '#'+tube.material.color.clone().getHexString();
 		
-		q.querySelector('[item="name"]').innerText = 'труба '+tube.userData.wf_tube.diameter * 1000;
+		q.querySelector('[nameId="nameItem"]').innerText = 'труба '+tube.userData.wf_tube.diameter * 1000;
 		q.querySelector('[item="value"]').innerText = tube.userData.wf_tube.length+'м';		
 	}
 }	
