@@ -30,7 +30,7 @@ class TubeN extends THREE.Mesh
 		infProject.scene.array.tube.push( this );
 		this.render();	
 
-		this.uiEstimateListObj();
+		this.uiEstimateListObj({type: 'add'});
 	}
 	
 	setPosTube({pos})
@@ -273,6 +273,8 @@ class TubeN extends THREE.Mesh
 	{
 		this.deClickTube();
 		
+		this.uiEstimateListObj({type: 'del'});
+		
 		deleteValueFromArrya({arr: infProject.scene.array.tube, o: this});
 		
 		let points = this.getTubePoints();
@@ -299,9 +301,10 @@ class TubeN extends THREE.Mesh
 	}
 	
 	// добавляем трубу в список сметы
-	uiEstimateListObj()
+	uiEstimateListObj({type})
 	{
-		infProject.ui.rpanel.EstList.crItem({obj: this}); 
+		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
+		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this}); 
 	}
 	
 	render()

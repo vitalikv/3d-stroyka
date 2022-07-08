@@ -118,7 +118,7 @@ function crtGroupItemListObjUI_1({list, item})
 	
 	if(item2)
 	{		
-		if(!item2.parent) crtGroupItemListObjUI_2({item: item2});
+		if(!item2.parent) crGroupItem({item: item2});
 
 		// добавляем в грппу объект и указываем, что у него есть parent
 		{
@@ -133,25 +133,48 @@ function crtGroupItemListObjUI_1({list, item})
 		}
 	}
 
+	// проверяем повторяется ли деталь в списке
+	function checkSimilarItemListObjUI_1({list = null, item})
+	{
+		let inf = null;
+		
+		let obj1 = item.o || item.obj;	
+		let name1 = item.el.querySelector('[nameId="nameItem"]').innerText;
+		
+		for(let i = 0; i < list.length; i++)
+		{
+			let obj2 = list[i].o || list[i].obj;
+
+			if(!obj2) continue;	
+			if(obj1 == obj2) continue;				
+
+			let name2 = list[i].el.querySelector('[nameId="nameItem"]').innerText;
+			
+			if(name1 == name2){ inf = list[i]; }				
+				
+			if(inf) break;
+		}
+
+
+		return inf;
+	}
 
 	
 	// если в проекте 2 и более одинаковых объектов, то создаем группу и добавляем в нее первый объект
-	function crtGroupItemListObjUI_2({item})
+	function crGroupItem({item})
 	{
 		let name = item.el.querySelector('[nameId="nameItem"]').innerText;
 		
-		var groupItem = '';
+		let groupItem = '';
 		
-		var str_button = 
+		let str_button = 
 		'<div nameId="shCp_1" style="margin-left: 5px; width: 10px; height: 20px;">\
-			<div>\
-				<svg height="100%" width="100%" viewBox="0 0 100 100">\
-					<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
-				</svg>\
-			</div>\
+			<svg height="100%" width="100%" viewBox="0 0 100 100">\
+				<polygon points="0,0 100,0 50,100" style="fill:#ffffff;stroke:#000000;stroke-width:4" />\
+			</svg>\
 		</div>';			
 		
-		var html = 
+		let html = 
 		'<div class="right_panel_1_1_list_item" style="top:0px; left:0px;">\
 			<div class="flex_1 relative_1" style="margin: auto;">\
 				'+str_button+'\
@@ -163,14 +186,14 @@ function crtGroupItemListObjUI_1({list, item})
 			</div>\
 		</div>';	
 
-		var div = document.createElement('div');
+		let div = document.createElement('div');
 		div.innerHTML = html;
-		var elem = div.firstChild;
+		let elem = div.firstChild;
 		
 		// назначаем кнопки треугольник событие
 		{
-			var el_2 = elem.querySelector('[nameId="shCp_1"]');
-			var container_2 = elem.querySelector('[nameid="groupItem"]');
+			let el_2 = elem.querySelector('[nameId="shCp_1"]');
+			let container_2 = elem.querySelector('[nameid="groupItem"]');
 
 			(function(container_2) 
 			{
@@ -178,13 +201,13 @@ function crtGroupItemListObjUI_1({list, item})
 			}(container_2));											
 		}		
 
-		// вставляем в группу item
-		var el = item.el;
-		var container_2 = elem.querySelector('[nameId="groupItem"]');
+		// вставляем item в группу
+		let el = item.el;
+		let container_2 = elem.querySelector('[nameId="groupItem"]');
 		container_2.append(el);
 		
 		// добавляем группу в "список"
-		var container = document.body.querySelector('[list_ui="wf"]');
+		let container = document.body.querySelector('[list_ui="wf"]');
 		container.append(elem);	
 
 		// назначаем группы для item
@@ -193,31 +216,6 @@ function crtGroupItemListObjUI_1({list, item})
 }
 
 
-// проверяем повторяется ли деталь в списке
-function checkSimilarItemListObjUI_1({list = null, item})
-{
-	let inf = null;
-	
-	let obj1 = item.o || item.obj;	
-	let name1 = item.el.querySelector('[nameId="nameItem"]').innerText;
-	
-	for(let i = 0; i < list.length; i++)
-	{
-		let obj2 = list[i].o || list[i].obj;
-
-		if(!obj2) continue;	
-		if(obj1 == obj2) continue;				
-
-		let name2 = list[i].el.querySelector('[nameId="nameItem"]').innerText;
-		
-		if(name1 == name2){ inf = list[i]; }				
-			
-		if(inf) break;
-	}
-
-
-	return inf;
-}
 
 
 

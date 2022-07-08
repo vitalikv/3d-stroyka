@@ -55,7 +55,7 @@ class UI_estimateListObj
 			let name = '';
 			
 			if(obj.userData.tag == 'obj') name = obj.userData.obj3D.nameRus;
-			if(obj.userData.tag == 'wf_tube') name = 'труба';
+			if(obj.userData.tag == 'wf_tube') name = 'труба' + obj.userData.wf_tube.diameter * 1000;
 			if(obj.userData.tag == 'new_tube') name = obj.userData.nameRus;
 			
 			return name;
@@ -84,7 +84,7 @@ class UI_estimateListObj
 			if(lengthTube)
 			{
 				str = 
-				'<div class="right_panel_1_1_list_item_color" item="color" style="background-color: '+colorTube+';"></div>\
+				'<div class="right_panel_1_1_list_item_color" nameId="colorTube" style="background-color: '+colorTube+';"></div>\
 				<div class="right_panel_1_1_list_item_text" nameId="lengthTube">'+lengthTube+'м</div>';			
 			}
 			
@@ -121,15 +121,30 @@ class UI_estimateListObj
 	groupItem({item})
 	{
 		crtGroupItemListObjUI_1({list: this.arr, item});
-		//console.log(555, inf);
 	}
 	
-
-	deleteItemArr({obj})
+	
+	// удаляем Item
+	delItem({obj})
 	{
 		let arr = this.arr;
 		
-		for(let i = arr.length - 1; i > -1; i--) { if(arr[i].obj == obj) { arr.splice(i, 1); break; } }
+		//for(let i = arr.length - 1; i > -1; i--) { if(arr[i].obj == obj) { arr.splice(i, 1); break; } }
+		
+		
+		for(let i = 0; i < arr.length; i++)
+		{
+			if(arr[i].obj !== obj) continue;
+			
+			let parent = arr[i].parent;
+			
+			arr[i].el.remove();
+			deleteValueFromArrya({arr: arr, o: arr[i]});
+			
+			console.log(777, arr);
+			//delGroupItemListObjUI_1({parent: parent});
+			break;
+		}		
 	}
 	
 	

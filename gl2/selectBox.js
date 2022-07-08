@@ -52,7 +52,7 @@ function initSelectBox({container})
 	{ 
 		if(e.keyCode == 46) 
 		{ 
-			let arr = Build.outlinePass.selectedObjects;
+			let arr = outlinePass.selectedObjects;
 			
 			for ( let i = 0; i < arr.length; i ++ ) 
 			{
@@ -60,10 +60,8 @@ function initSelectBox({container})
 				disposeNode(arr[i]);				
 			}
 			
-			console.log(Build.infProg.scene);
-			
-			Build.outlinePass.selectedObjects = [];
-			Build.render();
+			outlinePass.selectedObjects = [];
+			renderCamera();
 		}
 	});	
 }
