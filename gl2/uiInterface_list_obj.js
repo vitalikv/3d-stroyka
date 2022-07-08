@@ -85,16 +85,16 @@ function updateListObjUI_1(cdm)
 	
 	if(cdm.type == 'delete')
 	{
-		for(var i = 0; i < infProject.list.obj_scene_ui.length; i++)
+		for(let i = 0; i < infProject.list.obj_scene_ui.length; i++)
 		{
 			if(infProject.list.obj_scene_ui[i].o == cdm.o) 
 			{
-				var parent = infProject.list.obj_scene_ui[i].parent;
+				let parent = infProject.list.obj_scene_ui[i].parent;
 				
 				infProject.list.obj_scene_ui[i].el.remove();
 				deleteValueFromArrya({arr: infProject.list.obj_scene_ui, o: infProject.list.obj_scene_ui[i]});
 				
-				delGroupItemListObjUI_1({parent: parent});
+				delGroupItemListObjUI_1({list: infProject.list.obj_scene_ui, parent});
 				break;
 			}
 		}
@@ -220,15 +220,12 @@ function crtGroupItemListObjUI_1({list, item})
 
 
 // удаляем группу, если в ней, будет только 1 или 0 объектов
-function delGroupItemListObjUI_1(cdm)
+function delGroupItemListObjUI_1({list, parent})
 {
-	var parent = cdm.parent;
-	var list = infProject.list.obj_scene_ui;
-	
 	if(!parent) return;
 	
-	var arr = [];
-	for(var i = 0; i < list.length; i++)
+	let arr = [];
+	for(let i = 0; i < list.length; i++)
 	{
 		if(list[i].parent == parent) { arr[arr.length] = list[i]; }
 	}
@@ -239,13 +236,13 @@ function delGroupItemListObjUI_1(cdm)
 	}
 	if(arr.length == 1)
 	{
-		var container = document.body.querySelector('[list_ui="wf"]');
+		let container = document.body.querySelector('[list_ui="wf"]');
 		container.append(arr[0].el);
 		parent.remove();
 		arr[0].parent = null;
 	}
 	
-	getCountObjInGroup({list: infProject.list.obj_scene_ui, parent});
+	getCountObjInGroup({list, parent});
 }
 
 

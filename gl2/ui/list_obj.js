@@ -129,9 +129,6 @@ class UI_estimateListObj
 	{
 		let arr = this.arr;
 		
-		//for(let i = arr.length - 1; i > -1; i--) { if(arr[i].obj == obj) { arr.splice(i, 1); break; } }
-		
-		
 		for(let i = 0; i < arr.length; i++)
 		{
 			if(arr[i].obj !== obj) continue;
@@ -141,8 +138,7 @@ class UI_estimateListObj
 			arr[i].el.remove();
 			deleteValueFromArrya({arr: arr, o: arr[i]});
 			
-			console.log(777, arr);
-			//delGroupItemListObjUI_1({parent: parent});
+			delGroupItemListObjUI_1({list: arr, parent});
 			break;
 		}		
 	}
