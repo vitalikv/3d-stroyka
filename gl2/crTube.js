@@ -94,6 +94,8 @@ class TubeN extends THREE.Mesh
 		
 		this.geometry.dispose();
 		this.geometry = geometry;
+		
+		if(!path) this.uiEstimateListObj({type: 'up'});
 	}
 	
 	tubeMaterial({color})
@@ -300,11 +302,12 @@ class TubeN extends THREE.Mesh
 		if(type == 'hide') activeObjRightPanelUI_1();
 	}
 	
-	// добавляем трубу в список сметы
+	// список материалов
 	uiEstimateListObj({type})
 	{
 		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
-		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this}); 
+		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
+		if(type == 'up') infProject.ui.rpanel.EstList.upTube({obj: this}); 
 	}
 	
 	render()
