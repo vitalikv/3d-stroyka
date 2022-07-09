@@ -268,6 +268,18 @@ class TubeN extends THREE.Mesh
 		
 		for ( let i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }	
 	}
+
+
+	// меняем цвет трубы input
+	changeColorTube({value}) 
+	{  			
+		this.material.color = new THREE.Color(value); 
+		this.material.needsUpdate = true;	
+		
+		this.uiEstimateListObj({type: 'update'});	// обновляем цвет трубы во вкладке "список"
+		
+		this.render(); 
+	};
 	
 	
 	// удаляем трубу

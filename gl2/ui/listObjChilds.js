@@ -210,8 +210,15 @@ class UI_listObjChilds
 		let input = elem.querySelector('input[type="color"]');
 		if(!input) return;
 		
+		let obj = this.arr[id].obj;
+		
 		input.onmousedown = (e) => e.stopPropagation();
-		input.onchange = (e) => { e.stopPropagation(); };
+		input.onchange = (e) => 
+		{ 
+			if(obj.userData.tag == 'new_tube') obj.changeColorTube({ value: e.target.value });
+			if(obj.userData.tag == 'wf_tube') changeColorTube({ obj, value: e.target.value }); 
+			e.stopPropagation(); 
+		};
 	}
 
 

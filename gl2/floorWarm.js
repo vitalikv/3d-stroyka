@@ -267,10 +267,8 @@ function inputWF_tubeDiametr(cdm)
 
 // меняем цвет трубы input
 function changeColorTube({obj, value}) 
-{  	
-	if(obj.userData.tag != 'wf_tube') return;		 
-	
-	obj.material.color = new THREE.Color(cdm.value); 
+{  			
+	obj.material.color = new THREE.Color(value); 
 	obj.material.needsUpdate = true;	
 	
 	infProject.ui.rpanel.EstList.updateItem({obj});	// обновляем цвет трубы во вкладке "список"
