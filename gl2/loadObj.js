@@ -145,7 +145,7 @@ function addObjInScene(inf, cdm)
 	if(cdm.notArray){}
 	else
 	{		 
-		updateListObjUI_1({o: obj, type: 'add'});	// добавляем объект в UI список материалов 		
+		infProject.ui.rpanel.EstList.crItem({obj});	// добавляем в список материалов	
 	}
 	
 	if(cdm.cursor) 

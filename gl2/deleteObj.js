@@ -89,7 +89,7 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 
 	for(var i = 0; i < arr.length; i++)
 	{	
-		updateListObjUI_1({type: 'delete', o: arr[i]});
+		infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
 		
 		if(arr[i].userData.wf_tube)
 		{
@@ -130,7 +130,7 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 // удалить трубу
 function deleteLineWF(tube)
 {	
-	updateListObjUI_1({type: 'delete', o: tube});
+	infProject.ui.rpanel.EstList.delItem({obj: tube});	// удаляем объект из списка материалов
 	deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
 	
 	for ( var i = tube.userData.wf_tube.point.length - 1; i > -1; i-- )

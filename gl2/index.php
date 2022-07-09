@@ -176,7 +176,6 @@
 	<script src="<?=$path?>uiInterface_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_wf.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_plane.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>uiInterface_list_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_catalog.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_user_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>

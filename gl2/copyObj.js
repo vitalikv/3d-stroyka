@@ -34,7 +34,7 @@ function copyObj()
 	
 			infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
 			
-			updateListObjUI_1({o: clone, type: 'add'});	// добавляем объект в UI список материалов 
+			infProject.ui.rpanel.EstList.crItem({obj: clone});	// добавляем в список материалов
 		}
 		
 		if(arr[i].userData.wf_tube) 

@@ -86,7 +86,7 @@ function getTubeToSborka_1(cdm)
 	
 	if(!cdm.notArray)
 	{		
-		updateListObjUI_1({o: tube, type: 'add'}); 	// добавляем в список материалов			
+		infProject.ui.rpanel.EstList.crItem({obj: tube});	// добавляем в список материалов		
 	}	
 	
 	return tube;

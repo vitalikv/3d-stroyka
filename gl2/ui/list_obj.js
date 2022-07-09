@@ -1,7 +1,7 @@
 
 
 
-// список всех объектов в сцене
+// список всех объектов в сцене (вкладка "список")
 class UI_estimateListObj
 {
 	el = null;
@@ -55,7 +55,7 @@ class UI_estimateListObj
 			let name = '';
 			
 			if(obj.userData.tag == 'obj') name = obj.userData.obj3D.nameRus;
-			if(obj.userData.tag == 'wf_tube') name = 'труба' + obj.userData.wf_tube.diameter * 1000;
+			if(obj.userData.tag == 'wf_tube') name = 'труба ' + obj.userData.wf_tube.diameter * 1000;
 			if(obj.userData.tag == 'new_tube') name = obj.userData.nameRus;
 			
 			return name;
@@ -158,10 +158,10 @@ class UI_estimateListObj
 		}
 	}	
 	
-	// обновляем название/длину/цвет у трубы
-	upTube({obj})
+	// обновляем название/длину/цвет у трубы/объекта
+	updateItem({obj})
 	{
-		upTubeListObjUI({obj, list: this.arr});
+		updateItemListUI({obj, list: this.arr});
 	}
 }
 
@@ -200,10 +200,7 @@ function crtGroupItemListObjUI_1({list, item})
 		
 		for(let i = 0; i < list.length; i++)
 		{
-			let obj2 = list[i].o || list[i].obj;
-
-			if(!obj2) continue;	
-			if(obj1 == obj2) continue;				
+			if(obj1 == list[i].obj) continue;				
 
 			let name2 = list[i].el.querySelector('[nameId="nameItem"]').innerText;
 			
@@ -332,19 +329,14 @@ function getCountObjInGroup({list, parent})
 
 
 
-// обновляем название/длину/цвет у трубы в списке материалов
-function upTubeListObjUI({obj, list = infProject.list.obj_scene_ui})
+// обновляем название/длину/цвет у трубы/объекта в списке материалов
+function updateItemListUI({obj, list = infProject.list.obj_scene_ui})
 {	
-	if(obj.userData.tag == 'wf_tube' || obj.userData.tag == 'new_tube'){}
-	else { return; }
-	
 	let el = null;	
 	
 	for(let i = 0; i < list.length; i++)
-	{
-		let obj2 = list[i].o || list[i].obj;
-		
-		if(obj == obj2) 
+	{		
+		if(obj == list[i].obj) 
 		{
 			el = list[i].el;
 			break;
@@ -353,39 +345,26 @@ function upTubeListObjUI({obj, list = infProject.list.obj_scene_ui})
 
 	if(el)
 	{
+		if(obj.userData.tag == 'obj')
+		{
+			el.querySelector('[nameId="nameItem"]').innerText = obj.userData.obj3D.nameRus;			
+		}		
 		if(obj.userData.tag == 'wf_tube')
 		{
-			el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();		
 			el.querySelector('[nameId="nameItem"]').innerText = 'труба ' + obj.userData.wf_tube.diameter * 1000;
+			el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
 			el.querySelector('[nameId="lengthTube"]').innerText = obj.userData.wf_tube.length + 'м';				
 		}
 		if(obj.userData.tag == 'new_tube')
 		{
-			el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();		
 			el.querySelector('[nameId="nameItem"]').innerText = obj.userData.nameRus;
+			el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
 			el.querySelector('[nameId="lengthTube"]').innerText = obj.userData.lengthTube + 'м';				
 		}			
 	}
 }
 
 
-// переименовываем название во вкладке "список"
-function upObjListObjUI({obj, list = infProject.list.obj_scene_ui})
-{
-	if(obj.userData.tag != 'obj'){ return; }
-	
-	for(let i = 0; i < list.length; i++)
-	{
-		let obj2 = list[i].o || list[i].obj;
-		
-		if(obj == obj2)
-		{
-			let nameItem = list[i].el.querySelector('[nameId="nameItem"]');
-			nameItem.innerText = obj.userData.obj3D.nameRus;
-			break;
-		}				
-	}			
 
-}
 
 

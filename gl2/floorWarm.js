@@ -196,7 +196,7 @@ function updateTubeWF(cdm)
 	
 	for(var i = 0; i < point.length; i++) { point[i].userData.wf_point.tube = tube; }
 
-	updateListObjUI_1({o: tube, type: 'update'});			// обновляем список материалов 
+	infProject.ui.rpanel.EstList.updateItem({obj: tube});	// обновляем длину трубы во вкладке "список"
 	
 	renderCamera();
 	
@@ -266,17 +266,14 @@ function inputWF_tubeDiametr(cdm)
 
 
 // меняем цвет трубы input
-function changeColorTube(cdm) 
-{  
-	var tube = cdm.obj;
+function changeColorTube({obj, value}) 
+{  	
+	if(obj.userData.tag != 'wf_tube') return;		 
 	
-	if(!tube) return;	
-	if(tube.userData.tag != 'wf_tube') return;		 
+	obj.material.color = new THREE.Color(cdm.value); 
+	obj.material.needsUpdate = true;	
 	
-	tube.material.color = new THREE.Color(cdm.value); 
-	tube.material.needsUpdate = true;	
-	
-	updateListObjUI_1({o: tube, type: 'update'});
+	infProject.ui.rpanel.EstList.updateItem({obj});	// обновляем цвет трубы во вкладке "список"
 	
 	renderCamera(); 
 };

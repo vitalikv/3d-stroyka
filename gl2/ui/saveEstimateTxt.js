@@ -21,21 +21,16 @@ class UI_saveEstimateTxt
 
 	getList()
 	{
-		let list = infProject.list.obj_scene_ui;	
+		let list = infProject.ui.rpanel.EstList.arr;	
 		let arr = [];
 		
 		for(let i = 0; i < list.length; i++)
 		{
-			let o = list[i].o;
+			let o = list[i].obj;
 			
-			if(o.userData.obj3D)
-			{
-				checkObjExistList({obj: o, arr: arr});
-			}
-			else if(o.userData.wf_tube)
-			{
-				arr[arr.length] = {obj: o, count: 1};
-			}				
+			if(o.userData.obj3D) checkObjExistList({obj: o, arr: arr});
+			if(o.userData.tag == 'wf_tube') arr[arr.length] = {obj: o, count: 1};
+			if(o.userData.tag == 'new_tube') arr[arr.length] = {obj: o, count: 1};
 		}
 		
 		
@@ -82,7 +77,12 @@ class UI_saveEstimateTxt
 			{
 				txt += n+'. '+o.userData.wf_tube.nameRus+' ('+o.userData.wf_tube.length+'м)\n';
 				n++;
-			}				
+			}
+			else if(o.userData.tag == 'new_tube')
+			{
+				txt += n+'. '+o.userData.nameRus+' ('+o.userData.lengthTube+'м)\n';
+				n++;
+			}			
 		}
 
 		return txt;

@@ -142,8 +142,7 @@ function renameObject(cdm)
 	
 	upItemObjNameUI({obj: obj});	// переименовываем название во вкладке "объект"	
 
-	updateListObjUI_1({o: obj, type: 'update'});	// переименовываем название во вкладке "список"
-	
+	infProject.ui.rpanel.EstList.updateItem({obj});	// переименовываем название во вкладке "список"
 	
 	// переименовываем название во вкладке "объект"
 	function upItemObjNameUI(cdm)
