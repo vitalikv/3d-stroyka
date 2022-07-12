@@ -58,7 +58,7 @@ class TubeN extends THREE.Mesh
 				let pos = new THREE.Vector3(path[i].pos.x, path[i].pos.y, path[i].pos.z);
 				let point = new PointTube({pos: pos, tube: this, id: path[i].id});
 				arr.push(point);
-				point.visible = false;
+				point.visible = path[i].visible || false;
 			}
 			
 			this.userData.point.push(...arr);		
@@ -279,8 +279,15 @@ class TubeN extends THREE.Mesh
 		this.uiEstimateListObj({type: 'update'});	// обновляем цвет трубы во вкладке "список"
 		
 		this.render(); 
-	};
+	}
 	
+	
+	// копировать трубу
+	copyTube()
+	{
+		return copyTubeN({obj: this});
+	}
+
 	
 	// удаляем трубу
 	delete()
@@ -336,6 +343,22 @@ TubeN.prototype.newM = function()
 };
 
 
-
+// копировать трубу
+function copyTubeN({obj})
+{	
+	if(obj.userData.tag != 'new_tube') return;
+	
+	let point = obj.getTubePoints();
+	
+	let path = [];
+	for(let i = 0; i < point.length; i++)
+	{
+		path[i] = {pos: point[i].position.clone(), visible: point[i].visible};
+	}	
+	
+	let tube = new TubeN({path: path, diameter: obj.userData.diameter, color: obj.material.color});
+	
+	return tube;
+}
 
 

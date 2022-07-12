@@ -41,7 +41,11 @@ function copyObj()
 		{ 
 			arr2[arr2.length] = copyTubeWF({tube: arr[i]}); 
 		}		 
-		
+
+		if(arr[i].userData.tag == 'new_tube') 
+		{ 
+			arr2[arr2.length] = copyTubeWF({tube: arr[i]}); 
+		}		
 		
 		// восстанавливаем группу
 		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }					
@@ -66,11 +70,10 @@ function copyObj()
 
 
 // копировать трубу
-function copyTubeWF(cdm)
+function copyTubeWF({tube})
 {
-	var tube = cdm.tube;
-	
-	if(!tube) return;	
+	if(!tube) return;
+	if(tube.userData.tag == 'new_tube') return tube.copyTube();
 	if(tube.userData.tag != 'wf_tube') return;
 	
 	var point = tube.userData.wf_tube.point;
