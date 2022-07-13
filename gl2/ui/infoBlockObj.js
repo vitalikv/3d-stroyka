@@ -19,7 +19,8 @@ class UI_infoBlockObj
 		this.list.div = {};
 		this.list.upd = {};
 		this.list.listChilds = new UI_listObjChilds({el: this.el.querySelector('[nameId="list_obj_childs"]')});
-		this.list.jobj = null;
+		this.list.jobj = new Obj_JoinConnector({container: mainDiv_1, el_parent: this.el});
+		this.list.jgr = new Obj_JoinGroup({container: mainDiv_1, el_parent: this.el});
 		
 		this.assignEvent();	
 		this.setDivElement();
@@ -38,26 +39,12 @@ class UI_infoBlockObj
 		if(!infProject.elem) infProject.elem = {};		
 		
 		// input название объекта, трубы, точки и т.д.
-		infProject.elem.rp_obj_name = this.el.querySelector('[nameId="rp_obj_name"]');		
-
-		// вкладка со списком объектов в группе 
-		infProject.elem.bl_rp_obj_group = this.el.querySelector('[nameId="bl_rp_obj_group"]');		
+		infProject.elem.rp_obj_name = this.el.querySelector('[nameId="rp_obj_name"]');			
 		
 		// список объединения в группу
 		infProject.elem.rp_add_group = this.el.querySelector('[nameId="rp_add_group"]');		
 		
-		let b_open = this.el.querySelector('[nameId="button_active_align_wf_point1"]');
-		let b_open2 = this.el.querySelector('[nameId="button_active_align_wf_point2"]');
-		let b_close = this.el.querySelector('[nameId="button_deactive_join_element"]');
-		let b_action = this.el.querySelector('[nameId="join_element"]');
-		this.list.jobj = new Obj_JoinConnector({container: mainDiv_1, b_open: b_open, b_open2: b_open2, b_close: b_close, b_action: b_action});
-		
-		
-		this.el.querySelector('[nameId="button_deactive_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: false}); } 
-		this.el.querySelector('[nameId="button_add_group"]').onmousedown = () => { addObjToGroup(); } 		
-		  
-		this.el.querySelector('[nameId="button_active_add_group"]').onmousedown = () => { switchSelectAddObjGroup({active: true}); }
-		this.el.querySelector('[nameId="button_detach_obj_group"]').onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }		
+
 	}
 
 	// elem которые будут скрываться/показываться

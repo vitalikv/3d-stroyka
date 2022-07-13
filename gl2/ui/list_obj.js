@@ -330,7 +330,7 @@ function getCountObjInGroup({list, parent})
 
 
 // обновляем название/длину/цвет у трубы/объекта в списке материалов
-function updateItemListUI({obj, list = infProject.list.obj_scene_ui})
+function updateItemListUI({obj, list})
 {	
 	let el = null;	
 	

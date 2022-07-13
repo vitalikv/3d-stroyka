@@ -73,6 +73,7 @@ crPointTube.js
 ui/pivotGizmo.js
 ui/infoBlockObj.js
 ui/listObjChilds.js
+ui/joinGroup.js
 ui/list_obj.js
 ui/saveEstimateTxt.js
 sceneInit.js

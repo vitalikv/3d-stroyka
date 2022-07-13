@@ -138,8 +138,7 @@ function resetScene()
 	
 	// удаляем список материалов UI
 	var container = document.body.querySelector('[list_ui="wf"]');
-	container.innerHTML = '';		
-	infProject.list.obj_scene_ui = [];			
+	container.innerHTML = '';				
 
 	infProject.ui.rpanel.InfObj.list.listChilds.clear();
 	infProject.ui.rpanel.InfObj.hide();

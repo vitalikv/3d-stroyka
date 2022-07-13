@@ -5,13 +5,14 @@
 // класс для присоединие разъема к другому разъему
 class Obj_JoinConnector
 {		
-	constructor({container, b_open, b_open2, b_close, b_action})
+	constructor({container, el_parent})
 	{
 		this.container = container;
-		this.b_open = b_open;
-		this.b_open2 = b_open2;
-		this.b_close = b_close;
-		this.b_action = b_action;
+
+		this.b_open = el_parent.querySelector('[nameId="button_active_align_wf_point1"]');
+		this.b_open2 = el_parent.querySelector('[nameId="button_active_align_wf_point2"]');
+		this.b_close = el_parent.querySelector('[nameId="button_deactive_join_element"]');
+		this.b_action = el_parent.querySelector('[nameId="join_element"]');
 
 		this.moveTube = false;
 		this.arr = [];

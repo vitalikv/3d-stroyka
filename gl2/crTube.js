@@ -282,6 +282,12 @@ class TubeN extends THREE.Mesh
 	}
 	
 	
+	// получаем группу
+	getGroupTube()
+	{
+		return ddGroup({obj: this, tubePoint: true});
+	}
+	
 	// копировать трубу
 	copyTube()
 	{

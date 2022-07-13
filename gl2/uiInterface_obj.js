@@ -64,6 +64,7 @@ function activeObjRightPanelUI_1({obj} = {})
 
 
 // получаем группу , если у объекта есть группа, иначе получаем выбранный объект
+// tubePoint=true добавляет в массив точки труб
 function ddGroup({obj, tubePoint = false})
 {
 	let arr = [];

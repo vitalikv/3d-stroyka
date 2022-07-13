@@ -188,6 +188,7 @@
 	<script src="<?=$path?>ui/pivotGizmo.js?<?=$vrs?>"></script> 
 	<script src="<?=$path?>ui/infoBlockObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/listObjChilds.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>ui/joinGroup.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/list_obj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/saveEstimateTxt.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>sceneInit.js?<?=$vrs?>"></script>
