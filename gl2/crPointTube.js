@@ -100,7 +100,7 @@ class PointTube extends THREE.Mesh
 		if(newObj)
 		{
 			
-			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGroup({obj: newObj}) }); console.log(equal, newObj);		
+			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGetGroup({obj: newObj}) }); console.log(equal, newObj);		
 			if(!equal) infProject.ui.rpanel.InfObj.list.listChilds.clear(); 				
 		}
 		

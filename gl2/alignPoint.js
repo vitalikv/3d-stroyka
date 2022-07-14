@@ -535,7 +535,7 @@ function alignTubePointToPoint({o1, o2})
 // o2 объект не трогаем, остается на месте
 function alignObjPointToObjPoint({o1, o2, qt})
 { 	
-	let arr_2 = ddGroup({obj: o1, tubePoint: true});
+	let arr_2 = ddGetGroup({obj: o1, tubePoint: true});
 	
 	if(qt)
 	{

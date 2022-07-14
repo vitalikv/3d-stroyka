@@ -21,7 +21,7 @@ class TubeN extends THREE.Mesh
 		this.userData.nameRus = '';
 		this.userData.lengthTube = 0;
 		this.userData.diameter = 0;	
-		this.userData.group = [this];	
+		this.userData.group = null;	
 		
 		this.tubeGeometry({path, diameter});
 		this.tubeMaterial({color});
@@ -149,7 +149,7 @@ class TubeN extends THREE.Mesh
 		let result = this.detectPosTube({clickPos: clickPos});	// определяем в какое место трубы кликнули
 		let pos = result.pos;	
 		
-		let arrO = [this, ...this.getTubePoints()];
+		let arrO = [this, ...this.getTubePoints()]; console.log(888, this.getGroupTube({tubePoint: true}));
 		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
 
 		this.ui_menu({type: 'show'});
@@ -249,7 +249,7 @@ class TubeN extends THREE.Mesh
 
 		if(newObj)
 		{
-			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGroup({obj: newObj}) });		
+			let equal = infProject.ui.rpanel.InfObj.isEqualListChilds({ arr: ddGetGroup({obj: newObj}) });		
 			if(!equal) infProject.ui.rpanel.InfObj.list.listChilds.clear(); 				
 		}
 		else
@@ -283,9 +283,9 @@ class TubeN extends THREE.Mesh
 	
 	
 	// получаем группу
-	getGroupTube()
+	getGroupTube({tubePoint})
 	{
-		return ddGroup({obj: this, tubePoint: true});
+		return ddGetGroup({obj: this, tubePoint});
 	}
 	
 	// копировать трубу

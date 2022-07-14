@@ -26,7 +26,7 @@ class Obj_JoinGroup
 	{
 		this.b_open.onmousedown = (event) => { this.start(); event.stopPropagation(); }
 		this.b_close.onmousedown = () => { this.end(); activeObjRightPanelUI_1({obj: infProject.tools.pg.obj}); }		
-		this.b_action.onmousedown = () => { addObjToGroup(); } 	
+		this.b_action.onmousedown = () => { this.crGroup(); } 	// addObjToGroup();
 		
 		this.b_detach.onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }			
 		
@@ -51,7 +51,7 @@ class Obj_JoinGroup
 		infProject.ui.rpanel.InfObj.show({inf: ['jgroup']});		
 	}
 	
-	// выкл возможность присоединить разъем к другому разъему
+	// выкл возможность создавать группу
 	end()
 	{
 		this.clearObj();
@@ -76,13 +76,13 @@ class Obj_JoinGroup
 		
 		let obj = ray[0].object;
 		
-		// если кликнули, на главные объект, у которого активирован разъем для присоединения, от ничего не делаем
+		// если кликнули на главные объект, от ничего не делаем
 		if(infProject.tools.pg.arrO.findIndex(o => o == obj) > -1)
 		{
-			//this.ui_list.clear();
 			return;			
 		}
 
+		// если кликнули на объект, который уже находится в списке для присоединения
 		if(this.arr.findIndex(o => o == obj) > -1)
 		{
 			//this.ui_list.clear();
@@ -102,21 +102,41 @@ class Obj_JoinGroup
 	// активруем объект/трубу которую выбрали
 	activeObj({obj})
 	{
-		let arr = ddGroup({obj, tubePoint: false})	
+		let arr = ddGetGroup({obj, tubePoint: false})	
 
 		this.arr.push(...arr);
-		console.log(34343, [...infProject.tools.pg.arrO, ...this.arr]);
+		
 		outlinePass.selectedObjects = [...infProject.tools.pg.arrO, ...this.arr];
 
 		this.render();
 	}
 			
 	
-	// нажали кнопку присоединить 
-	connectObj()
-	{
-		let o1 = infProject.tools.pg.obj;
+	// нажали кнопку сгруппировать, создаем новую группу 
+	crGroup()
+	{		
+		let group = {};
+		group.userData = {};
+		group.userData.tag = 'group';
+		group.userData.groupObj = {};	
+		group.userData.groupObj.nameRus = 'группа';
+		group.userData.groupObj.child = [...infProject.tools.pg.arrO, ...this.arr];
+		
+		infProject.scene.array.group.push(group);		
 
+		let arr = group.userData.groupObj.child;
+		
+		// добавляем полученные объекты в новую группу
+		for(var i = 0; i < arr.length; i++)
+		{
+			if(!arr[i]) continue;
+			if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }
+			if(arr[i].userData.wf_tube) { arr[i].userData.wf_tube.group = group; }
+			if(arr[i].userData.tag == 'new_tube') { arr[i].userData.group = group; }
+		}
+	
+		console.log(555, infProject.scene.array.group);
+		
 		this.render();
 	}
 
