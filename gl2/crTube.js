@@ -143,13 +143,14 @@ class TubeN extends THREE.Mesh
 	// кликнули на трубу
 	clickTube({clickPos})
 	{
-		outlineAddObj(this);
+		let arrO = this.getGroupTube({tubePoint: true});
+		
+		outlinePass.selectedObjects = arrO;
 		this.showHideTubePoints({visible: true});
 		
 		let result = this.detectPosTube({clickPos: clickPos});	// определяем в какое место трубы кликнули
 		let pos = result.pos;	
-		
-		let arrO = [this, ...this.getTubePoints()]; console.log(888, this.getGroupTube({tubePoint: true}));
+		  
 		infProject.tools.pg.activeTool({obj: this, pos: pos, arrO: arrO});
 
 		this.ui_menu({type: 'show'});

@@ -120,7 +120,7 @@ class Obj_JoinGroup
 		group.userData.tag = 'group';
 		group.userData.groupObj = {};	
 		group.userData.groupObj.nameRus = 'группа';
-		group.userData.groupObj.child = [...infProject.tools.pg.arrO, ...this.arr];
+		group.userData.groupObj.child = [...ddGetGroup({obj: infProject.tools.pg.obj, tubePoint: false}), ...this.arr];
 		
 		infProject.scene.array.group.push(group);		
 
@@ -134,8 +134,6 @@ class Obj_JoinGroup
 			if(arr[i].userData.wf_tube) { arr[i].userData.wf_tube.group = group; }
 			if(arr[i].userData.tag == 'new_tube') { arr[i].userData.group = group; }
 		}
-	
-		console.log(555, infProject.scene.array.group);
 		
 		this.render();
 	}

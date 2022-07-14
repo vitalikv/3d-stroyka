@@ -133,7 +133,7 @@ class ToolPG
 		this.hide();
 		
 		this.obj = obj;
-		this.arrO = (arrO) ? arrO : arrObjFromGroup({obj: obj});
+		this.arrO = (arrO) ? arrO : ddGetGroup({obj, tubePoint: true});
 		
 		this.pos = (pos) ? pos : this.calcPos({obj: obj});		
 		this.qt = this.calcRot({obj: obj});
