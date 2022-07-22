@@ -2,7 +2,7 @@
 
 
 
-// класс для присоединие разъема к другому разъему
+// класс для присоединие объекта к группе
 class Obj_JoinGroup
 {		
 	constructor({container, el_parent})
@@ -29,13 +29,6 @@ class Obj_JoinGroup
 		this.b_action.onmousedown = () => { this.crGroup(); } 	// addObjToGroup();
 		
 		this.b_detach.onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }			
-		
-		
-		return;
-		this.b_open.onmousedown = (event) => { this.start(event); }
-		this.b_open2.onmousedown = (event) => { this.start(event); }
-		this.b_close.onmousedown = () => { this.end(); activeObjRightPanelUI_1({obj: infProject.tools.pg.obj}); }
-		this.b_action.onmousedown = () => { this.connectObj(); }
 	}
 	
 	
@@ -60,7 +53,7 @@ class Obj_JoinGroup
 		setRayhitStop(false);		
 	}
 	
-	// кликаем в сцену, если попадаем на трубу/объект, то добавляем в список для присоединения в группу
+	// кликаем в сцену
 	clickOnScene({event})
 	{
 		if(event.button != 0) return;
@@ -135,8 +128,25 @@ class Obj_JoinGroup
 			if(arr[i].userData.tag == 'new_tube') { arr[i].userData.group = group; }
 		}
 		
-		this.render();
+		this.end(); 
+		activeObjRightPanelUI_1({obj: infProject.tools.pg.obj});
 	}
+	
+	
+	// удаляем объект из группы
+	delGroup()
+	{
+		let obj = infProject.tools.pg.obj;
+		
+		let arr = ddGetGroup({obj: obj, tubePoint: false});
+		
+		for(let i = 0; i < arr.length; i++)
+		{
+			detachObjGroup({obj: arr[i]});
+		}	
+		
+	}
+	
 
 	// снимаем выдиления с разъемов и очищаем список
 	clearObj()

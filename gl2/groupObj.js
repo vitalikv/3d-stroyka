@@ -157,27 +157,26 @@ function addObjToGroup(cdm)
 
 
 // отделяем объект от группы, если остается в группе один объект, то удаляем группу
-function detachObjGroup(cdm)
+function detachObjGroup({obj, active = false})
 {
-	var obj = cdm.obj;	
-	var group = null;
+	let group = null;
 	
-	if(obj.userData.obj3D) 
+	if(obj.userData.obj3D && obj.userData.obj3D.group) 
 	{ 
-		if(obj.userData.obj3D.group) 
-		{
-			group = obj.userData.obj3D.group;
-			obj.userData.obj3D.group = null;
-		}
+		group = obj.userData.obj3D.group;
+		obj.userData.obj3D.group = null;
 	}
-	if(obj.userData.wf_tube) 
+	if(obj.userData.wf_tube && obj.userData.wf_tube.group) 
 	{ 
-		if(obj.userData.wf_tube.group) 
-		{ 
-			group = obj.userData.wf_tube.group;
-			obj.userData.wf_tube.group = null; 
-		} 
+		group = obj.userData.wf_tube.group;
+		obj.userData.wf_tube.group = null; 
 	}
+	if(obj.userData.tag == 'new_tube' && obj.userData.group) 
+	{ 
+		group = obj.userData.group;
+		obj.userData.group = null; 
+	}
+
 	
 	if(!group) return;
 	
@@ -186,15 +185,17 @@ function detachObjGroup(cdm)
 	// удаляем группу
 	if(group.userData.groupObj.child.length == 1)
 	{
-		var obj_2 = group.userData.groupObj.child[0];
+		let obj_2 = group.userData.groupObj.child[0];
 		
 		if(obj_2.userData.obj3D) { obj_2.userData.obj3D.group = null; }
 		if(obj_2.userData.wf_tube) { obj_2.userData.wf_tube.group = null; }
-			
-		deleteValueFromArrya({arr : infProject.scene.array.group, o : group});
+		if(obj_2.userData.tag == 'new_tube') { obj_2.userData.group = null; }
+		
+		deleteValueFromArrya({arr: infProject.scene.array.group, o: group});
 	}
+
 	
-	if(cdm.active)
+	if(active)
 	{
 		if(obj.userData.obj3D)
 		{
@@ -206,7 +207,7 @@ function detachObjGroup(cdm)
 			clickTubeWF({obj: obj, toolPos: toolPos, menu_1: true});
 		}		
 	}
-
+	
 	renderCamera();
 }
 
