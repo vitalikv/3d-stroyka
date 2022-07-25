@@ -63,39 +63,6 @@ function activeObjRightPanelUI_1({obj} = {})
 
 
 
-// получаем группу , если у объекта есть группа, иначе получаем выбранный объект
-// tubePoint=true добавляет в массив точки труб
-function ddGetGroup({obj, tubePoint = false})
-{
-	let arr = [obj];
-	let group = null;
-	
-	if(obj.userData.obj3D && obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }	 
-	else if(obj.userData.tag == 'joinPoint' && obj.parent.userData.obj3D.group) { group = obj.parent.userData.obj3D.group; }
-	else if(obj.userData.wf_tube && obj.userData.wf_tube.group) { group = obj.userData.wf_tube.group; }		
-	else if(obj.userData.tag == 'wf_point' && obj.userData.wf_point.tube.userData.wf_tube.group) { group = obj.userData.wf_point.tube.userData.wf_tube.group; } 
-	else if(obj.userData.tag == 'new_point' && obj.userData.tube.userData.group) { group = obj.userData.tube.userData.group; }  
-	else if(obj.userData.tag == 'new_tube' && obj.userData.group) { group = obj.userData.group; } 
-	
-	if(group)
-	{
-		arr = group.userData.groupObj.child;
-	}
-
-	if(tubePoint)
-	{
-		let arr2 = [];
-		for(let i = 0; i < arr.length; i++)
-		{
-			if(arr[i].userData.tag == 'wf_tube') arr2.push(...arr[i].userData.wf_tube.point);
-			if(arr[i].userData.tag == 'new_tube') arr2.push(...arr[i].userData.point);
-		}		
-		if(arr2.length > 0) arr = [...arr, ...arr2];
-	}	
-	
-	
-	return arr;
-}
 
 
 // подготавливаем список для создания списка объектов

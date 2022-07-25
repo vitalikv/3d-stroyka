@@ -17,7 +17,7 @@ class Obj_JoinGroup
 		
 		this.arr = [];
 
-		//this.ui_list = new UI_JoinConnector({el: document.querySelector('[nameId="rp_obj_align"]'), classObj: this});		
+		this.ui_list = new UI_ListJoinGroup({el: document.querySelector('[nameId="rp_add_group"]'), classObj: this});		
 		
 		this.assignEvent();	
 	}
@@ -28,7 +28,7 @@ class Obj_JoinGroup
 		this.b_close.onmousedown = () => { this.end(); activeObjRightPanelUI_1({obj: infProject.tools.pg.obj}); }		
 		this.b_action.onmousedown = () => { this.crGroup(); } 	// addObjToGroup();
 		
-		this.b_detach.onmousedown = () => { detachObjGroup({obj: clickO.last_obj, active: true}); }			
+		this.b_detach.onmousedown = () => { this.removeObjFromGroup(); }			
 	}
 	
 	
@@ -48,7 +48,6 @@ class Obj_JoinGroup
 	end()
 	{
 		this.clearObj();
-		//this.ui_list.clear();
 		this.container.onmousedown = null;
 		setRayhitStop(false);		
 	}
@@ -62,7 +61,6 @@ class Obj_JoinGroup
 		let ray = rayIntersect( event, [...infProject.scene.array.tube, ...infProject.scene.array.obj], 'arr' );
 		if(ray.length == 0) 
 		{			
-			//this.ui_list.clear();
 			this.clearObj();
 			return;
 		}
@@ -78,21 +76,35 @@ class Obj_JoinGroup
 		// если кликнули на объект, который уже находится в списке для присоединения
 		if(this.arr.findIndex(o => o == obj) > -1)
 		{
-			//this.ui_list.clear();
-			return;			
+			this.removeObjFromList({obj});
+			return;
 		}
 		
 		this.activeObj({obj});
 		
-		//this.ui_list.crListUI({obj: this.selectObj});
-	
-		
 		this.render();
 	}
 	
+	
+	// убираем объект из списка для присоединения в группу
+	removeObjFromList({obj})
+	{
+		let arr = ddGetGroup({obj, tubePoint: false});
+		
+		for(var i = 0; i < arr.length; i++)
+		{
+			deleteValueFromArrya({arr: this.arr, o: arr[i]});
+		}
+		
+		outlinePass.selectedObjects = [...infProject.tools.pg.arrO, ...this.arr];
+		
+		this.ui_list.crListUI({arrO: outlinePass.selectedObjects});
+		
+		this.render();		
+	}
 		
 	
-	// активруем объект/трубу которую выбрали
+	// добавляем объект/объекты в список для присоединения в группу
 	activeObj({obj})
 	{
 		let arr = ddGetGroup({obj, tubePoint: false})	
@@ -101,6 +113,8 @@ class Obj_JoinGroup
 		
 		outlinePass.selectedObjects = [...infProject.tools.pg.arrO, ...this.arr];
 
+		this.ui_list.crListUI({arrO: outlinePass.selectedObjects});
+		
 		this.render();
 	}
 			
@@ -134,17 +148,9 @@ class Obj_JoinGroup
 	
 	
 	// удаляем объект из группы
-	delGroup()
+	removeObjFromGroup()
 	{
-		let obj = infProject.tools.pg.obj;
-		
-		let arr = ddGetGroup({obj: obj, tubePoint: false});
-		
-		for(let i = 0; i < arr.length; i++)
-		{
-			detachObjGroup({obj: arr[i]});
-		}	
-		
+		detachObjGroup({obj: infProject.tools.pg.obj, active: true});			
 	}
 	
 
@@ -154,6 +160,8 @@ class Obj_JoinGroup
 		outlinePass.selectedObjects = infProject.tools.pg.arrO;
 		this.arr = [];
 		
+		this.ui_list.clear();
+		
 		this.render();
 	}
 
@@ -162,6 +170,91 @@ class Obj_JoinGroup
 		renderCamera();
 	}
 }	
+
+
+
+
+
+
+
+// класс для создания списка присоединяемых объектов в группу
+class UI_ListJoinGroup
+{
+	el = null;
+		
+	constructor({el, classObj})
+	{
+		this.el = el;
+		this.activeItem = null;
+		this.arr = [];
+		this.classObj = classObj;
+	}
+	
+	crListUI({arrO})
+	{
+		this.clear();
+		
+		let arr = [];
+		
+		for (let i = 0; i < arrO.length; i++)
+		{
+			let item = {obj: arrO[i], name: ''};
+			if(arrO[i].userData.obj3D) arr.push({obj: arrO[i], name: arrO[i].userData.obj3D.nameRus});
+			if(arrO[i].userData.wf_tube) arr.push({obj: arrO[i], name: arrO[i].userData.wf_tube.nameRus});
+			if(arrO[i].userData.tag == 'new_tube') arr.push({obj: arrO[i], name: arrO[i].userData.nameRus});
+		}
+		
+		this.arr = arr;
+		
+		for (let i = 0; i < arr.length; i++)
+		{			
+			let html = this.html(arr[i]);	
+
+			let elem = document.createElement('div');
+			elem.innerHTML = html;
+			elem = elem.firstChild;
+
+			this.el.append(elem);
+			
+			this.arrAddElem({id: i, elem: elem});
+		}
+	}
+	
+	html({name})
+	{
+		let str = 
+		'<div class="right_panel_1_1_list_item" nameId="obj" style="background: #ebebeb;">\
+			<div class="flex_1 relative_1" style="margin: auto;">\
+				<div class="right_panel_1_1_list_item_text">'+name+'</div>\
+			</div>\
+		</div>';
+
+		return str;
+	}
+	
+	
+	// добавляем в массив elem
+	arrAddElem({id, elem})
+	{
+		this.arr[id].elem = elem;				
+		
+		let arrEl = elem.querySelectorAll('[nameId="item"]');
+		
+		for (let i = 0; i < arrEl.length; i++)
+		{
+			this.arr[id].childs[i].elem = arrEl[i];
+		}
+	}
+	
+
+	// очищаем список
+	clear()
+	{
+		this.activeItem = null;
+		this.arr = [];
+		this.el.innerHTML = '';
+	}	
+}
 
 
 
