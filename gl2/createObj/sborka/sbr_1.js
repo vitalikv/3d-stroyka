@@ -8,7 +8,7 @@ function joinSborkaToGroup(cdm)
 {
 	var arr = cdm.arr;
 	
-	var group = createGroupObj_1({nameRus: 'новая группа', obj: {o: arr} });
+	infProject.class.group.crGroup({arr});
 	
 	//for(var i = 0; i < arr.length; i++) { scene.add( arr[i] ); }		
 }

@@ -83,7 +83,7 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 	{
 		arr = [obj];
 		
-		detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
+		infProject.class.group.detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
 	}
 	
 

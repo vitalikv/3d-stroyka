@@ -4,7 +4,7 @@
 // кликнули на obj, wd (показываем нужное меню и заполняем input или скрываем меню)
 function activeObjRightPanelUI_1({obj} = {}) 
 {	
-	console.trace(3244, obj);
+	//console.trace(3244, obj);
 	infProject.ui.rpanel.InfObj.hide();		
 	infProject.ui.rpanel.InfObj.list.jobj.end();
 	
@@ -15,7 +15,7 @@ function activeObjRightPanelUI_1({obj} = {})
 	if(!equal)
 	{
 		infProject.ui.rpanel.InfObj.setGroupObjs({arr: arrO});			
-		let arrItem = newCrListObj({arrO: arrO});	console.log(777, arrItem);
+		let arrItem = newCrListObj({arrO: arrO});	
 		infProject.ui.rpanel.InfObj.list.listChilds.crListUI({arr: arrItem});
 	}		
 	infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: obj});	

@@ -568,9 +568,8 @@ async function loadFilePL(arr)
 		{
 			arrId[arrId.length] = group[i2].obj[i3].id;
 		}
-		group[i2].obj = { id: arrId };
 		
-		createGroupObj_1(group[i2]);
+		infProject.class.group.newGroupLoadFile({arrId});
 	}
 	
 	for ( var i2 = 0; i2 < house.length; i2++ )

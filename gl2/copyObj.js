@@ -56,7 +56,8 @@ function copyObj()
 	 
 	hideMenuObjUI_2D();
 	
-	createGroupObj_1({nameRus: 'новая группа', obj: {o: arr2} });
+	
+	infProject.class.group.crGroup({arr: arr2});
 	
 	if(arr2[0].userData.obj3D) { clickObject3D( arr2[0], {menu_1: true, outline: true} ); }
 	else if(arr2[0].userData.wf_tube) { clickTubeWF({obj: arr2[0], toolPos: toolPos, menu_1: true}); }		

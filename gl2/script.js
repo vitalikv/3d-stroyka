@@ -559,6 +559,8 @@ function init()
 	new UI_saveEstimateTxt({el: document.body.querySelector('[nameId="save_list_obj"]')});
 
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
+	infProject.class = {};
+	infProject.class.group = new NewGroup();
 	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI

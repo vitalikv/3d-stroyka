@@ -32,7 +32,7 @@ class Obj_JoinGroup
 		this.b_action.onmousedown = () => { this.crGroup(); } 	// addObjToGroup();
 		
 		// удаляем один выбранный объект из группы (по кнопке)
-		this.b_detach.onmousedown = () => { detachObjGroup({obj: infProject.tools.pg.obj, active: true}); }			
+		this.b_detach.onmousedown = () => { infProject.class.group.detachObjGroup({obj: infProject.tools.pg.obj, active: true}); }			
 	}
 	
 	
@@ -134,28 +134,11 @@ class Obj_JoinGroup
 	{
 		if(this.arr.length == 0) return;
 		
+		let arr = [...this.main.arrO, ...this.arr];
 		// удалем группы у объектов, если они есть (чтобы потом можно было создать одну общую)
-		this.removeGroup({arr: [...this.main.arrO, ...this.arr]});
+		this.removeGroup({arr});
 		
-		let group = {};
-		group.userData = {};
-		group.userData.tag = 'group';
-		group.userData.groupObj = {};	
-		group.userData.groupObj.nameRus = 'группа';
-		group.userData.groupObj.child = [...this.main.arrO, ...this.arr];
-		
-		infProject.scene.array.group.push(group);		
-
-		let arr = group.userData.groupObj.child;
-		
-		// добавляем полученные объекты в новую группу
-		for(var i = 0; i < arr.length; i++)
-		{
-			if(!arr[i]) continue;
-			if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }
-			if(arr[i].userData.wf_tube) { arr[i].userData.wf_tube.group = group; }
-			if(arr[i].userData.tag == 'new_tube') { arr[i].userData.group = group; }
-		}
+		infProject.class.group.crGroup({arr});
 		
 		this.end(); 
 	}
@@ -167,7 +150,7 @@ class Obj_JoinGroup
 	{
 		for(let i = 0; i < arr.length; i++) 
 		{ 
-			detachObjGroup({obj: arr[i]}); 
+			infProject.class.group.detachObjGroup({obj: arr[i]}); 
 		}	
 	}
 
