@@ -16,8 +16,11 @@ class Obj_JoinGroup
 		this.b_detach = el_parent.querySelector('[nameId="button_detach_obj_group"]');
 		
 		this.arr = [];
-
-		this.ui_list = new UI_ListJoinGroup({el: document.querySelector('[nameId="rp_add_group"]'), classObj: this});		
+		this.main = {};
+		this.main.obj = null;
+		this.main.arrO = [];
+		
+		this.ui_list = new UI_ListJoinGroup({el: el_parent.querySelector('[nameId="rp_add_group"]')});		
 		
 		this.assignEvent();	
 	}
@@ -25,10 +28,11 @@ class Obj_JoinGroup
 	assignEvent()
 	{
 		this.b_open.onmousedown = (event) => { this.start(); event.stopPropagation(); }
-		this.b_close.onmousedown = () => { this.end(); activeObjRightPanelUI_1({obj: infProject.tools.pg.obj}); }		
+		this.b_close.onmousedown = () => { this.end(); }		
 		this.b_action.onmousedown = () => { this.crGroup(); } 	// addObjToGroup();
 		
-		this.b_detach.onmousedown = () => { this.removeObjFromGroup(); }			
+		// удаляем один выбранный объект из группы (по кнопке)
+		this.b_detach.onmousedown = () => { detachObjGroup({obj: infProject.tools.pg.obj, active: true}); }			
 	}
 	
 	
@@ -41,15 +45,21 @@ class Obj_JoinGroup
 		this.container.onmousedown = (event) => this.clickOnScene({event});	
 		
 		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.show({inf: ['jgroup']});		
+		infProject.ui.rpanel.InfObj.show({inf: ['jgroup']});
+
+		this.main.obj = infProject.tools.pg.obj;
+		this.main.arrO = ddGetGroup({obj: this.main.obj, tubePoint: false});
+
+		this.ui_list.crListUI({arrO: this.main.arrO});
 	}
 	
 	// выкл возможность создавать группу
 	end()
 	{
+		activeObjRightPanelUI_1({obj: this.main.obj});
 		this.clearObj();
 		this.container.onmousedown = null;
-		setRayhitStop(false);		
+		setRayhitStop(false);
 	}
 	
 	// кликаем в сцену
@@ -68,7 +78,7 @@ class Obj_JoinGroup
 		let obj = ray[0].object;
 		
 		// если кликнули на главные объект, от ничего не делаем
-		if(infProject.tools.pg.arrO.findIndex(o => o == obj) > -1)
+		if(this.main.arrO.findIndex(o => o == obj) > -1)
 		{
 			return;			
 		}
@@ -96,7 +106,7 @@ class Obj_JoinGroup
 			deleteValueFromArrya({arr: this.arr, o: arr[i]});
 		}
 		
-		outlinePass.selectedObjects = [...infProject.tools.pg.arrO, ...this.arr];
+		outlinePass.selectedObjects = [...this.main.arrO, ...this.arr];
 		
 		this.ui_list.crListUI({arrO: outlinePass.selectedObjects});
 		
@@ -111,7 +121,7 @@ class Obj_JoinGroup
 
 		this.arr.push(...arr);
 		
-		outlinePass.selectedObjects = [...infProject.tools.pg.arrO, ...this.arr];
+		outlinePass.selectedObjects = [...this.main.arrO, ...this.arr];
 
 		this.ui_list.crListUI({arrO: outlinePass.selectedObjects});
 		
@@ -121,13 +131,18 @@ class Obj_JoinGroup
 	
 	// нажали кнопку сгруппировать, создаем новую группу 
 	crGroup()
-	{		
+	{
+		if(this.arr.length == 0) return;
+		
+		// удалем группы у объектов, если они есть (чтобы потом можно было создать одну общую)
+		this.removeGroup({arr: [...this.main.arrO, ...this.arr]});
+		
 		let group = {};
 		group.userData = {};
 		group.userData.tag = 'group';
 		group.userData.groupObj = {};	
 		group.userData.groupObj.nameRus = 'группа';
-		group.userData.groupObj.child = [...ddGetGroup({obj: infProject.tools.pg.obj, tubePoint: false}), ...this.arr];
+		group.userData.groupObj.child = [...this.main.arrO, ...this.arr];
 		
 		infProject.scene.array.group.push(group);		
 
@@ -143,22 +158,26 @@ class Obj_JoinGroup
 		}
 		
 		this.end(); 
-		activeObjRightPanelUI_1({obj: infProject.tools.pg.obj});
 	}
 	
+
 	
-	// удаляем объект из группы
-	removeObjFromGroup()
+	// удалем объекты из группы и удалем группу (нужно чтобы объеденить эту группу с другими объектами)
+	removeGroup({arr})
 	{
-		detachObjGroup({obj: infProject.tools.pg.obj, active: true});			
+		for(let i = 0; i < arr.length; i++) 
+		{ 
+			detachObjGroup({obj: arr[i]}); 
+		}	
 	}
-	
 
 	// снимаем выдиления с разъемов и очищаем список
 	clearObj()
 	{		
 		outlinePass.selectedObjects = infProject.tools.pg.arrO;
 		this.arr = [];
+		this.main.obj = null;
+		this.main.arrO = [];
 		
 		this.ui_list.clear();
 		
@@ -182,12 +201,10 @@ class UI_ListJoinGroup
 {
 	el = null;
 		
-	constructor({el, classObj})
+	constructor({el})
 	{
 		this.el = el;
-		this.activeItem = null;
 		this.arr = [];
-		this.classObj = classObj;
 	}
 	
 	crListUI({arrO})
@@ -250,7 +267,6 @@ class UI_ListJoinGroup
 	// очищаем список
 	clear()
 	{
-		this.activeItem = null;
 		this.arr = [];
 		this.el.innerHTML = '';
 	}	

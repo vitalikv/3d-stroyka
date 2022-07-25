@@ -230,9 +230,18 @@ function ddGetGroup({obj, tubePoint = false})
 	
 	if(group)
 	{
-		arr = group.userData.groupObj.child;
+		//arr = [...group.userData.groupObj.child];	// копируем объекты по отдельности в новый массив
+		
+		// obj - будет идти первым объектом в массиве
+		let arr2 = group.userData.groupObj.child;
+		
+		for(let i = 0; i < arr2.length; i++)
+		{
+			if(arr2[i] == obj) continue;
+			arr.push(arr2[i]);
+		}
 	}
-
+ 
 	if(tubePoint)
 	{
 		let arr2 = [];
