@@ -121,52 +121,7 @@ class NewGroup
 
 
 
-// пролучить все объекты принадлежащие группе 
-function getObjsFromGroup_1({obj})
-{
-	let arr = [ obj ];
-	
-	if(obj.userData.obj3D && obj.userData.obj3D.group)
-	{
-		arr = obj.userData.obj3D.group.userData.groupObj.child;	
-	}
-	else if(obj.userData.wf_tube && obj.userData.wf_tube.group)
-	{
-		arr = obj.userData.wf_tube.group.userData.groupObj.child;		
-	}
 
-	arr = [...arr];		// копируем массив, чтобы в оригинальный, не попали новые элементы
-	
-	
-	let arr2 = [];
-	for(let i = 0; i < arr.length; i++)
-	{
-		if(arr[i].userData.wf_tube) arr2.push(...arr[i].userData.wf_tube.point);
-	}	
-	if(arr2.length > 0) arr.push(...arr2);	
-	
-	
-	return arr;	
-}
-
-
-// получаем все объекты, которые будем перемещать или вращать 
-function arrObjFromGroup(cdm)
-{
-	var obj = cdm.obj;
-	var arr = [];
-	
-	if(obj.userData.obj3D) { var obj = cdm.obj; }
-	else if(obj.userData.centerPoint) { var obj = cdm.obj.parent; }
-	else if(obj.userData.wf_tube) { var obj = cdm.obj; }
-	else if(obj.userData.wf_point) { var obj = cdm.obj.userData.wf_point.tube; }
-	else if(obj.userData.tag == 'wtGrid') { return [obj]; }
-	else { return arr; }
-
-	var arr = getObjsFromGroup_1({obj: obj});	// получаем все объекты группы, если нет группы -> получаем один объект		
-	
-	return arr;
-}
 
 
 
@@ -176,6 +131,8 @@ function arrObjFromGroup(cdm)
 function ddGetGroup({obj, tubePoint = false})
 {
 	let arr = [obj];
+	if(obj.userData.tag == 'joinPoint') { arr = [obj.parent]; } 
+	
 	let group = null;
 	
 	if(obj.userData.obj3D && obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }	 

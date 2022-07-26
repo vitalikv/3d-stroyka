@@ -851,7 +851,7 @@ function getInfoFcObj()
 {
 	var obj = clickO.last_obj;
 	
-	var arrO = getObjsFromGroup_1({obj: obj});
+	var arrO = ddGetGroup({obj});;
 	
 	
 	var txt = '';

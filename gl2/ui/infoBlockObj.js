@@ -331,7 +331,7 @@ function newAddPointOnTube()
 		
 		updateTubeWF({tube: obj});
 
-		infProject.tools.pg.arrO = arrObjFromGroup({obj: obj});
+		infProject.tools.pg.arrO = ddGetGroup({obj, tubePoint: true});
 	}
 	if(obj.userData.tag == 'new_tube')
 	{

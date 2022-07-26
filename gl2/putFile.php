@@ -30,7 +30,6 @@ substrate.js
 groupObj.js
 clickMoveTube.js
 alignPoint.js
-mergeObjToGroup.js
 planeHeight.js
 createObj/radiator/st_radiator.js
 createObj/radiator/al_radiator.js

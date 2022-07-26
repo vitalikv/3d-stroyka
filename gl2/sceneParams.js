@@ -108,7 +108,6 @@ function initSceneParams()
 	infProject.list = {};	// список разных параметров/объектов
 	infProject.list.rp_ui = { arr: [] };
 	infProject.list.group_catalog_ui = { arr: [] };
-	infProject.list.mergeO = {active: false, o1: [], o2: [], el: []};	// режим группировки объектов
 	infProject.list.sborka = {};
 	infProject.list.sborka.radiator = [{}, {}, {}];
 	infProject.list.sborka.radiator[0].niz = paramSborkaRad_Odnotrub_Niz_Mp();

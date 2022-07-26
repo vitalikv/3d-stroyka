@@ -44,8 +44,7 @@ function compareSelectedObjWithCurrent( cdm )
 // кликнули на объект, распределяем что делать
 function clickFirstObj3D({obj})
 {	
-	if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }	
-	else { clickObject3D( obj, {menu_1: true, outline: true} ); }	 	
+	clickObject3D( obj, {menu_1: true, outline: true} ); 	
 }
 
 
@@ -181,8 +180,8 @@ function renameObject(cdm)
 // кликнули на другой объект, деактивируем объект
 function deClickObj({obj, moment})  
 {	
-	if(moment == 'down' && camera == cameraTop && !checkClickTumbler_1()) deClickObj_1();
-	else if(moment == 'up' && camera == camera3D && !checkClickTumbler_1()) deClickObj_1();
+	if(moment == 'down' && camera == cameraTop) deClickObj_1();
+	else if(moment == 'up' && camera == camera3D) deClickObj_1();
 	else if(moment == '') deClickObj_1();	
 	
 	
@@ -223,21 +222,6 @@ function deClickObj({obj, moment})
 		outlineRemoveObj();					
 	}
 
-	
-	// проверяем куда кликнули
-	function checkClickTumbler_1()
-	{  
-		if(clickO.rayhit)
-		{  			
-			if(infProject.list.mergeO.active)
-			{
-				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
-				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
-			}
-		}							
-
-		return false;
-	}
 }
 
 

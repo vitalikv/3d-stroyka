@@ -81,8 +81,7 @@ function addTubeInScene(tube, cdm)
 // кликнули на трубу, распределяем что делать
 function clickFirstTubeWF({obj, rayhit})
 {	
-	if(infProject.list.mergeO.active && infProject.list.mergeO.o1.length) { selectObjForMergeToGroup({obj: obj}); }
-	else { clickTubeWF({ray: rayhit, menu_1: true}); }	
+	clickTubeWF({ray: rayhit, menu_1: true});	
 }
 
 

@@ -66,7 +66,7 @@ function deleteObjectPop(obj)
 	
 	hideMenuObjUI_2D();
 	
-	var arr = getObjsFromGroup_1({obj: obj});
+	var arr = ddGetGroup({obj});;
 	
 	var group = null;
 	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }

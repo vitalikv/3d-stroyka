@@ -337,7 +337,7 @@ function clickItemListRpInfUI({obj})
 		
 		showHideJP({obj});		
 		
-		let arrO = getObjsFromGroup_1({obj: obj});
+		let arrO = ddGetGroup({obj, tubePoint: true});
 		
 		outlinePass.selectedObjects = arrO;	
 		
@@ -358,7 +358,7 @@ function clickItemListRpInfUI({obj})
 		activeJoinPoint({obj: obj});
 		showHideJP({obj: obj.parent});		
 		
-		let arrO = getObjsFromGroup_1({obj: obj.parent});
+		let arrO = ddGetGroup({obj: obj.parent, tubePoint: true});
 		
 		outlinePass.selectedObjects = arrO;	
 		

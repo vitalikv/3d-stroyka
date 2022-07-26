@@ -285,25 +285,10 @@ function changeColorTube({obj, value})
 // кликнули на другой объект, деактивируем трубу
 function deClickTube({obj, moment})  
 {	
-	if(moment == 'down' && camera == cameraTop && !checkClickTube_1()) deClickTube_1({obj});
-	else if(moment == 'up' && camera == camera3D && !checkClickTube_1()) deClickTube_1({obj});
+	if(moment == 'down' && camera == cameraTop) deClickTube_1({obj});
+	else if(moment == 'up' && camera == camera3D) deClickTube_1({obj});
 	else if(moment == '') deClickTube_1({obj});
-	
-	
-	// если была вкл кнопка выровнить, то проверяем куда кликнули
-	function checkClickTube_1()
-	{ 
-		if(clickO.rayhit)
-		{  			
-			if(infProject.list.mergeO.active)
-			{
-				if(clickO.rayhit.object.userData.tag == 'obj') { return true; }
-				if(clickO.rayhit.object.userData.tag == 'wf_tube') { return true; }
-			}			
-		}
-
-		return false;
-	}	
+		
 	
 	
 	// деактивируем трубу иди точку

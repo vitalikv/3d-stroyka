@@ -10,12 +10,12 @@ function copyObj()
 	if(!obj) return;	
 	
 	
-	var arr = getObjsFromGroup_1({obj: obj});
+	var arr = ddGetGroup({obj});
 
 	var group = null;
-	if(obj.userData.obj3D) { var group = obj.userData.obj3D.group; }
-	if(obj.userData.wf_tube) { var group = obj.userData.wf_tube.group; }		
-
+	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }
+	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }		
+	if(obj.userData.tag == 'new_tube') { group = obj.userData.group; }
 	
 	
 	var arr2 = [];

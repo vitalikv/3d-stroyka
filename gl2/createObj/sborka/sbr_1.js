@@ -260,7 +260,7 @@ async function addSborkaToScene_1(cdm)
 	if(!inf) return;
 	
 	var obj = inf.arr1[0];
-	var arrO = arrObjFromGroup({obj: obj});
+	var arrO = ddGetGroup({obj, tubePoint: true});
 	clickO.move = obj; 
 	clickO.arrO = arrO;
 	
