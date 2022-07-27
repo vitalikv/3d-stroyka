@@ -455,11 +455,13 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	o.tube1 = getTubeToSborka_1(ti1);
 	o.tube2 = getTubeToSborka_1(ti2);	
 
-
+	let tubePos_1 = (o.tube1.userData.wf_tube) ? o.tube1.userData.wf_tube.point[0].position : o.tube1.userData.point[0].position;
+	let tubePos_2 = (o.tube2.userData.wf_tube) ? o.tube2.userData.wf_tube.point[0].position : o.tube2.userData.point[0].position;
+	
 	if(inf.typePipe == 'pp' && inf.typePt2 == 'verh' && inf.typePt == 'od')
 	{
-		if(o.ugol_1) { posSubAdd_1({o: o.ugol_1, jp: 0, pos: o.tube1.userData.wf_tube.point[0].position}); }
-		if(o.ugol_2) { posSubAdd_1({o: o.ugol_2, jp: 0, pos: o.tube2.userData.wf_tube.point[0].position}); }
+		if(o.ugol_1) { posSubAdd_1({o: o.ugol_1, jp: 0, pos: tubePos_1}); }
+		if(o.ugol_2) { posSubAdd_1({o: o.ugol_2, jp: 0, pos: tubePos_2}); }
 		
 		// трубы магистральные
 		o.tube3 = getTubeToSborka_1({type: 1, lengthX: 0.1, color: 15688453, diameter: m1, mirror: mirror_2, startPos: o.ugol_1.userData.jp[1], notArray: notArray});
@@ -469,8 +471,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	// подключаем тройники к трубе
 	var nJp = 1;
 	if(inf.typePt == 'od_bay' && inf.typePt2 == 'bok') { nJp = 2; }
-	if(o.troin_1) { posSubAdd_1({o: o.troin_1, jp: nJp, pos: o.tube1.userData.wf_tube.point[0].position}); }
-	if(o.troin_2) { posSubAdd_1({o: o.troin_2, jp: nJp, pos: o.tube2.userData.wf_tube.point[0].position}); }	
+	if(o.troin_1) { posSubAdd_1({o: o.troin_1, jp: nJp, pos: tubePos_1}); }
+	if(o.troin_2) { posSubAdd_1({o: o.troin_2, jp: nJp, pos: tubePos_2}); }	
 	
 	
 	if(inf.typePt == 'od_bay')

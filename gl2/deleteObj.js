@@ -12,7 +12,7 @@ function detectDeleteObj(cdm)
 	if ( tag == 'wf_point' ) { deletePointWF(obj); }
 	else if ( tag == 'obj' || tag == 'wf_tube' ) { deleteObjectPop(obj); }
 	else if ( tag == 'wtGrid' ) { obj.userData.propObj({type: 'deleteObj', obj: obj}); }
-	else if ( tag == 'new_tube' ) { obj.delete(); }
+	else if ( tag == 'new_tube' ) { deleteObjectPop(obj); }
 	else if ( tag == 'new_point' ) { obj.delete(); }
 	
 	renderCamera();
@@ -62,6 +62,7 @@ function deleteObjectPop(obj)
 { 
 	if(obj.userData.tag == 'obj') {}
 	else if(obj.userData.tag == 'wf_tube') {}
+	else if(obj.userData.tag == 'new_tube') {}
 	else { return; }
 	
 	hideMenuObjUI_2D();
@@ -73,27 +74,20 @@ function deleteObjectPop(obj)
 	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }	
 
 
-console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
+console.log('oldState', 'group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
 	
-	if(group && infProject.settings.active.group)
-	{
-		deleteValueFromArrya({arr: infProject.scene.array.group, o: group});
-	}
-	else
-	{
-		arr = [obj];
-		
-		infProject.class.group.detachObjGroup({obj: obj});		// удаляем объект из группы (если есть группа)
-	}
+	
 	
 
 	for(var i = 0; i < arr.length; i++)
-	{	
-		infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
+	{
 		
 		if(arr[i].userData.wf_tube)
 		{
 			var tube = arr[i];
+			
+			infProject.class.group.detachObjGroup({obj: arr[i]});		// удаляем объект из группы (если есть группа)
+			infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
 			
 			deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
 			
@@ -108,6 +102,9 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 		}
 		else if(arr[i].userData.obj3D)
 		{
+			infProject.class.group.detachObjGroup({obj: arr[i]});		// удаляем объект из группы (если есть группа)
+			infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
+			
 			deleteValueFromArrya({arr: infProject.scene.array.obj, o: arr[i]});
 			
 			var arrO = getAllChildObect({obj: arr[i]});
@@ -118,9 +115,14 @@ console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.sc
 			
 			scene.remove(arr[i]);			
 		}
+		else if(arr[i].userData.tag == 'new_tube')
+		{
+			//infProject.ui.rpanel.EstList.delItem({obj: arr[i]});
+			arr[i].delete();
+		}
 	}
 	
-console.log('group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);
+console.log('newState', 'group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
 	outlineRemoveObj();
 	renderCamera();

@@ -70,17 +70,25 @@ function getTubeToSborka_1(cdm)
 	for(var i = 0; i < arrP_1.length; i++) { point1[point1.length] = {pos: arrP_1[i]}; }
 	
 	
-	
-	var color = (cdm.color) ? cdm.color : 15688453;
-	var diameter = (cdm.diameter) ? cdm.diameter : 0.016;
-	
-	var tube = crTubeWF({"point": point1, "diameter": diameter, "color": color, pVisible: false});
-	
+	// смещаем трубу в нужное положение
 	if(cdm.startPos)
 	{
-		setPosTube({tube: tube, startPos: cdm.startPos, lastP: cdm.lastP });
-	}
+		let pos = (cdm.lastP) ? point1[point1.length-1].pos : point1[0].pos;		// понменять место соединения начало/конец
+		
+		let pos2 = cdm.startPos.clone().sub( pos );
+				
+		for(let i = 0; i < point1.length; i++)
+		{
+			point1[i].pos.add(pos2);	
+		}
+	}	
 
+	var color = cdm.color || 15688453;
+	var diameter = cdm.diameter || 0.016;
+	
+	//var tube = crTubeWF({"point": point1, "diameter": diameter, "color": color, pVisible: false});
+	let tube = new TubeN({path: point1, diameter: diameter, color: color, pVisible: false});
+	
 
 	infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;
 	
@@ -188,29 +196,6 @@ function getPointTubeCurve_1(cdm)
 	}
 	
 	return arrP;
-}
-
-
-
-
-// смещаем трубу в нужное положение
-function setPosTube(cdm)
-{
-	var tube = cdm.tube;
-	var startPos = cdm.startPos;
-	
-	var pointTube = tube.userData.wf_tube.point;
-	
-	var pos = (cdm.lastP) ? pointTube[pointTube.length-1].position : pointTube[0].position;		// понменять место соединения начало/конец
-	
-	startPos.sub( pos );
-	
-	for(var i = 0; i < pointTube.length; i++)
-	{
-		pointTube[i].position.add(startPos);	
-	}	
-	
-	updateTubeWF({tube: tube});		
 }
 
 

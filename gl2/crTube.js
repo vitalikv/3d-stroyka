@@ -303,6 +303,8 @@ class TubeN extends THREE.Mesh
 		
 		this.uiEstimateListObj({type: 'del'});
 		
+		infProject.class.group.detachObjGroup({obj: this});
+		
 		deleteValueFromArrya({arr: infProject.scene.array.tube, o: this});
 		
 		let points = this.getTubePoints();
@@ -316,7 +318,6 @@ class TubeN extends THREE.Mesh
 		scene.remove(this); 
 
 		this.userData.point = [];
-		this.userData.group = [];
 
 		this.render();
 	}
@@ -330,7 +331,7 @@ class TubeN extends THREE.Mesh
 	
 	// список материалов
 	uiEstimateListObj({type})
-	{
+	{ 
 		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
 		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
 		if(type == 'update') infProject.ui.rpanel.EstList.updateItem({obj: this}); 
