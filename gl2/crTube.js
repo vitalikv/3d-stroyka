@@ -4,14 +4,14 @@
 class TubeN extends THREE.Mesh
 {
 
-	constructor({id, path, diameter, color})
+	constructor({id, points, path, diameter, color})
 	{
 		super();
 		
-		this.create({id, path, diameter, color}); 
+		this.create({id, points, path, diameter, color}); 
 	}
 	
-	create({id, path, diameter, color})
+	create({id, points, path, diameter, color})
 	{
 		if(!id) { id = countId; countId++; }
 		
@@ -20,10 +20,10 @@ class TubeN extends THREE.Mesh
 		this.userData.point = [];
 		this.userData.nameRus = '';
 		this.userData.lengthTube = 0;
-		this.userData.diameter = 0;	
+		this.userData.diameter = 0.05;	
 		this.userData.group = null;	
 		
-		this.tubeGeometry({path, diameter});
+		this.tubeGeometry({points, path, diameter});
 		this.tubeMaterial({color});
 	
 		scene.add( this );
@@ -44,7 +44,7 @@ class TubeN extends THREE.Mesh
 	}
 	
 	// создаем/обновляем Geometry трубы
-	tubeGeometry({path = null, diameter = this.userData.diameter} = {})
+	tubeGeometry({points = null, path = null, diameter = this.userData.diameter} = {})
 	{
 		this.position.set(0, 0, 0);
 		this.rotation.set(0, 0, 0);
@@ -62,6 +62,16 @@ class TubeN extends THREE.Mesh
 			}
 			
 			this.userData.point.push(...arr);		
+		}
+		
+		if(points)
+		{
+			for(let i = 0; i < points.length; i++)
+			{
+				points[i].userData.tube = this;
+			}
+			
+			this.userData.point.push(...points);
 		}
 		
 		
@@ -95,7 +105,9 @@ class TubeN extends THREE.Mesh
 		this.geometry.dispose();
 		this.geometry = geometry;
 		
-		if(!path) this.uiEstimateListObj({type: 'update'});
+		
+		if(path || points){  }
+		else { this.uiEstimateListObj({type: 'update'}); }
 	}
 	
 	tubeMaterial({color})

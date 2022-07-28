@@ -37,30 +37,28 @@ function crEventButtonWarmTube(params)
 				}
 			});
 		}
-
-		function addObjScene(params)
-		{ 
-			let pos = params.pos;
-			
-			let obj = createPointWF({pos: pos}); 
-			obj.userData.propObj = propObj;
-			obj.userData.propObj({type: 'addObjButton', obj: obj});
-			
-			renderCamera();
-		}		
 	}
 
+	function addObjScene({pos})
+	{ 
+		let obj = new PointTube({pos, visible: true});
+		//let obj = createPointWF({pos: pos}); 
+		obj.userData.propObj = propObj;
+		obj.userData.propObj({type: 'addObjButton', obj: obj});
+		
+		renderCamera();
+		
+		return obj;
+	}		
 
-	function propObj(params) 
-	{
-		let type = params.type;			
-		let obj = params.obj;
+
+	function propObj({type, obj}) 
+	{		
+		if(type == 'addObjButton') { addObjButton({obj}); }
 		
-		if(type == 'addObjButton') { addObjButton({obj: params.obj}); }
-		
-		function addObjButton() 
+		function addObjButton({obj}) 
 		{
-			outlineAddObj(obj);
+			outlinePass.selectedObjects = [obj];
 			setMouseStop(true);
 			
 
@@ -71,7 +69,7 @@ function crEventButtonWarmTube(params)
 
 				obj.position.copy(intersects[0].point);			
 				
-				if(obj.userData.wf_point.tube) { updateTubeWF({tube: obj.userData.wf_point.tube}); }
+				if(obj.userData.tube) { obj.userData.tube.tubeGeometry(); }
 				
 				renderCamera();
 			};
@@ -84,29 +82,32 @@ function crEventButtonWarmTube(params)
 				outlineRemoveObj();				
 				setMouseStop(false);
 
-				if (e.button == 2) 
+				if(e.button == 2) 
 				{
-					deletePointWF(obj);
+					disposeNode(obj);
+					scene.remove(obj);
 				} 
 				else 
 				{
-					let pos = obj.position.clone();
 					
-					let obj2 = createPointWF({pos: pos}); 
-					obj2.userData.propObj = propObj;
-					obj2.userData.propObj({type: 'addObjButton', obj: obj2});					
 					
-					if(!obj.userData.wf_point.tube)
+					if(!obj.userData.tube)
 					{
-						let tube = crTubeWF({pointObj: [obj, obj2], diameter: 0.2, pVisible: true});
+						let obj2 = new PointTube({pos: obj.position.clone(), visible: true});		
+						let tube = new TubeN({points: [obj, obj2]});
 						
-						infProject.scene.array.tube.push(tube);
+						obj2.userData.propObj = propObj;
+						obj2.userData.propObj({type: 'addObjButton', obj: obj2});						
 					}
 					else
 					{
-						let tube = obj.userData.wf_point.tube;
-						tube.userData.wf_tube.point.push(obj2);
-						updateTubeWF({tube: obj.userData.wf_point.tube});
+						let tube = obj.userData.tube;
+						let obj2 = new PointTube({pos: obj.position.clone(), tube, visible: true});
+						tube.userData.point.push(obj2);
+						tube.tubeGeometry();	
+						
+						obj2.userData.propObj = propObj;
+						obj2.userData.propObj({type: 'addObjButton', obj: obj2});
 					}
 				}
 				

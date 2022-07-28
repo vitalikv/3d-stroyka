@@ -19,7 +19,7 @@ function moveObjFromCatalog( event )
 
 	let arrO = clickO.arrO; 
 
-	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', obj: obj, arrO: arrO, offset: offset});
+	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', obj, arrO, offset});
 }
 
 

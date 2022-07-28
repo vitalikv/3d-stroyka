@@ -81,7 +81,7 @@ class UI_estimateListObj
 			}				
 
 			
-			if(lengthTube)
+			if(obj.userData.tag == 'wf_tube' || obj.userData.tag == 'new_tube')
 			{
 				str = 
 				'<div class="right_panel_1_1_list_item_color" nameId="colorTube" style="background-color: '+colorTube+';"></div>\

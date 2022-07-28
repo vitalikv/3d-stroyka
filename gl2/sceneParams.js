@@ -124,9 +124,6 @@ function initSceneParams()
 	infProject.list.sborka.zr_nasos[0] = paramSborka_Zr_Nasos_1();
 
 
-	infProject.settings.active = {};
-	infProject.settings.active.pg = 'pivot';		// 'pivot' 'gizmo'
-	infProject.settings.active.group = true;
 	infProject.settings.blockKeyCode = false; 	// блокировка клавиатуры
 	infProject.settings.BD = {};
 	infProject.settings.BD.table = {};

@@ -117,7 +117,7 @@ console.log('oldState', 'group:', infProject.scene.array.group.length, 'obj:', i
 		}
 		else if(arr[i].userData.tag == 'new_tube')
 		{
-			//infProject.ui.rpanel.EstList.delItem({obj: arr[i]});
+			//infProject.ui.rpanel.EstList.delItem({obj: arr[i]}); 
 			arr[i].delete();
 		}
 	}
