@@ -399,11 +399,11 @@ function setScaleTubePoint(cdm)
 		var obj = clickO.last_obj; 	
 		if(!obj) return;
 		
-		if(obj.userData.wf_tube) { var tube = obj; }		
-		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }
+		if(obj.userData.tag == 'new_tube') { var tube = obj; }		
+		else if(obj.userData.tag == 'new_point') { var tube = obj.userData.tube; }
 		else { return; }
 		
-		arr = tube.userData.wf_tube.point;	
+		arr = tube.userData.point;	
 	}
 	
 	if(arr.length == 0) return;		 
@@ -486,11 +486,7 @@ function clickRayhitPointWF(params)
 	if(!obj) return;
 	
 	let arrP = null;
-	let rayhit = null;
-	
-	
-	if(obj.userData.tag == 'wf_tube'){ arrP = obj.userData.wf_tube.point; }	
-	if(obj.userData.tag == 'wf_point'){ arrP = obj.userData.wf_point.tube.userData.wf_tube.point; }
+	let rayhit = null;	
 
 	if(obj.userData.tag == 'new_tube'){ arrP = obj.getTubePoints(); }
 	if(obj.userData.tag == 'new_point'){ arrP = obj.getTubePoints(); }
@@ -525,24 +521,6 @@ function createTubeWF_1(cdm)
 // добавляем новую трубу в сцену
 function addTubeInScene(tube, cdm)
 {
-	if(tube.userData.tag == 'wf_tube')
-	{
-		if(!cdm.notArray)
-		{		
-			infProject.ui.rpanel.EstList.crItem({obj: tube});	// добавляем в список материалов
-		}
-		
-		if(cdm.cursor)
-		{
-			planeMath.position.y = infProject.tools.heightPl.position.y;  
-			planeMath.rotation.set(-Math.PI/2, 0, 0);
-			planeMath.updateMatrixWorld();
-
-			clickO.move = tube;
-		}
-		
-		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;			
-	}
 	if(tube.userData.tag == 'new_tube')
 	{
 		planeMath.position.y = infProject.tools.heightPl.position.y;  

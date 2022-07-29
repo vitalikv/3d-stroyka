@@ -13,8 +13,7 @@ function copyObj()
 	var arr = ddGetGroup({obj});
 
 	var group = null;
-	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }
-	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }		
+	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }		
 	if(obj.userData.tag == 'new_tube') { group = obj.userData.group; }
 	
 	
@@ -35,12 +34,7 @@ function copyObj()
 			infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
 			
 			infProject.ui.rpanel.EstList.crItem({obj: clone});	// добавляем в список материалов
-		}
-		
-		if(arr[i].userData.wf_tube) 
-		{ 
-			arr2[arr2.length] = copyTubeWF({tube: arr[i]}); 
-		}		 
+		}	 
 
 		if(arr[i].userData.tag == 'new_tube') 
 		{ 

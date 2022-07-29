@@ -35,7 +35,6 @@ class NewGroup
 		{
 			if(!arr[i]) continue;
 			if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }
-			if(arr[i].userData.wf_tube) { arr[i].userData.wf_tube.group = group; }
 			if(arr[i].userData.tag == 'new_tube') { arr[i].userData.group = group; }
 		}
 
@@ -71,11 +70,6 @@ class NewGroup
 			group = obj.userData.obj3D.group;
 			obj.userData.obj3D.group = null;
 		}
-		if(obj.userData.wf_tube && obj.userData.wf_tube.group) 
-		{ 
-			group = obj.userData.wf_tube.group;
-			obj.userData.wf_tube.group = null; 
-		}
 		if(obj.userData.tag == 'new_tube' && obj.userData.group) 
 		{ 
 			group = obj.userData.group;
@@ -93,7 +87,6 @@ class NewGroup
 			let obj_2 = group.userData.groupObj.child[0];
 			
 			if(obj_2.userData.obj3D) { obj_2.userData.obj3D.group = null; }
-			if(obj_2.userData.wf_tube) { obj_2.userData.wf_tube.group = null; }
 			if(obj_2.userData.tag == 'new_tube') { obj_2.userData.group = null; }
 			
 			deleteValueFromArrya({arr: infProject.scene.array.group, o: group});
@@ -131,9 +124,7 @@ console.log(obj.userData);
 	let group = null;
 	
 	if(obj.userData.obj3D && obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }	 
-	else if(obj.userData.tag == 'joinPoint' && obj.parent.userData.obj3D.group) { group = obj.parent.userData.obj3D.group; }
-	else if(obj.userData.wf_tube && obj.userData.wf_tube.group) { group = obj.userData.wf_tube.group; }		
-	else if(obj.userData.tag == 'wf_point' && obj.userData.wf_point.tube.userData.wf_tube.group) { group = obj.userData.wf_point.tube.userData.wf_tube.group; } 
+	else if(obj.userData.tag == 'joinPoint' && obj.parent.userData.obj3D.group) { group = obj.parent.userData.obj3D.group; }	 
 	else if(obj.userData.tag == 'new_point' && obj.userData.tube.userData.group) { group = obj.userData.tube.userData.group; }  
 	else if(obj.userData.tag == 'new_tube' && obj.userData.group) { group = obj.userData.group; } 
 	
@@ -146,7 +137,7 @@ console.log(obj.userData);
 		
 		for(let i = 0; i < arr2.length; i++)
 		{
-			if(arr2[i] == obj) continue;
+			if(arr2[i] == arr[0]) continue;
 			arr.push(arr2[i]);
 		}
 	}
@@ -156,7 +147,6 @@ console.log(obj.userData);
 		let arr2 = [];
 		for(let i = 0; i < arr.length; i++)
 		{
-			if(arr[i].userData.tag == 'wf_tube') arr2.push(...arr[i].userData.wf_tube.point);
 			if(arr[i].userData.tag == 'new_tube') arr2.push(...arr[i].userData.point);
 		}		
 		if(arr2.length > 0) arr = [...arr, ...arr2];

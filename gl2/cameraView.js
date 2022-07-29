@@ -174,46 +174,7 @@ function deleteObjCameraView()
 {
 	var arr = cameraView.userData.cameraView.arrO;
 	
-	if(1==1)
-	{
-		detectDeleteObj({obj: arr[0]});		
-	}
-	else
-	{
-		for(var i = 0; i < arr.length; i++)
-		{
-			
-			if(arr[i].userData.wf_tube)
-			{
-				var tube = arr[i];
-				
-				for ( var i2 = tube.userData.wf_tube.point.length - 1; i2 > -1; i2-- )
-				{
-					disposeNode(tube.userData.wf_tube.point[i2]);
-					scene.remove(tube.userData.wf_tube.point[i2]);		
-				}
-				
-				disposeNode(tube);
-				scene.remove(tube);  			
-			}
-			else if(arr[i].userData.obj3D)
-			{		
-console.log(arr[i].userData.obj3D.nameRus);		
-				var arrO = getAllChildObect({obj: arr[i]});
-				for(var i2 = 0; i2 < arrO.length; i2++)
-				{
-					disposeNode(arrO[i2]);
-				}
-				
-				scene.remove(arr[i]);
-arr[i] = undefined;				
-			}		
-		}
-		
-		
-		
-		console.log(22, infProject.scene.array.obj);
-	}
+	detectDeleteObj({obj: arr[0]});
 	
 	cameraView.userData.cameraView.arrO = [];
 	

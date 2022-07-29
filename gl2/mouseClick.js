@@ -557,7 +557,6 @@ function detectMouseObj()
 			var obj = rayhit.object;
 			
 			if(obj.userData.tag == 'obj') { txt = obj.userData.obj3D.nameRus; }
-			else if(obj.userData.tag == 'wf_tube') { txt = obj.userData.wf_tube.nameRus+' ('+obj.userData.wf_tube.length+'м)'; }
 			else if(obj.userData.tag == 'new_tube') { txt = obj.getNameObj(); }
 		}
 		
@@ -597,7 +596,7 @@ function consoleInfo( obj )
 	{
 		console.log( "tag: obj | id: " + obj.userData.id + " | lotid : " + obj.userData.obj3D.lotid  + " | userData : ", obj.userData, obj );
 	}	
-	else if ( tag == 'wf_tube' ) 
+	else if ( tag == 'new_tube' ) 
 	{
 		console.log( "tag: " + tag + " | id : " + obj.userData.id + " | userData : ", obj.userData, obj );
 	}	

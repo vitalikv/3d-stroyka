@@ -124,11 +124,6 @@ class Obj_JoinConnector
 		let arr = [];
 		
 		// получаем разъемы, если есть
-		if(obj.userData.tag == 'wf_tube')
-		{		
-			arr[0] = obj.userData.wf_tube.point[0]
-			arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];
-		}
 		if(obj.userData.tag == 'new_tube')
 		{		
 			arr[0] = obj.userData.point[0]
@@ -394,11 +389,9 @@ class UI_JoinConnector
 	{
 		let f = '';
 		
-		if(obj.userData.tag == 'wf_tube'){ f = 'obj'; }
-		else if(obj.userData.tag == 'new_tube'){ f = 'obj'; }
+		if(obj.userData.tag == 'new_tube'){ f = 'obj'; }
 		else if(obj.userData.tag == 'obj') { f = 'obj'; }
 		else if(obj.userData.centerPoint) { f = 'point'; }
-		else if(obj.userData.wf_point) { f = 'point'; }
 		else if(obj.userData.tag == 'new_point') { f = 'point'; }
 
 		

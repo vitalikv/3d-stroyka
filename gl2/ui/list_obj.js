@@ -55,7 +55,6 @@ class UI_estimateListObj
 			let name = '';
 			
 			if(obj.userData.tag == 'obj') name = obj.userData.obj3D.nameRus;
-			if(obj.userData.tag == 'wf_tube') name = 'труба ' + obj.userData.wf_tube.diameter * 1000;
 			if(obj.userData.tag == 'new_tube') name = obj.userData.nameRus;
 			
 			return name;
@@ -66,13 +65,7 @@ class UI_estimateListObj
 		{		
 			let str = '';
 			let colorTube = null;
-			let lengthTube = null;
-			
-			if(obj.userData.tag == 'wf_tube')
-			{
-				lengthTube = obj.userData.wf_tube.length;
-				colorTube = '#' + obj.material.color.clone().getHexString();				
-			}
+			let lengthTube = null;			
 			
 			if(obj.userData.tag == 'new_tube')
 			{				
@@ -81,7 +74,7 @@ class UI_estimateListObj
 			}				
 
 			
-			if(obj.userData.tag == 'wf_tube' || obj.userData.tag == 'new_tube')
+			if(obj.userData.tag == 'new_tube')
 			{
 				str = 
 				'<div class="right_panel_1_1_list_item_color" nameId="colorTube" style="background-color: '+colorTube+';"></div>\
@@ -348,12 +341,6 @@ function updateItemListUI({obj, list})
 		{
 			el.querySelector('[nameId="nameItem"]').innerText = obj.userData.obj3D.nameRus;			
 		}		
-		if(obj.userData.tag == 'wf_tube')
-		{
-			el.querySelector('[nameId="nameItem"]').innerText = 'труба ' + obj.userData.wf_tube.diameter * 1000;
-			el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
-			el.querySelector('[nameId="lengthTube"]').innerText = obj.userData.wf_tube.length + 'м';				
-		}
 		if(obj.userData.tag == 'new_tube')
 		{
 			el.querySelector('[nameId="nameItem"]').innerText = obj.userData.nameRus;

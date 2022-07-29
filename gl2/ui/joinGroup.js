@@ -200,7 +200,6 @@ class UI_ListJoinGroup
 		{
 			let item = {obj: arrO[i], name: ''};
 			if(arrO[i].userData.obj3D) arr.push({obj: arrO[i], name: arrO[i].userData.obj3D.nameRus});
-			if(arrO[i].userData.wf_tube) arr.push({obj: arrO[i], name: arrO[i].userData.wf_tube.nameRus});
 			if(arrO[i].userData.tag == 'new_tube') arr.push({obj: arrO[i], name: arrO[i].userData.nameRus});
 		}
 		

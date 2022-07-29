@@ -493,7 +493,7 @@ function getCountObjTube()
 	for ( var i = 0; i < infProject.scene.array.tube.length; i++ )
 	{
 		var tube = infProject.scene.array.tube[i];		
-		lengthTube += tube.userData.wf_tube.length;		
+		lengthTube += tube.userData.lengthTube;		
 	}
 	
 	lengthTube = Math.round(lengthTube * 10) / 10;

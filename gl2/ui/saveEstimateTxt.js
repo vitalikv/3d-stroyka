@@ -29,7 +29,6 @@ class UI_saveEstimateTxt
 			let o = list[i].obj;
 			
 			if(o.userData.obj3D) checkObjExistList({obj: o, arr: arr});
-			if(o.userData.tag == 'wf_tube') arr[arr.length] = {obj: o, count: 1};
 			if(o.userData.tag == 'new_tube') arr[arr.length] = {obj: o, count: 1};
 		}
 		
@@ -71,11 +70,6 @@ class UI_saveEstimateTxt
 			if(o.userData.obj3D)
 			{
 				txt += n+'. '+o.userData.obj3D.nameRus+count+'\n';
-				n++;
-			}
-			else if(o.userData.wf_tube)
-			{
-				txt += n+'. '+o.userData.wf_tube.nameRus+' ('+o.userData.wf_tube.length+'м)\n';
 				n++;
 			}
 			else if(o.userData.tag == 'new_tube')

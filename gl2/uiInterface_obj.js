@@ -20,18 +20,8 @@ function activeObjRightPanelUI_1({obj} = {})
 	}		
 	infProject.ui.rpanel.InfObj.list.listChilds.selectObjScene({obj: obj});	
 	
-	
-	if(obj.userData.tag == 'wf_point')
-	{
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});
-	}	
-	else if(obj.userData.tag == 'wf_tube')
-	{
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});
-	}			
-	else if(obj.userData.tag == 'obj')
+				
+	if(obj.userData.tag == 'obj')
 	{	
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.obj3D.nameRus} });
 		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj']});					
@@ -76,7 +66,6 @@ function newCrListObj({arrO})
 		let item = null;
 		
 		if(o.userData.obj3D) item = getObj3D({obj: o});
-		else if(o.userData.wf_tube) item = getObjTube({obj: o});
 		//else if(o.userData.tag == 'new_point') item = o.userData.tube.ui_getObjChilds();
 		else if(o.userData.tag == 'new_tube') item = getObjNewTube({obj: o});
 
@@ -99,30 +88,6 @@ function newCrListObj({arrO})
 			item.childs[i] = {};
 			item.childs[i].obj = arr[i];
 			item.childs[i].name = arr[i].userData.centerPoint.nameRus;			
-		}
-		
-		return item;
-	}
-
-	function getObjTube({obj})
-	{
-		let item = {};
-		item.obj = obj;
-		item.name = obj.userData.wf_tube.nameRus;
-		item.lengthTube = obj.userData.wf_tube.length;
-		item.colorTube = '#' + obj.material.color.clone().getHexString();		
-		
-		item.childs = [];	
-		
-		let arr = [];
-		arr[0] = obj.userData.wf_tube.point[0];
-		arr[1] = obj.userData.wf_tube.point[obj.userData.wf_tube.point.length - 1];	
-					
-		for (let i = 0; i < arr.length; i++)
-		{
-			item.childs[i] = {};
-			item.childs[i].obj = arr[i];
-			item.childs[i].name = arr[i].userData.wf_point.nameRus;			
 		}
 		
 		return item;

@@ -34,7 +34,7 @@ async function fc_cr_obj(params)
 		// сохраняем в базу
 		if(1==2)
 		{
-			var name = (obj.userData.obj3D) ? obj.userData.obj3D.nameRus : obj.userData.wf_tube.nameRus;
+			var name = (obj.userData.obj3D) ? obj.userData.obj3D.nameRus : obj.userData.nameRus;
 			await saveObjSql_2({name: name, params: {fc: {name: funcName}, cdm: arr[i], cat: params.cat} })
 		}
 		
@@ -881,18 +881,18 @@ function getInfoFcObj()
 
 		for(var i = 0; i < arrO.length; i++)
 		{
-			if(arrO[i].userData.tag == 'wf_tube')
+			if(arrO[i].userData.tag == 'new_tube')
 			{
 				var params = {};
 				params.point = [];
 				
-				params.diameter = arrO[i].userData.wf_tube.diameter;
+				params.diameter = arrO[i].userData.diameter;
 				params.color = arrO[i].material.color;
 				
-				for ( var i2 = 0; i2 < arrO[i].userData.wf_tube.point.length; i2++ )
+				for ( var i2 = 0; i2 < arrO[i].userData.point.length; i2++ )
 				{
 					params.point[i2] = {};					
-					params.point[i2].pos = offset.clone().add(arrO[i].userData.wf_tube.point[i2].position);
+					params.point[i2].pos = offset.clone().add(arrO[i].userData.point[i2].position);
 				}
 				
 				var offsetTube = params.point[0].pos.clone();
@@ -903,45 +903,9 @@ function getInfoFcObj()
 				}				
 				
 				params = JSON.stringify(params);
-				txt += `crTubeWF(${params}),\n`;				
+				txt += `TubeN(${params}),\n`;				
 			}
 		}		
-	}
-	else
-	{
-		for(var i = 0; i < arrO.length; i++)
-		{
-			if(arrO[i].userData.tag == 'obj') 
-			{
-				var lotid = arrO[i].userData.obj3D.lotid;
-				
-				var pos = offset.clone().add(arrO[i].position);
-				
-				var params = {};
-				params.lotid = lotid;
-				params.pos = {x: pos.x, y: pos.y, z: pos.z};
-				params.q = {x: arrO[i].quaternion.x, y: arrO[i].quaternion.y, z: arrO[i].quaternion.z, w: arrO[i].quaternion.w};				
-			}
-
-			if(arrO[i].userData.tag == 'wf_tube')
-			{
-				var params = {};
-				params.point = [];
-				
-				params.diameter = arrO[i].userData.wf_tube.diameter;
-				params.color = arrO[i].material.color;
-				
-				for ( var i2 = 0; i2 < arrO[i].userData.wf_tube.point.length; i2++ )
-				{
-					params.point[i2] = {};					
-					params.point[i2].pos = offset.clone().add(arrO[i].userData.wf_tube.point[i2].position);
-				}
-			}
-			
-			params = JSON.stringify(params);
-			txt += `${params},\n`;
-		}
-		
 	}	
 
 	console.log(txt);

@@ -80,15 +80,6 @@ class ToolPG
 		{ 
 			pos = obj.getWorldPosition(new THREE.Vector3());  
 			activeJoinPoint({obj: obj});
-		}
-		else if(obj.userData.tag == 'wf_point')		// точка трубы
-		{ 
-			pos = obj.position; 
-		}
-		else if(obj.userData.tag == 'wf_tube')		// труба
-		{ 
-			obj.updateMatrixWorld();			
-			pos = obj.localToWorld( obj.userData.wf_tube.posPivotGizmo.clone() );					
 		}		
 		else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
 		{ 

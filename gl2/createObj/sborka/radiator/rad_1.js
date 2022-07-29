@@ -455,8 +455,8 @@ async function getObjectsSborkaRad_1(cdm, dp)
 	o.tube1 = getTubeToSborka_1(ti1);
 	o.tube2 = getTubeToSborka_1(ti2);	
 
-	let tubePos_1 = (o.tube1.userData.wf_tube) ? o.tube1.userData.wf_tube.point[0].position : o.tube1.userData.point[0].position;
-	let tubePos_2 = (o.tube2.userData.wf_tube) ? o.tube2.userData.wf_tube.point[0].position : o.tube2.userData.point[0].position;
+	let tubePos_1 = o.tube1.userData.point[0].position;
+	let tubePos_2 = o.tube2.userData.point[0].position;
 	
 	if(inf.typePipe == 'pp' && inf.typePt2 == 'verh' && inf.typePt == 'od')
 	{

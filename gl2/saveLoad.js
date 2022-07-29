@@ -91,10 +91,10 @@ function resetScene()
 
 	for ( var i = 0; i < tube.length; i++ )
 	{		
-		for ( var i2 = tube[i].userData.wf_tube.point.length - 1; i2 > -1; i2-- )
+		for ( var i2 = tube[i].userData.point.length - 1; i2 > -1; i2-- )
 		{
-			disposeNode(tube[i].userData.wf_tube.point[i2]);
-			scene.remove(tube[i].userData.wf_tube.point[i2]);		
+			disposeNode(tube[i].userData.point[i2]);
+			scene.remove(tube[i].userData.point[i2]);		
 		}
 	
 		disposeNode(tube[i]);
@@ -307,24 +307,7 @@ function getJsonGeometry()
 	{
 		var tube = infProject.scene.array.tube[i];
 		
-		if(tube.userData.tag == 'wf_tube')
-		{
-			var m = pipe.length;
-			pipe[m] = {};
-			pipe[m].id = tube.userData.id;
-			pipe[m].diameter = tube.userData.wf_tube.diameter;
-			pipe[m].color = tube.material.color;
-			
-			pipe[m].point = [];
-			
-			for ( var i2 = 0; i2 < tube.userData.wf_tube.point.length; i2++ )
-			{
-				pipe[m].point[i2] = {};
-				pipe[m].point[i2].id = tube.userData.wf_tube.point[i2].userData.id;
-				pipe[m].point[i2].pos = tube.userData.wf_tube.point[i2].position;
-			}			
-		}
-		else if(tube.userData.tag == 'new_tube')
+		if(tube.userData.tag == 'new_tube')
 		{
 			let info = {};
 			info.vers = 2;

@@ -28,7 +28,6 @@ function detectDeleteObj(cdm)
 function deleteObjectPop(obj)
 { 
 	if(obj.userData.tag == 'obj') {}
-	else if(obj.userData.tag == 'wf_tube') {}
 	else if(obj.userData.tag == 'new_tube') {}
 	else { return; }
 	
@@ -36,10 +35,6 @@ function deleteObjectPop(obj)
 	
 	var arr = ddGetGroup({obj});;
 	
-	var group = null;
-	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }
-	if(obj.userData.wf_tube) { group = obj.userData.wf_tube.group; }	
-
 
 console.log('oldState', 'group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
 	
@@ -47,27 +42,8 @@ console.log('oldState', 'group:', infProject.scene.array.group.length, 'obj:', i
 	
 
 	for(var i = 0; i < arr.length; i++)
-	{
-		
-		if(arr[i].userData.wf_tube)
-		{
-			var tube = arr[i];
-			
-			infProject.class.group.detachObjGroup({obj: arr[i]});		// удаляем объект из группы (если есть группа)
-			infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
-			
-			deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
-			
-			for ( var i2 = tube.userData.wf_tube.point.length - 1; i2 > -1; i2-- )
-			{
-				disposeNode(tube.userData.wf_tube.point[i2]);
-				scene.remove(tube.userData.wf_tube.point[i2]);		
-			}
-			
-			disposeNode(tube);
-			scene.remove(tube);  			
-		}
-		else if(arr[i].userData.obj3D)
+	{		
+		if(arr[i].userData.obj3D)
 		{
 			infProject.class.group.detachObjGroup({obj: arr[i]});		// удаляем объект из группы (если есть группа)
 			infProject.ui.rpanel.EstList.delItem({obj: arr[i]});	// удаляем объект из списка материалов
