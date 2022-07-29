@@ -13,7 +13,6 @@ deleteObj.js
 copyObj.js 	   
 saveLoad.js
 script.js
-floorWarm.js
 toolPivot.js
 toolGizmo.js
 clickObj.js
@@ -27,7 +26,6 @@ uiInterface_user_1.js
 objCenterPoint.js
 substrate.js
 groupObj.js
-clickMoveTube.js
 alignPoint.js
 planeHeight.js
 createObj/radiator/st_radiator.js

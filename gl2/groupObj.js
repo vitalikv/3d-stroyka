@@ -105,11 +105,6 @@ class NewGroup
 			if(obj.userData.obj3D)
 			{
 				clickObject3D( obj, {menu_1: true, outline: true} );
-			}
-			else if(obj.userData.wf_tube)
-			{
-				var toolPos = (infProject.tools.pivot.visible) ? infProject.tools.pivot.position : infProject.tools.gizmo.position;
-				clickTubeWF({obj: obj, toolPos: toolPos, menu_1: true});
 			}		
 		}
 		

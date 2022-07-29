@@ -347,8 +347,6 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
 		else if( tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
-		else if( tag == 'wf_point' && camera == cameraTop) { clickFirstWFPoint({obj: obj, rayhit: rayhit}); }
-		else if( tag == 'wf_tube' && camera == cameraTop ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }	
 		else if( tag == 'joinPoint' && camera == cameraTop) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
@@ -362,10 +360,8 @@ function clickMouseActive(cdm)
 	}
 	else if(cdm.type == 'up')
 	{		
-		if( tag == 'wf_point' && camera == camera3D) { clickFirstWFPoint({obj: obj, rayhit: rayhit}); }	
-		else if( tag == 'joinPoint' && camera == camera3D) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
+		if( tag == 'joinPoint' && camera == camera3D) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickFirstObj3D({obj: obj}); }
-		else if( tag == 'wf_tube' && camera == camera3D ) { clickFirstTubeWF({obj: obj, rayhit: rayhit}) }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({clickPos: rayhit.point}); }

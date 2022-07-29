@@ -457,7 +457,7 @@ function inputWF_tubeDiametr(cdm)
 	
 	infProject.settings.wf_tube.d = size;	
 	
-	updateTubeWF({tube: tube, diameter: size});	
+	updateTubeWF({tube: tube, diameter: size});		// обновляем форму трубы	
 	
 	showWF_line_UI({tube: tube});		// при выделении трубы, обновляем меню длины трубы UI	
 }
@@ -473,6 +473,112 @@ function checkPointBoundBoxLine(pointA, pointB, pointToCheck)
 	if(pointToCheck.z < Math.min(pointA.z, pointB.z) || pointToCheck.z > Math.max(pointA.z, pointB.z)) { return false; } 
 
 	return true;
+}
+
+
+
+// пускаем луч, определяем кликнули ли на точку, если активирована труба или точка
+function clickRayhitPointWF(params)
+{  
+	let event = params.event;
+	let obj = params.obj;
+	
+	if(!obj) return;
+	
+	let arrP = null;
+	let rayhit = null;
+	
+	
+	if(obj.userData.tag == 'wf_tube'){ arrP = obj.userData.wf_tube.point; }	
+	if(obj.userData.tag == 'wf_point'){ arrP = obj.userData.wf_point.tube.userData.wf_tube.point; }
+
+	if(obj.userData.tag == 'new_tube'){ arrP = obj.getTubePoints(); }
+	if(obj.userData.tag == 'new_point'){ arrP = obj.getTubePoints(); }
+		
+	if(arrP)
+	{			
+		let ray = rayIntersect( event, arrP, 'arr' );  
+		if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }		
+	}	
+
+	return rayhit;
+}
+
+
+
+// создаем трубу из каталога 
+function createTubeWF_1(cdm)
+{
+	let visible = false;
+	
+	if(cdm.type == 'vertical') visible = (camera == cameraTop) ? true : false;
+	
+	
+	let diameter = (cdm.diameter) ? cdm.diameter : 0.05;
+	//let tube = crTubeWF({point: cdm.point, diameter: diameter, pVisible: visible}); 	 		
+	let tube = new TubeN({path: cdm.point, diameter: diameter});
+	
+	return tube;
+}
+
+
+// добавляем новую трубу в сцену
+function addTubeInScene(tube, cdm)
+{
+	if(tube.userData.tag == 'wf_tube')
+	{
+		if(!cdm.notArray)
+		{		
+			infProject.ui.rpanel.EstList.crItem({obj: tube});	// добавляем в список материалов
+		}
+		
+		if(cdm.cursor)
+		{
+			planeMath.position.y = infProject.tools.heightPl.position.y;  
+			planeMath.rotation.set(-Math.PI/2, 0, 0);
+			planeMath.updateMatrixWorld();
+
+			clickO.move = tube;
+		}
+		
+		infProject.scene.array.tube[infProject.scene.array.tube.length] = tube;			
+	}
+	if(tube.userData.tag == 'new_tube')
+	{
+		planeMath.position.y = infProject.tools.heightPl.position.y;  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		setMouseStop(true);
+		
+		mainDiv_1.onmousemove = (event) => 
+		{
+			let intersects = rayIntersect(event, planeMath, 'one');
+			if (intersects.length == 0) return;		
+			
+			tube.setPosTube({pos: intersects[0].point});			
+			
+			renderCamera();
+		};
+
+		mainDiv_1.onmousedown = () => 
+		{
+			mainDiv_1.onmousemove = null;
+			mainDiv_1.onmousedown = null;
+		
+			let intersects = rayIntersect(event, planeMath, 'one');
+			if (intersects.length > 0) tube.clickTube({clickPos: intersects[0].point});						
+			
+			setMouseStop(false);
+			
+			renderCamera();
+		};			
+
+	}
+	
+	renderCamera();
+	
+	return tube;
 }
 
 

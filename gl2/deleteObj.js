@@ -9,8 +9,7 @@ function detectDeleteObj(cdm)
 	
 	var tag = obj.userData.tag;	
 		
-	if ( tag == 'wf_point' ) { deletePointWF(obj); }
-	else if ( tag == 'obj' || tag == 'wf_tube' ) { deleteObjectPop(obj); }
+	if ( tag == 'obj') { deleteObjectPop(obj); }
 	else if ( tag == 'wtGrid' ) { obj.userData.propObj({type: 'deleteObj', obj: obj}); }
 	else if ( tag == 'new_tube' ) { deleteObjectPop(obj); }
 	else if ( tag == 'new_point' ) { obj.delete(); }
@@ -21,39 +20,7 @@ function detectDeleteObj(cdm)
 
 
 
-// удаляем точку трубы
-function deletePointWF(obj)
-{
-	//arr_wf.point.pop();	// удаляем последнее значение в массиве
-	
-	hideMenuObjUI_2D();
-		
-	var tube = obj.userData.wf_point.tube;
-	
-	// если у трубы 2 точки, то удаляем трубу
-	if(tube.userData.wf_tube.point.length == 2)
-	{		
-		deleteLineWF(tube);			
-	}
-	else	// удаляем точку
-	{		
-		deleteValueFromArrya({arr: tube.userData.wf_tube.point, o: obj});
 
-		var geometry = new THREE.Geometry();
-		
-		for(var i = 0; i < tube.userData.wf_tube.point.length; i++)
-		{
-			geometry.vertices[i] = tube.userData.wf_tube.point[i].position;
-		}
-		
-		disposeNode(tube);
-		updateTubeWF({tube: tube});
-		
-		disposeNode(obj);
-		scene.remove(obj);	// удаляем точку
-	}
-
-}
 
 
 
@@ -129,21 +96,7 @@ console.log('newState', 'group:', infProject.scene.array.group.length, 'obj:', i
 }
 
 
-// удалить трубу
-function deleteLineWF(tube)
-{	
-	infProject.ui.rpanel.EstList.delItem({obj: tube});	// удаляем объект из списка материалов
-	deleteValueFromArrya({arr: infProject.scene.array.tube, o: tube});
-	
-	for ( var i = tube.userData.wf_tube.point.length - 1; i > -1; i-- )
-	{
-		disposeNode(tube.userData.wf_tube.point[i]);
-		scene.remove(tube.userData.wf_tube.point[i]);		
-	}
-	
-	disposeNode(tube);
-	scene.remove(tube);  
-}
+
 
 
 

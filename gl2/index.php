@@ -124,7 +124,6 @@
 	<script src="<?=$path?>changeCamera.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>cameraView.js?<?=$vrs?>"></script>
     <script src="<?=$path?>moveCamera.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>clickMoveTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>alignPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>copyObj.js?<?=$vrs?>"></script>
@@ -194,7 +193,6 @@
 	<script src="<?=$path?>selectBox.js?<?=$vrs?>"></script>
 	
 
-	<script src="<?=$path?>floorWarm.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/select_list_1.js?<?=$vrs?>"></script> 	
 	<script src="<?=$path?>ui/slider_2mov.js?<?=$vrs?>"></script> 
 	

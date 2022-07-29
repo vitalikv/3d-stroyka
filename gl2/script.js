@@ -375,7 +375,7 @@ document.body.addEventListener("keydown", function (e)
 			{
 				var size = $('[nameid="size_tube_diameter_2"]').val();
 				
-				inputWF_tubeDiametr({line: clickO.last_obj, size: size});
+				//inputWF_tubeDiametr({line: clickO.last_obj, size: size});
 			}
 			else if(infProject.activeInput == 'dp_inf_1_proj')
 			{
