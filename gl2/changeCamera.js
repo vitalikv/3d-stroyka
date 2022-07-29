@@ -42,13 +42,7 @@ function changeCamera(cam)
 
 
 
-// скрываем/показываем объекты
-function showHideArrObj(arr, visible)
-{	
-	if(arr.length == 0) return;
-	
-	for ( var i = 0; i < arr.length; i++ ) { arr[i].visible = visible; }				
-}
+
 
 
 

@@ -21,7 +21,6 @@ activePivotGizmo.js
 scaleBox.js
 loadObj.js
 uiInterface_obj.js
-uiInterface_wf.js
 uiInterface_plane.js
 uiInterface_catalog.js
 uiInterface_user_1.js

@@ -390,14 +390,6 @@ function crPivot(params)
 			{
 				obj.movePointTube({offset: offset});	
 			}			 
-			else if(obj && obj.userData.tag == 'wf_point')		// точка трубы
-			{
-				obj.position.add(offset);	
-
-				updateTubeWF({tube: obj.userData.wf_point.tube});
-
-				showWF_point_UI({point: obj});
-			}
 			else if(obj && obj.userData.tag == 'wtGrid') 
 			{ 
 				obj.userData.propObj({type: 'moveObj', obj: obj, offset: offset}); 

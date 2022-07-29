@@ -409,7 +409,6 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }		
 		else if ( tag == 'boxWF' && camera == cameraTop ) { moveBoxWF_2D( event ); }
 		else if ( tag == 'obj' ) { moveObjFromCatalog( event ); }
-		else if ( tag == 'wf_tube' ) { moveFullTube( event ); }
 	}
 	else 
 	{
@@ -442,7 +441,6 @@ function onDocumentMouseUp( event )
 		if(tag == 'obj') { clickMouseUpObject(obj); }
 		else if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
 		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
-		else if(tag == 'wf_tube') { clickMouseUpTube(obj); }
 		
 		if(tag == 'free_dw') {  }
 		else if (tag == 'point') 
@@ -497,9 +495,7 @@ function hideMenuObjUI_2D(cdm)
 		let newObj = (clickO.rayhit && clickO.rayhit.object) ? clickO.rayhit.object : null;		
 		let tag = obj.userData.tag;
 		
-		if(tag == 'wf_tube') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
-		else if(tag == 'wf_point') { deClickTube({obj: obj, moment: cdm.type}); flag = false; }
-		else if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
+		if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
 		else if(tag == 'new_tube') { obj.deClickTube({newObj: newObj}); return; }

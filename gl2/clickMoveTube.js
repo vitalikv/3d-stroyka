@@ -94,17 +94,9 @@ function clickTubeWF(cdm)
 	if(cdm.obj) { tube = cdm.obj; }  
 	
 	if(!tube) return;
-
-	// показываем точки 
-	showHideTubePoint({tube: tube, visible: true});
-
-	setClickLastObj({obj: tube});
-	
-	setScaleTubePoint();
 	
 	
 	activeObjRightPanelUI_1({obj: tube});
-	showWF_line_UI({tube: tube});
 	
 	outlineAddObj(tube);
 	
@@ -145,100 +137,14 @@ function clickTubeWF(cdm)
 
 }
 
-// прячем/показываем точки у трубы
-function showHideTubePoint(cdm)
-{
-	var tube = cdm.tube;
-	var visible = cdm.visible;
-	
-	showHideArrObj(tube.userData.wf_tube.point, visible);	
-}
-
-// определяем в какое место трубы кликнули
-function detectPosTubeWF(cdm)
-{
-	var ray = cdm.ray;			  
-	var tube = ray.object;
-	
-	var arr = [];
-	
-	for ( var i = 0; i < tube.userData.wf_tube.point.length - 1; i++ )
-	{ 
-		var p1 = tube.userData.wf_tube.point[i];
-		var p2 = tube.userData.wf_tube.point[i + 1];
-		
-		var pos = mathProjectPointOnLine({p: [p1.position, p2.position], rayHit: ray.point});
-		
-		var dist = ray.point.distanceTo(pos);	
-		
-		if(checkPointBoundBoxLine(p1.position, p2.position, pos))
-		{
-			arr[arr.length] = {dist: dist, pos: pos, p1: p1, tube: tube};
-		}
-	} 
-
-	arr.sort(function (a, b) { return a.dist - b.dist; });	// сортируем по увеличению дистанции 
-
-	var p1 = arr[0].p1;
-	var pos = arr[0].pos;
-
-	return {p1: p1, pos: pos};
-}
-
-
-
-// перемещение трубы, когда достали ее из каталога 
-function moveFullTube(cdm)
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	if(cdm.obj) { var tube = cdm.obj; }
-	else { var tube = clickO.move; }
-	
-	if(!clickO.actMove)
-	{
-		clickO.actMove = true;
-	}	
-		
-	var point = tube.userData.wf_tube.point;
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );
-	var posCenter = new THREE.Vector3().subVectors( point[1].position, point[0].position ).divideScalar( 2 ).add(point[0].position);
-	var pos2 = new THREE.Vector3().subVectors( pos, posCenter );
-
-	moveFullTube_2({tube: tube, offset: pos2});
-}
 
 
 
 
-// перемещаем всю трубу
-function moveFullTube_2(cdm)
-{	
-	var tube = cdm.tube;
-	var offset = cdm.offset;
-		
-	var point = tube.userData.wf_tube.point;	
-	
-	for(var i = 0; i < point.length; i++)
-	{
-		point[i].position.add( offset );
-	}
-	
-	//tube.position.add( offset );
-
-	updateTubeWF({tube: tube});
-}
 
 
-function clickMouseUpTube(obj) 
-{
-	if(!clickO.actMove) return;
-	
-	
-}
+
+
 
 
 

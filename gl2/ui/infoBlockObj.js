@@ -320,19 +320,6 @@ function newAddPointOnTube()
 {	
 	let obj = infProject.tools.pg.obj;
 
-	if(obj.userData.tag == 'wf_tube')
-	{			  
-		let result = detectPosTubeWF({ray: ray[0]});	// определяем в какое место трубы кликнули
-		
-		let arrP = obj.userData.wf_tube.point;  			
-		let newPoint = createPointWF({ pos: result.pos });
-		
-		for(let i = 0; i < arrP.length; i++) { if(arrP[i] == result.p1) { arrP.splice(i+1, 0, newPoint); break; } }	
-		
-		updateTubeWF({tube: obj});
-
-		infProject.tools.pg.arrO = ddGetGroup({obj, tubePoint: true});
-	}
 	if(obj.userData.tag == 'new_tube')
 	{
 		let point = obj.addPointOnTube({clickPos: infProject.tools.pg.pos});

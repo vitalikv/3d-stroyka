@@ -44,7 +44,7 @@ function copyObj()
 
 		if(arr[i].userData.tag == 'new_tube') 
 		{ 
-			arr2[arr2.length] = copyTubeWF({tube: arr[i]}); 
+			arr2[arr2.length] = arr[i].copyTube(); 
 		}		
 		
 		// восстанавливаем группу
@@ -70,25 +70,4 @@ function copyObj()
 
 
 
-// копировать трубу
-function copyTubeWF({tube})
-{
-	if(!tube) return;
-	if(tube.userData.tag == 'new_tube') return tube.copyTube();
-	if(tube.userData.tag != 'wf_tube') return;
-	
-	var point = tube.userData.wf_tube.point;
-	
-	var p = [];
-	for(var i = 0; i < point.length; i++)
-	{
-		p[i] = {pos: point[i].position.clone(), visible: false};
-	}	
-	
-	var tube = crTubeWF({point: p, diameter: tube.userData.wf_tube.diameter, color: tube.material.color.clone(), pVisible: false});
-	
-	addTubeInScene(tube, {});
-	
-	return tube;
-}
 

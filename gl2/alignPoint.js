@@ -513,12 +513,6 @@ function alignTubePointToPoint({o1, o2})
 	{
 		o1.movePointTube({pos});
 	}
-	else if(o1.userData.tag == 'wf_point')
-	{
-		o1.position.copy(pos);
-		updateTubeWF({tube: o1.userData.wf_point.tube});	
-		showWF_point_UI({point: o1}); 	// обновляем меню длины трубы UI		
-	}
 	
 	
 	infProject.tools.pg.setPosPivotGizmo({pos: o1.position}); 

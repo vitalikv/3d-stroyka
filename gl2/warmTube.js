@@ -42,7 +42,7 @@ function crEventButtonWarmTube(params)
 	function addObjScene({pos})
 	{ 
 		let obj = new PointTube({pos, visible: true});
-		//let obj = createPointWF({pos: pos}); 
+		
 		obj.userData.propObj = propObj;
 		obj.userData.propObj({type: 'addObjButton', obj: obj});
 		

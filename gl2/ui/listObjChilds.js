@@ -216,7 +216,6 @@ class UI_listObjChilds
 		input.onchange = (e) => 
 		{ 
 			if(obj.userData.tag == 'new_tube') obj.changeColorTube({ value: e.target.value });
-			if(obj.userData.tag == 'wf_tube') changeColorTube({ obj, value: e.target.value }); 
 			e.stopPropagation(); 
 		};
 	}
@@ -327,8 +326,6 @@ function clickItemListRpInfUI({obj})
 {	
 	if(obj.userData.obj3D) { obj3D({obj}); }
 	else if(obj.userData.centerPoint) { objCenterPoint({obj}); }
-	else if(obj.userData.wf_tube) { tube({obj}); }
-	else if(obj.userData.wf_point) { tubePoint({obj}); }
 	else if(obj.userData.tag == 'new_tube') { newTube({obj}); }
 	else if(obj.userData.tag == 'new_point') { newTubePoint({obj}); }
 
@@ -374,66 +371,6 @@ function clickItemListRpInfUI({obj})
 	}	
 	
 	
-	function tube({obj})
-	{
-		showHideTubePoint({tube: obj, visible: true});
-		
-		let arrO = [obj, ...obj.userData.wf_tube.point];
-		
-		outlinePass.selectedObjects = arrO;	
-		
-		
-		let pos = new THREE.Vector3();
-		
-		if(1==1)
-		{
-			let p = obj.userData.wf_tube.point;
-			let n = (p.length % 2);	// четное/нечетное, 2=false 3=true
-			pos = p[0].position;
-			
-			if(n)
-			{
-				n = (p.length - 1)/2;				
-				pos = p[n].position;
-			}
-			else
-			{
-				n = (p.length - p.length/2) - 1;				
-				let pos1 = p[n].position;
-				let pos2 = p[n+1].position;
-				pos = new THREE.Vector3().subVectors( pos2, pos1 ).divideScalar( 2 ).add(pos1);
-			}			
-
-			
-			obj.updateMatrixWorld();						
-			pos = obj.worldToLocal( pos.clone() );			
-		}
-				
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: pos, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_tube.nameRus, tubeDiameter: obj.userData.wf_tube.length} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'bobj', 'tube']});			
-	}
-	
-
-	function tubePoint({obj})
-	{
-		let tube = obj.userData.wf_point.tube;
-		
-		showHideTubePoint({tube: tube, visible: true});		
-		
-		let arrO = [tube, ...tube.userData.wf_tube.point];
-		
-		outlinePass.selectedObjects = arrO;				
-		
-		infProject.tools.pg.activeTool({obj: obj, pos: obj.position, arrO: arrO});
-
-		infProject.ui.rpanel.InfObj.hide();
-		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.wf_point.nameRus} });
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});		
-	}	
 
 
 	function newTube({obj})

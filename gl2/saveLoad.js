@@ -538,16 +538,7 @@ async function loadFilePL(arr)
 	
 	for ( var i = 0; i < pipe.length; i++ )
 	{
-		if(pipe[i].vers)
-		{
-			console.log(111, pipe[i]);
-			new TubeN({id: pipe[i].id, path: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)});		
-		}
-		else
-		{
-			var tube = crTubeWF({id: pipe[i].id, point: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color), pVisible: false});
-			addTubeInScene(tube, {});			
-		}
+		if(pipe[i].vers) new TubeN({id: pipe[i].id, path: pipe[i].point, diameter: pipe[i].diameter, color: new THREE.Color(pipe[i].color)});
 	}
 
 

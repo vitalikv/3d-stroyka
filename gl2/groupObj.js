@@ -132,7 +132,7 @@ function ddGetGroup({obj, tubePoint = false})
 {
 	let arr = [obj];
 	if(obj.userData.tag == 'joinPoint') { arr = [obj.parent]; } 
-	
+console.log(obj.userData);	
 	let group = null;
 	
 	if(obj.userData.obj3D && obj.userData.obj3D.group) { group = obj.userData.obj3D.group; }	 

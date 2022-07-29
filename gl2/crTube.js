@@ -382,3 +382,98 @@ function copyTubeN({obj})
 }
 
 
+
+// масштаб точек трубы
+function setScaleTubePoint(cdm) 
+{ 
+	if(!cdm) { cdm = {}; }
+
+	var arr = [];
+	
+	if(cdm.arr) 
+	{ 
+		arr = cdm.arr; 
+	}
+	else 
+	{
+		var obj = clickO.last_obj; 	
+		if(!obj) return;
+		
+		if(obj.userData.wf_tube) { var tube = obj; }		
+		else if(obj.userData.wf_point) { var tube = obj.userData.wf_point.tube; }
+		else { return; }
+		
+		arr = tube.userData.wf_tube.point;	
+	}
+	
+	if(arr.length == 0) return;		 
+		
+	
+	if(camera == cameraTop)
+	{		
+		var scale = 3.5/camera.zoom;	
+		
+		if(scale > 1.4) { scale = 1.4; }
+		else if(scale < 0.5) { scale = 0.5; }
+		
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			arr[i].scale.set( scale,scale,scale );			
+		}	
+	}	
+	else if(camera == camera3D)
+	{
+		for ( var i = 0; i < arr.length; i++ )
+		{ 
+			var scale = camera.position.distanceTo(arr[i].position)/2;	
+
+			if(scale > 1.2) scale = 1.2;
+			
+			arr[i].scale.set( scale,scale,scale );			
+		}							
+	}
+}		
+
+
+// input меняем диаметр трубы
+function inputWF_tubeDiametr(cdm)
+{
+	var tube = cdm.line;
+	
+	if(!tube) return;	
+	if(tube.userData.tag != 'wf_tube') return;
+	
+	var line = tube.userData.wf_tube.line;
+	
+	var size = checkNumberInput({ value: cdm.size, unit: 0.001, limit: {min: 0.003, max: 0.063}, int: true });
+	
+	if(!size) 
+	{
+		showWF_line_UI({tube: tube});	// при выделении трубы, обновляем меню длины трубы UI	
+		return;
+	}
+	
+	var size = size.num;
+	
+	infProject.settings.wf_tube.d = size;	
+	
+	updateTubeWF({tube: tube, diameter: size});	
+	
+	showWF_line_UI({tube: tube});		// при выделении трубы, обновляем меню длины трубы UI	
+}
+
+
+// попадает ли точка в граница отрезка 3D BoundBox
+function checkPointBoundBoxLine(pointA, pointB, pointToCheck) 
+{
+	if(pointToCheck.x < Math.min(pointA.x, pointB.x) || pointToCheck.x > Math.max(pointA.x, pointB.x)) { return false; }
+
+	if(pointToCheck.y < Math.min(pointA.y, pointB.y) || pointToCheck.y > Math.max(pointA.y, pointB.y)) { return false; }
+
+	if(pointToCheck.z < Math.min(pointA.z, pointB.z) || pointToCheck.z > Math.max(pointA.z, pointB.z)) { return false; } 
+
+	return true;
+}
+
+
+
