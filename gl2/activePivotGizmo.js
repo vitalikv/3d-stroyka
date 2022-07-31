@@ -134,11 +134,9 @@ class ToolPG
 		this.setRotUI();
 		this.displayMenuUI({visible: ''});
 		
-		let type = this.type;	
-		if(obj.userData.tag == 'wf_point') { type = 'pivot'; }			// точка трубы
-		
-		if(type == 'pivot') this.pivot.userData.propPivot({type: 'setPivot', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});		
-		if(type == 'gizmo') this.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});
+
+		if(this.type == 'pivot') this.pivot.userData.propPivot({type: 'setPivot', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});		
+		if(this.type == 'gizmo') this.gizmo.userData.propGizmo({type: 'setGizmo', obj: obj, arrO: this.arrO, pos: this.pos, qt: this.qt});
 
 		this.render();	
 	}

@@ -5,7 +5,7 @@ class PointTube extends THREE.Mesh
 {
 	constructor(params = {})
 	{
-		super(infProject.geometry.wf_point, infProject.material.pointTube.default);
+		super(infProject.geometry.new_point, infProject.material.pointTube.default);
 
 		this.create(params);
 	}

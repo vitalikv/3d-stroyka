@@ -168,14 +168,14 @@ class Obj_JoinConnector
 		
 		if(!o1 || !o2) return;
 		
-		if(o1.userData.tag == 'wf_point' || o1.userData.tag == 'new_point')
+		if(o1.userData.tag == 'new_point')
 		{ 
 			if(this.moveTube){ alignObjPointToObjPoint({o1, o2, qt: false}); }
 			else { alignTubePointToPoint({o1, o2}); } 			
 		}
 		else if(o1.userData.tag == 'joinPoint')
 		{ 
-			if(o2.userData.tag == 'wf_point') alignObjPointToObjPoint({o1, o2, qt: false}); 
+			if(o2.userData.tag == 'new_point') alignObjPointToObjPoint({o1, o2, qt: false}); 
 			if(o2.userData.tag == 'joinPoint') alignObjPointToObjPoint({o1, o2, qt: true});
 		}
 		

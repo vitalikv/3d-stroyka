@@ -89,7 +89,7 @@ function initSceneParams()
 	infProject.geometry.circle = createCircleSpline();
 	infProject.geometry.labelWall = createGeometryPlan(0.25 * 2, 0.125 * 2);
 	infProject.geometry.labelFloor = createGeometryPlan(1.0, 0.25);
-	infProject.geometry.wf_point = new THREE.SphereGeometry( 0.015, 16, 16 );
+	infProject.geometry.new_point = new THREE.SphereGeometry( 0.015, 16, 16 );
 	infProject.geometry.centerPoint = new THREE.BufferGeometry().fromGeometry(createGeometryWD(0.03, 0.03, 0.03));
 
 	infProject.tools = {};
