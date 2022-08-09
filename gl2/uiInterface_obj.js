@@ -36,7 +36,7 @@ function activeObjRightPanelUI_1({obj} = {})
 	else if(obj.userData.tag == 'new_point')
 	{ 
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus}});		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2']});	
+		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2', 'ptube3']});	
 	}
 	else if(obj.userData.tag == 'new_tube')
 	{ 

@@ -22,20 +22,20 @@ class UI_infoBlockObj
 		this.list.jobj = new Obj_JoinConnector({container: mainDiv_1, el_parent: this.el});
 		this.list.jgr = new Obj_JoinGroup({container: mainDiv_1, el_parent: this.el});
 		
-		this.assignEvent();	
+			
 		this.setDivElement();
-		this.setUpdElement();	
+		this.setUpdElement();
+		this.assignEvent();
 	}
 	
 	assignEvent()
 	{
 		this.el.querySelector('[nameId="butt_add_point_on_tube"]').onmousedown = () => { newAddPointOnTube(); }
-		
+		this.el.querySelector('[nameId="btn_tube_point3"]').onmousedown = (e) => { newAddPointStartEndOnTube(); };
 		
 		this.el.querySelector('[nameId="button_delete_obj"]').onmousedown = (e) => { detectDeleteObj({obj: clickO.last_obj}); e.stopPropagation(); };
 		this.el.querySelector('[nameId="button_copy_obj"]').onmousedown = (e) => { copyObj(); e.stopPropagation(); };
-		
-		
+
 		if(!infProject.elem) infProject.elem = {};		
 		
 		// input название объекта, трубы, точки и т.д.
@@ -54,6 +54,7 @@ class UI_infoBlockObj
 		this.list.div.bobj = this.el.querySelector('[nameId="pr_list_button_for_obj"]');
 		this.list.div.ptube1 = this.el.querySelector('[nameId="pr_list_button_for_tube_point1"]');
 		this.list.div.ptube2 = this.el.querySelector('[nameId="pr_list_button_for_tube_point2"]');
+		this.list.div.ptube3 = this.el.querySelector('[nameId="btn_tube_point3"]');
 		
 		this.list.div.listobj = this.el.querySelector('[nameId="bl_rp_obj_group"]');
 		this.list.div.jgroup = this.el.querySelector('[nameId="rp_wrap_add_group"]');
@@ -147,8 +148,12 @@ class UI_infoBlockObj
 		 
 		<div nameId="pr_list_button_for_tube_point2" style="margin: 10px 0; display: none;">								 
 			<div nameId="button_active_align_wf_point2" class="button1 button_gradient_1">подключить трубу</div>			 
-		</div>`;			
+		</div>			
 
+		<div nameId="btn_tube_point3" style="margin: 10px 0; display: none;">								 
+			<div class="button1 button_gradient_1">удлинить трубу</div>			 
+		</div>`;
+		
 		return str;	
 	}
 	
@@ -323,6 +328,29 @@ function newAddPointOnTube()
 	if(obj.userData.tag == 'new_tube')
 	{
 		let point = obj.addPointOnTube({clickPos: infProject.tools.pg.pos});
+		
+		infProject.tools.pg.hide();
+		infProject.ui.rpanel.InfObj.hide();
+		
+		point.clickPointTube();	
+	}		
+
+	
+	renderCamera();	
+}
+
+
+// создаем точку в начале/в конце трубы, тем самым удлиняем трубу
+function newAddPointStartEndOnTube()
+{	
+	let obj = infProject.tools.pg.obj;
+
+	if(obj.userData.tag == 'new_point')
+	{
+		let tube = obj.userData.tube;
+		if(!tube) return;
+		
+		let point = tube.addPointStartEndOnTube({pos: infProject.tools.pg.pos});
 		
 		infProject.tools.pg.hide();
 		infProject.ui.rpanel.InfObj.hide();

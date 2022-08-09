@@ -141,6 +141,40 @@ class TubeN extends THREE.Mesh
 	}
 	
 	
+	// создаем точку в начале/в конце трубы, тем самым удлиняем трубу
+	addPointStartEndOnTube({pos})
+	{
+		let arrP = this.getTubePoints();
+		
+		let dist = arrP[0].position.distanceTo(pos);
+		let idPoint = 0;
+		
+		if(arrP.length > 1) 
+		{
+			let dist2 = arrP[arrP.length - 1].position.distanceTo(pos);
+			if(dist > dist2) idPoint = arrP.length - 1;
+		}
+		
+		let dir = new THREE.Vector3();
+		if(arrP.length > 1)
+		{
+			let idPoint2 = (idPoint === 0) ? 1 : arrP.length - 2;
+			dir = arrP[idPoint].position.clone().sub(arrP[idPoint2].position).normalize();
+			let n = 0.00001;
+			dir = new THREE.Vector3(dir.x * n, dir.y * n, dir.z * n);
+		}
+		
+		let newPoint = new PointTube({pos: pos.clone().add(dir), tube: this});
+		
+		if(idPoint === 0) { arrP.splice(0, 0, newPoint); }
+		else { arrP.splice(idPoint+1, 0, newPoint); }
+
+		this.tubeGeometry();
+
+		return newPoint;
+	}	
+	
+	
 	getTubePoints()
 	{
 		return this.userData.point;					

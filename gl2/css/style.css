@@ -30,6 +30,24 @@ canvas
 }
 
 
+/* анимация бордера */
+.blink 
+{
+  animation-name: blinker;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 1s;
+}
+
+@keyframes blinker {
+
+  0% { border: 1px solid #fff; }
+  35% { border: 1px solid #FF5926; }
+  65% { border: 1px solid #FF5926; }
+  100% { border: 1px solid #fff; }
+}
+/* анимация бордера */
+
 .flex_1 
 {
 	display: -webkit-box;

@@ -179,9 +179,28 @@ class Obj_JoinConnector
 			if(o2.userData.tag == 'joinPoint') alignObjPointToObjPoint({o1, o2, qt: true});
 		}
 		
-
+		this.addStyleAnime();
+		
 		this.render();
 	}
+
+
+	// добавляем класс стиля
+	addStyleAnime()
+	{
+		this.removeStyleAnime = this.removeStyleAnime.bind(this);
+		this.b_close.classList.add("blink");
+		event.stopPropagation();
+		document.body.addEventListener('mousedown', this.removeStyleAnime);
+	}
+	
+	// удаляем класс стиля
+	removeStyleAnime()
+	{
+		this.b_close.classList.remove("blink");
+		document.body.removeEventListener('mousedown', this.removeStyleAnime);
+	}
+	
 
 	// снимаем выдиления с разъемов и очищаем список
 	clearObj()
