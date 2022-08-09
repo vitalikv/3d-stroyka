@@ -50,14 +50,14 @@ function initSelectBox({container})
 
 	document.addEventListener("keydown", function (e) 
 	{ 
-		if(e.keyCode == 46) 
+		if(e.keyCode == 46 && 1==2) 
 		{ 
 			let arr = outlinePass.selectedObjects;
 			
 			for ( let i = 0; i < arr.length; i ++ ) 
 			{
-				arr[i].parent.remove(arr[i]);
-				disposeNode(arr[i]);				
+				//arr[i].parent.remove(arr[i]);
+				//disposeNode(arr[i]);				
 			}
 			
 			outlinePass.selectedObjects = [];
