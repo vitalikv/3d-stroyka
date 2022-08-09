@@ -12,7 +12,7 @@ function crEventButtonWarmTube(params)
 	function eventClickButton()
 	{
 		let el = document.querySelector('[nameId="warmtube"]');	
-		el.onmouseup = function(){ promise_1().then(data=> { addObjScene({pos: data.pos}); }) }	
+		el.onmouseup = function(){ promise_1().then(data=> { startPoint({event: data.e}); }) }	
 	
 
 		function promise_1()
@@ -24,18 +24,23 @@ function crEventButtonWarmTube(params)
 					if(e.target == container) 
 					{
 						document.onmousemove = null;
-						
-						planeMath.position.y = infProject.tools.heightPl.position.y;  
-						planeMath.rotation.set(-Math.PI/2, 0, 0);
-						planeMath.updateMatrixWorld();
-			
-						let intersects = rayIntersect( event, planeMath, 'one' );
-						if(intersects.length == 0) reject();
-						
-						resolve({pos: intersects[ 0 ].point});
+						resolve({e});
 					}
 				}
 			});
+		}
+		
+		
+		function startPoint({event})
+		{
+			planeMath.position.y = infProject.tools.heightPl.position.y;  
+			planeMath.rotation.set(-Math.PI/2, 0, 0);
+			planeMath.updateMatrixWorld();
+
+			let intersects = rayIntersect( event, planeMath, 'one' );
+			if(intersects.length == 0) reject();
+			
+			addObjScene({pos: intersects[0].point}); 
 		}
 	}
 
@@ -43,8 +48,7 @@ function crEventButtonWarmTube(params)
 	{ 
 		let obj = new PointTube({pos, visible: true});
 		
-		obj.userData.propObj = propObj;
-		obj.userData.propObj({type: 'addObjButton', obj: obj});
+		propObj({type: 'addObjButton', obj: obj});
 		
 		renderCamera();
 		
@@ -84,20 +88,16 @@ function crEventButtonWarmTube(params)
 
 				if(e.button == 2) 
 				{
-					disposeNode(obj);
-					scene.remove(obj);
+					obj.delete();
 				} 
 				else 
 				{
-					
-					
 					if(!obj.userData.tube)
 					{
 						let obj2 = new PointTube({pos: obj.position.clone(), visible: true});		
-						let tube = new TubeN({points: [obj, obj2]});
-						
-						obj2.userData.propObj = propObj;
-						obj2.userData.propObj({type: 'addObjButton', obj: obj2});						
+						new TubeN({points: [obj, obj2]});
+
+						propObj({type: 'addObjButton', obj: obj2});						
 					}
 					else
 					{
@@ -106,8 +106,7 @@ function crEventButtonWarmTube(params)
 						tube.userData.point.push(obj2);
 						tube.tubeGeometry();	
 						
-						obj2.userData.propObj = propObj;
-						obj2.userData.propObj({type: 'addObjButton', obj: obj2});
+						propObj({type: 'addObjButton', obj: obj2});
 					}
 				}
 				

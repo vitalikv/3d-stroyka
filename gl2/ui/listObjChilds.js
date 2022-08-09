@@ -72,7 +72,7 @@ class UI_listObjChilds
 	}
 	
 	
-	// цвет трубы
+	// цвет и длина трубы
 	htmlTube({colorTube, lengthTube})
 	{		
 		let str = '';
@@ -239,7 +239,37 @@ class UI_listObjChilds
 		this.activeItem = elem;
 		elem.style.backgroundColor = infProject.listColor.activeItem_1;
 	}
-	
+
+
+	// обновляем длину у трубы
+	upItemListObj({obj})
+	{
+		let el = null;	
+		let list = this.arr;
+		
+		for(let i = 0; i < list.length; i++)
+		{		
+			if(obj == list[i].obj) 
+			{
+				el = list[i].elem;
+				break;
+			}
+		}		
+		
+		if(el)
+		{
+			if(obj.userData.tag == 'obj')
+			{
+				//el.querySelector('[nameId="nameItem"]').innerText = obj.userData.obj3D.nameRus;			
+			}		
+			if(obj.userData.tag == 'new_tube')
+			{
+				//el.querySelector('[nameId="nameItem"]').innerText = obj.userData.nameRus;
+				//el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
+				el.querySelector('[nameId="lengthTube"]').innerText = obj.userData.lengthTube + 'м';				
+			}			
+		}	
+	}	
 	
 	// кликнули на объект в сцене
 	selectObjScene({obj})

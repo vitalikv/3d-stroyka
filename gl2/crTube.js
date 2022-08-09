@@ -107,7 +107,11 @@ class TubeN extends THREE.Mesh
 		
 		
 		if(path || points){  }
-		else { this.uiEstimateListObj({type: 'update'}); }
+		else 
+		{ 
+			this.uiEstimateListObj({type: 'update'});
+			this.uiInfoListObj({type: 'update'});
+		}
 	}
 	
 	tubeMaterial({color})
@@ -341,12 +345,18 @@ class TubeN extends THREE.Mesh
 		if(type == 'hide') activeObjRightPanelUI_1();
 	}
 	
-	// список материалов
+	// список сметы/материалов
 	uiEstimateListObj({type})
 	{ 
 		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
 		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
 		if(type == 'update') infProject.ui.rpanel.EstList.updateItem({obj: this}); 
+	}
+
+	// список объектов
+	uiInfoListObj({type})
+	{ 	
+		if(type == 'update') infProject.ui.rpanel.InfObj.list.listChilds.upItemListObj({obj: this})
 	}
 	
 	render()
