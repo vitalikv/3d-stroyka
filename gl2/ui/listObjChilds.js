@@ -156,26 +156,25 @@ class UI_listObjChilds
 	// создаем событие -> кликнули на пункт объекта/разъема
 	clickItem({id})
 	{
-		let item = this.arr[id];
-		
-		let arr = [{elem: item.elem, obj: item.obj}];
+		let item = this.arr[id];		
+		let arr = [item.elem];
 		
 		if(item.childs)
 		{
 			for (let i = 0; i < item.childs.length; i++)
 			{
-				arr.push({elem: item.childs[i].elem, obj: item.childs[i].obj});
-			};					
+				arr.push(item.childs[i].elem);
+			}					
 		}
 	
 		for (let i = 0; i < arr.length; i++)
 		{
-			arr[i].elem.onmousedown = (e) => 
+			arr[i].onmousedown = (e) => 
 			{
-				this.selectItem({elem: arr[i].elem});
+				this.selectItem({elem: arr[i]});
 				e.stopPropagation(); 
 			}
-		};		
+		}		
 	}
 	
 	// создаем событие -> показываем/скрываем список разъемов объекта

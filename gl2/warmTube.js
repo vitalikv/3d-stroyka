@@ -33,6 +33,8 @@ function crEventButtonWarmTube(params)
 		
 		function startPoint({event})
 		{
+			deActiveSelected();
+
 			planeMath.position.y = infProject.tools.heightPl.position.y;  
 			planeMath.rotation.set(-Math.PI/2, 0, 0);
 			planeMath.updateMatrixWorld();
@@ -88,7 +90,16 @@ function crEventButtonWarmTube(params)
 
 				if(e.button == 2) 
 				{
-					obj.delete();
+					if(!obj.userData.tube)
+					{
+						outlineRemoveObj();
+						disposeNode(obj);
+						scene.remove(obj);						
+					}
+					else
+					{
+						obj.delete();
+					}					
 				} 
 				else 
 				{
