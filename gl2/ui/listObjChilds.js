@@ -172,7 +172,7 @@ class UI_listObjChilds
 		{
 			arr[i].elem.onmousedown = (e) => 
 			{
-				this.selectItem({elem: arr[i].elem, obj: arr[i].obj});
+				this.selectItem({elem: arr[i].elem});
 				e.stopPropagation(); 
 			}
 		};		
@@ -231,8 +231,26 @@ class UI_listObjChilds
 	
 	
 	// кликнули на пункт 
-	selectItem({elem, obj = null})
+	selectItem({elem})
 	{
+		let list = this.arr;
+		let obj = null;
+		
+		for(let i = 0; i < list.length; i++)
+		{		
+			if(elem === list[i].elem) obj = list[i].obj;
+			
+			if(list[i].childs)
+			{
+				for (let i2 = 0; i2 < list[i].childs.length; i2++)
+				{
+					if(elem === list[i].childs[i2].elem) obj = list[i].childs[i2].obj;
+				}					
+			}
+
+			if(obj) break;
+		}	
+		
 		if(obj) clickItemListRpInfUI({obj}); 
 		
 		this.setResetColorItems();
@@ -241,32 +259,35 @@ class UI_listObjChilds
 	}
 
 
-	// обновляем длину у трубы
+	// обновляем длину у трубы и точки первую и последнию
 	upItemListObj({obj})
 	{
-		let el = null;	
+		let item = null;
 		let list = this.arr;
 		
 		for(let i = 0; i < list.length; i++)
 		{		
 			if(obj == list[i].obj) 
 			{
-				el = list[i].elem;
+				item = list[i];				
 				break;
 			}
 		}		
 		
-		if(el)
+		if(item)
 		{
 			if(obj.userData.tag == 'obj')
 			{
-				//el.querySelector('[nameId="nameItem"]').innerText = obj.userData.obj3D.nameRus;			
+				//item.elem.querySelector('[nameId="nameItem"]').innerText = obj.userData.obj3D.nameRus;			
 			}		
 			if(obj.userData.tag == 'new_tube')
 			{
-				//el.querySelector('[nameId="nameItem"]').innerText = obj.userData.nameRus;
-				//el.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
-				el.querySelector('[nameId="lengthTube"]').innerText = obj.userData.lengthTube + 'м';				
+				//item.elem.querySelector('[nameId="nameItem"]').innerText = obj.userData.nameRus;
+				//item.elem.querySelector('[nameId="colorTube"]').style.backgroundColor = '#' + obj.material.color.clone().getHexString();					
+				item.elem.querySelector('[nameId="lengthTube"]').innerText = obj.userData.lengthTube + 'м';	
+				
+				item.childs[0].obj = obj.userData.point[0];
+				item.childs[1].obj = obj.userData.point[obj.userData.point.length - 1];
 			}			
 		}	
 	}	

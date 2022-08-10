@@ -35,8 +35,16 @@ function activeObjRightPanelUI_1({obj} = {})
 	}
 	else if(obj.userData.tag == 'new_point')
 	{ 
+		let tube = obj.userData.tube;
+		let div = ['listobj'];
+		if(tube)
+		{
+			if(obj == tube.userData.point[0] || obj == tube.userData.point[tube.userData.point.length - 1]) { div = ['listobj', 'ptube1', 'ptube2', 'ptube3']; }
+			else { div = ['listobj']; }
+		}
+		
 		infProject.ui.rpanel.InfObj.update({inf: {nameObj: obj.userData.nameRus}});		
-		infProject.ui.rpanel.InfObj.show({inf: ['listobj', 'ptube1', 'ptube2', 'ptube3']});	
+		infProject.ui.rpanel.InfObj.show({inf: div});	
 	}
 	else if(obj.userData.tag == 'new_tube')
 	{ 
@@ -49,6 +57,7 @@ function activeObjRightPanelUI_1({obj} = {})
 	}	
 	
 }
+
 
 
 
