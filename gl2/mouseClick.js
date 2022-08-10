@@ -178,7 +178,7 @@ function clickRayHit(event)
 	// разъем у объекта
 	if(!rayhit)
 	{
-		var rayhit = clickRayJoinPoint();
+		var rayhit = clickRayJoinPoint({event, obj: clickO.last_obj});
 		if(rayhit) { return rayhit; }
 	}
 	
@@ -347,7 +347,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
 		else if( tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
-		else if( tag == 'joinPoint' && camera == cameraTop) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
+		else if( tag == 'joinPoint' && camera == cameraTop) { clickObject3D(obj, {menu_1: true, outline: true}); }
 		else if( tag == 'obj' && camera == cameraTop ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
@@ -360,7 +360,7 @@ function clickMouseActive(cdm)
 	}
 	else if(cdm.type == 'up')
 	{		
-		if( tag == 'joinPoint' && camera == camera3D) { clickFirstCenterPoint({obj: obj, rayhit: rayhit}); }
+		if( tag == 'joinPoint' && camera == camera3D) { clickObject3D(obj, {menu_1: true, outline: true}); }
 		else if( tag == 'obj' && camera == camera3D ) { clickFirstObj3D({obj: obj}); }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
@@ -422,10 +422,7 @@ function onDocumentMouseUp( event )
 {
 	if(onfM.stop) return;
 	
-	if(!long_click) 
-	{ 
-		clickMouseActive({type: 'up'}); 
-	}
+	if(!long_click) clickMouseActive({type: 'up'});
 	
 	
 	var obj = clickO.move;	
@@ -434,19 +431,11 @@ function onDocumentMouseUp( event )
 	{
 		var tag = obj.userData.tag;
 		
-		if(tag == 'obj') { clickMouseUpObject(obj); }
-		else if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
+		if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
 		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
 		
-		if(tag == 'free_dw') {  }
-		else if (tag == 'point') 
-		{
-			if(obj.userData.point.type) {  } 
-			else { clickO.move = null; }
-		}		
-		else { clickO.move = null; }		
-	}
-	
+		clickO.move = null;		
+	}	
 	
 	clickO.offset = new THREE.Vector3();
 	

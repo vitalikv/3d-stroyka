@@ -402,8 +402,7 @@ function clickItemListRpInfUI({obj})
 
 	function objCenterPoint({obj})
 	{
-		activeJoinPoint({obj: obj});
-		showHideJP({obj: obj.parent});		
+		showHideJP({obj});		
 		
 		let arrO = ddGetGroup({obj: obj.parent, tubePoint: true});
 		

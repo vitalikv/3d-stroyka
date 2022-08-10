@@ -80,16 +80,18 @@ function clickObject3D( obj, cdm )
 // получаем все разъемы объекта
 function getCenterPointFromObj_1( obj )
 {
-	var arr = [];
+	let arr = [];
+	
+	if(obj.userData.centerPoint) obj = obj.parent;
 	
 	if(obj.userData.obj3D)
 	{
-		for(var i = 0; i < obj.children.length; i++)
+		for(let i = 0; i < obj.children.length; i++)
 		{
-			var child = obj.children[i];
+			let child = obj.children[i];
 			if(!child.userData.centerPoint) continue;
 			
-			arr[arr.length] = child;
+			arr.push(child);
 		}
 	}
 	
@@ -188,26 +190,10 @@ function deClickObj({obj, moment})
 	
 	function deClickObj_1()
 	{ 
-		
-
-  
 		// скрываем разъемы
 		if(obj.userData.tag == 'obj' || obj.userData.tag == 'joinPoint')
-		{
-			
-			var arr = [];
-			
-			if(obj.userData.tag == 'joinPoint')
-			{
-				var obj3D = getParentObj({obj: obj});
-				arr = getCenterPointFromObj_1( obj3D );
-			}
-
-			if(obj.userData.tag == 'obj')
-			{
-				arr = getCenterPointFromObj_1( obj );
-			}			
-			
+		{		
+			var arr = getCenterPointFromObj_1( obj );					
 			
 			for ( var i = 0; i < arr.length; i++ )
 			{ 

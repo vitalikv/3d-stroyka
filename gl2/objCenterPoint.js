@@ -8,60 +8,39 @@
 
 
 // пускаем луч, определяем кликнули ли на разъем активированного объекта
-function clickRayJoinPoint()
-{  
-	var rayhit = null;
+function clickRayJoinPoint({event, obj})
+{ 
+	if(!obj) return;
 	
-	var obj = null;
+	if(obj.userData.tag == 'obj' || obj.userData.tag == 'joinPoint'){  }
+	else { return null; }
 	
-	if(clickO.last_obj)
-	{
-		if(clickO.last_obj.userData.tag == 'obj'){ obj = clickO.last_obj; }
-		if(clickO.last_obj.userData.tag == 'joinPoint'){ obj = getParentObj({obj: clickO.last_obj}); }
-	}
-	
-	var arr = [];
+	let rayhit = null;
 		
-	if(obj)
-	{			
-		arr = getCenterPointFromObj_1( obj );			
-	}
+	let arr = getCenterPointFromObj_1( obj );
 	 
-	var ray = rayIntersect( event, arr, 'arr' );  
-	if(ray) { if(ray.length > 0) { rayhit = ray[0]; return rayhit; } }
+	let ray = rayIntersect( event, arr, 'arr' );  
+	if(ray) { if(ray.length > 0) { rayhit = ray[0]; } }
 
-	return null;
+	return rayhit;
 }
 
-
-
-// кликнули на разъем, распределяем что делать
-function clickFirstCenterPoint({obj})
-{
-	clickObject3D(obj, {menu_1: true, outline: true});
-}
 
 
 
 // показываем/скрываем разъемы объекта
 function showHideJP({obj} = {obj: null}) 
 {		
-	if(!obj) obj = infProject.tools.pg.obj;
-	
+	if(!obj) obj = infProject.tools.pg.obj;	
 	if(!obj) return;
 	
-	if(obj.userData.tag == 'joinPoint') { var o2 = obj; obj = getParentObj({obj: obj}); }
+	let arr = getCenterPointFromObj_1( obj );
 	
-	var arr = getCenterPointFromObj_1( obj );
-	
-	for(var i = 0; i < arr.length; i++)
-	{				
-		arr[i].visible = true;	
-	}	
+	arr.forEach((o) => { o.visible = true; o.material = infProject.material.pointObj.default; } );	
 	
 	setScaleJoinPoint({arr: arr}); 
 	
-	if(o2) { activeJoinPoint({obj: o2}); }
+	if(obj.userData.tag == 'joinPoint') { activeJoinPoint({obj}); }
 }
 
 
@@ -70,13 +49,9 @@ function showHideJP({obj} = {obj: null})
 
  
 // активируем точку-соединитель 
-function activeJoinPoint(cdm)
+function activeJoinPoint({obj})
 {
-	var obj = null;
-	if(cdm.obj) { obj = cdm.obj; }
-	
-	if(!obj) return;	
-	 
+	if(!obj) return;		 
 	obj.material = infProject.material.pointObj.active; 
 }
 
@@ -101,15 +76,10 @@ function setScaleJoinPoint(cdm)
 		var obj = clickO.last_obj; 	
 		if(!obj) return;
 		
-		if(obj.userData.obj3D) 
+		if(obj.userData.obj3D || obj.userData.centerPoint) 
 		{ 
 			arr = getCenterPointFromObj_1(obj); 
-		}		
-		else if(obj.userData.centerPoint) 
-		{ 
-			var objParent = getParentObj({obj: obj});
-			arr = getCenterPointFromObj_1(objParent); 
-		}		
+		}				
 	}
 	
 	if(arr.length == 0) return;	
