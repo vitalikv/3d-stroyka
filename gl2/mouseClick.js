@@ -347,7 +347,7 @@ function clickMouseActive(cdm)
 		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
 		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
 		else if( tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
-		else if( tag == 'joinPoint' && camera == cameraTop) { clickObject3D(obj, {menu_1: true, outline: true}); }
+		else if( tag == 'joinPoint' && camera == cameraTop) { obj.clickPointObj(); }
 		else if( tag == 'obj' && camera == cameraTop ) { obj.clickObj(); }
 		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
@@ -360,7 +360,7 @@ function clickMouseActive(cdm)
 	}
 	else if(cdm.type == 'up')
 	{		
-		if( tag == 'joinPoint' && camera == camera3D) { clickObject3D(obj, {menu_1: true, outline: true}); }
+		if( tag == 'joinPoint' && camera == camera3D) { obj.clickPointObj(); }
 		else if( tag == 'obj' && camera == camera3D ) { obj.clickObj(); }
 		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
@@ -481,7 +481,7 @@ function hideMenuObjUI_2D(cdm)
 		let tag = obj.userData.tag;
 		
 		if(tag == 'obj') { obj.deClickObj({obj: obj, moment: cdm.type}); flag = false; }
-		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
+		else if(tag == 'joinPoint') { obj.deClickPointObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
 		else if(tag == 'new_tube') { obj.deClickTube({newObj: newObj}); return; }
 		else if(tag == 'new_point') { obj.deClickPointTube({newObj: newObj}); return; }

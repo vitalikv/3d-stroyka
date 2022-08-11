@@ -380,9 +380,8 @@ function clickItemListRpInfUI({obj})
 	else if(obj.userData.tag == 'new_point') { newTubePoint({obj}); }
 
 	function obj3D({obj})
-	{
-		
-		showHideJP({obj});		
+	{		
+		obj.showHideObjPoint({visible: true});		
 		
 		let arrO = ddGetGroup({obj, tubePoint: true});
 		
@@ -402,7 +401,7 @@ function clickItemListRpInfUI({obj})
 
 	function objCenterPoint({obj})
 	{
-		showHideJP({obj});		
+		obj.activeColorPoint();		
 		
 		let arrO = ddGetGroup({obj: obj.parent, tubePoint: true});
 		

@@ -90,7 +90,7 @@ function newCrListObj({arrO})
 		
 		item.childs = [];	
 		
-		let arr = getCenterPointFromObj_1(obj);
+		let arr = obj.getObjPoint();
 		
 		for (let i = 0; i < arr.length; i++)
 		{

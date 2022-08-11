@@ -114,11 +114,10 @@ class NewGroup
 // получаем группу , если у объекта есть группа, иначе получаем выбранный объект
 // tubePoint=true добавляет в массив точки труб
 function ddGetGroup({obj, tubePoint = false})
-{	
+{
+console.trace(obj);	
 	if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
 	if(obj.userData.tag == 'new_point') { obj = obj.userData.tube; }
-
-console.trace(obj);
 	
 	let arr = [obj];
 	

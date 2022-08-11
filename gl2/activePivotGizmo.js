@@ -79,7 +79,7 @@ class ToolPG
 		else if(obj.userData.tag == 'joinPoint')		// разъем
 		{ 
 			pos = obj.getWorldPosition(new THREE.Vector3());  
-			activeJoinPoint({obj: obj});
+			console.trace(7777)
 		}		
 		else if(obj.userData.tag == 'wtGrid')		// сетка теплого пола
 		{ 

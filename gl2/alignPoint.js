@@ -124,15 +124,8 @@ class Obj_JoinConnector
 		let arr = [];
 		
 		// получаем разъемы, если есть
-		if(obj.userData.tag == 'new_tube')
-		{		
-			arr[0] = obj.userData.point[0]
-			arr[1] = obj.userData.point[obj.userData.point.length - 1];
-		}	
-		if(obj.userData.tag == 'obj')
-		{
-			arr = getCenterPointFromObj_1( obj );
-		}	
+		if(obj.userData.tag == 'new_tube') arr = [obj.userData.point[0], obj.userData.point[obj.userData.point.length - 1]];	
+		if(obj.userData.tag == 'obj') arr = obj.getObjPoint();
 
 		// показываем разъемы
 		for(let i = 0; i < arr.length; i++) arr[i].visible = true;
