@@ -52,7 +52,7 @@ async function loadObjServer(cdm)
 	
 	var lotid = cdm.lotid;	
 	
-	var inf = await getObjFromBase({lotid: lotid});
+	var inf = await getObjFromBase({lotid});
 	if(!inf) return;		// объект не существует в API/каталоге
 	
 	
@@ -60,46 +60,41 @@ async function loadObjServer(cdm)
 	{ 
 		return addObjInScene(inf, cdm); 
 	}		
-	else if(inf.params)		// обращаемся к BD list_obj_3
+	
+	if(inf.params && inf.params.fc)		// обращаемся к BD list_obj_3
 	{ 
-		if(inf.params.fc)
-		{
-			var obj = window[inf.params.fc.name](inf.params.cdm);
+		var obj = window[inf.params.fc.name](inf.params.cdm);
+		
+		console.log(inf.params.fc.name);
+		
+		if(obj.userData.tag == 'new_tube')	// если труба, то в кэш сохраняем только параметры
+		{				
+			checkAddInf({inf});
+			return addTubeInScene(obj, cdm);
+		}		
+		else 	// если объект, то в кэш сохраняем параметры и сам объект
+		{ 
+			obj.userData.fc = {};
+			obj.userData.fc.name = inf.params.fc.name;
+			obj.userData.fc.params = inf.params.cdm;			
+			inf.obj = obj;
+			infProject.scene.array.base.push(inf);
 			
-			if(obj.userData.tag == 'new_tube')	// если труба, то в кэш сохраняем только параметры
-			{				
-				checkAddInf({inf: inf});
-				return addTubeInScene(obj, cdm);
-			}		
-			else 	// если объект, то в кэш сохраняем параметры и сам объект
-			{ 
-				obj.userData.fc = {};
-				obj.userData.fc.name = inf.params.fc.name;
-				obj.userData.fc.params = inf.params.cdm;			
-				inf.obj = obj;
-				infProject.scene.array.base[infProject.scene.array.base.length] = inf; 
-				return addObjInScene(inf, cdm);
-			}			
-			
-					
-		}
+			return addObjInScene(inf, cdm);
+		}			
 	}
 	
 	// если значение есть в кэше, то НЕ сохраняем
-	function checkAddInf(cdm)
+	function checkAddInf({inf})
 	{
-		var inf = cdm.inf;
-		var base = infProject.scene.array.base;		// объекты в памяти	
+		let base = infProject.scene.array.base;		// объекты в памяти	
 		
-		for(var i = 0; i < base.length; i++)
+		for(let i = 0; i < base.length; i++)
 		{
-			if(base[i].id == inf.id)
-			{
-				return;		// объект есть в кэше
-			}
+			if(base[i].id == inf.id) return;		// объект есть в кэше
 		}
 
-		infProject.scene.array.base[infProject.scene.array.base.length] = inf;
+		infProject.scene.array.base.push(inf);
 	}
 }
 
@@ -166,8 +161,6 @@ function addObjInScene(inf, cdm)
 	
 	if(1 == 1)
 	{
-		var id = 0;
-		
 		obj.traverse( function ( child ) 
 		{
 			if ( child.isMesh ) 
@@ -179,26 +172,23 @@ function addObjInScene(inf, cdm)
 			}
 		});
 		
-		if(cdm.centerPoint)
+		if(cdm.centerPoint && cdm.centerPoint.length > 0)
 		{
-			if(cdm.centerPoint.length > 0)
-			{
-				// получаем разъемы объекта
-				var o = getCenterPointFromObj_1(obj);
+			// получаем разъемы объекта
+			var o = getCenterPointFromObj_1(obj);
 
-				// есть разъемы
-				for(var i2 = 0; i2 < o.length; i2++)
-				{				
-					if(!o[i2].userData.centerPoint) continue;			
-				
-					for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
-					{
-						if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
-						
-						o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
-						
-						break;
-					}
+			// есть разъемы
+			for(var i2 = 0; i2 < o.length; i2++)
+			{				
+				if(!o[i2].userData.centerPoint) continue;			
+			
+				for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
+				{
+					if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
+					
+					o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
+					
+					break;
 				}
 			}			
 		}

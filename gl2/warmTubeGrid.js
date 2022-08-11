@@ -388,7 +388,7 @@ function crEventButtonWarmTubeGrid(params)
 			setClickLastObj({obj: obj});
 			activeObjRightPanelUI_1({obj: obj});
 			outlineAddObj(obj);			
-			setPivotGizmo({obj: obj});				
+			infProject.tools.pg.activeTool({obj});				
 
 			obj.userData.propObj({type: 'setPointPos', obj: obj});
 			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: true});

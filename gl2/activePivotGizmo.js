@@ -343,11 +343,6 @@ class ToolPG
 }
 
 
-// ставим pivot/gizmo
-function setPivotGizmo(params)
-{
-	infProject.tools.pg.activeTool({obj: params.obj});			
-}
 
 
 

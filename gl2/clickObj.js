@@ -25,49 +25,16 @@ function moveObjFromCatalog( event )
 
 
 
-// сравниваем выделенные объекты с текущим (если объект уже есть в массиве arr, то true) 
-function compareSelectedObjWithCurrent( cdm )
-{
-	var exist = false;
-	var obj = cdm.obj;
-	var arr = cdm.arr;
-	
-	for(var i = 0; i < arr.length; i++)
-	{
-		if(obj == arr[i]) { exist = true; break; }
-	}
-	
-	return exist;
-}
-
-
-// кликнули на объект, распределяем что делать
-function clickFirstObj3D({obj})
-{	
-	clickObject3D( obj, {menu_1: true, outline: true} ); 	
-}
-
-
-
 
 // активируем 3D объект или разъем, ставим pivot/gizmo
-function clickObject3D( obj, cdm )
+function clickObject3D( obj, {outline, menu_1} )
 {
-	if(!cdm) { cdm = {}; }		
+	infProject.tools.pg.activeTool({obj});
 	
-	setPivotGizmo({obj: obj});	// ставим pivot/gizmo		
+	if(outline) outlineAddObj(obj);
 	
-	if(cdm.outline) 
-	{  
-		if(obj.userData.centerPoint) { outlineAddObj(obj.parent); }
-		else { outlineAddObj(obj); } 
-	}
-
-	
-	if(cdm.menu_1) // обновляем правое меню 
-	{ 
-		activeObjRightPanelUI_1({obj: obj}); 
-	}												
+	if(menu_1) activeObjRightPanelUI_1({obj: obj}); // обновляем правое меню 
+											
 	showHideJP();
 	
 	setClickLastObj({obj: obj});
@@ -98,16 +65,6 @@ function getCenterPointFromObj_1( obj )
 	return arr; 
 }	
 	
-
-
-
-function clickMouseUpObject(obj)
-{
-	if(clickO.actMove)
-	{		
-		
-	}	
-}
 
 
 
@@ -207,7 +164,6 @@ function deClickObj({obj, moment})
 		
 		outlineRemoveObj();					
 	}
-
 }
 
 

@@ -121,7 +121,7 @@ function ddGetGroup({obj, tubePoint = false})
 	if(obj.userData.tag == 'joinPoint') { obj = obj.parent; }
 	if(obj.userData.tag == 'new_point') { obj = obj.userData.tube; }
 
-console.log(obj.userData);
+console.log(obj);
 	
 	let arr = [obj];
 	

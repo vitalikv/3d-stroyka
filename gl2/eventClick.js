@@ -48,13 +48,9 @@ elemStop.forEach(function(el)
 //----------------- верхняя панель ->
 
 infProject.elem.screenshot = document.querySelector('[nameId="screenshot"]');
-infProject.elem.butt_camera_2D = document.querySelector('[nameId="butt_camera_2D"]');
-infProject.elem.butt_camera_3D = document.querySelector('[nameId="butt_camera_3D"]');
-infProject.elem.butt_close_cameraView = document.querySelector('[nameId="butt_close_cameraView"]');
-
 infProject.elem.screenshot.onmousedown = function(e){ saveAsImage(); e.stopPropagation(); };
-infProject.elem.butt_camera_2D.onmousedown = function(e){ changeCamera(cameraTop); }
-infProject.elem.butt_camera_3D.onmousedown = function(e){ changeCamera(camera3D); }
+
+infProject.elem.butt_close_cameraView = document.querySelector('[nameId="butt_close_cameraView"]');
 infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraView(); }
 
 
