@@ -5,48 +5,30 @@
 // копируем объект или группу
 function copyObj() 
 {	
-	var obj = clickO.last_obj;
-	
+	let obj = infProject.tools.pg.obj;	
 	if(!obj) return;	
 	
 	
-	var arr = ddGetGroup({obj});
+	let arr = ddGetGroup({obj});
 
-	var group = null;
+	let group = null;
 	if(obj.userData.obj3D) { group = obj.userData.obj3D.group; }		
 	if(obj.userData.tag == 'new_tube') { group = obj.userData.group; }
 	
 	
-	var arr2 = [];
+	let arr2 = [];
 	
-	for(var i = 0; i < arr.length; i++)
+	for(let i = 0; i < arr.length; i++)
 	{ 
-		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = null; }					
+		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = null; }							
 		
-		
-		if(arr[i].userData.obj3D) 
-		{ 
-			var clone = arr[i].clone();
-			arr2[arr2.length] = clone;
-			clone.userData.id = countId; countId++;
-			scene.add( clone );
-	
-			infProject.scene.array.obj[infProject.scene.array.obj.length] = clone; 
-			
-			infProject.ui.rpanel.EstList.crItem({obj: clone});	// добавляем в список материалов
-		}	 
+		if(arr[i].userData.obj3D) arr2.push(arr[i].clone());	 
 
-		if(arr[i].userData.tag == 'new_tube') 
-		{ 
-			arr2[arr2.length] = arr[i].copyTube(); 
-		}		
+		if(arr[i].userData.tag == 'new_tube') arr2.push(arr[i].copyTube());			
 		
-		// восстанавливаем группу
-		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }					
+		if(arr[i].userData.obj3D) { arr[i].userData.obj3D.group = group; }	// восстанавливаем группу					
 	}
 
-
-	var toolPos = (infProject.tools.pivot.visible) ? infProject.tools.pivot.position : infProject.tools.gizmo.position;
 	 
 	hideMenuObjUI_2D();
 	

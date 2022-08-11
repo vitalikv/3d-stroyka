@@ -27,6 +27,22 @@ function clickRayJoinPoint({event, obj})
 
 
 
+// активируем 3D объект или разъем, ставим pivot/gizmo
+function clickObject3D( obj, {outline, menu_1} )
+{
+	infProject.tools.pg.activeTool({obj});
+	
+	if(outline) outlineAddObj(obj);
+	
+	if(menu_1) activeObjRightPanelUI_1({obj: obj}); // обновляем правое меню 
+											
+	showHideJP();
+	
+	setClickLastObj({obj: obj});
+}
+
+
+
 
 // показываем/скрываем разъемы объекта
 function showHideJP({obj} = {obj: null}) 

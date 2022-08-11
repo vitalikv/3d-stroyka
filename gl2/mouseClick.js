@@ -480,7 +480,7 @@ function hideMenuObjUI_2D(cdm)
 		let newObj = (clickO.rayhit && clickO.rayhit.object) ? clickO.rayhit.object : null;		
 		let tag = obj.userData.tag;
 		
-		if(tag == 'obj') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
+		if(tag == 'obj') { obj.deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
 		else if(tag == 'new_tube') { obj.deClickTube({newObj: newObj}); return; }
