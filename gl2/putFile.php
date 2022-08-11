@@ -64,6 +64,7 @@ createObj/sborka/radiator/bok_mp.js
 house.js
 warmTube.js
 warmTubeGrid.js
+crObj.js
 crTube.js
 crPointTube.js
 ui/pivotGizmo.js

@@ -53,7 +53,7 @@ function copyObj()
 	
 	infProject.class.group.crGroup({arr: arr2});
 	
-	if(arr2[0].userData.obj3D) { clickObject3D( arr2[0], {menu_1: true, outline: true} ); }		
+	if(arr2[0].userData.obj3D) { arr2[0].clickObj(); }		
 
 
 	scaleToolsMoveCamera();	

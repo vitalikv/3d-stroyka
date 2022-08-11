@@ -144,7 +144,7 @@ class UI_estimateListObj
 		button.onmousedown = (e) => 
 		{ 
 			hideMenuObjUI_2D();
-			if(obj.userData.tag == 'obj') { clickObject3D( obj, { menu_1: true, outline: true} ); }				
+			if(obj.userData.tag == 'obj') { obj.clickObj(); }				
 			fitCameraToObject({obj: obj}); 
 			e.stopPropagation(); 
 		}

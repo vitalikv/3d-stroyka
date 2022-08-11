@@ -93,12 +93,9 @@ class NewGroup
 		}
 
 		
-		if(active)
+		if(active && obj.userData.obj3D)
 		{
-			if(obj.userData.obj3D)
-			{
-				clickObject3D( obj, {menu_1: true, outline: true} );
-			}		
+			obj.clickObj();		
 		}
 		
 		renderCamera();
