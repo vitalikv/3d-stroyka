@@ -153,8 +153,6 @@ function crGizmo(params)
 			
 			gizmo.userData.propGizmo({type: 'updateScale'});
 			gizmo.userData.propGizmo({type: 'clippingGizmo'});
-			
-			setClickLastObj({obj: obj});
 		}
 
 

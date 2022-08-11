@@ -87,9 +87,11 @@ function getBoundObject_1(cdm)
 	v[4].z = v[5].z = v[6].z = v[7].z = bound.min.z;		
 		
 	geometry = new THREE.BufferGeometry().fromGeometry(geometry);	 
-	var box = new THREE.Mesh( geometry, infProject.material.box_1 ); 	
+	//var box = new THREE.Mesh( geometry, infProject.material.box_1 );
+
+	var box = new ObjNew({geometry: geometry, material: infProject.material.box_1}); 	
 	//box.position.copy(centP);	
-	
+
 	//obj.position.set(0, 0, 0);
 	//obj.rotation.set(0, 0, 0);
 	

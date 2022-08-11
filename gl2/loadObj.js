@@ -70,10 +70,27 @@ async function loadObjServer(cdm)
 		if(obj.userData.tag == 'new_tube')	// если труба, то в кэш сохраняем только параметры
 		{				
 			checkAddInf({inf});
+			
+			// если значение есть в кэше, то НЕ сохраняем
+			function checkAddInf({inf})
+			{
+				let base = infProject.scene.array.base;		// объекты в памяти	
+				
+				for(let i = 0; i < base.length; i++)
+				{
+					if(base[i].id == inf.id) return;		// объект есть в кэше
+				}
+
+				infProject.scene.array.base.push(inf);
+			}
+			
 			return addTubeInScene(obj, cdm);
 		}		
 		else 	// если объект, то в кэш сохраняем параметры и сам объект
 		{ 
+		
+			
+			console.log(obj);
 			obj.userData.fc = {};
 			obj.userData.fc.name = inf.params.fc.name;
 			obj.userData.fc.params = inf.params.cdm;			
@@ -84,18 +101,6 @@ async function loadObjServer(cdm)
 		}			
 	}
 	
-	// если значение есть в кэше, то НЕ сохраняем
-	function checkAddInf({inf})
-	{
-		let base = infProject.scene.array.base;		// объекты в памяти	
-		
-		for(let i = 0; i < base.length; i++)
-		{
-			if(base[i].id == inf.id) return;		// объект есть в кэше
-		}
-
-		infProject.scene.array.base.push(inf);
-	}
 }
 
 
@@ -105,6 +110,8 @@ async function loadObjServer(cdm)
 function addObjInScene(inf, cdm)
 {
 	var obj = inf.obj.clone();
+	
+	obj.initObj({id: cdm.id, lotid: cdm.lotid, nameRus: inf.name});
 	
 	if(cdm.pos)
 	{ 
@@ -121,27 +128,6 @@ function addObjInScene(inf, cdm)
 	if(cdm.q){ obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w); }					
 	
 	
-	if(cdm.id){ obj.userData.id = cdm.id; }
-	else { obj.userData.id = countId; countId++; }
-	
-	obj.userData.tag = 'obj';
-	obj.userData.obj3D = {};
-	obj.userData.obj3D.lotid = cdm.lotid;
-	obj.userData.obj3D.nameRus = inf.name;  
-	//obj.material = new THREE.MeshLambertMaterial( {color: 0xffff00, transparent: true, opacity: 0.5 } );
-	obj.material.visible = false;
-	//obj.rotation.y += 1;
-	
-	infProject.scene.array.obj[infProject.scene.array.obj.length] = obj;
-	//if(cdm.nameRus) { renameObject({obj: obj, name: cdm.nameRus}); }
-
-	scene.add( obj );
-	
-	if(cdm.notArray){}
-	else
-	{		 
-		infProject.ui.rpanel.EstList.crItem({obj});	// добавляем в список материалов	
-	}
 	
 	if(cdm.cursor) 
 	{ 
@@ -155,44 +141,8 @@ function addObjInScene(inf, cdm)
 		obj.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y;
 		planeMath.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y; 
 		planeMath.updateMatrixWorld();
-	}
-	
+	}	
 
-	
-	if(1 == 1)
-	{
-		obj.traverse( function ( child ) 
-		{
-			if ( child.isMesh ) 
-			{ 
-				if(new RegExp( '_est_' ,'i').test( child.name ))
-				{
-					//child.visible = true;
-				}
-			}
-		});
-		
-		if(cdm.centerPoint && cdm.centerPoint.length > 0)
-		{
-			// получаем разъемы объекта
-			var o = getCenterPointFromObj_1(obj);
-
-			// есть разъемы
-			for(var i2 = 0; i2 < o.length; i2++)
-			{				
-				if(!o[i2].userData.centerPoint) continue;			
-			
-				for(var i3 = 0; i3 < cdm.centerPoint.length; i3++)
-				{
-					if(o[i2].userData.id != cdm.centerPoint[i3].id) continue;
-					
-					o[i2].userData.centerPoint.nameRus = cdm.centerPoint[i3].nameRus;
-					
-					break;
-				}
-			}			
-		}
-	}
 
 		
 	renderCamera();
@@ -201,6 +151,77 @@ function addObjInScene(inf, cdm)
 }
 
 
+
+class ObjNew extends THREE.Mesh
+{
+	constructor({geometry, material})
+	{
+		super(geometry, material);
+	}
+	
+	initObj({id, lotid = null, nameRus = null})
+	{
+		if(!id) { id = countId; countId++; }
+		
+		this.userData.id = id;
+		this.userData.tag = 'obj';
+		this.userData.obj3D = {};
+		this.userData.obj3D.lotid = (lotid === null) ? 0 : lotid;
+		this.userData.obj3D.nameRus = (nameRus === null) ? '' : nameRus;
+		this.userData.group = null;
+		
+		this.material.visible = true;
+		
+		scene.add( this );
+		infProject.scene.array.obj.push( this );
+		this.render();
+
+
+		this.uiEstimateListObj({type: 'add'});
+	}
+
+	clone() 
+	{
+		return new this.constructor(this).copy( this, false );
+	}
+
+	// кликнули на obj
+	clickObj() 
+	{
+		let arrO = ddGetGroup({obj: this, tubePoint: true});
+		
+		outlinePass.selectedObjects = arrO; 
+		showHideJP({obj: this});
+		
+		this.updateMatrixWorld();
+		let pos = this.localToWorld( this.geometry.boundingSphere.center.clone() );	
+												
+		infProject.tools.pg.activeTool({obj: this, pos, arrO});
+		
+		this.ui_menu({type: 'show'});		
+	}	
+	
+	// список сметы/материалов
+	uiEstimateListObj({type})
+	{ 
+		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
+		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
+		if(type == 'update') infProject.ui.rpanel.EstList.updateItem({obj: this}); 
+	}
+	
+	
+	ui_menu({type})
+	{
+		if(type == 'show') activeObjRightPanelUI_1({obj: this});
+		if(type == 'hide') activeObjRightPanelUI_1();
+	}	
+	
+	
+	render()
+	{
+		renderCamera();
+	}	
+}
 
 
 

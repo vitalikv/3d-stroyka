@@ -385,7 +385,7 @@ function crEventButtonWarmTubeGrid(params)
 		{
 			obj.userData.wtGrid.active = true;
 			
-			setClickLastObj({obj: obj});
+			
 			activeObjRightPanelUI_1({obj: obj});
 			outlineAddObj(obj);			
 			infProject.tools.pg.activeTool({obj});				

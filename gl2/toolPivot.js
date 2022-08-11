@@ -282,8 +282,6 @@ function crPivot(params)
 			}
 			
 			pivot.userData.propPivot({type: 'updateScale'});
-			
-			setClickLastObj({obj: obj});
 		}
 
 		
