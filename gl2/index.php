@@ -181,6 +181,7 @@
 	<script src="<?=$path?>warmTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>warmTubeGrid.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>crObj.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>crPointObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>crTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>crPointTube.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>ui/pivotGizmo.js?<?=$vrs?>"></script> 

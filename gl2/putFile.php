@@ -65,6 +65,7 @@ house.js
 warmTube.js
 warmTubeGrid.js
 crObj.js
+crPointObj.js
 crTube.js
 crPointTube.js
 ui/pivotGizmo.js

@@ -351,32 +351,19 @@ function crSphere_2(cdm)
 // создаем разъем для объектов
 function cr_CenterPoint(cdm)
 {
-	var obj = cdm.obj;
-	var name = cdm.name;
-	var id = cdm.id;
+	let obj = new PointObj({geometry: infProject.geometry.centerPoint, material: infProject.material.pointObj.default});
 	
-	var geometry = infProject.geometry.centerPoint;
-	var material = infProject.material.pointObj.default;
+	obj.initObj({id: cdm.id, name: cdm.name});
 	
-	var cube = new THREE.Mesh( geometry, material );
-	cube.position.copy(cdm.pos);
 	
-	if(cdm.q) { cube.quaternion.copy(cdm.q); }
-	if(cdm.rot) { cube.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);  }
+	//var obj = new THREE.Mesh( geometry, material );
+	obj.position.copy(cdm.pos);
 	
-	cube.visible = false;
-	cube.renderOrder = 1;
-	//cube.rotation.y += 1;
-	//var axesHelper = new THREE.AxesHelper( 0.2 );
-	//axesHelper.position.copy(cube.position);
-	//scene.add( axesHelper );							
+	if(cdm.q) { obj.quaternion.copy(cdm.q); }
+	if(cdm.rot) { obj.rotation.set(cdm.rot.x, cdm.rot.y, cdm.rot.z);  }
 	
-	cube.userData.tag = 'joinPoint';
-	cube.userData.id = id;  
-	cube.userData.centerPoint = { join: null };						 
-	cube.userData.centerPoint.nameRus = name;
 	
-	obj.add( cube );	
+	cdm.obj.add( obj );	
 }
 
 
