@@ -210,7 +210,7 @@ function getRazyem(cdm)
 	
 	var arrNum = (cdm.arrNum) ? cdm.arrNum : [];
 	
-	var centerPoint = getCenterPointFromObj_1( obj );
+	var centerPoint = obj.getObjPoint();
 	
 	var arr = [];
 	

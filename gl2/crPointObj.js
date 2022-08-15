@@ -20,6 +20,7 @@ class PointObj extends THREE.Mesh
 		this.renderOrder = 1;			
 	}
 	
+	// нужно при клонировании основного объекта иначе создаются без геометрии и материала
 	clone() 
 	{
 		let obj = new this.constructor(this).copy( this, false );
@@ -45,7 +46,7 @@ class PointObj extends THREE.Mesh
 	
 
 	
-	// получаем точки принадлежащие к одному объекту
+	// получаем все точки/разъемы родительского объекта
 	getPointObjOnObj()
 	{
 		return this.parent.getObjPoint();

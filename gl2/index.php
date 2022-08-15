@@ -115,7 +115,6 @@
 	
 	
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>clickObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolPivot.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolGizmo.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>activePivotGizmo.js?<?=$vrs?>"></script>
@@ -128,7 +127,6 @@
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>copyObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>loadObj.js?<?=$vrs?>"></script>
-	<script src="<?=$path?>objCenterPoint.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>groupObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/radiator/st_radiator.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>createObj/radiator/al_radiator.js?<?=$vrs?>"></script>

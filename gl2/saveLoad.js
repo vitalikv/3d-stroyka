@@ -268,7 +268,7 @@ function getJsonGeometry()
 		if(gr) { furn[m].group = gr; }
 		
 		// получаем разъемы объекта
-		var o = getCenterPointFromObj_1(obj);
+		var o = obj.getObjPoint();
 
 		// есть разъемы
 		for(var i2 = 0; i2 < o.length; i2++)

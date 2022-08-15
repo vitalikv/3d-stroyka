@@ -15,7 +15,6 @@ saveLoad.js
 script.js
 toolPivot.js
 toolGizmo.js
-clickObj.js
 activePivotGizmo.js
 scaleBox.js
 loadObj.js
@@ -23,7 +22,6 @@ uiInterface_obj.js
 uiInterface_plane.js
 uiInterface_catalog.js
 uiInterface_user_1.js
-objCenterPoint.js
 substrate.js
 groupObj.js
 alignPoint.js
