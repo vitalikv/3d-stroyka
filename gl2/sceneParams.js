@@ -21,8 +21,8 @@ function initSceneParams()
 	infProject.scene.substrate = { ruler: [], floor: [], active: null };
 	infProject.scene.substrate.ruler = createToolRulerSubstrate();  
 	infProject.scene.block = { key : { scroll : false } };		// блокировка действий/клавишь
-	infProject.scene.block.click = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
-	infProject.scene.block.hover = {wall: false, point: false, door: false, window: false, room: false, tube: false, controll_wd: false, obj: false};
+	infProject.scene.block.click = {tube: false, obj: false};
+	infProject.scene.block.hover = {tube: false, obj: false};
 	infProject.geometry = {};
 
 	infProject.material = {};
@@ -99,7 +99,7 @@ function initSceneParams()
 
 
 
-	//infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox   
+	  
 	infProject.tools.plane = {o1: [], el: []};
 	infProject.tools.heightPl = createPlaneHeight();		// плоскость высоты
 	infProject.tools.helpVertex = [];

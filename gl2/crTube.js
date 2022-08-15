@@ -564,7 +564,6 @@ function crEventTubeMove(tube)
 {
 	if(tube.userData.tag !== 'new_tube') return;
 	
-	console.log(7777777)
 	planeMath.position.y = infProject.tools.heightPl.position.y;  
 	planeMath.rotation.set(-Math.PI/2, 0, 0);
 	planeMath.updateMatrixWorld();

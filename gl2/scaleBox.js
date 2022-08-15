@@ -1,9 +1,10 @@
 
 
-
-
-
- 
+// добавляем в сцену boxScale
+function addBoxScaleScene()
+{
+	infProject.tools.wf = { plane: createPlaneWF(), cube: createControlBoxPop3D() };  // scaleBox 
+}
 
 
 
@@ -72,58 +73,64 @@ function createControlBoxPop3D()
 
 
 
-// кликнули на 3D объект в 2D режиме, подготавляем к перемещению
-function clickBoxWF_2D( obj, intersect )
-{	
-	var obj = clickO.move = intersect.object;  
-	
-	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
-	
-	planeMath.position.copy( intersect.point );
-	planeMath.rotation.set( Math.PI/2, 0, 0 );
-	
-	showToggleGp(); 
-	showBoxWF_UI();
 
-
-	setClickLastObj({obj: obj});
-}
-
-
-
-// перемещение по 2D плоскости 
-function moveBoxWF_2D( event )
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	var obj = clickO.move;
-	
-	if(!clickO.actMove)
-	{
-		clickO.actMove = true;
-		
-		hideControlWF();
-	}	
-	
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
-	
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
-	obj.position.add( pos2 );	
-}
-
-
-
-
-function clickMouseUpBoxWF(obj)
+// кликнули на Box, подготавляем к перемещению/перемещение Box
+function clickBoxWF_2D({rayhit}) 
 {
-	if(clickO.actMove)
-	{		
+	let obj = rayhit.object;
+	let posOffset = new THREE.Vector3();
+	
+	start({obj, rayhit});
+	setMouseStop(true);
+	
+	function start({obj, rayhit})
+	{
+		posOffset = new THREE.Vector3().subVectors( obj.position, rayhit.point );		
+		
+		planeMath.position.copy( rayhit.point );  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		showToggleGp(); 
+		
+		setClickLastObj({obj});
+	}
+	
+	
+	mainDiv_1.onmousemove = (event) => 
+	{
+		let intersects = rayIntersect( event, planeMath, 'one' ); 		
+		if(intersects.length == 0) return;
+		
+		let pos = new THREE.Vector3().addVectors( intersects[0].point, posOffset );	
+		
+		let pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+		obj.position.add( pos2 );
+
+		hideControlWF();	
+
+		renderCamera();
+	};
+
+	mainDiv_1.onmouseup = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;				
+		
 		showToggleGp();
-	}	
+		
+		setMouseStop(false);
+		
+		stopCameraTop();
+		stopCamera3D();
+		stopCameraView();		
+		
+		renderCamera();
+	};			
+
 }
+
+
 
 
 
@@ -205,11 +212,51 @@ function showHelperNormal(obj)
 }
 
 
+// кликнули на контроллер изменяющий размер box
+function clickBoxCnrt({rayhit}) 
+{
+	let obj = rayhit.object;
+	
+	start({rayhit});
+	setMouseStop(true);
+	
+	function start({rayhit})
+	{
+		clickToggleGp(rayhit);
+	}
+	
+	
+	mainDiv_1.onmousemove = (event) => 
+	{
+		moveToggleGp({obj, event});	
+
+		renderCamera();
+	};
+
+	mainDiv_1.onmouseup = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;				
+		
+		setClickLastObj({obj: infProject.tools.wf.plane});
+		
+		setMouseStop(false);
+		
+		stopCameraTop();
+		stopCamera3D();
+		stopCameraView();		
+		
+		renderCamera();
+	};			
+
+}
+
+
 
 // кликнули на контроллер
 function clickToggleGp( intersect )
 {
-	var obj = clickO.obj = clickO.move = intersect.object;  
+	var obj = intersect.object;  
 	
 	var arrGp = infProject.tools.wf.cube; 	
 	
@@ -338,14 +385,12 @@ function inputScaleObjPop(cdm)
 
 
 // перемещаем контроллер
-function moveToggleGp( event )
+function moveToggleGp({obj, event})
 {
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
+	var intersects = rayIntersect( event, planeMath, 'one' );	
 	if (!intersects) return;
 	if (intersects.length == 0) return;
-	
-	var obj = clickO.move;
+
 	
 	// положение контроллера с ограничениями
 	var posNew = new THREE.Vector3();
@@ -438,25 +483,9 @@ function hideControlWF()
 }
 
 
-// скрываем контроллеры
-function hideBoxWF_UI()
-{
-	if(clickO.rayhit)
-	{
-		if(clickO.rayhit.object.userData.tag == 'scaleBox_control') return;
-	}
-	
-	$('[nameId="box_wf_b1"]').hide();	
-}
 
 
 
-
-// при выделении точки, показываем меню
-function showBoxWF_UI()
-{		
-	$('[nameId="box_wf_b1"]').show();
-}
 
 
 

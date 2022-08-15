@@ -653,173 +653,227 @@ function upUvs_4( obj )
 
 
 
-// кликнули на линейку, подготавляем к перемещению
-function clickToolRulerSubstrate2D(cdm)
-{	
-	var intersect = cdm.intersect;
-	var obj = clickO.move = cdm.intersect.object;  
+// кликнули на линейку, подготавляем к перемещению/перемещение линейки 
+function clickToolSubstrate({rayhit}) 
+{
+	let obj = rayhit.object;
+	let posOffset = new THREE.Vector3();
 	
-	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
+	start({obj, rayhit});
+	setMouseStop(true);
 	
-	planeMath.position.copy( intersect.point );  
-	planeMath.rotation.set( Math.PI/2, 0, 0 );
-	
-	setClickLastObj({obj: obj});
-}
-
-
-
-// перемещение линейки 
-function moveToolRulerSubstrate2D( event ) 
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	var obj = clickO.move;	
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
-	
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
-	obj.position.add( pos2 );
-
-
-	// меняем положение линейки 
-	if(1==1)
+	function start({obj, rayhit})
 	{
-		setPosRotLineRulerSubstrate({ruler: infProject.scene.substrate.ruler});	
+		posOffset = new THREE.Vector3().subVectors( obj.position, rayhit.point );		
+		
+		planeMath.position.copy( rayhit.point );  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		setClickLastObj({obj});
 	}
-}
-
-
-
-// кликнули на плоскость, подготавляем к перемещению
-function clickSubstrate2D(cdm)
-{	
-	var intersect = cdm.intersect;
-	var obj = clickO.move = cdm.intersect.object;  
 	
-	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );	
 	
-	planeMath.position.copy( intersect.point );  
-	planeMath.rotation.set( Math.PI/2, 0, 0 );
-	
-	setClickLastObj({obj: obj});
-}
-
-
-
-// перемещение плоскости 
-function moveSubstrate2D( event ) 
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	var obj = clickO.move;	
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
-	
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
-	obj.position.add( pos2 );
-
-
-	// перемещаем точки и линейку
-	if(1==1)
+	mainDiv_1.onmousemove = (event) => 
 	{
-		for (var i = 0; i < obj.userData.substrate.p.length; i++)
+		let intersects = rayIntersect( event, planeMath, 'one' ); 		
+		if(intersects.length == 0) return;
+		
+		let pos = new THREE.Vector3().addVectors( intersects[0].point, posOffset );	
+		
+		let pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+		obj.position.add( pos2 );
+
+		// меняем положение линейки 
+		setPosRotLineRulerSubstrate({ruler: infProject.scene.substrate.ruler});
+
+		renderCamera();
+	};
+
+	mainDiv_1.onmouseup = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;				
+		
+		setMouseStop(false);
+		
+		stopCameraTop();
+		stopCamera3D();
+		stopCameraView();		
+		
+		renderCamera();
+	};			
+
+}
+
+
+
+
+// кликнули на плоскость, подготавляем к перемещению/перемещение плоскости
+function clickSubstrate({rayhit}) 
+{
+	let obj = rayhit.object;
+	let posOffset = new THREE.Vector3();
+	
+	start({obj, rayhit});
+	setMouseStop(true);
+	
+	function start({obj, rayhit})
+	{
+		posOffset = new THREE.Vector3().subVectors( obj.position, rayhit.point );		
+		
+		planeMath.position.copy( rayhit.point );  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		setClickLastObj({obj});
+	}
+	
+	
+	mainDiv_1.onmousemove = (event) => 
+	{
+		let intersects = rayIntersect( event, planeMath, 'one' ); 		
+		if(intersects.length == 0) return;
+		
+		let pos = new THREE.Vector3().addVectors( intersects[0].point, posOffset );	
+		
+		let pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+		obj.position.add( pos2 );
+
+		// перемещаем точки и линейку
+		if(1==1)
 		{
-			obj.userData.substrate.p[i].position.add( pos2 );
+			for (var i = 0; i < obj.userData.substrate.p.length; i++)
+			{
+				obj.userData.substrate.p[i].position.add( pos2 );
+			}
+
+			infProject.scene.substrate.ruler[0].position.add( pos2 );
+			infProject.scene.substrate.ruler[1].position.add( pos2 );
+			infProject.scene.substrate.ruler[0].userData.subtool.line.position.add( pos2 );		
+		}		
+
+		renderCamera();
+	};
+
+	mainDiv_1.onmouseup = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;				
+		
+		setMouseStop(false);
+		
+		stopCameraTop();
+		stopCamera3D();
+		stopCameraView();		
+		
+		renderCamera();
+	};			
+
+}
+
+
+
+// кликнули точку, подготавляем к перемещению/перемещение точки
+function clickPointSubstrate({rayhit})  
+{
+	let obj = rayhit.object;
+	let posOffset = new THREE.Vector3();
+	
+	start({obj, rayhit});
+	setMouseStop(true);
+	
+	function start({obj, rayhit})
+	{
+		posOffset = new THREE.Vector3().subVectors( obj.position, rayhit.point );		
+		
+		planeMath.position.copy( rayhit.point );  
+		planeMath.rotation.set(-Math.PI/2, 0, 0);
+		planeMath.updateMatrixWorld();
+		
+		setClickLastObj({obj});
+	}
+	
+	
+	mainDiv_1.onmousemove = (event) => 
+	{
+		let intersects = rayIntersect( event, planeMath, 'one' ); 		
+		if(intersects.length == 0) return;
+		
+		let pos = new THREE.Vector3().addVectors( intersects[0].point, posOffset );	
+
+		// равномерное перемещение по осям xz
+		if(1==1)
+		{
+			let ps = obj.userData.subpoint.p2.position;
+			let dir = obj.userData.subpoint.dir;
+			let qt = obj.userData.subpoint.qt;  
+			
+			let v1 = localTransformPoint( new THREE.Vector3().subVectors( ps, pos ), qt ); 
+			if(v1.z < 0.5) { v1.z = 0.5; }   
+			v1 = new THREE.Vector3().addScaledVector( dir, -v1.z );
+			pos = new THREE.Vector3().addVectors( ps, v1 );		
 		}
+		
+		// перемещаем соседние точки
+		if(1 == 1)
+		{
+			obj.updateMatrixWorld();
+			let posLoc = obj.worldToLocal( pos.clone() );	
+			let posX = obj.localToWorld( new THREE.Vector3(posLoc.x, 0, 0) );
+			posX = new THREE.Vector3().subVectors( posX, obj.position );
+			
+			let posZ = obj.localToWorld( new THREE.Vector3(0, 0, posLoc.z) );
+			posZ = new THREE.Vector3().subVectors( posZ, obj.position );	
 
-		infProject.scene.substrate.ruler[0].position.add( pos2 );
-		infProject.scene.substrate.ruler[1].position.add( pos2 );
-		infProject.scene.substrate.ruler[0].userData.subtool.line.position.add( pos2 );		
-	}
+			obj.userData.subpoint.x.position.add( posX );
+			obj.userData.subpoint.z.position.add( posZ );
+		}		
+		
+		let pos2 = new THREE.Vector3().subVectors( pos, obj.position );
+		obj.position.add( pos2 );
+
+		
+		// по положению точек изменяем форму плоскости 
+		if(1 == 1)
+		{
+			let plane = obj.userData.subpoint.plane;		
+			let point = plane.userData.substrate.p;
+			
+			plane.updateMatrixWorld();			
+			let ps1 = plane.worldToLocal( point[0].position.clone() );
+			let ps2 = plane.worldToLocal( point[1].position.clone() );
+			let ps3 = plane.worldToLocal( point[2].position.clone() );
+			let ps4 = plane.worldToLocal( point[3].position.clone() );
+			
+			let x = new THREE.Vector3().subVectors( ps3, ps1 ).x;
+			let z = new THREE.Vector3().subVectors( ps2, ps1 ).z;
+			
+			updateSizeSubstrate({obj: plane, size: {x: x/2, z: z/2}});
+			
+			plane.position.add( pos2.clone().divideScalar( 2 ) );
+		}		
+
+		renderCamera();
+	};
+
+	mainDiv_1.onmouseup = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;				
+		
+		setMouseStop(false);
+		
+		stopCameraTop();
+		stopCamera3D();
+		stopCameraView();		
+		
+		renderCamera();
+	};			
+
 }
 
 
-
-
-// кликнули точку, подготавляем к перемещению
-function clickPointSubstrate2D(cdm)
-{	
-	var intersect = cdm.intersect;
-	var obj = clickO.move = cdm.intersect.object;  
-	
-	clickO.offset = new THREE.Vector3().subVectors( obj.position, intersect.point );
-
-	planeMath.position.copy( intersect.point );  
-	planeMath.rotation.set( Math.PI/2, 0, 0 );
-	
-	setClickLastObj({obj: obj});
-}
-
-
-
-// перемещение точки
-function movePointSubstrate2D( event ) 
-{	
-	var intersects = rayIntersect( event, planeMath, 'one' ); 
-	
-	if(intersects.length == 0) return;
-	
-	var obj = clickO.move;	
-	
-	var pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );	
-	
-	// равномерное перемещение по осям xz
-	if(1==1)
-	{
-		var ps = obj.userData.subpoint.p2.position;
-		var dir = obj.userData.subpoint.dir;
-		var qt = obj.userData.subpoint.qt;  
-		
-		var v1 = localTransformPoint( new THREE.Vector3().subVectors( ps, pos ), qt ); 
-		if(v1.z < 0.5) { v1.z = 0.5; }   
-		var v1 = new THREE.Vector3().addScaledVector( dir, -v1.z );
-		pos = new THREE.Vector3().addVectors( ps, v1 );		
-	}
-	
-	// перемещаем соседние точки
-	if(1 == 1)
-	{
-		obj.updateMatrixWorld();
-		var posLoc = obj.worldToLocal( pos.clone() );	
-		var posX = obj.localToWorld( new THREE.Vector3(posLoc.x, 0, 0) );
-		var posX = new THREE.Vector3().subVectors( posX, obj.position );
-		
-		var posZ = obj.localToWorld( new THREE.Vector3(0, 0, posLoc.z) );
-		var posZ = new THREE.Vector3().subVectors( posZ, obj.position );	
-
-		obj.userData.subpoint.x.position.add( posX );
-		obj.userData.subpoint.z.position.add( posZ );
-	}		
-	
-	var pos2 = new THREE.Vector3().subVectors( pos, obj.position );
-	obj.position.add( pos2 );
-
-	
-	// по положению точек изменяем форму плоскости 
-	if(1 == 1)
-	{
-		var plane = obj.userData.subpoint.plane;		
-		var point = plane.userData.substrate.p;
-		
-		plane.updateMatrixWorld();			
-		var ps1 = plane.worldToLocal( point[0].position.clone() );
-		var ps2 = plane.worldToLocal( point[1].position.clone() );
-		var ps3 = plane.worldToLocal( point[2].position.clone() );
-		var ps4 = plane.worldToLocal( point[3].position.clone() );
-		
-		var x = new THREE.Vector3().subVectors( ps3, ps1 ).x;
-		var z = new THREE.Vector3().subVectors( ps2, ps1 ).z;
-		
-		updateSizeSubstrate({obj: plane, size: {x: x/2, z: z/2}});
-		
-		plane.position.add( pos2.clone().divideScalar( 2 ) );
-	}
-}
 
 
 

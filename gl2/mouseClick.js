@@ -43,8 +43,6 @@ function mouseDownRight()
 
 		clickO = resetPop.clickO();
 	}
-	
-	clickO.move = null;	
 }
 
 
@@ -89,7 +87,6 @@ function onDocumentMouseDown( event )
 
 	 
 	clickO.obj = null; 	
-	clickO.actMove = false;	
 	clickO.rayhit = clickRayHit(event); 
 
 	
@@ -148,9 +145,9 @@ function clickRayHit(event)
 	}
 
 	// scaleBox
-	if(1==2)
+	if(1==1)
 	{
-		if(infProject.tools.wf.cube)
+		if(infProject.tools.wf && infProject.tools.wf.cube)
 		{
 			if(infProject.tools.wf.cube[0].visible)
 			{
@@ -159,7 +156,7 @@ function clickRayHit(event)
 			}		
 		}
 		
-		if(infProject.tools.wf.plane)
+		if(infProject.tools.wf && infProject.tools.wf.plane)
 		{
 			var ray = rayIntersect( event, infProject.tools.wf.plane, 'one' );  
 			if(ray.length > 0) { rayhit = ray[0]; }		
@@ -342,16 +339,15 @@ function clickMouseActive(cdm)
 	 
 	if(cdm.type == 'down')
 	{  
-		if( tag == 'substrate' && camera == cameraTop ) { clickSubstrate2D({intersect: rayhit}); }
-		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate2D({intersect: rayhit}); }
-		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolRulerSubstrate2D({intersect: rayhit}); }
+		if( tag == 'substrate' && camera == cameraTop ) { clickSubstrate({rayhit}); }
+		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate({rayhit}); }
+		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolSubstrate({rayhit}); }
 		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
 		else if( tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
 		else if( tag == 'joinPoint' && camera == cameraTop) { obj.clickPointObj(); }
 		else if( tag == 'obj' && camera == cameraTop ) { obj.clickObj(); }
-		else if( tag == 'boxWF' && camera == cameraTop ) { clickBoxWF_2D( obj, rayhit ); }
-		else if( tag == 'scaleBox_control' && camera == cameraTop ) { clickToggleGp( rayhit ); }
-		else if( tag == 'scaleBox_control' && camera == camera3D ) { clickToggleGp( rayhit ); }
+		else if( tag == 'boxWF' ) { clickBoxWF_2D({rayhit}); }
+		else if( tag == 'scaleBox_control' ) { clickBoxCnrt({rayhit}); }
 		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
 		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
@@ -362,7 +358,6 @@ function clickMouseActive(cdm)
 	{		
 		if( tag == 'joinPoint' && camera == camera3D) { obj.clickPointObj(); }
 		else if( tag == 'obj' && camera == camera3D ) { obj.clickObj(); }
-		else if( tag == 'boxWF' && camera == camera3D ) { clickBoxWF_2D( obj, rayhit ); }
 		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
 		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({clickPos: rayhit.point}); }
 		else if( tag == 'new_point' && camera == camera3D ) { obj.clickPointTube(); }
@@ -386,32 +381,13 @@ function onDocumentMouseMove( event )
 		//detectMouseObj();		
 	}
 
-	clickButton( event );
-		
+	clickButton( event );		
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
-
-	var obj = clickO.move;
 	
-	if ( obj ) 
-	{
-		var tag = obj.userData.tag;
-		
-		if ( tag == 'substrate' ) { moveSubstrate2D( event ); }
-		else if ( tag == 'substrate_point' ) { movePointSubstrate2D( event ); }
-		else if ( tag == 'substrate_tool' ) { moveToolRulerSubstrate2D(event); }		
-		else if ( tag == 'controll_wd' ) { moveToggleChangeWin( event, obj ); }
-		else if ( tag == 'move_control' ) { moveObjectControls( event ); }
-		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }		
-		else if ( tag == 'boxWF' && camera == cameraTop ) { moveBoxWF_2D( event ); }
-	}
-	else 
-	{
-		if ( camera == camera3D ) { cameraMove3D( event ); }
-		else if ( camera == cameraTop ) { moveCameraTop( event ); }
-		else if( camera == cameraView ) { moveCameraView( event ); }
-	}
-	
+	if ( camera == camera3D ) { cameraMove3D( event ); }
+	else if ( camera == cameraTop ) { moveCameraTop( event ); }
+	else if( camera == cameraView ) { moveCameraView( event ); }	
 
 	renderCamera();
 }
@@ -421,22 +397,7 @@ function onDocumentMouseUp( event )
 {
 	if(onfM.stop) return;
 	
-	if(!long_click) clickMouseActive({type: 'up'});
-	
-	
-	var obj = clickO.move;	
-	
-	if(obj)  
-	{
-		var tag = obj.userData.tag;
-		
-		if(tag == 'boxWF') { clickMouseUpBoxWF(obj); }
-		else if(tag == 'scaleBox_control') { setClickLastObj({obj: infProject.tools.wf.plane}); }
-		
-		clickO.move = null;		
-	}	
-	
-	clickO.offset = new THREE.Vector3();
+	if(!long_click) clickMouseActive({type: 'up'});	
 	
 	stopCameraTop();
 	stopCamera3D();
@@ -455,10 +416,6 @@ function setClickLastObj(cdm)
 
 function resetClickLastObj(cdm)
 {
-	//var o = (clickO.last_obj) ? { tag: clickO.last_obj.userData.tag, id: clickO.last_obj.userData.id } : null;	
-	//console.log(1, 'resetClick', o);
-	//console.trace();	
-	
 	clickO.last_obj = null;
 }
 

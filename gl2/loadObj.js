@@ -61,7 +61,9 @@ async function loadObjServer(cdm)
 		let obj = inf.obj.clone();
 		
 		addObjInScene(obj, inf, cdm);
-
+		
+		if(cdm.cursor) crEventObjMoveFromCatalog({obj});
+		
 		return obj;
 	}		
 	

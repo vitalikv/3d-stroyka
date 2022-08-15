@@ -163,12 +163,6 @@ function clickButton( event )
 
 function clickInterface(cdm)
 {
-	if(clickO.move)
-	{
-		deActiveSelected();
-		mouseDownRight();
-	}
-
 	console.log(cdm);
 	if(cdm)
 	{		
