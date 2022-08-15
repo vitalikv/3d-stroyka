@@ -245,29 +245,8 @@ async function addSborkaToScene_1(cdm)
 	if(!inf) return;
 	
 	var obj = inf.arr1[0];
-	var arrO = ddGetGroup({obj, tubePoint: true});
-	clickO.move = obj; 
-	clickO.arrO = arrO;
 	
-	planeMath.position.y = infProject.tools.heightPl.position.y; 
-	planeMath.rotation.set(-Math.PI/2, 0, 0);
-	planeMath.updateMatrixWorld(); 		
-	
-	// устанавливаем высоту над полом
-	clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
-	clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
-	clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
-
-	var offsetY = clickO.offset.y + obj.geometry.boundingBox.min.y;
-	
-
-	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', arrO: arrO, offset: new THREE.Vector3(0, -offsetY, 0)});
-	
-	planeMath.position.y -= offsetY; 
-	planeMath.updateMatrixWorld();
-
-	
-	renderCamera();	
+	crEventObjMoveFromCatalog({obj});
 }
 
 

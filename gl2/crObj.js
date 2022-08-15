@@ -177,25 +177,7 @@ function clickRayJoinPoint({event, obj})
 
 
 
-// перемещение объекта после того как загрузили из каталога 
-function moveObjFromCatalog( event )
-{	
-	let intersects = rayIntersect( event, planeMath, 'one' ); 	
-	if(intersects.length == 0) return;
-	
-	let obj = clickO.move;		
-	
-	if(clickO.arrO.length == 0) clickO.arrO = [obj];
-	if(!clickO.actMove) clickO.actMove = true;	
-	
-	
-	let pos = new THREE.Vector3().addVectors( intersects[ 0 ].point, clickO.offset );		
-	let offset = new THREE.Vector3().subVectors( pos, obj.position ); 
 
-	let arrO = clickO.arrO; 
-
-	infProject.tools.pivot.userData.propPivot({type: 'moveObjs', obj, arrO, offset});
-}
 
 
 

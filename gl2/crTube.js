@@ -549,13 +549,10 @@ function clickRayhitPointWF(params)
 // создаем трубу из каталога 
 function createTubeWF_1(cdm)
 {
-	let visible = false;
+	let visible = false;	
+	if(cdm.type == 'vertical') visible = (camera == cameraTop) ? true : false;	
 	
-	if(cdm.type == 'vertical') visible = (camera == cameraTop) ? true : false;
-	
-	
-	let diameter = (cdm.diameter) ? cdm.diameter : 0.05;
-	//let tube = crTubeWF({point: cdm.point, diameter: diameter, pVisible: visible}); 	 		
+	let diameter = (cdm.diameter) ? cdm.diameter : 0.05;	 		
 	let tube = new TubeN({path: cdm.point, diameter: diameter});
 	
 	return tube;
@@ -563,44 +560,40 @@ function createTubeWF_1(cdm)
 
 
 // добавляем новую трубу в сцену
-function addTubeInScene(tube, cdm)
+function crEventTubeMove(tube)
 {
-	if(tube.userData.tag == 'new_tube')
+	if(tube.userData.tag !== 'new_tube') return;
+	
+	console.log(7777777)
+	planeMath.position.y = infProject.tools.heightPl.position.y;  
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.updateMatrixWorld();
+	
+	setMouseStop(true);
+	
+	mainDiv_1.onmousemove = (event) => 
 	{
-		planeMath.position.y = infProject.tools.heightPl.position.y;  
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-		planeMath.updateMatrixWorld();
+		let intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length == 0) return;		
 		
-		setMouseStop(true);
+		tube.setPosTube({pos: intersects[0].point});			
 		
-		mainDiv_1.onmousemove = (event) => 
-		{
-			let intersects = rayIntersect(event, planeMath, 'one');
-			if (intersects.length == 0) return;		
-			
-			tube.setPosTube({pos: intersects[0].point});			
-			
-			renderCamera();
-		};
+		renderCamera();
+	};
 
-		mainDiv_1.onmousedown = () => 
-		{
-			mainDiv_1.onmousemove = null;
-			mainDiv_1.onmousedown = null;
+	mainDiv_1.onmousedown = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmousedown = null;
+	
+		let intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length > 0) tube.clickTube({clickPos: intersects[0].point});						
 		
-			let intersects = rayIntersect(event, planeMath, 'one');
-			if (intersects.length > 0) tube.clickTube({clickPos: intersects[0].point});						
-			
-			setMouseStop(false);
-			
-			renderCamera();
-		};			
+		setMouseStop(false);
+		
+		renderCamera();
+	};			
 
-	}
-	
-	renderCamera();
-	
-	return tube;
 }
 
 

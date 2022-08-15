@@ -58,12 +58,16 @@ async function loadObjServer(cdm)
 	
 	if(inf.obj)		// объект есть в кэше
 	{ 
-		return addObjInScene(inf, cdm); 
+		let obj = inf.obj.clone();
+		
+		addObjInScene(obj, inf, cdm);
+
+		return obj;
 	}		
 	
 	if(inf.params && inf.params.fc)		// обращаемся к BD list_obj_3
 	{ 
-		var obj = window[inf.params.fc.name](inf.params.cdm);
+		let obj = window[inf.params.fc.name](inf.params.cdm);
 		
 		console.log(inf.params.fc.name);
 		
@@ -84,20 +88,25 @@ async function loadObjServer(cdm)
 				infProject.scene.array.base.push(inf);
 			}
 			
-			return addTubeInScene(obj, cdm);
+			if(cdm.cursor) crEventTubeMove(obj);	// создаем событие перемещение трубы из каталога
+			
+			return obj;
 		}		
 		else 	// если объект, то в кэш сохраняем параметры и сам объект
 		{ 
-		
-			
-			console.log(obj);
 			obj.userData.fc = {};
 			obj.userData.fc.name = inf.params.fc.name;
 			obj.userData.fc.params = inf.params.cdm;			
 			inf.obj = obj;
 			infProject.scene.array.base.push(inf);
 			
-			return addObjInScene(inf, cdm);
+			obj = inf.obj.clone();
+			
+			addObjInScene(obj, inf, cdm);
+			
+			if(cdm.cursor) crEventObjMoveFromCatalog({obj});
+			
+			return obj;
 		}			
 	}
 	
@@ -107,51 +116,89 @@ async function loadObjServer(cdm)
 
 
 // добавляем объект в сцену
-function addObjInScene(inf, cdm)
-{
-	var obj = inf.obj.clone();
-	
+function addObjInScene(obj, inf, cdm)
+{		
 	obj.initObj({id: cdm.id, lotid: cdm.lotid, nameRus: inf.name});
 	
-	if(cdm.pos)
-	{ 
-		obj.position.copy(cdm.pos); 
-	}
-	else
-	{ 
-		obj.position.y = infProject.tools.heightPl.position.y;
-		planeMath.position.y = infProject.tools.heightPl.position.y; 
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-		planeMath.updateMatrixWorld(); 
-	}
+	if(cdm.pos) obj.position.copy(cdm.pos);
 	
-	if(cdm.q){ obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w); }					
-	
-	
-	
-	if(cdm.cursor) 
-	{ 
-		clickO.move = obj; 
-		
-		// устанавливаем высоту над полом
-		clickO.offset.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
-		clickO.offset.y = -((obj.geometry.boundingBox.max.y - obj.geometry.boundingBox.min.y)/2 + obj.geometry.boundingBox.min.y);
-		clickO.offset.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
-
-		obj.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y;
-		planeMath.position.y -= clickO.offset.y + obj.geometry.boundingBox.min.y; 
-		planeMath.updateMatrixWorld();
-	}	
-
-
+	if(cdm.q) obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w);						
 		
 	renderCamera();
-	
-	return obj;
 }
 
 
+// назначаем событие при загрузки объекта из каталога
+function crEventObjMoveFromCatalog({obj})
+{	
+	planeMath.position.y = infProject.tools.heightPl.position.y;  
+	planeMath.rotation.set(-Math.PI/2, 0, 0);
+	planeMath.updateMatrixWorld();
+	
+	
+	setMouseStop(true);
+	
+	let arrO = ddGetGroup({obj, tubePoint: true});
+	
+	setStartPos({arrO});
+	
+	// устанавливаем высоту над полом
+	function setStartPos({arrO})
+	{		
+		if(!obj.geometry.boundingBox) obj.geometry.computeBoundingBox();
+		let offsetY = obj.geometry.boundingBox.min.y;
 
+		let posCenter = new THREE.Vector3();
+		posCenter.x = -((obj.geometry.boundingBox.max.x - obj.geometry.boundingBox.min.x)/2 + obj.geometry.boundingBox.min.x);
+		posCenter.y = 0;
+		posCenter.z = -((obj.geometry.boundingBox.max.z - obj.geometry.boundingBox.min.z)/2 + obj.geometry.boundingBox.min.z);
+		
+		for(let i = 0; i < arrO.length; i++)
+		{
+			arrO[i].position.y += planeMath.position.y - offsetY;
+			arrO[i].position.add(posCenter);
+		}		
+	}
+	
+	let pos = new THREE.Vector3(0, planeMath.position.y, 0);
+	
+	
+	mainDiv_1.onmousemove = (event) => 
+	{
+		let intersects = rayIntersect(event, planeMath, 'one');
+		if (intersects.length == 0) return;			
+		
+		pos = intersects[0].point.clone().sub(pos);		
+		
+		for(let i = 0; i < arrO.length; i++)
+		{
+			arrO[i].position.add(pos);		
+		}		
+		
+		pos = intersects[0].point.clone();
+		
+		renderCamera();
+	};
+
+	mainDiv_1.onmousedown = () => 
+	{
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmousedown = null;
+	
+		//let intersects = rayIntersect(event, planeMath, 'one');
+		//if (intersects.length > 0 && intersects[0].object.userData.tag && intersects[0].object.userData.tag === 'obj') 
+		//{
+		//	obj.clickObj({clickPos: obj.position});
+		//}
+
+		obj.clickObj({clickPos: obj.position});
+		
+		setMouseStop(false);
+		
+		renderCamera();
+	};			
+
+}
 
 
 

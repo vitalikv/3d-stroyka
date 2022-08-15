@@ -404,7 +404,6 @@ function onDocumentMouseMove( event )
 		else if ( tag == 'move_control' ) { moveObjectControls( event ); }
 		else if ( tag == 'scaleBox_control' ) { moveToggleGp( event ); }		
 		else if ( tag == 'boxWF' && camera == cameraTop ) { moveBoxWF_2D( event ); }
-		else if ( tag == 'obj' ) { moveObjFromCatalog( event ); }
 	}
 	else 
 	{
