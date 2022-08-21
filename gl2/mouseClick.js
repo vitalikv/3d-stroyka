@@ -75,9 +75,6 @@ function onDocumentMouseDown( event )
 		case 2: vk_click = 'right'; break;
 	}
 
-	
-	if(camera == cameraView){ clickSetCameraView( event, vk_click ); return; }
-
 	clickSetCamera2D( event, vk_click );
 	clickSetCamera3D( event, vk_click );
 
@@ -387,7 +384,6 @@ function onDocumentMouseMove( event )
 	
 	if ( camera == camera3D ) { cameraMove3D( event ); }
 	else if ( camera == cameraTop ) { moveCameraTop( event ); }
-	else if( camera == cameraView ) { moveCameraView( event ); }	
 
 	renderCamera();
 }
@@ -401,7 +397,6 @@ function onDocumentMouseUp( event )
 	
 	stopCameraTop();
 	stopCamera3D();
-	stopCameraView();
 	
 	renderCamera();
 }

@@ -50,9 +50,6 @@ elemStop.forEach(function(el)
 infProject.elem.screenshot = document.querySelector('[nameId="screenshot"]');
 infProject.elem.screenshot.onmousedown = function(e){ saveAsImage(); e.stopPropagation(); };
 
-infProject.elem.butt_close_cameraView = document.querySelector('[nameId="butt_close_cameraView"]');
-infProject.elem.butt_close_cameraView.onmousedown = function(e){ deActiveCameraView(); }
-
 
 //----------------- верхняя панель <-
 

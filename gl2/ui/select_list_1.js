@@ -240,7 +240,7 @@ class SelectList_1
 			params.sborka = true;
 			params.inf = this.inf;
 			
-			activeCameraView(params);
+			infProject.class.camView.enable(params);
 		}		
 	}	
 }

@@ -122,8 +122,7 @@ function clickBoxWF_2D({rayhit})
 		setMouseStop(false);
 		
 		stopCameraTop();
-		stopCamera3D();
-		stopCameraView();		
+		stopCamera3D();	
 		
 		renderCamera();
 	};			
@@ -243,8 +242,7 @@ function clickBoxCnrt({rayhit})
 		setMouseStop(false);
 		
 		stopCameraTop();
-		stopCamera3D();
-		stopCameraView();		
+		stopCamera3D();		
 		
 		renderCamera();
 	};			

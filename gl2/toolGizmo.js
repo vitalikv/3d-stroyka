@@ -178,7 +178,6 @@ function crGizmo(params)
 				
 				stopCameraTop();
 				stopCamera3D();
-				stopCameraView();
 
 				renderCamera();
 			};			

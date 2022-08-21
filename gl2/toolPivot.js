@@ -307,7 +307,6 @@ function crPivot(params)
 				
 				stopCameraTop();
 				stopCamera3D();
-				stopCameraView();
 
 				renderCamera();
 			};			

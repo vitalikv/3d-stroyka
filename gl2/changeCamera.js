@@ -18,7 +18,7 @@ function changeCamera(cam)
 
 	infProject.elem.butt_camera_2D.style.display = 'none';
 	infProject.elem.butt_camera_3D.style.display = 'none';
-	infProject.elem.butt_close_cameraView.style.display = 'none';
+	//infProject.elem.butt_close_cameraView.style.display = 'none';
 	
 	
 	if(camera == cameraTop)

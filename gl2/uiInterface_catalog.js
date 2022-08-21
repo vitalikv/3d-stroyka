@@ -109,7 +109,7 @@ async function addObjInCatalogUI_1(cdm)
 				elem_2.onmousedown = function(e)
 				{ 
 					clickItemFocusUI_1({el: elem});
-					activeCameraView({lotid: n});
+					infProject.class.camView.enable({lotid: n});
 					e.stopPropagation();
 				};	
 			}(n));			
@@ -211,7 +211,7 @@ function addElemItemSborka_UI_1(cdm)
 		elem_2.onmousedown = function(e)
 		{ 
 			clickItemFocusUI_1({el: elem});
-			activeCameraView({sborka: true, inf: cdm});
+			infProject.class.camView.enable({sborka: true, inf: cdm});
 			e.stopPropagation();
 		};	
 	}());			

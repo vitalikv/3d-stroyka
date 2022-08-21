@@ -555,6 +555,8 @@ function init()
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
 	infProject.class = {};
 	infProject.class.group = new NewGroup();
+	infProject.class.camView = new CameraView();
+	console.log(4444, infProject.class.camView);
 	
 	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI

@@ -203,7 +203,7 @@ console.log(json);
 			{
 				elem_2.onmousedown = function(e)
 				{ 
-					activeCameraView({lotid: n});
+					infProject.class.camView.enable({lotid: n});
 					e.stopPropagation();
 				};	
 			}(n));			

@@ -234,7 +234,6 @@ function crEventButtonWarmTubeGrid(params)
 				
 				stopCameraTop();
 				stopCamera3D();
-				stopCameraView();
 
 				renderCamera();
 			};				

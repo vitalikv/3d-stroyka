@@ -698,8 +698,7 @@ function clickToolSubstrate({rayhit})
 		setMouseStop(false);
 		
 		stopCameraTop();
-		stopCamera3D();
-		stopCameraView();		
+		stopCamera3D();		
 		
 		renderCamera();
 	};			
@@ -764,8 +763,7 @@ function clickSubstrate({rayhit})
 		setMouseStop(false);
 		
 		stopCameraTop();
-		stopCamera3D();
-		stopCameraView();		
+		stopCamera3D();		
 		
 		renderCamera();
 	};			
@@ -865,8 +863,7 @@ function clickPointSubstrate({rayhit})
 		setMouseStop(false);
 		
 		stopCameraTop();
-		stopCamera3D();
-		stopCameraView();		
+		stopCamera3D();		
 		
 		renderCamera();
 	};			
