@@ -1,24 +1,60 @@
 
 
 class CameraView
-{
-	camera = cameraView;
-	
-	
+{	
 	constructor()
 	{
+		this.camView = null;
 		this.btnClose = null;
 		
+		this.obj = null;
+		this.currentCam = null;
+		
+		this.initCamView();
 		this.initEvent();		
 	}
 	
 	initEvent()
 	{
 		this.btnClose = document.querySelector('[nameId="butt_close_cameraView"]');
-		this.btnClose.onmousedown = (e) => { this.disable(); }		
+		this.btnClose.onmousedown = (e) => { this.disable(); }
+
+		let windowResize = this.windowResize.bind(this);
+		window.addEventListener('resize', windowResize, false);
 	}
 	
-	// включаем CameraView
+	initCamView()
+	{
+		let camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.01, 1000 );  
+		camera.rotation.order = 'YZX';		//'ZYX'
+		camera.position.y = 2000;
+		camera.lookAt(new THREE.Vector3());
+		
+		camera.userData.mouse = new THREE.Vector2();
+		camera.userData.targetPos = new THREE.Vector3();
+		camera.userData.intersectPos = new THREE.Vector3();
+		camera.userData.theta = 0;
+		camera.userData.phi = 0; 
+
+		this.camView = camera;
+	}
+	
+	windowResize() 
+	{
+		//const width = mainDiv_1.clientWidth;
+		//const height = mainDiv_1.clientHeight;
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+		
+		let aspect = width / height;
+		
+		this.camView.aspect = aspect;
+		this.camView.updateProjectionMatrix();
+
+		this.render();
+	}
+	
+	// включаем Camera
 	enable(params)
 	{
 		this.btnClose.style.display = '';
@@ -28,12 +64,11 @@ class CameraView
 		deActiveSelected();
 		this.deleteObjCameraView();
 
-		if(camera != cameraView) cameraView.userData.cameraView.lastCam = camera;
+		if(this.currentCam !== this.camView) this.currentCam = camera;
 		
-		cameraView.position.y = 2000;
-		camera = cameraView;
-		renderPass.camera = cameraView;
-		outlinePass.renderCamera = cameraView;
+		camera = this.camView;
+		renderPass.camera = this.camView;
+		outlinePass.renderCamera = this.camView;
 		this.render();
 		
 		this.activeCamera(params);
@@ -41,7 +76,7 @@ class CameraView
 		this.initMouse();
 	}
 
-	// включаем CameraView
+	// включаем Camera
 	async activeCamera(cdm)
 	{  
 		let obj = null;
@@ -55,6 +90,8 @@ class CameraView
 			
 			inf.arr1.forEach((o) => o.position.y += 2000 )
 			
+			addDeleteElemSettingSborka_UI_1(cdm);
+			
 			obj = inf.arr1[0];
 		}
 		else
@@ -64,7 +101,7 @@ class CameraView
 			obj.position.y += 2000;		
 		}
 		
-		cameraView.userData.cameraView.arrO = [obj];
+		this.obj = obj;
 		this.fitCamToObj({obj});			 
 		
 		this.render();
@@ -126,11 +163,9 @@ class CameraView
 	
 	startMoveCamera(event, click)
 	{
-		let inf = cameraView.userData.cameraView;	
-		
 		if(click == 'left')			
 		{
-			let dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
+			let dir = new THREE.Vector3().subVectors( this.camView.userData.targetPos, this.camView.position ).normalize();
 			
 			// получаем угол наклона камеры к target (к точке куда она смотрит)
 			let dergree = THREE.Math.radToDeg( dir.angleTo(new THREE.Vector3(dir.x, 0, dir.z)) ) * 2;	
@@ -140,47 +175,45 @@ class CameraView
 			dir.y = 0; 
 			dir.normalize();    		
 			
-			inf.theta = THREE.Math.radToDeg( Math.atan2(dir.x, dir.z) - Math.PI ) * 2;
-			inf.phi = dergree;
+			this.camView.userData.theta = THREE.Math.radToDeg( Math.atan2(dir.x, dir.z) - Math.PI ) * 2;
+			this.camView.userData.phi = dergree;
 		}
 		else if(click == 'right')		
 		{
-			planeMath.position.copy( inf.targetPos );
-			planeMath.rotation.copy( camera.rotation );
+			planeMath.position.copy( this.camView.userData.targetPos );
+			planeMath.rotation.copy( this.camView.rotation );
 			planeMath.updateMatrixWorld();
 
 			let intersects = rayIntersect( event, planeMath, 'one' );	
-			inf.intersectPos = intersects[0].point;  
+			this.camView.userData.intersectPos = intersects[0].point;  
 		}		
 
-		inf.mouse.x = event.clientX;
-		inf.mouse.y = event.clientY;			
+		this.camView.userData.mouse.x = event.clientX;
+		this.camView.userData.mouse.y = event.clientY;			
 	}
 
 	moveCamera(event, click)
 	{  
-		let inf = cameraView.userData.cameraView;
-		
 		if(click == 'left') 
 		{  
-			let radious = inf.targetPos.distanceTo( camera.position );
-			let theta = - ( ( event.clientX - inf.mouse.x ) * 0.5 ) + inf.theta;
-			let phi = ( ( event.clientY - inf.mouse.y ) * 0.5 ) + inf.phi;
+			let radious = this.camView.userData.targetPos.distanceTo( this.camView.position );
+			let theta = - ( ( event.clientX - this.camView.userData.mouse.x ) * 0.5 ) + this.camView.userData.theta;
+			let phi = ( ( event.clientY - this.camView.userData.mouse.y ) * 0.5 ) + this.camView.userData.phi;
 			phi = Math.min( 170, Math.max( -160, phi ) );
 
-			camera.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
-			camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
-			camera.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+			this.camView.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
+			this.camView.position.y = radious * Math.sin( phi * Math.PI / 360 );
+			this.camView.position.z = radious * Math.cos( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 
-			camera.position.add( inf.targetPos );  
-			camera.lookAt( inf.targetPos );					
+			this.camView.position.add( this.camView.userData.targetPos );  
+			this.camView.lookAt( this.camView.userData.targetPos );					
 		}
 		else if(click == 'right')    
 		{		
 			let intersects = rayIntersect( event, planeMath, 'one' );
-			let offset = new THREE.Vector3().subVectors( inf.intersectPos, intersects[0].point );
-			camera.position.add( offset );
-			inf.targetPos.add( offset );
+			let offset = new THREE.Vector3().subVectors( this.camView.userData.intersectPos, intersects[0].point );
+			this.camView.position.add( offset );
+			this.camView.userData.targetPos.add( offset );
 		}		
 	}
 
@@ -222,34 +255,32 @@ class CameraView
 		let maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y, bound.max.z - bound.min.z );  	
 		
 		let dir = obj.getWorldDirection().multiplyScalar( maxSize * 2 );	
-		camera.position.copy(center).add(dir);
-		camera.lookAt(center);			
+		this.camView.position.copy(center).add(dir);
+		this.camView.lookAt(center);			
 		
-		cameraView.userData.cameraView.targetPos.copy( center );
+		this.camView.userData.targetPos.copy( center );
 		
-		camera.updateProjectionMatrix();
+		this.camView.updateProjectionMatrix();
 	}
 
 
 	zoomCamera( delta, z )
 	{		
-		let inf = cameraView.userData.cameraView;
-
 		let vect = delta * -0.08;
 
-		let dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
+		let dir = new THREE.Vector3().subVectors( this.camView.userData.targetPos, this.camView.position ).normalize();
 		dir = new THREE.Vector3().addScaledVector( dir, vect );
 
-		let pos = new THREE.Vector3().addVectors( camera.position, dir );	
+		let pos = new THREE.Vector3().addVectors( this.camView.position, dir );	
 
-		let qt = quaternionDirection( new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize() );
-		let v1 = localTransformPoint( new THREE.Vector3().subVectors( inf.targetPos, pos ), qt );
+		let qt = quaternionDirection( new THREE.Vector3().subVectors( this.camView.userData.targetPos, this.camView.position ).normalize() );
+		let v1 = localTransformPoint( new THREE.Vector3().subVectors( this.camView.userData.targetPos, pos ), qt );
 		
-		if ( v1.z >= 0.03) camera.position.copy( pos );
+		if ( v1.z >= 0.03) this.camView.position.copy( pos );
 	}
 
 	
-	// включаем CameraView
+	// выключаем Camera
 	disable()
 	{
 		mainDiv_1.onmousedown = null;	
@@ -261,17 +292,17 @@ class CameraView
 		
 		this.deleteObjCameraView();
 		
-		changeCamera(cameraView.userData.cameraView.lastCam);		
+		changeCamera(this.currentCam);		
 	}
 	
 	
 	// удаляем объекты из preview
 	deleteObjCameraView()
 	{
-		let arr = cameraView.userData.cameraView.arrO;
-		cameraView.userData.cameraView.arrO = [];
+		let obj = this.obj;
+		this.obj = null;
 		
-		detectDeleteObj({obj: arr[0]});
+		detectDeleteObj({obj});
 		
 		addDeleteElemSettingSborka_UI_1();
 

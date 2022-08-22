@@ -238,9 +238,7 @@ function getRazyem(cdm)
 
 // добавляем сборку радиатора в сцену
 async function addSborkaToScene_1(cdm)
-{ 
-	if(camera == cameraView) return;
- 
+{  
 	var inf = await actionFnSborka_1(cdm);	
 	if(!inf) return;
 	
@@ -258,8 +256,6 @@ async function actionFnSborka_1(cdm)
 	var inf = null;
 	
 	if(cdm.inf) { inf = window[cdm.inf.fc](cdm); }
-	
-	if(camera == cameraView) { addDeleteElemSettingSborka_UI_1(cdm); }
 	
 	return inf;
 }

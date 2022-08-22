@@ -19,7 +19,7 @@ function initScene()
 	scene.background = new THREE.Color( 0xffffff );	
 }
 
-var camera, cameraTop, camera3D, cameraView;
+var camera, cameraTop, camera3D;
 
 function initCams()
 {
@@ -51,21 +51,6 @@ function initCams()
 
 	//----------- camera3D
 
-
-
-	cameraView = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.01, 1000 );  
-	cameraView.rotation.order = 'YZX';		//'ZYX'
-	cameraView.position.set(0, 1, 1);
-	cameraView.lookAt(new THREE.Vector3());
-	cameraView.userData.cameraView = {};
-	cameraView.userData.cameraView.click = '';
-	cameraView.userData.cameraView.mouse = new THREE.Vector2();
-	cameraView.userData.cameraView.targetPos = new THREE.Vector3(0, 0, 0);
-	cameraView.userData.cameraView.intersectPos = new THREE.Vector3();
-	cameraView.userData.cameraView.theta = 0;
-	cameraView.userData.cameraView.phi = 0; 
-	cameraView.userData.cameraView.lastCam = null;
-	cameraView.userData.cameraView.arrO = [];
 	
 	
 	camera = cameraTop;
@@ -146,9 +131,6 @@ function onWindowResize()
 	 
 	camera3D.aspect = aspect;
 	camera3D.updateProjectionMatrix();
-	
-	cameraView.aspect = aspect;
-	cameraView.updateProjectionMatrix();
 	
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	
