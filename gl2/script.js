@@ -125,12 +125,6 @@ function clickButton( event )
 {
 	if(!clickO.button) return;	
 	
-	if(camera == cameraView) 
-	{
-		clickO.button = null;		
-		return;
-	}
-	
 	if(camera == cameraTop)
 	{
 		planeMath.position.set(0, 0, 0);
@@ -348,8 +342,7 @@ mainDiv_1.addEventListener( 'touchend', onDocumentMouseUp, false );
 
 mainDiv_1.addEventListener("mouseout", function () { infProject.ui.div.msDiv_1.style.display = "none"; });	// вышли из canvas или навели на другой элемент
 
-mainDiv_1.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
-mainDiv_1.addEventListener('mousewheel', onDocumentMouseWheel, false);	
+mainDiv_1.addEventListener('wheel', onDocumentMouseWheel, false);	
 
 
 document.body.addEventListener("keydown", function (e) 

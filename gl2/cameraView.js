@@ -28,10 +28,48 @@ class CameraView
 		deActiveSelected();
 		this.deleteObjCameraView();
 
-		activeCameraView(params);
+		if(camera != cameraView) cameraView.userData.cameraView.lastCam = camera;
+		
+		cameraView.position.y = 2000;
+		camera = cameraView;
+		renderPass.camera = cameraView;
+		outlinePass.renderCamera = cameraView;
+		this.render();
+		
+		this.activeCamera(params);
 		
 		this.initMouse();
 	}
+
+	// включаем CameraView
+	async activeCamera(cdm)
+	{  
+		let obj = null;
+		
+		if(cdm.sborka)
+		{
+			//await sleepPause(2000);
+			
+			let inf = await actionFnSborka_1(cdm);	
+			if(!inf) return;
+			
+			inf.arr1.forEach((o) => o.position.y += 2000 )
+			
+			obj = inf.arr1[0];
+		}
+		else
+		{
+			obj = await loadObjServer({lotid: cdm.lotid, notArray: true});
+			
+			obj.position.y += 2000;		
+		}
+		
+		cameraView.userData.cameraView.arrO = [obj];
+		this.fitCamToObj({obj});			 
+		
+		this.render();
+	}
+
 	
 	initMouse()
 	{
@@ -88,14 +126,14 @@ class CameraView
 	
 	startMoveCamera(event, click)
 	{
-		var inf = cameraView.userData.cameraView;	
+		let inf = cameraView.userData.cameraView;	
 		
 		if(click == 'left')			
 		{
-			var dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
+			let dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
 			
 			// получаем угол наклона камеры к target (к точке куда она смотрит)
-			var dergree = THREE.Math.radToDeg( dir.angleTo(new THREE.Vector3(dir.x, 0, dir.z)) ) * 2;	
+			let dergree = THREE.Math.radToDeg( dir.angleTo(new THREE.Vector3(dir.x, 0, dir.z)) ) * 2;	
 			if(dir.y > 0) { dergree *= -1; } 			
 			
 			// получаем угол направления (на плоскости) камеры к target 
@@ -111,7 +149,7 @@ class CameraView
 			planeMath.rotation.copy( camera.rotation );
 			planeMath.updateMatrixWorld();
 
-			var intersects = rayIntersect( event, planeMath, 'one' );	
+			let intersects = rayIntersect( event, planeMath, 'one' );	
 			inf.intersectPos = intersects[0].point;  
 		}		
 
@@ -121,14 +159,14 @@ class CameraView
 
 	moveCamera(event, click)
 	{  
-		var inf = cameraView.userData.cameraView;
+		let inf = cameraView.userData.cameraView;
 		
 		if(click == 'left') 
 		{  
-			var radious = inf.targetPos.distanceTo( camera.position );
-			var theta = - ( ( event.clientX - inf.mouse.x ) * 0.5 ) + inf.theta;
-			var phi = ( ( event.clientY - inf.mouse.y ) * 0.5 ) + inf.phi;
-			var phi = Math.min( 170, Math.max( -160, phi ) );
+			let radious = inf.targetPos.distanceTo( camera.position );
+			let theta = - ( ( event.clientX - inf.mouse.x ) * 0.5 ) + inf.theta;
+			let phi = ( ( event.clientY - inf.mouse.y ) * 0.5 ) + inf.phi;
+			phi = Math.min( 170, Math.max( -160, phi ) );
 
 			camera.position.x = radious * Math.sin( theta * Math.PI / 360 ) * Math.cos( phi * Math.PI / 360 );
 			camera.position.y = radious * Math.sin( phi * Math.PI / 360 );
@@ -139,27 +177,73 @@ class CameraView
 		}
 		else if(click == 'right')    
 		{		
-			var intersects = rayIntersect( event, planeMath, 'one' );
-			var offset = new THREE.Vector3().subVectors( inf.intersectPos, intersects[0].point );
+			let intersects = rayIntersect( event, planeMath, 'one' );
+			let offset = new THREE.Vector3().subVectors( inf.intersectPos, intersects[0].point );
 			camera.position.add( offset );
 			inf.targetPos.add( offset );
 		}		
 	}
 
+	// камера обхватывает весь объект
+	fitCamToObj({obj})
+	{
+		let v = [];
+		
+		obj.updateMatrixWorld();
+		if(!obj.geometry.boundingBox) obj.geometry.computeBoundingBox();	
+
+		let bound = JSON.parse(JSON.stringify(obj.geometry.boundingBox));
+		
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
+
+
+		bound = { min : { x : Infinity, y : Infinity, z : Infinity }, max : { x : -Infinity, y : -Infinity, z : -Infinity } };
+		
+		for(let i = 0; i < v.length; i++)
+		{
+			if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+			if(v[i].y < bound.min.y) { bound.min.y = v[i].y; }
+			if(v[i].y > bound.max.y) { bound.max.y = v[i].y; }			
+			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+		}				
+		
+		let center = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, (bound.max.y - bound.min.y)/2 + bound.min.y, (bound.max.z - bound.min.z)/2 + bound.min.z);
+
+		let maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y, bound.max.z - bound.min.z );  	
+		
+		let dir = obj.getWorldDirection().multiplyScalar( maxSize * 2 );	
+		camera.position.copy(center).add(dir);
+		camera.lookAt(center);			
+		
+		cameraView.userData.cameraView.targetPos.copy( center );
+		
+		camera.updateProjectionMatrix();
+	}
+
 
 	zoomCamera( delta, z )
 	{		
-		var inf = cameraView.userData.cameraView;
+		let inf = cameraView.userData.cameraView;
 
-		var vect = delta * -0.08;
+		let vect = delta * -0.08;
 
-		var dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
+		let dir = new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize();
 		dir = new THREE.Vector3().addScaledVector( dir, vect );
 
-		var pos = new THREE.Vector3().addVectors( camera.position, dir );	
+		let pos = new THREE.Vector3().addVectors( camera.position, dir );	
 
-		var qt = quaternionDirection( new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize() );
-		var v1 = localTransformPoint( new THREE.Vector3().subVectors( inf.targetPos, pos ), qt );
+		let qt = quaternionDirection( new THREE.Vector3().subVectors( inf.targetPos, camera.position ).normalize() );
+		let v1 = localTransformPoint( new THREE.Vector3().subVectors( inf.targetPos, pos ), qt );
 		
 		if ( v1.z >= 0.03) camera.position.copy( pos );
 	}
@@ -184,11 +268,10 @@ class CameraView
 	// удаляем объекты из preview
 	deleteObjCameraView()
 	{
-		var arr = cameraView.userData.cameraView.arrO;
+		let arr = cameraView.userData.cameraView.arrO;
+		cameraView.userData.cameraView.arrO = [];
 		
 		detectDeleteObj({obj: arr[0]});
-		
-		cameraView.userData.cameraView.arrO = [];
 		
 		addDeleteElemSettingSborka_UI_1();
 
@@ -202,47 +285,7 @@ class CameraView
 }    
 
 
-// включаем CameraView
-async function activeCameraView(cdm)
-{  
-	if(camera != cameraView) cameraView.userData.cameraView.lastCam = camera;
-	
-	cameraView.position.y = 2000;
-	camera = cameraView;
-	renderPass.camera = cameraView;
-	outlinePass.renderCamera = cameraView;
-	
 
-	
-	
-	renderCamera();
-console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);
-	
-	if(cdm.sborka)
-	{
-		//await sleepPause(2000);
-		
-		var inf = await actionFnSborka_1(cdm);	
-		if(!inf) return;
-		
-		infProject.tools.pivot.userData.propPivot({type: 'moveObjs', arrO: inf.arr1, offset: new THREE.Vector3(0, 2000, 0)});		
-
-		var obj = inf.arr1[0];
-	}
-	else
-	{
-		var obj = await loadObjServer({lotid: cdm.lotid, notArray: true});
-		
-		obj.position.y += 2000;		
-	}
-	
-	cameraView.userData.cameraView.arrO = [obj];
-	fitCameraToObject({obj: obj});	
-	 
-console.log(infProject.scene.array.obj.length, renderer.info.memory.geometries, renderer.info.memory.textures);	
-	
-	renderCamera();
-}
 
 
 
