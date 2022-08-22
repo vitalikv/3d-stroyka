@@ -102,7 +102,7 @@ async function loadObjServer(cdm)
 			inf.obj = obj;
 			infProject.scene.array.base.push(inf);
 			
-			obj = inf.obj.clone();
+			obj = inf.obj.clone({cash: true});
 			
 			addObjInScene(obj, inf, cdm);
 			

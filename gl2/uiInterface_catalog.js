@@ -102,7 +102,7 @@ async function addObjInCatalogUI_1(cdm)
 				};	
 			}(n));
 
-			// назначаем событие при клике на лупу UI
+			// при клике на лупу добавляем cameraView
 			var elem_2 = elem.querySelector('[nameId="sh_select_obj3D"]');
 			(function(n) 
 			{

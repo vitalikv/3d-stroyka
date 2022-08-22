@@ -29,11 +29,11 @@ class ObjNew extends THREE.Mesh
 		this.uiEstimateListObj({type: 'add'});
 	}
 
-	clone() 
+	clone({cash = false} = {}) 
 	{
 		let obj = new this.constructor(this).copy( this, false );
 		
-		obj.initObj({lotid: obj.userData.obj3D.lotid, nameRus: obj.userData.obj3D.nameRus});
+		if(!cash) obj.initObj({lotid: obj.userData.obj3D.lotid, nameRus: obj.userData.obj3D.nameRus});
 
 		return obj;
 	}
