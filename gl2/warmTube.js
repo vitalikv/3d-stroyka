@@ -3,10 +3,8 @@
 
 
 
-function crEventButtonWarmTube(params)
+function crEventButtonWarmTube({container}) 
 {
-	let container = params.container;
-	
 	eventClickButton();
 	
 	function eventClickButton()

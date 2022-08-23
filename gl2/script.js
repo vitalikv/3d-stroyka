@@ -120,61 +120,7 @@ function rayIntersect( event, obj, t, recursive )
 
 
 
-// нажали на кнопку интерфейса, загружаем объект	
-function clickButton( event )
-{
-	if(!clickO.button) return;	
-	
-	if(camera == cameraTop)
-	{
-		planeMath.position.set(0, 0, 0);
-		planeMath.rotation.set(-Math.PI/2, 0, 0);
-	}
-	
-	planeMath.updateMatrixWorld();
 
-	var intersects = rayIntersect( event, planeMath, 'one' );
-	
-	if(intersects.length == 0) return;	
-	
-	if(camera == cameraTop || camera == camera3D)
-	{ 		
-		if(clickO.button == 'add_lotid')
-		{
-			loadObjServer({lotid: clickO.options, cursor: true});
-		}
-		else if(clickO.button == 'add_group_obj')
-		{
-			addSborkaToScene_1({addScene: true, inf: clickO.options});
-		}		
-	}
-	
-	clickO.buttonAct = clickO.button;
-	clickO.button = null;
-	
-}	
-	
-
-function clickInterface(cdm)
-{
-	console.log(cdm);
-	if(cdm)
-	{		
-		deActiveSelected();	
-				
-		if(cdm.button == 'add_lotid')
-		{
-			clickO.button = cdm.button; 
-			clickO.options = cdm.value;					
-		}
-		else if(cdm.button == 'add_group_obj')
-		{
-			clickO.button = cdm.button; 
-			clickO.options = cdm.value;					
-		}		
-	}
-
-}	
 
 
 

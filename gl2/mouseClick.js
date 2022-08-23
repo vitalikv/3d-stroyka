@@ -26,26 +26,6 @@ function setRayhitStop(value)
 }
 
 
-function mouseDownRight()
-{
-	
-	clickO.buttonAct = null;
-	clickO.button = null; 
-	
-	var obj = clickO.move;
-	
-	if(obj)
-	{		
-		if(obj.userData.tag == 'obj')
-		{
-			deleteObjectPop(obj); 
-		}		
-
-		clickO = resetPop.clickO();
-	}
-}
-
-
 
 function onDocumentMouseDown( event ) 
 {
@@ -74,14 +54,11 @@ function onDocumentMouseDown( event )
 		case 1: vk_click = 'right'; /*middle*/ break;
 		case 2: vk_click = 'right'; break;
 	}
-
+	
 	clickSetCamera2D( event, vk_click );
 	clickSetCamera3D( event, vk_click );
 
-
-	if ( vk_click == 'right' ) { mouseDownRight( event ); return; } 
-
-
+	if ( vk_click == 'right' ) { return; }
 	 
 	clickO.obj = null; 	
 	clickO.rayhit = clickRayHit(event); 
@@ -376,9 +353,7 @@ function onDocumentMouseMove( event )
 		lastMouseTime = new Date().getTime();
 		moveMouse = event;	
 		//detectMouseObj();		
-	}
-
-	clickButton( event );		
+	}		
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
 	

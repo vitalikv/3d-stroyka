@@ -52,20 +52,7 @@ var resetPop =
 	
 	clickO : function()
 	{
-		var inf = { obj: null, last_obj: null, hover: null, rayhit : null, button : null, buttonAct : null };
-		inf.down = null;
-		inf.move = null;
-		inf.up = null;
-		inf.offset = new THREE.Vector3();
-		inf.actMove = false;
-		inf.pos = { clickDown : new THREE.Vector3() };
-		inf.click = { wall : [], point : [] };  
-		inf.selectBox = { arr : [], drag : false, move : false, walls : [], walls_2 : [], point : [] };
-		inf.keys = [];
-		inf.options = null;
-		inf.arrO = [];
-		
-		return inf;
+		return { obj: null, last_obj: null, rayhit : null, keys: [] };
 	},
 	
 	active : function()

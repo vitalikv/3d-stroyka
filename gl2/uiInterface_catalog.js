@@ -97,7 +97,10 @@ async function addObjInCatalogUI_1(cdm)
 				elem.onmousedown = function(e)
 				{ 
 					clickItemFocusUI_1({el: elem});
-					clickInterface({button: 'add_lotid', value: n}); 
+					
+					deActiveSelected();					
+					promiseCursorInScene({container: mainDiv_1}).then(data=> { loadObjServer({lotid: n, cursor: true}); })
+					
 					e.stopPropagation(); 
 				};	
 			}(n));
@@ -199,7 +202,10 @@ function addElemItemSborka_UI_1(cdm)
 		elem.onmousedown = function(e)
 		{ 
 			clickItemFocusUI_1({el: elem});
-			clickInterface({button: 'add_group_obj', value: cdm}); 
+			
+			deActiveSelected();
+			promiseCursorInScene({container: mainDiv_1}).then(data=> { addSborkaToScene_1({addScene: true, inf: cdm}); }) 
+			
 			e.stopPropagation(); 
 		}	  
 	}());
@@ -230,6 +236,21 @@ function addElemItemSborka_UI_1(cdm)
 }
 
 
+function promiseCursorInScene({container})
+{
+	return new Promise((resolve, reject) => 
+	{
+		document.onmousemove = function(e)
+		{ 			
+			if(e.target == container) 
+			{
+				document.onmousemove = null;
+				resolve({e});
+			}
+		}
+	});
+}
+		
 
 
 // кликнули на item catalog, выделфем этот пункт меню
