@@ -165,17 +165,17 @@ function saveAsImagePreview()
 { 
 	try 
 	{		
-		var rd = 200/w_w;
+		var rd = 200/window.innerWidth;
 
-		renderer.setSize( 200, w_h*rd );
+		renderer.setSize( 200, window.innerHeight * rd );
 		renderer.antialias = true;
-		renderer.render( scene, camera );
+		renderer.render( scene, camOrbit.activeCam );
 		
 		var imgData = renderer.domElement.toDataURL("image/jpeg", 0.7);	
 
-		renderer.setSize( w_w, w_h );
+		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.antialias = false;
-		renderer.render( scene, camera );
+		renderer.render( scene, camOrbit.activeCam );
 		
 		return imgData;
 	} 

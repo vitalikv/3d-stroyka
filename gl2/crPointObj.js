@@ -79,16 +79,16 @@ class PointObj extends THREE.Mesh
 			outlineRemoveObj();					
 		}	
 	
-		if(moment == 'down' && camera == cameraTop) deActive();
-		else if(moment == 'up' && camera == camera3D) deActive();
-		else if(moment == '') deActive();	
+		if(moment === 'down' && camOrbit.activeCam.userData.isCam2D) deActive();
+		else if(moment === 'up' && camOrbit.activeCam.userData.isCam3D) deActive();
+		else if(moment === '') deActive();	
 	}
 
 
 	ui_menu({type})
 	{
-		if(type == 'show') activeObjRightPanelUI_1({obj: this});
-		if(type == 'hide') activeObjRightPanelUI_1();
+		if(type === 'show') activeObjRightPanelUI_1({obj: this});
+		if(type === 'hide') activeObjRightPanelUI_1();
 	}
 	
 	

@@ -453,9 +453,9 @@ function setScaleTubePoint(cdm)
 	if(arr.length == 0) return;		 
 		
 	
-	if(camera == cameraTop)
+	if(camOrbit.activeCam.userData.isCam2D)
 	{		
-		var scale = 3.5/camera.zoom;	
+		var scale = 3.5/camOrbit.activeCam.zoom;	
 		
 		if(scale > 1.4) { scale = 1.4; }
 		else if(scale < 0.5) { scale = 0.5; }
@@ -465,11 +465,11 @@ function setScaleTubePoint(cdm)
 			arr[i].scale.set( scale,scale,scale );			
 		}	
 	}	
-	else if(camera == camera3D)
+	else if(camOrbit.activeCam.userData.isCam3D)
 	{
 		for ( var i = 0; i < arr.length; i++ )
 		{ 
-			var scale = camera.position.distanceTo(arr[i].position)/2;	
+			var scale = camOrbit.activeCam.position.distanceTo(arr[i].position)/2;	
 
 			if(scale > 1.2) scale = 1.2;
 			
@@ -550,7 +550,7 @@ function clickRayhitPointWF(params)
 function createTubeWF_1(cdm)
 {
 	let visible = false;	
-	if(cdm.type == 'vertical') visible = (camera == cameraTop) ? true : false;	
+	if(cdm.type == 'vertical') visible = (camOrbit.activeCam.userData.isCam2D) ? true : false;	
 	
 	let diameter = (cdm.diameter) ? cdm.diameter : 0.05;	 		
 	let tube = new TubeN({path: cdm.point, diameter: diameter});

@@ -108,18 +108,19 @@ function crGizmo(params)
 			if (!gizmo.visible) return;
 			
 			
-			if(camera == cameraTop)
+			if(camOrbit.activeCam.userData.isCam2D)
 			{
 				let plane = new THREE.Plane(new THREE.Vector3(0,1,0), 100);
 				gizmo.children[0].children[0].material.clippingPlanes[0].copy(plane);		
 			}
-			else
+			
+			if(camOrbit.activeCam.userData.isCam3D)
 			{
 				let obj = new THREE.Object3D();
 				
 				obj.position.copy(gizmo.position);
 				
-				obj.lookAt(camera3D.position);
+				obj.lookAt(camOrbit.activeCam.position);
 				obj.rotateOnAxis(new THREE.Vector3(0,1,0), -Math.PI / 2);
 				obj.updateMatrixWorld();
 	
@@ -146,7 +147,7 @@ function crGizmo(params)
 			gizmo.position.copy(pos);
 			gizmo.quaternion.copy(qt);
 			
-			let visible = (camera == cameraTop) ? false : true;			
+			let visible = (camOrbit.activeCam.userData.isCam2D) ? false : true;			
 			gizmo.children[1].visible = visible;
 			gizmo.children[2].visible = visible;				
 				
@@ -303,8 +304,8 @@ function crGizmo(params)
 			
 			let scale = 1;
 			
-			if(camera == cameraTop) { scale = 1 / cameraTop.zoom; }
-			if(camera == camera3D) { scale = camera3D.position.distanceTo(gizmo.position) / 6; }			
+			if(camOrbit.activeCam.userData.isCam2D) { scale = 1 / camOrbit.activeCam.zoom; }
+			if(camOrbit.activeCam.userData.isCam3D) { scale = camOrbit.activeCam.position.distanceTo(gizmo.position) / 6; }			
 			
 			gizmo.scale.set(scale, scale, scale);
 		}

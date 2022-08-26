@@ -544,9 +544,9 @@ function crEventButtonWarmTubeGrid(params)
 			
 			let check = false;
 			
-			if(moment == 'down' && camera == cameraTop) { check = true; }
-			else if(moment == 'up' && camera == camera3D) { check = true; }
-			else if(moment == ''){}
+			if(moment === 'down' && camOrbit.activeCam.userData.isCam2D) { check = true; }
+			else if(moment === 'up' && camOrbit.activeCam.userData.isCam3D) { check = true; }
+			else if(moment === ''){}
 			else { return; }
 			
 			
@@ -554,11 +554,11 @@ function crEventButtonWarmTubeGrid(params)
 			{
 				let newObj = rayhit.object;
 				
-				if(newObj.userData.tag == 'pivot') return;
-				if(newObj.userData.tag == 'gizmo') return;
-				if(newObj.userData.tag == 'wtPointGrid')
+				if(newObj.userData.tag === 'pivot') return;
+				if(newObj.userData.tag === 'gizmo') return;
+				if(newObj.userData.tag === 'wtPointGrid')
 				{
-					if(newObj.userData.plane == obj) return;
+					if(newObj.userData.plane === obj) return;
 				}
 			}
 			

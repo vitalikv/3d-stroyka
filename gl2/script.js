@@ -108,7 +108,7 @@ function rayIntersect( event, obj, t, recursive )
 	
 	let raycaster = new THREE.Raycaster();
 	
-	raycaster.setFromCamera( mouse, camOrbit.camera );
+	raycaster.setFromCamera( mouse, camOrbit.activeCam );
 	
 	var intersects = null;
 	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); } 
@@ -173,16 +173,16 @@ function saveAsImage(cdm)
 	
 	try 
 	{	
-		if(cdm.preview) { renderer.setSize( 300, 300 * (w_h/w_w) ); }
+		if(cdm.preview) { renderer.setSize( 300, 300 * (window.innerHeight/window.innerWidth) ); }
 		renderer.antialias = true;
-		renderer.render( scene, camera );
+		renderer.render( scene, camOrbit.activeCam );
 		
 		var strMime = "image/png"; 
 		var imgData = renderer.domElement.toDataURL(strMime);	
 
-		if(cdm.preview) { renderer.setSize( w_w, w_h ); }
+		if(cdm.preview) { renderer.setSize( window.innerWidth, window.innerHeight ); }
 		renderer.antialias = false;
-		renderer.render( scene, camera );
+		renderer.render( scene, camOrbit.activeCam );
  
 		if(cdm.preview) { return imgData; }
 		else { openFileImage(imgData.replace(strMime, "image/octet-stream"), "screenshot.png"); }		
@@ -470,14 +470,14 @@ var docReady = false;
 
 document.addEventListener("DOMContentLoaded", init);
 
-let camOrbit;
+let camOrbit, btnCamera2D3D;
 
 function init()
 {
 	initScene();
-	camOrbit = new CameraOrbit({container: mainDiv_1, renderer: renderer, scene: scene, setCam: '3D'});
+	camOrbit = new CameraOrbit({canvas: renderer.domElement, container: mainDiv_1, renderer: renderer, scene: scene, setCam: '3D'});
 	//initCams();
-	//outlineInit();
+	outlineInit({camera: camOrbit.activeCam});
 	initLights();
 	
 	initSceneParams();
@@ -493,6 +493,7 @@ function init()
 
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
 	infProject.class = {};
+	infProject.class.btnCamera2D3D = new BtnCamera2D3D('2D');
 	infProject.class.group = new NewGroup();
 	infProject.class.camView = new CameraView();
 	console.log(4444, infProject.class.camView);

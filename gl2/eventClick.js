@@ -184,22 +184,22 @@ function changeRightMenuUI_1(cdm)
 	else if(cdm.current) { name = infProject.ui.right_menu.active; }
 	
 	
-	if(name == "button_wrap_catalog") 
+	if(name === "button_wrap_catalog") 
 	{
 		infProject.elem.wrap_catalog.style.display = '';
 	}
-	if(name == "button_wrap_list_obj") 
+	if(name === "button_wrap_list_obj") 
 	{
 		infProject.elem.wrap_list_obj.style.display = '';
 	}
-	if(name == "button_wrap_object") 
+	if(name === "button_wrap_object") 
 	{
 		infProject.elem.wrap_object.style.display = ''; 
 	}
-	if(name == "button_wrap_plan") 
+	if(name === "button_wrap_plan") 
 	{
 		infProject.elem.wrap_plan.style.display = '';
-		if(camera == cameraTop) 
+		if(camOrbit.activeCam.userData.isCam2D) 
 		{ 
 			deActiveSelected();
 		}

@@ -19,42 +19,7 @@ function initScene()
 	scene.background = new THREE.Color( 0xffffff );	
 }
 
-var camera, cameraTop, camera3D;
 
-function initCams()
-{
-	var d = 5;
-	var aspect = window.innerWidth / window.innerHeight;
-	//----------- cameraTop
-	cameraTop = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
-	cameraTop.position.set(0, 30, 0);
-	cameraTop.lookAt(scene.position);
-	cameraTop.zoom = infProject.settings.camera.zoom;
-	cameraTop.updateMatrixWorld();
-	cameraTop.updateProjectionMatrix();
-	cameraTop.userData.cameraTop = {};
-	cameraTop.userData.cameraTop.click = '';
-	cameraTop.userData.cameraTop.mouse = new THREE.Vector2();
-	//----------- cameraTop
-
-	 
-	//----------- camera3D
-	camera3D = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.05, 1000 );  
-	camera3D.rotation.order = 'YZX';		//'ZYX'
-	camera3D.userData.camera3D = {};
-	camera3D.userData.camera3D.click = '';
-	camera3D.userData.camera3D.mouse = new THREE.Vector2();
-	camera3D.userData.camera3D.targetPos = new THREE.Vector3(0, 0, 0);
-	camera3D.userData.camera3D.intersectPos = new THREE.Vector3();
-	camera3D.userData.camera3D.theta = 0;
-	camera3D.userData.camera3D.phi = 0; 
-
-	//----------- camera3D
-
-	
-	
-	camera = cameraTop;
-}
 
 
 
@@ -92,9 +57,7 @@ function initLights()
 //----------- render
 function animate() 
 {
-	requestAnimationFrame( animate );	
-
-	cameraZoomTopLoop();	
+	requestAnimationFrame( animate );		
 	
 	updateKeyDown();
 	
@@ -116,39 +79,16 @@ function renderCamera()
 //----------- render
 
 
-//----------- onWindowResize
-window.addEventListener( 'resize', onWindowResize, false );
-function onWindowResize() 
-{ 
-	var aspect = window.innerWidth / window.innerHeight;
-	var d = 5;
-	
-	cameraTop.left = -d * aspect;
-	cameraTop.right = d * aspect;
-	cameraTop.top = d;
-	cameraTop.bottom = -d;
-	cameraTop.updateProjectionMatrix();
-
-	 
-	camera3D.aspect = aspect;
-	camera3D.updateProjectionMatrix();
-	
-	renderer.setSize(window.innerWidth, window.innerHeight);
-	
-	renderCamera();
-}
-//----------- onWindowResize
-
 
 
 var composer, renderPass, outlinePass;
 
 // outline render
-function outlineInit()
+function outlineInit({camera})
 {
 	composer = new THREE.EffectComposer( renderer );
-	renderPass = new THREE.RenderPass( scene, cameraTop );
-	outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, cameraTop );
+	renderPass = new THREE.RenderPass( scene, camera );
+	outlinePass = new THREE.OutlinePass( new THREE.Vector2( window.innerWidth, window.innerHeight ), scene, camera );
 	composer.setSize( window.innerWidth, window.innerHeight );
 	composer.addPass( renderPass );
 	composer.addPass( outlinePass );

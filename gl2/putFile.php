@@ -6,7 +6,6 @@
 $list = 'eventClick.js 	
 crossWall.js
 mouseClick.js
-changeCamera.js
 camera.js
 cameraView.js
 moveCamera.js

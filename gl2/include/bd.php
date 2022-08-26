@@ -48,10 +48,6 @@ $infProject['user']['status'] = null;
 $infProject['user']['sum'] = [ 'obj' => 0, 'tube' => 0 ];
 
 $infProject['settings']['project'] = '';
-$infProject['settings']['land'] = [ 'o' => false ];
-$infProject['settings']['unit'] = [ 'wall' => 1, 'floor' => 1 ];
-$infProject['settings']['camera'] = [ 'type' => '2d', 'zoom' => 1, 'limitZoom' => 1 ];
-$infProject['settings']['interface']['button'] = [ 'cam2d' => '2d' ];
 
 $infProject['scene'] = [ 'tool' => [] ];
 $infProject['scene']['load'] = '';

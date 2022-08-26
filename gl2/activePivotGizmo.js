@@ -94,7 +94,7 @@ class ToolPG
 		let obj = params.obj;
 		let qt = new THREE.Quaternion();
 		
-		if(camera == cameraTop)	
+		if(camOrbit.activeCam.userData.isCam2D)	
 		{		
 			if(!obj.geometry.boundingBox) obj.geometry.computeBoundingBox();
 			let bound = obj.geometry.boundingBox;
@@ -109,7 +109,7 @@ class ToolPG
 			qt = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), rotY - Math.PI/2);
 		}
 		
-		if(camera == camera3D) qt = obj.getWorldQuaternion(new THREE.Quaternion());	
+		if(camOrbit.activeCam.userData.isCam3D) qt = obj.getWorldQuaternion(new THREE.Quaternion());	
 
 		return qt;
 	}

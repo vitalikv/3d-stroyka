@@ -9,41 +9,32 @@ function initSelectBox({container})
 	
 	container.addEventListener('mousedown', function ( event ) 
 	{
-		if(camera == cameraTop || camera == camera3D)
-		{
-			isMove = false;
+		isMove = false;
 
-			let x = ( event.clientX / window.innerWidth ) * 2 - 1;
-			let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
-			selectionBox.startPoint.set(x, y, 0);			
-		}
+		let x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
+		selectionBox.startPoint.set(x, y, 0);			
 	});
 	
 
 	container.addEventListener('mousemove', function ( event ) 
 	{
-		if(camera == cameraTop || camera == camera3D)
-		{
-			if(helper.isDown) isMove = true;
-		}		
+		if(helper.isDown) isMove = true;		
 	});
 
 	container.addEventListener('mouseup', function ( event ) 
 	{
-		if(camera == cameraTop || camera == camera3D)
+		if(isMove)
 		{
-			if(isMove)
-			{
-				outlinePass.selectedObjects = [];
-				
-				let x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
-				selectionBox.endPoint.set(x, y, 0);
+			outlinePass.selectedObjects = [];
+			
+			let x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			let y = -( event.clientY / window.innerHeight ) * 2 + 1;	
+			selectionBox.endPoint.set(x, y, 0);
 
-				outlinePass.selectedObjects = selectionBox.select();
+			outlinePass.selectedObjects = selectionBox.select();
 
-				renderCamera();
-			}
+			renderCamera();
 		}
 	});
 

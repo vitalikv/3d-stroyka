@@ -8,7 +8,6 @@ class CameraView
 		this.btnClose = null;
 		
 		this.obj = null;
-		this.currentCam = null;
 		
 		this.initCamView();
 		this.initEvent();		
@@ -58,15 +57,13 @@ class CameraView
 	enable(params)
 	{
 		this.btnClose.style.display = '';
-		infProject.elem.butt_camera_2D.style.display = 'none';
-		infProject.elem.butt_camera_3D.style.display = 'none';		
+		infProject.class.btnCamera2D3D.btn2D.style.display = 'none';
+		infProject.class.btnCamera2D3D.btn3D.style.display = 'none';		
 		
 		deActiveSelected();
 		this.deleteObjCameraView();
-
-		if(this.currentCam !== this.camView) this.currentCam = camera;
 		
-		camera = this.camView;
+		//camera = this.camView;
 		renderPass.camera = this.camView;
 		outlinePass.renderCamera = this.camView;
 		this.render();
@@ -291,8 +288,8 @@ class CameraView
 		this.btnClose.style.display = 'none';
 		
 		this.deleteObjCameraView();
-		
-		changeCamera(this.currentCam);		
+
+		(camOrbit.activeCam.userData.isCam2D) ? infProject.class.btnCamera2D3D.clickBtnCamera('2D') : infProject.class.btnCamera2D3D.clickBtnCamera('3D');		
 	}
 	
 	

@@ -2,23 +2,36 @@
 
 
 
-
-function changeCamera22(params)
+// переключение камеры
+class BtnCamera2D3D
 {
-	let elem = params.elem;
-	
-	if(infProg.el.butt.cam2D == elem)
+	constructor(type)
 	{
-		elem.style.display = 'none';
-		infProg.el.butt.cam3D.style.display = '';
-		camOrbit.setActiveCam({cam: '2D'});
+		this.btn2D = document.querySelector('[nameId="butt_camera_2D"]');
+		this.btn3D = document.querySelector('[nameId="butt_camera_3D"]');
+		this.initEvent();
+		
+		if(type) this.clickBtnCamera(type);
 	}
 
-	if(infProg.el.butt.cam3D == elem)
+	initEvent()
+	{  
+		this.btn2D.onmousedown = (e) => { this.clickBtnCamera('2D'); }
+		this.btn3D.onmousedown = (e) => { this.clickBtnCamera('3D'); }		
+	}
+	
+	clickBtnCamera(type)
 	{
-		elem.style.display = 'none';
-		infProg.el.butt.cam2D.style.display = '';
-		camOrbit.setActiveCam({cam: '3D'});
+		deActiveSelected();
+		changeRightMenuUI_1({current: true});
+		clickO = resetPop.clickO();
+		
+		this.btn2D.style.display = 'none';
+		this.btn3D.style.display = 'none';
+		
+		(type === '2D') ? this.btn3D.style.display = '' : this.btn2D.style.display = '';
+		
+		camOrbit.setActiveCam({cam: type});
 	}
 }
 
@@ -76,9 +89,10 @@ class CameraOrbit
 	
 	initCam2D()
 	{
-		let aspect = this.params.container.clientWidth / this.params.container.clientHeight;
+		let aspect = this.params.canvas.clientWidth / this.params.canvas.clientHeight;
 		let d = 5;
 		let camera2D = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
+		camera2D.userData.isCam2D = true;
 		camera2D.position.set(0, 10, 0);
 		camera2D.lookAt(this.params.scene.position);
 		camera2D.zoom = 1;
@@ -90,12 +104,12 @@ class CameraOrbit
 
 	initCam3D()
 	{
-		let camera3D = new THREE.PerspectiveCamera( 65, this.params.container.clientWidth / this.params.container.clientHeight, 0.01, 1000 );  
+		let camera3D = new THREE.PerspectiveCamera( 65, this.params.canvas.clientWidth / this.params.canvas.clientHeight, 0.01, 1000 );  
 		camera3D.rotation.order = 'YZX';		//'ZYX'
 		camera3D.position.set(5, 7, 5);	
 		camera3D.lookAt( new THREE.Vector3() );
 		
-		
+		camera3D.userData.isCam3D = true;
 		camera3D.userData.camera = {};	
 		camera3D.userData.camera.d3 = { theta: 0, phi: 75 };
 		camera3D.userData.camera.d3.targetO = targetO(this.params.scene);	
@@ -130,12 +144,17 @@ class CameraOrbit
 		return planeMath;
 	}	
 	
-	setActiveCam(params)
+	setActiveCam({cam})
 	{
-		let cam = (params.cam == '2D') ? this.cam2D : this.cam3D;
+		let camera = (cam == '2D') ? this.cam2D : this.cam3D;
 		
-		this.activeCam = cam;
-		this.camera = cam;
+		this.activeCam = camera;
+		
+		if(composer)
+		{ 
+			renderPass.camera = this.activeCam;
+			outlinePass.renderCamera = this.activeCam;			
+		}
 		
 		this.render();
 	}
@@ -200,7 +219,7 @@ class CameraOrbit
 	
 	windowResize() 
 	{
-		const canvas = this.params.container;
+		const canvas = this.params.canvas;
 		const width = canvas.clientWidth;
 		const height = canvas.clientHeight;
 		const needResize = canvas.width !== width || canvas.height !== height;
@@ -473,7 +492,8 @@ class CameraOrbit
 
 	render() 
 	{
-		this.params.renderer.render( this.params.scene, this.activeCam );
+		if (composer) { composer.render(); } 
+		else { this.params.renderer.render( this.params.scene, this.activeCam ); }				
 	}
 	
 }

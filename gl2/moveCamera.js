@@ -12,7 +12,7 @@ function updateKeyDown()
 	var keys = clickO.keys;  
 	if(keys.length == 0) return;
 	
-	if ( camera == cameraTop )
+	if (camOrbit.activeCam.userData.isCam2D)
 	{
 		if ( keys[ 87 ] || keys[ 38 ] ) 
 		{
@@ -35,7 +35,7 @@ function updateKeyDown()
 			flag = true;
 		}
 	}
-	else if ( camera == camera3D ) 
+	else if (camOrbit.activeCam.userData.isCam3D) 
 	{
 		if ( keys[ 87 ] || keys[ 38 ] ) 
 		{
@@ -421,33 +421,6 @@ function zoomCamera3D_2(cdm)
 
 
 
-var zoomLoop = '';
-function cameraZoomTopLoop() 
-{
-	var flag = false;
-	
-	if ( camera == cameraTop )
-	{
-		if ( zoomLoop == 'zoomOut' ) { cameraZoomTop( camera.zoom - ( 0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { cameraZoomTop( camera.zoom - ( -0.05 * ( camera.zoom / 2 ) ) ); flag = true; }
-	}
-	else if ( camera == camera3D )
-	{
-		if ( zoomLoop == 'zoomOut' ) { cameraZoom3D( 0.3, 0.3 ); flag = true; }
-		if ( zoomLoop == 'zoomIn' ) { cameraZoom3D( -0.3, 0.3 ); flag = true; }
-	}
-	
-	
-	
-	if(flag) { renderCamera(); }
-}
-
-
-
-
-
-
-
 
 
 // приближаемся к выбранному объекту
@@ -475,7 +448,7 @@ function fitCameraToObject(cdm)
 	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
 
 
-	if(camera == camera3D)
+	if(camOrbit.activeCam.userData.isCam3D)
 	{
 		var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
 		
@@ -537,7 +510,7 @@ function fitCameraToObject(cdm)
 	}
 	
 	
-	if(camera == cameraTop)
+	if(camOrbit.activeCam.userData.isCam2D)
 	{
 		var bound = { min : { x : 999999, z : 999999 }, max : { x : -999999, z : -999999 } };
 		

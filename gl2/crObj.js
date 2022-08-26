@@ -87,9 +87,9 @@ class ObjNew extends THREE.Mesh
 	{
 		let arr = this.getObjPoint();
 		
-		if(camera == cameraTop)
+		if(camOrbit.activeCam.userData.isCam2D)
 		{		
-			let scale = 3.5/camera.zoom;	
+			let scale = 3.5/camOrbit.activeCam.zoom;	
 			
 			if(scale > 1.4) { scale = 1.4; }
 			else if(scale < 0.1) { scale = 0.1; }				
@@ -97,16 +97,16 @@ class ObjNew extends THREE.Mesh
 			arr.forEach((o) => { o.scale.set( scale, scale, scale ); } );	
 		}	
 		
-		if(camera == camera3D)
+		if(camOrbit.activeCam.userData.isCam3D)
 		{
 			for ( let i = 0; i < arr.length; i++ )
 			{ 
-				let scale = camera.position.distanceTo( arr[i].getWorldPosition(new THREE.Vector3()) ) / 2;	
+				let scale = camOrbit.activeCam.position.distanceTo( arr[i].getWorldPosition(new THREE.Vector3()) ) / 2;	
 				if(scale > 1.2) scale = 1.2;
 				
 				arr[i].scale.set( scale, scale, scale );			
 			}							
-		} 	
+		}
 	}
 
 
@@ -123,25 +123,25 @@ class ObjNew extends THREE.Mesh
 			outlineRemoveObj();					
 		}	
 	
-		if(moment == 'down' && camera == cameraTop) deActive();
-		else if(moment == 'up' && camera == camera3D) deActive();
-		else if(moment == '') deActive();	
+		if(moment === 'down' && camOrbit.activeCam.userData.isCam2D) deActive();
+		else if(moment === 'up' && camOrbit.activeCam.userData.isCam3D) deActive();
+		else if(moment === '') deActive();	
 	}
 	
 	
 	// список сметы/материалов
 	uiEstimateListObj({type})
 	{ 
-		if(type == 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
-		if(type == 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
-		if(type == 'update') infProject.ui.rpanel.EstList.updateItem({obj: this}); 
+		if(type === 'add') infProject.ui.rpanel.EstList.crItem({obj: this}); 
+		if(type === 'del') infProject.ui.rpanel.EstList.delItem({obj: this});
+		if(type === 'update') infProject.ui.rpanel.EstList.updateItem({obj: this}); 
 	}
 	
 	
 	ui_menu({type})
 	{
-		if(type == 'show') activeObjRightPanelUI_1({obj: this});
-		if(type == 'hide') activeObjRightPanelUI_1();
+		if(type === 'show') activeObjRightPanelUI_1({obj: this});
+		if(type === 'hide') activeObjRightPanelUI_1();
 	}	
 	
 	

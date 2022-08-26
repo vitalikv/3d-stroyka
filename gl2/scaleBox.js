@@ -184,7 +184,7 @@ function showToggleGp()
 
 	var count = 4;
 	
-	if(camera == camera3D) { count = 6; }
+	if(camOrbit.activeCam.userData.isCam3D) { count = 6; }
 	
 	for ( var i = 0; i < count; i++ )
 	{
@@ -314,7 +314,7 @@ function clickToggleGp( intersect )
 
 	if(obj.userData.contrBP.number == 4 || obj.userData.contrBP.number == 5)
 	{
-		var dir = new THREE.Vector3().subVectors( planeMath.position, camera.position ).normalize();
+		var dir = new THREE.Vector3().subVectors( planeMath.position, camOrbit.activeCam.position ).normalize();
 		var angle = Math.atan2( dir.x, dir.z );
 		planeMath.rotation.set( 0, 0, Math.PI / 2 );
 		planeMath.rotation.y = angle ;

@@ -278,7 +278,7 @@ function crPivot(params)
 			
 			for ( let i = 0; i < pivot.children.length; i++ )
 			{
-				if(pivot.children[i].userData.axis == 'y') pivot.children[i].visible = (camera == cameraTop) ? false : true;
+				if(pivot.children[i].userData.axis == 'y') pivot.children[i].visible = (camOrbit.activeCam.userData.isCam2D) ? false : true;
 			}
 			
 			pivot.userData.propPivot({type: 'updateScale'});
@@ -436,8 +436,8 @@ function crPivot(params)
 			
 			let scale = 1;
 			
-			if(camera == cameraTop) { scale = 1 / cameraTop.zoom; }
-			if(camera == camera3D) { scale = camera3D.position.distanceTo(pivot.position) / 6; }			
+			if(camOrbit.activeCam.userData.isCam2D) { scale = 1 / camOrbit.activeCam.zoom; }
+			if(camOrbit.activeCam.userData.isCam3D) { scale = camOrbit.activeCam.position.distanceTo(pivot.position) / 6; }			
 			
 			pivot.scale.set(scale, scale, scale);
 		}

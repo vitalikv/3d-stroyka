@@ -311,30 +311,37 @@ function clickMouseActive(cdm)
 	var tag = obj.userData.tag;
 	var rayhit = clickO.rayhit;
 	 
-	if(cdm.type == 'down')
+	if(cdm.type === 'down' && camOrbit.activeCam.userData.isCam2D)
 	{  
-		if( tag == 'substrate' && camera == cameraTop ) { clickSubstrate({rayhit}); }
-		else if( tag == 'substrate_point' && camera == cameraTop ) { clickPointSubstrate({rayhit}); }
-		else if( tag == 'substrate_tool' && camera == cameraTop ) { clickToolSubstrate({rayhit}); }
-		else if( tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
-		else if( tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
-		else if( tag == 'joinPoint' && camera == cameraTop) { obj.clickPointObj(); }
-		else if( tag == 'obj' && camera == cameraTop ) { obj.clickObj(); }
-		else if( tag == 'boxWF' ) { clickBoxWF_2D({rayhit}); }
-		else if( tag == 'scaleBox_control' ) { clickBoxCnrt({rayhit}); }
-		else if( tag == 'wtGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
-		else if( tag == 'wtPointGrid' && camera == cameraTop ) { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
-		else if( tag == 'wtPointGrid' && camera == camera3D ) { console.log(444); }
-		else if( tag == 'new_tube' && camera == cameraTop ) { obj.clickTube({clickPos: rayhit.point}); }
-		else if( tag == 'new_point' && camera == cameraTop ) { obj.clickPointTube(); }		
+		if(tag == 'substrate') { clickSubstrate({rayhit}); }
+		else if(tag == 'substrate_point') { clickPointSubstrate({rayhit}); }
+		else if(tag == 'substrate_tool') { clickToolSubstrate({rayhit}); }
+		else if(tag == 'pivot' ) { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
+		else if(tag == 'gizmo' ) { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
+		else if(tag == 'joinPoint') { obj.clickPointObj(); }
+		else if(tag == 'obj') { obj.clickObj(); }
+		else if(tag == 'boxWF') { clickBoxWF_2D({rayhit}); }
+		else if(tag == 'scaleBox_control') { clickBoxCnrt({rayhit}); }
+		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'clickObj', obj: obj}); }
+		else if(tag == 'wtPointGrid') { obj.userData.propObj({type: 'clickObj', obj: obj, pos: rayhit.point}); }
+		else if(tag == 'new_tube') { obj.clickTube({clickPos: rayhit.point}); }
+		else if(tag == 'new_point') { obj.clickPointTube(); }		
 	}
-	else if(cdm.type == 'up')
+	else if(cdm.type === 'down' && camOrbit.activeCam.userData.isCam3D)
+	{
+		if(tag === 'pivot') { obj.parent.userData.propPivot({type: 'addEvent', rayhit: rayhit}); }
+		else if(tag === 'gizmo') { obj.parent.userData.propGizmo({type: 'addEvent', rayhit: rayhit}); }  		
+		else if(tag === 'boxWF') { clickBoxWF_2D({rayhit}); }
+		else if(tag === 'scaleBox_control') { clickBoxCnrt({rayhit}); }
+		else if(tag === 'wtPointGrid') { console.log(444); }	
+	}
+	else if(cdm.type === 'up' && camOrbit.activeCam.userData.isCam3D)
 	{		
-		if( tag == 'joinPoint' && camera == camera3D) { obj.clickPointObj(); }
-		else if( tag == 'obj' && camera == camera3D ) { obj.clickObj(); }
-		else if( tag == 'wtGrid' && camera == camera3D ) { obj.userData.propObj({type: 'clickObj', obj: obj}); }
-		else if( tag == 'new_tube' && camera == camera3D ) { obj.clickTube({clickPos: rayhit.point}); }
-		else if( tag == 'new_point' && camera == camera3D ) { obj.clickPointTube(); }
+		if(tag === 'joinPoint') { obj.clickPointObj(); }
+		else if(tag === 'obj') { obj.clickObj(); }
+		else if(tag === 'wtGrid') { obj.userData.propObj({type: 'clickObj', obj: obj}); }
+		else if(tag === 'new_tube') { obj.clickTube({clickPos: rayhit.point}); }
+		else if(tag === 'new_point') { obj.clickPointTube(); }
 	}		
 }
 
@@ -356,10 +363,6 @@ function onDocumentMouseMove( event )
 	}		
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
-	
-	//if ( camera == camera3D ) { cameraMove3D( event ); }
-	//else if ( camera == cameraTop ) { moveCameraTop( event ); }
-	//renderCamera();
 }
 
 
@@ -407,7 +410,7 @@ function hideMenuObjUI_2D(cdm)
 		
 		if(tag == 'obj') { obj.deClickObj({obj: obj, moment: cdm.type}); flag = false; }
 		else if(tag == 'joinPoint') { obj.deClickPointObj({obj: obj, moment: cdm.type}); flag = false; }
-		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camera, rayhit: clickO.rayhit}); }
+		else if(tag == 'wtGrid') { obj.userData.propObj({type: 'deActiveObj', obj: obj, moment: cdm.type, camera: camOrbit.activeCam, rayhit: clickO.rayhit}); }
 		else if(tag == 'new_tube') { obj.deClickTube({newObj: newObj}); return; }
 		else if(tag == 'new_point') { obj.deClickPointTube({newObj: newObj}); return; }
 	}
