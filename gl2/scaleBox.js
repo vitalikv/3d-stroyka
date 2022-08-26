@@ -81,6 +81,7 @@ function clickBoxWF_2D({rayhit})
 	let posOffset = new THREE.Vector3();
 	
 	start({obj, rayhit});
+	camOrbit.stopMove = true;
 	setMouseStop(true);
 	
 	function start({obj, rayhit})
@@ -119,10 +120,8 @@ function clickBoxWF_2D({rayhit})
 		
 		showToggleGp();
 		
+		camOrbit.stopMove = false;
 		setMouseStop(false);
-		
-		stopCameraTop();
-		stopCamera3D();	
 		
 		renderCamera();
 	};			
@@ -217,6 +216,7 @@ function clickBoxCnrt({rayhit})
 	let obj = rayhit.object;
 	
 	start({rayhit});
+	camOrbit.stopMove = true;
 	setMouseStop(true);
 	
 	function start({rayhit})
@@ -239,10 +239,8 @@ function clickBoxCnrt({rayhit})
 		
 		setClickLastObj({obj: infProject.tools.wf.plane});
 		
-		setMouseStop(false);
-		
-		stopCameraTop();
-		stopCamera3D();		
+		camOrbit.stopMove = false;
+		setMouseStop(false);	
 		
 		renderCamera();
 	};			

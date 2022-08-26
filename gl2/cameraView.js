@@ -121,6 +121,7 @@ class CameraView
 				case 2: click = 'right'; break;
 			}		
 			
+			camOrbit.stopMove = true;
 			setMouseStop(true);
 			
 			this.startMoveCamera(event, click);
@@ -139,10 +140,8 @@ class CameraView
 		{
 			mouseDown = false;
 			
-			setMouseStop(false);
-			
-			stopCameraTop();
-			stopCamera3D();	
+			camOrbit.stopMove = false;
+			setMouseStop(false);	
 			
 			this.render();
 		}			

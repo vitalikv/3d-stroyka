@@ -216,6 +216,7 @@ function crEventButtonWarmTubeGrid(params)
 			planeMath.position.copy( pos );  
 			planeMath.rotation.set( Math.PI/2, 0, 0 );
 			
+			camOrbit.stopMove = true;
 			setMouseStop(true);
 			
 			container.onmousemove = (event) => 
@@ -230,10 +231,8 @@ function crEventButtonWarmTubeGrid(params)
 				container.onmousemove = null;
 				container.onmouseup = null;
 				
+				camOrbit.stopMove = false;
 				setMouseStop(false);
-				
-				stopCameraTop();
-				stopCamera3D();
 
 				renderCamera();
 			};				

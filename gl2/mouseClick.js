@@ -371,11 +371,6 @@ function onDocumentMouseUp( event )
 	if(onfM.stop) return;
 	
 	if(!long_click) clickMouseActive({type: 'up'});	
-	
-	stopCameraTop();
-	stopCamera3D();
-	
-	//renderCamera();
 }
 
 

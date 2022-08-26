@@ -215,12 +215,12 @@ function cameraMove3D( event )
 
 function stopCameraTop()
 {
-	//cameraTop.userData.cameraTop.click = '';
+	//camOrbit.stopMove = true;
 }
 
 function stopCamera3D()
 {
-	//camera3D.userData.camera3D.click = '';
+	//camOrbit.stopMove = true;
 }
 
 

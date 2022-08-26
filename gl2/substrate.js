@@ -660,6 +660,7 @@ function clickToolSubstrate({rayhit})
 	let posOffset = new THREE.Vector3();
 	
 	start({obj, rayhit});
+	camOrbit.stopMove = true;
 	setMouseStop(true);
 	
 	function start({obj, rayhit})
@@ -695,10 +696,8 @@ function clickToolSubstrate({rayhit})
 		mainDiv_1.onmousemove = null;
 		mainDiv_1.onmouseup = null;				
 		
-		setMouseStop(false);
-		
-		stopCameraTop();
-		stopCamera3D();		
+		camOrbit.stopMove = false;
+		setMouseStop(false);	
 		
 		renderCamera();
 	};			
@@ -715,6 +714,7 @@ function clickSubstrate({rayhit})
 	let posOffset = new THREE.Vector3();
 	
 	start({obj, rayhit});
+	camOrbit.stopMove = true;
 	setMouseStop(true);
 	
 	function start({obj, rayhit})
@@ -760,10 +760,8 @@ function clickSubstrate({rayhit})
 		mainDiv_1.onmousemove = null;
 		mainDiv_1.onmouseup = null;				
 		
-		setMouseStop(false);
-		
-		stopCameraTop();
-		stopCamera3D();		
+		camOrbit.stopMove = false;
+		setMouseStop(false);	
 		
 		renderCamera();
 	};			
@@ -779,6 +777,7 @@ function clickPointSubstrate({rayhit})
 	let posOffset = new THREE.Vector3();
 	
 	start({obj, rayhit});
+	camOrbit.stopMove = true;
 	setMouseStop(true);
 	
 	function start({obj, rayhit})
@@ -860,10 +859,8 @@ function clickPointSubstrate({rayhit})
 		mainDiv_1.onmousemove = null;
 		mainDiv_1.onmouseup = null;				
 		
-		setMouseStop(false);
-		
-		stopCameraTop();
-		stopCamera3D();		
+		camOrbit.stopMove = false;
+		setMouseStop(false);		
 		
 		renderCamera();
 	};			

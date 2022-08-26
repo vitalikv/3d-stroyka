@@ -161,6 +161,7 @@ function crGizmo(params)
 		{
 			startGizmo(params);
 			
+			camOrbit.stopMove = true;
 			setMouseStop(true);
 			
 			container.onmousemove = (e) => 
@@ -175,10 +176,8 @@ function crGizmo(params)
 				container.onmousemove = null;
 				container.onmouseup = null;
 				
+				camOrbit.stopMove = false;
 				setMouseStop(false);
-				
-				stopCameraTop();
-				stopCamera3D();
 
 				renderCamera();
 			};			
