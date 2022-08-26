@@ -545,7 +545,7 @@ async function loadFilePL(arr)
 	
 	readyProject();
 	
-	cameraZoomTop( camera.zoom );
+	//cameraZoomTop( camera.zoom );
 }
 
 
@@ -628,11 +628,7 @@ function readyProject(cdm)
 	
 	document.querySelector('[nameId="menu_loader_slider_UI"]').style.display = 'none';
 	
-	if( isCheckExsistFunction(window['cr_obj_cat']) ) { cr_obj_cat(); } 
-	
-	
-	
-	changeCamera(cameraTop);	
+	if( isCheckExsistFunction(window['cr_obj_cat']) ) { cr_obj_cat(); } 	
 }
 
 

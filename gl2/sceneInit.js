@@ -107,8 +107,9 @@ function animate()
 
 function renderCamera()
 {
-	camera.updateMatrixWorld();			
-	composer.render();
+	//camera.updateMatrixWorld();			
+	//composer.render();
+	camOrbit.render();
 }
 
 

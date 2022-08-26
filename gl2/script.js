@@ -108,7 +108,7 @@ function rayIntersect( event, obj, t, recursive )
 	
 	let raycaster = new THREE.Raycaster();
 	
-	raycaster.setFromCamera( mouse, camera );
+	raycaster.setFromCamera( mouse, camOrbit.camera );
 	
 	var intersects = null;
 	if(t == 'one'){ intersects = raycaster.intersectObject( obj ); } 
@@ -282,13 +282,9 @@ mainDiv_1.addEventListener( 'mousemove', onDocumentMouseMove, false );
 mainDiv_1.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 
-mainDiv_1.addEventListener( 'touchstart', onDocumentMouseDown, false );
-mainDiv_1.addEventListener( 'touchmove', onDocumentMouseMove, false );
-mainDiv_1.addEventListener( 'touchend', onDocumentMouseUp, false );
-
 mainDiv_1.addEventListener("mouseout", function () { infProject.ui.div.msDiv_1.style.display = "none"; });	// вышли из canvas или навели на другой элемент
 
-mainDiv_1.addEventListener('wheel', onDocumentMouseWheel, false);	
+//mainDiv_1.addEventListener('wheel', onDocumentMouseWheel, false);	
 
 
 document.body.addEventListener("keydown", function (e) 
@@ -474,16 +470,20 @@ var docReady = false;
 
 document.addEventListener("DOMContentLoaded", init);
 
+let camOrbit;
+
 function init()
 {
 	initScene();
-	initCams();
+	camOrbit = new CameraOrbit({container: mainDiv_1, renderer: renderer, scene: scene, setCam: '3D'});
+	//initCams();
+	//outlineInit();
 	initLights();
-	outlineInit();
+	
 	initSceneParams();
 	
 	animate();
-	renderCamera();	
+	//renderCamera();	
 	
 	initSelectBox({container: mainDiv_1});
 	
@@ -497,7 +497,7 @@ function init()
 	infProject.class.camView = new CameraView();
 	console.log(4444, infProject.class.camView);
 	
-	startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
+	//startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI
 	 
 	//changeRightMenuUI_1({name: 'button_wrap_plan'});			// назначаем первоначальную вкладку , которая будет включена

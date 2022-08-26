@@ -55,8 +55,8 @@ function onDocumentMouseDown( event )
 		case 2: vk_click = 'right'; break;
 	}
 	
-	clickSetCamera2D( event, vk_click );
-	clickSetCamera3D( event, vk_click );
+	//clickSetCamera2D( event, vk_click );
+	//clickSetCamera3D( event, vk_click );
 
 	if ( vk_click == 'right' ) { return; }
 	 
@@ -357,10 +357,9 @@ function onDocumentMouseMove( event )
 
 	if ( !long_click ) { long_click = ( lastClickTime - new Date().getTime() < catchTime ) ? true : false; }
 	
-	if ( camera == camera3D ) { cameraMove3D( event ); }
-	else if ( camera == cameraTop ) { moveCameraTop( event ); }
-
-	renderCamera();
+	//if ( camera == camera3D ) { cameraMove3D( event ); }
+	//else if ( camera == cameraTop ) { moveCameraTop( event ); }
+	//renderCamera();
 }
 
 
@@ -373,7 +372,7 @@ function onDocumentMouseUp( event )
 	stopCameraTop();
 	stopCamera3D();
 	
-	renderCamera();
+	//renderCamera();
 }
 
 
@@ -425,7 +424,7 @@ function hideMenuObjUI_2D(cdm)
 // когда курсор останавливается, показываем название объекта, на который указывает мышь
 function detectMouseObj()
 {
-	
+	return
 	if(!moveMouse) return;
 
 	var elem1 = infProject.ui.div.msDiv_1;
