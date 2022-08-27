@@ -5,7 +5,7 @@
 var long_click = false;
 var lastClickTime = 0;
 var catchTime = 0.30;
-var vk_click = '';
+
 
 
 var lastMouseTime = new Date().getTime();
@@ -39,26 +39,22 @@ function onDocumentMouseDown( event )
  
 	long_click = false;
 	lastClickTime = new Date().getTime();
-	
+	let clickBtn = 'left';
 	
 	if(event.changedTouches)
 	{
 		event.clientX = event.changedTouches[0].clientX;
 		event.clientY = event.changedTouches[0].clientY;
-		vk_click = 'left';
 	}	
 
 	switch ( event.button ) 
 	{
-		case 0: vk_click = 'left'; break;
-		case 1: vk_click = 'right'; /*middle*/ break;
-		case 2: vk_click = 'right'; break;
+		case 0: clickBtn = 'left'; break;
+		case 1: clickBtn = 'right'; /*middle*/ break;
+		case 2: clickBtn = 'right'; break;
 	}
-	
-	//clickSetCamera2D( event, vk_click );
-	//clickSetCamera3D( event, vk_click );
 
-	if ( vk_click == 'right' ) { return; }
+	if(clickBtn == 'right') { return; }
 	 
 	clickO.obj = null; 	
 	clickO.rayhit = clickRayHit(event); 

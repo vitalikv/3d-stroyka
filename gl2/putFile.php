@@ -9,7 +9,7 @@ api.js
 mouseClick.js
 camera.js
 cameraView.js
-moveCamera.js
+keyMoveCamera.js
 deleteObj.js
 copyObj.js 	   
 saveLoad.js

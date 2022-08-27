@@ -122,7 +122,7 @@
     <script src="<?=$path?>mouseClick.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>camera.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>cameraView.js?<?=$vrs?>"></script>
-    <script src="<?=$path?>moveCamera.js?<?=$vrs?>"></script>
+    <script src="<?=$path?>keyMoveCamera.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>alignPoint.js?<?=$vrs?>"></script>
     <script src="<?=$path?>deleteObj.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>copyObj.js?<?=$vrs?>"></script>

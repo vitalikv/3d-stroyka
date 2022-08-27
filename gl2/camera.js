@@ -362,17 +362,18 @@ class CameraOrbit
 
 	rayIntersect( event, obj, t ) 
 	{		
-		let container = this.params.container; 
-
+		let canvas = this.params.renderer.domElement;
 		let mouse = getMousePosition( event );
 		
 		function getMousePosition( event )
 		{
-			let x = ( ( event.clientX - container.offsetLeft ) / container.clientWidth ) * 2 - 1;
-			let y = - ( ( event.clientY - container.offsetTop ) / container.clientHeight ) * 2 + 1;	
+			let rect = canvas.getBoundingClientRect();
+
+			let x = ( ( event.clientX - rect.left ) / rect.width ) * 2 - 1;
+			let y = - ( ( event.clientY - rect.top ) / rect.height ) * 2 + 1;	
 			
 			return new THREE.Vector2(x, y);
-		}
+		}		
 		
 		let raycaster = new THREE.Raycaster()
 		raycaster.setFromCamera( mouse, this.activeCam );
@@ -389,8 +390,12 @@ class CameraOrbit
 	{		
 		let delta = -event.wheelDelta / 120;	
 		
-		if(this.activeCam == this.cam2D) { this.cameraZoom2D({cam2D: this.cam2D, delta: delta}); }
-		else if(this.activeCam == this.cam3D) { this.cameraZoom3D({cam3D: this.cam3D, delta: delta}); }
+		if(this.activeCam == this.cam2D) { this.cameraZoom2D({delta, event}); }
+		else if(this.activeCam == this.cam3D) 
+		{ 
+			//this.cameraZoom3D({cam3D: this.cam3D, delta: delta});
+			zoomCamera3D_2({event, delta, camera: this.activeCam});
+		}
 		
 		infProject.class.api.camZoom();
 		
@@ -399,15 +404,38 @@ class CameraOrbit
 	
 	
 
-	cameraZoom2D(params)
+	cameraZoom2D({delta, event})
 	{
-		let camera2D = params.cam2D;
-		let delta = params.delta;
+		let camera = this.cam2D;
 		
-		let zoom = camera2D.zoom - ( delta * 0.1 * ( camera2D.zoom / 2 ) );
+		let zoomOld = camera.zoom;
 		
-		camera2D.zoom = zoom;
-		camera2D.updateProjectionMatrix();	
+		camera.zoom -= ( delta * 0.3 * ( camera.zoom / 2 ) );
+		//camera.updateProjectionMatrix();
+
+
+		// зумирование на конкретный объект/точку в простаранстве 
+		let zoomOnTarget = ({event, zoomOld}) =>
+		{ 
+			this.planeMath.position.set(camera.position.x, 0, camera.position.z);
+			this.planeMath.rotation.set(-Math.PI/2,0,0);  
+			this.planeMath.updateMatrixWorld();
+				
+			let intersects = this.rayIntersect( event, this.planeMath, 'one' );	
+			if(intersects.length == 0) return;
+			
+			let pos = intersects[0].point;
+
+			let xNew = pos.x + (((camera.position.x - pos.x) * camera.zoom) /zoomOld);
+			let yNew = pos.z + (((camera.position.z - pos.z) * camera.zoom) /zoomOld);
+
+			camera.position.x += camera.position.x - xNew;
+			camera.position.z += camera.position.z - yNew;	
+			
+			camera.updateProjectionMatrix();				
+		}
+
+		zoomOnTarget({event, zoomOld});
 	}
 
 
@@ -624,6 +652,94 @@ class CameraOrbit
 	}
 	
 }
+
+
+
+
+
+function zoomCamera3D_2({event, delta, camera})
+{	
+	var rayhit = clickRayHit(event);	
+	
+	if(!rayhit)
+	{
+		var arr = [];
+		var subs = infProject.scene.substrate.floor;	
+
+		for(var i = 0; i < subs.length; i++)
+		{
+			arr[arr.length] = subs[i].plane;
+		}
+		
+		var rayhit = rayIntersect( event, arr, 'arr' );				
+		var rayhit = (rayhit.length > 0) ? rayhit[0] : null;							
+	}
+	
+	if(!rayhit)
+	{
+		var rayhit = rayIntersect( event, planeMath, 'one' );	
+		
+		if(rayhit.length == 0) 
+		{
+			var dir = camera.getWorldDirection(new THREE.Vector3());
+			dir = new THREE.Vector3().addScaledVector(dir, 10);
+			planeMath.position.copy(camera.position);  
+			planeMath.position.add(dir);  
+			planeMath.rotation.copy( camera.rotation ); 
+			planeMath.updateMatrixWorld();
+
+			var rayhit = rayIntersect( event, planeMath, 'one' );
+		}
+		
+		var rayhit = rayhit[0];				
+	}
+
+	var pos = rayhit.point;	
+	
+	camera.userData.camera.d3.targetO.position.copy( pos );
+	
+	var vect = ( delta < 0 ) ? 1 : -1;
+	
+
+	
+	var dir = new THREE.Vector3().subVectors( pos, camera.position ).normalize();
+	var dir2 = new THREE.Vector3().addScaledVector( dir, vect );
+	var pos3 = new THREE.Vector3().addVectors( camera.position, dir2 );
+	
+	var dist = pos.distanceTo(pos3);
+	
+	if(dist < 5)
+	{	
+		//if(dist < 0.1) dist = 0.1;
+		dist = dist/5;
+		if(dist < 0.05) dist = 0.05;
+		
+		vect *= dist; 
+		
+		var dir2 = new THREE.Vector3().addScaledVector( dir, vect );
+		var pos3 = new THREE.Vector3().addVectors( camera.position, dir2 );			
+	}	
+	
+	camera.position.copy( pos3 );
+	
+
+	// находим пересечения цетра камеры с плоскостью
+	planeMath.position.copy(camera.userData.camera.d3.targetO.position);   
+	planeMath.rotation.copy(camera.rotation); 
+	planeMath.updateMatrixWorld();		
+	
+	var raycaster = new THREE.Raycaster();
+	raycaster.set(camera.position, camera.getWorldDirection(new THREE.Vector3()) );
+	var intersects = raycaster.intersectObject( planeMath );	
+	
+	if(intersects[0])
+	{		
+		camera.userData.camera.d3.targetO.position.copy( intersects[0].point );	
+	}
+	
+	camera.updateProjectionMatrix();
+}
+
 
 
 
