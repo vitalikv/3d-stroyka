@@ -307,7 +307,7 @@ class CameraView
 
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}
 }    
 

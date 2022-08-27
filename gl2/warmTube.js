@@ -50,7 +50,7 @@ function crEventButtonWarmTube({container})
 		
 		propObj({type: 'addObjButton', obj: obj});
 		
-		renderCamera();
+		camOrbit.render();
 		
 		return obj;
 	}		
@@ -75,7 +75,7 @@ function crEventButtonWarmTube({container})
 				
 				if(obj.userData.tube) { obj.userData.tube.tubeGeometry(); }
 				
-				renderCamera();
+				camOrbit.render();
 			};
 
 			container.onmousedown = (e) => 
@@ -119,7 +119,7 @@ function crEventButtonWarmTube({container})
 					}
 				}
 				
-				renderCamera();
+				camOrbit.render();
 			};
 		}
 	}

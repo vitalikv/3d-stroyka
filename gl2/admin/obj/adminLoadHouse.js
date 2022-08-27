@@ -128,7 +128,7 @@ function setParamHouse(cdm)
 	console.log(obj);	
 
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 
@@ -144,7 +144,7 @@ function saveHouseFBX()
 	
 	//delete obj.userData.obj3D;	
 	
-	renderCamera();
+	camOrbit.render();
 	
 	let data = JSON.stringify(obj);
 

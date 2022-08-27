@@ -66,7 +66,7 @@ function onDocumentMouseDown( event )
 	
 	clickMouseActive({type: 'down'});
 	
-	renderCamera();
+	//camOrbit.render();
 }
 
 

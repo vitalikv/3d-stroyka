@@ -296,7 +296,7 @@ function crPivot(params)
 			{
 				movePivot({event: e});		
 				
-				renderCamera();
+				camOrbit.render();
 			};
 
 			container.onmouseup = (e) => 
@@ -307,7 +307,7 @@ function crPivot(params)
 				camOrbit.stopMove = false;
 				setMouseStop(false);
 
-				renderCamera();
+				camOrbit.render();
 			};			
 		}
 

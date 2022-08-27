@@ -38,8 +38,8 @@ function copyObj()
 	if(arr2[0].userData.obj3D) { arr2[0].clickObj(); }		
 
 
-	scaleToolsMoveCamera();	
-	renderCamera();		
+	//scaleToolsMoveCamera();	
+	camOrbit.render();		
 }
 
 

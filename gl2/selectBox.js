@@ -34,7 +34,7 @@ function initSelectBox({container})
 
 			outlinePass.selectedObjects = selectionBox.select();
 
-			renderCamera();
+			camOrbit.render();
 		}
 	});
 
@@ -52,7 +52,7 @@ function initSelectBox({container})
 			}
 			
 			outlinePass.selectedObjects = [];
-			renderCamera();
+			camOrbit.render();
 		}
 	});	
 }

@@ -225,7 +225,7 @@ class UI_listObjChilds
 	{
 		let elem = this.arr[id].elem;
 		let button = elem.querySelector('[nameId="sh_select_obj3D"]');
-		button.onmousedown = (e) => { fitCameraToObject({obj: this.arr[id].obj, rot: true}); e.stopPropagation(); };
+		button.onmousedown = (e) => { camOrbit.fitCamera({obj: this.arr[id].obj, rot: true}); e.stopPropagation(); };
 	}
 	
 	

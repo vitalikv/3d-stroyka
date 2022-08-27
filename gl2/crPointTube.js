@@ -67,6 +67,7 @@ class PointTube extends THREE.Mesh
 	clickPointTube()
 	{
 		let tube = this.userData.tube;
+		this.setScaleTubePoint();
 		tube.showHideTubePoints({visible: true});
 		
 		let arrO = [tube, ...this.getTubePoints()];
@@ -107,6 +108,36 @@ class PointTube extends THREE.Mesh
 		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
 	}
+	
+	
+	// масштаб точек 
+	setScaleTubePoint()  
+	{
+		let tube = this.userData.tube;
+		if(tube) 
+		{
+			tube.setScaleTubePoints();
+			return;
+		}
+		
+		if(camOrbit.activeCam.userData.isCam2D)
+		{		
+			let scale = 3.5/camOrbit.activeCam.zoom;	
+			
+			if(scale > 1.4) { scale = 1.4; }
+			else if(scale < 0.1) { scale = 0.1; }				
+			
+			this.scale.set( scale, scale, scale );
+		}	
+		
+		if(camOrbit.activeCam.userData.isCam3D)
+		{
+			let scale = camOrbit.activeCam.position.distanceTo( this.getWorldPosition(new THREE.Vector3()) ) / 2;	
+			if(scale > 1.2) scale = 1.2;
+			
+			this.scale.set( scale, scale, scale );										
+		}
+	}	
 
 
 	// удаляем точку
@@ -155,7 +186,7 @@ class PointTube extends THREE.Mesh
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}
 }
 

@@ -145,7 +145,7 @@ class UI_estimateListObj
 		{ 
 			hideMenuObjUI_2D();
 			if(obj.userData.tag == 'obj') { obj.clickObj(); }				
-			fitCameraToObject({obj: obj}); 
+			camOrbit.fitCamera({obj: obj}); 
 			e.stopPropagation(); 
 		}
 	}	

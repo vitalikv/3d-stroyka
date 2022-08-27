@@ -315,7 +315,7 @@ class UI_infoBlockObj
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}	
 }
 
@@ -336,7 +336,7 @@ function newAddPointOnTube()
 	}		
 
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 
@@ -359,7 +359,7 @@ function newAddPointStartEndOnTube()
 	}		
 
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 

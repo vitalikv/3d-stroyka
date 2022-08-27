@@ -204,7 +204,8 @@ class CameraOrbit
 		if (this.activeCam == this.cam2D) { this.moveCam2D( this.cam2D, event, this.mouse.button ); }
 		else if (this.activeCam == this.cam3D) { this.moveCam3D( this.cam3D, event, this.mouse.button ); }	
 	
-		//console.log(event.clientX);
+		
+		infProject.class.api.camMove();
 		
 		this.render();
 	}
@@ -223,7 +224,7 @@ class CameraOrbit
 		const width = canvas.clientWidth;
 		const height = canvas.clientHeight;
 		const needResize = canvas.width !== width || canvas.height !== height;
-		if (!needResize) { return; }
+		//if (!needResize) { return; }
 		
 		this.params.renderer.setSize(width, height, false);
 		
@@ -391,6 +392,8 @@ class CameraOrbit
 		if(this.activeCam == this.cam2D) { this.cameraZoom2D({cam2D: this.cam2D, delta: delta}); }
 		else if(this.activeCam == this.cam3D) { this.cameraZoom3D({cam3D: this.cam3D, delta: delta}); }
 		
+		infProject.class.api.camZoom();
+		
 		this.render();
 	}
 	
@@ -467,6 +470,130 @@ class CameraOrbit
 	}
 
 
+	// приближаемся к выбранному объекту
+	fitCamera({obj, rot = true})
+	{
+		let camera = this.activeCam;
+
+		let v = [];
+		
+		obj.updateMatrixWorld();
+		obj.geometry.computeBoundingBox();	
+
+		let bound = obj.geometry.boundingBox;
+		
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );
+		v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
+
+
+		if(camera.userData.isCam3D)
+		{
+			bound = { min : { x : Infinity, y : Infinity, z : Infinity }, max : { x : -Infinity, y : -Infinity, z : -Infinity } };
+			
+			for(let i = 0; i < v.length; i++)
+			{
+				if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+				if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+				if(v[i].y < bound.min.y) { bound.min.y = v[i].y; }
+				if(v[i].y > bound.max.y) { bound.max.y = v[i].y; }			
+				if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+				if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+			}		
+			
+			
+			let center = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, (bound.max.y - bound.min.y)/2 + bound.min.y, (bound.max.z - bound.min.z)/2 + bound.min.z);
+			
+			// визуализируем 
+			if(1==2)
+			{
+				let g = createGeometryCube(0.01, 0.01, 0.01);
+				let material = new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } );
+
+				let cube = [];
+				for(let i = 0; i < 6; i++)
+				{
+					cube[i] = new THREE.Mesh( g, material );
+					scene.add( cube[i] );	
+				}
+				cube[0].position.set(bound.min.x, center.y, center.z); 
+				cube[1].position.set(bound.max.x, center.y, center.z); 
+				cube[2].position.set(center.x, bound.min.y, center.z); 
+				cube[3].position.set(center.x, bound.max.y, center.z); 
+				cube[4].position.set(center.x, center.y, bound.min.z); 
+				cube[5].position.set(center.x, center.y, bound.max.z);		
+			}
+			
+			let fitOffset = 5.1;
+			let maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y, bound.max.z - bound.min.z );  
+			//let fitHeightDistance = maxSize / ( 2 * Math.atan( Math.PI * camera.fov / 360 ) );		
+			//let fitWidthDistance = fitHeightDistance / camera.aspect;		
+			//let distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );		
+			
+			
+			if(rot)
+			{
+				camera.lookAt(center);		
+				let dir = center.clone().sub( camera.position ).normalize().multiplyScalar( maxSize + 0.25 );	
+				camera.position.copy(center).sub(dir);			
+			}
+			else
+			{	
+				//let maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y );
+				let dir = obj.getWorldDirection().multiplyScalar( maxSize * 2 );	
+				camera.position.copy(center).add(dir);
+				camera.lookAt(center);			
+			}		
+			
+			camera.userData.camera.d3.targetO.position.copy( center );
+		}
+		
+		
+		if(camera.userData.isCam2D)
+		{
+			bound = { min : { x : Infinity, z : Infinity }, max : { x : -Infinity, z : -Infinity } };
+			
+			for(let i = 0; i < v.length; i++)
+			{
+				if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
+				if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
+				if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
+				if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
+			}					
+
+			let aspect = ( bound.max.x - bound.min.x )/( bound.max.z - bound.min.z );		
+			
+			if( aspect > 1.0 )	// определяем что больше ширина или высота 
+			{
+				let x = ( bound.max.x - bound.min.x < 0.1) ? 0.1 : bound.max.x - bound.min.x;
+				camera.zoom = camera.right / (x/0.5);
+			}
+			else
+			{
+				let z = ( bound.max.z - bound.min.z < 0.1) ? 0.1 : bound.max.z - bound.min.z;
+				camera.zoom = camera.top / (z/0.5);
+			}
+			
+			
+
+			// центр нужно считать, так как у трубы центр всегда в нулях
+			let pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);		
+			camera.position.x = pos.x;
+			camera.position.z = pos.z;	
+		}
+		
+		camera.updateProjectionMatrix();
+		
+		infProject.class.api.camMove();
+		
+		this.render();
+	}
 	
 	
 	

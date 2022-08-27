@@ -61,7 +61,7 @@ function addPlaneListUI(cdm)
 	
 	clickItemFloorUI({el: elem, type: "general"});
 	
-	renderCamera();
+	camOrbit.render();
 }
 
 

@@ -147,7 +147,7 @@ class ObjNew extends THREE.Mesh
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}	
 }
 

@@ -110,7 +110,7 @@ function clickBoxWF_2D({rayhit})
 
 		hideControlWF();	
 
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmouseup = () => 
@@ -123,7 +123,7 @@ function clickBoxWF_2D({rayhit})
 		camOrbit.stopMove = false;
 		setMouseStop(false);
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }
@@ -229,7 +229,7 @@ function clickBoxCnrt({rayhit})
 	{
 		moveToggleGp({obj, event});	
 
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmouseup = () => 
@@ -242,7 +242,7 @@ function clickBoxCnrt({rayhit})
 		camOrbit.stopMove = false;
 		setMouseStop(false);	
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }
@@ -376,7 +376,7 @@ function inputScaleObjPop(cdm)
 	obj.scale.set(x2/scale.x, y2/scale.y, z2/scale.z);	
 	obj.updateMatrixWorld();	
 	
-	renderCamera();
+	camOrbit.render();
 }
 
 

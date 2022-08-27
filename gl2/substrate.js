@@ -327,7 +327,7 @@ function showHideSubstrate_1(cdm)
 		ruler[0].userData.subtool.line.visible = visible;	
 	}	
 	
-	renderCamera();
+	camOrbit.render();
 }
 
 
@@ -390,7 +390,7 @@ function setPlanePositionY(cdm)
 	setPosRotLineRulerSubstrate({ruler: ruler});
 	setPositionPointSubstrate({plane: plane});
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 
@@ -540,7 +540,7 @@ function setImgUrlSubstrate(cdm)
 		material.lightMap = lightMap_1;
 		material.needsUpdate = true; 
 		
-		renderCamera();
+		camOrbit.render();
 	});			
 }
 
@@ -613,7 +613,7 @@ function setImgCompSubstrate(cdm)
 			console.log(image, bytesToSize(decoded.length));				
 		}
 		
-		renderCamera();
+		camOrbit.render();
 	};
 		
 }
@@ -688,7 +688,7 @@ function clickToolSubstrate({rayhit})
 		// меняем положение линейки 
 		setPosRotLineRulerSubstrate({ruler: infProject.scene.substrate.ruler});
 
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmouseup = () => 
@@ -699,7 +699,7 @@ function clickToolSubstrate({rayhit})
 		camOrbit.stopMove = false;
 		setMouseStop(false);	
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }
@@ -752,7 +752,7 @@ function clickSubstrate({rayhit})
 			infProject.scene.substrate.ruler[0].userData.subtool.line.position.add( pos2 );		
 		}		
 
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmouseup = () => 
@@ -763,7 +763,7 @@ function clickSubstrate({rayhit})
 		camOrbit.stopMove = false;
 		setMouseStop(false);	
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }
@@ -851,7 +851,7 @@ function clickPointSubstrate({rayhit})
 			plane.position.add( pos2.clone().divideScalar( 2 ) );
 		}		
 
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmouseup = () => 
@@ -862,7 +862,7 @@ function clickPointSubstrate({rayhit})
 		camOrbit.stopMove = false;
 		setMouseStop(false);		
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }
@@ -954,7 +954,7 @@ function assignSizeSubstrate()
 	
 	setPositionPointSubstrate({plane: plane});
 	
-	renderCamera();
+	camOrbit.render();
 }
 
 
@@ -990,7 +990,7 @@ function setRotateSubstrate(cdm)
 	
 	setPositionPointSubstrate({plane: plane});
 	
-	renderCamera();
+	camOrbit.render();
 }
 
 
@@ -1009,7 +1009,7 @@ function setTransparencySubstrate(cdm)
 	
 	document.querySelector('[nameId="input_transparency_substrate"]').value = value;
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 
@@ -1052,7 +1052,7 @@ function deleteSubstrate(cdm)
 	
 	infProject.scene.substrate.active = null;	// деактивируем активный этаж
 
-	renderCamera();	
+	camOrbit.render();	
 }
 
 

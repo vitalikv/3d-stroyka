@@ -134,7 +134,7 @@ function deActiveSelected()
 
 	clickO = resetPop.clickO();
 
-	renderCamera();	
+	camOrbit.render();	
 }
 
 
@@ -349,7 +349,7 @@ document.body.addEventListener("keydown", function (e)
 
 	if(infProject.settings.blockKeyCode) return;
 	
-	if(e.keyCode == 90) { fitCameraToObject({obj: clickO.last_obj, rot: true}); }	// z
+	if(e.keyCode == 90) { camOrbit.fitCamera({obj: clickO.last_obj, rot: true}); }	// z
 		
 	if(e.keyCode == 46) { detectDeleteObj({obj: clickO.last_obj}); }
 	
@@ -483,7 +483,7 @@ function init()
 	initSceneParams();
 	
 	animate();
-	//renderCamera();	
+	//camOrbit.render();	
 	
 	initSelectBox({container: mainDiv_1});
 	
@@ -511,6 +511,7 @@ function init()
 	crEventButtonWarmTube({container: mainDiv_1});
 	crEventButtonWarmTubeGrid({container: mainDiv_1});	
 	
+	infProject.class.api = new Api();
 	
 	docReady = true; 
 

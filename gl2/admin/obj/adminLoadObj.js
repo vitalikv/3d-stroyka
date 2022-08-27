@@ -140,7 +140,7 @@ function setParamObj(cdm)
 	
 	
 	
-	renderCamera();	
+	camOrbit.render();	
 }
 
 

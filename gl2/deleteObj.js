@@ -14,7 +14,7 @@ function detectDeleteObj(cdm)
 	else if ( tag == 'new_tube' ) { deleteObjectPop(obj); }
 	else if ( tag == 'new_point' ) { obj.delete(); }
 	
-	renderCamera();
+	//camOrbit.render();
 }
 
 
@@ -68,7 +68,7 @@ console.log('oldState', 'group:', infProject.scene.array.group.length, 'obj:', i
 console.log('newState', 'group:', infProject.scene.array.group.length, 'obj:', infProject.scene.array.obj.length, 'tube:', infProject.scene.array.tube.length, renderer.info.memory.geometries, renderer.info.memory.textures);
 
 	outlineRemoveObj();
-	renderCamera();
+	camOrbit.render();
 }
 
 

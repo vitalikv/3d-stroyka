@@ -169,7 +169,7 @@ class Obj_JoinGroup
 
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}
 }	
 

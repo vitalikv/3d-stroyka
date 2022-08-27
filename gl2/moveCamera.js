@@ -89,7 +89,7 @@ function updateKeyDown()
 		}
 	}
 
-	if(flag) { renderCamera(); }
+	if(flag) { camOrbit.render(); }
 }
 
 
@@ -213,15 +213,7 @@ function cameraMove3D( event )
 }
 
 
-function stopCameraTop()
-{
-	//camOrbit.stopMove = true;
-}
 
-function stopCamera3D()
-{
-	//camOrbit.stopMove = true;
-}
 
 
 
@@ -423,190 +415,12 @@ function zoomCamera3D_2(cdm)
 
 
 
-// приближаемся к выбранному объекту
-function fitCameraToObject(cdm)
-{
-	var obj = cdm.obj; 
-	
-	if(!obj) return;
-
-	var v = [];
-	
-	obj.updateMatrixWorld();
-	obj.geometry.computeBoundingBox();	
-
-	var bound = obj.geometry.boundingBox;
-	
-	v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.max.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.min.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.max.x, bound.min.y, bound.min.z).applyMatrix4( obj.matrixWorld );
-
-	v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.max.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.min.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );
-	v[v.length] = new THREE.Vector3(bound.max.x, bound.max.y, bound.min.z).applyMatrix4( obj.matrixWorld );			
-
-
-	if(camOrbit.activeCam.userData.isCam3D)
-	{
-		var bound = { min : { x : 999999, y : 999999, z : 999999 }, max : { x : -999999, y : -999999, z : -999999 } };
-		
-		for(var i = 0; i < v.length; i++)
-		{
-			if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
-			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
-			if(v[i].y < bound.min.y) { bound.min.y = v[i].y; }
-			if(v[i].y > bound.max.y) { bound.max.y = v[i].y; }			
-			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
-			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
-		}		
-		
-		
-		var center = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, (bound.max.y - bound.min.y)/2 + bound.min.y, (bound.max.z - bound.min.z)/2 + bound.min.z);
-		
-		// визуализируем 
-		if(1==2)
-		{
-			var g = createGeometryCube(0.01, 0.01, 0.01);
-			var material = new THREE.MeshLambertMaterial( { color : 0x030202, transparent: true, opacity: 1, depthTest: false } );
-
-			var cube = [];
-			for(var i = 0; i < 6; i++)
-			{
-				cube[i] = new THREE.Mesh( g, material );
-				scene.add( cube[i] );	
-			}
-			cube[0].position.set(bound.min.x, center.y, center.z); 
-			cube[1].position.set(bound.max.x, center.y, center.z); 
-			cube[2].position.set(center.x, bound.min.y, center.z); 
-			cube[3].position.set(center.x, bound.max.y, center.z); 
-			cube[4].position.set(center.x, center.y, bound.min.z); 
-			cube[5].position.set(center.x, center.y, bound.max.z);		
-		}
-		
-		var fitOffset = 5.1;
-		var maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y, bound.max.z - bound.min.z );  
-		//var fitHeightDistance = maxSize / ( 2 * Math.atan( Math.PI * camera.fov / 360 ) );		
-		//var fitWidthDistance = fitHeightDistance / camera.aspect;		
-		//var distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );		
-		
-		
-		if(cdm.rot)
-		{
-			camera.lookAt(center);		
-			var dir = center.clone().sub( camera.position ).normalize().multiplyScalar( maxSize + 0.25 );	
-			camera.position.copy(center).sub(dir);			
-		}
-		else
-		{	
-			//var maxSize = Math.max( bound.max.x - bound.min.x, bound.max.y - bound.min.y );
-			var dir = obj.getWorldDirection().multiplyScalar( maxSize * 2 );	
-			camera.position.copy(center).add(dir);
-			camera.lookAt(center);			
-		}		
-		
-		camera3D.userData.camera3D.targetPos.copy( center );
-	}
-	
-	
-	if(camOrbit.activeCam.userData.isCam2D)
-	{
-		var bound = { min : { x : 999999, z : 999999 }, max : { x : -999999, z : -999999 } };
-		
-		for(var i = 0; i < v.length; i++)
-		{
-			if(v[i].x < bound.min.x) { bound.min.x = v[i].x; }
-			if(v[i].x > bound.max.x) { bound.max.x = v[i].x; }
-			if(v[i].z < bound.min.z) { bound.min.z = v[i].z; }
-			if(v[i].z > bound.max.z) { bound.max.z = v[i].z; }		
-		}					
-
-		var aspect = ( bound.max.x - bound.min.x )/( bound.max.z - bound.min.z );		
-		
-		if( aspect > 1.0 )	// определяем что больше ширина или высота 
-		{
-			var x = ( bound.max.x - bound.min.x < 0.1) ? 0.1 : bound.max.x - bound.min.x;
-			camera.zoom = camera.right / (x/0.5);
-		}
-		else
-		{
-			var z = ( bound.max.z - bound.min.z < 0.1) ? 0.1 : bound.max.z - bound.min.z;
-			camera.zoom = camera.top / (z/0.5);
-		}
-		
-		
-
-		// центр нужно считать, так как у трубы центр всегда в нулях
-		var pos = new THREE.Vector3((bound.max.x - bound.min.x)/2 + bound.min.x, 0, (bound.max.z - bound.min.z)/2 + bound.min.z);		
-		camera.position.x = pos.x;
-		camera.position.z = pos.z;	
-	}
-	
-	camera.updateProjectionMatrix();
-	
-	infProject.tools.pivot.userData.propPivot({type: 'updateScale'});
-	infProject.tools.gizmo.userData.propGizmo({type: 'updateScale'});
-	scaleToolsMoveCamera();
-	
-	renderCamera();
-}
-
-
 // масштаб pivot/gizmo и разъемов труб/объектов
 function scaleToolsMoveCamera()
 {
-	setScaleTubePoint(); 
-	setScaleJoinPoint();	
+
 }
 
-// масштаб соединительных точек у объектов
-function setScaleJoinPoint(cdm)  
-{ 
-	if(!cdm) { cdm = {}; }	
-	
-	var arr = [];
-	
-	if(cdm.arr) 
-	{ 
-		arr = cdm.arr; 
-	}
-	else 
-	{
-		var obj = clickO.last_obj; 	
-		if(!obj) return;
-		
-		if(obj.userData.obj3D) arr = obj.getObjPoint();
-		if(obj.userData.centerPoint) arr = obj.getPointObjOnObj();
-	}
-	
-	if(arr.length == 0) return;	
- 
-	
-	if(camera == cameraTop)
-	{		
-		var scale = 3.5/camera.zoom;	
-		
-		if(scale > 1.4) { scale = 1.4; }
-		else if(scale < 0.1) { scale = 0.1; }	
-		
-		for ( var i = 0; i < arr.length; i++ )
-		{ 
-			arr[i].scale.set( scale,scale,scale );			
-		}	
-	}	
-	else if(camera == camera3D)
-	{
-		for ( var i = 0; i < arr.length; i++ )
-		{ 
-			var scale = camera.position.distanceTo(arr[i].getWorldPosition(new THREE.Vector3()))/2;	
-
-			if(scale > 1.2) scale = 1.2;
-			
-			arr[i].scale.set( scale,scale,scale );			
-		}							
-	}
-}
 
 
 function detectBrowser()

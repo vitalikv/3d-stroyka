@@ -70,7 +70,7 @@ async function loadHouse(cdm)
 				{
 					if(mtrl.map && mtrl.map.image)
 					{
-						mtrl.map.image.onload = function(e){ renderCamera(); }
+						mtrl.map.image.onload = function(e){ camOrbit.render(); }
 					}
 					
 				});	
@@ -96,7 +96,7 @@ async function loadHouse(cdm)
 		});			
 	}	
 	
-	renderCamera();
+	camOrbit.render();
 }	
 
 
@@ -145,7 +145,7 @@ function addHouseListUI_2(cdm)
 			arr[i].visible = false;
 		}
 		
-		renderCamera();
+		camOrbit.render();
 		
 		el_show.style.display = 'none';
 		el_hide.style.display = ''; 
@@ -159,7 +159,7 @@ function addHouseListUI_2(cdm)
 			arr[i].visible = true;
 		}
 		
-		renderCamera();
+		camOrbit.render();
 		
 		el_show.style.display = '';
 		el_hide.style.display = 'none'; 

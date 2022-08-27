@@ -213,7 +213,7 @@ class Obj_JoinConnector
 
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}
 }	
 

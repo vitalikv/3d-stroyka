@@ -97,7 +97,7 @@ function setPlaneHeightPositionY(cdm)
 
 	input_height.value = plane.position.y;	
 	
-	renderCamera();		
+	camOrbit.render();		
 }
 
 
@@ -118,7 +118,7 @@ function showHidePlaneHeight(cdm)
 		infProject.tools.heightPl.visible = !infProject.tools.heightPl.visible;
 	}
 			
-	renderCamera();
+	camOrbit.render();
 }
 
 

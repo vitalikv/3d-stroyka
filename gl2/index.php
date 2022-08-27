@@ -113,7 +113,7 @@
 	
 	
 	
-	
+	<script src="<?=$path?>api.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>scaleBox.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolPivot.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>toolGizmo.js?<?=$vrs?>"></script>

@@ -196,6 +196,7 @@ class TubeN extends THREE.Mesh
 		let arrO = this.getGroupTube({tubePoint: true});
 		
 		outlinePass.selectedObjects = arrO;
+		this.setScaleTubePoints();
 		this.showHideTubePoints({visible: true});
 		
 		let result = this.detectPosTube({clickPos: clickPos});	// определяем в какое место трубы кликнули
@@ -311,6 +312,35 @@ class TubeN extends THREE.Mesh
 		this.ui_menu({type: 'hide'});
 		infProject.tools.pg.hide();	
 	}
+	
+	
+	// масштаб точек 
+	setScaleTubePoints()  
+	{
+		let arr = this.getTubePoints();
+		
+		if(camOrbit.activeCam.userData.isCam2D)
+		{		
+			let scale = 3.5/camOrbit.activeCam.zoom;	
+			
+			if(scale > 1.4) { scale = 1.4; }
+			else if(scale < 0.1) { scale = 0.1; }				
+			
+			arr.forEach((o) => { o.scale.set( scale, scale, scale ); } );	
+		}	
+		
+		if(camOrbit.activeCam.userData.isCam3D)
+		{
+			for ( let i = 0; i < arr.length; i++ )
+			{ 
+				let scale = camOrbit.activeCam.position.distanceTo( arr[i].getWorldPosition(new THREE.Vector3()) ) / 2;	
+				if(scale > 1.2) scale = 1.2;
+				
+				arr[i].scale.set( scale, scale, scale );			
+			}							
+		}
+	}
+	
 
 	// показываем/прячем точки трубы
 	showHideTubePoints({visible})
@@ -395,7 +425,7 @@ class TubeN extends THREE.Mesh
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}	
 
 }
@@ -426,57 +456,6 @@ function copyTubeN({obj})
 }
 
 
-
-// масштаб точек трубы
-function setScaleTubePoint(cdm) 
-{ 
-	if(!cdm) { cdm = {}; }
-
-	var arr = [];
-	
-	if(cdm.arr) 
-	{ 
-		arr = cdm.arr; 
-	}
-	else 
-	{
-		var obj = clickO.last_obj; 	
-		if(!obj) return;
-		
-		if(obj.userData.tag == 'new_tube') { var tube = obj; }		
-		else if(obj.userData.tag == 'new_point') { var tube = obj.userData.tube; }
-		else { return; }
-		
-		arr = tube.userData.point;	
-	}
-	
-	if(arr.length == 0) return;		 
-		
-	
-	if(camOrbit.activeCam.userData.isCam2D)
-	{		
-		var scale = 3.5/camOrbit.activeCam.zoom;	
-		
-		if(scale > 1.4) { scale = 1.4; }
-		else if(scale < 0.5) { scale = 0.5; }
-		
-		for ( var i = 0; i < arr.length; i++ )
-		{ 
-			arr[i].scale.set( scale,scale,scale );			
-		}	
-	}	
-	else if(camOrbit.activeCam.userData.isCam3D)
-	{
-		for ( var i = 0; i < arr.length; i++ )
-		{ 
-			var scale = camOrbit.activeCam.position.distanceTo(arr[i].position)/2;	
-
-			if(scale > 1.2) scale = 1.2;
-			
-			arr[i].scale.set( scale,scale,scale );			
-		}							
-	}
-}		
 
 
 // input меняем диаметр трубы
@@ -577,7 +556,7 @@ function crEventTubeMove(tube)
 		
 		tube.setPosTube({pos: intersects[0].point});			
 		
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmousedown = () => 
@@ -590,7 +569,7 @@ function crEventTubeMove(tube)
 		
 		setMouseStop(false);
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }

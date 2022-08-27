@@ -126,7 +126,7 @@ function addObjInScene(obj, inf, cdm)
 	
 	if(cdm.q) obj.quaternion.set(cdm.q.x, cdm.q.y, cdm.q.z, cdm.q.w);						
 		
-	renderCamera();
+	camOrbit.render();
 }
 
 
@@ -179,7 +179,7 @@ function crEventObjMoveFromCatalog({obj})
 		
 		pos = intersects[0].point.clone();
 		
-		renderCamera();
+		camOrbit.render();
 	};
 
 	mainDiv_1.onmousedown = () => 
@@ -197,7 +197,7 @@ function crEventObjMoveFromCatalog({obj})
 		
 		setMouseStop(false);
 		
-		renderCamera();
+		camOrbit.render();
 	};			
 
 }

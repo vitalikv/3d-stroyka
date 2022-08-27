@@ -98,7 +98,7 @@ class NewGroup
 			obj.clickObj();		
 		}
 		
-		renderCamera();
+		camOrbit.render();
 	}
 	
 }

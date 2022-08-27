@@ -59,7 +59,7 @@ function crEventButtonWarmTubeGrid(params)
 			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: false});
 			obj.userData.propObj({type: 'addObjButton', obj: obj});	
 		
-			renderCamera();
+			camOrbit.render();
 		}		
 	}
 	
@@ -223,7 +223,7 @@ function crEventButtonWarmTubeGrid(params)
 			{
 				movePoint({obj: obj, event: event, offset: offset});		
 				
-				renderCamera();
+				camOrbit.render();
 			};
 
 			container.onmouseup = (e) => 
@@ -234,7 +234,7 @@ function crEventButtonWarmTubeGrid(params)
 				camOrbit.stopMove = false;
 				setMouseStop(false);
 
-				renderCamera();
+				camOrbit.render();
 			};				
 		}			
 
@@ -357,7 +357,7 @@ function crEventButtonWarmTubeGrid(params)
 
 				obj.position.copy(intersects[0].point);			
 				
-				renderCamera();
+				camOrbit.render();
 			};
 
 			container.onmousedown = (e) => 
@@ -374,7 +374,7 @@ function crEventButtonWarmTubeGrid(params)
 					deleteObj();
 				} 
 				
-				renderCamera();
+				camOrbit.render();
 			};
 		}
 		
@@ -391,7 +391,7 @@ function crEventButtonWarmTubeGrid(params)
 			obj.userData.propObj({type: 'setPointPos', obj: obj});
 			obj.userData.propObj({type: 'setPointVisible', obj: obj, show: true});
 		
-			renderCamera();
+			camOrbit.render();
 		}
 		
 		function moveObj(params)
@@ -421,7 +421,7 @@ function crEventButtonWarmTubeGrid(params)
 			disposeNode(obj);
 			scene.remove(obj);		
 
-			renderCamera();
+			camOrbit.render();
 		}	
 
 		// обновляем форму плоскости

@@ -94,7 +94,7 @@ class PointObj extends THREE.Mesh
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}	
 }
 

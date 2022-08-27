@@ -340,7 +340,7 @@ class ToolPG
 	
 	render()
 	{
-		renderCamera();
+		camOrbit.render();
 	}
 }
 
