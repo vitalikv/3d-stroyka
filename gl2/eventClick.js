@@ -1,10 +1,12 @@
 $(document).ready(function()
 {
+	// вот решение 
+	
 	$('input').on('focus keyup change', function () 
 	{ 
 		infProject.activeInput = $(this).data('action');
 		if($(this).data('action') == undefined) { infProject.activeInput = $(this).data('input');  }
-		if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }
+		if(infProject.activeInput == undefined) { infProject.activeInput = $(this).attr('nameId');  }  
 		console.log(infProject.activeInput);
 		if(infProject.activeInput) { blockKeyCode({block: true}); }
 	});
@@ -15,6 +17,7 @@ $(document).ready(function()
 	});	
 
 });
+
 
 
 

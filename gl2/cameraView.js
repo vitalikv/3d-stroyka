@@ -2,10 +2,10 @@
 
 class CameraView
 {	
-	constructor()
+	constructor({canvas})
 	{
 		this.camView = null;
-		this.btnClose = null;
+		this.canvas = canvas;
 		
 		this.obj = null;
 		
@@ -15,16 +15,13 @@ class CameraView
 	
 	initEvent()
 	{
-		this.btnClose = document.querySelector('[nameId="butt_close_cameraView"]');
-		this.btnClose.onmousedown = (e) => { this.disable(); }
-
 		let windowResize = this.windowResize.bind(this);
 		window.addEventListener('resize', windowResize, false);
 	}
 	
 	initCamView()
 	{
-		let camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.01, 1000 );  
+		let camera = new THREE.PerspectiveCamera( 65, this.canvas.clientWidth / this.canvas.clientHeight, 0.01, 1000 );  
 		camera.rotation.order = 'YZX';		//'ZYX'
 		camera.position.y = 2000;
 		camera.lookAt(new THREE.Vector3());
@@ -42,8 +39,8 @@ class CameraView
 	{
 		//const width = mainDiv_1.clientWidth;
 		//const height = mainDiv_1.clientHeight;
-		const width = window.innerWidth;
-		const height = window.innerHeight;
+		const width = this.canvas.clientWidth;
+		const height = this.canvas.clientHeight;
 		
 		let aspect = width / height;
 		
@@ -56,9 +53,7 @@ class CameraView
 	// включаем Camera
 	enable(params)
 	{
-		this.btnClose.style.display = '';
-		infProject.class.btnCamera2D3D.btn2D.style.display = 'none';
-		infProject.class.btnCamera2D3D.btn3D.style.display = 'none';		
+		infProject.class.ui.tp.btnCam.activeCamView();		
 		
 		deActiveSelected();
 		this.deleteObjCameraView();
@@ -72,6 +67,18 @@ class CameraView
 		
 		this.initMouse();
 	}
+	
+	
+	// выключаем Camera
+	disable()
+	{
+		mainDiv_1.onmousedown = null;	
+		mainDiv_1.onmousemove = null;
+		mainDiv_1.onmouseup = null;
+		mainDiv_1.onwheel = null;
+		
+		this.deleteObjCameraView();	
+	}	
 
 	// включаем Camera
 	async activeCamera(cdm)
@@ -276,20 +283,7 @@ class CameraView
 	}
 
 	
-	// выключаем Camera
-	disable()
-	{
-		mainDiv_1.onmousedown = null;	
-		mainDiv_1.onmousemove = null;
-		mainDiv_1.onmouseup = null;
-		mainDiv_1.onwheel = null;
-		
-		this.btnClose.style.display = 'none';
-		
-		this.deleteObjCameraView();
 
-		(camOrbit.activeCam.userData.isCam2D) ? infProject.class.btnCamera2D3D.clickBtnCamera('2D') : infProject.class.btnCamera2D3D.clickBtnCamera('3D');		
-	}
 	
 	
 	// удаляем объекты из preview

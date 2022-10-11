@@ -1,44 +1,6 @@
 
 
 
-
-// переключение камеры
-class BtnCamera2D3D
-{
-	constructor(type)
-	{
-		this.btn2D = document.querySelector('[nameId="butt_camera_2D"]');
-		this.btn3D = document.querySelector('[nameId="butt_camera_3D"]');
-		this.initEvent();
-		
-		if(type) this.clickBtnCamera(type);
-	}
-
-	initEvent()
-	{  
-		this.btn2D.onmousedown = (e) => { this.clickBtnCamera('2D'); }
-		this.btn3D.onmousedown = (e) => { this.clickBtnCamera('3D'); }		
-	}
-	
-	clickBtnCamera(type)
-	{
-		deActiveSelected();
-		changeRightMenuUI_1({current: true});
-		clickO = resetPop.clickO();
-		
-		this.btn2D.style.display = 'none';
-		this.btn3D.style.display = 'none';
-		
-		(type === '2D') ? this.btn3D.style.display = '' : this.btn2D.style.display = '';
-		
-		camOrbit.setActiveCam({cam: type});
-	}
-}
-
-
-
-
-
 class CameraOrbit
 {
 	constructor(params)
@@ -74,15 +36,15 @@ class CameraOrbit
 		let mouseWheel = this.mouseWheel.bind(this);
 		let windowResize = this.windowResize.bind(this);
 		
-		this.params.container.addEventListener( 'mousedown', mouseDown, false );
-		this.params.container.addEventListener( 'mousemove', mouseMove, false );
-		this.params.container.addEventListener( 'mouseup', mouseUp, false );	
+		this.params.canvas.addEventListener( 'mousedown', mouseDown, false );
+		this.params.canvas.addEventListener( 'mousemove', mouseMove, false );
+		this.params.canvas.addEventListener( 'mouseup', mouseUp, false );	
 		
-		this.params.container.addEventListener( 'touchstart', mouseDown, false );
-		this.params.container.addEventListener( 'touchmove', mouseMove, false );
-		this.params.container.addEventListener( 'touchend', mouseUp, false );
+		this.params.canvas.addEventListener( 'touchstart', mouseDown, false );
+		this.params.canvas.addEventListener( 'touchmove', mouseMove, false );
+		this.params.canvas.addEventListener( 'touchend', mouseUp, false );
 		
-		this.params.container.addEventListener('wheel', mouseWheel, false);			
+		this.params.canvas.addEventListener('wheel', mouseWheel, false);			
 
 		window.addEventListener( 'resize', windowResize, false );
 	}

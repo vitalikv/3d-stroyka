@@ -6,14 +6,32 @@ var canvas, context, renderer, scene;
 
 function initScene()
 {
-	canvas = document.createElement( 'canvas' );
-	context = canvas.getContext( 'webgl2', { antialias: false } );
-	renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context, preserveDrawingBuffer: true, } );
+	if(1===2)
+	{
+		canvas = document.createElement( 'canvas' );
+		context = canvas.getContext( 'webgl2', { antialias: false } );
+		renderer = new THREE.WebGLRenderer( { canvas: canvas, context: context, preserveDrawingBuffer: true, } );
+		
+		renderer.localClippingEnabled = true;
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.append( renderer.domElement );
+		
+	}
+	else
+	{
+		let container = document.body.querySelector('[nameId="mainDiv_1"]');
+		renderer = new THREE.WebGLRenderer( { preserveDrawingBuffer: true, } );
+		renderer.localClippingEnabled = true;
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( container.clientWidth, container.clientHeight );
 
-	renderer.localClippingEnabled = true;
-	renderer.setPixelRatio( window.devicePixelRatio );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.append( renderer.domElement );
+		renderer.domElement.style.width = '100%';
+		renderer.domElement.style.height = '100%';
+		container.append(renderer.domElement);
+	}
+	
+
 
 	scene = new THREE.Scene();
 	scene.background = new THREE.Color( 0xffffff );	

@@ -174,6 +174,9 @@
 	<script src="<?=$path?>uiInterface_catalog.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>uiInterface_user_1.js?<?=$vrs?>"></script>
 	<script src="<?=$path?>eventClick.js?<?=$vrs?>"></script>
+	
+	<script src="<?=$path?>interface/top-panel/main.js?<?=$vrs?>"></script>
+	<script src="<?=$path?>interface/top-panel/btn-cam.js?<?=$vrs?>"></script>
 	 
     
 	<script src="<?=$path?>warmTube.js?<?=$vrs?>"></script>

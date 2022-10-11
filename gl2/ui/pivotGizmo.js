@@ -3,23 +3,30 @@
 
 class UI_menuPivotGizmo 
 {
-	el = null;
+	
 	
 	constructor({container})
 	{
-		this.el = document.createElement('div');			
-		this.el.innerHTML = this.html();
-		this.el = this.el.firstChild;
-		
-		container.append(this.el);
-		this.assignEvent();		
+		this.el = null;	
+		this.init({container});
 	}
 	
-	assignEvent()
+	init({container})
 	{
-		this.el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
-		this.el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
-		this.el.addEventListener('mouseup', function(e) { e.stopPropagation(); });	
+		let div = document.createElement('div');			
+		div.innerHTML = this.html();
+		this.el = div.children[0];
+		
+		container.append(this.el);
+		
+		this.initEvent();			
+	}
+	
+	initEvent()
+	{
+		//this.el.addEventListener('mousedown', function(e) { e.stopPropagation(); });
+		//this.el.addEventListener('mousemove', function(e) { e.stopPropagation(); });
+		//this.el.addEventListener('mouseup', function(e) { e.stopPropagation(); });	
 	}
 	
 	html()

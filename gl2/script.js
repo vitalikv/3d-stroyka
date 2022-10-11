@@ -431,6 +431,7 @@ function checkNumberInput(cdm)
 }
 
 
+
 // блокировка клавиатуры
 function blockKeyCode(cdm) 
 {	 
@@ -470,10 +471,14 @@ var docReady = false;
 
 document.addEventListener("DOMContentLoaded", init);
 
-let camOrbit, btnCamera2D3D;
+let camOrbit;
 
 function init()
 {
+	infProject.class = {};
+	infProject.class.ui = {};
+	infProject.class.ui.tp = new TopPanel({container: mainDiv_1});
+	
 	initScene();
 	camOrbit = new CameraOrbit({canvas: renderer.domElement, container: mainDiv_1, renderer: renderer, scene: scene, setCam: '3D'});
 	//initCams();
@@ -492,11 +497,12 @@ function init()
 	new UI_saveEstimateTxt({el: document.body.querySelector('[nameId="save_list_obj"]')});
 
 	infProject.tools.pg = new ToolPG({type: 'pivot', nameAttr: '[nameId="mainDiv_1"]'});
-	infProject.class = {};
-	infProject.class.btnCamera2D3D = new BtnCamera2D3D('2D');
+	
+	
 	infProject.class.group = new NewGroup();
-	infProject.class.camView = new CameraView();
-	console.log(4444, infProject.class.camView);
+	infProject.class.camView = new CameraView({canvas: renderer.domElement});
+	
+	infProject.class.ui.tp.btnCam.activeCamera('2D');
 	
 	//startPosCamera3D({radious: 15, theta: 90, phi: 35});		// стартовое положение 3D камеры
 	addObjInCatalogUI_1();										// каталог UI
