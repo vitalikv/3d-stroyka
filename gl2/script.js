@@ -514,8 +514,8 @@ function init()
 
 	setPlaneHeightPositionY({ value: 0.4 });
 
-	crEventButtonWarmTube({container: mainDiv_1});
-	crEventButtonWarmTubeGrid({container: mainDiv_1});	
+	crEventButtonWarmTube({container: renderer.domElement});
+	crEventButtonWarmTubeGrid({container: renderer.domElement});	
 	
 	infProject.class.api = new Api();
 	

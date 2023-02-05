@@ -19,7 +19,14 @@ $(document).ready(function()
 });
 
 
+document.addEventListener('mousedown', checkInput);
 
+
+function checkInput(event)
+{
+	console.log(6789, event, event.target instanceof HTMLInputElement);
+	if(event.target instanceof HTMLInputElement) return;
+}
 
 
 //----------------- блокируем действия ->

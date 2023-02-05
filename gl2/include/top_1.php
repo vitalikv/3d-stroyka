@@ -3,7 +3,7 @@
 
 
 
-<div class="flex_1 top_panel_2">	
+<div style="display: flex; position: absolute; top: 15px; left: 50%; transform: translateX(-50%);">	
 	
 	<div class="toolbar" data-action ='top_panel_1'>
 

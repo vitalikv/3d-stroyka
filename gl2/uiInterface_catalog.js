@@ -99,7 +99,7 @@ async function addObjInCatalogUI_1(cdm)
 					clickItemFocusUI_1({el: elem});
 					
 					deActiveSelected();					
-					promiseCursorInScene({container: mainDiv_1}).then(data=> { loadObjServer({lotid: n, cursor: true}); })
+					promiseCursorInScene({container: renderer.domElement}).then(data=> { loadObjServer({lotid: n, cursor: true}); })
 					
 					e.stopPropagation(); 
 				};	
@@ -204,7 +204,7 @@ function addElemItemSborka_UI_1(cdm)
 			clickItemFocusUI_1({el: elem});
 			
 			deActiveSelected();
-			promiseCursorInScene({container: mainDiv_1}).then(data=> { addSborkaToScene_1({addScene: true, inf: cdm}); }) 
+			promiseCursorInScene({container: renderer.domElement}).then(data=> { addSborkaToScene_1({addScene: true, inf: cdm}); }) 
 			
 			e.stopPropagation(); 
 		}	  
